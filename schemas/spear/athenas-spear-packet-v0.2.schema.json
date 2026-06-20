@@ -1,1 +1,747 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://atlas-prime.local/schemas/athenas-spear-packet-v0.2.json","title":"Athena's Spear Packet v0.2","type":"object","additionalProperties":false,"required":["schema_version","packet_id","created_at","prepared_by","caller","run_intent","intent","approval_basis","authority_class","privacy_class","repository","base_ref","expected_base_object","destination_policy_version","primary_project","affected_projects","changes","verification","non_promotions","resource_limits","packet_hash","human_summary"],"properties":{"schema_version":{"const":"0.2"},"packet_id":{"type":"string","pattern":"^atlas-[a-z0-9][a-z0-9-]{7,127}$"},"created_at":{"type":"string","format":"date-time"},"prepared_by":{"enum":["Athena","Hermes","Jayson"]},"caller":{"$ref":"#/$defs/caller"},"run_intent":{"enum":["PLAN_ONLY","CREATE_PR","REPAIR_PR","VERIFY_MERGE"]},"intent":{"type":"string","minLength":3,"maxLength":200},"approval_basis":{"$ref":"#/$defs/approval_basis"},"authority_class":{"$ref":"#/$defs/authority_class"},"privacy_class":{"$ref":"#/$defs/privacy_class"},"repository":{"type":"string","pattern":"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},"base_ref":{"type":"string","minLength":1,"maxLength":200},"expected_base_object":{"$ref":"#/$defs/git_object_id"},"destination_policy_version":{"type":"string","pattern":"^[A-Za-z0-9_.-]+/[0-9]+\\.[0-9]+$"},"primary_project":{"type":"string","minLength":1,"maxLength":100},"affected_projects":{"type":"array","items":{"type":"string","minLength":1,"maxLength":100},"uniqueItems":true,"maxItems":12},"changes":{"type":"array","minItems":1,"maxItems":50,"items":{"$ref":"#/$defs/change"}},"verification":{"$ref":"#/$defs/verification"},"non_promotions":{"type":"array","items":{"type":"string","minLength":1,"maxLength":500},"uniqueItems":true,"maxItems":100},"resource_limits":{"$ref":"#/$defs/resource_limits"},"packet_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},"human_summary":{"type":"string","minLength":1,"maxLength":5000},"repair_context":{"$ref":"#/$defs/repair_context"},"merge_verification_context":{"$ref":"#/$defs/merge_verification_context"}},"allOf":[{"if":{"properties":{"run_intent":{"const":"REPAIR_PR"}}},"then":{"required":["repair_context"]}},{"if":{"properties":{"run_intent":{"const":"VERIFY_MERGE"}}},"then":{"required":["merge_verification_context"]}},{"if":{"properties":{"privacy_class":{"const":"PROHIBITED"}}},"then":false}],"$defs":{"authority_class":{"enum":["CONTINUITY_MEMORY","STATE_UPDATE","DECISION_UPDATE","CANONICAL_UPDATE","PROMOTION","SUPERSESSION","ARCHIVE_PROPOSAL","AEGIS_EVOLUTION","REPAIR"]},"privacy_class":{"enum":["PUBLIC_CLEAN","PRIVATE_CLEAN_SUMMARY","POINTER_ONLY","PROHIBITED"]},"caller":{"type":"object","additionalProperties":false,"required":["caller_type","caller_id","request_id","requested_at"],"properties":{"caller_type":{"enum":["CHATGPT_ATHENA","APPLE_SHORTCUT","N8N","HERMES","BOT","GITHUB_ACTIONS","ATLAS_APP","JAYSON"]},"caller_id":{"type":"string","minLength":1,"maxLength":200},"request_id":{"type":"string","minLength":8,"maxLength":200},"requested_at":{"type":"string","format":"date-time"},"nonce":{"type":"string","minLength":8,"maxLength":200}}},"approval_basis":{"type":"object","additionalProperties":false,"required":["source","reference","approved_scope"],"properties":{"source":{"enum":["EXPLICIT_JAYSON_INSTRUCTION","APPROVED_PREVIEW_EXECUTE","PHOENIX_BURN_DISPOSITION","PR_AUDIT_REPAIR_AUTHORIZATION","NONE_REQUIRED_CONTINUITY_ONLY"]},"reference":{"type":"string","minLength":1,"maxLength":1000},"approved_scope":{"type":"string","minLength":1,"maxLength":2000},"approved_at":{"type":"string","format":"date-time"}}},"git_object_id":{"type":"object","additionalProperties":false,"required":["algorithm","value"],"properties":{"algorithm":{"enum":["sha1","sha256"]},"value":{"type":"string","pattern":"^[0-9a-f]{40}$|^[0-9a-f]{64}$"}},"allOf":[{"if":{"properties":{"algorithm":{"const":"sha1"}}},"then":{"properties":{"value":{"pattern":"^[0-9a-f]{40}$"}}}},{"if":{"properties":{"algorithm":{"const":"sha256"}}},"then":{"properties":{"value":{"pattern":"^[0-9a-f]{64}$"}}}}]},"resource_limits":{"type":"object","additionalProperties":false,"required":["max_packet_bytes","max_change_bytes","max_changes","max_changed_files","max_total_diff_bytes","max_result_file_bytes"],"properties":{"max_packet_bytes":{"type":"integer","minimum":1,"maximum":10485760},"max_change_bytes":{"type":"integer","minimum":1,"maximum":5242880},"max_changes":{"type":"integer","minimum":1,"maximum":100},"max_changed_files":{"type":"integer","minimum":1,"maximum":100},"max_total_diff_bytes":{"type":"integer","minimum":1,"maximum":10485760},"max_result_file_bytes":{"type":"integer","minimum":1,"maximum":5242880}}},"change":{"type":"object","additionalProperties":false,"required":["change_id","record_type","operation","target_path","primary_project","affected_projects","authority_class","privacy_class","payload","reason","canonical_effect","supersession_effect","cross_references","verification","rollback"],"properties":{"change_id":{"type":"string","pattern":"^chg-[a-z0-9][a-z0-9-]{3,63}$"},"record_type":{"enum":["HARVEST_RECORD","SUNSET_RECORD","SYNTHESIS_RECORD","CONTINUITY_RECORD","AEGIS_LESSON","ACTIVE_WORK_ITEM","DECISION_RECORD","PROJECT_UPDATE","OPERATION_UPDATE","RUNBOOK_UPDATE","POLICY_UPDATE","PHOENIX_BURN_PROMOTION","ARCHIVE_OR_RETIREMENT_PROPOSAL","BOUNDED_SOURCE_UPDATE","PR_REPAIR"]},"operation":{"enum":["CREATE_FILE","CREATE_RECORD_IN_BUNDLE","CREATE_CROSS_REFERENCE","REPLACE_EXACT","APPEND_UNDER_UNIQUE_HEADING","UPDATE_STRUCTURED_FIELD","UPSERT_STRUCTURED_RECORD","MARK_CONSOLIDATED","MARK_SUPERSEDED","ADD_RELATIONSHIP","REMOVE_RELATIONSHIP","PROPOSE_ARCHIVE","PROPOSE_RETIREMENT","PROPOSE_PROMOTION","PROPOSE_MOVE_OR_RENAME","REPAIR_EXISTING_PR","REPLACE_UNSAFE_PR"]},"target_path":{"type":"string","minLength":1,"maxLength":500,"not":{"pattern":"(^/|\\.\\.|\\\\|%2e|%2f|%5c)"}},"primary_project":{"type":"string","minLength":1,"maxLength":100},"affected_projects":{"type":"array","items":{"type":"string","minLength":1,"maxLength":100},"uniqueItems":true,"maxItems":12},"authority_class":{"$ref":"#/$defs/authority_class"},"privacy_class":{"$ref":"#/$defs/privacy_class"},"expected_blob_object":{"$ref":"#/$defs/git_object_id"},"expected_absent":{"const":true},"payload":{"type":"object","minProperties":1,"maxProperties":30},"reason":{"type":"string","minLength":1,"maxLength":3000},"canonical_effect":{"enum":["NONE","MODIFIES_CANONICAL","CREATES_CANONICAL","PROPOSES_CANONICAL"]},"supersession_effect":{"enum":["NONE","MARKS_CONSOLIDATED","MARKS_SUPERSEDED","PROPOSES_RETIREMENT"]},"cross_references":{"type":"array","items":{"type":"string","maxLength":500},"uniqueItems":true,"maxItems":100},"verification":{"$ref":"#/$defs/change_verification"},"rollback":{"$ref":"#/$defs/rollback"}},"allOf":[{"if":{"properties":{"operation":{"enum":["REPLACE_EXACT","APPEND_UNDER_UNIQUE_HEADING","UPDATE_STRUCTURED_FIELD","UPSERT_STRUCTURED_RECORD","MARK_CONSOLIDATED","MARK_SUPERSEDED","ADD_RELATIONSHIP","REMOVE_RELATIONSHIP","REPAIR_EXISTING_PR"]}}},"then":{"required":["expected_blob_object"]}},{"if":{"properties":{"operation":{"enum":["CREATE_FILE","CREATE_CROSS_REFERENCE"]}}},"then":{"required":["expected_absent"]}},{"if":{"properties":{"privacy_class":{"const":"PROHIBITED"}}},"then":false}]},"change_verification":{"type":"object","additionalProperties":false,"required":["expected_paths","required_anchors","prohibited_anchors","result_format"],"properties":{"expected_paths":{"type":"array","items":{"type":"string","maxLength":500},"uniqueItems":true},"required_anchors":{"type":"array","items":{"type":"string","maxLength":1000},"uniqueItems":true},"prohibited_anchors":{"type":"array","items":{"type":"string","maxLength":1000},"uniqueItems":true},"result_format":{"enum":["MARKDOWN","YAML","JSON","TEXT","OTHER"]}}},"verification":{"type":"object","additionalProperties":false,"required":["expected_changed_file_count","required_checks","post_merge_readback_paths"],"properties":{"expected_changed_file_count":{"type":"integer","minimum":1,"maximum":100},"required_checks":{"type":"array","items":{"type":"string","maxLength":200},"uniqueItems":true,"maxItems":100},"post_merge_readback_paths":{"type":"array","items":{"type":"string","maxLength":500},"uniqueItems":true,"maxItems":100}}},"rollback":{"type":"object","additionalProperties":false,"required":["strategy","independent_revert_expected"],"properties":{"strategy":{"enum":["GIT_REVERT","REPLACEMENT_PR","NOT_APPLICABLE_PLAN_ONLY"]},"independent_revert_expected":{"type":"boolean"},"notes":{"type":"string","maxLength":2000}}},"repair_context":{"type":"object","additionalProperties":false,"required":["original_packet_id","original_manifest_hash","pr_number","expected_pr_head_object","audit_finding_ids","repair_cycle"],"properties":{"original_packet_id":{"type":"string"},"original_manifest_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},"pr_number":{"type":"integer","minimum":1},"expected_pr_head_object":{"$ref":"#/$defs/git_object_id"},"audit_finding_ids":{"type":"array","minItems":1,"items":{"type":"string","maxLength":200},"uniqueItems":true},"repair_cycle":{"type":"integer","minimum":1,"maximum":5}}},"merge_verification_context":{"type":"object","additionalProperties":false,"required":["pr_number","expected_merge_object","expected_manifest_hash"],"properties":{"pr_number":{"type":"integer","minimum":1},"expected_merge_object":{"$ref":"#/$defs/git_object_id"},"expected_manifest_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"}}}}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas-prime.local/schemas/athenas-spear-packet-v0.2.json",
+  "title": "Athena's Spear Packet v0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "packet_id",
+    "created_at",
+    "prepared_by",
+    "caller",
+    "run_intent",
+    "intent",
+    "approval_basis",
+    "authority_class",
+    "privacy_class",
+    "repository",
+    "base_ref",
+    "expected_base_object",
+    "destination_policy_version",
+    "primary_project",
+    "affected_projects",
+    "changes",
+    "verification",
+    "non_promotions",
+    "resource_limits",
+    "packet_hash",
+    "human_summary"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "packet_id": {
+      "type": "string",
+      "pattern": "^atlas-[a-z0-9][a-z0-9-]{7,127}$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "prepared_by": {
+      "enum": [
+        "Athena",
+        "Hermes",
+        "Jayson"
+      ]
+    },
+    "caller": {
+      "$ref": "#/$defs/caller"
+    },
+    "run_intent": {
+      "enum": [
+        "PLAN_ONLY",
+        "CREATE_PR",
+        "REPAIR_PR",
+        "VERIFY_MERGE"
+      ]
+    },
+    "intent": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 200
+    },
+    "approval_basis": {
+      "$ref": "#/$defs/approval_basis"
+    },
+    "authority_class": {
+      "$ref": "#/$defs/authority_class"
+    },
+    "privacy_class": {
+      "$ref": "#/$defs/privacy_class"
+    },
+    "repository": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+    },
+    "base_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "expected_base_object": {
+      "$ref": "#/$defs/git_object_id"
+    },
+    "destination_policy_version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+/[0-9]+\\.[0-9]+$"
+    },
+    "primary_project": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "affected_projects": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100
+      },
+      "uniqueItems": true,
+      "maxItems": 12
+    },
+    "changes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 50,
+      "items": {
+        "$ref": "#/$defs/change"
+      }
+    },
+    "verification": {
+      "$ref": "#/$defs/verification"
+    },
+    "non_promotions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      },
+      "uniqueItems": true,
+      "maxItems": 100
+    },
+    "resource_limits": {
+      "$ref": "#/$defs/resource_limits"
+    },
+    "packet_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "human_summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 5000
+    },
+    "repair_context": {
+      "$ref": "#/$defs/repair_context"
+    },
+    "merge_verification_context": {
+      "$ref": "#/$defs/merge_verification_context"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "run_intent": {
+            "const": "REPAIR_PR"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "repair_context"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "run_intent": {
+            "const": "VERIFY_MERGE"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "merge_verification_context"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "privacy_class": {
+            "const": "PROHIBITED"
+          }
+        }
+      },
+      "then": false
+    }
+  ],
+  "$defs": {
+    "authority_class": {
+      "enum": [
+        "CONTINUITY_MEMORY",
+        "STATE_UPDATE",
+        "DECISION_UPDATE",
+        "CANONICAL_UPDATE",
+        "PROMOTION",
+        "SUPERSESSION",
+        "ARCHIVE_PROPOSAL",
+        "AEGIS_EVOLUTION",
+        "REPAIR"
+      ]
+    },
+    "privacy_class": {
+      "enum": [
+        "PUBLIC_CLEAN",
+        "PRIVATE_CLEAN_SUMMARY",
+        "POINTER_ONLY",
+        "PROHIBITED"
+      ]
+    },
+    "caller": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "caller_type",
+        "caller_id",
+        "request_id",
+        "requested_at"
+      ],
+      "properties": {
+        "caller_type": {
+          "enum": [
+            "CHATGPT_ATHENA",
+            "APPLE_SHORTCUT",
+            "N8N",
+            "HERMES",
+            "BOT",
+            "GITHUB_ACTIONS",
+            "ATLAS_APP",
+            "JAYSON"
+          ]
+        },
+        "caller_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 200
+        },
+        "requested_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "nonce": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 200
+        }
+      }
+    },
+    "approval_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "reference",
+        "approved_scope"
+      ],
+      "properties": {
+        "source": {
+          "enum": [
+            "EXPLICIT_JAYSON_INSTRUCTION",
+            "APPROVED_PREVIEW_EXECUTE",
+            "PHOENIX_BURN_DISPOSITION",
+            "PR_AUDIT_REPAIR_AUTHORIZATION",
+            "NONE_REQUIRED_CONTINUITY_ONLY"
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "approved_scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "approved_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "git_object_id": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "properties": {
+        "algorithm": {
+          "enum": [
+            "sha1",
+            "sha256"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$|^[0-9a-f]{64}$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "algorithm": {
+                "const": "sha1"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "pattern": "^[0-9a-f]{40}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "algorithm": {
+                "const": "sha256"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "resource_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_packet_bytes",
+        "max_change_bytes",
+        "max_changes",
+        "max_changed_files",
+        "max_total_diff_bytes",
+        "max_result_file_bytes"
+      ],
+      "properties": {
+        "max_packet_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10485760
+        },
+        "max_change_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5242880
+        },
+        "max_changes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "max_changed_files": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "max_total_diff_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10485760
+        },
+        "max_result_file_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5242880
+        }
+      }
+    },
+    "change": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "change_id",
+        "record_type",
+        "operation",
+        "target_path",
+        "primary_project",
+        "affected_projects",
+        "authority_class",
+        "privacy_class",
+        "payload",
+        "reason",
+        "canonical_effect",
+        "supersession_effect",
+        "cross_references",
+        "verification",
+        "rollback"
+      ],
+      "properties": {
+        "change_id": {
+          "type": "string",
+          "pattern": "^chg-[a-z0-9][a-z0-9-]{3,63}$"
+        },
+        "record_type": {
+          "enum": [
+            "HARVEST_RECORD",
+            "SUNSET_RECORD",
+            "SYNTHESIS_RECORD",
+            "CONTINUITY_RECORD",
+            "AEGIS_LESSON",
+            "ACTIVE_WORK_ITEM",
+            "DECISION_RECORD",
+            "PROJECT_UPDATE",
+            "OPERATION_UPDATE",
+            "RUNBOOK_UPDATE",
+            "POLICY_UPDATE",
+            "PHOENIX_BURN_PROMOTION",
+            "ARCHIVE_OR_RETIREMENT_PROPOSAL",
+            "BOUNDED_SOURCE_UPDATE",
+            "PR_REPAIR"
+          ]
+        },
+        "operation": {
+          "enum": [
+            "CREATE_FILE",
+            "CREATE_RECORD_IN_BUNDLE",
+            "CREATE_CROSS_REFERENCE",
+            "REPLACE_EXACT",
+            "APPEND_UNDER_UNIQUE_HEADING",
+            "UPDATE_STRUCTURED_FIELD",
+            "UPSERT_STRUCTURED_RECORD",
+            "MARK_CONSOLIDATED",
+            "MARK_SUPERSEDED",
+            "ADD_RELATIONSHIP",
+            "REMOVE_RELATIONSHIP",
+            "PROPOSE_ARCHIVE",
+            "PROPOSE_RETIREMENT",
+            "PROPOSE_PROMOTION",
+            "PROPOSE_MOVE_OR_RENAME",
+            "REPAIR_EXISTING_PR",
+            "REPLACE_UNSAFE_PR"
+          ]
+        },
+        "target_path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "not": {
+            "pattern": "(^/|\\.\\.|\\\\|%2e|%2f|%5c)"
+          }
+        },
+        "primary_project": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "affected_projects": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "uniqueItems": true,
+          "maxItems": 12
+        },
+        "authority_class": {
+          "$ref": "#/$defs/authority_class"
+        },
+        "privacy_class": {
+          "$ref": "#/$defs/privacy_class"
+        },
+        "expected_blob_object": {
+          "$ref": "#/$defs/git_object_id"
+        },
+        "expected_absent": {
+          "const": true
+        },
+        "payload": {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 30
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 3000
+        },
+        "canonical_effect": {
+          "enum": [
+            "NONE",
+            "MODIFIES_CANONICAL",
+            "CREATES_CANONICAL",
+            "PROPOSES_CANONICAL"
+          ]
+        },
+        "supersession_effect": {
+          "enum": [
+            "NONE",
+            "MARKS_CONSOLIDATED",
+            "MARKS_SUPERSEDED",
+            "PROPOSES_RETIREMENT"
+          ]
+        },
+        "cross_references": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "uniqueItems": true,
+          "maxItems": 100
+        },
+        "verification": {
+          "$ref": "#/$defs/change_verification"
+        },
+        "rollback": {
+          "$ref": "#/$defs/rollback"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "enum": [
+                  "REPLACE_EXACT",
+                  "APPEND_UNDER_UNIQUE_HEADING",
+                  "UPDATE_STRUCTURED_FIELD",
+                  "UPSERT_STRUCTURED_RECORD",
+                  "MARK_CONSOLIDATED",
+                  "MARK_SUPERSEDED",
+                  "ADD_RELATIONSHIP",
+                  "REMOVE_RELATIONSHIP",
+                  "REPAIR_EXISTING_PR"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "expected_blob_object"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "enum": [
+                  "CREATE_FILE",
+                  "CREATE_CROSS_REFERENCE"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "expected_absent"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "privacy_class": {
+                "const": "PROHIBITED"
+              }
+            }
+          },
+          "then": false
+        }
+      ]
+    },
+    "change_verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expected_paths",
+        "required_anchors",
+        "prohibited_anchors",
+        "result_format"
+      ],
+      "properties": {
+        "expected_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "uniqueItems": true
+        },
+        "required_anchors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "uniqueItems": true
+        },
+        "prohibited_anchors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "uniqueItems": true
+        },
+        "result_format": {
+          "enum": [
+            "MARKDOWN",
+            "YAML",
+            "JSON",
+            "TEXT",
+            "OTHER"
+          ]
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expected_changed_file_count",
+        "required_checks",
+        "post_merge_readback_paths"
+      ],
+      "properties": {
+        "expected_changed_file_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "required_checks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "uniqueItems": true,
+          "maxItems": 100
+        },
+        "post_merge_readback_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "uniqueItems": true,
+          "maxItems": 100
+        }
+      }
+    },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "independent_revert_expected"
+      ],
+      "properties": {
+        "strategy": {
+          "enum": [
+            "GIT_REVERT",
+            "REPLACEMENT_PR",
+            "NOT_APPLICABLE_PLAN_ONLY"
+          ]
+        },
+        "independent_revert_expected": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "repair_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "original_packet_id",
+        "original_manifest_hash",
+        "pr_number",
+        "expected_pr_head_object",
+        "audit_finding_ids",
+        "repair_cycle"
+      ],
+      "properties": {
+        "original_packet_id": {
+          "type": "string"
+        },
+        "original_manifest_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "pr_number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expected_pr_head_object": {
+          "$ref": "#/$defs/git_object_id"
+        },
+        "audit_finding_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "uniqueItems": true
+        },
+        "repair_cycle": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        }
+      }
+    },
+    "merge_verification_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pr_number",
+        "expected_merge_object",
+        "expected_manifest_hash"
+      ],
+      "properties": {
+        "pr_number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expected_merge_object": {
+          "$ref": "#/$defs/git_object_id"
+        },
+        "expected_manifest_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}
