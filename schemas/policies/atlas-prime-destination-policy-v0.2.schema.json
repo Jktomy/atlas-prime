@@ -1,0 +1,621 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas-prime.local/schemas/policies/atlas-prime-destination-policy-v0.2.schema.json",
+  "title": "Atlas Prime Destination Policy v0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "policy_id",
+    "policy_version",
+    "status",
+    "mode",
+    "repository",
+    "repository_state",
+    "authority",
+    "source_control",
+    "path_safety",
+    "path_classes",
+    "source_generated_separation",
+    "protected_content",
+    "operation_boundaries",
+    "self_modification",
+    "failure_behavior"
+  ],
+  "properties": {
+    "policy_id": {
+      "const": "atlas-prime-destination-policy"
+    },
+    "policy_version": {
+      "const": "0.2.0"
+    },
+    "status": {
+      "const": "PREVIEW"
+    },
+    "mode": {
+      "const": "V03_CONTRACT_PREVIEW"
+    },
+    "repository": {
+      "const": "Jktomy/atlas-prime"
+    },
+    "repository_state": {
+      "const": "SHADOW"
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_writes_authorized",
+        "compatible_spear_contracts",
+        "registered_operations",
+        "execution_authorized_operations",
+        "note"
+      ],
+      "properties": {
+        "repository_writes_authorized": {
+          "const": false
+        },
+        "compatible_spear_contracts": {
+          "type": "array",
+          "contains": {
+            "const": "athenas-spear/0.3"
+          },
+          "uniqueItems": true
+        },
+        "registered_operations": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "CREATE_FILE",
+              "REPLACE_FILE_FULL",
+              "APPEND_FEATHER_ENTRY",
+              "APPLY_QUEST_DELTA",
+              "GENERATE_QUEST_BOARD",
+              "APPLY_SUNSET_LIFECYCLE"
+            ]
+          },
+          "minItems": 6,
+          "maxItems": 6,
+          "uniqueItems": true
+        },
+        "execution_authorized_operations": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "note": {
+          "type": "string",
+          "minLength": 20
+        }
+      }
+    },
+    "source_control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed_base_refs",
+        "denied_write_refs",
+        "future_transaction_branch_regex",
+        "new_branch_required",
+        "branch_must_not_preexist",
+        "draft_pull_request_required",
+        "direct_main_allowed",
+        "force_update_allowed",
+        "automatic_merge_allowed",
+        "merge_authority",
+        "one_repository_per_transaction"
+      ],
+      "properties": {
+        "allowed_base_refs": {
+          "type": "array",
+          "contains": {
+            "const": "main"
+          },
+          "uniqueItems": true
+        },
+        "denied_write_refs": {
+          "type": "array",
+          "contains": {
+            "const": "main"
+          },
+          "uniqueItems": true
+        },
+        "future_transaction_branch_regex": {
+          "const": "^spear/[0-9]{8}-[0-9]{3}-[a-f0-9]{8}$"
+        },
+        "new_branch_required": {
+          "const": true
+        },
+        "branch_must_not_preexist": {
+          "const": true
+        },
+        "draft_pull_request_required": {
+          "const": true
+        },
+        "direct_main_allowed": {
+          "const": false
+        },
+        "force_update_allowed": {
+          "const": false
+        },
+        "automatic_merge_allowed": {
+          "const": false
+        },
+        "merge_authority": {
+          "type": "array",
+          "const": [
+            "JAYSON_MANUAL"
+          ]
+        },
+        "one_repository_per_transaction": {
+          "const": true
+        }
+      }
+    },
+    "path_safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default",
+        "unicode_normalization",
+        "reject_absolute_paths",
+        "reject_backslashes",
+        "reject_traversal",
+        "reject_percent_encoded_traversal",
+        "reject_control_characters",
+        "reject_trailing_space_or_dot",
+        "reject_case_collisions",
+        "reject_symlinks",
+        "reject_submodules",
+        "reject_nested_archives",
+        "reject_binary_content_by_default",
+        "max_path_bytes"
+      ],
+      "properties": {
+        "default": {
+          "const": "DENY"
+        },
+        "unicode_normalization": {
+          "const": "NFC"
+        },
+        "reject_absolute_paths": {
+          "const": true
+        },
+        "reject_backslashes": {
+          "const": true
+        },
+        "reject_traversal": {
+          "const": true
+        },
+        "reject_percent_encoded_traversal": {
+          "const": true
+        },
+        "reject_control_characters": {
+          "const": true
+        },
+        "reject_trailing_space_or_dot": {
+          "const": true
+        },
+        "reject_case_collisions": {
+          "const": true
+        },
+        "reject_symlinks": {
+          "const": true
+        },
+        "reject_submodules": {
+          "const": true
+        },
+        "reject_nested_archives": {
+          "const": true
+        },
+        "reject_binary_content_by_default": {
+          "const": true
+        },
+        "max_path_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500
+        }
+      }
+    },
+    "path_classes": {
+      "type": "array",
+      "minItems": 13,
+      "uniqueItems": false,
+      "items": {
+        "$ref": "#/$defs/path_class"
+      }
+    },
+    "source_generated_separation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ordinary_generated_files_in_source_pr",
+        "source_files_in_generated_refresh_pr",
+        "quest_board_exception"
+      ],
+      "properties": {
+        "ordinary_generated_files_in_source_pr": {
+          "const": false
+        },
+        "source_files_in_generated_refresh_pr": {
+          "const": false
+        },
+        "quest_board_exception": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "enabled_for_future_contract",
+            "generated_path",
+            "required_atomic_inputs",
+            "direct_edit_allowed",
+            "note",
+            "required_contract"
+          ],
+          "properties": {
+            "enabled_for_future_contract": {
+              "const": true
+            },
+            "generated_path": {
+              "const": "codex/atlas-quest-board.md"
+            },
+            "required_atomic_inputs": {
+              "type": "array",
+              "minItems": 2,
+              "uniqueItems": true
+            },
+            "direct_edit_allowed": {
+              "const": false
+            },
+            "note": {
+              "type": "string",
+              "minLength": 10
+            },
+            "required_contract": {
+              "type": "string",
+              "minLength": 5
+            }
+          }
+        }
+      }
+    },
+    "protected_content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prohibited_classes",
+        "allowed_clean_classes",
+        "scanner_is_proof_of_absence",
+        "redact_diagnostics"
+      ],
+      "properties": {
+        "prohibited_classes": {
+          "type": "array",
+          "minItems": 10,
+          "uniqueItems": true
+        },
+        "allowed_clean_classes": {
+          "type": "array",
+          "contains": {
+            "const": "POINTER_ONLY"
+          },
+          "uniqueItems": true
+        },
+        "scanner_is_proof_of_absence": {
+          "const": false
+        },
+        "redact_diagnostics": {
+          "const": true
+        }
+      }
+    },
+    "operation_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "execution_authorized",
+        "registered_operations",
+        "derived_internal_steps",
+        "forbidden"
+      ],
+      "properties": {
+        "execution_authorized": {
+          "const": false
+        },
+        "registered_operations": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "CREATE_FILE",
+            "REPLACE_FILE_FULL",
+            "APPEND_FEATHER_ENTRY",
+            "APPLY_QUEST_DELTA",
+            "GENERATE_QUEST_BOARD",
+            "APPLY_SUNSET_LIFECYCLE"
+          ],
+          "properties": {
+            "CREATE_FILE": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contract_defined",
+                "execution_authorized"
+              ],
+              "properties": {
+                "contract_defined": {
+                  "const": true
+                },
+                "execution_authorized": {
+                  "const": false
+                }
+              }
+            },
+            "REPLACE_FILE_FULL": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contract_defined",
+                "execution_authorized"
+              ],
+              "properties": {
+                "contract_defined": {
+                  "const": true
+                },
+                "execution_authorized": {
+                  "const": false
+                }
+              }
+            },
+            "APPEND_FEATHER_ENTRY": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contract_defined",
+                "execution_authorized"
+              ],
+              "properties": {
+                "contract_defined": {
+                  "const": true
+                },
+                "execution_authorized": {
+                  "const": false
+                }
+              }
+            },
+            "APPLY_QUEST_DELTA": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contract_defined",
+                "execution_authorized"
+              ],
+              "properties": {
+                "contract_defined": {
+                  "const": true
+                },
+                "execution_authorized": {
+                  "const": false
+                }
+              }
+            },
+            "GENERATE_QUEST_BOARD": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contract_defined",
+                "execution_authorized"
+              ],
+              "properties": {
+                "contract_defined": {
+                  "const": true
+                },
+                "execution_authorized": {
+                  "const": false
+                }
+              }
+            },
+            "APPLY_SUNSET_LIFECYCLE": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contract_defined",
+                "execution_authorized"
+              ],
+              "properties": {
+                "contract_defined": {
+                  "const": true
+                },
+                "execution_authorized": {
+                  "const": false
+                }
+              }
+            }
+          }
+        },
+        "derived_internal_steps": {
+          "type": "array",
+          "uniqueItems": true
+        },
+        "forbidden": {
+          "type": "array",
+          "contains": {
+            "const": "DIRECT_MAIN_WRITE"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "self_modification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "normal_packet_may_modify_spear",
+        "normal_packet_may_modify_phoenix",
+        "normal_packet_may_modify_workflows",
+        "separate_preview_execute_required",
+        "separate_branch_and_pr_required",
+        "noctua_required"
+      ],
+      "properties": {
+        "normal_packet_may_modify_spear": {
+          "const": false
+        },
+        "normal_packet_may_modify_phoenix": {
+          "const": false
+        },
+        "normal_packet_may_modify_workflows": {
+          "const": false
+        },
+        "separate_preview_execute_required": {
+          "const": true
+        },
+        "separate_branch_and_pr_required": {
+          "const": true
+        },
+        "noctua_required": {
+          "const": true
+        }
+      }
+    },
+    "failure_behavior": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stale_source",
+        "unknown_path_class",
+        "ambiguous_owner",
+        "prohibited_content",
+        "route_failure",
+        "case_collision",
+        "connector_block"
+      ],
+      "properties": {
+        "stale_source": {
+          "const": "BLOCK"
+        },
+        "unknown_path_class": {
+          "const": "BLOCK"
+        },
+        "ambiguous_owner": {
+          "const": "BLOCK"
+        },
+        "prohibited_content": {
+          "const": "BLOCK_AND_REDACT"
+        },
+        "route_failure": {
+          "const": "BLOCK"
+        },
+        "case_collision": {
+          "const": "BLOCK"
+        },
+        "connector_block": {
+          "const": "STOP_BLOCKED_ACTION_NO_SAME_RUN_RETRY"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "match": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "exact": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/path"
+          },
+          "uniqueItems": true
+        },
+        "prefixes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/path"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*[\\x00-\\x1f\\x7f]).+$"
+    },
+    "path_class": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "precedence",
+        "match",
+        "authority_classes",
+        "source_types",
+        "extensions",
+        "write_lane",
+        "current_mutation",
+        "future_operations"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "precedence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "match": {
+          "$ref": "#/$defs/match"
+        },
+        "authority_classes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "source_types": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "extensions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "write_lane": {
+          "enum": [
+            "SOURCE_PR",
+            "GENERATED_PR",
+            "MIGRATION_PR"
+          ]
+        },
+        "current_mutation": {
+          "enum": [
+            "DENY",
+            "MANUAL_BOOTSTRAP_ONLY"
+          ]
+        },
+        "future_operations": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "CREATE_FILE",
+              "REPLACE_FILE_FULL",
+              "APPEND_FEATHER_ENTRY",
+              "APPLY_QUEST_DELTA",
+              "GENERATE_QUEST_BOARD",
+              "APPLY_SUNSET_LIFECYCLE"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "future_write_route": {
+          "type": "string",
+          "minLength": 5
+        },
+        "late_addendum_requires_new_versioned_operation": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
