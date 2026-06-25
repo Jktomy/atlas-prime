@@ -19,6 +19,9 @@ routes_to:
   - tools/spear/cli.py
   - tools/spear/operator-runbook.md
   - tools/spear/recovery-runbook.md
+  - specs/atlas-prime/codex-to-prime-migration-contract-v1.md
+  - migration/atlas-codex/README.md
+  - templates/codex-to-prime-reconciliation-record.md
 private_boundary: This source must contain only clean protocol text and must not include secrets, private runtime values, raw account evidence, PHI, or protected exports.
 evidence_boundary: This file is authored source; generated receipts, test logs, package manifests, migration evidence, and original protected evidence remain outside this source unless separately approved.
 supersedes: []
@@ -193,6 +196,24 @@ The intended campaign sequence is:
 5. preserve Atlas Codex as canonical until Prime is fully reconciled and verified;
 6. perform explicit cutover only after restore, rollback, routing, source-order, and continuity proof;
 7. retain Atlas Codex as historical or rollback evidence under a separately approved sunsetting plan.
+
+## Migration contract
+
+The normative Codex-to-Prime source order, reconciliation method, route selection, packet lifecycle, full-file replacement controls, proof requirements, and closure rules are defined in:
+
+`specs/atlas-prime/codex-to-prime-migration-contract-v1.md`
+
+Migration evidence is routed through:
+
+`migration/atlas-codex/README.md`
+
+Athena prepares the required read-only pre-packet analysis from:
+
+`templates/codex-to-prime-reconciliation-record.md`
+
+Current S0 ordinary packets remain limited by the active overlay and destination policy. They do not authorize protected root, governance, schema, policy, tool, test, workflow, generated, structured-register, or migration-evidence writes.
+
+Those surfaces require their separately approved source, migration, register, generator, or future versioned Spear routes.
 
 ## Predecessor continuity
 
