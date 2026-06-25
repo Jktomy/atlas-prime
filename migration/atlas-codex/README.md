@@ -13,6 +13,8 @@ routes_from:
   - specs/atlas-prime/codex-to-prime-migration-contract-v1.md
 routes_to:
   - schemas/migration/atlas-codex-inventory-v1.schema.json
+  - migration/atlas-codex/source-inventory.json
+  - migration/atlas-codex/audits/source-inventory-preflight-v1.md
   - templates/codex-to-prime-reconciliation-record.md
 private_boundary: This hub and its future child records may contain clean migration provenance and clean pointers only. They must not contain secrets, credentials, PHI, raw finance or account evidence, private runtime values, IP addresses, network maps, device registers, raw exports, or other prohibited evidence.
 evidence_boundary: This directory records migration provenance. Atlas Codex source, Git history, current Atlas Prime source, original evidence systems, Spear artifacts, Noctua reports, pull requests, merge records, and recovery receipts remain distinct evidence sources.
@@ -30,7 +32,8 @@ Repository: Jktomy/atlas-prime
 Predecessor: Jktomy/atlas-codex
 Prime state: SHADOW
 Migration control plane: PROPOSED
-Source inventory: NOT_STARTED
+Source inventory: INVENTORY_COMPLETE
+Preliminary disposition mapping: PRESENT — NOT EXECUTION AUTHORITY
 Disposition ledger: NOT_STARTED
 Migration map: NOT_STARTED
 Content movement: NOT_AUTHORIZED
@@ -38,9 +41,11 @@ Spear writer: NOT_AUTHORIZED
 Cutover: NOT_AUTHORIZED
 ```
 
-This hub establishes a routed location for future migration evidence.
+This hub routes the exact predecessor inventory and its preflight audit.
 
-It does not claim that the inventory, ledger, map, audits, or migration batches already exist.
+The inventory accounts for every tracked Atlas Codex path at the pinned source commit. Its preliminary dispositions remain migration evidence only and require later reconciliation before any packet or protected source PR.
+
+The disposition ledger, migration map, and migration batches do not yet exist.
 
 ## Governing contract
 
@@ -55,6 +60,17 @@ The machine-readable inventory must conform to:
 Athena prepares each read-only reconciliation record from:
 
 `templates/codex-to-prime-reconciliation-record.md`
+
+## Current source inventory
+
+- Path: `migration/atlas-codex/source-inventory.json`
+- Source commit: `3e4f06ed4abf8fbd44bd04ec1ad8997ffae7eda4`
+- Entries: `349`
+- Unique source paths: `349`
+- Internal inventory SHA-256: `03fa76c0991e06350cb112d1b33b1dbf00fe6296cabb08199cb92808956dd4fa`
+- Preflight: `migration/atlas-codex/audits/source-inventory-preflight-v1.md`
+
+`MAPPING_COMPLETE` in the inventory means every predecessor path has a provisional schema-valid disposition. It does not authorize migration, deletion, retirement, supersession, source promotion, writer activation, or cutover.
 
 ## Planned artifacts
 
