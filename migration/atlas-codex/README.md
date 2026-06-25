@@ -15,6 +15,7 @@ routes_to:
   - schemas/migration/atlas-codex-inventory-v1.schema.json
   - migration/atlas-codex/source-inventory.json
   - migration/atlas-codex/audits/source-inventory-preflight-v1.md
+  - migration/atlas-codex/migration-map.md
   - templates/codex-to-prime-reconciliation-record.md
 private_boundary: This hub and its future child records may contain clean migration provenance and clean pointers only. They must not contain secrets, credentials, PHI, raw finance or account evidence, private runtime values, IP addresses, network maps, device registers, raw exports, or other prohibited evidence.
 evidence_boundary: This directory records migration provenance. Atlas Codex source, Git history, current Atlas Prime source, original evidence systems, Spear artifacts, Noctua reports, pull requests, merge records, and recovery receipts remain distinct evidence sources.
@@ -35,17 +36,19 @@ Migration control plane: PROPOSED
 Source inventory: INVENTORY_COMPLETE
 Preliminary disposition mapping: PRESENT — NOT EXECUTION AUTHORITY
 Disposition ledger: NOT_STARTED
-Migration map: NOT_STARTED
+Migration map: PRESENT — PLANNING EVIDENCE ONLY
 Content movement: NOT_AUTHORIZED
 Spear writer: NOT_AUTHORIZED
 Cutover: NOT_AUTHORIZED
 ```
 
-This hub routes the exact predecessor inventory and its preflight audit.
+This hub routes the exact predecessor inventory, its preflight audit, and the migration map.
 
 The inventory accounts for every tracked Atlas Codex path at the pinned source commit. Its preliminary dispositions remain migration evidence only and require later reconciliation before any packet or protected source PR.
 
-The disposition ledger, migration map, and migration batches do not yet exist.
+The migration map organizes review waves, collision triage, pilot-selection rules, route classes, and closure gates. It does not authorize content movement, writer activation, source retirement, promotion, or cutover.
+
+The disposition ledger and migration batches do not yet exist.
 
 ## Governing contract
 
@@ -72,14 +75,22 @@ Athena prepares each read-only reconciliation record from:
 
 `MAPPING_COMPLETE` in the inventory means every predecessor path has a provisional schema-valid disposition. It does not authorize migration, deletion, retirement, supersession, source promotion, writer activation, or cutover.
 
+## Current migration map
+
+- Path: `migration/atlas-codex/migration-map.md`
+- State: `PRESENT — PLANNING EVIDENCE ONLY`
+- Inventory entries covered: `349`
+- Preliminary collision groups: `18`
+
+The map remains non-executing migration evidence. It does not finalize dispositions, approve packets, move content, activate S1, replace Atlas Codex authority, or authorize cutover.
+
 ## Remaining planned artifacts
 
-The following paths remain planned and are not active:
+The following path remains planned and is not active:
 
 - `migration/atlas-codex/disposition-ledger.json`
-- `migration/atlas-codex/migration-map.md`
 
-They require later exact Previews and their appropriate migration PRs.
+It requires a later exact Preview and its appropriate migration PR.
 
 Do not create empty placeholder ledgers merely to satisfy topology.
 
