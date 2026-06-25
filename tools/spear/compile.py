@@ -4,7 +4,7 @@ import re
 from typing import Any
 
 from .models import COMPILER_VERSION, EXECUTION_STATE, ContractIdentity, StateError
-from .policy import validate_action, validate_content, validate_contract, validate_markdown_source_metadata, validate_path_policy, validate_scanner_category_coverage
+from .policy import validate_action, validate_content, validate_contract, validate_markdown_source_metadata, validate_metadata_destination_class, validate_path_policy, validate_scanner_category_coverage
 from .validate import (
     assert_blob_sha,
     assert_no_path_collisions,
@@ -49,29 +49,31 @@ def _identity_dict(identity) -> dict[str, Any]:
         "repository_commit": identity.repository_commit,
         "git_blob_sha": identity.git_blob_sha,
         "sha256": identity.sha256,
+        "raw_byte_size": identity.raw_byte_size,
         "policy_id": identity.policy_id,
         "policy_version": identity.policy_version,
+    }
+
+
+def _artifact_identity_dict(identity) -> dict[str, Any]:
+    return {
+        "path": identity.path,
+        "repository_commit": identity.repository_commit,
+        "git_blob_sha": identity.git_blob_sha,
+        "raw_byte_sha256": identity.raw_byte_sha256,
+        "raw_byte_size": identity.raw_byte_size,
+        "schema_id": identity.schema_id,
     }
 
 
 def contract_identity_dict(identity: ContractIdentity) -> dict[str, Any]:
     return {
         "compiler_version": identity.compiler_version,
-        "schema_id": identity.schema_id,
-        "schema_sha256": identity.schema_sha256,
-        "overlay_policy_id": identity.overlay_policy_id,
-        "overlay_policy_version": identity.overlay_policy_version,
-        "overlay_policy_sha256": identity.overlay_policy_sha256,
+        "packet_schema": _artifact_identity_dict(identity.packet_schema),
+        "overlay_policy": _identity_dict(identity.overlay_policy),
         "destination_policy": _identity_dict(identity.destination_policy),
         "protected_policy": _identity_dict(identity.protected_policy),
-        "source_metadata_schema": {
-            "path": identity.source_metadata_schema.path,
-            "repository_commit": identity.source_metadata_schema.repository_commit,
-            "git_blob_sha": identity.source_metadata_schema.git_blob_sha,
-            "raw_byte_sha256": identity.source_metadata_schema.raw_byte_sha256,
-            "raw_byte_size": identity.source_metadata_schema.raw_byte_size,
-            "schema_id": identity.source_metadata_schema.schema_id,
-        },
+        "source_metadata_schema": _artifact_identity_dict(identity.source_metadata_schema),
     }
 
 
@@ -100,10 +102,13 @@ def compile_packet(
         path = op["path"]
         content = op["content_utf8"]
         validate_action(action, overlay_policy, controlling_policy)
-        validate_path_policy(path, overlay_policy, controlling_policy, limits, action=action)
         validate_content(path, content, limits)
+        metadata = None
         if path.endswith(".md"):
-            validate_markdown_source_metadata(path, content, source_metadata_schema, action=action)
+            metadata = validate_markdown_source_metadata(path, content, source_metadata_schema, action=action)
+        destination_class = validate_path_policy(path, overlay_policy, controlling_policy, limits, action=action)
+        if metadata is not None:
+            validate_metadata_destination_class(path, metadata, destination_class, op["source_type"])
         assert_sha256_matches(content, op["content_sha256"])
         existing_blob = base_state.get(path)
         if action == "CREATE_FILE":

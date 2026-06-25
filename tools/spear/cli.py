@@ -8,16 +8,21 @@ from . import __version__
 from .compile import compile_packet
 from .git_adapter import assert_git_repository, blob_sha_at_commit, resolve_ref
 from .models import BASE_BRANCH, COMPILER_VERSION, ContractIdentity, GitError, PolicyError
-from .policy import effective_limits, load_controlling_policies, load_source_metadata_schema
+from .policy import (
+    effective_limits,
+    load_controlling_policies,
+    load_source_metadata_schema,
+    load_spear_overlay_policy,
+    load_spear_packet_schema,
+)
 from .validate import (
     canonical_json_bytes,
-    load_json_file,
-    load_json_policy,
     parse_base64_packet,
     parse_packet_file,
-    sha256_bytes,
     validate_schema,
 )
+
+BOOTSTRAP_MAX_PACKET_BYTES = 1024 * 1024
 
 
 def _write_json(path: Path, value: object) -> None:
@@ -75,8 +80,6 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--packet", help="Path to UTF-8 JSON packet")
     parser.add_argument("--packet-b64", help="Base64-encoded UTF-8 JSON packet")
     parser.add_argument("--packet-sha256", required=True, help="Expected SHA-256 of exact decoded packet bytes")
-    parser.add_argument("--schema", required=True)
-    parser.add_argument("--policy", required=True, help="Spear overlay policy")
     parser.add_argument("--repository", required=True, help="Target Atlas Prime checkout and source of controlling policy Git objects")
     parser.add_argument("--atlas-codex-repository", help="Canonical predecessor repository, used only for output-root protection")
     parser.add_argument("--base-ref", required=True)
@@ -92,17 +95,10 @@ def main(argv: list[str] | None = None) -> int:
         protected_roots.append(assert_git_repository(args.atlas_codex_repository))
     out = validate_output_root(args.output_root, protected_roots)
 
-    schema_bytes = Path(args.schema).read_bytes()
-    overlay_bytes = Path(args.policy).read_bytes()
-    schema = load_json_file(args.schema)
-    overlay = load_json_policy(args.policy)
-    max_bytes = int(overlay["limits"]["max_decoded_packet_bytes"])
-
     if args.packet:
-        packet, transport_sha, raw_packet = parse_packet_file(args.packet, args.packet_sha256, max_bytes=max_bytes)
+        packet, transport_sha, raw_packet = parse_packet_file(args.packet, args.packet_sha256, max_bytes=BOOTSTRAP_MAX_PACKET_BYTES)
     else:
-        packet, transport_sha, raw_packet = parse_base64_packet(args.packet_b64, args.packet_sha256, max_bytes=max_bytes)
-    validate_schema(packet, schema)
+        packet, transport_sha, raw_packet = parse_base64_packet(args.packet_b64, args.packet_sha256, max_bytes=BOOTSTRAP_MAX_PACKET_BYTES)
 
     if args.base_ref != BASE_BRANCH:
         raise PolicyError("S0 base ref must be main")
@@ -110,6 +106,9 @@ def main(argv: list[str] | None = None) -> int:
     if resolved != packet["base_commit"]:
         raise GitError("stale_base_commit", "resolved main does not match packet base_commit")
 
+    packet_schema_identity, schema, _schema_bytes = load_spear_packet_schema(str(repository), packet["base_commit"])
+    overlay_identity, overlay, _overlay_bytes = load_spear_overlay_policy(str(repository), packet["base_commit"])
+    validate_schema(packet, schema)
     controlling = load_controlling_policies(str(repository), packet["base_commit"])
     source_metadata_identity, source_metadata_schema = load_source_metadata_schema(str(repository), packet["base_commit"])
     limits = effective_limits(schema, overlay, controlling)
@@ -119,11 +118,8 @@ def main(argv: list[str] | None = None) -> int:
 
     contract_identity = ContractIdentity(
         compiler_version=COMPILER_VERSION,
-        schema_id=schema.get("$id", ""),
-        schema_sha256=sha256_bytes(schema_bytes),
-        overlay_policy_id=overlay["policy_id"],
-        overlay_policy_version=overlay["policy_version"],
-        overlay_policy_sha256=sha256_bytes(overlay_bytes),
+        packet_schema=packet_schema_identity,
+        overlay_policy=overlay_identity,
         destination_policy=controlling["destination_identity"],
         protected_policy=controlling["protected_identity"],
         source_metadata_schema=source_metadata_identity,

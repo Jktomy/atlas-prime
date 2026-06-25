@@ -10,6 +10,8 @@ COMPILER_VERSION = "4.0.0-s0"
 DESTINATION_POLICY_PATH = "policies/destination/atlas-prime-destination-policy-v0.2.yaml"
 PROTECTED_POLICY_PATH = "policies/protected-paths/protected-paths-v0.2.yaml"
 SOURCE_METADATA_SCHEMA_PATH = "schemas/source-metadata/source-metadata-v1.schema.json"
+SPEAR_PACKET_SCHEMA_PATH = "schemas/spear/spear-packet-v1.schema.json"
+SPEAR_OVERLAY_POLICY_PATH = "policies/operations/spear/spear-policy-v1.yaml"
 EXECUTION_STATE = "EXECUTION_NOT_AUTHORIZED"
 
 
@@ -50,6 +52,7 @@ class PolicyIdentity:
     repository_commit: str
     git_blob_sha: str
     sha256: str
+    raw_byte_size: int
     policy_id: str
     policy_version: str
 
@@ -67,11 +70,8 @@ class ArtifactIdentity:
 @dataclass(frozen=True)
 class ContractIdentity:
     compiler_version: str
-    schema_id: str
-    schema_sha256: str
-    overlay_policy_id: str
-    overlay_policy_version: str
-    overlay_policy_sha256: str
+    packet_schema: ArtifactIdentity
+    overlay_policy: PolicyIdentity
     destination_policy: PolicyIdentity
     protected_policy: PolicyIdentity
     source_metadata_schema: ArtifactIdentity

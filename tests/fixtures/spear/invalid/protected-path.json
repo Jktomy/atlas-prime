@@ -17,11 +17,11 @@
   "operations": [
     {
       "action": "CREATE_FILE",
-      "content_sha256": "5ad990ec04ff1756ad30024571b786aea974b444f3c2a3e4ffa6d8a2b3cdad92",
-      "content_utf8": "---\ntitle: Spear Probationary Create Fixture\natlas_id: spear.fixture.create\nformat_version: \"1.0\"\nstatus: PROPOSED\nsource_type: TOOL_DOCUMENTATION\nauthority_class: TOOL_CONTRACT\nowner_project: Codex\nowner_operation: Athena's Spear\ncanonical_scope: Provides harmless test Markdown content for validating Athena's Spear S0 packet compilation behavior.\nprotected_level: LOW\nroutes_from:\n  - athenas-spear.md\nroutes_to:\n  - tools/spear/cli.py\nprivate_boundary: This fixture contains public clean test text only and no private or protected evidence.\nevidence_boundary: This fixture is generated test evidence and not canonical Atlas doctrine or runtime evidence.\nsupersedes: []\ncleanup_path: Remove or update only through a reviewed Spear test fixture PR.\nlast_verified: 2026-06-24\n---\n\n# Spear probationary create\n\nThis is a harmless proof document.\n",
+      "content_sha256": "6e4b560c7b1b5527c7b812eb10939c49a5a759d3bbc832d7d80ac1e3cd39b13e",
+      "content_utf8": "---\ntitle: Spear Probationary Create Fixture\natlas_id: spear.fixture.create\nformat_version: \"1.0\"\nstatus: PROPOSED\nsource_type: REFERENCE\nauthority_class: CONTINUITY_PROVENANCE\nowner_project: Codex\nowner_operation: Athena's Spear\ncanonical_scope: Provides harmless test Markdown content for validating Athena's Spear S0 packet compilation behavior.\nprotected_level: LOW\nroutes_from:\n  - athenas-spear.md\nroutes_to:\n  - tools/spear/cli.py\nprivate_boundary: This fixture contains public clean test text only and no private or protected evidence.\nevidence_boundary: This fixture is generated test evidence and not canonical Atlas doctrine or runtime evidence.\nsupersedes: []\ncleanup_path: Remove or update only through a reviewed Spear test fixture PR.\nlast_verified: 2026-06-24\n---\n\n# Spear probationary create\n\nThis is a harmless proof document.\n",
       "expected_state": "ABSENT",
       "path": ".github/workflows/bad.yml",
-      "source_type": "AUTHORED_SOURCE"
+      "source_type": "CLEAN_SUMMARY"
     }
   ],
   "packet_id": "spear-protected-path",

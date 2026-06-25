@@ -12,7 +12,7 @@ from tools.spear.cli import main
 from tools.spear.compile import compile_packet, derive_branch
 from tools.spear.git_adapter import blob_sha_at_commit
 from tools.spear.models import EXECUTION_STATE, ContractIdentity, GitError, PolicyError, StateError
-from tools.spear.policy import effective_limits, load_controlling_policies, load_source_metadata_schema
+from tools.spear.policy import effective_limits, load_controlling_policies, load_source_metadata_schema, load_spear_overlay_policy, load_spear_packet_schema
 from tools.spear.validate import canonical_json_bytes, load_json_file, load_json_policy, validate_schema
 from .helpers import POLICY, SCHEMA, blob, cli_args, fixture, init_repo, write_packet
 
@@ -23,14 +23,15 @@ class CompileAndIntegrationTests(unittest.TestCase):
         self.tmp = Path(self.td.name)
         self.repo = self.tmp / "repo"
         self.commit = init_repo(self.repo)
-        self.schema = load_json_file(str(SCHEMA)); self.overlay = load_json_policy(str(POLICY))
+        self.packet_schema_identity, self.schema, _ = load_spear_packet_schema(str(self.repo), self.commit)
+        self.overlay_identity, self.overlay, _ = load_spear_overlay_policy(str(self.repo), self.commit)
         self.controlling = load_controlling_policies(str(self.repo), self.commit)
         self.source_metadata_identity, self.source_metadata_schema = load_source_metadata_schema(str(self.repo), self.commit)
         self.limits = effective_limits(self.schema, self.overlay, self.controlling)
         self.identity = ContractIdentity(
             compiler_version="3.0.0-s0",
-            schema_id=self.schema["$id"], schema_sha256="a"*64,
-            overlay_policy_id=self.overlay["policy_id"], overlay_policy_version=self.overlay["policy_version"], overlay_policy_sha256="b"*64,
+            packet_schema=self.packet_schema_identity,
+            overlay_policy=self.overlay_identity,
             destination_policy=self.controlling["destination_identity"], protected_policy=self.controlling["protected_identity"],
             source_metadata_schema=self.source_metadata_identity,
         )

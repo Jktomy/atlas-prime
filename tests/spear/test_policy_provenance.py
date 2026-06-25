@@ -9,8 +9,8 @@ import unittest
 from pathlib import Path
 
 from tools.spear.cli import main
-from tools.spear.models import GitError, PolicyError
-from tools.spear.policy import DESTINATION_POLICY_PATH, PROTECTED_POLICY_PATH, load_controlling_policies, parse_policy_yaml
+from tools.spear.models import DESTINATION_POLICY_PATH, PROTECTED_POLICY_PATH, SPEAR_OVERLAY_POLICY_PATH, SPEAR_PACKET_SCHEMA_PATH, GitError, PolicyError
+from tools.spear.policy import load_controlling_policies, parse_policy_yaml
 from .helpers import DEST_POLICY_TEXT, PROT_POLICY_TEXT, POLICY, SCHEMA, cli_args, fixture, init_repo, run, write_packet
 
 
@@ -60,15 +60,35 @@ class PolicyProvenanceAdversarialTests(unittest.TestCase):
         with self.assertRaises(SystemExit):
             main(args)
 
-    def test_newer_base_plus_older_policy_fails_by_no_separate_policy_commit(self) -> None:
-        write_policy(self.repo, DESTINATION_POLICY_PATH, DEST_POLICY_TEXT.replace("registered_operations:\n  - CREATE_FILE", "registered_operations:\n  - CREATE_FILE\n  - REPLACE_FILE_FULL"))
-        newer = commit_all(self.repo, "newer-policy")
+    def test_newer_base_uses_newer_pinned_schema_and_overlay_from_git(self) -> None:
+        write_policy(self.repo, SPEAR_OVERLAY_POLICY_PATH, POLICY.read_text(encoding="utf-8").replace('"policy_version": "4.0.0"', '"policy_version": "4.0.1"'))
+        write_policy(self.repo, SPEAR_PACKET_SCHEMA_PATH, SCHEMA.read_text(encoding="utf-8").replace('"title": "Athena\'s Spear Packet v1"', '"title": "Athena\'s Spear Packet v1 - pinned newer proof"'))
+        newer = commit_all(self.repo, "newer-pinned-contract")
         packet_path, packet_sha, _ = packet_for(self.repo, newer)
-        self.assertEqual(main(cli_args(self.repo, packet_path, packet_sha, self.tmp / "out-newer")), 0)
+        out = self.tmp / "out-newer"
+        self.assertEqual(main(cli_args(self.repo, packet_path, packet_sha, out)), 0)
+        receipt = json.loads((out / "validation-receipt.json").read_text(encoding="utf-8"))
+        self.assertEqual(receipt["contract_identity"]["overlay_policy"]["repository_commit"], newer)
+        self.assertEqual(receipt["contract_identity"]["overlay_policy"]["policy_version"], "4.0.1")
+        self.assertEqual(receipt["contract_identity"]["packet_schema"]["repository_commit"], newer)
         args = cli_args(self.repo, packet_path, packet_sha, self.tmp / "out-rollback")
-        args.extend(["--prime-commit", self.commit])
+        args.extend(["--schema", str(SCHEMA), "--policy", str(POLICY)])
         with self.assertRaises(SystemExit):
             main(args)
+
+    def test_missing_pinned_spear_schema_fails_closed(self) -> None:
+        (self.repo / SPEAR_PACKET_SCHEMA_PATH).unlink()
+        newer = commit_all(self.repo, "remove-pinned-schema")
+        packet_path, packet_sha, _ = packet_for(self.repo, newer)
+        with self.assertRaises(PolicyError):
+            main(cli_args(self.repo, packet_path, packet_sha, self.tmp / "out-missing-schema"))
+
+    def test_missing_pinned_spear_overlay_fails_closed(self) -> None:
+        (self.repo / SPEAR_OVERLAY_POLICY_PATH).unlink()
+        newer = commit_all(self.repo, "remove-pinned-overlay")
+        packet_path, packet_sha, _ = packet_for(self.repo, newer)
+        with self.assertRaises(PolicyError):
+            main(cli_args(self.repo, packet_path, packet_sha, self.tmp / "out-missing-overlay"))
 
     def test_older_base_plus_newer_main_fails_before_policy_load(self) -> None:
         write_policy(self.repo, DESTINATION_POLICY_PATH, DEST_POLICY_TEXT + "\n# newer\n")
@@ -101,6 +121,21 @@ class PolicyProvenanceAdversarialTests(unittest.TestCase):
         with self.assertRaises(PolicyError):
             main(cli_args(self.repo, packet_path, packet_sha, self.tmp / "out-deny"))
 
+    def test_destination_metadata_classification_lists_fail_closed(self) -> None:
+        cases = [
+            DEST_POLICY_TEXT.replace("  authority_classes:\n  - CANONICAL_AUTHORED_SOURCE\n  - CONTINUITY_PROVENANCE\n  - PRIVATE_POINTER\n", ""),
+            DEST_POLICY_TEXT.replace("  source_types:\n  - PROJECT\n  - OPERATION\n  - RUNBOOK\n  - PROTOCOL\n  - TEMPLATE\n  - REFERENCE\n", ""),
+            DEST_POLICY_TEXT.replace("  authority_classes:\n  - CANONICAL_AUTHORED_SOURCE\n  - CONTINUITY_PROVENANCE\n  - PRIVATE_POINTER\n", "  authority_classes: []\n"),
+            DEST_POLICY_TEXT.replace("  source_types:\n  - PROJECT\n  - OPERATION\n  - RUNBOOK\n  - PROTOCOL\n  - TEMPLATE\n  - REFERENCE\n", "  source_types:\n  - 17\n"),
+        ]
+        for index, dest in enumerate(cases):
+            repo = self.tmp / f"classification-{index}"
+            commit = init_repo(repo)
+            write_policy(repo, DESTINATION_POLICY_PATH, dest)
+            new_commit = commit_all(repo, f"classification-{index}")
+            with self.assertRaises(PolicyError):
+                load_controlling_policies(str(repo), new_commit)
+
     def test_required_registered_operation_removed_fails(self) -> None:
         dest = DEST_POLICY_TEXT.replace("  - CREATE_FILE\n", "")
         write_policy(self.repo, DESTINATION_POLICY_PATH, dest)
@@ -124,7 +159,7 @@ class PolicyProvenanceAdversarialTests(unittest.TestCase):
         with self.assertRaises(PolicyError):
             load_controlling_policies(str(self.repo), new_commit)
 
-    def test_permissive_overlay_cannot_override_official_denial(self) -> None:
+    def test_external_permissive_overlay_argument_is_not_available(self) -> None:
         protected = PROT_POLICY_TEXT.replace("protected_sets:\n", "protected_sets:\n- id: project-spear-block\n  level: HIGH\n  match:\n    prefixes:\n    - projects/spear/\n  normal_spear_mutation: DENY\n  required_route: TEST_ROUTE\n  controls: []\n")
         write_policy(self.repo, PROTECTED_POLICY_PATH, protected)
         new_commit = commit_all(self.repo, "official-denial")
@@ -134,8 +169,19 @@ class PolicyProvenanceAdversarialTests(unittest.TestCase):
         permissive.write_text(json.dumps(overlay, sort_keys=True), encoding="utf-8")
         packet_path, packet_sha, _ = packet_for(self.repo, new_commit)
         args = cli_args(self.repo, packet_path, packet_sha, self.tmp / "out-permissive")
-        args[args.index("--policy") + 1] = str(permissive)
-        with self.assertRaises(PolicyError):
+        args.extend(["--policy", str(permissive)])
+        with self.assertRaises(SystemExit):
+            main(args)
+
+    def test_external_permissive_schema_argument_is_not_available(self) -> None:
+        permissive = self.tmp / "permissive-schema.json"
+        schema = json.loads(Path(SCHEMA).read_text(encoding="utf-8"))
+        schema["additionalProperties"] = True
+        permissive.write_text(json.dumps(schema, sort_keys=True), encoding="utf-8")
+        packet_path, packet_sha, _ = packet_for(self.repo, self.commit)
+        args = cli_args(self.repo, packet_path, packet_sha, self.tmp / "out-permissive-schema")
+        args.extend(["--schema", str(permissive)])
+        with self.assertRaises(SystemExit):
             main(args)
 
     def test_receipt_policy_hashes_match_raw_git_object_bytes(self) -> None:
@@ -143,13 +189,23 @@ class PolicyProvenanceAdversarialTests(unittest.TestCase):
         out = self.tmp / "out-receipt"
         self.assertEqual(main(cli_args(self.repo, packet_path, packet_sha, out)), 0)
         receipt = json.loads((out / "validation-receipt.json").read_text(encoding="utf-8"))
-        for key, rel in [("destination_policy", DESTINATION_POLICY_PATH), ("protected_policy", PROTECTED_POLICY_PATH)]:
+        policy_keys = [("overlay_policy", SPEAR_OVERLAY_POLICY_PATH), ("destination_policy", DESTINATION_POLICY_PATH), ("protected_policy", PROTECTED_POLICY_PATH)]
+        for key, rel in policy_keys:
             raw = subprocess.check_output(["git", "-C", str(self.repo), "show", f"{self.commit}:{rel}"])
             blob = subprocess.check_output(["git", "-C", str(self.repo), "rev-parse", f"{self.commit}:{rel}"], text=True).strip()
             ident = receipt["contract_identity"][key]
             self.assertEqual(ident["sha256"], hashlib.sha256(raw).hexdigest())
             self.assertEqual(ident["git_blob_sha"], blob)
             self.assertEqual(ident["repository_commit"], self.commit)
+            self.assertEqual(ident["raw_byte_size"], len(raw))
+        for key, rel in [("packet_schema", SPEAR_PACKET_SCHEMA_PATH)]:
+            raw = subprocess.check_output(["git", "-C", str(self.repo), "show", f"{self.commit}:{rel}"])
+            blob = subprocess.check_output(["git", "-C", str(self.repo), "rev-parse", f"{self.commit}:{rel}"], text=True).strip()
+            ident = receipt["contract_identity"][key]
+            self.assertEqual(ident["raw_byte_sha256"], hashlib.sha256(raw).hexdigest())
+            self.assertEqual(ident["git_blob_sha"], blob)
+            self.assertEqual(ident["repository_commit"], self.commit)
+            self.assertEqual(ident["raw_byte_size"], len(raw))
 
 
 if __name__ == "__main__":

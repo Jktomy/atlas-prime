@@ -48,8 +48,22 @@ path_classes:
     - projects/
   write_lane: SOURCE_PR
   current_mutation: DENY
+  authority_classes:
+  - CANONICAL_AUTHORED_SOURCE
+  - CONTINUITY_PROVENANCE
+  - PRIVATE_POINTER
+  source_types:
+  - PROJECT
+  - OPERATION
+  - RUNBOOK
+  - PROTOCOL
+  - TEMPLATE
+  - REFERENCE
   extensions:
   - .md
+  - .json
+  - .jsonl
+  - .yaml
   future_operations:
   - CREATE_FILE
   - REPLACE_FILE_FULL
@@ -99,13 +113,17 @@ def init_repo(repo: Path) -> str:
     run(["git", "config", "user.email", "spear@example.test"], repo)
     run(["git", "config", "user.name", "Spear Test"], repo)
     (repo / "policies/destination").mkdir(parents=True)
+    (repo / "policies/operations/spear").mkdir(parents=True)
     (repo / "policies/protected-paths").mkdir(parents=True)
+    (repo / "schemas/spear").mkdir(parents=True)
     (repo / "schemas/source-metadata").mkdir(parents=True)
     (repo / "projects/spear").mkdir(parents=True)
     (repo / "policies/destination/atlas-prime-destination-policy-v0.2.yaml").write_text(DEST_POLICY_TEXT, encoding="utf-8")
+    (repo / "policies/operations/spear/spear-policy-v1.yaml").write_text(POLICY.read_text(encoding="utf-8"), encoding="utf-8")
     (repo / "policies/protected-paths/protected-paths-v0.2.yaml").write_text(PROT_POLICY_TEXT, encoding="utf-8")
+    (repo / "schemas/spear/spear-packet-v1.schema.json").write_text(SCHEMA.read_text(encoding="utf-8"), encoding="utf-8")
     (repo / "schemas/source-metadata/source-metadata-v1.schema.json").write_text(SOURCE_METADATA_SCHEMA_TEXT, encoding="utf-8")
-    (repo / "projects/spear/existing.md").write_text('---\ntitle: Spear Existing Test Document\natlas_id: spear.fixture.existing-base\nformat_version: "1.0"\nstatus: PROPOSED\nsource_type: TOOL_DOCUMENTATION\nauthority_class: TOOL_CONTRACT\nowner_project: Codex\nowner_operation: Athena\'s Spear\ncanonical_scope: Provides harmless existing Markdown content for Athena\'s Spear S0 replacement tests.\nprotected_level: LOW\nroutes_from:\n  - athenas-spear.md\nroutes_to:\n  - tools/spear/cli.py\nprivate_boundary: This fixture contains public clean test text only and no private or protected evidence.\nevidence_boundary: This fixture is generated test evidence and not canonical Atlas doctrine or runtime evidence.\nsupersedes: []\ncleanup_path: Remove or update only through a reviewed Spear test fixture PR.\nlast_verified: 2026-06-24\n---\n\n# Spear existing target\n\nOriginal harmless text.\n', encoding="utf-8")
+    (repo / "projects/spear/existing.md").write_text('---\ntitle: Spear Existing Test Document\natlas_id: spear.fixture.existing-base\nformat_version: "1.0"\nstatus: PROPOSED\nsource_type: REFERENCE\nauthority_class: CONTINUITY_PROVENANCE\nowner_project: Codex\nowner_operation: Athena\'s Spear\ncanonical_scope: Provides harmless existing Markdown content for Athena\'s Spear S0 replacement tests.\nprotected_level: LOW\nroutes_from:\n  - athenas-spear.md\nroutes_to:\n  - tools/spear/cli.py\nprivate_boundary: This fixture contains public clean test text only and no private or protected evidence.\nevidence_boundary: This fixture is generated test evidence and not canonical Atlas doctrine or runtime evidence.\nsupersedes: []\ncleanup_path: Remove or update only through a reviewed Spear test fixture PR.\nlast_verified: 2026-06-24\n---\n\n# Spear existing target\n\nOriginal harmless text.\n', encoding="utf-8")
     run(["git", "add", "."], repo)
     run(["git", "commit", "-m", "initial"], repo)
     return run(["git", "rev-parse", "HEAD"], repo).strip()
@@ -129,8 +147,6 @@ def cli_args(repo: Path, packet_path: Path, packet_sha: str, out: Path) -> list[
     return [
         "--packet", str(packet_path),
         "--packet-sha256", packet_sha,
-        "--schema", str(SCHEMA),
-        "--policy", str(POLICY),
         "--repository", str(repo),
         "--base-ref", "main",
         "--output-root", str(out),

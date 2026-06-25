@@ -69,6 +69,11 @@ class FinalGateTests(unittest.TestCase):
         text = (ROOT / "tools/spear/cli.py").read_text(encoding="utf-8")
         self.assertIn('parser.add_argument("--packet-sha256", required=True', text)
 
+    def test_cli_does_not_accept_external_schema_or_policy_paths(self) -> None:
+        text = (ROOT / "tools/spear/cli.py").read_text(encoding="utf-8")
+        self.assertNotIn('parser.add_argument("--schema"', text)
+        self.assertNotIn('parser.add_argument("--policy"', text)
+
     def test_no_legacy_branch_template_in_compile_source(self) -> None:
         text = (ROOT / "tools/spear/compile.py").read_text(encoding="utf-8")
         self.assertNotIn('spear/{packet', text)

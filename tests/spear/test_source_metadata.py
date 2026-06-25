@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import subprocess
 import tempfile
@@ -42,6 +43,13 @@ class SourceMetadataTests(unittest.TestCase):
         sha = write_packet(path, packet)
         return main(cli_args(self.repo, path, sha, self.tmp / out_name))
 
+    def replace_operation_content(self, packet: dict, old: str, new: str) -> dict:
+        mutated = copy.deepcopy(packet)
+        content = mutated["operations"][0]["content_utf8"].replace(old, new)
+        mutated["operations"][0]["content_utf8"] = content
+        mutated["operations"][0]["content_sha256"] = hashlib.sha256(content.encode("utf-8")).hexdigest()
+        return mutated
+
     def test_three_authored_markdown_files_have_valid_metadata(self) -> None:
         for rel in ["athenas-spear.md", "tools/spear/operator-runbook.md", "tools/spear/recovery-runbook.md"]:
             content = (ROOT / rel).read_text(encoding="utf-8")
@@ -77,6 +85,38 @@ class SourceMetadataTests(unittest.TestCase):
         sha = write_packet(path, p)
         with self.assertRaises(PolicyError):
             main(cli_args(self.repo, path, sha, self.tmp / "out-txt"))
+
+    def test_valid_project_metadata_passes_real_destination_policy(self) -> None:
+        self.assertEqual(self.run_packet(self.packet(), "valid-project-metadata"), 0)
+
+    def test_disallowed_destination_metadata_source_type_fails(self) -> None:
+        p = self.replace_operation_content(self.packet(), "source_type: REFERENCE", "source_type: TOOL_DOCUMENTATION")
+        with self.assertRaises(PolicyError):
+            self.run_packet(p, "bad-destination-source-type")
+
+    def test_disallowed_destination_metadata_authority_class_fails(self) -> None:
+        p = self.replace_operation_content(self.packet(), "authority_class: CONTINUITY_PROVENANCE", "authority_class: TOOL_CONTRACT")
+        with self.assertRaises(PolicyError):
+            self.run_packet(p, "bad-destination-authority-class")
+
+    def test_packet_source_type_consistency_fails_closed(self) -> None:
+        p = self.packet()
+        p["operations"][0]["source_type"] = "AUTHORED_SOURCE"
+        with self.assertRaises(PolicyError):
+            self.run_packet(p, "bad-authored-continuity")
+        p = self.packet()
+        p["operations"][0]["source_type"] = "POINTER_ONLY"
+        with self.assertRaises(PolicyError):
+            self.run_packet(p, "bad-pointer-authority")
+        p = self.packet()
+        p["operations"][0]["source_type"] = "GENERATED_FIXTURE"
+        with self.assertRaises(PolicyError):
+            self.run_packet(p, "bad-generated-project")
+
+    def test_current_valid_fixtures_comply_with_real_pinned_destination_policy(self) -> None:
+        for fixture_name in ["valid-create.json", "valid-multi.json"]:
+            p = self.packet(fixture_name)
+            self.assertEqual(self.run_packet(p, "fixture-" + fixture_name.replace(".", "-")), 0)
 
     def test_extension_absent_from_official_destination_class_rejected(self) -> None:
         dest = DEST_POLICY_TEXT.replace("  - .md", "  - .json")

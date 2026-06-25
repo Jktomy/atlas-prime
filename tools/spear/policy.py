@@ -15,14 +15,17 @@ from .models import (
     DESTINATION_POLICY_PATH,
     PROTECTED_POLICY_PATH,
     SOURCE_METADATA_SCHEMA_PATH,
+    SPEAR_OVERLAY_POLICY_PATH,
+    SPEAR_PACKET_SCHEMA_PATH,
     SPEAR_CONTRACT_ID,
     TARGET_REPOSITORY,
     ArtifactIdentity,
+    GitError,
     PolicyError,
     PolicyIdentity,
     WarningSummary,
 )
-from .validate import normalize_spear_path, sha256_bytes
+from .validate import load_json_bytes, normalize_spear_path, sha256_bytes
 
 _PRIVATE_IPV4 = re.compile(r"\b(?:10\.\d{1,3}|192\.168|172\.(?:1[6-9]|2\d|3[0-1]))\.\d{1,3}\.\d{1,3}\b")
 _CREDENTIAL_ASSIGN = re.compile(r"(?im)\b(?:api[_-]?key|secret|password|passwd|session[_-]?cookie)\b\s*[:=]\s*['\"]?[^'\"\s]{8,}")
@@ -114,6 +117,7 @@ def _identity_from_parsed(path: str, commit: str, blob: str, data: bytes, parsed
         repository_commit=commit,
         git_blob_sha=blob,
         sha256=sha256_bytes(data),
+        raw_byte_size=len(data),
         policy_id=_require_str(parsed.get("policy_id"), "policy_id"),
         policy_version=_require_str(parsed.get("policy_version"), "policy_version"),
     )
@@ -154,6 +158,12 @@ def _validate_destination_policy(parsed: dict[str, Any]) -> None:
         if cls.get("write_lane") not in SUPPORTED_WRITE_LANES:
             raise PolicyError("unsupported destination write_lane")
         _require_list(cls.get("future_operations", []), "path_class.future_operations")
+        authority_classes = _require_list(cls.get("authority_classes"), "path_class.authority_classes")
+        source_types = _require_list(cls.get("source_types"), "path_class.source_types")
+        if not authority_classes or not all(isinstance(item, str) and item for item in authority_classes):
+            raise PolicyError("path_class.authority_classes must contain nonempty strings")
+        if not source_types or not all(isinstance(item, str) and item for item in source_types):
+            raise PolicyError("path_class.source_types must contain nonempty strings")
 
 
 def _validate_protected_policy(parsed: dict[str, Any]) -> None:
@@ -200,6 +210,53 @@ def load_controlling_policies(prime_repo: str, base_commit: str) -> dict[str, An
         "globally_denied_operations": protected["globally_denied_operations"],
         "content_boundaries": protected["content_boundaries"],
     }
+
+
+def load_spear_packet_schema(prime_repo: str, base_commit: str) -> tuple[ArtifactIdentity, dict[str, Any], bytes]:
+    try:
+        data = file_bytes_at_commit(prime_repo, base_commit, SPEAR_PACKET_SCHEMA_PATH)
+    except GitError as exc:
+        raise PolicyError("Spear packet schema missing at pinned commit") from exc
+    blob = blob_sha_at_commit(prime_repo, base_commit, SPEAR_PACKET_SCHEMA_PATH)
+    if blob is None:
+        raise PolicyError("Spear packet schema missing at pinned commit")
+    try:
+        schema = load_json_bytes(data)
+    except Exception as exc:
+        raise PolicyError("Spear packet schema is not valid strict JSON") from exc
+    schema_id = schema.get("$id")
+    if not isinstance(schema_id, str) or not schema_id:
+        raise PolicyError("Spear packet schema is missing $id")
+    Draft202012Validator.check_schema(schema)
+    identity = ArtifactIdentity(
+        path=SPEAR_PACKET_SCHEMA_PATH,
+        repository_commit=base_commit,
+        git_blob_sha=blob,
+        raw_byte_sha256=sha256_bytes(data),
+        raw_byte_size=len(data),
+        schema_id=schema_id,
+    )
+    return identity, schema, data
+
+
+def load_spear_overlay_policy(prime_repo: str, base_commit: str) -> tuple[PolicyIdentity, dict[str, Any], bytes]:
+    try:
+        data = file_bytes_at_commit(prime_repo, base_commit, SPEAR_OVERLAY_POLICY_PATH)
+    except GitError as exc:
+        raise PolicyError("Spear overlay policy missing at pinned commit") from exc
+    blob = blob_sha_at_commit(prime_repo, base_commit, SPEAR_OVERLAY_POLICY_PATH)
+    if blob is None:
+        raise PolicyError("Spear overlay policy missing at pinned commit")
+    parsed = parse_policy_yaml(data)
+    identity = _identity_from_parsed(SPEAR_OVERLAY_POLICY_PATH, base_commit, blob, data, parsed)
+    if parsed.get("target_repository") != TARGET_REPOSITORY:
+        raise PolicyError("Spear overlay target repository mismatch")
+    if parsed.get("contract_id") != SPEAR_CONTRACT_ID:
+        raise PolicyError("Spear overlay contract id mismatch")
+    for key in ["limits", "allowed_actions", "allowed_extensions", "ordinary_packet_allowed_prefixes", "ordinary_packet_denied_path_globs"]:
+        if key not in parsed:
+            raise PolicyError(f"Spear overlay policy missing {key}")
+    return identity, parsed, data
 
 
 def effective_limits(schema: dict[str, Any], overlay: dict[str, Any], controlling: dict[str, Any]) -> dict[str, int]:
@@ -279,11 +336,19 @@ def _destination_class_for(path: str, controlling: dict[str, Any]) -> dict[str, 
     return sorted(matches, key=lambda item: int(item.get("precedence", 10_000)))[0]
 
 
+def destination_class_for(path: str, controlling: dict[str, Any], limits: dict[str, int]) -> dict[str, Any]:
+    normalized = normalize_spear_path(path, max_path_bytes=limits["max_path_bytes"])
+    cls = _destination_class_for(normalized, controlling)
+    if cls is None:
+        raise PolicyError("unknown or unauthorized Prime path class blocks ordinary packet")
+    return cls
+
+
 def _protected_matches(path: str, controlling: dict[str, Any]) -> list[dict[str, Any]]:
     return [item for item in controlling["protected_sets"] if _matches(item.get("match", {}), path)]
 
 
-def validate_path_policy(path: str, overlay: dict[str, Any], controlling: dict[str, Any], limits: dict[str, int], action: str | None = None) -> None:
+def validate_path_policy(path: str, overlay: dict[str, Any], controlling: dict[str, Any], limits: dict[str, int], action: str | None = None) -> dict[str, Any]:
     normalized = normalize_spear_path(path, max_path_bytes=limits["max_path_bytes"])
     suffix = PurePosixPath(normalized).suffix.lower()
     if suffix not in overlay.get("allowed_extensions", []):
@@ -306,6 +371,7 @@ def validate_path_policy(path: str, overlay: dict[str, Any], controlling: dict[s
     overlay_prefixes = overlay.get("ordinary_packet_allowed_prefixes", [])
     if overlay_prefixes and not any(normalized.startswith(prefix) for prefix in overlay_prefixes):
         raise PolicyError("Spear overlay does not allow this path")
+    return cls
 
 
 def scan_content(path: str, content: str) -> list[WarningSummary]:
@@ -401,3 +467,38 @@ def validate_markdown_source_metadata(
     if action == "CREATE_FILE" and metadata.get("status") not in {"DRAFT", "PROPOSED"}:
         raise PolicyError(f"CREATE_FILE Markdown status is not pre-merge safe for {path}")
     return metadata
+
+
+def validate_metadata_destination_class(
+    path: str,
+    metadata: dict[str, Any],
+    destination_class: dict[str, Any],
+    packet_source_type: str,
+) -> None:
+    authority_classes = destination_class.get("authority_classes")
+    source_types = destination_class.get("source_types")
+    if not isinstance(authority_classes, list) or not authority_classes or not all(isinstance(item, str) and item for item in authority_classes):
+        raise PolicyError("destination path class authority_classes are missing or malformed")
+    if not isinstance(source_types, list) or not source_types or not all(isinstance(item, str) and item for item in source_types):
+        raise PolicyError("destination path class source_types are missing or malformed")
+    authority_class = metadata.get("authority_class")
+    source_type = metadata.get("source_type")
+    if authority_class not in authority_classes:
+        raise PolicyError(f"Markdown authority_class is not allowed by destination path class for {path}")
+    if source_type not in source_types:
+        raise PolicyError(f"Markdown source_type is not allowed by destination path class for {path}")
+    class_id = destination_class.get("id")
+    if packet_source_type == "POINTER_ONLY":
+        if authority_class != "PRIVATE_POINTER":
+            raise PolicyError("POINTER_ONLY packet source_type requires PRIVATE_POINTER metadata authority")
+    elif packet_source_type == "CLEAN_SUMMARY":
+        if authority_class not in {"CONTINUITY_PROVENANCE", "HISTORICAL_REFERENCE"}:
+            raise PolicyError("CLEAN_SUMMARY packet source_type requires continuity metadata authority")
+    elif packet_source_type == "AUTHORED_SOURCE":
+        if authority_class in {"PRIVATE_POINTER", "CONTINUITY_PROVENANCE", "HISTORICAL_REFERENCE", "GENERATED_OPERATIONAL_PROJECTION", "MIGRATION_EVIDENCE"}:
+            raise PolicyError("AUTHORED_SOURCE packet source_type is incompatible with metadata authority")
+    elif packet_source_type == "GENERATED_FIXTURE":
+        if class_id == "project-and-operation-source":
+            raise PolicyError("GENERATED_FIXTURE may not enter authored project source paths")
+    else:
+        raise PolicyError(f"unsupported packet source_type: {packet_source_type}")
