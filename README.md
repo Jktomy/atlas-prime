@@ -22,6 +22,9 @@ routes_to:
 - schemas/atlas-prime/repository-manifest-v1.schema.json
 - schemas/source-metadata/source-metadata-v1.schema.json
 - schemas/migration/atlas-codex-inventory-v1.schema.json
+- specs/atlas-prime/codex-to-prime-migration-contract-v1.md
+- migration/atlas-codex/README.md
+- templates/codex-to-prime-reconciliation-record.md
 - schemas/policies/atlas-prime-destination-policy-v0.2.schema.json
 - schemas/policies/protected-paths-v0.2.schema.json
 - policies/destination/atlas-prime-destination-policy-v0.2.yaml
@@ -53,7 +56,7 @@ Repository: Jktomy/atlas-prime
 State: SHADOW
 Canonical predecessor: Jktomy/atlas-codex
 Spear v0.2: merged compatibility contract; PLAN_ONLY authority only
-Spear v0.3: existing foundation under reconciliation; not write-enabled
+Prime Spear S0: merged compiler and validation foundation; `EXECUTION_NOT_AUTHORIZED`
 Phoenix Reborn: designed; real repository proof not yet complete
 Cutover: not authorized
 ```
@@ -118,6 +121,9 @@ PR 1A does **not**:
 - Repository manifest schema: `schemas/atlas-prime/repository-manifest-v1.schema.json`
 - Markdown metadata schema: `schemas/source-metadata/source-metadata-v1.schema.json`
 - Codex migration schema: `schemas/migration/atlas-codex-inventory-v1.schema.json`
+- Codex-to-Prime migration contract: `specs/atlas-prime/codex-to-prime-migration-contract-v1.md`
+- Migration evidence hub: `migration/atlas-codex/README.md`
+- Reconciliation record template: `templates/codex-to-prime-reconciliation-record.md`
 - Destination classification: `policies/destination/atlas-prime-destination-policy-v0.2.yaml`
 - Protected paths: `policies/protected-paths/protected-paths-v0.2.yaml`
 - Destination-policy schema: `schemas/policies/atlas-prime-destination-policy-v0.2.schema.json`
