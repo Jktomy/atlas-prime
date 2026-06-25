@@ -203,21 +203,27 @@ Selecting a pilot does not authorize execution.
 
 ## 9. Per-wave closure rule
 
-A wave closes only when every included entry has:
+A planning wave closes only when every included entry has:
 
-- completed reconciliation evidence;
-- approved final disposition;
-- approved route;
-- packet or source-PR identity where applicable;
+- completed reconciliation or planning evidence appropriate to the wave;
+- an approved disposition, review state, or explicit `NEEDS_JAYSON` or `BLOCKED_PENDING_CONTRACT` state;
+- an approved route or documented reason that no execution route is yet applicable;
+- all required wave outputs reviewed and durably recorded;
+- unresolved obligations recorded explicitly.
+
+When a wave executes a migration packet or protected source PR, closure additionally requires:
+
+- packet or source-PR identity;
 - Noctua result;
 - PR identity;
 - merge commit;
 - merged-main readback;
 - final target hash;
-- inventory and ledger closure state;
-- unresolved obligations recorded explicitly.
+- inventory and disposition-ledger closure state.
 
-A merged PR without lineage closure does not complete a wave.
+Planning-only waves do not require execution lineage that has not yet been authorized.
+
+An executed migration is not complete until all applicable execution-lineage evidence is closed.
 
 ## 10. Immediate next planning action
 
