@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas-prime.local/schemas/spear/spear-packet-v1.schema.json",
+  "title": "Athena's Spear Packet v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "packet_version",
+    "packet_id",
+    "title",
+    "summary",
+    "lane",
+    "target_repository",
+    "base_branch",
+    "base_commit",
+    "approval_basis",
+    "operations",
+    "authority"
+  ],
+  "properties": {
+    "packet_version": { "const": "1.0" },
+    "packet_id": { "type": "string", "pattern": "^spear-[a-z0-9][a-z0-9-]{6,80}$" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "lane": { "const": "BUILD" },
+    "target_repository": { "const": "Jktomy/atlas-prime" },
+    "base_branch": { "const": "main" },
+    "base_commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "approval_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "reference", "approved_scope"],
+      "properties": {
+        "source": { "enum": ["EXPLICIT_JAYSON_INSTRUCTION", "APPROVED_PREVIEW_EXECUTE", "PR_AUDIT_REPAIR_AUTHORIZATION"] },
+        "reference": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "approved_scope": { "type": "string", "minLength": 1, "maxLength": 2000 }
+      }
+    },
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": { "$ref": "#/$defs/operation" }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requested_by",
+        "draft_pr_only",
+        "merge_authorized",
+        "deletion_authorized",
+        "cutover_authorized"
+      ],
+      "properties": {
+        "requested_by": { "const": "JAYSON" },
+        "draft_pr_only": { "const": true },
+        "merge_authorized": { "const": false },
+        "deletion_authorized": { "const": false },
+        "cutover_authorized": { "const": false }
+      }
+    }
+  },
+  "$defs": {
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action", "path", "content_utf8", "content_sha256", "source_type"],
+      "properties": {
+        "action": { "enum": ["CREATE_FILE", "REPLACE_FILE_FULL"] },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "expected_state": { "const": "ABSENT" },
+        "expected_blob_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "content_utf8": { "type": "string", "maxLength": 16384 },
+        "content_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "source_type": {
+          "enum": [
+            "AUTHORED_SOURCE",
+            "CLEAN_SUMMARY",
+            "POINTER_ONLY",
+            "GENERATED_FIXTURE"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "action": { "const": "CREATE_FILE" } }, "required": ["action"] },
+          "then": { "required": ["expected_state"], "not": { "required": ["expected_blob_sha"] } }
+        },
+        {
+          "if": { "properties": { "action": { "const": "REPLACE_FILE_FULL" } }, "required": ["action"] },
+          "then": { "required": ["expected_blob_sha"], "not": { "required": ["expected_state"] } }
+        }
+      ]
+    }
+  }
+}
