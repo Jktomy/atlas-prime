@@ -72,14 +72,12 @@ Athena prepares each read-only reconciliation record from:
 
 `MAPPING_COMPLETE` in the inventory means every predecessor path has a provisional schema-valid disposition. It does not authorize migration, deletion, retirement, supersession, source promotion, writer activation, or cutover.
 
-## Planned artifacts
+## Remaining planned artifacts
 
-The following paths are planned, not active:
+The following paths remain planned and are not active:
 
-- `migration/atlas-codex/source-inventory.json`
 - `migration/atlas-codex/disposition-ledger.json`
 - `migration/atlas-codex/migration-map.md`
-- `migration/atlas-codex/audits/`
 
 They require later exact Previews and their appropriate migration PRs.
 
