@@ -16,7 +16,6 @@ routes_from:
   - migration/atlas-codex/audits/source-inventory-preflight-v1.md
   - templates/codex-to-prime-reconciliation-record.md
 routes_to:
-  - migration/atlas-codex/disposition-ledger.json
   - templates/codex-to-prime-reconciliation-record.md
 private_boundary: This migration map may contain clean source paths, target paths, counts, classifications, route assignments, dependencies, review states, and clean pointers only. It must not contain secrets, credentials, PHI, raw finance or account evidence, private runtime values, IP addresses, network maps, device registers, raw exports, or prohibited evidence.
 evidence_boundary: This file is migration-planning evidence. Atlas Codex source, Atlas Prime source, Git history, original evidence systems, reconciliation records, Spear receipts, pull requests, Noctua reports, and Phoenix proofs remain distinct evidence sources.
