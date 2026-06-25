@@ -185,7 +185,7 @@ A first-pilot candidate must satisfy all of the following:
 - proposed target beneath an ordinary `projects/` route;
 - not a root, governance, schema, policy, tool, test, workflow, structured-register, generated, startup, source-order, finance-evidence, medical-evidence, or private-runtime surface;
 - dependencies resolved;
-- current source and target can be read completely;
+- current source can be read completely, and the proposed Prime target can be read completely when it exists; otherwise, target absence is verified against the pinned Prime base;
 - no unresolved Decision Box;
 - bounded enough for full human diff and merged-main readback.
 
