@@ -1,0 +1,1023 @@
+{
+  "authority": {
+    "cutover_authorized": false,
+    "merge_authorized": false,
+    "migration_authorized": false,
+    "packet_execution_authorized": false,
+    "promotion_authorized": false,
+    "writer_activation_authorized": false
+  },
+  "campaign": "Spear",
+  "controlling_a2_contract_blob": "dadf1d83841d3cb6a5a0f6848be6787602ac5a51",
+  "gate": "A3-G0",
+  "quest": "Atlas Prime Rebuild",
+  "required_a2_sections": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+  ],
+  "source_suite_sha256": "b282768a49257ae07df1dce3674febb423610a5843a7c421dfafe47d0aabc0ce",
+  "suite_id": "atlas-prime.spear.a3-g0.golden-transactions.v1",
+  "suite_version": "1.0",
+  "vectors": [
+    {
+      "a2_contract_sections": [
+        7,
+        8,
+        9,
+        11,
+        12,
+        14,
+        17,
+        18
+      ],
+      "category": "POSITIVE",
+      "expected_code": null,
+      "expected_repository_effect": "Exactly one new branch, one commit, one draft PR, and one new Markdown file; main unchanged.",
+      "expected_state": "DRAFT_PR_CREATED",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Ordinary single-file create",
+      "purpose": "Prove the smallest approved ordinary projects/ CREATE_FILE transaction.",
+      "required_noctua_assertions": [
+        "One-file fidelity; exact metadata; no extra path; no direct-main, force, merge, or settings mutation."
+      ],
+      "required_receipt_evidence": [
+        "Exact packet, manifest, Preview, base, target absence, branch, commit, PR, and non-authority fields."
+      ],
+      "vector_id": "GT-P01"
+    },
+    {
+      "a2_contract_sections": [
+        8,
+        9,
+        11,
+        12,
+        14,
+        17,
+        18
+      ],
+      "category": "POSITIVE",
+      "expected_code": null,
+      "expected_repository_effect": "One branch, one commit, one draft PR; exactly one full-file replacement; main unchanged.",
+      "expected_state": "DRAFT_PR_CREATED",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Exact full-file replacement",
+      "purpose": "Prove REPLACE_FILE_FULL only succeeds against the exact expected old blob.",
+      "required_noctua_assertions": [
+        "No silent deletion outside approved replacement; old/new identities match Preview."
+      ],
+      "required_receipt_evidence": [
+        "Old and new Git blob identities, content SHA-256, complete changed-file list, validation results."
+      ],
+      "vector_id": "GT-P02"
+    },
+    {
+      "a2_contract_sections": [
+        11,
+        12,
+        14,
+        17,
+        18,
+        21
+      ],
+      "category": "POSITIVE",
+      "expected_code": null,
+      "expected_repository_effect": "One branch, one single-parent commit containing all three files, one draft PR; no partial commit.",
+      "expected_state": "DRAFT_PR_CREATED",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Atomic three-file create",
+      "purpose": "Prove a bounded multi-file transaction is all-or-nothing.",
+      "required_noctua_assertions": [
+        "No missing or extra file; one-commit atomicity; packet-to-tree fidelity."
+      ],
+      "required_receipt_evidence": [
+        "All three target states and hashes; exact one-commit tree; deterministic branch and PR."
+      ],
+      "vector_id": "GT-P03"
+    },
+    {
+      "a2_contract_sections": [
+        13,
+        14,
+        16,
+        17,
+        18,
+        21
+      ],
+      "category": "RECOVERY",
+      "expected_code": null,
+      "expected_repository_effect": "No new branch or commit; exactly one draft PR is created.",
+      "expected_state": "DRAFT_PR_CREATED_RECOVERED",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Exact branch pushed, PR missing recovery",
+      "purpose": "Prove safe recovery after a successful branch push and failed PR creation.",
+      "required_noctua_assertions": [
+        "Recovery created no duplicate branch or commit; PR metadata matches exact approved body."
+      ],
+      "required_receipt_evidence": [
+        "Previous BRANCH_PUSHED_PR_MISSING state, exact branch and commit identities, recovery action."
+      ],
+      "vector_id": "GT-R01"
+    },
+    {
+      "a2_contract_sections": [
+        13,
+        14,
+        16,
+        17,
+        18,
+        21
+      ],
+      "category": "RECOVERY",
+      "expected_code": null,
+      "expected_repository_effect": "No repository mutation; existing branch, commit, and PR are returned.",
+      "expected_state": "EXISTING_TRANSACTION_RETURNED",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Exact completed transaction idempotent replay",
+      "purpose": "Prove an identical retry returns the existing transaction without duplication.",
+      "required_noctua_assertions": [
+        "No second branch, commit, or PR; unchanged server metadata."
+      ],
+      "required_receipt_evidence": [
+        "Existing transaction identities and proof of exact equality."
+      ],
+      "vector_id": "GT-R02"
+    },
+    {
+      "a2_contract_sections": [
+        15,
+        18,
+        19,
+        22,
+        23
+      ],
+      "category": "POSITIVE",
+      "expected_code": null,
+      "expected_repository_effect": "One harmless file change only after manual merge; complete lineage and recovery evidence.",
+      "expected_state": "HARMLESS_PROOF_COMPLETE",
+      "implementation_gate": "A4_PROOF",
+      "name": "Harmless end-to-end proof vector",
+      "purpose": "Define the later A4 harmless proof without granting authority to run it now.",
+      "required_noctua_assertions": [
+        "Packet-to-PR-to-main fidelity; Phoenix rollback planning; Codex remains canonical and Prime remains SHADOW."
+      ],
+      "required_receipt_evidence": [
+        "All A2 receipt fields plus merge and readback evidence."
+      ],
+      "vector_id": "GT-P04"
+    },
+    {
+      "a2_contract_sections": [
+        5,
+        9,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "ACTOR_NOT_AUTHORIZED",
+      "expected_repository_effect": "No branch, commit, PR, or file change.",
+      "expected_state": "BLOCKED_BEFORE_PLAN",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Non-owner actor rejected",
+      "purpose": "Prove only the repository owner can dispatch S1.",
+      "required_noctua_assertions": [
+        "Actor was checked before packet-selected behavior."
+      ],
+      "required_receipt_evidence": [
+        "Authenticated actor and rejection code; no token material."
+      ],
+      "vector_id": "GT-N01"
+    },
+    {
+      "a2_contract_sections": [
+        5,
+        9,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "EVENT_NOT_AUTHORIZED",
+      "expected_repository_effect": "No repository mutation.",
+      "expected_state": "BLOCKED_BEFORE_PLAN",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Wrong event rejected",
+      "purpose": "Prove S1 accepts only workflow_dispatch.",
+      "required_noctua_assertions": [
+        "No apply job; no elevated permission path."
+      ],
+      "required_receipt_evidence": [
+        "Event type and rejection code."
+      ],
+      "vector_id": "GT-N02"
+    },
+    {
+      "a2_contract_sections": [
+        5,
+        9,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "REPOSITORY_MISMATCH",
+      "expected_repository_effect": "No repository mutation.",
+      "expected_state": "BLOCKED_BEFORE_PLAN",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Wrong repository rejected",
+      "purpose": "Prove repository binding is exact.",
+      "required_noctua_assertions": [
+        "No target lookup or write path executed."
+      ],
+      "required_receipt_evidence": [
+        "Observed and expected repository."
+      ],
+      "vector_id": "GT-N03"
+    },
+    {
+      "a2_contract_sections": [
+        7,
+        11,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "DUPLICATE_JSON_KEY",
+      "expected_repository_effect": "No repository mutation.",
+      "expected_state": "BLOCKED_BEFORE_COMPILE",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Duplicate JSON keys rejected",
+      "purpose": "Prove strict parsing prevents ambiguous packet or envelope meaning.",
+      "required_noctua_assertions": [
+        "No canonicalization of ambiguous input."
+      ],
+      "required_receipt_evidence": [
+        "Transport hash and parser rejection without echoing protected content."
+      ],
+      "vector_id": "GT-N04"
+    },
+    {
+      "a2_contract_sections": [
+        7,
+        9,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "INPUT_LIMIT_EXCEEDED",
+      "expected_repository_effect": "No repository mutation.",
+      "expected_state": "BLOCKED_BEFORE_PARSE",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Transport and decompression limits enforced",
+      "purpose": "Prove payload size and compression-ratio limits block bombs and oversized dispatches.",
+      "required_noctua_assertions": [
+        "No unbounded memory or artifact creation."
+      ],
+      "required_receipt_evidence": [
+        "Encoded length, decoded length when safe, configured limits, rejection code."
+      ],
+      "vector_id": "GT-N05"
+    },
+    {
+      "a2_contract_sections": [
+        7,
+        8,
+        11,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "PACKET_HASH_MISMATCH",
+      "expected_repository_effect": "No repository mutation.",
+      "expected_state": "BLOCKED_BEFORE_COMPILE",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Packet transport hash mismatch",
+      "purpose": "Prove the exact transported packet bytes are bound.",
+      "required_noctua_assertions": [
+        "No normalized-manifest generation accepted from mismatched transport."
+      ],
+      "required_receipt_evidence": [
+        "Expected and observed hashes."
+      ],
+      "vector_id": "GT-N06"
+    },
+    {
+      "a2_contract_sections": [
+        8,
+        9,
+        11,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "MANIFEST_HASH_MISMATCH",
+      "expected_repository_effect": "No repository mutation.",
+      "expected_state": "BLOCKED_IN_PLAN",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Manifest hash mismatch",
+      "purpose": "Prove compile output cannot drift from the approved normalized manifest.",
+      "required_noctua_assertions": [
+        "No branch creation."
+      ],
+      "required_receipt_evidence": [
+        "Expected and observed manifest hashes."
+      ],
+      "vector_id": "GT-N07"
+    },
+    {
+      "a2_contract_sections": [
+        8,
+        9,
+        11,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "PREVIEW_HASH_MISMATCH",
+      "expected_repository_effect": "No repository mutation.",
+      "expected_state": "BLOCKED_IN_PLAN",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Preview hash mismatch",
+      "purpose": "Prove an old or related approval cannot authorize a changed Preview.",
+      "required_noctua_assertions": [
+        "No freeform reinterpretation."
+      ],
+      "required_receipt_evidence": [
+        "Expected and observed Preview hashes; approval reference."
+      ],
+      "vector_id": "GT-N08"
+    },
+    {
+      "a2_contract_sections": [
+        7,
+        8,
+        9,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "PLAN_EXPIRED",
+      "expected_repository_effect": "No branch, commit, or PR.",
+      "expected_state": "BLOCKED_BEFORE_WRITE",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Expired plan or approval rejected",
+      "purpose": "Prove stale approval cannot be replayed.",
+      "required_noctua_assertions": [
+        "No clock-skew widening beyond explicit tolerance."
+      ],
+      "required_receipt_evidence": [
+        "Plan creation and expiration times, current workflow time, rejection."
+      ],
+      "vector_id": "GT-N09"
+    },
+    {
+      "a2_contract_sections": [
+        7,
+        8,
+        9,
+        17
+      ],
+      "category": "HOSTILE",
+      "expected_code": "APPROVAL_SCOPE_MISMATCH",
+      "expected_repository_effect": "No repository mutation.",
+      "expected_state": "BLOCKED_IN_PLAN",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Approval scope does not authorize draft PR",
+      "purpose": "Prove a valid review without explicit CREATE_DRAFT_PR_ONLY authority is insufficient.",
+      "required_noctua_assertions": [
+        "No inference from prior Noctua YES or packet validity."
+      ],
+      "required_receipt_evidence": [
+        "Approval source/reference and normalized approved scope."
+      ],
+      "vector_id": "GT-N10"
+    },
+    {
+      "a2_contract_sections": [
+        9,
+        11,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "BASE_COMMIT_MISMATCH",
+      "expected_repository_effect": "No repository mutation.",
+      "expected_state": "BLOCKED_IN_PLAN",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Stale base detected in PLAN",
+      "purpose": "Prove PLAN binds current remote main to the approved base.",
+      "required_noctua_assertions": [
+        "Contracts loaded from no other commit."
+      ],
+      "required_receipt_evidence": [
+        "Expected and observed remote-main SHA."
+      ],
+      "vector_id": "GT-N11"
+    },
+    {
+      "a2_contract_sections": [
+        9,
+        11,
+        12,
+        16,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "REMOTE_MAIN_ADVANCED",
+      "expected_repository_effect": "No branch, commit, or PR.",
+      "expected_state": "BLOCKED_BEFORE_BRANCH",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Remote main advances before branch creation",
+      "purpose": "Close the proven TOCTOU race at the first write boundary.",
+      "required_noctua_assertions": [
+        "No branch object or ref created."
+      ],
+      "required_receipt_evidence": [
+        "PLAN base, current remote main, last completed gate."
+      ],
+      "vector_id": "GT-N12"
+    },
+    {
+      "a2_contract_sections": [
+        9,
+        11,
+        12,
+        16,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "REMOTE_MAIN_ADVANCED",
+      "expected_repository_effect": "No remote branch ref or PR.",
+      "expected_state": "BLOCKED_BEFORE_PUSH",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Remote main advances before push",
+      "purpose": "Prove a local proposed commit cannot be pushed after base drift.",
+      "required_noctua_assertions": [
+        "No force or transplant attempt."
+      ],
+      "required_receipt_evidence": [
+        "Current remote main and preserved local evidence identity."
+      ],
+      "vector_id": "GT-N13"
+    },
+    {
+      "a2_contract_sections": [
+        9,
+        13,
+        16,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "REMOTE_MAIN_ADVANCED",
+      "expected_repository_effect": "Existing exact branch preserved; no PR created.",
+      "expected_state": "BRANCH_PUSHED_PR_MISSING",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Remote main advances before PR creation",
+      "purpose": "Prove a pushed branch does not automatically gain a PR after base drift.",
+      "required_noctua_assertions": [
+        "No rebase, force push, or silent PR creation."
+      ],
+      "required_receipt_evidence": [
+        "Branch/commit state, remote-main drift, next safe action."
+      ],
+      "vector_id": "GT-N14"
+    },
+    {
+      "a2_contract_sections": [
+        9,
+        11,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "TARGET_BLOB_MISMATCH",
+      "expected_repository_effect": "No branch, commit, or PR.",
+      "expected_state": "BLOCKED_BEFORE_BRANCH",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Stale replacement target blob",
+      "purpose": "Prove replacement state is checked in PLAN and independently in APPLY.",
+      "required_noctua_assertions": [
+        "No content replacement attempted."
+      ],
+      "required_receipt_evidence": [
+        "Expected and observed target blobs."
+      ],
+      "vector_id": "GT-N15"
+    },
+    {
+      "a2_contract_sections": [
+        7,
+        9,
+        11,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "CONTRACT_IDENTITY_DRIFT",
+      "expected_repository_effect": "No branch, commit, or PR.",
+      "expected_state": "BLOCKED_BEFORE_WRITE",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Schema or policy blob drift",
+      "purpose": "Prove controlling contract identities are pinned to the approved base and plan.",
+      "required_noctua_assertions": [
+        "No fallback to current working-tree contracts."
+      ],
+      "required_receipt_evidence": [
+        "Expected and observed contract blob identities."
+      ],
+      "vector_id": "GT-N16"
+    },
+    {
+      "a2_contract_sections": [
+        10,
+        11,
+        17,
+        18,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "PATH_NOT_ALLOWED",
+      "expected_repository_effect": "No Git target lookup and no repository mutation.",
+      "expected_state": "BLOCKED_BEFORE_GIT_LOOKUP",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Path validation precedes Git lookup",
+      "purpose": "Close A1-F02 across malformed, traversal, control-character, backslash, and normalization inputs.",
+      "required_noctua_assertions": [
+        "Lookup spy confirms zero calls."
+      ],
+      "required_receipt_evidence": [
+        "Path category only; do not echo prohibited raw values where unsafe."
+      ],
+      "vector_id": "GT-N17"
+    },
+    {
+      "a2_contract_sections": [
+        11,
+        17,
+        18,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "PROTECTED_PATH",
+      "expected_repository_effect": "No lookup or repository mutation.",
+      "expected_state": "BLOCKED_BEFORE_GIT_LOOKUP",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Protected or denied path rejected",
+      "purpose": "Prove ordinary S1 cannot target migration, workflow, policy, schema, tool, register, generated, or root-governance paths.",
+      "required_noctua_assertions": [
+        "No route widening by packet content."
+      ],
+      "required_receipt_evidence": [
+        "Denied class and policy identity."
+      ],
+      "vector_id": "GT-N18"
+    },
+    {
+      "a2_contract_sections": [
+        11,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "SYMLINK_TARGET",
+      "expected_repository_effect": "No branch, commit, or PR.",
+      "expected_state": "BLOCKED_BEFORE_WRITE",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Symlink target or ancestor rejected",
+      "purpose": "Prove path containment cannot escape through symlinks.",
+      "required_noctua_assertions": [
+        "No dereferenced external content captured."
+      ],
+      "required_receipt_evidence": [
+        "Affected logical path and safe category."
+      ],
+      "vector_id": "GT-N19"
+    },
+    {
+      "a2_contract_sections": [
+        11,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "SUBMODULE_TARGET",
+      "expected_repository_effect": "No branch, commit, or PR.",
+      "expected_state": "BLOCKED_BEFORE_WRITE",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Submodule target or ancestor rejected",
+      "purpose": "Prove Gitlinks cannot be modified through ordinary S1.",
+      "required_noctua_assertions": [
+        "No nested repository mutation."
+      ],
+      "required_receipt_evidence": [
+        "Object type and logical path."
+      ],
+      "vector_id": "GT-N20"
+    },
+    {
+      "a2_contract_sections": [
+        10,
+        11,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "PATH_COLLISION",
+      "expected_repository_effect": "No repository mutation.",
+      "expected_state": "BLOCKED_BEFORE_GIT_LOOKUP",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Case or normalization collision rejected",
+      "purpose": "Prove two operations cannot collapse to the same logical path.",
+      "required_noctua_assertions": [
+        "No platform-dependent acceptance."
+      ],
+      "required_receipt_evidence": [
+        "Collision category and operation indexes."
+      ],
+      "vector_id": "GT-N21"
+    },
+    {
+      "a2_contract_sections": [
+        11,
+        20,
+        21,
+        22,
+        23
+      ],
+      "category": "HOSTILE",
+      "expected_code": "DUAL_ACTIVATION_MISMATCH",
+      "expected_repository_effect": "No repository mutation.",
+      "expected_state": "BLOCKED_BEFORE_PLAN",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Activation policy alone cannot authorize",
+      "purpose": "Prove the red-team activation bypass is closed.",
+      "required_noctua_assertions": [
+        "One gate alone never enables write permission."
+      ],
+      "required_receipt_evidence": [
+        "Both policy identities and each authority value."
+      ],
+      "vector_id": "GT-N22"
+    },
+    {
+      "a2_contract_sections": [
+        11,
+        20,
+        21,
+        22,
+        23
+      ],
+      "category": "HOSTILE",
+      "expected_code": "DUAL_ACTIVATION_MISMATCH",
+      "expected_repository_effect": "No repository mutation.",
+      "expected_state": "BLOCKED_BEFORE_PLAN",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Destination policy alone cannot authorize",
+      "purpose": "Prove destination authorization cannot bypass the separate activation record.",
+      "required_noctua_assertions": [
+        "No implied activation."
+      ],
+      "required_receipt_evidence": [
+        "Both policy identities and each authority value."
+      ],
+      "vector_id": "GT-N23"
+    },
+    {
+      "a2_contract_sections": [
+        11,
+        20,
+        21,
+        22,
+        23
+      ],
+      "category": "HOSTILE",
+      "expected_code": "DUAL_ACTIVATION_MISMATCH",
+      "expected_repository_effect": "No repository mutation.",
+      "expected_state": "BLOCKED_BEFORE_PLAN",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Dual activation operation mismatch",
+      "purpose": "Prove the two authority surfaces must agree exactly.",
+      "required_noctua_assertions": [
+        "No union, widening, or permissive fallback."
+      ],
+      "required_receipt_evidence": [
+        "Exact normalized authority sets and references."
+      ],
+      "vector_id": "GT-N24"
+    },
+    {
+      "a2_contract_sections": [
+        13,
+        16,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "PACKET_ID_REUSE_COLLISION",
+      "expected_repository_effect": "No new branch, commit, or PR.",
+      "expected_state": "BLOCKED_AS_COLLISION",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Same packet ID with changed content",
+      "purpose": "Prove packet_id is the durable transaction identity and cannot generate a second branch.",
+      "required_noctua_assertions": [
+        "Branch identity remains one-to-one with packet ID."
+      ],
+      "required_receipt_evidence": [
+        "Prior and attempted hashes; deterministic transaction key."
+      ],
+      "vector_id": "GT-N25"
+    },
+    {
+      "a2_contract_sections": [
+        13,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "CONCURRENCY_LOCKED",
+      "expected_repository_effect": "At most one branch, one commit, and one PR.",
+      "expected_state": "ONE_RUN_SERIALIZED_OTHER_BLOCKED_OR_QUEUED",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Concurrent duplicate dispatch",
+      "purpose": "Prove concurrency is keyed by Jktomy/atlas-prime plus packet_id with cancel-in-progress false.",
+      "required_noctua_assertions": [
+        "No cancelled run silently mutates."
+      ],
+      "required_receipt_evidence": [
+        "Run IDs, attempts, lock key, winning/queued outcome."
+      ],
+      "vector_id": "GT-N26"
+    },
+    {
+      "a2_contract_sections": [
+        13,
+        16,
+        17,
+        18,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "BRANCH_COLLISION",
+      "expected_repository_effect": "Existing branch preserved; no force update, second branch, or PR repair.",
+      "expected_state": "BLOCKED_AS_COLLISION",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Existing branch collision",
+      "purpose": "Prove any non-identical branch state blocks without repair.",
+      "required_noctua_assertions": [
+        "No automatic cleanup or history rewrite."
+      ],
+      "required_receipt_evidence": [
+        "Observed branch/commit/PR identities and exact mismatch."
+      ],
+      "vector_id": "GT-N27"
+    },
+    {
+      "a2_contract_sections": [
+        12,
+        13,
+        16,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "COMMIT_PARENT_MISMATCH",
+      "expected_repository_effect": "Existing branch preserved; no PR creation or repair.",
+      "expected_state": "BLOCKED_AS_COLLISION",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Multi-parent commit rejected",
+      "purpose": "Close the proven crafted-merge-commit recovery weakness.",
+      "required_noctua_assertions": [
+        "Exactly one parent required."
+      ],
+      "required_receipt_evidence": [
+        "Full parent list and expected sole parent."
+      ],
+      "vector_id": "GT-N28"
+    },
+    {
+      "a2_contract_sections": [
+        12,
+        13,
+        16,
+        17,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "COMMIT_MESSAGE_MISMATCH",
+      "expected_repository_effect": "Existing branch preserved; no PR creation.",
+      "expected_state": "BLOCKED_AS_COLLISION",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Modified full commit message rejected",
+      "purpose": "Close acceptance of extra bodies or trailers under the approved subject.",
+      "required_noctua_assertions": [
+        "Exact full commit message required."
+      ],
+      "required_receipt_evidence": [
+        "Expected and observed full-message hashes."
+      ],
+      "vector_id": "GT-N29"
+    },
+    {
+      "a2_contract_sections": [
+        12,
+        13,
+        17,
+        18,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "COMMIT_IDENTITY_MISMATCH",
+      "expected_repository_effect": "Existing branch preserved; no PR creation.",
+      "expected_state": "BLOCKED_AS_COLLISION",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Unexpected author or committer rejected",
+      "purpose": "Prove commit identity policy is explicit and enforced.",
+      "required_noctua_assertions": [
+        "No trust based only on tree equality."
+      ],
+      "required_receipt_evidence": [
+        "Expected policy and observed safe identity fields."
+      ],
+      "vector_id": "GT-N30"
+    },
+    {
+      "a2_contract_sections": [
+        14,
+        16,
+        17,
+        18,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": "PR_METADATA_MISMATCH",
+      "expected_repository_effect": "Branch and PR preserved for audit; no automated repair.",
+      "expected_state": "PR_CREATED_METADATA_MISMATCH",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Server-created PR metadata mutated",
+      "purpose": "Close the proven title/body verification weakness.",
+      "required_noctua_assertions": [
+        "Exact title and full body verified, including all A2 evidence and non-authorities."
+      ],
+      "required_receipt_evidence": [
+        "Expected and observed title/body hashes, PR number, branch and commit."
+      ],
+      "vector_id": "GT-N31"
+    },
+    {
+      "a2_contract_sections": [
+        14,
+        16,
+        17,
+        18,
+        21
+      ],
+      "category": "RECOVERY",
+      "expected_code": "PR_CREATION_UNCERTAIN",
+      "expected_repository_effect": "No second PR until state is resolved; branch preserved.",
+      "expected_state": "PR_STATE_UNCERTAIN",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "PR API uncertainty after possible creation",
+      "purpose": "Prevent duplicate PRs when the client fails after the server may have created one.",
+      "required_noctua_assertions": [
+        "At most one PR; uncertain state is not treated as absence."
+      ],
+      "required_receipt_evidence": [
+        "Request identity, uncertainty code, exact search/readback evidence."
+      ],
+      "vector_id": "GT-N32"
+    },
+    {
+      "a2_contract_sections": [
+        9,
+        16,
+        17,
+        18,
+        21
+      ],
+      "category": "HOSTILE",
+      "expected_code": null,
+      "expected_repository_effect": "No extra mutation beyond the last explicitly completed gate.",
+      "expected_state": "FAILED_WITH_RECEIPT",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Receipt emitted for every failed gate",
+      "purpose": "Prove every PLAN and APPLY attempt leaves bounded machine-readable evidence.",
+      "required_noctua_assertions": [
+        "Receipt exists and is uploaded with failure-safe behavior; no protected values."
+      ],
+      "required_receipt_evidence": [
+        "Last completed gate, blocker, state, all available identities, explicit non-authorities, redaction result."
+      ],
+      "vector_id": "GT-N33"
+    },
+    {
+      "a2_contract_sections": [
+        6,
+        11,
+        17,
+        18,
+        21,
+        23
+      ],
+      "category": "HOSTILE",
+      "expected_code": "PROTECTED_VALUE_DETECTED",
+      "expected_repository_effect": "No unauthorized repository mutation and no leaked sentinel values.",
+      "expected_state": "BLOCKED_OR_REDACTED",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Credential and protected-value leakage blocked",
+      "purpose": "Prove token material and prohibited values never reach logs, artifacts, receipts, PR text, or packet-selected commands.",
+      "required_noctua_assertions": [
+        "Logs, artifacts, receipt, PR body, and exception text contain no sentinel."
+      ],
+      "required_receipt_evidence": [
+        "Category-only findings, no detected values."
+      ],
+      "vector_id": "GT-N34"
+    },
+    {
+      "a2_contract_sections": [
+        5,
+        6,
+        12,
+        14,
+        16,
+        18,
+        21,
+        23
+      ],
+      "category": "HOSTILE",
+      "expected_code": null,
+      "expected_repository_effect": "Only approved branch/commit/draft-PR operations are reachable.",
+      "expected_state": "FORBIDDEN_CAPABILITIES_ABSENT",
+      "implementation_gate": "A3A_CONTRACT_TEST",
+      "name": "Forbidden capability static and dynamic denial",
+      "purpose": "Prove no direct-main, force-push, merge, auto-merge, workflow self-modification, branch deletion, PR closure, review dismissal, or settings mutation path exists.",
+      "required_noctua_assertions": [
+        "Static source scan and dynamic spies agree."
+      ],
+      "required_receipt_evidence": [
+        "Invoked commands/endpoints allowlist and zero forbidden calls."
+      ],
+      "vector_id": "GT-N35"
+    },
+    {
+      "a2_contract_sections": [
+        15,
+        18,
+        22,
+        23
+      ],
+      "category": "PLATFORM",
+      "expected_code": "CHECKS_NOT_COMPLETE",
+      "expected_repository_effect": "No merge authorization.",
+      "expected_state": "AWAITING_HUMAN_CHECK_APPROVAL_OR_BLOCKED",
+      "implementation_gate": "A3B_WRITER_TEST",
+      "name": "Expected PR checks require human approval and success",
+      "purpose": "Prove action_required, missing approval, skipped jobs, absent expected jobs, or failed checks do not pass Noctua.",
+      "required_noctua_assertions": [
+        "Only manually approved and successful expected checks qualify."
+      ],
+      "required_receipt_evidence": [
+        "Expected jobs, observed states, approval requirement, run identities."
+      ],
+      "vector_id": "GT-N36"
+    },
+    {
+      "a2_contract_sections": [
+        19,
+        22,
+        23
+      ],
+      "category": "RECOVERY",
+      "expected_code": null,
+      "expected_repository_effect": "No automated rollback by S1; separate reviewed recovery path only.",
+      "expected_state": "ROLLBACK_PLAN_VERIFIED",
+      "implementation_gate": "A4_PROOF",
+      "name": "Rollback and replacement-PR planning",
+      "purpose": "Define Phoenix proof without letting S1 execute rollback.",
+      "required_noctua_assertions": [
+        "Phoenix independently validates recovery claim."
+      ],
+      "required_receipt_evidence": [
+        "Original and recovery lineage, conflict state, readback requirements."
+      ],
+      "vector_id": "GT-N37"
+    }
+  ]
+}

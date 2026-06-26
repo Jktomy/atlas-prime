@@ -77,6 +77,30 @@ def contract_identity_dict(identity: ContractIdentity) -> dict[str, Any]:
     }
 
 
+def prevalidate_operation_paths(
+    packet: dict[str, Any],
+    overlay_policy: dict[str, Any],
+    controlling_policy: dict[str, Any],
+    limits: dict[str, int],
+) -> list[dict[str, Any]]:
+    """Validate every operation path and action before any target Git lookup."""
+    operations = packet["operations"]
+    assert_no_path_collisions(
+        (op["path"] for op in operations),
+        max_path_bytes=limits["max_path_bytes"],
+    )
+    for op in operations:
+        validate_action(op["action"], overlay_policy, controlling_policy)
+        validate_path_policy(
+            op["path"],
+            overlay_policy,
+            controlling_policy,
+            limits,
+            action=op["action"],
+        )
+    return operations
+
+
 def compile_packet(
     packet: dict[str, Any],
     overlay_policy: dict[str, Any],
@@ -92,8 +116,12 @@ def compile_packet(
     validate_contract(packet, overlay_policy, controlling_policy)
     validate_scanner_category_coverage(overlay_policy)
     validate_authority(packet)
-    operations = packet["operations"]
-    assert_no_path_collisions((op["path"] for op in operations), max_path_bytes=limits["max_path_bytes"])
+    operations = prevalidate_operation_paths(
+        packet,
+        overlay_policy,
+        controlling_policy,
+        limits,
+    )
 
     proposed_files: dict[str, str] = {}
     manifest_ops: list[dict[str, Any]] = []

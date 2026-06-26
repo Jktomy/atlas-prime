@@ -1,0 +1,36 @@
+{
+  "a2_contract": {
+    "git_blob_sha": "dadf1d83841d3cb6a5a0f6848be6787602ac5a51",
+    "path": "specs/spear/athenas-spear-s1-writer-contract-v1.md"
+  },
+  "activation_reference": null,
+  "allowed_actor_logins": [
+    "Jktomy"
+  ],
+  "allowed_event": "workflow_dispatch",
+  "authority": {
+    "auto_merge": false,
+    "cutover": false,
+    "deletion": false,
+    "direct_main": false,
+    "force_push": false,
+    "merge": false,
+    "migration": false,
+    "promotion": false
+  },
+  "authorized_operations": [],
+  "base_branch": "main",
+  "destination_policy_contract": {
+    "path": "policies/destination/atlas-prime-destination-policy-v0.2.yaml",
+    "policy_id": "atlas-prime-destination-policy"
+  },
+  "enabled": false,
+  "execution_mode": "CREATE_DRAFT_PR_ONLY",
+  "mode": "DISABLED",
+  "note": "A3a defines contracts and read-only tests only. S1 remains disabled; A3b, a harmless proof, Noctua, Phoenix Reborn, and explicit Jayson activation are still required.",
+  "policy_id": "atlas-prime-spear-s1-activation",
+  "policy_version": "1.0.0",
+  "repository": "Jktomy/atlas-prime",
+  "repository_writes_authorized": false,
+  "status": "PROPOSED"
+}

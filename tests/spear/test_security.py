@@ -53,5 +53,29 @@ class SecuritySourceTests(unittest.TestCase):
         self.assertNotIn("yaml.FullLoader", text)
         self.assertNotIn("Loader=yaml.Loader", text)
 
+    def test_a3a_contains_no_writer_or_workflow_surface(self) -> None:
+        for relative in [
+            "s1_runtime.py",
+            "s1_cli.py",
+            "s1_git.py",
+            "s1_pr.js",
+        ]:
+            self.assertFalse((TOOLS / relative).exists(), relative)
+        self.assertFalse((ROOT / ".github").exists())
+
+    def test_s1_contract_module_has_no_mutating_git_or_github_client(self) -> None:
+        text = (TOOLS / "s1_contracts.py").read_text(encoding="utf-8-sig")
+        for needle in [
+            "git push",
+            "update-ref",
+            "checkout -b",
+            "requests",
+            "urllib",
+            "GITHUB_TOKEN",
+            "pull-requests: write",
+            "contents: write",
+        ]:
+            self.assertNotIn(needle, text)
+
 
 if __name__ == "__main__": unittest.main()
