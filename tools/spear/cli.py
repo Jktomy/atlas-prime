@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 from . import __version__
-from .compile import compile_packet
+from .compile import compile_packet, prevalidate_operation_paths
 from .git_adapter import assert_git_repository, blob_sha_at_commit, resolve_ref
 from .models import BASE_BRANCH, COMPILER_VERSION, ContractIdentity, GitError, PolicyError
 from .policy import (
@@ -114,7 +114,8 @@ def main(argv: list[str] | None = None) -> int:
     limits = effective_limits(schema, overlay, controlling)
     if len(raw_packet) > limits["max_decoded_packet_bytes"]:
         raise PolicyError("decoded packet exceeds effective policy limit")
-    base_state = build_base_state(repository, packet["base_commit"], packet["operations"])
+    operations = prevalidate_operation_paths(packet, overlay, controlling, limits)
+    base_state = build_base_state(repository, packet["base_commit"], operations)
 
     contract_identity = ContractIdentity(
         compiler_version=COMPILER_VERSION,

@@ -88,5 +88,29 @@ class FinalGateTests(unittest.TestCase):
             self.assertEqual(policies["protected_identity"].policy_id, "atlas-prime-protected-paths")
             self.assertEqual(len(policies["protected_identity"].sha256), 64)
 
+    def test_a3a_contract_assets_exist_without_writer_workflow(self) -> None:
+        required = [
+            ROOT / "specs/spear/athenas-spear-a3-g0-golden-transaction-suite-v1.md",
+            ROOT / "tools/spear/s1_contracts.py",
+            ROOT / "policies/operations/spear/spear-s1-activation-v1.json",
+            ROOT / "schemas/spear/spear-execution-envelope-v1.schema.json",
+            ROOT / "schemas/spear/spear-execution-preview-v1.schema.json",
+            ROOT / "schemas/spear/spear-execution-receipt-v1.schema.json",
+            ROOT / "schemas/spear/spear-golden-transaction-suite-v1.schema.json",
+            ROOT / "tests/fixtures/spear/golden-transactions-v1.json",
+        ]
+        for path in required:
+            self.assertTrue(path.is_file(), path)
+        self.assertFalse((ROOT / ".github").exists())
+
+    def test_s1_activation_policy_is_exactly_disabled(self) -> None:
+        policy = load_json_file(str(ROOT / "policies/operations/spear/spear-s1-activation-v1.json"))
+        self.assertIs(policy["enabled"], False)
+        self.assertEqual(policy["mode"], "DISABLED")
+        self.assertIs(policy["repository_writes_authorized"], False)
+        self.assertEqual(policy["authorized_operations"], [])
+        self.assertIsNone(policy["activation_reference"])
+        self.assertTrue(all(value is False for value in policy["authority"].values()))
+
 
 if __name__ == "__main__": unittest.main()

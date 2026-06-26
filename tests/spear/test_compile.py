@@ -6,12 +6,13 @@ import json
 import re
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 from tools.spear.cli import main
 from tools.spear.compile import compile_packet, derive_branch
 from tools.spear.git_adapter import blob_sha_at_commit
-from tools.spear.models import EXECUTION_STATE, ContractIdentity, GitError, PolicyError, StateError
+from tools.spear.models import COMPILER_VERSION, EXECUTION_STATE, ContractIdentity, GitError, PolicyError, StateError
 from tools.spear.policy import effective_limits, load_controlling_policies, load_source_metadata_schema, load_spear_overlay_policy, load_spear_packet_schema
 from tools.spear.validate import canonical_json_bytes, load_json_file, load_json_policy, validate_schema
 from .helpers import POLICY, SCHEMA, blob, cli_args, fixture, init_repo, write_packet
@@ -29,7 +30,7 @@ class CompileAndIntegrationTests(unittest.TestCase):
         self.source_metadata_identity, self.source_metadata_schema = load_source_metadata_schema(str(self.repo), self.commit)
         self.limits = effective_limits(self.schema, self.overlay, self.controlling)
         self.identity = ContractIdentity(
-            compiler_version="3.0.0-s0",
+            compiler_version=COMPILER_VERSION,
             packet_schema=self.packet_schema_identity,
             overlay_policy=self.overlay_identity,
             destination_policy=self.controlling["destination_identity"], protected_policy=self.controlling["protected_identity"],
@@ -102,6 +103,19 @@ class CompileAndIntegrationTests(unittest.TestCase):
         self.assertIn("destination_policy", receipt["contract_identity"])
         self.assertIn("canonical_packet_sha256", receipt)
         self.assertIn("transport_sha256", receipt)
+
+    def test_path_policy_runs_before_target_git_lookup(self) -> None:
+        p = self.packet_with_base("valid-create.json")
+        p["operations"][0]["path"] = "migration/blocked-before-lookup.md"
+        packet_path = self.tmp / "blocked-path.json"
+        packet_sha = write_packet(packet_path, p)
+        with patch(
+            "tools.spear.cli.blob_sha_at_commit",
+            side_effect=AssertionError("target Git lookup occurred before path policy"),
+        ) as target_lookup:
+            with self.assertRaises(PolicyError):
+                main(cli_args(self.repo, packet_path, packet_sha, self.tmp / "out-blocked"))
+        target_lookup.assert_not_called()
 
 
 if __name__ == "__main__": unittest.main()

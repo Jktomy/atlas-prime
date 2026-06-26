@@ -1,0 +1,183 @@
+{
+  "$id": "https://atlas-prime.local/schemas/spear/spear-golden-transaction-suite-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "authority": {
+      "additionalProperties": false,
+      "properties": {
+        "cutover_authorized": {
+          "const": false
+        },
+        "merge_authorized": {
+          "const": false
+        },
+        "migration_authorized": {
+          "const": false
+        },
+        "packet_execution_authorized": {
+          "const": false
+        },
+        "promotion_authorized": {
+          "const": false
+        },
+        "writer_activation_authorized": {
+          "const": false
+        }
+      },
+      "required": [
+        "writer_activation_authorized",
+        "packet_execution_authorized",
+        "migration_authorized",
+        "merge_authorized",
+        "promotion_authorized",
+        "cutover_authorized"
+      ],
+      "type": "object"
+    },
+    "campaign": {
+      "const": "Spear"
+    },
+    "controlling_a2_contract_blob": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "gate": {
+      "const": "A3-G0"
+    },
+    "quest": {
+      "const": "Atlas Prime Rebuild"
+    },
+    "required_a2_sections": {
+      "items": {
+        "maximum": 23,
+        "minimum": 5,
+        "type": "integer"
+      },
+      "maxItems": 19,
+      "minItems": 19,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "source_suite_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "suite_id": {
+      "const": "atlas-prime.spear.a3-g0.golden-transactions.v1"
+    },
+    "suite_version": {
+      "const": "1.0"
+    },
+    "vectors": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "a2_contract_sections": {
+            "items": {
+              "maximum": 23,
+              "minimum": 5,
+              "type": "integer"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "category": {
+            "enum": [
+              "POSITIVE",
+              "HOSTILE",
+              "RECOVERY",
+              "PLATFORM"
+            ]
+          },
+          "expected_code": {
+            "oneOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expected_repository_effect": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "expected_state": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "implementation_gate": {
+            "enum": [
+              "A3A_CONTRACT_TEST",
+              "A3B_WRITER_TEST",
+              "A4_PROOF"
+            ]
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "purpose": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "required_noctua_assertions": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "required_receipt_evidence": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "vector_id": {
+            "pattern": "^GT-[PNR][0-9]{2}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "vector_id",
+          "category",
+          "name",
+          "purpose",
+          "expected_state",
+          "expected_code",
+          "expected_repository_effect",
+          "required_receipt_evidence",
+          "required_noctua_assertions",
+          "a2_contract_sections",
+          "implementation_gate"
+        ],
+        "type": "object"
+      },
+      "maxItems": 43,
+      "minItems": 43,
+      "type": "array"
+    }
+  },
+  "required": [
+    "suite_version",
+    "suite_id",
+    "source_suite_sha256",
+    "quest",
+    "campaign",
+    "gate",
+    "controlling_a2_contract_blob",
+    "required_a2_sections",
+    "authority",
+    "vectors"
+  ],
+  "title": "Atlas Prime Spear Golden Transaction Suite v1",
+  "type": "object"
+}
