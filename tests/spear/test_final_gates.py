@@ -58,8 +58,17 @@ class FinalGateTests(unittest.TestCase):
         self.assertFalse((ROOT / "requirements-spear.txt").exists())
         self.assertFalse((ROOT / "requirements-spear-lock.txt").exists())
 
-    def test_no_workflow_tree_exists(self) -> None:
-        self.assertFalse((ROOT / ".github").exists())
+    def test_s1_workflow_exists_but_apply_is_hard_disabled(self) -> None:
+        workflow = ROOT / ".github/workflows/spear-s1-draft-pr-writer.yml"
+        text = workflow.read_text(encoding="utf-8")
+        self.assertIn("workflow_dispatch:", text)
+        self.assertIn("if: ${{ false }}", text)
+        self.assertIn("contents: write", text)
+        self.assertIn("pull-requests: write", text)
+        self.assertIn("S1_APPLY_HARD_DISABLED", text)
+        self.assertNotIn("pull_request:", text)
+        self.assertNotIn("push:", text)
+        self.assertNotIn("force", text.lower())
 
     def test_cli_requires_repository_argument(self) -> None:
         text = (ROOT / "tools/spear/cli.py").read_text(encoding="utf-8")
@@ -88,20 +97,26 @@ class FinalGateTests(unittest.TestCase):
             self.assertEqual(policies["protected_identity"].policy_id, "atlas-prime-protected-paths")
             self.assertEqual(len(policies["protected_identity"].sha256), 64)
 
-    def test_a3a_contract_assets_exist_without_writer_workflow(self) -> None:
+    def test_a3a_contract_assets_exist_with_disabled_writer_only(self) -> None:
         required = [
             ROOT / "specs/spear/athenas-spear-a3-g0-golden-transaction-suite-v1.md",
             ROOT / "tools/spear/s1_contracts.py",
+            ROOT / "tools/spear/s1_writer.py",
+            ROOT / "tools/spear/s1_cli.py",
+            ROOT / "tools/spear/s1_git_adapter.py",
+            ROOT / "tools/spear/s1_pr_client.py",
+            ROOT / "tools/spear/s1_recovery.py",
+            ROOT / "tools/spear/s1_receipts.py",
             ROOT / "policies/operations/spear/spear-s1-activation-v1.json",
             ROOT / "schemas/spear/spear-execution-envelope-v1.schema.json",
             ROOT / "schemas/spear/spear-execution-preview-v1.schema.json",
             ROOT / "schemas/spear/spear-execution-receipt-v1.schema.json",
             ROOT / "schemas/spear/spear-golden-transaction-suite-v1.schema.json",
             ROOT / "tests/fixtures/spear/golden-transactions-v1.json",
+            ROOT / ".github/workflows/spear-s1-draft-pr-writer.yml",
         ]
         for path in required:
             self.assertTrue(path.is_file(), path)
-        self.assertFalse((ROOT / ".github").exists())
 
     def test_s1_activation_policy_is_exactly_disabled(self) -> None:
         policy = load_json_file(str(ROOT / "policies/operations/spear/spear-s1-activation-v1.json"))
@@ -111,6 +126,17 @@ class FinalGateTests(unittest.TestCase):
         self.assertEqual(policy["authorized_operations"], [])
         self.assertIsNone(policy["activation_reference"])
         self.assertTrue(all(value is False for value in policy["authority"].values()))
+
+    def test_runbook_metadata_covers_s0_and_disabled_a3b_s1(self) -> None:
+        operator = (ROOT / "tools/spear/operator-runbook.md").read_text(encoding="utf-8")
+        recovery = (ROOT / "tools/spear/recovery-runbook.md").read_text(encoding="utf-8")
+        for text in (operator, recovery):
+            self.assertIn("S0/S1", text)
+            self.assertIn("last_verified: 2026-06-26", text)
+            self.assertIn("tools/spear/s1_writer.py", text)
+            self.assertIn(".github/workflows/spear-s1-draft-pr-writer.yml", text)
+        self.assertIn("S1_APPLY_HARD_DISABLED", operator)
+        self.assertIn("packet-ID replay collision", recovery)
 
 
 if __name__ == "__main__": unittest.main()

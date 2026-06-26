@@ -34,7 +34,8 @@ def validate_authority(packet: dict[str, Any]) -> None:
 
 
 def derive_branch(packet: dict[str, Any], canonical_sha: str, branch_regex: str) -> str:
-    seed = sha256_bytes(canonical_json_bytes({"packet_id": packet["packet_id"], "canonical_packet_sha256": canonical_sha}))
+    del canonical_sha
+    seed = sha256_bytes(canonical_json_bytes({"packet_id": packet["packet_id"], "target_repository": packet["target_repository"]}))
     digits = f"{int(seed[:12], 16) % 100000000:08d}"
     sequence = f"{(int(seed[12:16], 16) % 999) + 1:03d}"
     branch = f"spear/{digits}-{sequence}-{seed[:8]}"
