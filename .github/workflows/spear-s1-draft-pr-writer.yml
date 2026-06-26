@@ -1,0 +1,130 @@
+name: Athena's Spear S1 Draft PR Writer
+
+on:
+  workflow_dispatch:
+    inputs:
+      packet_id:
+        description: Packet ID, required to match both envelope and decoded packet.
+        required: true
+        type: string
+      envelope_b64:
+        description: Base64-encoded S1 execution envelope.
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: spear-s1-${{ github.repository }}-${{ inputs.packet_id }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    name: Dependency route blocked with receipt
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Create bounded blocked receipt
+        shell: bash
+        env:
+          SPEAR_ACTOR: ${{ github.actor }}
+          SPEAR_EVENT: ${{ github.event_name }}
+          SPEAR_WORKFLOW_SHA: ${{ github.workflow_sha }}
+          SPEAR_RUN_ID: ${{ github.run_id }}
+          SPEAR_RUN_ATTEMPT: ${{ github.run_attempt }}
+          SPEAR_REPOSITORY: ${{ github.repository }}
+          SPEAR_PACKET_ID: ${{ inputs.packet_id }}
+        run: |
+          set -euo pipefail
+          artifact="spear-s1-receipt-${SPEAR_RUN_ID}-${SPEAR_RUN_ATTEMPT}"
+          mkdir -p "$artifact"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          run_id = os.environ["SPEAR_RUN_ID"]
+          run_attempt = os.environ["SPEAR_RUN_ATTEMPT"]
+          artifact = Path(f"spear-s1-receipt-{run_id}-{run_attempt}")
+          receipt = {
+              "receipt_version": "1.0",
+              "transaction_state": "FAILED_WITH_RECEIPT",
+              "last_completed_gate": "NONE",
+              "repository": os.environ["SPEAR_REPOSITORY"],
+              "base_branch": "main",
+              "base_commit": None,
+              "packet_id": os.environ["SPEAR_PACKET_ID"],
+              "packet_transport_sha256": None,
+              "manifest_sha256": None,
+              "preview_sha256": None,
+              "approval_reference": None,
+              "actor": os.environ["SPEAR_ACTOR"],
+              "event": os.environ["SPEAR_EVENT"],
+              "workflow_sha": os.environ["SPEAR_WORKFLOW_SHA"],
+              "run_id": run_id,
+              "run_attempt": run_attempt,
+              "changed_files": [],
+              "branch": None,
+              "commit_sha": None,
+              "tree_sha": None,
+              "pull_request_number": None,
+              "pull_request_url": None,
+              "contract_identities": [],
+              "file_identities": [],
+              "validation_results": ["dependency route blocked before execution"],
+              "warning_codes": [],
+              "blocker_codes": ["DEPENDENCY_ROUTE_BLOCKED"],
+              "protected_scan_categories": [],
+              "redaction_state": "PROTECTED_VALUES_REDACTED",
+              "authority": {
+                  "draft_pr_only": True,
+                  "merge_authorized": False,
+                  "deletion_authorized": False,
+                  "migration_authorized": False,
+                  "promotion_authorized": False,
+                  "cutover_authorized": False,
+              },
+          }
+          (artifact / "spear-s1-receipt.json").write_text(
+              json.dumps(receipt, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n",
+              encoding="utf-8",
+          )
+          PY
+          echo "S1 hosted-runner execution is blocked pending a separately reviewed dependency route."
+          exit 1
+      - name: Upload bounded receipt
+        if: always()
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
+        with:
+          name: spear-s1-receipt-${{ github.run_id }}-${{ github.run_attempt }}
+          path: spear-s1-receipt-${{ github.run_id }}-${{ github.run_attempt }}/spear-s1-receipt.json
+          if-no-files-found: error
+
+  apply:
+    name: Source-level hard-disabled APPLY
+    if: ${{ false }}
+    needs: plan
+    runs-on: ubuntu-latest
+    permissions:
+      actions: none
+      checks: none
+      contents: write
+      deployments: none
+      discussions: none
+      id-token: none
+      issues: none
+      packages: none
+      pages: none
+      pull-requests: write
+      security-events: none
+      statuses: none
+    steps:
+      - name: Hard-disabled APPLY gate
+        shell: bash
+        run: |
+          echo "S1_APPLY_HARD_DISABLED"
+          exit 1

@@ -81,6 +81,14 @@ class CompileAndIntegrationTests(unittest.TestCase):
         p = self.packet_with_base("valid-create.json")
         branch = derive_branch(p, hashlib.sha256(canonical_json_bytes(p)).hexdigest(), self.controlling["future_branch_regex"])
         self.assertRegex(branch, r"^spear/[0-9]{8}-[0-9]{3}-[a-f0-9]{8}$")
+        changed = copy.deepcopy(p)
+        changed["title"] = "Changed title with same packet identity"
+        changed["operations"][0]["content_utf8"] = changed["operations"][0]["content_utf8"].replace("probationary", "changed")
+        changed["operations"][0]["content_sha256"] = hashlib.sha256(changed["operations"][0]["content_utf8"].encode("utf-8")).hexdigest()
+        self.assertEqual(
+            branch,
+            derive_branch(changed, hashlib.sha256(canonical_json_bytes(changed)).hexdigest(), self.controlling["future_branch_regex"]),
+        )
         p["branch_name"] = "spear/not-allowed"
         with self.assertRaises(Exception): validate_schema(p, self.schema)
 
