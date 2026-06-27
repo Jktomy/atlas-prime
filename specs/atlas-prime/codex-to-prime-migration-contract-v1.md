@@ -2,7 +2,7 @@
 title: Atlas Codex to Atlas Prime Migration and Reconciliation Contract v1
 atlas_id: atlas-prime.migration.codex-to-prime.v1
 format_version: "1.0"
-status: PROPOSED
+status: SUPERSEDED
 source_type: SPECIFICATION
 authority_class: TOOL_CONTRACT
 owner_project: Codex
@@ -13,6 +13,7 @@ routes_from:
   - README.md
   - athenas-spear.md
 routes_to:
+  - specs/atlas-prime/codex-to-prime-migration-contract-v2.md
   - schemas/migration/atlas-codex-inventory-v1.schema.json
   - codex/codex-source-update-standard.md
   - migration/atlas-codex/README.md
@@ -20,8 +21,10 @@ routes_to:
 private_boundary: This contract may contain clean migration doctrine, classifications, schemas, and examples only. It must not contain secrets, credentials, PHI, raw finance or account evidence, private runtime values, IP addresses, network maps, device registers, raw protected exports, or other prohibited evidence.
 evidence_boundary: Atlas Codex, current Atlas Prime source, approved session harvests, original evidence systems, Git history, Spear receipts, pull requests, Noctua reports, and recovery proofs remain distinct evidence sources. This contract governs how their clean meaning is reconciled but does not replace them.
 supersedes: []
+superseded_by:
+  - specs/atlas-prime/codex-to-prime-migration-contract-v2.md
 cleanup_path: Version this contract through a later reviewed specification when migration semantics change. Do not silently reinterpret v1, and do not delete predecessor source merely because a successor contract exists.
-last_verified: 2026-06-25
+last_verified: 2026-06-27
 ---
 
 # Atlas Codex to Atlas Prime Migration and Reconciliation Contract v1

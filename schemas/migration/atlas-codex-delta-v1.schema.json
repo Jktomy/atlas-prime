@@ -1,0 +1,1253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas-prime.local/schemas/atlas-codex-delta-v1.schema.json",
+  "title": "Atlas Codex Ordered Migration Delta v1",
+  "description": "Schema for one ordered, non-executing delta between an immutable Atlas Codex frozen baseline or accepted delta-chain head and one later exact Codex commit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "delta_id",
+    "sequence",
+    "status",
+    "source_repository",
+    "target_repository",
+    "baseline",
+    "previous_delta",
+    "range",
+    "target_observation",
+    "summary",
+    "resulting_state",
+    "entries",
+    "collision_group_impacts",
+    "prepared_at",
+    "prepared_by",
+    "execution_authority",
+    "delta_sha256",
+    "notes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "delta_id": {
+      "type": "string",
+      "pattern": "^atlas-codex-delta:[0-9]{4}$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9999
+    },
+    "status": {
+      "enum": [
+        "DRAFT",
+        "PREVIEWED",
+        "MERGED",
+        "CLOSED"
+      ]
+    },
+    "source_repository": {
+      "const": "Jktomy/atlas-codex"
+    },
+    "target_repository": {
+      "const": "Jktomy/atlas-prime"
+    },
+    "baseline": {
+      "$ref": "#/$defs/baseline"
+    },
+    "previous_delta": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/previous_delta"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "range": {
+      "$ref": "#/$defs/range"
+    },
+    "target_observation": {
+      "$ref": "#/$defs/target_observation"
+    },
+    "summary": {
+      "$ref": "#/$defs/summary"
+    },
+    "resulting_state": {
+      "$ref": "#/$defs/resulting_state"
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20000,
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    },
+    "collision_group_impacts": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "$ref": "#/$defs/collision_group_impact"
+      }
+    },
+    "prepared_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "prepared_by": {
+      "enum": [
+        "ATHENA",
+        "JAYSON",
+        "MIGRATION_TOOL"
+      ]
+    },
+    "execution_authority": {
+      "const": "NONE"
+    },
+    "delta_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "notes": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "sequence": {
+            "const": 1
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "previous_delta": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "previous_delta": {
+            "$ref": "#/$defs/previous_delta"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*[\\x00-\\x1f\\x7f]).+$"
+    },
+    "path_array": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/path"
+      },
+      "uniqueItems": true,
+      "maxItems": 200
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "git_object_id": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "properties": {
+        "algorithm": {
+          "enum": [
+            "sha1",
+            "sha256"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$|^[0-9a-f]{64}$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "algorithm": {
+                "const": "sha1"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "pattern": "^[0-9a-f]{40}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "algorithm": {
+                "const": "sha256"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "frozen",
+        "inventory_path",
+        "source_commit",
+        "inventory_git_blob",
+        "inventory_file_sha256",
+        "inventory_canonical_sha256",
+        "entry_count",
+        "unique_path_count"
+      ],
+      "properties": {
+        "status": {
+          "const": "FROZEN_BASELINE"
+        },
+        "frozen": {
+          "const": true
+        },
+        "inventory_path": {
+          "const": "migration/atlas-codex/source-inventory.json"
+        },
+        "source_commit": {
+          "$ref": "#/$defs/git_object_id"
+        },
+        "inventory_git_blob": {
+          "$ref": "#/$defs/git_object_id"
+        },
+        "inventory_file_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "inventory_canonical_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "entry_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20000
+        },
+        "unique_path_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20000
+        }
+      }
+    },
+    "previous_delta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "delta_id",
+        "sequence",
+        "ending_commit",
+        "delta_sha256"
+      ],
+      "properties": {
+        "delta_id": {
+          "type": "string",
+          "pattern": "^atlas-codex-delta:[0-9]{4}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9998
+        },
+        "ending_commit": {
+          "$ref": "#/$defs/git_object_id"
+        },
+        "delta_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start_commit",
+        "end_commit",
+        "comparison_status",
+        "ahead_by",
+        "behind_by",
+        "total_commits",
+        "contiguous"
+      ],
+      "properties": {
+        "start_commit": {
+          "$ref": "#/$defs/git_object_id"
+        },
+        "end_commit": {
+          "$ref": "#/$defs/git_object_id"
+        },
+        "comparison_status": {
+          "const": "ahead"
+        },
+        "ahead_by": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "behind_by": {
+          "const": 0
+        },
+        "total_commits": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "contiguous": {
+          "const": true
+        }
+      }
+    },
+    "target_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "existence",
+        "git_blob",
+        "notes"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/path"
+        },
+        "existence": {
+          "enum": [
+            "PRESENT",
+            "ABSENT"
+          ]
+        },
+        "git_blob": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/git_object_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "existence": {
+                "const": "ABSENT"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "git_blob": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "existence": {
+                "const": "PRESENT"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "git_blob": {
+                "$ref": "#/$defs/git_object_id"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "target_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "commit",
+        "repository_state",
+        "observed_at",
+        "checks"
+      ],
+      "properties": {
+        "repository": {
+          "const": "Jktomy/atlas-prime"
+        },
+        "commit": {
+          "$ref": "#/$defs/git_object_id"
+        },
+        "repository_state": {
+          "enum": [
+            "SHADOW",
+            "CUTOVER_CANDIDATE",
+            "CANONICAL",
+            "FROZEN",
+            "RETIRED"
+          ]
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/target_check"
+          },
+          "maxItems": 1000
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "added",
+        "modified",
+        "removed",
+        "renamed",
+        "changed_path_count"
+      ],
+      "properties": {
+        "added": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "modified": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "removed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "renamed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "changed_path_count": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "resulting_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "live_path_count",
+        "accounted_lineage_count",
+        "normalized_case_collisions",
+        "unresolved_entries"
+      ],
+      "properties": {
+        "live_path_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20000
+        },
+        "accounted_lineage_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50000
+        },
+        "normalized_case_collisions": {
+          "const": 0
+        },
+        "unresolved_entries": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20000
+        }
+      }
+    },
+    "approval_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "reference",
+        "approved_scope"
+      ],
+      "properties": {
+        "source": {
+          "enum": [
+            "EXPLICIT_JAYSON_INSTRUCTION",
+            "APPROVED_PREVIEW_EXECUTE",
+            "CUTOVER_APPROVAL",
+            "RETIREMENT_APPROVAL"
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "approved_scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "approved_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entry_id",
+        "change_type",
+        "path_before",
+        "path_after",
+        "git_blob_before",
+        "git_blob_after",
+        "sha256_before",
+        "sha256_after",
+        "source_class_before",
+        "source_class_after",
+        "privacy_class_before",
+        "privacy_class_after",
+        "disposition_before",
+        "disposition_after",
+        "content_transfer_before",
+        "content_transfer_after",
+        "target_paths_before",
+        "target_paths_after",
+        "preserved_elements",
+        "removed_or_remodeled_elements",
+        "dependencies_before",
+        "dependencies_after",
+        "collision_group_ids",
+        "collision_effects",
+        "reason",
+        "approval_basis",
+        "review_state",
+        "notes"
+      ],
+      "properties": {
+        "entry_id": {
+          "type": "string",
+          "pattern": "^D[0-9]{4}-E[0-9]{4}$"
+        },
+        "change_type": {
+          "enum": [
+            "ADDED",
+            "MODIFIED",
+            "REMOVED",
+            "RENAMED"
+          ]
+        },
+        "path_before": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/path"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "path_after": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/path"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "git_blob_before": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/git_object_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "git_blob_after": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/git_object_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sha256_before": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sha256_after": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_class_before": {
+          "oneOf": [
+            {
+              "enum": [
+                "BOOTSTRAP",
+                "CANONICAL_SOURCE",
+                "PROTOCOL",
+                "STANDARD",
+                "PROJECT",
+                "OPERATION",
+                "RUNBOOK",
+                "REGISTER",
+                "GENERATED",
+                "ARCHIVE",
+                "MIGRATION",
+                "TOOL",
+                "WORKFLOW",
+                "TEST",
+                "OTHER"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_class_after": {
+          "oneOf": [
+            {
+              "enum": [
+                "BOOTSTRAP",
+                "CANONICAL_SOURCE",
+                "PROTOCOL",
+                "STANDARD",
+                "PROJECT",
+                "OPERATION",
+                "RUNBOOK",
+                "REGISTER",
+                "GENERATED",
+                "ARCHIVE",
+                "MIGRATION",
+                "TOOL",
+                "WORKFLOW",
+                "TEST",
+                "OTHER"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "privacy_class_before": {
+          "oneOf": [
+            {
+              "enum": [
+                "PUBLIC_CLEAN",
+                "PRIVATE_CLEAN_SUMMARY",
+                "POINTER_ONLY",
+                "PROHIBITED"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "privacy_class_after": {
+          "oneOf": [
+            {
+              "enum": [
+                "PUBLIC_CLEAN",
+                "PRIVATE_CLEAN_SUMMARY",
+                "POINTER_ONLY",
+                "PROHIBITED"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "disposition_before": {
+          "oneOf": [
+            {
+              "enum": [
+                "MIGRATE",
+                "MERGE",
+                "REMODEL",
+                "GENERATED_REBUILD",
+                "HISTORICAL_REFERENCE",
+                "PRIVATE_POINTER",
+                "SUPERSEDE",
+                "RETIRE",
+                "OMIT_WITH_REASON"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "disposition_after": {
+          "oneOf": [
+            {
+              "enum": [
+                "MIGRATE",
+                "MERGE",
+                "REMODEL",
+                "GENERATED_REBUILD",
+                "HISTORICAL_REFERENCE",
+                "PRIVATE_POINTER",
+                "SUPERSEDE",
+                "RETIRE",
+                "OMIT_WITH_REASON"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "content_transfer_before": {
+          "oneOf": [
+            {
+              "enum": [
+                "FULL",
+                "PARTIAL",
+                "NONE",
+                "POINTER_ONLY",
+                "GENERATED_REBUILD"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "content_transfer_after": {
+          "oneOf": [
+            {
+              "enum": [
+                "FULL",
+                "PARTIAL",
+                "NONE",
+                "POINTER_ONLY",
+                "GENERATED_REBUILD"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "target_paths_before": {
+          "$ref": "#/$defs/path_array"
+        },
+        "target_paths_after": {
+          "$ref": "#/$defs/path_array"
+        },
+        "preserved_elements": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 200,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        },
+        "removed_or_remodeled_elements": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 200,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        },
+        "dependencies_before": {
+          "$ref": "#/$defs/path_array"
+        },
+        "dependencies_after": {
+          "$ref": "#/$defs/path_array"
+        },
+        "collision_group_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 100,
+          "items": {
+            "type": "string",
+            "pattern": "^C[0-9]{2}$"
+          }
+        },
+        "collision_effects": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 10,
+          "items": {
+            "enum": [
+              "ADD_MEMBER",
+              "REMOVE_MEMBER",
+              "UPDATE_MEMBER_IDENTITY",
+              "SEMANTIC_DEPENDENCY",
+              "NO_DIRECT_IMPACT"
+            ]
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 4000
+        },
+        "approval_basis": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/approval_basis"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "review_state": {
+          "enum": [
+            "DELTA_RECORDED",
+            "NEEDS_JAYSON",
+            "BLOCKED"
+          ]
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 4000
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "change_type": {
+                "const": "ADDED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "path_before": {
+                "type": "null"
+              },
+              "git_blob_before": {
+                "type": "null"
+              },
+              "sha256_before": {
+                "type": "null"
+              },
+              "source_class_before": {
+                "type": "null"
+              },
+              "privacy_class_before": {
+                "type": "null"
+              },
+              "disposition_before": {
+                "type": "null"
+              },
+              "content_transfer_before": {
+                "type": "null"
+              },
+              "path_after": {
+                "$ref": "#/$defs/path"
+              },
+              "git_blob_after": {
+                "$ref": "#/$defs/git_object_id"
+              },
+              "sha256_after": {
+                "$ref": "#/$defs/sha256"
+              },
+              "source_class_after": {
+                "enum": [
+                  "BOOTSTRAP",
+                  "CANONICAL_SOURCE",
+                  "PROTOCOL",
+                  "STANDARD",
+                  "PROJECT",
+                  "OPERATION",
+                  "RUNBOOK",
+                  "REGISTER",
+                  "GENERATED",
+                  "ARCHIVE",
+                  "MIGRATION",
+                  "TOOL",
+                  "WORKFLOW",
+                  "TEST",
+                  "OTHER"
+                ]
+              },
+              "privacy_class_after": {
+                "enum": [
+                  "PUBLIC_CLEAN",
+                  "PRIVATE_CLEAN_SUMMARY",
+                  "POINTER_ONLY",
+                  "PROHIBITED"
+                ]
+              },
+              "disposition_after": {
+                "enum": [
+                  "MIGRATE",
+                  "MERGE",
+                  "REMODEL",
+                  "GENERATED_REBUILD",
+                  "HISTORICAL_REFERENCE",
+                  "PRIVATE_POINTER",
+                  "SUPERSEDE",
+                  "RETIRE",
+                  "OMIT_WITH_REASON"
+                ]
+              },
+              "content_transfer_after": {
+                "enum": [
+                  "FULL",
+                  "PARTIAL",
+                  "NONE",
+                  "POINTER_ONLY",
+                  "GENERATED_REBUILD"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "change_type": {
+                "const": "REMOVED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "path_before": {
+                "$ref": "#/$defs/path"
+              },
+              "git_blob_before": {
+                "$ref": "#/$defs/git_object_id"
+              },
+              "sha256_before": {
+                "$ref": "#/$defs/sha256"
+              },
+              "source_class_before": {
+                "enum": [
+                  "BOOTSTRAP",
+                  "CANONICAL_SOURCE",
+                  "PROTOCOL",
+                  "STANDARD",
+                  "PROJECT",
+                  "OPERATION",
+                  "RUNBOOK",
+                  "REGISTER",
+                  "GENERATED",
+                  "ARCHIVE",
+                  "MIGRATION",
+                  "TOOL",
+                  "WORKFLOW",
+                  "TEST",
+                  "OTHER"
+                ]
+              },
+              "privacy_class_before": {
+                "enum": [
+                  "PUBLIC_CLEAN",
+                  "PRIVATE_CLEAN_SUMMARY",
+                  "POINTER_ONLY",
+                  "PROHIBITED"
+                ]
+              },
+              "disposition_before": {
+                "enum": [
+                  "MIGRATE",
+                  "MERGE",
+                  "REMODEL",
+                  "GENERATED_REBUILD",
+                  "HISTORICAL_REFERENCE",
+                  "PRIVATE_POINTER",
+                  "SUPERSEDE",
+                  "RETIRE",
+                  "OMIT_WITH_REASON"
+                ]
+              },
+              "content_transfer_before": {
+                "enum": [
+                  "FULL",
+                  "PARTIAL",
+                  "NONE",
+                  "POINTER_ONLY",
+                  "GENERATED_REBUILD"
+                ]
+              },
+              "path_after": {
+                "type": "null"
+              },
+              "git_blob_after": {
+                "type": "null"
+              },
+              "sha256_after": {
+                "type": "null"
+              },
+              "source_class_after": {
+                "type": "null"
+              },
+              "privacy_class_after": {
+                "type": "null"
+              },
+              "disposition_after": {
+                "type": "null"
+              },
+              "content_transfer_after": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "change_type": {
+                "enum": [
+                  "MODIFIED",
+                  "RENAMED"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "path_before": {
+                "$ref": "#/$defs/path"
+              },
+              "path_after": {
+                "$ref": "#/$defs/path"
+              },
+              "git_blob_before": {
+                "$ref": "#/$defs/git_object_id"
+              },
+              "git_blob_after": {
+                "$ref": "#/$defs/git_object_id"
+              },
+              "sha256_before": {
+                "$ref": "#/$defs/sha256"
+              },
+              "sha256_after": {
+                "$ref": "#/$defs/sha256"
+              },
+              "source_class_before": {
+                "enum": [
+                  "BOOTSTRAP",
+                  "CANONICAL_SOURCE",
+                  "PROTOCOL",
+                  "STANDARD",
+                  "PROJECT",
+                  "OPERATION",
+                  "RUNBOOK",
+                  "REGISTER",
+                  "GENERATED",
+                  "ARCHIVE",
+                  "MIGRATION",
+                  "TOOL",
+                  "WORKFLOW",
+                  "TEST",
+                  "OTHER"
+                ]
+              },
+              "source_class_after": {
+                "enum": [
+                  "BOOTSTRAP",
+                  "CANONICAL_SOURCE",
+                  "PROTOCOL",
+                  "STANDARD",
+                  "PROJECT",
+                  "OPERATION",
+                  "RUNBOOK",
+                  "REGISTER",
+                  "GENERATED",
+                  "ARCHIVE",
+                  "MIGRATION",
+                  "TOOL",
+                  "WORKFLOW",
+                  "TEST",
+                  "OTHER"
+                ]
+              },
+              "privacy_class_before": {
+                "enum": [
+                  "PUBLIC_CLEAN",
+                  "PRIVATE_CLEAN_SUMMARY",
+                  "POINTER_ONLY",
+                  "PROHIBITED"
+                ]
+              },
+              "privacy_class_after": {
+                "enum": [
+                  "PUBLIC_CLEAN",
+                  "PRIVATE_CLEAN_SUMMARY",
+                  "POINTER_ONLY",
+                  "PROHIBITED"
+                ]
+              },
+              "disposition_before": {
+                "enum": [
+                  "MIGRATE",
+                  "MERGE",
+                  "REMODEL",
+                  "GENERATED_REBUILD",
+                  "HISTORICAL_REFERENCE",
+                  "PRIVATE_POINTER",
+                  "SUPERSEDE",
+                  "RETIRE",
+                  "OMIT_WITH_REASON"
+                ]
+              },
+              "disposition_after": {
+                "enum": [
+                  "MIGRATE",
+                  "MERGE",
+                  "REMODEL",
+                  "GENERATED_REBUILD",
+                  "HISTORICAL_REFERENCE",
+                  "PRIVATE_POINTER",
+                  "SUPERSEDE",
+                  "RETIRE",
+                  "OMIT_WITH_REASON"
+                ]
+              },
+              "content_transfer_before": {
+                "enum": [
+                  "FULL",
+                  "PARTIAL",
+                  "NONE",
+                  "POINTER_ONLY",
+                  "GENERATED_REBUILD"
+                ]
+              },
+              "content_transfer_after": {
+                "enum": [
+                  "FULL",
+                  "PARTIAL",
+                  "NONE",
+                  "POINTER_ONLY",
+                  "GENERATED_REBUILD"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "collision_group_impact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "group_id",
+        "target_path",
+        "baseline_member_count",
+        "resulting_member_count",
+        "affected_paths",
+        "effects",
+        "notes"
+      ],
+      "properties": {
+        "group_id": {
+          "type": "string",
+          "pattern": "^C[0-9]{2}$"
+        },
+        "target_path": {
+          "$ref": "#/$defs/path"
+        },
+        "baseline_member_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "resulting_member_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "affected_paths": {
+          "$ref": "#/$defs/path_array"
+        },
+        "effects": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "maxItems": 10,
+          "items": {
+            "enum": [
+              "ADD_MEMBER",
+              "REMOVE_MEMBER",
+              "UPDATE_MEMBER_IDENTITY",
+              "SEMANTIC_DEPENDENCY",
+              "NO_DIRECT_IMPACT"
+            ]
+          }
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 4000
+        }
+      }
+    }
+  }
+}
