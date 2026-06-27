@@ -15,6 +15,7 @@ routes_from:
   - migration/atlas-codex/audits/atlas-codex-delta-0001-preflight-v1.md
   - migration/atlas-codex/audits/atlas-codex-delta-0001-merge-closeout-v1.md
   - migration/atlas-codex/audits/atlas-codex-delta-0001-final-closeout-v1.md
+  - migration/atlas-codex/audits/atlas-active-workboard-authority-alignment-v1.md
   - migration/atlas-codex/README.md
   - migration/atlas-codex/source-inventory.json
   - migration/atlas-codex/audits/source-inventory-preflight-v1.md
@@ -38,7 +39,7 @@ Inventoried source commit: 3e4f06ed4abf8fbd44bd04ec1ad8997ffae7eda4
 Current canonical repository: Jktomy/atlas-codex
 
 Target repository: Jktomy/atlas-prime
-Current target base: 126a7e4329dc217dc99661da375a2966d76d119c
+Current target base: 8993d0bffce3bb64b6659ca60fe029d2818f050c
 Target state: SHADOW
 
 Frozen inventory entries: 349
@@ -243,24 +244,26 @@ Current M0-D evidence:
 - PR `#14` was squash-merged as `3a93006397d780cb6099a97a82524a90009df1fe` and its merge closeout remains immutable;
 - PR `#16` merged the Prime-native generated-index foundation as `0b09425172df0562cbe65a418fce9fbead0e9472`;
 - PR `#17` rebuilt the five Prime generated projections and was read back from Prime `main` at `126a7e4329dc217dc99661da375a2966d76d119c`;
-- the canonical Codex Active Workboard was updated as Drive revision `0Bz1aLTIXmYtUaXhFUGhCT2gvNzhLaTdKSURnZVNqNGVzQVhjPQ` and read back at SHA-256 `8f735bcadf7b7f770332ad0586fdde6d1768ce46285c8279f682d2535d9aa477`;
+- Drive revision `0Bz1aLTIXmYtUaXhFUGhCT2gvNzhLaTdKSURnZVNqNGVzQVhjPQ` with SHA-256 `8f735bcadf7b7f770332ad0586fdde6d1768ce46285c8279f682d2535d9aa477` remains valid historical M0-D execution evidence;
+- ongoing Active Workboard authority belongs only to `Jktomy/atlas-codex/codex/atlas-active-workboard.md` on `main`; external copies are noncanonical, unsynchronized, and may remain stale;
 - delta `0001` is recorded as `CLOSED`;
 - effective live and accounted-lineage counts remain `351`;
 - content movement, collision resolution, the disposition ledger, S1 activation, Questboard migration, promotion, retirement, and cutover remain unauthorized.
 
-M1-A is unblocked for a separate read-only collision-and-consequence planning route after this final closeout is merged and read back. No content movement or writer activation is authorized.
+M1-A may resume only through a newly generated read-only evidence preflight bound to the post-alignment Codex and Prime `main` heads. Any earlier preflight package is stale. No content movement or writer activation is authorized.
 
 ## 11. Immediate next planning action
 
-The next read-only action after final M0-D closeout is:
+The next read-only action after authority alignment is:
 
 ```text
-Begin M1-A collision and consequence triage as a separate read-only planning route.
+Regenerate the M1-A evidence preflight from the new exact Codex and Prime main heads.
 
-Use the closed ordered delta, frozen inventory, current Codex source, current Prime
-source, and the existing collision register. Do not move content, activate S1,
-create the disposition ledger, migrate the Workboard into Quest state, or alter
-repository authority without a new exact Preview → Execute gate.
+Use the closed ordered delta, frozen inventory, current canonical GitHub Workboard,
+current Codex source, current Prime source, and the existing collision register.
+Do not use an earlier preflight package. Do not move content, activate S1, create
+the disposition ledger, migrate the Workboard into Quest state, or alter repository
+authority without a new exact Preview -> Execute gate.
 ```
 
 No content movement, target replacement, retirement, supersession, omission closure, Questboard transition, S1 work, or cutover is authorized by this map.
