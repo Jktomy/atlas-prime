@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "delta_id": "atlas-codex-delta:0001",
   "sequence": 1,
-  "status": "PREVIEWED",
+  "status": "MERGED",
   "source_repository": "Jktomy/atlas-codex",
   "target_repository": "Jktomy/atlas-prime",
   "baseline": {
@@ -1110,7 +1110,7 @@
   "prepared_at": "2026-06-27T16:33:30.6797297Z",
   "prepared_by": "MIGRATION_TOOL",
   "execution_authority": "NONE",
-  "delta_sha256": "d1c6043a1ccba63d1134e939eacf163384e0fd7e2f77abb6b016123cd9e8b3f0",
+  "delta_sha256": "6abc9e7f108cafd725fd0d1afebfeec6c7e707ec4a050aab6e0024c2e47b8fd7",
   "notes": [
     "Read-only M0-D Preview generated from exact immutable Git objects.",
     "Five changed generated projections remain GENERATED_REBUILD evidence and are not copied into Atlas Prime.",
