@@ -10,18 +10,21 @@ owner_operation: Source Governance
 canonical_scope: Entry point and evidence boundary for the future Atlas Codex to Atlas Prime source inventory, disposition ledger, migration map, audits, packet lineage, and closure records.
 protected_level: CRITICAL
 routes_from:
-  - specs/atlas-prime/codex-to-prime-migration-contract-v1.md
+  - specs/atlas-prime/codex-to-prime-migration-contract-v2.md
 routes_to:
   - schemas/migration/atlas-codex-inventory-v1.schema.json
+  - schemas/migration/atlas-codex-delta-v1.schema.json
   - migration/atlas-codex/source-inventory.json
   - migration/atlas-codex/audits/source-inventory-preflight-v1.md
+  - migration/atlas-codex/deltas/atlas-codex-delta-0001.json
+  - migration/atlas-codex/audits/atlas-codex-delta-0001-preflight-v1.md
   - migration/atlas-codex/migration-map.md
   - templates/codex-to-prime-reconciliation-record.md
 private_boundary: This hub and its future child records may contain clean migration provenance and clean pointers only. They must not contain secrets, credentials, PHI, raw finance or account evidence, private runtime values, IP addresses, network maps, device registers, raw exports, or other prohibited evidence.
 evidence_boundary: This directory records migration provenance. Atlas Codex source, Git history, current Atlas Prime source, original evidence systems, Spear artifacts, Noctua reports, pull requests, merge records, and recovery receipts remain distinct evidence sources.
 supersedes: []
 cleanup_path: Keep as the routed migration evidence entry point until migration closes. After cutover, retain or supersede it only through an approved retention and sunsetting decision.
-last_verified: 2026-06-25
+last_verified: 2026-06-27
 ---
 
 # Atlas Codex Migration Evidence Hub
@@ -32,8 +35,10 @@ last_verified: 2026-06-25
 Repository: Jktomy/atlas-prime
 Predecessor: Jktomy/atlas-codex
 Prime state: SHADOW
-Migration control plane: PROPOSED
-Source inventory: INVENTORY_COMPLETE
+Migration control plane: ACTIVE — SHADOW-ONLY
+Frozen source inventory: FROZEN_BASELINE — 349 PATHS
+Ordered delta 0001: PREVIEWED — 15 CHANGED PATHS
+Effective inventory: 351 LIVE PATHS
 Preliminary disposition mapping: PRESENT — NOT EXECUTION AUTHORITY
 Disposition ledger: NOT_STARTED
 Migration map: PRESENT — PLANNING EVIDENCE ONLY
@@ -42,7 +47,7 @@ Spear writer: NOT_AUTHORIZED
 Cutover: NOT_AUTHORIZED
 ```
 
-This hub routes the exact predecessor inventory, its preflight audit, and the migration map.
+This hub routes the immutable predecessor inventory, its historical preflight, the ordered delta chain, delta preflight evidence, and the migration map.
 
 The inventory accounts for every tracked Atlas Codex path at the pinned source commit. Its preliminary dispositions remain migration evidence only and require later reconciliation before any packet or protected source PR.
 
@@ -54,7 +59,7 @@ The disposition ledger and migration batches do not yet exist.
 
 The controlling migration process is:
 
-`specs/atlas-prime/codex-to-prime-migration-contract-v1.md`
+`specs/atlas-prime/codex-to-prime-migration-contract-v2.md`
 
 The machine-readable inventory must conform to:
 
@@ -74,6 +79,20 @@ Athena prepares each read-only reconciliation record from:
 - Preflight: `migration/atlas-codex/audits/source-inventory-preflight-v1.md`
 
 `MAPPING_COMPLETE` in the inventory means every predecessor path has a provisional schema-valid disposition. It does not authorize migration, deletion, retirement, supersession, source promotion, writer activation, or cutover.
+
+## Current ordered delta chain
+
+- Delta path: `migration/atlas-codex/deltas/atlas-codex-delta-0001.json`
+- Delta ID: `atlas-codex-delta:0001`
+- Status: `PREVIEWED`
+- Range: `3e4f06ed4abf8fbd44bd04ec1ad8997ffae7eda4` → `cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f`
+- Commits: `17`
+- Changed paths: `15` (`2` added, `13` modified)
+- Effective live paths: `351`
+- Canonical delta digest: `d1c6043a1ccba63d1134e939eacf163384e0fd7e2f77abb6b016123cd9e8b3f0`
+- Preflight: `migration/atlas-codex/audits/atlas-codex-delta-0001-preflight-v1.md`
+
+The delta is migration evidence only. It grants no content movement, collision resolution, generated rebuild, structured-register transition, writer activation, promotion, retirement, deletion, or cutover authority.
 
 ## Current migration map
 
