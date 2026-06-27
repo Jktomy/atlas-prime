@@ -20,6 +20,7 @@ routes_to:
   - migration/atlas-codex/audits/atlas-codex-delta-0001-preflight-v1.md
   - migration/atlas-codex/audits/atlas-codex-delta-0001-merge-closeout-v1.md
   - migration/atlas-codex/audits/atlas-codex-delta-0001-final-closeout-v1.md
+  - migration/atlas-codex/audits/atlas-active-workboard-authority-alignment-v1.md
   - migration/atlas-codex/migration-map.md
   - templates/codex-to-prime-reconciliation-record.md
 private_boundary: This hub and its future child records may contain clean migration provenance and clean pointers only. They must not contain secrets, credentials, PHI, raw finance or account evidence, private runtime values, IP addresses, network maps, device registers, raw exports, or other prohibited evidence.
@@ -42,6 +43,7 @@ Frozen source inventory: FROZEN_BASELINE — 349 PATHS
 Ordered delta 0001: CLOSED — 15 CHANGED PATHS
 Effective inventory: 351 LIVE PATHS
 M0-D closure: CLOSED — GENERATED AND WORKBOARD READBACK VERIFIED
+Active Workboard authority: `Jktomy/atlas-codex/codex/atlas-active-workboard.md` — EXTERNAL COPIES NONCANONICAL
 Preliminary disposition mapping: PRESENT — NOT EXECUTION AUTHORITY
 Disposition ledger: NOT_STARTED
 Migration map: PRESENT — PLANNING EVIDENCE ONLY
@@ -100,6 +102,23 @@ Athena prepares each read-only reconciliation record from:
 - Final closeout: `migration/atlas-codex/audits/atlas-codex-delta-0001-final-closeout-v1.md`
 
 The delta is CLOSED as M0-D control-plane evidence. Closure confirms the Prime generated-output and Codex Active Workboard consequences were completed and read back. It grants no content movement, collision resolution, Questboard migration, writer activation, promotion, retirement, deletion, or cutover authority.
+
+## Active Workboard authority alignment
+
+The Google Drive revision used during M0-D remains valid historical execution evidence for the exact structured-register gate that was completed and read back.
+
+Ongoing operational authority is now explicit:
+
+- sole canonical Workboard: `Jktomy/atlas-codex/codex/atlas-active-workboard.md` on `main`;
+- Google Drive and other external copies: noncanonical, unsynchronized, and permitted to remain stale;
+- failed GitHub intake stored elsewhere: holding evidence only until reviewed and merged into GitHub;
+- future Prime hierarchy: `Questboard -> Quests -> Campaigns`, not yet executed.
+
+The alignment record is:
+
+`migration/atlas-codex/audits/atlas-active-workboard-authority-alignment-v1.md`
+
+This correction does not reopen M0-D and does not authorize M1 content movement.
 
 ## Current migration map
 
