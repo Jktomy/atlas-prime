@@ -13,6 +13,7 @@ routes_from:
   - specs/atlas-prime/codex-to-prime-migration-contract-v2.md
   - migration/atlas-codex/deltas/atlas-codex-delta-0001.json
   - migration/atlas-codex/audits/atlas-codex-delta-0001-preflight-v1.md
+  - migration/atlas-codex/audits/atlas-codex-delta-0001-merge-closeout-v1.md
   - migration/atlas-codex/README.md
   - migration/atlas-codex/source-inventory.json
   - migration/atlas-codex/audits/source-inventory-preflight-v1.md
@@ -41,7 +42,7 @@ Target state: SHADOW
 
 Frozen inventory entries: 349
 Frozen unique source paths: 349
-Accepted delta chain head: atlas-codex-delta:0001 - PREVIEWED
+Accepted delta chain head: atlas-codex-delta:0001 - MERGED
 Current Codex chain head: cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f
 Effective live paths: 351
 Accounted lineage paths: 351
@@ -238,29 +239,29 @@ Current M0-D evidence:
 - frozen baseline remains immutable at `3e4f06ed4abf8fbd44bd04ec1ad8997ffae7eda4`;
 - delta `0001` spans `17` contiguous commits through `cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f`;
 - all `15` changed paths are represented exactly once;
+- PR `#14` was squash-merged as `3a93006397d780cb6099a97a82524a90009df1fe` and Prime `main` readback passed;
+- delta `0001` is recorded as `MERGED`, while final M0-D closure remains pending;
 - effective live and accounted-lineage counts are `351`;
 - five changed generated projections remain on the separate `GENERATED_REBUILD` route;
 - the Active Workboard consequence remains on the separate structured-register route;
 - content movement, collision resolution, the disposition ledger, S1 activation, promotion, retirement, and cutover remain unauthorized.
 
-M1-A remains blocked until delta `0001` is audited, manually merged, read back from `main`, generated consequences are closed through their own route, and the Workboard records the current M0-D gate.
+M1-A remains blocked until generated consequences are closed through their own route, the Workboard records the current M0-D gate, and the final delta transition from `MERGED` to `CLOSED` is merged and read back.
 
 ## 11. Immediate next planning action
 
-
-The next read-only action after this map is approved should be:
+The next read-only actions after this merge closeout should be:
 
 ```text
-M1-A — Materialize the 18 collision groups from the exact inventory.
+Complete the two remaining M0-D closure routes before M1-A:
 
-Output:
-- exact member list for each collision group;
-- source blobs and privacy classes;
-- current Prime target existence and blob;
-- route recommendation;
-- risk rank;
-- reconciliation-record queue;
-- NEEDS_JAYSON items.
+1. Approve a Prime generator contract and rebuild the five generated projections
+   through a separate generated-output route.
+2. Update the Atlas Active Workboard through its separate structured-register route.
+3. Read both routes back from their canonical destinations.
+4. Prepare the final delta transition from MERGED to CLOSED.
+
+M1-A remains blocked until those closure obligations are complete.
 ```
 
 No content movement, target replacement, retirement, supersession, omission closure, structured-register transition, S1 work, or cutover is authorized by this map.

@@ -18,6 +18,7 @@ routes_to:
   - migration/atlas-codex/audits/source-inventory-preflight-v1.md
   - migration/atlas-codex/deltas/atlas-codex-delta-0001.json
   - migration/atlas-codex/audits/atlas-codex-delta-0001-preflight-v1.md
+  - migration/atlas-codex/audits/atlas-codex-delta-0001-merge-closeout-v1.md
   - migration/atlas-codex/migration-map.md
   - templates/codex-to-prime-reconciliation-record.md
 private_boundary: This hub and its future child records may contain clean migration provenance and clean pointers only. They must not contain secrets, credentials, PHI, raw finance or account evidence, private runtime values, IP addresses, network maps, device registers, raw exports, or other prohibited evidence.
@@ -37,8 +38,9 @@ Predecessor: Jktomy/atlas-codex
 Prime state: SHADOW
 Migration control plane: ACTIVE — SHADOW-ONLY
 Frozen source inventory: FROZEN_BASELINE — 349 PATHS
-Ordered delta 0001: PREVIEWED — 15 CHANGED PATHS
+Ordered delta 0001: MERGED — 15 CHANGED PATHS
 Effective inventory: 351 LIVE PATHS
+M0-D closure: OPEN — GENERATED_REBUILD AND WORKBOARD ROUTES PENDING
 Preliminary disposition mapping: PRESENT — NOT EXECUTION AUTHORITY
 Disposition ledger: NOT_STARTED
 Migration map: PRESENT — PLANNING EVIDENCE ONLY
@@ -84,13 +86,16 @@ Athena prepares each read-only reconciliation record from:
 
 - Delta path: `migration/atlas-codex/deltas/atlas-codex-delta-0001.json`
 - Delta ID: `atlas-codex-delta:0001`
-- Status: `PREVIEWED`
+- Status: `MERGED`
 - Range: `3e4f06ed4abf8fbd44bd04ec1ad8997ffae7eda4` → `cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f`
 - Commits: `17`
 - Changed paths: `15` (`2` added, `13` modified)
 - Effective live paths: `351`
-- Canonical delta digest: `d1c6043a1ccba63d1134e939eacf163384e0fd7e2f77abb6b016123cd9e8b3f0`
+- Canonical delta digest: `6abc9e7f108cafd725fd0d1afebfeec6c7e707ec4a050aab6e0024c2e47b8fd7`
 - Preflight: `migration/atlas-codex/audits/atlas-codex-delta-0001-preflight-v1.md`
+- Merge PR: `#14`
+- Squash commit: `3a93006397d780cb6099a97a82524a90009df1fe`
+- Merge closeout: `migration/atlas-codex/audits/atlas-codex-delta-0001-merge-closeout-v1.md`
 
 The delta is migration evidence only. It grants no content movement, collision resolution, generated rebuild, structured-register transition, writer activation, promotion, retirement, deletion, or cutover authority.
 
