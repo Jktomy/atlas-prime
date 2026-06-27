@@ -10,7 +10,9 @@ owner_operation: Source Governance
 canonical_scope: Defines the review waves, collision-triage order, pilot-selection rules, route classes, and closure gates for reconciling the exact Atlas Codex source inventory into Atlas Prime without authorizing content movement.
 protected_level: CRITICAL
 routes_from:
-  - specs/atlas-prime/codex-to-prime-migration-contract-v1.md
+  - specs/atlas-prime/codex-to-prime-migration-contract-v2.md
+  - migration/atlas-codex/deltas/atlas-codex-delta-0001.json
+  - migration/atlas-codex/audits/atlas-codex-delta-0001-preflight-v1.md
   - migration/atlas-codex/README.md
   - migration/atlas-codex/source-inventory.json
   - migration/atlas-codex/audits/source-inventory-preflight-v1.md
@@ -21,7 +23,7 @@ private_boundary: This migration map may contain clean source paths, target path
 evidence_boundary: This file is migration-planning evidence. Atlas Codex source, Atlas Prime source, Git history, original evidence systems, reconciliation records, Spear receipts, pull requests, Noctua reports, and Phoenix proofs remain distinct evidence sources.
 supersedes: []
 cleanup_path: Retain throughout the migration campaign. Replace only through a later versioned migration-map PR, and retain predecessor versions as migration evidence.
-last_verified: 2026-06-25
+last_verified: 2026-06-27
 ---
 
 # Atlas Codex to Atlas Prime Migration Map v1
@@ -34,11 +36,15 @@ Inventoried source commit: 3e4f06ed4abf8fbd44bd04ec1ad8997ffae7eda4
 Current canonical repository: Jktomy/atlas-codex
 
 Target repository: Jktomy/atlas-prime
-Current target base: e388a7e0f74c6a6a206b41b36a7d6cd7086f4609
+Current target base: 0c7ef6566d6d3a5df19b21c055036844e7edafc8
 Target state: SHADOW
 
-Inventory entries: 349
-Unique source paths: 349
+Frozen inventory entries: 349
+Frozen unique source paths: 349
+Accepted delta chain head: atlas-codex-delta:0001 - PREVIEWED
+Current Codex chain head: cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f
+Effective live paths: 351
+Accounted lineage paths: 351
 Canonical inventory digest:
 03fa76c0991e06350cb112d1b33b1dbf00fe6296cabb08199cb92808956dd4fa
 
@@ -225,7 +231,22 @@ Planning-only waves do not require execution lineage that has not yet been autho
 
 An executed migration is not complete until all applicable execution-lineage evidence is closed.
 
-## 10. Immediate next planning action
+## 10. M0-D ordered-delta closure gate
+
+Current M0-D evidence:
+
+- frozen baseline remains immutable at `3e4f06ed4abf8fbd44bd04ec1ad8997ffae7eda4`;
+- delta `0001` spans `17` contiguous commits through `cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f`;
+- all `15` changed paths are represented exactly once;
+- effective live and accounted-lineage counts are `351`;
+- five changed generated projections remain on the separate `GENERATED_REBUILD` route;
+- the Active Workboard consequence remains on the separate structured-register route;
+- content movement, collision resolution, the disposition ledger, S1 activation, promotion, retirement, and cutover remain unauthorized.
+
+M1-A remains blocked until delta `0001` is audited, manually merged, read back from `main`, generated consequences are closed through their own route, and the Workboard records the current M0-D gate.
+
+## 11. Immediate next planning action
+
 
 The next read-only action after this map is approved should be:
 
