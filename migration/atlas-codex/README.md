@@ -19,6 +19,7 @@ routes_to:
   - migration/atlas-codex/deltas/atlas-codex-delta-0001.json
   - migration/atlas-codex/audits/atlas-codex-delta-0001-preflight-v1.md
   - migration/atlas-codex/audits/atlas-codex-delta-0001-merge-closeout-v1.md
+  - migration/atlas-codex/audits/atlas-codex-delta-0001-final-closeout-v1.md
   - migration/atlas-codex/migration-map.md
   - templates/codex-to-prime-reconciliation-record.md
 private_boundary: This hub and its future child records may contain clean migration provenance and clean pointers only. They must not contain secrets, credentials, PHI, raw finance or account evidence, private runtime values, IP addresses, network maps, device registers, raw exports, or other prohibited evidence.
@@ -38,9 +39,9 @@ Predecessor: Jktomy/atlas-codex
 Prime state: SHADOW
 Migration control plane: ACTIVE — SHADOW-ONLY
 Frozen source inventory: FROZEN_BASELINE — 349 PATHS
-Ordered delta 0001: MERGED — 15 CHANGED PATHS
+Ordered delta 0001: CLOSED — 15 CHANGED PATHS
 Effective inventory: 351 LIVE PATHS
-M0-D closure: OPEN — GENERATED_REBUILD AND WORKBOARD ROUTES PENDING
+M0-D closure: CLOSED — GENERATED AND WORKBOARD READBACK VERIFIED
 Preliminary disposition mapping: PRESENT — NOT EXECUTION AUTHORITY
 Disposition ledger: NOT_STARTED
 Migration map: PRESENT — PLANNING EVIDENCE ONLY
@@ -86,18 +87,19 @@ Athena prepares each read-only reconciliation record from:
 
 - Delta path: `migration/atlas-codex/deltas/atlas-codex-delta-0001.json`
 - Delta ID: `atlas-codex-delta:0001`
-- Status: `MERGED`
+- Status: `CLOSED`
 - Range: `3e4f06ed4abf8fbd44bd04ec1ad8997ffae7eda4` → `cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f`
 - Commits: `17`
 - Changed paths: `15` (`2` added, `13` modified)
 - Effective live paths: `351`
-- Canonical delta digest: `6abc9e7f108cafd725fd0d1afebfeec6c7e707ec4a050aab6e0024c2e47b8fd7`
+- Canonical delta digest: `8685089fec21cc5b8ec571ab6a5ace4519b71c8454b8ba1d872281e611738810`
 - Preflight: `migration/atlas-codex/audits/atlas-codex-delta-0001-preflight-v1.md`
 - Merge PR: `#14`
 - Squash commit: `3a93006397d780cb6099a97a82524a90009df1fe`
 - Merge closeout: `migration/atlas-codex/audits/atlas-codex-delta-0001-merge-closeout-v1.md`
+- Final closeout: `migration/atlas-codex/audits/atlas-codex-delta-0001-final-closeout-v1.md`
 
-The delta is migration evidence only. It grants no content movement, collision resolution, generated rebuild, structured-register transition, writer activation, promotion, retirement, deletion, or cutover authority.
+The delta is CLOSED as M0-D control-plane evidence. Closure confirms the Prime generated-output and Codex Active Workboard consequences were completed and read back. It grants no content movement, collision resolution, Questboard migration, writer activation, promotion, retirement, deletion, or cutover authority.
 
 ## Current migration map
 

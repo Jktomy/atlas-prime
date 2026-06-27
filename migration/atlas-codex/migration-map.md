@@ -14,6 +14,7 @@ routes_from:
   - migration/atlas-codex/deltas/atlas-codex-delta-0001.json
   - migration/atlas-codex/audits/atlas-codex-delta-0001-preflight-v1.md
   - migration/atlas-codex/audits/atlas-codex-delta-0001-merge-closeout-v1.md
+  - migration/atlas-codex/audits/atlas-codex-delta-0001-final-closeout-v1.md
   - migration/atlas-codex/README.md
   - migration/atlas-codex/source-inventory.json
   - migration/atlas-codex/audits/source-inventory-preflight-v1.md
@@ -37,12 +38,12 @@ Inventoried source commit: 3e4f06ed4abf8fbd44bd04ec1ad8997ffae7eda4
 Current canonical repository: Jktomy/atlas-codex
 
 Target repository: Jktomy/atlas-prime
-Current target base: 0c7ef6566d6d3a5df19b21c055036844e7edafc8
+Current target base: 126a7e4329dc217dc99661da375a2966d76d119c
 Target state: SHADOW
 
 Frozen inventory entries: 349
 Frozen unique source paths: 349
-Accepted delta chain head: atlas-codex-delta:0001 - MERGED
+Accepted delta chain head: atlas-codex-delta:0001 - CLOSED
 Current Codex chain head: cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f
 Effective live paths: 351
 Accounted lineage paths: 351
@@ -239,29 +240,27 @@ Current M0-D evidence:
 - frozen baseline remains immutable at `3e4f06ed4abf8fbd44bd04ec1ad8997ffae7eda4`;
 - delta `0001` spans `17` contiguous commits through `cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f`;
 - all `15` changed paths are represented exactly once;
-- PR `#14` was squash-merged as `3a93006397d780cb6099a97a82524a90009df1fe` and Prime `main` readback passed;
-- delta `0001` is recorded as `MERGED`, while final M0-D closure remains pending;
-- effective live and accounted-lineage counts are `351`;
-- five changed generated projections remain on the separate `GENERATED_REBUILD` route;
-- the Active Workboard consequence remains on the separate structured-register route;
-- content movement, collision resolution, the disposition ledger, S1 activation, promotion, retirement, and cutover remain unauthorized.
+- PR `#14` was squash-merged as `3a93006397d780cb6099a97a82524a90009df1fe` and its merge closeout remains immutable;
+- PR `#16` merged the Prime-native generated-index foundation as `0b09425172df0562cbe65a418fce9fbead0e9472`;
+- PR `#17` rebuilt the five Prime generated projections and was read back from Prime `main` at `126a7e4329dc217dc99661da375a2966d76d119c`;
+- the canonical Codex Active Workboard was updated as Drive revision `0Bz1aLTIXmYtUaXhFUGhCT2gvNzhLaTdKSURnZVNqNGVzQVhjPQ` and read back at SHA-256 `8f735bcadf7b7f770332ad0586fdde6d1768ce46285c8279f682d2535d9aa477`;
+- delta `0001` is recorded as `CLOSED`;
+- effective live and accounted-lineage counts remain `351`;
+- content movement, collision resolution, the disposition ledger, S1 activation, Questboard migration, promotion, retirement, and cutover remain unauthorized.
 
-M1-A remains blocked until generated consequences are closed through their own route, the Workboard records the current M0-D gate, and the final delta transition from `MERGED` to `CLOSED` is merged and read back.
+M1-A is unblocked for a separate read-only collision-and-consequence planning route after this final closeout is merged and read back. No content movement or writer activation is authorized.
 
 ## 11. Immediate next planning action
 
-The next read-only actions after this merge closeout should be:
+The next read-only action after final M0-D closeout is:
 
 ```text
-Complete the two remaining M0-D closure routes before M1-A:
+Begin M1-A collision and consequence triage as a separate read-only planning route.
 
-1. Approve a Prime generator contract and rebuild the five generated projections
-   through a separate generated-output route.
-2. Update the Atlas Active Workboard through its separate structured-register route.
-3. Read both routes back from their canonical destinations.
-4. Prepare the final delta transition from MERGED to CLOSED.
-
-M1-A remains blocked until those closure obligations are complete.
+Use the closed ordered delta, frozen inventory, current Codex source, current Prime
+source, and the existing collision register. Do not move content, activate S1,
+create the disposition ledger, migrate the Workboard into Quest state, or alter
+repository authority without a new exact Preview → Execute gate.
 ```
 
-No content movement, target replacement, retirement, supersession, omission closure, structured-register transition, S1 work, or cutover is authorized by this map.
+No content movement, target replacement, retirement, supersession, omission closure, Questboard transition, S1 work, or cutover is authorized by this map.
