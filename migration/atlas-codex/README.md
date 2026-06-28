@@ -18,6 +18,8 @@ routes_to:
   - migration/atlas-codex/audits/source-inventory-preflight-v1.md
   - migration/atlas-codex/deltas/atlas-codex-delta-0001.json
   - migration/atlas-codex/audits/atlas-codex-delta-0001-preflight-v1.md
+  - migration/atlas-codex/deltas/atlas-codex-delta-0002.json
+  - migration/atlas-codex/audits/atlas-codex-delta-0002-preflight-v1.md
   - migration/atlas-codex/audits/atlas-codex-delta-0001-merge-closeout-v1.md
   - migration/atlas-codex/audits/atlas-codex-delta-0001-final-closeout-v1.md
   - migration/atlas-codex/audits/atlas-active-workboard-authority-alignment-v1.md
@@ -28,7 +30,7 @@ private_boundary: This hub and its future child records may contain clean migrat
 evidence_boundary: This directory records migration provenance. Atlas Codex source, Git history, current Atlas Prime source, original evidence systems, Spear artifacts, Noctua reports, pull requests, merge records, and recovery receipts remain distinct evidence sources.
 supersedes: []
 cleanup_path: Keep as the routed migration evidence entry point until migration closes. After cutover, retain or supersede it only through an approved retention and sunsetting decision.
-last_verified: 2026-06-27
+last_verified: 2026-06-28
 ---
 
 # Atlas Codex Migration Evidence Hub
@@ -42,7 +44,8 @@ Prime state: SHADOW
 Migration control plane: ACTIVE — SHADOW-ONLY
 Frozen source inventory: FROZEN_BASELINE — 349 PATHS
 Ordered delta 0001: CLOSED — 15 CHANGED PATHS
-Effective inventory: 351 LIVE PATHS
+Ordered delta 0002: PREVIEWED — 10 CHANGED PATHS
+Effective inventory after delta 0002: 352 LIVE PATHS
 M0-D closure: CLOSED — GENERATED AND WORKBOARD READBACK VERIFIED
 Active Workboard authority: `Jktomy/atlas-codex/codex/atlas-active-workboard.md` — EXTERNAL COPIES NONCANONICAL
 C04 reconciliation: CLOSED_WITH_LINEAGE — PR #20 / `6c4662cf76d76d4af3958c77044d4ba4e7488591`
@@ -105,6 +108,21 @@ Athena prepares each read-only reconciliation record from:
 
 The delta is CLOSED as M0-D control-plane evidence. Closure confirms the Prime generated-output and Codex Active Workboard consequences were completed and read back. It grants no content movement, collision resolution, Questboard migration, writer activation, promotion, retirement, deletion, or cutover authority.
 
+### Proposed ordered delta 0002
+
+- Delta path: `migration/atlas-codex/deltas/atlas-codex-delta-0002.json`
+- Delta ID: `atlas-codex-delta:0002`
+- Status: `PREVIEWED`
+- Previous chain head: `atlas-codex-delta:0001` / `cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f`
+- Range: `cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f` → `5cbf79a0851e0dda803be7b1abf153fffbad8414`
+- Commits: `4`
+- Changed paths: `10` (`1` added, `9` modified)
+- Effective live paths after delta: `352`
+- Canonical delta digest: `4dae5e3e9f5a7928b332503288291fddf87a7b2148c5eeed461ab4d62757706f`
+- Preflight: `migration/atlas-codex/audits/atlas-codex-delta-0002-preflight-v1.md`
+
+Delta 0002 is a non-executing control-plane extension. It accounts for current Codex bytes and corrects C05 membership evidence; it does not move source content, create the disposition ledger, activate a writer, alter Workboard authority, promote Prime, retire Codex, or authorize cutover.
+
 ## Active Workboard authority alignment
 
 The Google Drive revision used during M0-D remains valid historical execution evidence for the exact structured-register gate that was completed and read back.
@@ -130,6 +148,7 @@ This correction does not reopen M0-D and does not authorize M1 content movement.
 - Preliminary collision groups: `18`
 - C04 state: `CLOSED_WITH_LINEAGE`
 - C04 protected-source merge: `6c4662cf76d76d4af3958c77044d4ba4e7488591`
+- C05 preliminary source count: `7` — corrected from `6` by exact effective-inventory reconstruction
 
 The map remains non-executing migration evidence. It does not approve broad migration packets, move unrelated content, activate S1, replace Atlas Codex authority, or authorize cutover.
 

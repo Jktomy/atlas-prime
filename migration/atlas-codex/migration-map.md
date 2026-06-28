@@ -27,7 +27,7 @@ private_boundary: This migration map may contain clean source paths, target path
 evidence_boundary: This file is migration-planning evidence. Atlas Codex source, Atlas Prime source, Git history, original evidence systems, reconciliation records, Spear receipts, pull requests, Noctua reports, and Phoenix proofs remain distinct evidence sources.
 supersedes: []
 cleanup_path: Retain throughout the migration campaign. Replace only through a later versioned migration-map PR, and retain predecessor versions as migration evidence.
-last_verified: 2026-06-27
+last_verified: 2026-06-28
 ---
 
 # Atlas Codex to Atlas Prime Migration Map v1
@@ -45,10 +45,11 @@ Target state: SHADOW
 
 Frozen inventory entries: 349
 Frozen unique source paths: 349
-Accepted delta chain head: atlas-codex-delta:0001 - CLOSED
-C04 review Codex head: 5cbf79a0851e0dda803be7b1abf153fffbad8414
-Effective live paths: 351
-Accounted lineage paths: 351
+Accepted closed delta chain head: atlas-codex-delta:0001 - CLOSED
+Proposed delta chain extension: atlas-codex-delta:0002 - PREVIEWED
+Current Codex chain head: 5cbf79a0851e0dda803be7b1abf153fffbad8414
+Effective live paths after delta 0002: 352
+Accounted lineage paths after delta 0002: 352
 Canonical inventory digest:
 03fa76c0991e06350cb112d1b33b1dbf00fe6296cabb08199cb92808956dd4fa
 
@@ -121,7 +122,7 @@ This register began as provisional. Each unresolved collision group must be reva
 | C02 | `codex/golden-wing/events/2026/2026-06.jsonl` | 36 | Structured-register transition | High | Preserve append-only event identity and ordering; do not flatten into authored prose. |
 | C03 | `atlas-feather-archives/2026/2026-06.md` | 22 | Generated rebuild / historical projection | High | Identify authoritative inputs and rebuild contract before transfer. |
 | C04 | `atlas-prime.md` | 7 | Protected root doctrine | Critical | `CLOSED_WITH_LINEAGE` — protected-source PR `#20` merged and read back; see `migration/atlas-codex/reconciliations/c04-atlas-prime-core-doctrine-v1.md`. |
-| C05 | `atlas-index.md` | 6 | Protected routing source | Critical | Resolve routing ownership and generated-versus-authored boundaries. |
+| C05 | `atlas-index.md` | 7 | Protected routing source | Critical | Exact reconstruction corrected the preliminary count from 6 to 7; resolve routing ownership and generated-versus-authored boundaries. |
 | C06 | `codex/governance/protected-source-boundary.md` | 6 | Protected governance | Critical | Consolidate without weakening private-source boundaries. |
 | C07 | `codex/codex-source-update-standard.md` | 5 | Protected source standard | Critical | Preserve Preview → Execute, recovery, readback, and audit safeguards. |
 | C08 | `atlas-command-surface.md` | 4 | Protected root command surface | Critical | Reconcile current command semantics and successor routing. |
@@ -258,16 +259,18 @@ Current M0-D evidence:
 - Drive revision `0Bz1aLTIXmYtUaXhFUGhCT2gvNzhLaTdKSURnZVNqNGVzQVhjPQ` with SHA-256 `8f735bcadf7b7f770332ad0586fdde6d1768ce46285c8279f682d2535d9aa477` remains valid historical M0-D execution evidence;
 - ongoing Active Workboard authority belongs only to `Jktomy/atlas-codex/codex/atlas-active-workboard.md` on `main`; external copies are noncanonical, unsynchronized, and may remain stale;
 - delta `0001` is recorded as `CLOSED`;
-- effective live and accounted-lineage counts remain `351`;
+- proposed delta `0002` spans `4` contiguous commits from `cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f` through `5cbf79a0851e0dda803be7b1abf153fffbad8414` and records `10` changed paths;
+- C05 preliminary source accounting is corrected from `6` to `7` exact members;
+- effective live and accounted-lineage counts become `352` after delta `0002`;
 - M0-D itself authorized no content movement, collision resolution, disposition-ledger creation, S1 activation, Questboard migration, promotion, retirement, or cutover; later C04 closure authority is recorded separately.
 
 The M1-A read-only evidence preflight and collision-review corpus were completed against verified Codex and Prime heads. C04 is now `CLOSED_WITH_LINEAGE`; the remaining collision groups continue through separate semantic reconciliation routes. No broad content movement or writer activation is authorized.
 
 ## 11. Immediate next planning action
 
-The next read-only action after C04 closure is:
+The next control-plane action after this Preview is:
 
-- Begin C07 semantic reconciliation for `codex/codex-source-update-standard.md`.
-- Use the verified collision-review corpus, current Codex source, current Prime source, and the C04 closure record as process evidence.
+- Complete Noctua audit, manual merge, and merged-main readback for delta `0002` and the C05 count correction.
+- Then resume C07 semantic reconciliation for `codex/codex-source-update-standard.md` using the corrected effective inventory.
 - Do not create the disposition ledger, move content broadly, activate S1, retire predecessor source, promote Prime, or alter repository authority without a new exact Preview -> Execute gate.
 No content movement, target replacement, retirement, supersession, omission closure, Questboard transition, S1 work, or cutover is authorized by this map.
