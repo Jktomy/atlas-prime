@@ -13,6 +13,9 @@ routes_from:
   - specs/atlas-prime/codex-to-prime-migration-contract-v2.md
   - migration/atlas-codex/deltas/atlas-codex-delta-0001.json
   - migration/atlas-codex/audits/atlas-codex-delta-0001-preflight-v1.md
+  - migration/atlas-codex/deltas/atlas-codex-delta-0002.json
+  - migration/atlas-codex/audits/atlas-codex-delta-0002-preflight-v1.md
+  - migration/atlas-codex/audits/atlas-codex-delta-0002-final-closeout-v1.md
   - migration/atlas-codex/audits/atlas-codex-delta-0001-merge-closeout-v1.md
   - migration/atlas-codex/audits/atlas-codex-delta-0001-final-closeout-v1.md
   - migration/atlas-codex/audits/atlas-active-workboard-authority-alignment-v1.md
@@ -45,8 +48,7 @@ Target state: SHADOW
 
 Frozen inventory entries: 349
 Frozen unique source paths: 349
-Accepted closed delta chain head: atlas-codex-delta:0001 - CLOSED
-Proposed delta chain extension: atlas-codex-delta:0002 - PREVIEWED
+Accepted closed delta chain head: atlas-codex-delta:0002 - CLOSED
 Current Codex chain head: 5cbf79a0851e0dda803be7b1abf153fffbad8414
 Effective live paths after delta 0002: 352
 Accounted lineage paths after delta 0002: 352
@@ -259,7 +261,9 @@ Current M0-D evidence:
 - Drive revision `0Bz1aLTIXmYtUaXhFUGhCT2gvNzhLaTdKSURnZVNqNGVzQVhjPQ` with SHA-256 `8f735bcadf7b7f770332ad0586fdde6d1768ce46285c8279f682d2535d9aa477` remains valid historical M0-D execution evidence;
 - ongoing Active Workboard authority belongs only to `Jktomy/atlas-codex/codex/atlas-active-workboard.md` on `main`; external copies are noncanonical, unsynchronized, and may remain stale;
 - delta `0001` is recorded as `CLOSED`;
-- proposed delta `0002` spans `4` contiguous commits from `cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f` through `5cbf79a0851e0dda803be7b1abf153fffbad8414` and records `10` changed paths;
+- accepted delta `0002` spans `4` contiguous commits from `cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f` through `5cbf79a0851e0dda803be7b1abf153fffbad8414` and records `10` changed paths;
+- PR `#22` was squash-merged and read back from Prime `main` at `17c01c481da9ce19fb1a2b74017aee08a5eb29f6`;
+- delta `0002` is recorded as `CLOSED`; final closeout: `migration/atlas-codex/audits/atlas-codex-delta-0002-final-closeout-v1.md`;
 - C05 preliminary source accounting is corrected from `6` to `7` exact members;
 - effective live and accounted-lineage counts become `352` after delta `0002`;
 - M0-D itself authorized no content movement, collision resolution, disposition-ledger creation, S1 activation, Questboard migration, promotion, retirement, or cutover; later C04 closure authority is recorded separately.
@@ -268,9 +272,8 @@ The M1-A read-only evidence preflight and collision-review corpus were completed
 
 ## 11. Immediate next planning action
 
-The next control-plane action after this Preview is:
+The next safe planning action is:
 
-- Complete Noctua audit, manual merge, and merged-main readback for delta `0002` and the C05 count correction.
-- Then resume C07 semantic reconciliation for `codex/codex-source-update-standard.md` using the corrected effective inventory.
+- Resume C07 read-only semantic reconciliation for `codex/codex-source-update-standard.md` using the accepted delta `0002` chain head and corrected effective inventory.
 - Do not create the disposition ledger, move content broadly, activate S1, retire predecessor source, promote Prime, or alter repository authority without a new exact Preview -> Execute gate.
 No content movement, target replacement, retirement, supersession, omission closure, Questboard transition, S1 work, or cutover is authorized by this map.
