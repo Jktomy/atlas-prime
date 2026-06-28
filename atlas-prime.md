@@ -135,7 +135,17 @@ Preview -> Execute is required before:
 - Spear writer activation;
 - source-truth promotion.
 
-Atlas Prime has no normal Direct-Main Fast Path. Source changes use narrow branches and pull requests, stop before merge, receive Noctua audit, and are manually merged by Jayson.
+Atlas Prime has no normal Direct-Main Fast Path. Source changes use narrow branches and pull requests, stop before merge, receive Noctua audit, and require explicit Jayson-controlled merge. Jayson may merge directly or explicitly fire sealed Stage 3 of an exact audited Arrow bound to the PR head.
+
+## Quest Board, Campaign, Emberline, and one Arrow
+
+The Atlas Codex Active Workboard and Atlas Prime Quest Board are one continuity system across repository generations.
+
+Before cutover, Codex Workboard remains canonical and Prime Quest Board remains SHADOW.
+
+Quest is the parent. Campaign is the child/subquest and belongs to exactly one Quest. Emberline is the complete Quest status model.
+
+Artemis's Bow launches one immutable Arrow with sealed stages. Later-stage authority is never inherited, and ordinary Arrows may not modify their engine, policy, schema, or authority.
 
 ## Recovery-before-migration rule
 

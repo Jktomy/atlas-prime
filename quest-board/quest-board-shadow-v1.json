@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "authority_state": "SHADOW",
+  "source_workboard": {
+    "repository": "Jktomy/atlas-codex",
+    "path": "codex/atlas-active-workboard.md",
+    "commit": "0f6e8c0bc47b0faec92b219070b432ff47edc372",
+    "authority": "CANONICAL"
+  },
+  "quests": [
+    {
+      "quest_id": "atlas-prime-rebuild",
+      "title": "Atlas Prime Rebuild",
+      "owner_project": "Codex",
+      "owner_operation": "Source Governance",
+      "supporting_projects": [
+        "Artemis",
+        "Phoenix"
+      ],
+      "status": "ACTIVE",
+      "desired_end_state": "A verified Atlas Prime successor repository with Quest Board continuity, controlled source evolution, recovery proof, and an explicitly approved cutover from Atlas Codex.",
+      "emberline": {
+        "current_campaign_id": "spear-bow-arrow-development",
+        "current_gate": "Stage 1 draft PRs created; exact-head Noctua audit and merge-consent reconciliation are now required.",
+        "completed_durable_work": [
+          "Prime SHADOW repository foundation exists.",
+          "Ordered delta 0002 is closed.",
+          "Codex remains canonical and Prime remains SHADOW.",
+          "All 45 approved candidates compiled successfully before publication.",
+          "Codex draft PR #183 is open at head 8fb44c9247a8765214b4a525aa0cf5d201ec8735 with 30 changed files.",
+          "Prime draft PR #24 was initially published at Stage 1 head e1eda7e79c27ecf24b6a14b7e74bef2be73fb0ee with 15 changed files and now includes the SHADOW-state reconciliation lineage."
+        ],
+        "chat_only_or_uncertain": [
+          "The draft-PR content is durable on review branches but is not canonical source until separately approved merges and merged-main readback complete.",
+          "The Quest completion range remains a broad low-confidence estimate pending merge/readback, C07, later migration gates, recovery proof, and cutover."
+        ],
+        "remaining_work": [
+          "Complete Noctua audit against the exact Codex PR #183 and Prime PR #24 heads.",
+          "Resolve any audit findings without broadening the approved file boundaries.",
+          "Obtain explicit Jayson merge approval bound to the exact audited PR heads.",
+          "If approved, merge Codex before Prime and verify merged-main readback.",
+          "Keep generated-output follow-through separate and separately gated if required.",
+          "Resume C07 and later migration gates after this architecture gate is closed.",
+          "Prove Quest Board cutover and rollback before authority changes."
+        ],
+        "protected_boundary_posture": "No raw Drive, finance, health, clinic, runtime, account, or infrastructure evidence belongs in GitHub.",
+        "next_safe_action": "Complete Noctua audit of Codex PR #183 and Prime PR #24 at their exact current heads, then prepare the exact merge-consent gate.",
+        "next_approval_gate": "Explicit Jayson merge approval bound to Codex head 8fb44c9247a8765214b4a525aa0cf5d201ec8735 and the final audited Prime PR #24 head after this reconciliation commit.",
+        "restart_safe": true,
+        "solar_eclipse_ready": true,
+        "sunset_ready": false,
+        "must_not_happen_yet": [
+          "Do not merge either PR until Noctua passes on the exact current heads and Jayson gives explicit merge approval.",
+          "Do not activate S1, move or delete Drive material, generate or merge follow-through reports, promote Prime, retire Codex, or cut over."
+        ]
+      },
+      "campaigns": [
+        {
+          "campaign_id": "codex-to-prime-migration",
+          "parent_quest_id": "atlas-prime-rebuild",
+          "title": "Atlas Codex to Prime Migration",
+          "status": "ACTIVE",
+          "required_for_quest_completion": true,
+          "current_gate": "Architecture draft PRs #183 and #24 are open under Noctua review; C07 remains the next protected semantic gate after merge and readback closure.",
+          "completion_range": {
+            "min": 15,
+            "max": 30
+          },
+          "confidence": "MEDIUM",
+          "dependencies": [
+            "one-massive-arrow-architecture"
+          ],
+          "blockers": [],
+          "next_safe_action": "Complete the current exact-head PR audit and preserve C07 as the next separate read-only semantic reconciliation gate.",
+          "last_verified": "2026-06-28"
+        },
+        {
+          "campaign_id": "google-drive-dependency-retirement",
+          "parent_quest_id": "atlas-prime-rebuild",
+          "title": "Google Drive Dependency Retirement",
+          "status": "ACTIVE",
+          "required_for_quest_completion": true,
+          "current_gate": "The retirement plan, exception register, reconciliation harvest, and policy routing changes are in Codex draft PR #183 and are not canonical until merge/readback.",
+          "completion_range": {
+            "min": 10,
+            "max": 25
+          },
+          "confidence": "LOW",
+          "dependencies": [
+            "spear-bow-arrow-development"
+          ],
+          "blockers": [],
+          "next_safe_action": "Audit the Drive-governance changes in Codex PR #183; no Drive mutation or cleanup is authorized.",
+          "last_verified": "2026-06-28"
+        },
+        {
+          "campaign_id": "spear-bow-arrow-development",
+          "parent_quest_id": "atlas-prime-rebuild",
+          "title": "Athena's Spear and Artemis's Bow and Arrow",
+          "status": "ACTIVE",
+          "required_for_quest_completion": true,
+          "current_gate": "Stage 1 publication is complete: Codex PR #183 and Prime PR #24 are open as drafts; exact-head Noctua and merge consent are next.",
+          "completion_range": {
+            "min": 25,
+            "max": 45
+          },
+          "confidence": "MEDIUM",
+          "dependencies": [],
+          "blockers": [],
+          "next_safe_action": "Complete Noctua on both exact PR heads and prepare a separately approved merge-and-readback route if the audit passes.",
+          "last_verified": "2026-06-28"
+        },
+        {
+          "campaign_id": "quest-board-emberline-architecture",
+          "parent_quest_id": "atlas-prime-rebuild",
+          "title": "Quest Board and Emberline Architecture",
+          "status": "ACTIVE",
+          "required_for_quest_completion": true,
+          "current_gate": "The SHADOW schema, crosswalk, template, and parent Quest checkpoint are in Prime PR #24; this checkpoint has been reconciled to the actual Stage 1 state and requires re-audit.",
+          "completion_range": {
+            "min": 20,
+            "max": 40
+          },
+          "confidence": "LOW",
+          "dependencies": [
+            "spear-bow-arrow-development"
+          ],
+          "blockers": [],
+          "next_safe_action": "Re-audit Prime PR #24 at its new head and keep Quest Board authority SHADOW until a separately proven cutover.",
+          "last_verified": "2026-06-28"
+        }
+      ],
+      "completion_range": {
+        "min": 15,
+        "max": 30,
+        "basis": "Control-plane foundation, delta closure, candidate compilation, and coordinated draft PRs exist, but merge/readback, C07, generated follow-through where required, recovery proof, and cutover remain."
+      },
+      "confidence": "LOW",
+      "blockers": [],
+      "next_safe_action": "Complete Noctua on the exact current PR heads and prepare the exact merge-consent gate.",
+      "next_approval_gate": "Explicit Jayson merge approval bound to the final audited Codex PR #183 and Prime PR #24 head SHAs.",
+      "last_verified": "2026-06-28"
+    }
+  ]
+}

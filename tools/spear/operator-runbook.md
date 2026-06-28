@@ -23,7 +23,7 @@ private_boundary: This runbook may describe clean operational procedure only and
 evidence_boundary: Test receipts, generated compiler outputs, package manifests, and migration evidence remain external review evidence and are not authored source in this runbook.
 supersedes: []
 cleanup_path: Update through a separately reviewed Spear engine documentation PR; ordinary S0 packets must not modify Spear tooling documentation.
-last_verified: 2026-06-26
+last_verified: 2026-06-28
 ---
 
 # Spear Operator Runbook S0/S1 v4
@@ -31,6 +31,16 @@ last_verified: 2026-06-26
 S0 is a dry-run compiler and validator only.
 
 Atlas Codex remains canonical. Atlas Prime is the next-generation target under construction. S0 does not perform migration, repository mutation, source promotion, or cutover.
+
+## Athena/Jayson, Quest Board, and one Arrow
+
+Jayson defines the exact goal, boundaries, and stage approval. Athena reconciles current source and prepares the exact Spear proposal.
+
+When package execution is selected, the Bow launches one immutable Arrow with sealed stages.
+
+S0 may validate candidate material used by Stage 0. S0 does not create or fire a later stage.
+
+The Codex Workboard remains canonical; Prime Quest Board remains SHADOW.
 
 ## Before preparing a packet
 
@@ -150,6 +160,17 @@ Every S0 receipt must state:
 ```text
 EXECUTION_NOT_AUTHORIZED
 ```
+
+## One-Arrow operator requirements
+
+The Preview must identify:
+
+- Arrow ID and package hash;
+- requested sealed stage;
+- Bow version and launcher hash when applicable;
+- prior-stage receipt identities;
+- cross-repository partial-state behavior;
+- explicit later-stage authorization state.
 
 ## Review gate
 

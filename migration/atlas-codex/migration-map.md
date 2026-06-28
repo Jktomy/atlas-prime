@@ -25,6 +25,8 @@ routes_from:
   - migration/atlas-codex/audits/source-inventory-preflight-v1.md
   - templates/codex-to-prime-reconciliation-record.md
 routes_to:
+  - migration/atlas-codex/atlas-prime-rebuild-program-roadmap-v1.md
+  - migration/atlas-codex/workboard-to-quest-board-crosswalk-v1.md
   - templates/codex-to-prime-reconciliation-record.md
 private_boundary: This migration map may contain clean source paths, target paths, counts, classifications, route assignments, dependencies, review states, and clean pointers only. It must not contain secrets, credentials, PHI, raw finance or account evidence, private runtime values, IP addresses, network maps, device registers, raw exports, or prohibited evidence.
 evidence_boundary: This file is migration-planning evidence. Atlas Codex source, Atlas Prime source, Git history, original evidence systems, reconciliation records, Spear receipts, pull requests, Noctua reports, and Phoenix proofs remain distinct evidence sources.
@@ -59,6 +61,8 @@ Preliminary destination collision groups: 18
 C04 collision state: CLOSED_WITH_LINEAGE
 C04 closure record: migration/atlas-codex/reconciliations/c04-atlas-prime-core-doctrine-v1.md
 Semantic reconciliation complete: NO
+Program roadmap: PRESENT — PLANNING EVIDENCE ONLY
+Quest Board authority: SHADOW
 Content movement authorized: NO
 S1 authorized: NO
 Writer authority: NO
@@ -113,6 +117,16 @@ They do not grant execution authority.
 | M7 | Structured registers and generated rebuilds | Transition Workboard, Quest, Golden Wing, events, and generated archives through versioned contracts. | Structured or generated source. | Dedicated register or generator contract and proof exist. | Only after separate approvals |
 | M8 | Protected doctrine and source-order transition | Reconcile root doctrine, governance, safety protocols, schemas, policies, tools, workflows, startup, routing, and source order. | Protected or critical source. | Complete readback, Noctua, rollback, and manual merge. | Only after separate approvals |
 | M9 | Repository-wide proof and cutover preparation | Prove closure, restore, rollback, continuity, and successor readiness. | Earlier waves substantially closed. | Noctua repository audit, Phoenix isolated restore, rollback proof, and explicit Jayson decision. | No cutover without approval |
+
+### Cross-campaign architecture
+
+The parent Quest is `Atlas Prime Rebuild`.
+
+Child Campaigns include Codex-to-Prime migration, Google Drive dependency retirement, Spear/Bow/Arrow development, and Quest Board/Emberline architecture.
+
+The Codex Workboard remains canonical. Prime Quest Board remains SHADOW.
+
+One immutable Arrow may coordinate the source PRs and generated follow-through through separately approved sealed stages. This statement grants no writer, merge, migration, promotion, retirement, deletion, or cutover authority.
 
 ## 5. Preliminary collision register
 
