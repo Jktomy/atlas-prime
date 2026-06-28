@@ -40,13 +40,13 @@ Inventoried source commit: 3e4f06ed4abf8fbd44bd04ec1ad8997ffae7eda4
 Current canonical repository: Jktomy/atlas-codex
 
 Target repository: Jktomy/atlas-prime
-Current target base: 6c4662cf76d76d4af3958c77044d4ba4e7488591
+C04 protected-source merge: 6c4662cf76d76d4af3958c77044d4ba4e7488591
 Target state: SHADOW
 
 Frozen inventory entries: 349
 Frozen unique source paths: 349
 Accepted delta chain head: atlas-codex-delta:0001 - CLOSED
-Current Codex chain head: cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f
+C04 review Codex head: 5cbf79a0851e0dda803be7b1abf153fffbad8414
 Effective live paths: 351
 Accounted lineage paths: 351
 Canonical inventory digest:
@@ -101,7 +101,7 @@ They do not grant execution authority.
 | Wave | Name | Purpose | Entry criteria | Exit gate | Content movement |
 |---|---|---|---|---|---|
 | M0 | Control-plane foundation | Maintain inventory, preflight, migration map, ledger, and clean migration evidence. | Migration-evidence artifacts only. | Evidence is internally consistent, reviewed, and merged. | No |
-| M1 | Collision and consequence triage | Review all 18 collision groups and all high-consequence preliminary dispositions. | Collision member, `RETIRE`, `SUPERSEDE`, `OMIT_WITH_REASON`, `PRIVATE_POINTER`, `MERGE`, or high-risk `REMODEL`. | Each item is `RESOLVED_FOR_MAP`, `NEEDS_JAYSON`, or `BLOCKED_PENDING_CONTRACT`. | No |
+| M1 | Collision and consequence triage | Review all 18 collision groups and all high-consequence preliminary dispositions. | Collision member, `RETIRE`, `SUPERSEDE`, `OMIT_WITH_REASON`, `PRIVATE_POINTER`, `MERGE`, or high-risk `REMODEL`. | Each item is `RESOLVED_FOR_MAP`, `CLOSED_WITH_LINEAGE`, `NEEDS_JAYSON`, or `BLOCKED_PENDING_CONTRACT`. | No |
 | M2 | Low-risk pilot shortlist | Identify the safest candidates for the first migration pilot. | `MIGRATE`, `FULL`, `PUBLIC_CLEAN`, `MAPPED`, no collision, no protected surface, no structured or generated content, dependencies resolved. | One recommended pilot and up to two alternates are documented. | No |
 | M3 | First controlled pilot | Complete one reconciliation record, exact Preview, execution, Noctua audit, manual merge, and main readback. | One approved M2 candidate. | Inventory and ledger lineage close for every pilot entry. | Only after separate approval |
 | M4 | Low-risk ordinary waves | Migrate additional clean project and operation source using proven routes. | Same route class and risk profile as the successful pilot. | Each bounded batch closes independently. | Only after separate approvals |
@@ -113,7 +113,7 @@ They do not grant execution authority.
 
 ## 5. Preliminary collision register
 
-The following collision groups are provisional and must be revalidated directly against the exact inventory before this map is written durably.
+This register began as provisional. Each unresolved collision group must be revalidated directly against the exact inventory before resolution; closed groups carry explicit lineage.
 
 | ID | Proposed Prime target | Preliminary source count | Route class | Risk | Required review |
 |---|---|---:|---|---|---|
@@ -259,7 +259,7 @@ Current M0-D evidence:
 - ongoing Active Workboard authority belongs only to `Jktomy/atlas-codex/codex/atlas-active-workboard.md` on `main`; external copies are noncanonical, unsynchronized, and may remain stale;
 - delta `0001` is recorded as `CLOSED`;
 - effective live and accounted-lineage counts remain `351`;
-- content movement, collision resolution, the disposition ledger, S1 activation, Questboard migration, promotion, retirement, and cutover remain unauthorized.
+- M0-D itself authorized no content movement, collision resolution, disposition-ledger creation, S1 activation, Questboard migration, promotion, retirement, or cutover; later C04 closure authority is recorded separately.
 
 The M1-A read-only evidence preflight and collision-review corpus were completed against verified Codex and Prime heads. C04 is now `CLOSED_WITH_LINEAGE`; the remaining collision groups continue through separate semantic reconciliation routes. No broad content movement or writer activation is authorized.
 

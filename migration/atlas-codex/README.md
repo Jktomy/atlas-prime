@@ -129,7 +129,7 @@ This correction does not reopen M0-D and does not authorize M1 content movement.
 - Inventory entries covered: `349`
 - Preliminary collision groups: `18`
 - C04 state: `CLOSED_WITH_LINEAGE`
-- Current Prime target base: `6c4662cf76d76d4af3958c77044d4ba4e7488591`
+- C04 protected-source merge: `6c4662cf76d76d4af3958c77044d4ba4e7488591`
 
 The map remains non-executing migration evidence. It does not approve broad migration packets, move unrelated content, activate S1, replace Atlas Codex authority, or authorize cutover.
 
