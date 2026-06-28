@@ -21,6 +21,7 @@ routes_to:
   - migration/atlas-codex/audits/atlas-codex-delta-0001-merge-closeout-v1.md
   - migration/atlas-codex/audits/atlas-codex-delta-0001-final-closeout-v1.md
   - migration/atlas-codex/audits/atlas-active-workboard-authority-alignment-v1.md
+  - migration/atlas-codex/reconciliations/c04-atlas-prime-core-doctrine-v1.md
   - migration/atlas-codex/migration-map.md
   - templates/codex-to-prime-reconciliation-record.md
 private_boundary: This hub and its future child records may contain clean migration provenance and clean pointers only. They must not contain secrets, credentials, PHI, raw finance or account evidence, private runtime values, IP addresses, network maps, device registers, raw exports, or other prohibited evidence.
@@ -44,6 +45,7 @@ Ordered delta 0001: CLOSED — 15 CHANGED PATHS
 Effective inventory: 351 LIVE PATHS
 M0-D closure: CLOSED — GENERATED AND WORKBOARD READBACK VERIFIED
 Active Workboard authority: `Jktomy/atlas-codex/codex/atlas-active-workboard.md` — EXTERNAL COPIES NONCANONICAL
+C04 reconciliation: CLOSED_WITH_LINEAGE — PR #20 / `6c4662cf76d76d4af3958c77044d4ba4e7488591`
 Preliminary disposition mapping: PRESENT — NOT EXECUTION AUTHORITY
 Disposition ledger: NOT_STARTED
 Migration map: PRESENT — PLANNING EVIDENCE ONLY
@@ -126,8 +128,33 @@ This correction does not reopen M0-D and does not authorize M1 content movement.
 - State: `PRESENT — PLANNING EVIDENCE ONLY`
 - Inventory entries covered: `349`
 - Preliminary collision groups: `18`
+- C04 state: `CLOSED_WITH_LINEAGE`
+- Current Prime target base: `6c4662cf76d76d4af3958c77044d4ba4e7488591`
 
-The map remains non-executing migration evidence. It does not finalize dispositions, approve packets, move content, activate S1, replace Atlas Codex authority, or authorize cutover.
+The map remains non-executing migration evidence. It does not approve broad migration packets, move unrelated content, activate S1, replace Atlas Codex authority, or authorize cutover.
+
+## C04 protected-root-doctrine closure
+
+Collision group C04 is closed with verified lineage:
+
+- resolution: `SPLIT_INTO_MULTIPLE_TARGETS`;
+- source members accounted for: `7/7`;
+- target: `atlas-prime.md`;
+- protected-source PR: `#20`;
+- audited head: `519a4b8017035b079a7eea0fcba06517ff092d8b`;
+- squash merge: `6c4662cf76d76d4af3958c77044d4ba4e7488591`;
+- merged Git blob: `07c7636c78cd3c1c6456f7a06cf3f825fc167738`;
+- merged SHA-256: `3aec2f99762149cb9e775b311c28ea99f28a94135a3317ced5faa28a563c5485`;
+- Noctua outcome: `YES`;
+- merged-main readback: `PASS`;
+- Prime state: `SHADOW`;
+- Codex canonical: `YES`.
+
+Closure record:
+
+`migration/atlas-codex/reconciliations/c04-atlas-prime-core-doctrine-v1.md`
+
+No predecessor or addendum was deleted or retired. No broad content movement, disposition-ledger creation, S1 activation, Prime promotion, or cutover occurred.
 
 ## Remaining planned artifacts
 

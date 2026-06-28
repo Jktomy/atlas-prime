@@ -16,6 +16,7 @@ routes_from:
   - migration/atlas-codex/audits/atlas-codex-delta-0001-merge-closeout-v1.md
   - migration/atlas-codex/audits/atlas-codex-delta-0001-final-closeout-v1.md
   - migration/atlas-codex/audits/atlas-active-workboard-authority-alignment-v1.md
+  - migration/atlas-codex/reconciliations/c04-atlas-prime-core-doctrine-v1.md
   - migration/atlas-codex/README.md
   - migration/atlas-codex/source-inventory.json
   - migration/atlas-codex/audits/source-inventory-preflight-v1.md
@@ -39,7 +40,7 @@ Inventoried source commit: 3e4f06ed4abf8fbd44bd04ec1ad8997ffae7eda4
 Current canonical repository: Jktomy/atlas-codex
 
 Target repository: Jktomy/atlas-prime
-Current target base: 8993d0bffce3bb64b6659ca60fe029d2818f050c
+Current target base: 6c4662cf76d76d4af3958c77044d4ba4e7488591
 Target state: SHADOW
 
 Frozen inventory entries: 349
@@ -52,6 +53,8 @@ Canonical inventory digest:
 03fa76c0991e06350cb112d1b33b1dbf00fe6296cabb08199cb92808956dd4fa
 
 Preliminary destination collision groups: 18
+C04 collision state: CLOSED_WITH_LINEAGE
+C04 closure record: migration/atlas-codex/reconciliations/c04-atlas-prime-core-doctrine-v1.md
 Semantic reconciliation complete: NO
 Content movement authorized: NO
 S1 authorized: NO
@@ -117,7 +120,7 @@ The following collision groups are provisional and must be revalidated directly 
 | C01 | `codex/golden-wing/candidates.json` | 36 | Structured-register transition | High | Determine candidate identity, deduplication, state, and event lineage. |
 | C02 | `codex/golden-wing/events/2026/2026-06.jsonl` | 36 | Structured-register transition | High | Preserve append-only event identity and ordering; do not flatten into authored prose. |
 | C03 | `atlas-feather-archives/2026/2026-06.md` | 22 | Generated rebuild / historical projection | High | Identify authoritative inputs and rebuild contract before transfer. |
-| C04 | `atlas-prime.md` | 7 | Protected root doctrine | Critical | Reconcile authority, predecessor meaning, and current Prime doctrine without overwriting blindly. |
+| C04 | `atlas-prime.md` | 7 | Protected root doctrine | Critical | `CLOSED_WITH_LINEAGE` — protected-source PR `#20` merged and read back; see `migration/atlas-codex/reconciliations/c04-atlas-prime-core-doctrine-v1.md`. |
 | C05 | `atlas-index.md` | 6 | Protected routing source | Critical | Resolve routing ownership and generated-versus-authored boundaries. |
 | C06 | `codex/governance/protected-source-boundary.md` | 6 | Protected governance | Critical | Consolidate without weakening private-source boundaries. |
 | C07 | `codex/codex-source-update-standard.md` | 5 | Protected source standard | Critical | Preserve Preview → Execute, recovery, readback, and audit safeguards. |
@@ -132,6 +135,14 @@ The following collision groups are provisional and must be revalidated directly 
 | C16 | `projects/artemis/operations/nexus/protocols/argus.md` | 2 | Protected protocol merge | High | Reconcile router, parent protocol, and operational behavior. |
 | C17 | `projects/odyssey/operations/runtime-governance/operation.md` | 2 | Protected/private-boundary route | Critical | Preserve clean pointers only; do not import private runtime values. |
 | C18 | `sunsetting-protocol.md` | 2 | Protected continuity protocol | Critical | Preserve durable/chat-only/unfinished/archive-safe distinctions and Workboard handoff. |
+
+### C04 closed collision lineage
+
+| ID | State | Resolution | Source members | Protected-source PR | Merge commit | Final target SHA-256 |
+|---|---|---|---:|---|---|---|
+| C04 | `CLOSED_WITH_LINEAGE` | `SPLIT_INTO_MULTIPLE_TARGETS` | 7/7 accounted | `#20` | `6c4662cf76d76d4af3958c77044d4ba4e7488591` | `3aec2f99762149cb9e775b311c28ea99f28a94135a3317ced5faa28a563c5485` |
+
+C04 closed only the protected root-doctrine target. Its predecessor sources and temporary addenda remain retained and routed. No source deletion, retirement, broad content movement, Prime promotion, or cutover occurred.
 
 ## 6. Collision-review procedure
 
@@ -250,20 +261,13 @@ Current M0-D evidence:
 - effective live and accounted-lineage counts remain `351`;
 - content movement, collision resolution, the disposition ledger, S1 activation, Questboard migration, promotion, retirement, and cutover remain unauthorized.
 
-M1-A may resume only through a newly generated read-only evidence preflight bound to the post-alignment Codex and Prime `main` heads. Any earlier preflight package is stale. No content movement or writer activation is authorized.
+The M1-A read-only evidence preflight and collision-review corpus were completed against verified Codex and Prime heads. C04 is now `CLOSED_WITH_LINEAGE`; the remaining collision groups continue through separate semantic reconciliation routes. No broad content movement or writer activation is authorized.
 
 ## 11. Immediate next planning action
 
-The next read-only action after authority alignment is:
+The next read-only action after C04 closure is:
 
-```text
-Regenerate the M1-A evidence preflight from the new exact Codex and Prime main heads.
-
-Use the closed ordered delta, frozen inventory, current canonical GitHub Workboard,
-current Codex source, current Prime source, and the existing collision register.
-Do not use an earlier preflight package. Do not move content, activate S1, create
-the disposition ledger, migrate the Workboard into Quest state, or alter repository
-authority without a new exact Preview -> Execute gate.
-```
-
+- Begin C07 semantic reconciliation for `codex/codex-source-update-standard.md`.
+- Use the verified collision-review corpus, current Codex source, current Prime source, and the C04 closure record as process evidence.
+- Do not create the disposition ledger, move content broadly, activate S1, retire predecessor source, promote Prime, or alter repository authority without a new exact Preview -> Execute gate.
 No content movement, target replacement, retirement, supersession, omission closure, Questboard transition, S1 work, or cutover is authorized by this map.
