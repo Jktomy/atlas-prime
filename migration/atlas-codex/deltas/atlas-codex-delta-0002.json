@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "delta_id": "atlas-codex-delta:0002",
   "sequence": 2,
-  "status": "PREVIEWED",
+  "status": "CLOSED",
   "source_repository": "Jktomy/atlas-codex",
   "target_repository": "Jktomy/atlas-prime",
   "baseline": {
@@ -801,7 +801,7 @@
   "prepared_at": "2026-06-28T04:52:05.357786Z",
   "prepared_by": "MIGRATION_TOOL",
   "execution_authority": "NONE",
-  "delta_sha256": "4dae5e3e9f5a7928b332503288291fddf87a7b2148c5eeed461ab4d62757706f",
+  "delta_sha256": "e233a0ef37ab407935ff6d701cd7ff28b5848f0788718cc8d2e06044f2ec9cb4",
   "notes": [
     "Delta 0002 extends accepted delta 0001 without modifying the frozen 349-entry baseline.",
     "The added Sunset-to-Codex intake standard receives a provisional same-path FULL mapping only; no source creation is authorized.",
