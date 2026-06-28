@@ -26,6 +26,8 @@ routes_to:
   - migration/atlas-codex/audits/atlas-active-workboard-authority-alignment-v1.md
   - migration/atlas-codex/reconciliations/c04-atlas-prime-core-doctrine-v1.md
   - migration/atlas-codex/migration-map.md
+  - migration/atlas-codex/atlas-prime-rebuild-program-roadmap-v1.md
+  - migration/atlas-codex/workboard-to-quest-board-crosswalk-v1.md
   - templates/codex-to-prime-reconciliation-record.md
 private_boundary: This hub and its future child records may contain clean migration provenance and clean pointers only. They must not contain secrets, credentials, PHI, raw finance or account evidence, private runtime values, IP addresses, network maps, device registers, raw exports, or other prohibited evidence.
 evidence_boundary: This directory records migration provenance. Atlas Codex source, Git history, current Atlas Prime source, original evidence systems, Spear artifacts, Noctua reports, pull requests, merge records, and recovery receipts remain distinct evidence sources.
@@ -54,6 +56,8 @@ C04 reconciliation: CLOSED_WITH_LINEAGE — PR #20 / `6c4662cf76d76d4af3958c7704
 Preliminary disposition mapping: PRESENT — NOT EXECUTION AUTHORITY
 Disposition ledger: NOT_STARTED
 Migration map: PRESENT — PLANNING EVIDENCE ONLY
+Program roadmap: PRESENT — PLANNING EVIDENCE ONLY
+Quest Board: SHADOW SUCCESSOR — NOT CANONICAL
 Content movement: NOT_AUTHORIZED
 Spear writer: NOT_AUTHORIZED
 Cutover: NOT_AUTHORIZED
@@ -157,6 +161,12 @@ This correction does not reopen M0-D and does not authorize M1 content movement.
 - C05 preliminary source count: `7` — corrected from `6` by exact effective-inventory reconstruction
 
 The map remains non-executing migration evidence. It does not approve broad migration packets, move unrelated content, activate S1, replace Atlas Codex authority, or authorize cutover.
+
+## Quest Board and one-Arrow coordination
+
+The Codex Active Workboard remains canonical. Prime Quest Board is the SHADOW successor governed by the crosswalk and Quest Board specification.
+
+The rebuild program may be coordinated by one immutable Arrow with sealed stages, but this does not activate S1, authorize content movement, promote Prime, retire Codex, or authorize cutover.
 
 The next safe planning gate is C07 read-only semantic reconciliation for `codex/codex-source-update-standard.md`, under a separate Preview -> Execute route.
 

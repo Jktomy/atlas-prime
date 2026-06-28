@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "authority_state": "SHADOW",
+  "source_workboard": {
+    "repository": "Jktomy/atlas-codex",
+    "path": "codex/atlas-active-workboard.md",
+    "commit": "0f6e8c0bc47b0faec92b219070b432ff47edc372",
+    "authority": "CANONICAL"
+  },
+  "quests": [
+    {
+      "quest_id": "atlas-prime-rebuild",
+      "title": "Atlas Prime Rebuild",
+      "owner_project": "Codex",
+      "owner_operation": "Source Governance",
+      "supporting_projects": [
+        "Artemis",
+        "Phoenix"
+      ],
+      "status": "ACTIVE",
+      "desired_end_state": "A verified Atlas Prime successor repository with Quest Board continuity, controlled source evolution, recovery proof, and an explicitly approved cutover from Atlas Codex.",
+      "emberline": {
+        "current_campaign_id": "spear-bow-arrow-development",
+        "current_gate": "One Massive Arrow v4 corrected payload and Stage 0/1 executor preparation",
+        "completed_durable_work": [
+          "Prime SHADOW repository foundation exists.",
+          "Ordered delta 0002 is closed.",
+          "Codex remains canonical and Prime remains SHADOW."
+        ],
+        "chat_only_or_uncertain": [
+          "The corrected Arrow payload and executor are prepared locally but are not durable source until a later approved PR is merged.",
+          "The Quest completion range remains a broad low-confidence estimate pending C07 and later migration gates."
+        ],
+        "remaining_work": [
+          "Compile every existing-file transform through Stage 0.",
+          "Audit complete candidate bytes and diffs.",
+          "Create and audit the coordinated Codex and Prime source PRs.",
+          "Resume C07 and later migration gates after the architecture work is closed.",
+          "Prove Quest Board cutover and rollback before authority changes."
+        ],
+        "protected_boundary_posture": "No raw Drive, finance, health, clinic, runtime, account, or infrastructure evidence belongs in GitHub.",
+        "next_safe_action": "Run sealed Stage 0 against clean local clones and review the receipt.",
+        "next_approval_gate": "Explicit Jayson approval to fire Stage 0; Stage 1 remains separately gated.",
+        "restart_safe": true,
+        "solar_eclipse_ready": true,
+        "sunset_ready": false,
+        "must_not_happen_yet": [
+          "Do not create source PRs before Stage 0 PASS and audit.",
+          "Do not merge, activate S1, move Drive material, promote Prime, retire Codex, or cut over."
+        ]
+      },
+      "campaigns": [
+        {
+          "campaign_id": "codex-to-prime-migration",
+          "parent_quest_id": "atlas-prime-rebuild",
+          "title": "Atlas Codex to Prime Migration",
+          "status": "ACTIVE",
+          "required_for_quest_completion": true,
+          "current_gate": "C07 protected source-standard semantic reconciliation remains pending after the Arrow architecture gate.",
+          "completion_range": {
+            "min": 15,
+            "max": 30
+          },
+          "confidence": "MEDIUM",
+          "dependencies": [
+            "one-massive-arrow-architecture"
+          ],
+          "blockers": [],
+          "next_safe_action": "Preserve C07 as an explicit later gate; do not absorb it silently.",
+          "last_verified": "2026-06-28"
+        },
+        {
+          "campaign_id": "google-drive-dependency-retirement",
+          "parent_quest_id": "atlas-prime-rebuild",
+          "title": "Google Drive Dependency Retirement",
+          "status": "ACTIVE",
+          "required_for_quest_completion": true,
+          "current_gate": "Durable retirement plan and exception register source PR not yet created.",
+          "completion_range": {
+            "min": 10,
+            "max": 25
+          },
+          "confidence": "LOW",
+          "dependencies": [
+            "spear-bow-arrow-development"
+          ],
+          "blockers": [],
+          "next_safe_action": "Compile and audit the Drive governance candidates in Stage 0.",
+          "last_verified": "2026-06-28"
+        },
+        {
+          "campaign_id": "spear-bow-arrow-development",
+          "parent_quest_id": "atlas-prime-rebuild",
+          "title": "Athena's Spear and Artemis's Bow and Arrow",
+          "status": "ACTIVE",
+          "required_for_quest_completion": true,
+          "current_gate": "Corrected one-Arrow payload and Stage 0/1 executor preparation.",
+          "completion_range": {
+            "min": 25,
+            "max": 45
+          },
+          "confidence": "MEDIUM",
+          "dependencies": [],
+          "blockers": [],
+          "next_safe_action": "Run Stage 0 read-only compilation and Noctua audit.",
+          "last_verified": "2026-06-28"
+        },
+        {
+          "campaign_id": "quest-board-emberline-architecture",
+          "parent_quest_id": "atlas-prime-rebuild",
+          "title": "Quest Board and Emberline Architecture",
+          "status": "ACTIVE",
+          "required_for_quest_completion": true,
+          "current_gate": "SHADOW schema, crosswalk, template, and parent Quest checkpoint prepared locally.",
+          "completion_range": {
+            "min": 20,
+            "max": 40
+          },
+          "confidence": "LOW",
+          "dependencies": [
+            "spear-bow-arrow-development"
+          ],
+          "blockers": [],
+          "next_safe_action": "Compile and audit all governing-source reconciliations in Stage 0.",
+          "last_verified": "2026-06-28"
+        }
+      ],
+      "completion_range": {
+        "min": 15,
+        "max": 30,
+        "basis": "Control-plane foundation and delta closure exist, but C07, source PRs, generated follow-through, recovery proof, and cutover remain."
+      },
+      "confidence": "LOW",
+      "blockers": [],
+      "next_safe_action": "Run Stage 0 read-only compilation.",
+      "next_approval_gate": "Explicit Stage 0 firing approval, followed by Noctua review before Stage 1.",
+      "last_verified": "2026-06-28"
+    }
+  ]
+}

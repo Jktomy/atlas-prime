@@ -28,7 +28,7 @@ supersedes: []
 cleanup_path: Keep as the safety and authority hub. Detailed mechanics belong in routed
   specifications, policies, protocols, and runbooks. Change only through a protected
   source PR and Noctua audit.
-last_verified: '2026-06-21'
+last_verified: '2026-06-28'
 ---
 
 # Atlas Aegis
@@ -40,9 +40,9 @@ Aegis is the umbrella safety and authority layer for Atlas work. It does not rep
 ## Authority constellation
 
 ```text
-Jayson directs, approves Execute, accepts residual risk, and manually merges.
+Jayson directs, approves exact stages, accepts residual risk, and controls merge.
 Athena interprets, ranks, validates, and authors complete semantic content.
-Spear validates and stages registered deterministic repository mechanics.
+Spear converts Jayson-approved conversation intent into registered deterministic source-change mechanics.
 Noctua independently audits, verifies, and reports outcomes.
 Phoenix Flare selects the burn disposition through read-only analysis.
 Controlled Burn performs semantic compaction and classification.
@@ -60,11 +60,11 @@ No actor may silently acquire another actor's authority.
 3. No silent promotion, deletion, supersession, migration, retirement, or cutover.
 4. No raw protected evidence in GitHub.
 5. No direct write to `main` as a normal Prime path.
-6. No automated merge.
+6. No autonomous merge; a merge requires direct Jayson action or a Jayson-fired exact Arrow stage.
 7. No force push.
 8. No ordinary Spear self-modification.
 9. No ordinary Spear modification of Phoenix Reborn.
-10. No generated report edits in an ordinary source PR, except the narrow Quest Board transaction exception defined by contract.
+10. No generated report edits in an ordinary source PR. Quest Board source, schema, and SHADOW state changes are authored source; generated projections remain separate.
 11. A successful parser, workflow, upload, or test does not by itself prove semantic correctness, recovery, or source authority.
 12. Honest blocked or deferred status is preferable to a false completion claim.
 
@@ -85,6 +85,14 @@ A Preview must identify:
 - the exact bounded Execute scope.
 
 Execute approval applies only to the matching Preview and scope. A packet upload, plan generation, Noctua `YES`, or prior approval for related work does not silently authorize a different write.
+
+## Quest Board, Emberline, and one Arrow
+
+Prime Quest Board is the SHADOW successor to the canonical Codex Workboard.
+
+Quest is the parent, Campaign is the child/subquest, and Emberline is the complete Quest status model.
+
+The Bow launches one immutable Arrow with sealed stages. A stage receipt never grants later-stage authority.
 
 ## Stop conditions
 

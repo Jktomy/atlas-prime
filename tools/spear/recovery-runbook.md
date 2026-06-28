@@ -22,7 +22,7 @@ private_boundary: This recovery runbook must not include credentials, private ru
 evidence_boundary: Recovery evidence belongs in external review artifacts or separately approved receipts, not inline in this authored source.
 supersedes: []
 cleanup_path: Update through a separately reviewed Spear engine documentation PR; do not use ordinary S0 packets for Spear self-modification.
-last_verified: 2026-06-26
+last_verified: 2026-06-28
 ---
 
 # Spear Recovery Runbook S0/S1 v4
@@ -32,6 +32,21 @@ S0 has no repository mutation capability.
 Atlas Codex remains canonical while Atlas Prime is being built. A failed S0 run must not be treated as migration authority or as permission to bypass the current source order.
 
 ## General failure rule
+
+## Artemis one-Arrow recovery boundary
+
+Each sealed stage is an independent authority transaction inside one immutable package.
+
+On failure:
+
+- stop the current stage;
+- preserve exact local and remote state;
+- report completed and uncompleted actions separately;
+- do not reset, clean, force-push, delete, close, retry blindly, auto-revert, or advance stages;
+- require Noctua and explicit Jayson direction.
+
+For cross-repository work, a completed earlier action is not automatically reverted when a later repository blocks.
+
 
 When validation or compilation fails:
 
@@ -98,6 +113,10 @@ If content scanning, metadata validation, destination classification, or protect
 - do not reword, encode, split, or relocate content merely to evade the block;
 - determine whether the content belongs in a private evidence source, a clean pointer, a different source class, or a separately approved migration route;
 - prepare a new Preview only after the correct destination and authority are established.
+
+## Quest Board authority recovery
+
+Any disagreement between the canonical Codex Workboard and the SHADOW Prime Quest Board blocks promotion or cutover. Preserve both states and rebuild the crosswalk.
 
 ## A3b S1 disabled-writer recovery
 

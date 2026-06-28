@@ -7,7 +7,7 @@ source_type: PROTOCOL
 authority_class: CANONICAL_AUTHORED_SOURCE
 owner_project: Codex
 owner_operation: Athena's Spear
-canonical_scope: Defines the probationary S0 compiler and validation foundation for the next-generation Athena's Spear in Atlas Prime while Atlas Codex remains the current canonical source of truth.
+canonical_scope: Defines the probationary S0 compiler, Athena/Jayson conversation-to-source operating model, permanent Spear safety architecture, Artemis's Bow and Arrow handoff, Emberline relationship, capability evolution, migration role, and post-cutover maintenance boundary while Atlas Codex remains canonical until verified cutover.
 protected_level: CRITICAL
 routes_from:
   - specs/spear/athenas-spear-spec-v0.2.md
@@ -19,14 +19,16 @@ routes_to:
   - tools/spear/cli.py
   - tools/spear/operator-runbook.md
   - tools/spear/recovery-runbook.md
-  - specs/atlas-prime/codex-to-prime-migration-contract-v1.md
+  - specs/spear/spear-capability-lifecycle-v1.md
+  - specs/atlas-prime/codex-to-prime-migration-contract-v2.md
+  - migration/atlas-codex/atlas-prime-rebuild-program-roadmap-v1.md
   - migration/atlas-codex/README.md
   - templates/codex-to-prime-reconciliation-record.md
 private_boundary: This source must contain only clean protocol text and must not include secrets, private runtime values, raw account evidence, PHI, or protected exports.
 evidence_boundary: This file is authored source; generated receipts, test logs, package manifests, migration evidence, and original protected evidence remain outside this source unless separately approved.
 supersedes: []
 cleanup_path: Update through a separately reviewed Spear engine or protocol PR; do not alter Spear governance or implementation through an ordinary Spear packet.
-last_verified: 2026-06-25
+last_verified: 2026-06-28
 ---
 
 # Athena's Spear MVP S0 v4
@@ -48,9 +50,9 @@ During construction:
 
 ## Purpose of Prime Spear
 
-The Athena's Spear implementation being built in Atlas Prime is intended to become the controlled migration and source-change engine for the Atlas Prime rebuilding campaign.
+The Athena's Spear implementation being built in Atlas Prime is intended to become Athena's permanent controlled source-change instrument for the Atlas Prime rebuilding campaign and for normal Atlas evolution after cutover.
 
-Its long-term purpose is to let Athena prepare structured, auditable source-change packets without depending on fragile direct-write connectors.
+It is designed primarily for Athena operating inside an active ChatGPT conversation with Jayson. Its long-term purpose is to convert Jayson-approved intent into structured, auditable, recoverable source-change packets without depending on fragile direct-write connectors.
 
 The intended end-state is for Prime Spear to:
 
@@ -64,6 +66,71 @@ The intended end-state is for Prime Spear to:
 8. never self-approve, silently promote source truth, bypass protected boundaries, force-push, write directly to `main`, or merge automatically.
 
 The execution capabilities in items 4 through 7 are intended future phases. They are not implemented or authorized by S0.
+
+## Permanent platform and controlled evolution
+
+The Spear Campaign builds and proves the machine. The campaign may close after the required migration routes are proven, but Athena's Spear itself remains a permanent Atlas Prime source-change platform.
+
+Spear evolves through four separable layers:
+
+1. **Safety kernel** — packet parsing, contract binding, repository and expected-state validation, path safety, protected-content checks, deterministic planning, receipts, branch and commit controls, stop-before-merge, and recovery behavior. The kernel is deny-by-default and changes rarely.
+2. **Capabilities** — versioned operations such as create, replace, bounded surgical mutation, append, structured-register transition, generator execution, lifecycle handling, and lineage generation.
+3. **Route profiles** — versioned combinations of path classes, operations, limits, atomicity, tests, recovery, Noctua criteria, and activation state for recurring change families.
+4. **Packets** — exact bounded instances that invoke only already-defined and appropriately activated capabilities and route profiles.
+
+Flexibility belongs in reusable versioned capabilities and route profiles, not in packet-specific weakening of safeguards. A recurring legitimate need discovered by Evolving Prime may justify a new Spear capability. One difficult packet does not justify bypassing or globally relaxing policy.
+
+Implementation and authority remain separate. Code, schemas, or route profiles may exist while operational activation remains `NO`. No capability becomes executable merely because it compiles, tests, or merges.
+
+The normative capability states, promotion gates, compatibility rules, deactivation rules, and post-cutover maintenance process are defined in:
+
+`specs/spear/spear-capability-lifecycle-v1.md`
+
+
+## Jayson-Athena operating relationship
+
+The controlling relationship is:
+
+```text
+Jayson defines the goal, boundaries, and approval
+-> Athena reads current source and reasons about the safest exact change
+-> Athena's Spear validates and packages only that approved intent
+-> Artemis's Bow fires an exact Arrow when package-based local execution is selected
+-> Noctua independently audits the result
+-> Jayson retains final activation, merge, migration, promotion, retirement, and cutover authority
+```
+
+Spear is optimized for conversation-to-durable-source work. It may support adding, augmenting, reconciling, reorganizing, and retiring Atlas source only through versioned routes whose authority has been separately proven and activated.
+
+Technical capability never implies authorization. Chat discussion may propose change, but only an exact source-backed Preview and explicit Jayson approval may authorize the next bounded gate.
+
+## Artemis's Bow and Arrow handoff
+
+Artemis's Bow and Arrow is the user-facing local execution model for exact package-based Spear work.
+
+- **The Bow** is the stable thin Command Prompt or PowerShell launch surface Jayson uses.
+- **An Arrow** is one exact immutable ZIP payload plus its exact firing command or launcher.
+- **Stage 1 — Build and Verify** may create and read back only the approved draft-PR state, then stops for Noctua.
+- **Stage 3 — Merge and Readback** may be prepared and fired only after complete Stage 1 receipts, Noctua on the exact PR head, and a separate Jayson approval.
+
+The Bow may be reusable. Every Arrow is mission-specific, hash-bound, and disposable. Stage 1 never authorizes Stage 3.
+
+The current Codex-side user contract is `Jktomy/atlas-codex/codex/artemis-bow-and-arrow.md`. Prime operator and recovery guidance must remain compatible until cutover and later source-order reconciliation.
+
+## Emberline relationship
+
+Emberline is the Quest/Campaign roadmap and status surface. It explains where the campaign is, what is complete, what remains, how much is left, what is blocked, and the next safe gate.
+
+For source work:
+
+```text
+Emberline identifies the road and current gate
+-> Spear prepares the exact source change
+-> Bow and Arrow performs an approved package handoff when selected
+-> Noctua and Jayson control the merge gate
+```
+
+Emberline status is read-only. Durable source changes use the normal Spear/source-update route under Preview -> Execute. Historical **Ember Line** wording refers to the same unified Emberline system and does not create another protocol.
 
 ## Current S0 implementation boundary
 
@@ -173,11 +240,12 @@ A future execution-authorized Spear packet must identify:
 - protected-boundary declarations;
 - tests and verification requirements;
 - expected branch, commit, and draft-PR behavior;
+- Bow/Arrow stage and separate-authorization behavior when local package execution is selected;
 - explicit prohibitions;
 - rollback or recovery instructions;
 - and the Noctua stop gate.
 
-Before execution, Athena must present an exact Preview with files, old and new hashes, complete diff or replacement text, additions, deletions, source-truth consequences, protected-boundary findings, tests, expected PR shape, and unresolved decisions.
+Before execution, Athena must present an exact Preview with files, old and new hashes, complete diff or replacement text, additions, deletions, source-truth consequences, protected-boundary findings, tests, expected PR shape, Bow/Arrow stage when applicable, recovery behavior, and unresolved decisions.
 
 No execution occurs until Jayson approves the exact Preview.
 
@@ -187,21 +255,28 @@ A technically valid packet does not authorize merge, migration, promotion, or cu
 
 ## Campaign sequence
 
-The intended campaign sequence is:
+The Spear Campaign and Evolving Prime overlap rather than run as a simple handoff:
 
-1. build and prove Prime Spear;
-2. define Codex-to-Prime reconciliation and migration rules;
-3. use Athena-prepared packets to rebuild Atlas Prime in bounded batches;
-4. audit every batch through Noctua;
-5. preserve Atlas Codex as canonical until Prime is fully reconciled and verified;
-6. perform explicit cutover only after restore, rollback, routing, source-order, and continuity proof;
-7. retain Atlas Codex as historical or rollback evidence under a separately approved sunsetting plan.
+1. preserve the operational Codex Spear while Prime S0 remains probationary;
+2. freeze and audit the stable S0 compiler contract;
+3. continue Evolving Prime read-only reconciliation to discover legitimate recurring route needs;
+4. design, implement, and prove S1 writer authority without broad activation;
+5. add narrowly versioned capabilities and route profiles in response to demonstrated recurring needs;
+6. use approved packets to rebuild Atlas Prime in bounded batches;
+7. audit every packet, PR, merge, and merged-main state through Noctua and required human gates;
+8. preserve Atlas Codex as canonical until Prime is fully reconciled, recoverable, and explicitly approved for cutover;
+9. close the Spear build campaign into permanent maintenance after all migration-required routes are proven;
+10. continue post-cutover Spear evolution through the capability lifecycle rather than freezing the platform or granting unrestricted authority.
+
+The program-level dependencies, current M0-M9 migration waves, and A0-A7 Spear phases are coordinated in:
+
+`migration/atlas-codex/atlas-prime-rebuild-program-roadmap-v1.md`
 
 ## Migration contract
 
 The normative Codex-to-Prime source order, reconciliation method, route selection, packet lifecycle, full-file replacement controls, proof requirements, and closure rules are defined in:
 
-`specs/atlas-prime/codex-to-prime-migration-contract-v1.md`
+`specs/atlas-prime/codex-to-prime-migration-contract-v2.md`
 
 Migration evidence is routed through:
 
@@ -215,6 +290,24 @@ Current S0 ordinary packets remain limited by the active overlay and destination
 
 Those surfaces require their separately approved source, migration, register, generator, or future versioned Spear routes.
 
+## Post-cutover operating model
+
+After explicit Atlas Prime cutover, Spear changes role but not its permanent safeguards. The normal source-update flow becomes:
+
+```text
+canonical Prime source
+-> read-only analysis and exact Preview
+-> approved Spear packet
+-> validation and deterministic candidate
+-> bounded branch, commit, and draft PR
+-> Noctua and Jayson merge decision
+-> merged-main readback and retained lineage
+```
+
+Post-cutover Spear remains prohibited from direct `main` writes, force-push, automatic merge, silent authority expansion, protected-evidence ingestion, and ordinary self-modification. New capabilities continue through versioned proposal, fixture, proof, limited activation, operational, deprecation, and retirement gates.
+
+Spear governance, implementation, schemas, policies, tests, and workflows must use a separately reviewed engine or protocol route. An ordinary Spear packet must never grant itself broader authority.
+
 ## Predecessor continuity
 
 The merged Prime Spear v0.2 files remain predecessor design and historical/reference evidence:
@@ -224,3 +317,11 @@ The merged Prime Spear v0.2 files remain predecessor design and historical/refer
 - `tests/fixtures/spear/corpus-v0.2.md`
 
 S0 v4 is the current probationary Prime migration-compiler proposal. Neither v0.2 nor S0 v4 grants writer activation, migration authority, source promotion, or cutover. S1 and all later execution phases remain separately gated.
+
+## One Arrow and Quest Board correction
+
+Prime Spear prepares one immutable Arrow package with sealed stages. It does not prepare competing Arrow 1 and Arrow 2 packages.
+
+The Codex Active Workboard and Prime Quest Board are one system across repository generations. Quest is the parent, Campaign is the child/subquest, and Emberline is the complete Quest status model.
+
+Prime Quest Board remains SHADOW until verified cutover.
