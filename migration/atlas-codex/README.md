@@ -120,7 +120,7 @@ The delta is CLOSED as M0-D control-plane evidence. Closure confirms the Prime g
 - Commits: `4`
 - Changed paths: `10` (`1` added, `9` modified)
 - Effective live paths after delta: `352`
-- Canonical delta digest: `4dae5e3e9f5a7928b332503288291fddf87a7b2148c5eeed461ab4d62757706f`
+- Previous PREVIEWED canonical digest: `4dae5e3e9f5a7928b332503288291fddf87a7b2148c5eeed461ab4d62757706f`
 - Preflight: `migration/atlas-codex/audits/atlas-codex-delta-0002-preflight-v1.md`
 - Source PR: `#22`
 - Squash merge and Prime `main` readback: `17c01c481da9ce19fb1a2b74017aee08a5eb29f6`
