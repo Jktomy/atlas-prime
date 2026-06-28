@@ -1,0 +1,814 @@
+{
+  "schema_version": "1.0",
+  "delta_id": "atlas-codex-delta:0002",
+  "sequence": 2,
+  "status": "PREVIEWED",
+  "source_repository": "Jktomy/atlas-codex",
+  "target_repository": "Jktomy/atlas-prime",
+  "baseline": {
+    "status": "FROZEN_BASELINE",
+    "frozen": true,
+    "inventory_path": "migration/atlas-codex/source-inventory.json",
+    "source_commit": {
+      "algorithm": "sha1",
+      "value": "3e4f06ed4abf8fbd44bd04ec1ad8997ffae7eda4"
+    },
+    "inventory_git_blob": {
+      "algorithm": "sha1",
+      "value": "f95c3fab4ce296c11f4f277c8e4675071cc92091"
+    },
+    "inventory_file_sha256": "4d883149cef72e6d94805da73b0deda322ef1350ea848b29edf25cc6931c1856",
+    "inventory_canonical_sha256": "03fa76c0991e06350cb112d1b33b1dbf00fe6296cabb08199cb92808956dd4fa",
+    "entry_count": 349,
+    "unique_path_count": 349
+  },
+  "previous_delta": {
+    "delta_id": "atlas-codex-delta:0001",
+    "sequence": 1,
+    "ending_commit": {
+      "algorithm": "sha1",
+      "value": "cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f"
+    },
+    "delta_sha256": "8685089fec21cc5b8ec571ab6a5ace4519b71c8454b8ba1d872281e611738810"
+  },
+  "range": {
+    "start_commit": {
+      "algorithm": "sha1",
+      "value": "cdc4ae62eaff1c0d4a53e9f6b12873213b9f2f9f"
+    },
+    "end_commit": {
+      "algorithm": "sha1",
+      "value": "5cbf79a0851e0dda803be7b1abf153fffbad8414"
+    },
+    "comparison_status": "ahead",
+    "ahead_by": 4,
+    "behind_by": 0,
+    "total_commits": 4,
+    "contiguous": true
+  },
+  "target_observation": {
+    "repository": "Jktomy/atlas-prime",
+    "commit": {
+      "algorithm": "sha1",
+      "value": "5f5c3ff4fd20709823b6dbf798fa5084852910fd"
+    },
+    "repository_state": "SHADOW",
+    "observed_at": "2026-06-28T04:52:05.357786Z",
+    "checks": [
+      {
+        "path": "codex/aegis-local-execution-workbench.md",
+        "existence": "ABSENT",
+        "git_blob": null,
+        "notes": "Read-only target observation at the exact bound Prime commit. Presence or absence does not authorize creation, overwrite, or content movement."
+      },
+      {
+        "path": "codex/atlas-quest-board.md",
+        "existence": "ABSENT",
+        "git_blob": null,
+        "notes": "Read-only target observation at the exact bound Prime commit. Presence or absence does not authorize creation, overwrite, or content movement."
+      },
+      {
+        "path": "codex/codex-source-update-standard.md",
+        "existence": "PRESENT",
+        "git_blob": {
+          "algorithm": "sha1",
+          "value": "80b2914c1dfca154317479b54fbff2c900c10068"
+        },
+        "notes": "Read-only target observation at the exact bound Prime commit. Presence or absence does not authorize creation, overwrite, or content movement."
+      },
+      {
+        "path": "codex/governance/aegis-athena-github-operations-sop.md",
+        "existence": "ABSENT",
+        "git_blob": null,
+        "notes": "Read-only target observation at the exact bound Prime commit. Presence or absence does not authorize creation, overwrite, or content movement."
+      },
+      {
+        "path": "codex/quests/events/2026/2026-06.jsonl",
+        "existence": "ABSENT",
+        "git_blob": null,
+        "notes": "Read-only target observation at the exact bound Prime commit. Presence or absence does not authorize creation, overwrite, or content movement."
+      },
+      {
+        "path": "codex/quests/quest-registry.json",
+        "existence": "ABSENT",
+        "git_blob": null,
+        "notes": "Read-only target observation at the exact bound Prime commit. Presence or absence does not authorize creation, overwrite, or content movement."
+      },
+      {
+        "path": "codex/sunset-to-codex-intake-standard.md",
+        "existence": "ABSENT",
+        "git_blob": null,
+        "notes": "Read-only target observation at the exact bound Prime commit. Presence or absence does not authorize creation, overwrite, or content movement."
+      },
+      {
+        "path": "generated/atlas-file-inventory.md",
+        "existence": "PRESENT",
+        "git_blob": {
+          "algorithm": "sha1",
+          "value": "5df1d20c7f26f5eef50d0b2e511a296820973c3e"
+        },
+        "notes": "Read-only target observation at the exact bound Prime commit. Presence or absence does not authorize creation, overwrite, or content movement."
+      },
+      {
+        "path": "generated/atlas-metadata-inventory.md",
+        "existence": "PRESENT",
+        "git_blob": {
+          "algorithm": "sha1",
+          "value": "adf11e8c20cb132c94a2813bc72303478b2423a4"
+        },
+        "notes": "Read-only target observation at the exact bound Prime commit. Presence or absence does not authorize creation, overwrite, or content movement."
+      },
+      {
+        "path": "generated/atlas-orphan-report.md",
+        "existence": "PRESENT",
+        "git_blob": {
+          "algorithm": "sha1",
+          "value": "02900baf0a25f63ed4516d34d963fde64e9bf751"
+        },
+        "notes": "Read-only target observation at the exact bound Prime commit. Presence or absence does not authorize creation, overwrite, or content movement."
+      },
+      {
+        "path": "generated/atlas-routing-inventory.md",
+        "existence": "PRESENT",
+        "git_blob": {
+          "algorithm": "sha1",
+          "value": "5b2e310b57c96daf6e1b65fda648126ffcde6914"
+        },
+        "notes": "Read-only target observation at the exact bound Prime commit. Presence or absence does not authorize creation, overwrite, or content movement."
+      },
+      {
+        "path": "noctua.md",
+        "existence": "ABSENT",
+        "git_blob": null,
+        "notes": "Read-only target observation at the exact bound Prime commit. Presence or absence does not authorize creation, overwrite, or content movement."
+      }
+    ]
+  },
+  "summary": {
+    "added": 1,
+    "modified": 9,
+    "removed": 0,
+    "renamed": 0,
+    "changed_path_count": 10
+  },
+  "resulting_state": {
+    "live_path_count": 352,
+    "accounted_lineage_count": 352,
+    "normalized_case_collisions": 0,
+    "unresolved_entries": 0
+  },
+  "entries": [
+    {
+      "entry_id": "D0002-E0001",
+      "change_type": "MODIFIED",
+      "path_before": "codex/aegis-athena-github-operations-sop.md",
+      "path_after": "codex/aegis-athena-github-operations-sop.md",
+      "git_blob_before": {
+        "algorithm": "sha1",
+        "value": "cbcb95c4b30551e68535c4dc64bc2fbf349f2032"
+      },
+      "git_blob_after": {
+        "algorithm": "sha1",
+        "value": "ef2ea0c5ff5e915d5dcc3615389458612228f793"
+      },
+      "sha256_before": "585167a3941cfcae1ecc8f325f5c84a4c55209f4f3c1349eaed3f110fedad265",
+      "sha256_after": "685a610e200437bfaad58412397b76edaa17dc13feb6441065a47de1d64caa9a",
+      "source_class_before": "CANONICAL_SOURCE",
+      "source_class_after": "CANONICAL_SOURCE",
+      "privacy_class_before": "PUBLIC_CLEAN",
+      "privacy_class_after": "PUBLIC_CLEAN",
+      "disposition_before": "MERGE",
+      "disposition_after": "MERGE",
+      "content_transfer_before": "PARTIAL",
+      "content_transfer_after": "PARTIAL",
+      "target_paths_before": [
+        "codex/governance/aegis-athena-github-operations-sop.md"
+      ],
+      "target_paths_after": [
+        "codex/governance/aegis-athena-github-operations-sop.md"
+      ],
+      "preserved_elements": [
+        "Source path identity",
+        "Git blob identity",
+        "Exact SHA-256 evidence",
+        "Non-protected durable concepts subject to semantic review"
+      ],
+      "removed_or_remodeled_elements": [
+        "Obsolete or conflicting Atlas terminology and authority claims"
+      ],
+      "dependencies_before": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "dependencies_after": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "collision_group_ids": [],
+      "collision_effects": [
+        "NO_DIRECT_IMPACT"
+      ],
+      "reason": "Canonical Codex source changed after accepted delta 0001. Preserve both object identities and the existing provisional migration treatment so later semantic reconciliation uses current bytes without rewriting historical evidence.",
+      "approval_basis": null,
+      "review_state": "DELTA_RECORDED",
+      "notes": "M0-D2 control-plane evidence only. No content movement, overwrite, retirement, supersession, source promotion, writer activation, Workboard transition, or cutover authority."
+    },
+    {
+      "entry_id": "D0002-E0002",
+      "change_type": "MODIFIED",
+      "path_before": "codex/aegis-local-execution-workbench.md",
+      "path_after": "codex/aegis-local-execution-workbench.md",
+      "git_blob_before": {
+        "algorithm": "sha1",
+        "value": "a35d1897d902ba3cf89ae2229a7e843a0b678f41"
+      },
+      "git_blob_after": {
+        "algorithm": "sha1",
+        "value": "6f037bbb516df7a989e75fb796612b207ae4c851"
+      },
+      "sha256_before": "f3eb975fab352df18b3c2455346281c5eac26b1fce0274745927a98746d501e9",
+      "sha256_after": "0d646b1ec81cfbdc4c48fdd174708d57e70f909c1a4c8bd8c7cd56a350e912df",
+      "source_class_before": "STANDARD",
+      "source_class_after": "STANDARD",
+      "privacy_class_before": "PUBLIC_CLEAN",
+      "privacy_class_after": "PUBLIC_CLEAN",
+      "disposition_before": "REMODEL",
+      "disposition_after": "REMODEL",
+      "content_transfer_before": "PARTIAL",
+      "content_transfer_after": "PARTIAL",
+      "target_paths_before": [
+        "codex/aegis-local-execution-workbench.md"
+      ],
+      "target_paths_after": [
+        "codex/aegis-local-execution-workbench.md"
+      ],
+      "preserved_elements": [
+        "Generic local-execution safety boundaries",
+        "PREPARE, INSTALL, and PUBLISH separation",
+        "Failure-driven guardrail ledger",
+        "Stop-before-merge and preserved-workspace behavior"
+      ],
+      "removed_or_remodeled_elements": [
+        "Windows PowerShell 5.1-specific runtime assumptions must be reconciled with the verified PowerShell 7 runtime"
+      ],
+      "dependencies_before": [
+        "atlas-aegis.md",
+        "codex/codex-source-update-standard.md",
+        "noctua.md"
+      ],
+      "dependencies_after": [
+        "atlas-aegis.md",
+        "codex/codex-source-update-standard.md",
+        "noctua.md"
+      ],
+      "collision_group_ids": [],
+      "collision_effects": [
+        "NO_DIRECT_IMPACT"
+      ],
+      "reason": "Canonical Codex source changed after accepted delta 0001. Preserve both object identities and the existing provisional migration treatment so later semantic reconciliation uses current bytes without rewriting historical evidence.",
+      "approval_basis": null,
+      "review_state": "DELTA_RECORDED",
+      "notes": "M0-D2 control-plane evidence only. No content movement, overwrite, retirement, supersession, source promotion, writer activation, Workboard transition, or cutover authority."
+    },
+    {
+      "entry_id": "D0002-E0003",
+      "change_type": "MODIFIED",
+      "path_before": "codex/atlas-active-workboard.md",
+      "path_after": "codex/atlas-active-workboard.md",
+      "git_blob_before": {
+        "algorithm": "sha1",
+        "value": "347e0afe1ea79b8d12e4694a32f108abcba25b01"
+      },
+      "git_blob_after": {
+        "algorithm": "sha1",
+        "value": "55afc2c3bf7158153a234bcb644067dfa6a44db6"
+      },
+      "sha256_before": "0ed9a072de2c8af2fd72bc4798a25913d2c52d115562301925b34925d8033027",
+      "sha256_after": "3a9f65112aad4c562111bf24ac1572475f0160be6da471547dd7d95c6e74412a",
+      "source_class_before": "REGISTER",
+      "source_class_after": "REGISTER",
+      "privacy_class_before": "PUBLIC_CLEAN",
+      "privacy_class_after": "PUBLIC_CLEAN",
+      "disposition_before": "REMODEL",
+      "disposition_after": "REMODEL",
+      "content_transfer_before": "PARTIAL",
+      "content_transfer_after": "PARTIAL",
+      "target_paths_before": [
+        "codex/quests/quest-registry.json",
+        "codex/quests/events/2026/2026-06.jsonl",
+        "codex/atlas-quest-board.md"
+      ],
+      "target_paths_after": [
+        "codex/quests/quest-registry.json",
+        "codex/quests/events/2026/2026-06.jsonl",
+        "codex/atlas-quest-board.md"
+      ],
+      "preserved_elements": [
+        "Source path identity",
+        "Git blob identity",
+        "Exact SHA-256 evidence",
+        "Non-protected durable concepts subject to semantic review"
+      ],
+      "removed_or_remodeled_elements": [
+        "Obsolete or conflicting Atlas terminology and authority claims"
+      ],
+      "dependencies_before": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "dependencies_after": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "collision_group_ids": [
+        "C13"
+      ],
+      "collision_effects": [
+        "UPDATE_MEMBER_IDENTITY"
+      ],
+      "reason": "Canonical Codex source changed after accepted delta 0001. Preserve both object identities and the existing provisional migration treatment so later semantic reconciliation uses current bytes without rewriting historical evidence.",
+      "approval_basis": null,
+      "review_state": "DELTA_RECORDED",
+      "notes": "M0-D2 control-plane evidence only. No content movement, overwrite, retirement, supersession, source promotion, writer activation, Workboard transition, or cutover authority."
+    },
+    {
+      "entry_id": "D0002-E0004",
+      "change_type": "ADDED",
+      "path_before": null,
+      "path_after": "codex/sunset-to-codex-intake-standard.md",
+      "git_blob_before": null,
+      "git_blob_after": {
+        "algorithm": "sha1",
+        "value": "b763529aea3e93a76a8cf900d4b3a7f9c1f56b32"
+      },
+      "sha256_before": null,
+      "sha256_after": "3613907c2e961fe0340dacb4280ffdbf1d1b7f9c9411ff814add2e734990caa0",
+      "source_class_before": null,
+      "source_class_after": "STANDARD",
+      "privacy_class_before": null,
+      "privacy_class_after": "PUBLIC_CLEAN",
+      "disposition_before": null,
+      "disposition_after": "MIGRATE",
+      "content_transfer_before": null,
+      "content_transfer_after": "FULL",
+      "target_paths_before": [],
+      "target_paths_after": [
+        "codex/sunset-to-codex-intake-standard.md"
+      ],
+      "preserved_elements": [
+        "Guarded Sunset and Solar Eclipse intake classification",
+        "No automatic source promotion",
+        "Canonical GitHub Workboard authority",
+        "Protected-evidence exclusion",
+        "Preview, Noctua, manual merge, and merged-main readback sequence"
+      ],
+      "removed_or_remodeled_elements": [],
+      "dependencies_before": [],
+      "dependencies_after": [
+        "athenas-spear.md",
+        "codex/aegis-athena-github-operations-sop.md",
+        "codex/atlas-active-workboard.md",
+        "codex/codex-source-update-standard.md",
+        "github-pr-workflow.md",
+        "noctua.md",
+        "sunsetting-protocol.md"
+      ],
+      "collision_group_ids": [],
+      "collision_effects": [
+        "NO_DIRECT_IMPACT"
+      ],
+      "reason": "New clean Codex standard must be represented in the effective inventory. Its same-path FULL mapping is provisional migration evidence only and requires a later separate reconciliation before any Prime source creation.",
+      "approval_basis": null,
+      "review_state": "DELTA_RECORDED",
+      "notes": "M0-D2 control-plane evidence only. Classification does not authorize migration, source creation, automatic intake, Workboard mutation, promotion, or cutover."
+    },
+    {
+      "entry_id": "D0002-E0005",
+      "change_type": "MODIFIED",
+      "path_before": "generated/atlas-file-inventory.md",
+      "path_after": "generated/atlas-file-inventory.md",
+      "git_blob_before": {
+        "algorithm": "sha1",
+        "value": "19040888bbfa8b24bd04724fc0f6d0868935951e"
+      },
+      "git_blob_after": {
+        "algorithm": "sha1",
+        "value": "774d1773a21320520193496ff057d3ced507f0ef"
+      },
+      "sha256_before": "1e99fe2c32c2f19a84935fe050e8ed1f217d3f6cc1e80128b2ad37577b5c225f",
+      "sha256_after": "6db55d73fa13a7602d3b72ecb3c76fb4abca93b82ae7e6acd0071c38cd6e650c",
+      "source_class_before": "GENERATED",
+      "source_class_after": "GENERATED",
+      "privacy_class_before": "PUBLIC_CLEAN",
+      "privacy_class_after": "PUBLIC_CLEAN",
+      "disposition_before": "GENERATED_REBUILD",
+      "disposition_after": "GENERATED_REBUILD",
+      "content_transfer_before": "GENERATED_REBUILD",
+      "content_transfer_after": "GENERATED_REBUILD",
+      "target_paths_before": [
+        "generated/atlas-file-inventory.md"
+      ],
+      "target_paths_after": [
+        "generated/atlas-file-inventory.md"
+      ],
+      "preserved_elements": [
+        "Source path identity",
+        "Git blob identity",
+        "Exact SHA-256 evidence",
+        "Non-protected durable concepts subject to semantic review"
+      ],
+      "removed_or_remodeled_elements": [],
+      "dependencies_before": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "dependencies_after": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "collision_group_ids": [],
+      "collision_effects": [
+        "NO_DIRECT_IMPACT"
+      ],
+      "reason": "Canonical Codex source changed after accepted delta 0001. Preserve both object identities and the existing provisional migration treatment so later semantic reconciliation uses current bytes without rewriting historical evidence.",
+      "approval_basis": null,
+      "review_state": "DELTA_RECORDED",
+      "notes": "M0-D2 control-plane evidence only. No content movement, overwrite, retirement, supersession, source promotion, writer activation, Workboard transition, or cutover authority."
+    },
+    {
+      "entry_id": "D0002-E0006",
+      "change_type": "MODIFIED",
+      "path_before": "generated/atlas-metadata-inventory.md",
+      "path_after": "generated/atlas-metadata-inventory.md",
+      "git_blob_before": {
+        "algorithm": "sha1",
+        "value": "115fbc182b45858150a34454b642d1dc56d27d49"
+      },
+      "git_blob_after": {
+        "algorithm": "sha1",
+        "value": "ad9f6439eff73b58994013bdf3db949f5c37fed9"
+      },
+      "sha256_before": "124c62b6ecf3bd0560a8feb1d695b4f049f7938231db03d13d0f06e48554a8de",
+      "sha256_after": "ecfa1f0aec051b3d5600bc7c62269e6b3df2adc0416875ea01f0f515e8b0bfa7",
+      "source_class_before": "GENERATED",
+      "source_class_after": "GENERATED",
+      "privacy_class_before": "PUBLIC_CLEAN",
+      "privacy_class_after": "PUBLIC_CLEAN",
+      "disposition_before": "GENERATED_REBUILD",
+      "disposition_after": "GENERATED_REBUILD",
+      "content_transfer_before": "GENERATED_REBUILD",
+      "content_transfer_after": "GENERATED_REBUILD",
+      "target_paths_before": [
+        "generated/atlas-metadata-inventory.md"
+      ],
+      "target_paths_after": [
+        "generated/atlas-metadata-inventory.md"
+      ],
+      "preserved_elements": [
+        "Source path identity",
+        "Git blob identity",
+        "Exact SHA-256 evidence",
+        "Non-protected durable concepts subject to semantic review"
+      ],
+      "removed_or_remodeled_elements": [],
+      "dependencies_before": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "dependencies_after": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "collision_group_ids": [],
+      "collision_effects": [
+        "NO_DIRECT_IMPACT"
+      ],
+      "reason": "Canonical Codex source changed after accepted delta 0001. Preserve both object identities and the existing provisional migration treatment so later semantic reconciliation uses current bytes without rewriting historical evidence.",
+      "approval_basis": null,
+      "review_state": "DELTA_RECORDED",
+      "notes": "M0-D2 control-plane evidence only. No content movement, overwrite, retirement, supersession, source promotion, writer activation, Workboard transition, or cutover authority."
+    },
+    {
+      "entry_id": "D0002-E0007",
+      "change_type": "MODIFIED",
+      "path_before": "generated/atlas-orphan-report.md",
+      "path_after": "generated/atlas-orphan-report.md",
+      "git_blob_before": {
+        "algorithm": "sha1",
+        "value": "67670b4ef6d8cd835d31e26bfc91e21983303e8a"
+      },
+      "git_blob_after": {
+        "algorithm": "sha1",
+        "value": "4199675695d54f2a28c2ca189aa74b3b086caa70"
+      },
+      "sha256_before": "e44a2c796b0d7e3be6c1ec42504dcd5e5fe465bcf118cce729602516542432b2",
+      "sha256_after": "efb1ba8bee79791f79071d7bcd40af5c7d2e20e75dc756d78cad5f8501e8b1fc",
+      "source_class_before": "GENERATED",
+      "source_class_after": "GENERATED",
+      "privacy_class_before": "PUBLIC_CLEAN",
+      "privacy_class_after": "PUBLIC_CLEAN",
+      "disposition_before": "GENERATED_REBUILD",
+      "disposition_after": "GENERATED_REBUILD",
+      "content_transfer_before": "GENERATED_REBUILD",
+      "content_transfer_after": "GENERATED_REBUILD",
+      "target_paths_before": [
+        "generated/atlas-orphan-report.md"
+      ],
+      "target_paths_after": [
+        "generated/atlas-orphan-report.md"
+      ],
+      "preserved_elements": [
+        "Source path identity",
+        "Git blob identity",
+        "Exact SHA-256 evidence",
+        "Non-protected durable concepts subject to semantic review"
+      ],
+      "removed_or_remodeled_elements": [],
+      "dependencies_before": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "dependencies_after": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "collision_group_ids": [],
+      "collision_effects": [
+        "NO_DIRECT_IMPACT"
+      ],
+      "reason": "Canonical Codex source changed after accepted delta 0001. Preserve both object identities and the existing provisional migration treatment so later semantic reconciliation uses current bytes without rewriting historical evidence.",
+      "approval_basis": null,
+      "review_state": "DELTA_RECORDED",
+      "notes": "M0-D2 control-plane evidence only. No content movement, overwrite, retirement, supersession, source promotion, writer activation, Workboard transition, or cutover authority."
+    },
+    {
+      "entry_id": "D0002-E0008",
+      "change_type": "MODIFIED",
+      "path_before": "generated/atlas-routing-inventory.md",
+      "path_after": "generated/atlas-routing-inventory.md",
+      "git_blob_before": {
+        "algorithm": "sha1",
+        "value": "b9f2443a2f1cb6d4f08d28725826d1ac3839eb00"
+      },
+      "git_blob_after": {
+        "algorithm": "sha1",
+        "value": "8f983326197e95228901d0bffc368a3532a9f62b"
+      },
+      "sha256_before": "fb7200953e4e0561e62f4f775b70fba9d39e4f30d12cf784564409d99463facd",
+      "sha256_after": "7f4ed7ae7dfaa6f7aadeb8834ef9afbe87e0026fa4c611dcba382d8acce4d73d",
+      "source_class_before": "GENERATED",
+      "source_class_after": "GENERATED",
+      "privacy_class_before": "PUBLIC_CLEAN",
+      "privacy_class_after": "PUBLIC_CLEAN",
+      "disposition_before": "GENERATED_REBUILD",
+      "disposition_after": "GENERATED_REBUILD",
+      "content_transfer_before": "GENERATED_REBUILD",
+      "content_transfer_after": "GENERATED_REBUILD",
+      "target_paths_before": [
+        "generated/atlas-routing-inventory.md"
+      ],
+      "target_paths_after": [
+        "generated/atlas-routing-inventory.md"
+      ],
+      "preserved_elements": [
+        "Source path identity",
+        "Git blob identity",
+        "Exact SHA-256 evidence",
+        "Non-protected durable concepts subject to semantic review"
+      ],
+      "removed_or_remodeled_elements": [],
+      "dependencies_before": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "dependencies_after": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "collision_group_ids": [],
+      "collision_effects": [
+        "NO_DIRECT_IMPACT"
+      ],
+      "reason": "Canonical Codex source changed after accepted delta 0001. Preserve both object identities and the existing provisional migration treatment so later semantic reconciliation uses current bytes without rewriting historical evidence.",
+      "approval_basis": null,
+      "review_state": "DELTA_RECORDED",
+      "notes": "M0-D2 control-plane evidence only. No content movement, overwrite, retirement, supersession, source promotion, writer activation, Workboard transition, or cutover authority."
+    },
+    {
+      "entry_id": "D0002-E0009",
+      "change_type": "MODIFIED",
+      "path_before": "github-pr-workflow.md",
+      "path_after": "github-pr-workflow.md",
+      "git_blob_before": {
+        "algorithm": "sha1",
+        "value": "327d659da24ac09d5ccb97bed10544db3632ba1a"
+      },
+      "git_blob_after": {
+        "algorithm": "sha1",
+        "value": "aadb4483e96bbbaf34b340ea34cbbbb9a73c8003"
+      },
+      "sha256_before": "545433fcde18cc67e34bf4c30ed55afa004ab00a9c3d11e0f5623519aa5f66c2",
+      "sha256_after": "233237ca9240f4f7f4205ffc8dbf8767500ca0a8e10cd0ab60243400bac88837",
+      "source_class_before": "RUNBOOK",
+      "source_class_after": "RUNBOOK",
+      "privacy_class_before": "PUBLIC_CLEAN",
+      "privacy_class_after": "PUBLIC_CLEAN",
+      "disposition_before": "MERGE",
+      "disposition_after": "MERGE",
+      "content_transfer_before": "PARTIAL",
+      "content_transfer_after": "PARTIAL",
+      "target_paths_before": [
+        "codex/codex-source-update-standard.md"
+      ],
+      "target_paths_after": [
+        "codex/codex-source-update-standard.md"
+      ],
+      "preserved_elements": [
+        "Source path identity",
+        "Git blob identity",
+        "Exact SHA-256 evidence",
+        "Non-protected durable concepts subject to semantic review"
+      ],
+      "removed_or_remodeled_elements": [
+        "Obsolete or conflicting Atlas terminology and authority claims"
+      ],
+      "dependencies_before": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "dependencies_after": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "collision_group_ids": [
+        "C07"
+      ],
+      "collision_effects": [
+        "UPDATE_MEMBER_IDENTITY"
+      ],
+      "reason": "Canonical Codex source changed after accepted delta 0001. Preserve both object identities and the existing provisional migration treatment so later semantic reconciliation uses current bytes without rewriting historical evidence.",
+      "approval_basis": null,
+      "review_state": "DELTA_RECORDED",
+      "notes": "M0-D2 control-plane evidence only. No content movement, overwrite, retirement, supersession, source promotion, writer activation, Workboard transition, or cutover authority."
+    },
+    {
+      "entry_id": "D0002-E0010",
+      "change_type": "MODIFIED",
+      "path_before": "noctua.md",
+      "path_after": "noctua.md",
+      "git_blob_before": {
+        "algorithm": "sha1",
+        "value": "375a25b443319d4372047bfef6f1502633d9ae31"
+      },
+      "git_blob_after": {
+        "algorithm": "sha1",
+        "value": "ce3216b9bf6539165ddf9943bf63a93d385c90e9"
+      },
+      "sha256_before": "bb0a02c5672b1603008bffdc37f5eedabdf3e3888652ff74201ec8ce77fd9dda",
+      "sha256_after": "78a64b24961dcf231b91b34cb700b0866e67e23d65b663b459fef439484d80f5",
+      "source_class_before": "CANONICAL_SOURCE",
+      "source_class_after": "CANONICAL_SOURCE",
+      "privacy_class_before": "PUBLIC_CLEAN",
+      "privacy_class_after": "PUBLIC_CLEAN",
+      "disposition_before": "REMODEL",
+      "disposition_after": "REMODEL",
+      "content_transfer_before": "PARTIAL",
+      "content_transfer_after": "PARTIAL",
+      "target_paths_before": [
+        "noctua.md"
+      ],
+      "target_paths_after": [
+        "noctua.md"
+      ],
+      "preserved_elements": [
+        "Source path identity",
+        "Git blob identity",
+        "Exact SHA-256 evidence",
+        "Non-protected durable concepts subject to semantic review"
+      ],
+      "removed_or_remodeled_elements": [
+        "Obsolete or conflicting Atlas terminology and authority claims"
+      ],
+      "dependencies_before": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "dependencies_after": [
+        "atlas-prime.md",
+        "atlas-aegis.md",
+        "atlas-knowledge-lifecycle.md",
+        "codex/codex-source-update-standard.md",
+        "specs/atlas-prime/repository-format-v1.md"
+      ],
+      "collision_group_ids": [
+        "C14"
+      ],
+      "collision_effects": [
+        "UPDATE_MEMBER_IDENTITY"
+      ],
+      "reason": "Canonical Codex source changed after accepted delta 0001. Preserve both object identities and the existing provisional migration treatment so later semantic reconciliation uses current bytes without rewriting historical evidence.",
+      "approval_basis": null,
+      "review_state": "DELTA_RECORDED",
+      "notes": "M0-D2 control-plane evidence only. No content movement, overwrite, retirement, supersession, source promotion, writer activation, Workboard transition, or cutover authority."
+    }
+  ],
+  "collision_group_impacts": [
+    {
+      "group_id": "C07",
+      "target_path": "codex/codex-source-update-standard.md",
+      "baseline_member_count": 5,
+      "resulting_member_count": 5,
+      "affected_paths": [
+        "github-pr-workflow.md"
+      ],
+      "effects": [
+        "UPDATE_MEMBER_IDENTITY"
+      ],
+      "notes": "Current source object identity changed; collision membership and preliminary semantic treatment remain unchanged. Separate reconciliation is still required."
+    },
+    {
+      "group_id": "C13",
+      "target_path": "codex/quests/quest-registry.json",
+      "baseline_member_count": 2,
+      "resulting_member_count": 2,
+      "affected_paths": [
+        "codex/atlas-active-workboard.md"
+      ],
+      "effects": [
+        "UPDATE_MEMBER_IDENTITY"
+      ],
+      "notes": "Current source object identity changed; collision membership and preliminary semantic treatment remain unchanged. Separate reconciliation is still required."
+    },
+    {
+      "group_id": "C14",
+      "target_path": "noctua.md",
+      "baseline_member_count": 2,
+      "resulting_member_count": 2,
+      "affected_paths": [
+        "noctua.md"
+      ],
+      "effects": [
+        "UPDATE_MEMBER_IDENTITY"
+      ],
+      "notes": "Current source object identity changed; collision membership and preliminary semantic treatment remain unchanged. Separate reconciliation is still required."
+    }
+  ],
+  "prepared_at": "2026-06-28T04:52:05.357786Z",
+  "prepared_by": "MIGRATION_TOOL",
+  "execution_authority": "NONE",
+  "delta_sha256": "4dae5e3e9f5a7928b332503288291fddf87a7b2148c5eeed461ab4d62757706f",
+  "notes": [
+    "Delta 0002 extends accepted delta 0001 without modifying the frozen 349-entry baseline.",
+    "The added Sunset-to-Codex intake standard receives a provisional same-path FULL mapping only; no source creation is authorized.",
+    "C05 exact reconstruction contains seven members because atlas-vault-map.md targets atlas-index.md.",
+    "Generated paths remain generated evidence and are not manually transferred.",
+    "The canonical Codex Workboard remains authoritative; this delta performs no Workboard mutation or Quest transition.",
+    "Prime remains SHADOW and Codex remains canonical.",
+    "No disposition-ledger creation, content movement, writer activation, promotion, retirement, deletion, or cutover is authorized."
+  ]
+}
