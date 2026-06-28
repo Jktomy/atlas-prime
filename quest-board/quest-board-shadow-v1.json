@@ -28,7 +28,7 @@
           "Codex remains canonical and Prime remains SHADOW.",
           "All 45 approved candidates compiled successfully before publication.",
           "Codex draft PR #183 is open at head 8fb44c9247a8765214b4a525aa0cf5d201ec8735 with 30 changed files.",
-          "Prime draft PR #24 is open at head e1eda7e79c27ecf24b6a14b7e74bef2be73fb0ee with 15 changed files."
+          "Prime draft PR #24 was initially published at Stage 1 head e1eda7e79c27ecf24b6a14b7e74bef2be73fb0ee with 15 changed files and now includes the SHADOW-state reconciliation lineage."
         ],
         "chat_only_or_uncertain": [
           "The draft-PR content is durable on review branches but is not canonical source until separately approved merges and merged-main readback complete.",
