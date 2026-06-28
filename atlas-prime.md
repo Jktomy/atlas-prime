@@ -7,7 +7,7 @@ source_type: "CORE_DOCTRINE"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Codex"
 owner_operation: "Source Governance"
-canonical_scope: "Atlas identity, Project model, source hierarchy, realm shorthand, node and layer roles, construction posture, cutover boundary, and recovery-before-migration doctrine."
+canonical_scope: "Atlas identity, Project model, authority and source hierarchy, realm shorthand, node and layer roles, command safeguards, cutover boundary, and recovery-before-migration doctrine."
 protected_level: "CRITICAL"
 routes_from:
   - "README.md"
@@ -20,7 +20,7 @@ private_boundary: "Do not store secrets, credentials, tokens, MFA or recovery co
 evidence_boundary: "Original evidence systems remain authoritative outside GitHub. Atlas Prime stores only clean source, clean summaries, structured clean state, generated projections, migration provenance, and clean pointers."
 supersedes: []
 cleanup_path: "Keep as compact core doctrine. Move detailed Project, Operation, protocol, and implementation material to routed child files rather than allowing this file to become a second archive."
-last_verified: "2026-06-21"
+last_verified: "2026-06-27"
 ---
 
 # Atlas Prime Core Doctrine
@@ -42,17 +42,18 @@ Noctua watches and verifies.
 Jayson decides permanence.
 ```
 
-## Construction source hierarchy
+## Authority and source hierarchy
 
 1. Current explicit Jayson instruction.
-2. Existing Spear v0.3 foundation preserved in the June 21 Sunset package.
-3. June 21 lifecycle audit and locked decisions.
-4. Current `atlas-prime` merged source.
-5. Current `atlas-codex` as canonical until cutover and as migration evidence.
-6. Approved original evidence sources.
-7. Athena inference, explicitly labeled.
+2. `Jktomy/atlas-codex` durable clean source remains canonical until verified cutover.
+3. Current merged `Jktomy/atlas-prime` source defines proposed successor architecture only.
+4. Current active protocols and source-approved standards.
+5. Approved original evidence systems and private sources for protected facts.
+6. Legacy readable Atlas manuals in Google Drive and Atlas Archive material are retired, historical, or reference-only unless a current explicit Jayson instruction revives them.
+7. Prior project memory and conversation context may support continuity but do not override durable source.
+8. Athena inference must be explicitly labeled.
 
-This construction hierarchy governs the intended Prime design. It does not prematurely revoke the current operational authority of `atlas-codex`.
+This hierarchy governs the intended Prime design without prematurely revoking the operational authority of `atlas-codex`. Migration construction history remains in migration evidence rather than permanent core doctrine.
 
 ## Atlas Project model
 
@@ -76,10 +77,11 @@ Atlas uses twelve Projects:
 Critical classifications:
 
 - Vulcan is a future AI compute Node under Artemis.
-- Crucible is the future local AI services stack on Vulcan or another approved Artemis compute surface.
+- Crucible is the future local AI services stack on Node Vulcan.
 - Nexus is an Operation under Artemis.
 - Sun Maker and Sun Eater are Operations under Helios.
 - Kindling and Grazing Ember remain protected sub-Operations under Helios.
+- Relay and Steam Engine are under Helios.
 - Morningstar belongs under Beacon.
 - Pulse belongs under Raphael.
 - Genesis is a Project.
@@ -150,6 +152,8 @@ Do not migrate broad services or declare source cutover before backup paths and 
 ## Clean-source and evidence rule
 
 GitHub stores clean source, not raw evidence. Original evidence systems remain authoritative.
+
+Legacy readable Atlas manuals in Google Drive are retired or reference-only unless a current explicit Jayson instruction revives them. Google Drive and Google Sheets may still hold protected reference material, working evidence, exports, private registers, and other material that should not be stored raw in GitHub.
 
 - Midas uses Tiller, brokers, statements, Gmail confirmations, and original records.
 - Chiron excludes PHI and raw EHR material.
