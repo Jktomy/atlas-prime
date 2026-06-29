@@ -1,0 +1,78 @@
+{
+  "receipt_version": "1.0",
+  "receipt_id": "execute-receipt-gate-3-example",
+  "stage": "EXECUTE",
+  "transaction_id": "spear-tx-gate-3-contract-example",
+  "mission_id": "atlas-prime.gate-3.contract-example",
+  "arrow_id": "atlas-prime.gate-3.execute.example.v1",
+  "runner": {
+    "adapter": "ARTEMIS_BOW",
+    "operator": "JAYSON"
+  },
+  "authority": {
+    "authority_version": "1.0",
+    "authority_id": "authority-gate-3-execute-example",
+    "stage": "EXECUTE",
+    "granted_by": "JAYSON",
+    "approval_reference": "Exact audited PR head Execute approval",
+    "permitted_actions": [
+      "VERIFY_AUDITED_HEADS",
+      "MERGE_APPROVED_PR",
+      "READBACK_MAIN",
+      "EMIT_EXECUTE_RECEIPT"
+    ],
+    "denied_actions": [
+      "DIRECT_MAIN_WRITE",
+      "FORCE_PUSH",
+      "AUTO_MERGE",
+      "UNAPPROVED_MERGE",
+      "BRANCH_DELETE",
+      "PR_CLOSE",
+      "SCOPE_EXPANSION",
+      "S1_ACTIVATION",
+      "ARTEMIS_ACTIVATION",
+      "MIGRATION",
+      "PROMOTION",
+      "RETIREMENT",
+      "EVIDENCE_DELETION",
+      "GOOGLE_DRIVE_MUTATION",
+      "CUTOVER"
+    ],
+    "merge_authorized": true,
+    "exact_target_binding": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "build_receipt_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "noctua_report_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "result": "PASS",
+  "last_completed_gate": "COMPLETE",
+  "merge_results": [
+    {
+      "repository": "Jktomy/atlas-prime",
+      "pull_request_number": 99,
+      "approved_head_sha": "2222222222222222222222222222222222222222",
+      "merge_commit_sha": "3333333333333333333333333333333333333333",
+      "final_main_sha": "3333333333333333333333333333333333333333",
+      "merge_result": "PASS"
+    }
+  ],
+  "diagnostics_redacted": true,
+  "diagnostics": [],
+  "forbidden_actions_confirmed": [
+    "NO_DIRECT_MAIN_WRITE",
+    "NO_FORCE_PUSH",
+    "NO_AUTO_MERGE",
+    "NO_UNAPPROVED_MERGE",
+    "NO_BRANCH_DELETE",
+    "NO_PR_CLOSE",
+    "NO_SCOPE_EXPANSION",
+    "NO_S1_ACTIVATION",
+    "NO_ARTEMIS_ACTIVATION",
+    "NO_MIGRATION",
+    "NO_PROMOTION",
+    "NO_RETIREMENT",
+    "NO_EVIDENCE_DELETION",
+    "NO_GOOGLE_DRIVE_MUTATION",
+    "NO_CUTOVER"
+  ],
+  "emitted_at": "2026-06-29T16:30:00Z"
+}
