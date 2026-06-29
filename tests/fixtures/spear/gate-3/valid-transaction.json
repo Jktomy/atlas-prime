@@ -1,0 +1,128 @@
+{
+  "transaction_version": "1.0",
+  "transaction_id": "spear-tx-gate-3-contract-example",
+  "mission_id": "atlas-prime.gate-3.contract-example",
+  "title": "Gate 3 contract example",
+  "controlling_preview": {
+    "preview_id": "GATE-3-EXACT-PREVIEW",
+    "preview_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "approved_by": "JAYSON",
+    "approval_reference": "Explicit approval of the exact Gate 3 Preview"
+  },
+  "build_authority": {
+    "authority_version": "1.0",
+    "authority_id": "authority-gate-3-build-example",
+    "stage": "BUILD",
+    "granted_by": "JAYSON",
+    "approval_reference": "Gate 3 exact Build Arrow approval",
+    "permitted_actions": [
+      "VERIFY_STATE",
+      "WRITE_EXACT_CANDIDATES",
+      "CREATE_BRANCH",
+      "CREATE_COMMIT",
+      "PUSH_BRANCH",
+      "CREATE_DRAFT_PR",
+      "READBACK_DRAFT_PR",
+      "EMIT_BUILD_RECEIPT"
+    ],
+    "denied_actions": [
+      "DIRECT_MAIN_WRITE",
+      "FORCE_PUSH",
+      "AUTO_MERGE",
+      "UNAPPROVED_MERGE",
+      "BRANCH_DELETE",
+      "PR_CLOSE",
+      "SCOPE_EXPANSION",
+      "S1_ACTIVATION",
+      "ARTEMIS_ACTIVATION",
+      "MIGRATION",
+      "PROMOTION",
+      "RETIREMENT",
+      "EVIDENCE_DELETION",
+      "GOOGLE_DRIVE_MUTATION",
+      "CUTOVER"
+    ],
+    "merge_authorized": false,
+    "exact_target_binding": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "repository_subtransactions": [
+    {
+      "repository": "Jktomy/atlas-prime",
+      "base_branch": "main",
+      "expected_base_commit": "cde28fcf31ff1686072557a3120ff108898fd976",
+      "deterministic_branch": "source/gate-3-contract-example",
+      "commit_message": "prime: add Gate 3 contract example",
+      "pull_request": {
+        "title": "prime: add Gate 3 contract example",
+        "body_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "base": "main",
+        "head": "source/gate-3-contract-example",
+        "draft": true
+      },
+      "operations": [
+        {
+          "action": "CREATE_FILE",
+          "path": "projects/codex/gate-3-contract-example.md",
+          "payload_path": "payload/projects/codex/gate-3-contract-example.md",
+          "expected_state": "ABSENT",
+          "content_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "git_blob_sha1": "1111111111111111111111111111111111111111",
+          "bytes": 128,
+          "source_type": "AUTHORED_SOURCE"
+        }
+      ],
+      "stop_before_merge": true
+    }
+  ],
+  "candidate_set_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "required_tests": [
+    "schema-valid",
+    "candidate-hash-valid",
+    "changed-file-boundary-valid",
+    "stop-before-merge-valid"
+  ],
+  "noctua_profile": {
+    "profile_id": "noctua.spear-transaction.v1",
+    "profile_version": "1.0",
+    "path": "profiles/noctua/spear-transaction-v1.json",
+    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "cross_repository_order": [
+    "Jktomy/atlas-prime"
+  ],
+  "recovery": {
+    "preserve_partial_state": true,
+    "blind_retry_allowed": false,
+    "cleanup_allowed": false,
+    "recognized_states": [
+      "NOT_STARTED",
+      "LOCAL_VALIDATION_COMPLETE",
+      "BRANCH_CREATED",
+      "COMMIT_CREATED",
+      "COMMIT_PUSHED",
+      "BRANCH_PUSHED_PR_MISSING",
+      "PR_STATE_UNCERTAIN",
+      "DRAFT_PR_VERIFIED",
+      "COMPLETE"
+    ]
+  },
+  "forbidden_actions": [
+    "DIRECT_MAIN_WRITE",
+    "FORCE_PUSH",
+    "AUTO_MERGE",
+    "MERGE",
+    "BRANCH_DELETE",
+    "PR_CLOSE",
+    "RESET_SUCCESSFUL_STATE",
+    "DUPLICATE_PR",
+    "SCOPE_EXPANSION",
+    "S1_ACTIVATION",
+    "ARTEMIS_ACTIVATION",
+    "MIGRATION",
+    "PROMOTION",
+    "RETIREMENT",
+    "EVIDENCE_DELETION",
+    "GOOGLE_DRIVE_MUTATION",
+    "CUTOVER"
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "receipt_version": "1.0",
+  "receipt_id": "build-receipt-gate-3-example",
+  "stage": "BUILD",
+  "transaction_id": "spear-tx-gate-3-contract-example",
+  "mission_id": "atlas-prime.gate-3.contract-example",
+  "arrow_id": "atlas-prime.gate-3.build.example.v1",
+  "runner": {
+    "adapter": "ARTEMIS_BOW",
+    "operator": "JAYSON"
+  },
+  "authority": {
+    "authority_version": "1.0",
+    "authority_id": "authority-gate-3-build-example",
+    "stage": "BUILD",
+    "granted_by": "JAYSON",
+    "approval_reference": "Gate 3 exact Build Arrow approval",
+    "permitted_actions": [
+      "VERIFY_STATE",
+      "WRITE_EXACT_CANDIDATES",
+      "CREATE_BRANCH",
+      "CREATE_COMMIT",
+      "PUSH_BRANCH",
+      "CREATE_DRAFT_PR",
+      "READBACK_DRAFT_PR",
+      "EMIT_BUILD_RECEIPT"
+    ],
+    "denied_actions": [
+      "DIRECT_MAIN_WRITE",
+      "FORCE_PUSH",
+      "AUTO_MERGE",
+      "UNAPPROVED_MERGE",
+      "BRANCH_DELETE",
+      "PR_CLOSE",
+      "SCOPE_EXPANSION",
+      "S1_ACTIVATION",
+      "ARTEMIS_ACTIVATION",
+      "MIGRATION",
+      "PROMOTION",
+      "RETIREMENT",
+      "EVIDENCE_DELETION",
+      "GOOGLE_DRIVE_MUTATION",
+      "CUTOVER"
+    ],
+    "merge_authorized": false,
+    "exact_target_binding": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "package_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "candidate_set_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "result": "PASS",
+  "last_completed_gate": "DRAFT_PR_VERIFIED",
+  "repository_results": [
+    {
+      "repository": "Jktomy/atlas-prime",
+      "expected_base_commit": "cde28fcf31ff1686072557a3120ff108898fd976",
+      "observed_base_commit": "cde28fcf31ff1686072557a3120ff108898fd976",
+      "branch": "source/gate-3-contract-example",
+      "commit_sha": "2222222222222222222222222222222222222222",
+      "changed_files": [
+        {
+          "path": "projects/codex/gate-3-contract-example.md",
+          "content_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "git_blob_sha1": "1111111111111111111111111111111111111111"
+        }
+      ],
+      "pull_request": {
+        "number": 99,
+        "url": "https://github.com/Jktomy/atlas-prime/pull/99",
+        "base": "main",
+        "head": "source/gate-3-contract-example",
+        "head_sha": "2222222222222222222222222222222222222222",
+        "draft": true
+      },
+      "repository_result": "PASS"
+    }
+  ],
+  "diagnostics_redacted": true,
+  "diagnostics": [],
+  "forbidden_actions_confirmed": [
+    "NO_DIRECT_MAIN_WRITE",
+    "NO_FORCE_PUSH",
+    "NO_AUTO_MERGE",
+    "NO_MERGE",
+    "NO_BRANCH_DELETE",
+    "NO_PR_CLOSE",
+    "NO_SCOPE_EXPANSION",
+    "NO_S1_ACTIVATION",
+    "NO_ARTEMIS_ACTIVATION",
+    "NO_MIGRATION",
+    "NO_PROMOTION",
+    "NO_RETIREMENT",
+    "NO_EVIDENCE_DELETION",
+    "NO_GOOGLE_DRIVE_MUTATION",
+    "NO_CUTOVER"
+  ],
+  "emitted_at": "2026-06-29T16:00:00Z"
+}
