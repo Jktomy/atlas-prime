@@ -31,7 +31,7 @@ supersedes: []
 cleanup_path: Keep as the durable source-update standard. Version explicitly when
   repository format or Spear transaction semantics change; do not fork competing update
   standards.
-last_verified: '2026-06-21'
+last_verified: '2026-06-29'
 ---
 
 # Atlas Prime Source Update Standard
@@ -44,7 +44,15 @@ Every durable behavior change needs:
 source + ownership + routing hook + verification readback + cleanup or supersession path.
 ```
 
-This standard preserves the strongest controls from the canonical Codex source-update and Emberline workflows while aligning them to Atlas Prime and Spear v0.3.
+This standard preserves the strongest controls from canonical Codex source-update governance while aligning them to Atlas Prime and Spear v0.3. Emberline remains the independent Quest/Campaign status model; Reforge is the direct Preview route for doctrine reconciliation.
+
+## Emberline and Reforge boundary
+
+Emberline reports the unified Quest/Campaign roadmap, current state, completed and unfinished gates, blockers, dependencies, protected boundaries, provenance, and next safe action.
+
+Emberline may identify stale status or source drift. It is not a generic multi-file source-update engine and does not itself write, merge, migrate, promote, delete, retire, activate, or cut over.
+
+Reforge is the independent direct doctrine-reconciliation route. `REFORGE — [topic]` produces an exact Preview candidate for conflicting or stale doctrine. Reforge does not itself execute the resulting source transaction or expand actor authority.
 
 ## Classification before change
 
@@ -68,7 +76,7 @@ The classification determines metadata, route requirements, write lane, generato
 1. Read the current explicit Jayson instruction.
 2. Read the current target from the exact base commit.
 3. Read related routes, policies, schemas, and protected boundaries.
-4. Classify create, complete replacement, structured operation, generated refresh, migration, or proposal-only work.
+4. Classify create, complete replacement, structured operation, generated refresh, migration, proposal-only work, or a doctrine contradiction requiring a separate Reforge Preview.
 5. Prepare a complete Preview.
 6. Obtain explicit bounded Execute approval when required.
 7. Revalidate the exact base and target hashes.
@@ -78,7 +86,7 @@ The classification determines metadata, route requirements, write lane, generato
 11. Audit exact changed filenames and the complete diff.
 12. Open one scoped draft PR and stop before merge.
 13. Noctua verifies the audited head commit.
-14. Jayson manually merges.
+14. Jayson controls merge directly or through a separately approved exact Execute Arrow bound to the audited PR head.
 15. Read back merged `main` and verify routing and generated consequences.
 16. Update migration or transaction lineage when applicable.
 17. Report changed, skipped, blocked, failed, and deferred items honestly.
@@ -215,7 +223,7 @@ If a connector blocks once:
 - exact changed filenames audited;
 - PR head commit pinned for Noctua review;
 - source PR separated from ordinary generated refresh;
-- manual Jayson merge;
+- Jayson-controlled manual merge or separately approved exact Execute Arrow;
 - post-merge `main` readback required.
 
 ## Failure behavior
@@ -230,6 +238,7 @@ Block when:
 - one file in an atomic set is invalid;
 - a generated file is edited directly;
 - the proposal attempts silent promotion, supersession, or deletion;
+- the proposal treats Emberline as a generic source-update engine or Reforge as execution authority;
 - a normal packet targets Spear, Phoenix Reborn, policies, schemas, workflows, or tests outside its approved route.
 
 Diagnostics MUST redact protected matches.

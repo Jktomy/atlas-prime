@@ -28,7 +28,7 @@ supersedes: []
 cleanup_path: Keep as the safety and authority hub. Detailed mechanics belong in routed
   specifications, policies, protocols, and runbooks. Change only through a protected
   source PR and Noctua audit.
-last_verified: '2026-06-28'
+last_verified: '2026-06-29'
 ---
 
 # Atlas Aegis
@@ -42,13 +42,16 @@ Aegis is the umbrella safety and authority layer for Atlas work. It does not rep
 ```text
 Jayson directs, approves exact stages, accepts residual risk, and controls merge.
 Athena interprets, ranks, validates, and authors complete semantic content.
-Spear converts Jayson-approved conversation intent into registered deterministic source-change mechanics.
+Spear converts Jayson-approved intent into registered deterministic mechanics only.
 Noctua independently audits, verifies, and reports outcomes.
-Phoenix Flare selects the burn disposition through read-only analysis.
-Controlled Burn performs semantic compaction and classification.
-Phoenix Burn analyzes Golden Wing promotion into durable source.
+Phoenix Flare recommends exactly Controlled Burn, Phoenix Burn, or Sunset through read-only triage.
+Controlled Burn performs focused bounded semantic distillation.
+Phoenix Burn performs Standard or Full archive, source, alignment, and restart-readiness reconciliation.
+Emberline reports the unified Quest/Campaign roadmap and status.
+Reforge prepares exact doctrine-reconciliation Previews without execution authority.
+Sunset uses a two-stage essential archive closeout.
+Solar Eclipse transfers active work as the active-transfer form of Sunset.
 Phoenix Reborn independently proves recovery and integrity.
-Sunset closes sessions and preserves restart-safe continuity.
 ```
 
 No actor may silently acquire another actor's authority.
@@ -90,9 +93,23 @@ Execute approval applies only to the matching Preview and scope. A packet upload
 
 Prime Quest Board is the SHADOW successor to the canonical Codex Workboard.
 
-Quest is the parent, Campaign is the child/subquest, and Emberline is the complete Quest status model.
+Quest is the parent, Campaign is the child/subquest, and Emberline is the unified read-only Quest/Campaign roadmap and status model across the repository transition.
+
+Emberline may identify stale status or source drift. Reforge and the normal source-update workflow prepare any durable doctrine correction. Neither Emberline nor Reforge silently writes.
 
 The Bow launches one immutable Arrow with sealed stages. A stage receipt never grants later-stage authority.
+
+## Phoenix and closeout boundaries
+
+- Phoenix Flare has exactly three dispositions: Controlled Burn, Phoenix Burn, and Sunset.
+- Blocked is a workflow state. No Action is not a separate disposition.
+- `SUNSET` authors an exact archive Preview candidate.
+- `COMPLETE SUNSET [Archive ID]` performs only the exact approved archive transaction.
+- Solar Eclipse closes only the old chat after handshake PASS plus durable archive and Quest/Workboard readback; it does not complete the Quest or Campaign.
+- Reforge is Preview-only doctrine reconciliation.
+- Phoenix Reborn remains independent recovery proof.
+
+None of these relationships activates Prime writers, registered operations, migration, promotion, source cutover, or external automation.
 
 ## Stop conditions
 

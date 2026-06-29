@@ -7,9 +7,10 @@ source_type: CORE_DOCTRINE
 authority_class: CANONICAL_AUTHORED_SOURCE
 owner_project: Codex
 owner_operation: Source Governance
-canonical_scope: Controlling sequence, semantic authority, provenance states, absorption
-  rules, and transitional predecessor safeguards for Sunset, Feathers, Quests, Phoenix
-  Flare, Controlled Burn, Golden Wing, Phoenix Burn, Spear, Noctua, and Phoenix Reborn.
+canonical_scope: Controlling lifecycle relationships, semantic authority, provenance states,
+  absorption rules, and transitional safeguards for Sunset, Solar Eclipse, Feathers,
+  Quests, Emberline, Phoenix Flare, Controlled Burn, Golden Wing, Phoenix Burn,
+  Reforge, Spear, Noctua, and Phoenix Reborn.
 protected_level: CRITICAL
 routes_from:
 - README.md
@@ -27,7 +28,7 @@ supersedes: []
 cleanup_path: Keep as the single controlling lifecycle map. Specialized files may
   add detail but must not redefine actor authority, Phoenix meanings, or the order
   of promotion and recovery.
-last_verified: '2026-06-21'
+last_verified: '2026-06-29'
 ---
 
 # Atlas Knowledge Lifecycle
@@ -38,23 +39,33 @@ This file is the controlling lifecycle map for Atlas Prime. Specialized doctrine
 
 ## Lifecycle
 
+Atlas lifecycle protocols are related but do not form one mandatory linear pipeline.
+
 ```text
-Session
-→ Athena creates a Sunset Packet
-→ Spear validates and deterministically renders one Feather Entry
-→ Monthly Atlas Feather Archive
-→ Phoenix Flare
-→ Controlled Burn when needed
-→ Athena validates promotion candidates
-→ Golden Wing
-→ Phoenix Burn
-→ Athena authors complete destination files
-→ Spear validates and stages one atomic repository transaction
-→ Noctua audits
-→ Jayson approves and manually merges
-→ merged-main readback
-→ Atlas absorbs
-→ Phoenix Reborn
+Session or milestone
+├─ Phoenix Flare -> exactly one recommendation:
+│  ├─ Controlled Burn
+│  ├─ Phoenix Burn
+│  └─ Sunset
+├─ Emberline -> independent Quest/Campaign roadmap and status
+├─ Reforge -> independent doctrine-reconciliation Preview
+└─ Phoenix Reborn -> independent recovery and integrity proof
+
+SUNSET
+-> Athena authors one exact Sunset Packet Preview
+-> Jayson approves COMPLETE SUNSET [Archive ID]
+-> Spear validates and deterministically renders one Monthly Feather entry
+-> Noctua verifies the durable archive and continuity readback
+-> the session becomes archive-ready
+
+Phoenix Burn
+-> Standard or Full archive, Feather, Golden Wing, active-source, alignment, and restart-readiness reconciliation
+-> Reforge Preview when doctrine correction is needed
+-> exact separately approved source transaction
+-> Noctua audit
+-> Jayson-controlled merge
+-> merged-main readback
+-> Atlas absorbs
 ```
 
 ## Semantic versus mechanical authority
@@ -64,13 +75,15 @@ Session
 Athena performs semantic work:
 
 - session interpretation;
-- Sunset authorship;
+- Sunset and Solar Eclipse authorship;
 - Feather meaning;
-- Quest creation, update, state, and ranking decisions;
+- Quest, Campaign, and Emberline status interpretation;
 - Controlled Burn;
+- Phoenix Flare triage;
+- Standard and Full Phoenix Burn reconciliation;
 - recurrence and contradiction analysis;
 - Golden Wing validation;
-- Phoenix Burn;
+- Reforge Preview authorship;
 - destination selection;
 - complete-file authorship;
 - migration meaning and preservation decisions.
@@ -105,30 +118,47 @@ Jayson controls unresolved decisions, Preview -> Execute approval, source promot
 
 ### Sunset
 
-Sunset closes a session. Athena authors meaning. A normal Sunset does not create a standalone GitHub harvest file by default in the target architecture.
+Sunset is the essential archival closeout for a session.
+
+`SUNSET` is Preview-only. Athena authors one exact Sunset Packet candidate and reports what is durable, chat-only, uncertain, unfinished, and protected.
+
+`COMPLETE SUNSET [Archive ID]` executes only the exact approved archive transaction. The session is not archive-ready until the durable archive and required Quest/Workboard continuity are read back and verified.
 
 ### Monthly Feather Archives
 
-Each Sunset produces one concise entry in the correct monthly archive. Entries are append-oriented, uniquely identified, stale-hash protected, and amendment-based. Closed months reject ordinary appends.
+Prime's durable Essential Sunset Archive representation is one concise, verified, stable-ID entry in the correct Monthly Atlas Feather Archive unless a separately approved exception exists.
 
-### Quest Registry and Quest Board
+Entries are append-oriented, stale-hash protected, and amendment-based. Closed months reject ordinary appends. Feathers are continuity provenance, not governing doctrine.
 
-Quest Registry is the authoritative current work snapshot. Quest events preserve append-only history. Quest Board is a small deterministic projection, not an independent authority source.
+### Solar Eclipse
+
+Solar Eclipse is the active-transfer form of Sunset. It transfers a compact active Emberline checkpoint to a receiving chat and closes only the old chat after handshake PASS plus durable archive and Quest/Workboard readback.
+
+Solar Eclipse does not complete the Quest, Campaign, milestone, or continuing workstream.
+
+### Quest Registry, Quest Board, and Emberline
+
+Quest Registry is the authoritative current work snapshot after cutover. Quest events preserve append-only history. Quest Board is a small deterministic projection, not an independent authority source.
+
+Emberline is the independent unified Quest/Campaign roadmap and status model. It may identify status or source drift, but it is not a generic source-update engine, Phoenix Burn stage, or Phoenix Flare disposition.
 
 ### Phoenix Flare
 
-Phoenix Flare is read-only Athena analysis with exactly these primary dispositions:
+Phoenix Flare is read-only Athena triage that recommends exactly one disposition:
 
-- `NO_BURN`
-- `CONTROLLED_BURN`
-- `PHOENIX_BURN`
-- `BLOCKED`
+1. **Controlled Burn**
+2. **Phoenix Burn**
+3. **Sunset**
 
-It is not an umbrella family and does not perform repository changes.
+Blocked is a workflow state. No Action is not a separate disposition; a clean session that should close routes to Sunset.
+
+Phoenix Flare recommends. It does not write source, create an archive, update a register, merge, migrate, delete, retire, activate, or perform an external action.
 
 ### Controlled Burn
 
-Controlled Burn is Athena's semantic compaction, consolidation, contradiction review, and promotion-candidate classification. Recurrence alone never grants promotion.
+Controlled Burn is focused semantic distillation for one bounded topic, chat, workflow, archive cluster, or repeated context set.
+
+It preserves history, classifies findings, and routes doctrine contradictions to Reforge. Recurrence alone never grants promotion.
 
 ### Golden Wing
 
@@ -136,7 +166,19 @@ Golden Wing is a validated promotion holding surface, not a general archive. Can
 
 ### Phoenix Burn
 
-Phoenix Burn is Athena's Golden Wing -> durable-source promotion analysis. Athena authors complete final destination files. Spear validates and stages mechanics only.
+Phoenix Burn is broad Atlas reconciliation, not only Golden Wing promotion analysis.
+
+A **Standard Phoenix Burn** reviews every Essential Sunset Archive or Feather created since the last verified Burn, unresolved earlier findings, active source, routing, Quest/Workboard state, and open decisions.
+
+A **Full Phoenix Burn** reviews the complete archive and Feather corpus, all unresolved prior findings, active doctrine, and successor architecture.
+
+Phoenix Burn classifies what is already absorbed, historical only, a Quest/Workboard continuity need, a Reforge candidate, protected external evidence, or an unresolved conflict. A restart-safe verdict requires either no source changes or merged-main readback of every required approved change.
+
+### Reforge
+
+Reforge is the independent direct doctrine-reconciliation route.
+
+`REFORGE — [topic]` produces an exact Preview candidate. Reforge does not itself write, merge, migrate, promote, delete, retire, activate, cut over, or expand actor authority.
 
 ### Absorption
 
@@ -153,7 +195,9 @@ Material is not `ABSORBED` merely because it appears in a packet, plan, branch, 
 
 ### Phoenix Reborn
 
-Every completed Phoenix Flare creates an eventual recovery obligation after the selected work reaches a stable verified state.
+Phoenix Reborn is independent backup, restore, and repository-integrity proof. It is not a Phoenix Flare disposition, Phoenix Burn stage, Sunset stage, or Reforge stage.
+
+A Phoenix Flare or Phoenix Burn may identify a recovery obligation, but only the separate approved Phoenix Reborn contract can satisfy it.
 
 Valid terminal postures are:
 
@@ -169,19 +213,14 @@ A backup upload alone is not Phoenix Reborn. Full Reborn requires the approved b
 
 The Active Workboard remains canonical until every row is explicitly inventoried and mapped to a Quest record, Quest event history, historical reference, or approved omission reason. No row may disappear silently.
 
-### Emberline -> Spear and source-update governance
+### Emberline continuity
 
-Emberline remains operationally canonical until its safeguards are demonstrably absorbed by:
+Emberline is the unified Quest/Campaign roadmap and status model across the Codex Workboard and Prime Quest Board transition.
 
-- Spear packet and plan binding;
-- atomic transaction behavior;
-- Noctua verification;
-- Quest continuity;
-- source + routing + readback + cleanup discipline;
-- honest skipped, blocked, and manual-item reporting.
+It preserves current state, completed and unfinished gates, blockers, dependencies, durable versus uncertain context, protected boundaries, source and receipt lineage, next safe action, and the next approval gate.
 
-Only then may Emberline receive an explicit supersession or retirement disposition.
+Emberline identifies source drift. Reforge and the normal source-update workflow prepare any durable correction. Emberline does not silently write, merge, migrate, promote, delete, retire, activate, or cut over.
 
 ## Provenance rule
 
-Feathers, Quest events, Burn Reports, Golden Wing candidates, Phoenix Burn assessments, Spear packets, plans, receipts, PR discussions, and recovery receipts preserve provenance. None automatically becomes canonical by age, repetition, storage location, or successful automation.
+Sunset Packets, Essential Sunset Archive Feather entries, Solar Eclipse handshakes, Quest events, Emberline checkpoints, Burn Reports, Golden Wing candidates, Phoenix Burn assessments, Reforge Previews, Spear packets, plans, receipts, PR discussions, and recovery receipts preserve provenance. None automatically becomes canonical by age, repetition, storage location, or successful automation.

@@ -1,7 +1,7 @@
 ---
 title: Atlas Prime Repository Format v1
 atlas_id: atlas-prime.repository-format.v1
-format_version: '1.0'
+format_version: '1.1'
 status: PROPOSED
 source_type: SPECIFICATION
 authority_class: TOOL_CONTRACT
@@ -32,9 +32,10 @@ evidence_boundary: Original evidence systems remain authoritative. Atlas Prime s
   clean source, structured clean state, generated projections, migration provenance,
   and clean pointers.
 supersedes: []
-cleanup_path: Version through a new repository-format specification. Do not silently
-  rewrite v1 after implementation depends on it.
-last_verified: '2026-06-21'
+cleanup_path: Version through a new repository-format specification or an explicitly
+  versioned compatible revision. Do not silently rewrite v1 after implementation depends
+  on it.
+last_verified: '2026-06-29'
 ---
 
 # Atlas Prime Repository Format v1
@@ -46,6 +47,14 @@ This specification defines the complete target format of `Jktomy/atlas-prime`.
 It is a format contract, not a declaration that all target files already exist. The repository format and the already-existing Spear v0.3 foundation are co-designed and mutually validated. They are committed in narrow dependency-ordered PRs, then substantive Atlas content is rebuilt through audited Spear packets and manually merged pull requests after writer activation receives a separate approval.
 
 `Jktomy/atlas-codex` remains canonical until verified cutover.
+
+## 1A. Compatible revision record
+
+This file remains the Atlas Prime repository-format v1 contract. `format_version: '1.1'` is an explicitly versioned compatible revision of v1.
+
+Revision 1.1 synchronizes Phoenix, Sunset, Solar Eclipse, Emberline, Reforge, and Jayson-controlled merge wording with verified canonical Codex doctrine. It does not change repository topology, authority classes, schemas, policies, registered operations, writer authorization, repository state, migration authority, or cutover requirements.
+
+Existing v1 path and tool-contract consumers remain compatible. Any incompatible repository-format change still requires a new versioned specification.
 
 ## 2. Normative language
 
@@ -64,7 +73,7 @@ When this specification conflicts with a current explicit Jayson instruction, th
 6. Original approved evidence sources.
 7. Athena inference, explicitly labeled.
 
-Older Codex terminology MUST NOT override the newer v0.3 lifecycle. Conflicting predecessor meanings require an explicit migration disposition.
+Conflicting predecessor meanings MUST be reconciled through an explicit Reforge Preview and, when migration lineage is affected, an explicit migration disposition. Codex remains canonical until verified cutover.
 
 ## 3. Core principles
 
@@ -373,30 +382,45 @@ Corrections to append-only ledgers create new correction events. They do not sil
 
 ## 13. Knowledge lifecycle reservations
 
-The following meanings are reserved for Prime and MUST NOT be redefined by migrated Codex language.
+The following meanings are reserved for Prime and MUST NOT be redefined by migrated predecessor language.
 
 ### Sunset
 
-Athena interprets the session and authors the Sunset Packet. Spear validates and deterministically renders its archival section into one Monthly Feather entry. Ordinary sessions do not create one permanent file each.
+Sunset is the essential archival closeout for a session.
+
+`SUNSET` is Preview-only. Athena authors one exact Sunset Packet candidate.
+
+`COMPLETE SUNSET [Archive ID]` performs only the exact approved archive transaction. Spear validates and deterministically renders the approved archival section into one stable-ID Monthly Feather entry. The session is not archive-ready until the durable archive and required Quest/Workboard continuity are read back and verified.
 
 ### Monthly Atlas Feather Archives
 
+Prime's durable Essential Sunset Archive representation is one concise verified entry in the correct Monthly Atlas Feather Archive unless a separately approved exception exists.
+
 Monthly Feathers are summarized, append-oriented continuity memory. They are not transcripts or governing doctrine. Closed months block normal append; late material uses a dated addendum; corrections use amendments rather than silent rewrites.
+
+### Solar Eclipse
+
+Solar Eclipse is the active-transfer form of Sunset. It transfers a compact active Emberline checkpoint and closes only the old chat after handshake PASS plus durable archive and Quest/Workboard readback.
+
+Solar Eclipse does not complete the Quest, Campaign, milestone, or continuing workstream.
 
 ### Phoenix Flare
 
-Phoenix Flare is **read-only Athena analysis that decides whether a Controlled Burn or Phoenix Burn is needed**. Its disposition is:
+Phoenix Flare is read-only Athena triage that recommends exactly one disposition:
 
-- `NO_BURN`
-- `CONTROLLED_BURN`
-- `PHOENIX_BURN`
-- `BLOCKED`
+1. **Controlled Burn**
+2. **Phoenix Burn**
+3. **Sunset**
 
-Phoenix Flare does not perform source mutation, promotion, backup upload, or automation execution.
+Blocked is a workflow state. No Action is not a separate disposition.
+
+Phoenix Flare does not perform source mutation, promotion, archive execution, register mutation, backup upload, merge, migration, deletion, retirement, activation, cutover, or automation execution.
 
 ### Controlled Burn
 
-Athena semantically distills repeated, bloated, conflicting, or stale knowledge and classifies findings:
+Controlled Burn is focused semantic distillation for one bounded topic, chat, workflow, archive cluster, or repeated context set.
+
+Athena may classify findings as:
 
 - `PROMOTE`
 - `MERGE_WITH_EXISTING`
@@ -406,7 +430,7 @@ Athena semantically distills repeated, bloated, conflicting, or stale knowledge 
 - `SUPERSEDE`
 - `NEEDS_JAYSON`
 
-Controlled Burn does not silently delete history or promote doctrine.
+Controlled Burn preserves history, never silently promotes doctrine, and routes doctrine contradictions to Reforge.
 
 ### Golden Wing
 
@@ -414,9 +438,25 @@ Golden Wing holds Athena-validated or explicitly Jayson-directed promotion candi
 
 ### Phoenix Burn
 
-Phoenix Burn is **Athena's Golden Wing → durable-source promotion analysis**. Athena validates candidates against doctrine, ownership, dependencies, safety, duplication, supersession, source state, and restart value, then authors complete proposed destination files.
+Phoenix Burn is broad Atlas reconciliation, not only Golden Wing promotion analysis.
 
-Spear validates and stages the deterministic repository transaction. Spear does not invent the verdict or creatively rewrite destination content.
+A **Standard Phoenix Burn** reviews every Essential Sunset Archive or Feather created since the last verified Burn, unresolved earlier findings, active source, routing, Quest/Workboard state, and open decisions.
+
+A **Full Phoenix Burn** reviews the complete archive and Feather corpus, all unresolved prior findings, active doctrine, and successor architecture.
+
+Phoenix Burn classifies findings as already absorbed, historical only, Quest/Workboard continuity needed, Reforge candidate, protected external evidence, or unresolved conflict. A restart-safe verdict requires either no source changes or merged-main readback of every required approved change.
+
+### Reforge
+
+Reforge is the independent direct doctrine-reconciliation route.
+
+`REFORGE — [topic]` produces an exact Preview candidate. Reforge does not itself write, merge, migrate, promote, delete, retire, activate, cut over, or expand actor authority.
+
+### Emberline
+
+Emberline is the independent unified Quest/Campaign roadmap and status model.
+
+It may identify stale status or source drift, but it is not a generic source-update engine, Phoenix Burn stage, or Phoenix Flare disposition. Durable changes route through Reforge or the normal source-update workflow.
 
 ### Noctua
 
@@ -424,19 +464,17 @@ Noctua independently audits packets, changed filenames, hashes, diffs, routes, t
 
 ### Phoenix Reborn
 
-Phoenix Reborn is independent backup, restore, and repository-integrity proof. It is the desired terminal state of every completed Phoenix Flare cycle.
+Phoenix Reborn is independent backup, restore, and repository-integrity proof. It is not a Phoenix Flare disposition, Phoenix Burn stage, Sunset stage, or Reforge stage.
 
-A cycle resolves to:
+A Flare or Burn may identify a recovery obligation. Only the separately approved Phoenix Reborn contract can satisfy it.
+
+Valid terminal postures are:
 
 - `PHOENIX_REBORN`
 - `PHOENIX_REBORN_ALREADY_SATISFIED`
 - `BLOCKED_WITH_REBORN_PENDING`
 
 The future n8n and Google Drive workflow is reserved but not authorized by this format contract. Upload success alone MUST NOT be represented as full Phoenix Reborn unless the approved proof level is satisfied.
-
-### Emberline
-
-Emberline is retired from the Prime design. Useful safeguards are absorbed into Work/Quest continuity, Sunset, Spear, source-update standards, and Noctua. Migration references to Emberline require `REMODEL`, `SUPERSEDE`, `HISTORICAL_REFERENCE`, or another explicit disposition.
 
 ## 14. Spear boundary
 
@@ -481,7 +519,7 @@ Preview
 → audit diff and tests
 → open draft PR
 → Noctua audit
-→ Jayson manual merge
+→ Jayson-controlled manual merge or separately approved exact Execute Arrow
 → verify merge record and merged-main readback
 ```
 
@@ -622,7 +660,7 @@ The foundation PR is acceptable only when:
 - protected-source boundaries are at least as strong as canonical Codex;
 - no unexplained doctrine removal is hidden inside the format PR;
 - a clean diff and post-merge readback are available;
-- Jayson manually merges.
+- Jayson controls merge directly or through a separately approved exact Execute Arrow.
 
 ## 21. Cutover gates
 
@@ -670,6 +708,6 @@ Changes require:
 - migration notes;
 - Noctua audit;
 - Preview → Execute;
-- manual merge.
+- Jayson-controlled manual merge or separately approved exact Execute Arrow.
 
 No tool may silently reinterpret v1.
