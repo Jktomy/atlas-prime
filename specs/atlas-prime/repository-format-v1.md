@@ -1,7 +1,7 @@
 ---
 title: Atlas Prime Repository Format v1
 atlas_id: atlas-prime.repository-format.v1
-format_version: '1.0'
+format_version: '1.1'
 status: PROPOSED
 source_type: SPECIFICATION
 authority_class: TOOL_CONTRACT
@@ -32,8 +32,9 @@ evidence_boundary: Original evidence systems remain authoritative. Atlas Prime s
   clean source, structured clean state, generated projections, migration provenance,
   and clean pointers.
 supersedes: []
-cleanup_path: Version through a new repository-format specification. Do not silently
-  rewrite v1 after implementation depends on it.
+cleanup_path: Version through a new repository-format specification or an explicitly
+  versioned compatible revision. Do not silently rewrite v1 after implementation depends
+  on it.
 last_verified: '2026-06-29'
 ---
 
@@ -46,6 +47,14 @@ This specification defines the complete target format of `Jktomy/atlas-prime`.
 It is a format contract, not a declaration that all target files already exist. The repository format and the already-existing Spear v0.3 foundation are co-designed and mutually validated. They are committed in narrow dependency-ordered PRs, then substantive Atlas content is rebuilt through audited Spear packets and manually merged pull requests after writer activation receives a separate approval.
 
 `Jktomy/atlas-codex` remains canonical until verified cutover.
+
+## 1A. Compatible revision record
+
+This file remains the Atlas Prime repository-format v1 contract. `format_version: '1.1'` is an explicitly versioned compatible revision of v1.
+
+Revision 1.1 synchronizes Phoenix, Sunset, Solar Eclipse, Emberline, Reforge, and Jayson-controlled merge wording with verified canonical Codex doctrine. It does not change repository topology, authority classes, schemas, policies, registered operations, writer authorization, repository state, migration authority, or cutover requirements.
+
+Existing v1 path and tool-contract consumers remain compatible. Any incompatible repository-format change still requires a new versioned specification.
 
 ## 2. Normative language
 
