@@ -4,7 +4,7 @@
   "source_workboard": {
     "repository": "Jktomy/atlas-codex",
     "path": "codex/atlas-active-workboard.md",
-    "commit": "0f6e8c0bc47b0faec92b219070b432ff47edc372",
+    "commit": "091c7e88f6403e93a9016670cb5a872b4c8d0c7d",
     "authority": "CANONICAL"
   },
   "quests": [
@@ -18,40 +18,44 @@
         "Phoenix"
       ],
       "status": "ACTIVE",
-      "desired_end_state": "A verified Atlas Prime successor repository with Quest Board continuity, controlled source evolution, recovery proof, and an explicitly approved cutover from Atlas Codex.",
+      "desired_end_state": "A verified Atlas Prime successor repository with controlled source evolution, equivalent Spear and Bow execution evidence, recovery proof, and an explicitly approved cutover from Atlas Codex.",
       "emberline": {
         "current_campaign_id": "spear-bow-arrow-development",
-        "current_gate": "Stage 1 draft PRs created; exact-head Noctua audit and merge-consent reconciliation are now required.",
+        "current_gate": "Gates 1-2 execution convergence is using the approved CLI-primary Build Arrow route; exact PR heads and receipts must be audited before any Execute Arrow is prepared.",
         "completed_durable_work": [
           "Prime SHADOW repository foundation exists.",
           "Ordered delta 0002 is closed.",
           "Codex remains canonical and Prime remains SHADOW.",
-          "All 45 approved candidates compiled successfully before publication.",
-          "Codex draft PR #183 is open at head 8fb44c9247a8765214b4a525aa0cf5d201ec8735 with 30 changed files.",
-          "Prime draft PR #24 was initially published at Stage 1 head e1eda7e79c27ecf24b6a14b7e74bef2be73fb0ee with 15 changed files and now includes the SHADOW-state reconciliation lineage."
+          "Codex PR #183 merged at 091c7e88f6403e93a9016670cb5a872b4c8d0c7d.",
+          "Prime PR #24 merged at 0d2249b864a90804605b7bfa47ac189e51d3e431.",
+          "One Massive Arrow architecture is merged and read back.",
+          "Jayson approved Bow and Arrow CLI as the primary repository-mutation route for Gates 1-8.",
+          "The execution hierarchy is Athena first, Artemis Local Operator second, and Jayson as final manual fallback while Jayson remains ultimate authority."
         ],
         "chat_only_or_uncertain": [
-          "The draft-PR content is durable on review branches but is not canonical source until separately approved merges and merged-main readback complete.",
-          "The Quest completion range remains a broad low-confidence estimate pending merge/readback, C07, later migration gates, recovery proof, and cutover."
+          "Exact Gates 1-2 convergence PR numbers and head SHAs are transaction evidence and are read at audit time rather than embedded prospectively in authored source.",
+          "The Quest completion range remains broad pending C07, S1/Bow proof, later migration waves, recovery proof, and cutover."
         ],
         "remaining_work": [
-          "Complete Noctua audit against the exact Codex PR #183 and Prime PR #24 heads.",
-          "Resolve any audit findings without broadening the approved file boundaries.",
-          "Obtain explicit Jayson merge approval bound to the exact audited PR heads.",
-          "If approved, merge Codex before Prime and verify merged-main readback.",
-          "Keep generated-output follow-through separate and separately gated if required.",
-          "Resume C07 and later migration gates after this architecture gate is closed.",
+          "Complete the Gates 1-2 Build Arrow and read back both draft PR heads.",
+          "Complete Noctua against exact transaction receipts, filenames, diffs, and PR heads.",
+          "Prepare an Execute Arrow only after Jayson explicitly approves exact audited heads.",
+          "Merge Codex before Prime and verify both main heads.",
+          "Reconcile the canonical Codex Workboard after exact convergence lineage exists.",
+          "Create runner-neutral transaction and common receipt contracts in Gate 3.",
+          "Prove GitHub-native Spear, local Bow, recovery, Artemis compatibility, and coordinated transactions in Gates 4-7.",
+          "Resume C07 and bounded migration through Gate 8.",
           "Prove Quest Board cutover and rollback before authority changes."
         ],
-        "protected_boundary_posture": "No raw Drive, finance, health, clinic, runtime, account, or infrastructure evidence belongs in GitHub.",
-        "next_safe_action": "Complete Noctua audit of Codex PR #183 and Prime PR #24 at their exact current heads, then prepare the exact merge-consent gate.",
-        "next_approval_gate": "Explicit Jayson merge approval bound to Codex head 8fb44c9247a8765214b4a525aa0cf5d201ec8735 and the final audited Prime PR #24 head after this reconciliation commit.",
+        "protected_boundary_posture": "No raw Drive, finance, health, clinic, runtime, account, network, device, or infrastructure evidence belongs in GitHub.",
+        "next_safe_action": "Fire the Gates 1-2 Build Arrow, preserve its receipts, and perform exact-head Noctua readback.",
+        "next_approval_gate": "Explicit Jayson approval bound to the exact audited Codex and Prime convergence PR heads before an Execute Arrow exists.",
         "restart_safe": true,
         "solar_eclipse_ready": true,
         "sunset_ready": false,
         "must_not_happen_yet": [
-          "Do not merge either PR until Noctua passes on the exact current heads and Jayson gives explicit merge approval.",
-          "Do not activate S1, move or delete Drive material, generate or merge follow-through reports, promote Prime, retire Codex, or cut over."
+          "Do not merge either convergence PR before exact-head Noctua and explicit Jayson approval.",
+          "Do not activate S1 or Artemis, move or delete Drive material, generate or merge follow-through reports, promote Prime, retire Codex, or cut over."
         ]
       },
       "campaigns": [
@@ -61,18 +65,18 @@
           "title": "Atlas Codex to Prime Migration",
           "status": "ACTIVE",
           "required_for_quest_completion": true,
-          "current_gate": "Architecture draft PRs #183 and #24 are open under Noctua review; C07 remains the next protected semantic gate after merge and readback closure.",
+          "current_gate": "C07 remains the next protected read-only semantic gate after Gates 1-2 convergence closes.",
           "completion_range": {
             "min": 15,
             "max": 30
           },
           "confidence": "MEDIUM",
           "dependencies": [
-            "one-massive-arrow-architecture"
+            "spear-bow-arrow-development"
           ],
           "blockers": [],
-          "next_safe_action": "Complete the current exact-head PR audit and preserve C07 as the next separate read-only semantic reconciliation gate.",
-          "last_verified": "2026-06-28"
+          "next_safe_action": "Close execution convergence, then perform C07 read-only semantic reconciliation and stop at Preview.",
+          "last_verified": "2026-06-29"
         },
         {
           "campaign_id": "google-drive-dependency-retirement",
@@ -80,18 +84,18 @@
           "title": "Google Drive Dependency Retirement",
           "status": "ACTIVE",
           "required_for_quest_completion": true,
-          "current_gate": "The retirement plan, exception register, reconciliation harvest, and policy routing changes are in Codex draft PR #183 and are not canonical until merge/readback.",
+          "current_gate": "The GitHub governance foundation is merged; no Drive mutation or cleanup is authorized.",
           "completion_range": {
             "min": 10,
             "max": 25
           },
           "confidence": "LOW",
           "dependencies": [
-            "spear-bow-arrow-development"
+            "codex-to-prime-migration"
           ],
           "blockers": [],
-          "next_safe_action": "Audit the Drive-governance changes in Codex PR #183; no Drive mutation or cleanup is authorized.",
-          "last_verified": "2026-06-28"
+          "next_safe_action": "Continue read-only dependency reconciliation only when separately routed.",
+          "last_verified": "2026-06-29"
         },
         {
           "campaign_id": "spear-bow-arrow-development",
@@ -99,16 +103,16 @@
           "title": "Athena's Spear and Artemis's Bow and Arrow",
           "status": "ACTIVE",
           "required_for_quest_completion": true,
-          "current_gate": "Stage 1 publication is complete: Codex PR #183 and Prime PR #24 are open as drafts; exact-head Noctua and merge consent are next.",
+          "current_gate": "Gates 1-2 CLI-primary architecture convergence Build Arrow.",
           "completion_range": {
-            "min": 25,
+            "min": 30,
             "max": 45
           },
           "confidence": "MEDIUM",
           "dependencies": [],
           "blockers": [],
-          "next_safe_action": "Complete Noctua on both exact PR heads and prepare a separately approved merge-and-readback route if the audit passes.",
-          "last_verified": "2026-06-28"
+          "next_safe_action": "Create and audit the exact Codex and Prime convergence draft PRs; stop before merge.",
+          "last_verified": "2026-06-29"
         },
         {
           "campaign_id": "quest-board-emberline-architecture",
@@ -116,9 +120,9 @@
           "title": "Quest Board and Emberline Architecture",
           "status": "ACTIVE",
           "required_for_quest_completion": true,
-          "current_gate": "The SHADOW schema, crosswalk, template, and parent Quest checkpoint are in Prime PR #24; this checkpoint has been reconciled to the actual Stage 1 state and requires re-audit.",
+          "current_gate": "SHADOW continuity is being reconciled to the merged architecture and CLI-primary Gates 1-8 posture.",
           "completion_range": {
-            "min": 20,
+            "min": 25,
             "max": 40
           },
           "confidence": "LOW",
@@ -126,20 +130,20 @@
             "spear-bow-arrow-development"
           ],
           "blockers": [],
-          "next_safe_action": "Re-audit Prime PR #24 at its new head and keep Quest Board authority SHADOW until a separately proven cutover.",
-          "last_verified": "2026-06-28"
+          "next_safe_action": "Audit this SHADOW update and keep authority SHADOW until separately proven cutover.",
+          "last_verified": "2026-06-29"
         }
       ],
       "completion_range": {
         "min": 15,
         "max": 30,
-        "basis": "Control-plane foundation, delta closure, candidate compilation, and coordinated draft PRs exist, but merge/readback, C07, generated follow-through where required, recovery proof, and cutover remain."
+        "basis": "Architecture and merge lineage exist, but convergence closure, C07, transaction contracts, runner proofs, migration waves, recovery proof, and cutover remain."
       },
       "confidence": "LOW",
       "blockers": [],
-      "next_safe_action": "Complete Noctua on the exact current PR heads and prepare the exact merge-consent gate.",
-      "next_approval_gate": "Explicit Jayson merge approval bound to the final audited Codex PR #183 and Prime PR #24 head SHAs.",
-      "last_verified": "2026-06-28"
+      "next_safe_action": "Fire and audit the Gates 1-2 Build Arrow.",
+      "next_approval_gate": "Explicit Jayson merge approval bound to exact audited convergence PR heads.",
+      "last_verified": "2026-06-29"
     }
   ]
 }
