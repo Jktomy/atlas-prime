@@ -1,10 +1,10 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "authority_state": "SHADOW",
   "source_workboard": {
     "repository": "Jktomy/atlas-codex",
     "path": "codex/atlas-active-workboard.md",
-    "commit": "30b0f33ff571f8c2a7798224c34051781129b921",
+    "commit": "c3e664d429d553a41975f9df47ba946dbe402550",
     "authority": "CANONICAL"
   },
   "quests": [
@@ -17,44 +17,43 @@
         "Artemis",
         "Phoenix"
       ],
-      "status": "ACTIVE",
+      "status": "ACTIVE_PAUSED_AT_GATE_5",
       "desired_end_state": "A verified Atlas Prime successor repository with controlled source evolution, equivalent Spear and Bow execution evidence, recovery proof, and an explicitly approved cutover from Atlas Codex.",
       "emberline": {
         "current_campaign_id": "spear-bow-arrow-development",
-        "current_gate": "Gate 3 runner-neutral transaction and common receipt contracts.",
+        "current_gate": "Gate 5 equivalent local Bow proof is intentionally paused by Jayson. No Gate 5 Preview, Build, Execute, package, workflow, branch, or pull request is authorized.",
         "completed_durable_work": [
           "Prime SHADOW repository foundation exists.",
-          "Ordered delta 0002 is closed.",
+          "Gates 1-4 are complete.",
+          "Gate 4 GitHub-native Build proof is merged at Prime main 0c5c1c4887638efd61e8df701c58446047465f6d.",
           "Codex remains canonical and Prime remains SHADOW.",
-          "One Massive Arrow architecture is merged and read back.",
-          "Jayson approved Bow and Arrow CLI as the primary repository-mutation route for Gates 1-8.",
-          "The execution hierarchy is Athena first, Artemis Local Operator second, and Jayson as final manual fallback while Jayson remains ultimate authority.",
-          "Codex PR #184 was approved at 43a5a9295604be1d5aa8fb2a9b43675541075cee and squash-merged to Codex main 29e1b156316819f87511589bdca58ad120f787e3.",
-          "Prime PR #25 was approved at 1e5211cd1de00b70188a3a413d845826d898c624 and squash-merged to Prime main 525dfe23d130415f6acbba9ffd5e42d1bdee3fd8.",
-          "Codex continuity PR #185 was approved at 1eabc24046a777ccba44d9d8c33bbcc2cf2a5b80 and squash-merged to canonical Codex main 30b0f33ff571f8c2a7798224c34051781129b921.",
-          "The canonical Codex Workboard now records Gates 1-2 complete, Gate 3 active, and C07 preserved for Gate 8."
+          "The post-Solar-Eclipse Codex source alignment and Strikeforce doctrine are merged at Codex main c3e664d429d553a41975f9df47ba946dbe402550.",
+          "The universal Bow/Arrow contract uses one Build Arrow, Strikeforce, one Execute Arrow, Strikeforce, a compact Emberline, and a recommended next-move Decision Box.",
+          "Internal checkpoints are machine-only and never separate user fires."
         ],
         "chat_only_or_uncertain": [
-          "The Quest completion range remains broad pending Gate 3 contracts, Gates 4-7 runner and recovery proof, Gate 8 bounded migration, Quest Board cutover proof, rollback proof, and explicit authority transfer."
+          "The V6 alignment mission is complete only after the exact final Execute receipt and generated final-tree readback pass.",
+          "The Quest completion range remains broad pending Gates 5-8, recovery proof, migration waves, rollback, and explicit cutover."
         ],
         "remaining_work": [
-          "Create runner-neutral transaction, repository-subtransaction, authority, Build receipt, Execute receipt, and Noctua validation contracts in Gate 3.",
-          "Prove the harmless GitHub-native Spear Build route in Gate 4.",
-          "Prove equivalent local Bow execution against the same logical transaction in Gate 5.",
+          "Keep Gate 5 paused until Jayson explicitly resumes it.",
+          "When resumed, prove equivalent local Bow execution under the universal Arrow-level contract.",
           "Prove Artemis read-only validation without execution authority in Gate 6.",
-          "Prove multi-file, linked multi-repository, partial-state, and recovery behavior in Gate 7.",
-          "Resume C07 read-only semantic reconciliation and bounded migration in Gate 8.",
+          "Prove linked multi-repository, partial-state, and recovery behavior in Gate 7.",
+          "Resume C07 read-only semantic reconciliation and bounded migration only in Gate 8.",
           "Prove Quest Board cutover and rollback before any authority change."
         ],
-        "protected_boundary_posture": "No raw Drive, finance, health, clinic, runtime, account, network, device, or infrastructure evidence belongs in GitHub.",
-        "next_safe_action": "Prepare the exact Gate 3 transaction and receipt contract file inventory, schemas, fixtures, Noctua profile, and Build Arrow Preview; stop before mutation.",
-        "next_approval_gate": "Explicit Jayson approval of the exact Gate 3 Build Arrow after candidate files, hashes, tests, and stop conditions are shown.",
+        "protected_boundary_posture": "No raw Drive, finance, health, clinic, runtime, account, network, device, infrastructure, or secret evidence belongs in GitHub.",
+        "next_safe_action": "While Gate 5 remains paused, use the final post-Execute Decision Box to continue substantive Atlas work, review the canonical Active Workboard, Sunset, Solar Eclipse, Phoenix Flare, or hold.",
+        "next_approval_gate": "A later explicit Jayson instruction is required before any Gate 5 Preview or execution artifact.",
         "restart_safe": true,
         "solar_eclipse_ready": true,
         "sunset_ready": false,
         "must_not_happen_yet": [
-          "Do not activate S1 or Artemis, begin Gate 4-8 execution, migrate C07 content, move or delete Drive material, promote Prime, retire Codex, delete evidence, or cut over.",
-          "Do not treat this SHADOW Quest Board as canonical or as authority to execute a later gate."
+          "Do not activate persistent S1 or Artemis.",
+          "Do not begin Gate 5-8 execution without the applicable explicit gates.",
+          "Do not migrate C07 content, move or delete Drive material, promote Prime, retire Codex, delete evidence, claim Phoenix Reborn, or cut over.",
+          "Do not treat this SHADOW Quest Board as canonical or as execution authority."
         ]
       },
       "campaigns": [
@@ -62,9 +61,9 @@
           "campaign_id": "codex-to-prime-migration",
           "parent_quest_id": "atlas-prime-rebuild",
           "title": "Atlas Codex to Prime Migration",
-          "status": "ACTIVE",
+          "status": "WAITING",
           "required_for_quest_completion": true,
-          "current_gate": "C07 is preserved for Gate 8 after Gates 3-7 capability and recovery proof.",
+          "current_gate": "C07 remains deferred to Gate 8 after Gates 5-7 capability and recovery proof.",
           "completion_range": {
             "min": 15,
             "max": 30
@@ -74,18 +73,18 @@
             "spear-bow-arrow-development"
           ],
           "blockers": [
-            "Gates 3-7 capability and recovery proof must close before Gate 8 C07 migration work begins."
+            "Gate 5 is paused; Gates 5-7 must close before Gate 8 migration work."
           ],
-          "next_safe_action": "Preserve C07 unchanged while Gate 3 contracts and Gates 4-7 proof are completed.",
-          "last_verified": "2026-06-29"
+          "next_safe_action": "Preserve C07 unchanged.",
+          "last_verified": "2026-06-30"
         },
         {
           "campaign_id": "google-drive-dependency-retirement",
           "parent_quest_id": "atlas-prime-rebuild",
           "title": "Google Drive Dependency Retirement",
-          "status": "ACTIVE",
+          "status": "ACTIVE_READ_ONLY",
           "required_for_quest_completion": true,
-          "current_gate": "The GitHub governance foundation is merged; no Drive mutation or cleanup is authorized.",
+          "current_gate": "GitHub is the durable clean-text source. Drive remains protected reference, archive, collaboration, application, and exception space. No Drive mutation is authorized.",
           "completion_range": {
             "min": 10,
             "max": 25
@@ -95,56 +94,60 @@
             "codex-to-prime-migration"
           ],
           "blockers": [],
-          "next_safe_action": "Continue read-only dependency reconciliation only when separately routed.",
-          "last_verified": "2026-06-29"
+          "next_safe_action": "Continue only separately routed read-only dependency reconciliation.",
+          "last_verified": "2026-06-30"
         },
         {
           "campaign_id": "spear-bow-arrow-development",
           "parent_quest_id": "atlas-prime-rebuild",
           "title": "Athena's Spear and Artemis's Bow and Arrow",
-          "status": "ACTIVE",
+          "status": "ACTIVE_PAUSED",
           "required_for_quest_completion": true,
-          "current_gate": "Gate 3 runner-neutral transaction and common receipt contracts.",
+          "current_gate": "Gates 1-4 complete; Gate 5 paused. Universal Arrow-level operator contract prepared for durable alignment.",
           "completion_range": {
-            "min": 35,
-            "max": 50
+            "min": 55,
+            "max": 65
           },
-          "confidence": "MEDIUM",
+          "confidence": "MEDIUM_HIGH",
           "dependencies": [],
-          "blockers": [],
-          "next_safe_action": "Prepare the exact Gate 3 contract Preview and stop before mutation.",
-          "last_verified": "2026-06-29"
+          "blockers": [
+            "Jayson intentionally paused Gate 5."
+          ],
+          "next_safe_action": "Do not prepare Gate 5. Use the post-Execute Decision Box to choose substantive Atlas work or continuity routing.",
+          "last_verified": "2026-06-30"
         },
         {
           "campaign_id": "quest-board-emberline-architecture",
           "parent_quest_id": "atlas-prime-rebuild",
           "title": "Quest Board and Emberline Architecture",
-          "status": "ACTIVE",
+          "status": "ACTIVE_SHADOW",
           "required_for_quest_completion": true,
-          "current_gate": "SHADOW continuity is synchronized to canonical Codex main 30b0f33ff571f8c2a7798224c34051781129b921 and Gate 3 is active.",
+          "current_gate": "Prime Quest Board remains SHADOW and synchronized to canonical Codex continuity without becoming an independent Workboard.",
           "completion_range": {
-            "min": 30,
-            "max": 45
+            "min": 45,
+            "max": 60
           },
-          "confidence": "MEDIUM",
+          "confidence": "MEDIUM_HIGH",
           "dependencies": [
             "spear-bow-arrow-development"
           ],
           "blockers": [],
-          "next_safe_action": "Keep authority SHADOW and update continuity only through reviewed transactions until cutover and rollback are separately proven.",
-          "last_verified": "2026-06-29"
+          "next_safe_action": "Keep authority SHADOW until cutover and rollback are separately proven and approved.",
+          "last_verified": "2026-06-30"
         }
       ],
       "completion_range": {
-        "min": 20,
-        "max": 35,
-        "basis": "Gates 1-2 architecture, execution convergence, exact-head merges, canonical Workboard reconciliation, and SHADOW continuity synchronization are complete; Gates 3-8, recovery proof, migration waves, rollback, and cutover remain."
+        "min": 30,
+        "max": 45,
+        "basis": "Gates 1-4 and post-Solar-Eclipse source alignment are complete; Gate 5 remains paused and Gates 5-8, recovery, migration, rollback, and cutover remain."
       },
       "confidence": "MEDIUM",
-      "blockers": [],
-      "next_safe_action": "Prepare the Gate 3 runner-neutral transaction and receipt contract Preview.",
-      "next_approval_gate": "Explicit Jayson approval of the exact Gate 3 Build Arrow after Preview.",
-      "last_verified": "2026-06-29"
+      "blockers": [
+        "Gate 5 intentionally paused by Jayson."
+      ],
+      "next_safe_action": "Use the final post-Execute Decision Box rather than automatically entering another maintenance protocol.",
+      "next_approval_gate": "Explicit Jayson instruction to resume Gate 5, or a separate approved substantive Atlas route.",
+      "last_verified": "2026-06-30"
     }
   ]
 }
