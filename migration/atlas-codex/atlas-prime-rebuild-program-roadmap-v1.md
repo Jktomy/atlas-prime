@@ -41,7 +41,7 @@ Evolving Prime determines and prepares what the machine should build.
 Approved versioned Spear packets connect the two campaigns.
 ```
 
-The campaigns overlap. Evolving Prime read-only reconciliation may proceed before writer activation. Recurring legitimate migration needs feed versioned Spear capabilities and route profiles. Spear closes from a build campaign into permanent maintenance rather than disappearing after cutover. Emberline is the canonical roadmap/status readout for this program. Artemis's Bow and Arrow is the guarded package handoff when an approved local execution stage is selected.
+The campaigns overlap. Evolving Prime read-only reconciliation may proceed before writer activation. Recurring legitimate migration needs feed versioned Spear capabilities and route profiles. Spear closes from a build campaign into permanent maintenance rather than disappearing after cutover. Emberline is the canonical roadmap/status readout for this program. Artemis's Bow and Arrow is the guarded package handoff: one Build Arrow and one separately sealed Execute Arrow, each with hidden automatic checkpoints and one consolidated receipt.
 
 ## 2. Status and non-authority
 
@@ -82,7 +82,9 @@ Freeze the probationary read-only compiler contract, implementation, schemas, po
 
 ### A2 — S1 writer contract
 
-Define authenticated writer authority, exact branch/commit/draft-PR behavior, stale-state rejection, replay, partial-failure, recovery, observability, explicit activation boundaries, and compatibility with Stage 1 Build and Verify and separately authorized Stage 3 Merge and Readback.
+Define authenticated writer authority, exact branch/commit/draft-PR behavior, stale-state rejection, replay, partial failure, recovery, observability, and compatibility with one operator-visible Build Arrow and one separately authorized Execute Arrow.
+
+Internal checkpoints may model compilation, install, publish, merge, and readback but must not become separate user fires.
 
 ### A3 — S1 implementation
 
@@ -90,7 +92,9 @@ Implement only the approved contract in a separate protected engine PR. Merge do
 
 ### A4 — Harmless end-to-end proof
 
-Run one exact low-risk proof through Stage 1 Build and Verify, Noctua on the exact PR head, separately approved Stage 3 Merge and Readback, merged-main verification, and recovery evidence.
+Run one exact low-risk proof through one Build Arrow, one consolidated Build receipt, Strikeforce on the exact PR head, one separately authorized Execute Arrow, merged-main readback, one consolidated Execute receipt, and recovery evidence.
+
+Do not require operator-facing stage commands.
 
 ### A5 — Capability and route qualification
 
@@ -197,27 +201,46 @@ Emberline is read-only unless an explicit `EMBERLINE UPDATE` Preview is separate
 ## 9. Current program position
 
 ```text
-Codex main: 0f6e8c0bc47b0faec92b219070b432ff47edc372
-Prime main: b6622c6bce3ab0207635586b501b49ee16842d5e
+Codex main: c3e664d429d553a41975f9df47ba946dbe402550
+Prime main: 0c5c1c4887638efd61e8df701c58446047465f6d
 Codex authority: CANONICAL
 Prime state: SHADOW
-Ordered delta 0002: CLOSED
-Effective live and accounted paths: 352 / 352
-C04: CLOSED_WITH_LINEAGE
-C07: NEXT READ-ONLY SEMANTIC GATE
-Disposition ledger: NOT_STARTED
-Prime writer authority: NO
-Content movement: NOT_AUTHORIZED
-Cutover: NOT_AUTHORIZED
+Gates 1-4: COMPLETE
+Gate 5: PAUSED BY JAYSON
+Persistent S1: DISABLED
+Artemis Local Operator: INACTIVE
+C07: DEFERRED TO GATE 8
+Content movement: NOT AUTHORIZED
+Migration: NOT AUTHORIZED
+Phoenix Reborn: NOT CLAIMED
+Cutover: NOT AUTHORIZED
 ```
+
+The post-Solar-Eclipse alignment adopts Arrow-level operator semantics and does not resume Gate 5.
 
 ## 10. Immediate safe route
 
-1. Complete C07 read-only semantic reconciliation for `codex/codex-source-update-standard.md`.
-2. Preserve the Spear evolution model through this roadmap, `athenas-spear.md`, and the capability-lifecycle specification.
-3. Keep S1, content movement, disposition-ledger creation, generated refreshes, promotion, retirement, deletion, and cutover behind new exact Preview -> Execute gates.
+1. Keep Gate 5 paused until a later explicit Jayson instruction.
+2. Preserve C07 unchanged until Gate 8.
+3. Use the final post-Execute Decision Box to choose substantive Atlas work, Workboard review, Sunset, Solar Eclipse, Phoenix Flare, or hold.
+4. Do not automatically chain maintenance protocols.
+5. Keep S1, Artemis execution, migration, promotion, retirement, deletion, and cutover behind new exact gates.
 
 ## 11. Program controls
+## 11A. Universal Bow/Arrow operator contract
+
+```text
+one Build Arrow
+-> Strikeforce
+-> one Execute Arrow
+-> Strikeforce
+-> compact Emberline
+-> recommended next-move Decision Box
+-> stop
+```
+
+Each Arrow is one immutable artifact, one PowerShell command, and one consolidated receipt. Internal checkpoints are machine-only. Repair appears only after verified failure. Build never grants Execute authority.
+
 
 - one repository per transaction;
 - exact base commit and expected state;
