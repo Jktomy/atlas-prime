@@ -1,123 +1,151 @@
 ---
-title: Spear Execution Convergence v1
-atlas_id: spear.execution-convergence.v1
-format_version: "1.0"
+title: Atlas Change-Path Execution Convergence v2
+atlas_id: atlas.change-path.execution-convergence.v2
+format_version: "2.0"
 status: PROPOSED
 source_type: SPECIFICATION
 authority_class: TOOL_CONTRACT
 owner_project: Codex
-owner_operation: Athena's Spear
-canonical_scope: Defines the runner-neutral Spear transaction, GitHub-native and Artemis Bow execution adapters, Athena-Artemis-Jayson escalation, CLI-primary Gates 1-8 campaign posture, separate Build and Execute Arrows, common receipts, and recovery requirements without granting writer authority.
+owner_operation: Atlas Change Path Convergence
+canonical_scope: Defines the common Athena-authored Weave, Thread Engine normal execution, Sword direct local execution, Spear and Arrow/Bow intake roles, equivalent receipts, Gates 1-8 posture, replay, recovery, and authority boundaries without activating writer or merge authority.
 protected_level: CRITICAL
 routes_from:
   - athenas-spear.md
   - specs/spear/spear-capability-lifecycle-v1.md
-  - tools/spear/operator-runbook.md
-  - tools/spear/recovery-runbook.md
+  - specs/thread-engine/thread-engine-contract-v1.md
+  - specs/sword/atlas-sword-contract-v1.md
 routes_to:
   - schemas/spear/spear-packet-v1.schema.json
   - policies/operations/spear/spear-policy-v1.yaml
   - migration/atlas-codex/atlas-prime-rebuild-program-roadmap-v1.md
   - quest-board/quest-board-shadow-v1.json
-private_boundary: This specification may contain clean contracts, repository identities, route names, limits, tests, and recovery rules only. It must not contain secrets, credentials, PHI, raw finance or account evidence, private runtime values, network maps, device registers, real environment values, or protected exports.
-evidence_boundary: This specification defines intended behavior. Implementation, workflow runs, Arrow packages, receipts, PRs, Noctua reports, activation records, and recovery proof remain separate evidence.
-supersedes: []
-cleanup_path: Retain through the Spear/Bow convergence and capability-proof campaign. Supersede only through a separately reviewed protected source transaction with compatibility and recovery treatment.
-last_verified: 2026-06-29
+private_boundary: Public-clean contracts, repository identities, route names, limits, tests, and recovery rules only. No secrets, credentials, PHI, finance/account evidence, private runtime values, network maps, device registers, or protected exports.
+evidence_boundary: Implementation, workflow runs, Arrow and Sword packages, receipts, PRs, Noctua reports, activation records, and recovery proof remain separate evidence.
+supersedes:
+  - spear.execution-convergence.v1
+cleanup_path: Retain through Gates 6-8 and later absorb stable semantics into active maintenance contracts after cutover.
+last_verified: 2026-07-02
 ---
 
-# Spear Execution Convergence v1
+# Atlas Change-Path Execution Convergence v2
 
-## Status and controlling scope
+## Status
 
-Status: PROPOSED tool contract. It grants no writer authority.
+This specification grants no writer, merge, migration, promotion, retirement, deletion, cleanup, or cutover authority.
 
-For execution-adapter, Arrow-artifact, and Athena-Artemis-Jayson escalation semantics, this later-verified specification controls conflicting older Prime wording until those sources are reconciled through reviewed transactions.
+Codex remains canonical. Prime remains SHADOW.
 
-## Operating hierarchy
+## Common transaction
+
+Athena authors one runner-neutral multi-file **Weave** binding:
+
+- repository and exact base;
+- ordered file operations;
+- expected absence or current Git blob;
+- exact candidate bytes or deterministic sealed transformation;
+- allowed paths and route profile;
+- tests and validation;
+- protected boundaries;
+- branch, commit, and PR expectations;
+- replay and recovery rules;
+- Noctua criteria;
+- forbidden actions.
+
+Caller-selected executable code and hidden authority are prohibited.
+
+## Execution paths
+
+### Thread Engine
+
+Thread Engine is the intended normal deterministic multi-file workflow.
 
 ```text
-Jayson states intent and grants bounded authority
--> Athena reads current durable source and prepares one exact runner-neutral Spear transaction
--> the approved execution adapter performs the transaction
--> Artemis Local Operator is the local fallback operator
--> Jayson is the final manual fallback and remains the ultimate authority
--> Noctua verifies durable results
+Spear direct delivery
+or
+Arrow -> Bow delegated delivery
+-> Thread Engine
+-> exact branch, single-parent commit, draft PR, receipt
+-> stop before merge
 ```
 
-Execution escalation is Athena -> Artemis -> Jayson. Authority remains with Jayson throughout.
+### Sword
 
-## Runner-neutral transaction
+Sword is the mission-specific local direct-execution path.
 
-One Spear transaction binds exact candidate bytes, repository subtransactions, bases, expected blobs, allowed paths, hashes, route and capability versions, protected boundaries, tests, PR expectations, recovery rules, Noctua criteria, and forbidden actions.
+```text
+Athena-made sealed Sword ZIP
+-> exact local command
+-> direct Git/GitHub candidate construction
+-> exact branch, single-parent commit, draft PR, receipt
+-> stop before merge
+```
 
-The transaction must not contain caller-selected executable code, hidden policy, or authority-expanding instructions.
+Sword is used for fallback, recovery, or Thread Engine self-change. It creates no standing local authority.
 
-## Execution adapters
+## Operators
 
-### GitHub-native Spear adapter
+Jayson remains ultimate authority. An authorized agent or future local LLM may operate Bow or Sword only under the exact same artifact, authority capsule, receipt, and stop point. Artemis is optional and inactive until separately proven and activated.
 
-The intended long-term normal runner after capability proof and activation. It creates deterministic branches, commits, draft PRs, readback, and receipts, then stops before merge.
+## Build and Execute
 
-### Artemis Bow adapter
+Every durable mission separates:
 
-The local runner. It consumes the same transaction through a thin launcher and exact package. It must not perform semantic authoring or reconstruct source changes.
+```text
+Build artifact
+-> Strikeforce
+-> Noctua exact-head review
+-> separately authorized Execute artifact
+```
 
-## Gates 1-8 campaign posture
-
-For Atlas Prime Rebuild Gates 1-8, Bow and Arrow CLI is the approved primary repository-mutation route.
-
-- GitHub connectors remain readback and audit surfaces.
-- Prime S1 remains disabled except for a separately approved proof.
-- Jayson operates the Bow until Artemis Local Operator is implemented, proven, and activated.
-- Bow-primary campaign execution does not change the long-term GitHub-native Spear destination.
-
-## One mission, separate Arrows
-
-A mission may produce:
-
-1. a Build Arrow that creates and verifies draft PRs and stops;
-2. an Execute Arrow created only after Noctua audit and Jayson exact-head approval.
-
-They share mission lineage but have separate IDs, manifests, hashes, receipts, and approval records. Build success never grants Execute authority.
-
-## Final-byte rule
-
-Execution adapters receive complete final candidate bytes whenever practical. Source reasoning and compilation occur before execution. PowerShell and workflow runners verify and perform repository mechanics only.
+Build success never grants Execute authority.
 
 ## Common receipts
 
-Both adapters must emit equivalent receipts recording transaction, mission, runner, Arrow, bases, candidate and manifest hashes, changed files, branches, commits, PR heads, merges when applicable, result, last completed gate, authority used, and forbidden-action confirmation.
+Both paths emit equivalent sanitized receipts containing:
 
-## Idempotency and recovery
+- mission, artifact, and package identity;
+- runner and operator;
+- repository bases;
+- manifest and candidate identities;
+- changed files;
+- branches, commits, PRs, and exact heads;
+- result and last completed checkpoint;
+- partial-state and recovery context;
+- authority used;
+- forbidden-action confirmation.
 
-Active adapters must detect exact replay, branch-created, commit-pushed, branch-pushed/PR-missing, PR-state-uncertain, draft-PR-verified, partial repository success, merge/readback incomplete, and complete states.
+## Replay and recovery
 
-A rerun resumes only a missing permitted action. It must not reset successful work, force-push, delete, close, create duplicates, or broaden scope.
+Active paths must detect exact replay, stale base, branch-created, commit-pushed, PR-missing, PR-verified, partial repository success, merge/readback incomplete, and complete states.
 
-## Current implementation posture
+Recovery resumes only missing permitted work. It never resets successful work, force-pushes, deletes branches, closes PRs, creates duplicates, or broadens scope.
 
-- Codex remains canonical.
-- Prime remains SHADOW.
-- Prime S0 is read-only compiler support.
-- Prime S1 remains hard-disabled and dependency-blocked.
-- Artemis Local Operator is not implemented or activated.
-- Gates 1-8 repository mutations use Jayson-fired CLI Arrows.
-
-## Proof sequence
+## Gates
 
 ```text
-continuity and doctrine convergence
--> runner-neutral transaction and receipt contracts
--> harmless GitHub-native Build proof
--> equivalent local Bow Build proof
--> recovery and exact replay proof
--> separately approved Execute proof
--> multi-file and linked multi-repository proof
--> Artemis read-only validation and later bounded local operation
--> bounded migration use
+Gates 1-5 — COMPLETE
+  Transaction, receipt, GitHub-native, and local direct-execution foundations.
+
+Gate 6 — CHANGE PATH CONVERGENCE
+  Thread Engine, Sword, Spear, Arrow, Bow, Noctua, Workboard, roadmap, and Quest alignment.
+
+Gate 7 — DUAL-PATH PROOF
+  Multi-file ADD/REPLACE through Thread Engine;
+  mixed ADD/REPLACE/DELETE and linked-repository recovery through Sword;
+  exact-head Noctua and replay/partial-state proof.
+
+Gate 8 — C07 PROTECTED RECONCILIATION
+  Read-only semantic reconciliation, exact protected Weave Preview, approved proven path, Noctua, and Jayson Execute gate.
 ```
 
-## Authority boundary
+## Current posture
 
-This specification does not activate S1, authorize repository mutation, fire an Arrow, grant Artemis authority, authorize merge, migrate content, promote Prime, retire Codex, delete evidence, modify Google Drive, or perform cutover.
+- Codex: CANONICAL
+- Prime: SHADOW
+- Gates 1-5: COMPLETE
+- Gate 6: closes through the reviewed doctrine and Quest Reforge
+- Gate 7: next
+- Persistent Thread Engine writer: DISABLED
+- Sword standing authority: NONE; every Sword is mission-specific
+- Artemis Local Operator: INACTIVE / OPTIONAL
+- C07: DEFERRED TO GATE 8

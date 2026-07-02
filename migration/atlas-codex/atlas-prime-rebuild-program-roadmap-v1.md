@@ -1,147 +1,135 @@
 ---
-title: Atlas Prime Rebuild Program Roadmap v1
+title: Atlas Prime Rebuild Program Roadmap — Change Path Convergence Revision
 atlas_id: atlas-prime.program.rebuild-roadmap.v1
-format_version: "1.0"
+format_version: "1.1"
 status: PROPOSED
 source_type: MIGRATION_RECORD
 authority_class: MIGRATION_EVIDENCE
 owner_project: Codex
 owner_operation: Atlas Prime Rebuild Program
-canonical_scope: Coordinates the overlapping Spear Campaign and Evolving Prime M0-M9 migration waves from verified planning through bounded construction, recovery proof, explicit cutover, and post-migration Spear maintenance without granting execution authority.
+canonical_scope: Coordinates Thread Engine construction, Sword fallback and recovery, Spear and Arrow/Bow intake, Codex-to-Prime migration waves, Drive dependency retirement, Quest continuity, recovery proof, explicit cutover, and permanent post-cutover maintenance without granting execution authority.
 protected_level: CRITICAL
 routes_from:
   - atlas-prime.md
   - athenas-spear.md
   - specs/spear/spear-capability-lifecycle-v1.md
+  - specs/spear/spear-execution-convergence-v1.md
+  - specs/thread-engine/thread-engine-contract-v1.md
+  - specs/sword/atlas-sword-contract-v1.md
   - specs/atlas-prime/codex-to-prime-migration-contract-v2.md
-  - migration/atlas-codex/README.md
   - migration/atlas-codex/migration-map.md
 routes_to:
-  - athenas-spear.md
-  - specs/spear/spear-capability-lifecycle-v1.md
+  - specs/spear/spear-execution-convergence-v1.md
+  - specs/thread-engine/thread-engine-contract-v1.md
+  - specs/sword/atlas-sword-contract-v1.md
+  - quest-board/quest-board-shadow-v1.json
   - tools/spear/operator-runbook.md
   - tools/spear/recovery-runbook.md
-  - migration/atlas-codex/README.md
   - migration/atlas-codex/migration-map.md
-  - atlas-aegis.md
-private_boundary: This roadmap may contain clean program plans, repository identities, counts, route names, states, dependencies, and decision gates only. It must not contain secrets, credentials, PHI, raw finance or account evidence, private runtime values, IP addresses, network maps, device registers, protected exports, or raw private records.
-evidence_boundary: This roadmap coordinates work but does not replace source files, Git history, migration records, original evidence systems, Spear receipts, Noctua reports, pull requests, merge records, generated reports, or Phoenix recovery proof.
+private_boundary: Clean program plans, repository identities, counts, routes, dependencies, and decision gates only. No secrets, credentials, PHI, finance/account evidence, private runtime values, network maps, device registers, protected exports, or raw private records.
+evidence_boundary: This roadmap coordinates work but does not replace source files, Git history, receipts, Noctua reports, pull requests, merge records, generated reports, or Phoenix recovery proof.
 supersedes: []
-cleanup_path: Retain throughout the rebuild program. After explicit cutover and program closeout, supersede with final migration and cutover records while retaining this version as historical migration evidence.
-last_verified: 2026-06-28
+cleanup_path: Retain throughout the rebuild. After explicit cutover, supersede with final migration and cutover records while retaining this revision as historical evidence.
+last_verified: 2026-07-02
 ---
 
-# Atlas Prime Rebuild Program Roadmap v1
+# Atlas Prime Rebuild Program Roadmap
 
-## 1. Program truth
+## Program truth
 
 ```text
-The Spear Campaign builds, proves, and evolves the machine.
-Evolving Prime determines and prepares what the machine should build.
-Approved versioned Spear packets connect the two campaigns.
+Athena authors one exact multi-file Weave.
+Thread Engine is the normal machine that constructs Prime.
+Sword is the independent local fallback, recovery, and Thread Engine self-change path.
+Spear and Arrow/Bow deliver the same transaction meaning to Thread Engine.
+Evolving Prime determines what should be built.
+Noctua watches every merge.
+Jayson retains final permanence authority.
 ```
 
-The campaigns overlap. Evolving Prime read-only reconciliation may proceed before writer activation. Recurring legitimate migration needs feed versioned Spear capabilities and route profiles. Spear closes from a build campaign into permanent maintenance rather than disappearing after cutover. Emberline is the canonical roadmap/status readout for this program. Artemis's Bow and Arrow is the guarded package handoff: one Build Arrow and one separately sealed Execute Arrow, each with hidden automatic checkpoints and one consolidated receipt.
+Historical Spear/Bow proofs remain immutable evidence. Current doctrine governs future transactions.
 
-## 2. Status and non-authority
+## Status and non-authority
 
-This roadmap does not:
+This roadmap does not activate Thread Engine, create standing Sword authority, authorize a repository mutation, select a migration packet, alter Drive, merge, promote, retire, delete, or cut over.
 
-- activate Prime Spear writer authority;
-- authorize a repository mutation or migration packet;
-- close M1 or select an M2 pilot;
-- create the disposition ledger;
-- alter Workboard, Quest, Golden Wing, generators, or archives;
-- authorize merge, promotion, retirement, deletion, or cutover.
+Atlas Codex remains canonical and Atlas Prime remains SHADOW until a separate verified cutover.
 
-Atlas Codex remains canonical and Atlas Prime remains `SHADOW` until a separate verified cutover.
-
-## 3. Shared completion goal
+## Shared completion goal
 
 The program succeeds only when:
 
-- required Spear capabilities and route profiles are proven and bounded;
+- Thread Engine multi-file capabilities and route profiles are proven and bounded;
+- Sword parity, recovery, and Thread Engine self-change behavior are proven;
+- Spear and Arrow/Bow intake preserve identical Weave meaning;
 - every Codex path has a closed disposition;
-- every Prime source has packet, PR, merge, and final-state lineage;
+- every Prime source has package, PR, merge, and final-state lineage;
 - protected and private boundaries remain intact;
-- structured registers and generated systems operate under contracts;
-- recovery and rollback are proven;
-- repository-wide Noctua and Phoenix readiness pass;
+- registers and generators operate under contracts;
+- Noctua exact-head enforcement and Phoenix recovery pass;
 - Jayson explicitly approves cutover;
-- Spear transitions into a permanent controlled maintenance lifecycle.
+- Thread Engine becomes the permanent normal maintenance workflow while Sword remains a mission-specific fallback.
 
-## 4. Workstream A — Spear Campaign
+## Workstream A — Atlas Change Path Convergence
 
 ### A0 — Operational predecessor continuity
 
-Maintain the current operational Codex Spear while Codex is canonical. Preserve proven create-only and guarded mutation routes and do not generalize route-specific proof beyond its evidence.
+Preserve current Codex Spear and historical Bow evidence without generalizing narrow proofs.
 
-### A1 — Prime S0 audit and freeze
+### A1 — Common Weave contract
 
-Freeze the probationary read-only compiler contract, implementation, schemas, policies, tests, fixtures, and receipts. S0 remains `EXECUTION_NOT_AUTHORIZED`.
+Define runner-neutral multi-file operations, exact bases, expected blobs, candidates, policies, tests, receipts, and recovery.
 
-### A2 — S1 writer contract
+### A2 — Thread Engine contract and disabled implementation
 
-Define authenticated writer authority, exact branch/commit/draft-PR behavior, stale-state rejection, replay, partial failure, recovery, observability, and compatibility with one operator-visible Build Arrow and one separately authorized Execute Arrow.
+Converge the Prime S0 compiler and disabled S1 writer into the normal multi-file workflow. Merge never activates authority.
 
-Internal checkpoints may model compilation, install, publish, merge, and readback but must not become separate user fires.
+### A3 — Sword contract and mission packaging
 
-### A3 — S1 implementation
+Define sealed mission-specific local Build, Execute, and Repair Swords with no standing authority.
 
-Implement only the approved contract in a separate protected engine PR. Merge does not activate authority.
+### A4 — Harmless dual-path proof
 
-### A4 — Harmless end-to-end proof
+Prove a harmless multi-file ADD/REPLACE Weave through Thread Engine and equivalent transaction meaning through Sword. Stop at draft PR, Noctua, and separately authorized Execute.
 
-Run one exact low-risk proof through one Build Arrow, one consolidated Build receipt, Strikeforce on the exact PR head, one separately authorized Execute Arrow, merged-main readback, one consolidated Execute receipt, and recovery evidence.
+### A5 — Lifecycle and recovery qualification
 
-Do not require operator-facing stage commands.
+Prove controlled DELETE fixtures, replay, stale state, existing branch/PR recovery, linked repositories, partial success, and exact-head Noctua enforcement.
 
-### A5 — Capability and route qualification
+### A6 — Bounded activation
 
-Add versioned reusable capabilities and route profiles required by Evolving Prime, including ordinary source, protected source, migration evidence, bounded multi-file transactions, structured registers, generators, lifecycle operations, and lineage closure. Keep unproven routes denied.
-
-### A6 — Bounded activation for Evolving Prime
-
-Activate only the minimum proven profile set with explicit repository, path, actor, and limit boundaries. No merge authority or direct `main` write is granted.
+Activate only the minimum proven Thread Engine profile set. No direct-main, force-push, or automatic merge.
 
 ### A7 — Maintenance handoff
 
-Close the build campaign only after required migration routes are proven, contracts and implementation align, runbooks and recovery are current, active and denied profiles are explicit, and restart-safe closeout is durable.
+After migration routes and recovery are proven, Thread Engine becomes Prime's normal controlled maintenance workflow. Sword remains the fallback and self-change path.
 
-After A7, Spear remains active under `specs/spear/spear-capability-lifecycle-v1.md`. Emberline remains the program roadmap/status surface, while the Bow may remain reusable and every future Arrow remains exact and separately approved.
+## Workstream B — Evolving Prime migration waves
 
-## 5. Workstream B — Evolving Prime migration waves
-
-The durable migration map controls these waves:
-
-| Wave | Purpose | Current program posture |
+| Wave | Purpose | Current posture |
 |---|---|---|
-| M0 | Control-plane foundation, inventory, deltas, map, and evidence | Foundation established; maintain against current heads |
-| M1 | Collision and high-consequence semantic reconciliation | Active; C04 closed and C07 is the next protected reconciliation |
-| M2 | Low-risk pilot shortlist | Not started; no pilot selection before M1 readiness |
-| M3 | First controlled pilot | Not started; requires an approved candidate and proven route |
+| M0 | Control-plane foundation, inventory, deltas, map, and evidence | Foundation established |
+| M1 | Collision and high-consequence semantic reconciliation | C04 closed; C07 waits for Gate 8 |
+| M2 | Low-risk pilot shortlist | Not started |
+| M3 | First controlled pilot | Not started |
 | M4 | Low-risk ordinary waves | Not started |
 | M5 | Merge and remodel waves | Not started |
-| M6 | Private-pointer, omission, and history closure | Not started; raw protected transfer prohibited |
-| M7 | Structured registers and generated rebuilds | Not started; dedicated contracts and routes required |
-| M8 | Protected doctrine and source-order transition | Not started; protected routes and rollback required |
-| M9 | Repository-wide proof and cutover preparation | Not started; Noctua, Phoenix, continuity, and explicit decision required |
+| M6 | Private-pointer, omission, and history closure | Not started |
+| M7 | Structured registers and generated rebuilds | Not started |
+| M8 | Protected doctrine and source-order transition | Not started |
+| M9 | Repository-wide proof and cutover preparation | Not started |
 
-The migration map remains the detailed wave authority. This roadmap coordinates dependencies and Spear evolution without replacing it.
+The migration map remains detailed wave authority.
 
-## 6. Cross-campaign dependency model
-
-### Read-only work that may proceed before S1
+## Read-only work allowed before activation
 
 - inventory and delta verification;
-- collision and non-collision semantic review;
-- contract design;
-- target-source drafting;
-- packet drafting;
+- semantic reconciliation;
+- contract and candidate drafting;
 - route and risk analysis;
-- S0 compilation where current policy permits.
+- disabled compilation and test work.
 
-### Work requiring proven Spear routes or another separately approved protected route
+## Work requiring a proven route
 
 - migration-evidence writes;
 - Prime source construction;
@@ -150,150 +138,100 @@ The migration map remains the detailed wave authority. This roadmap coordinates 
 - generator execution;
 - lifecycle and archive operations;
 - disposition-ledger writes;
-- broad migration, promotion, or cutover.
+- migration, promotion, and cutover.
 
-### Feedback rule
-
-When Evolving Prime reveals a recurring legitimate need:
+## Feedback rule
 
 ```text
-reconcile the need
--> define a reusable capability/profile
+reconcile a recurring legitimate need
+-> define a reusable Thread Engine profile or Sword boundary
 -> implement behind a disabled gate
 -> test adversarially
 -> prove narrowly
 -> activate explicitly
--> use in bounded migration packets
+-> use in bounded migration
 -> revise, broaden, deprecate, or retire from evidence
 ```
 
-Do not weaken Spear for a single packet. Do not bypass Spear merely because content is ready.
+Do not weaken controls for one packet.
 
-## 7. Companion workstream D — Google Drive dependency retirement
+## Companion Workstream D — Google Drive dependency retirement
 
-The Codex-side Drive retirement campaign proceeds alongside the rebuild program:
+Drive retirement continues separately. GitHub controls clean source; original systems and approved exceptions control evidence and application roles. Drive cleanup never follows automatically from a GitHub merge.
 
-| Wave | Purpose | Relationship to Prime |
-|---|---|---|
-| D0 | Create Drive-retirement control plane and exception register | No Prime authority change |
-| D1 | Reconcile unique clean Drive meaning into current Codex owners | May produce later migration inputs; no blind copy |
-| D2 | Close working-analysis and AI Bridge surfaces | Preserve only reviewed clean results |
-| D3 | Design protected/private replacements or explicit retention | Raw protected content remains outside GitHub |
-| D4 | Close exact long-term exception set | Tiller and production Hearthstone families begin confirmed; exact members still require closure |
-| D5 | Remove Drive dependencies from startup, source order, and routing | Must complete before final Prime cutover readiness |
-| D6 | Execute exact archive/move/delete waves after proof | Separate external-system Preview -> Execute required |
-| D7 | Prove Drive-independent Atlas startup and continuity | A prerequisite to final program closeout when Drive was previously a required source layer |
-
-This companion campaign does not make Google Drive a migration source of equal authority. GitHub controls clean source. Original systems and approved exceptions control their own evidence or application roles. Drive cleanup never follows automatically from a GitHub merge.
-
-The Codex control-plane sources are:
-
-- `codex/google-drive-dependency-retirement-plan.md`
-- `codex/google-drive-exception-register.md`
-- `session-harvests/2026-06-28-google-drive-atlas-source-reconciliation.md`
-
-## 8. Emberline program readout contract
-
-When Jayson invokes `EMBERLINE` for the Atlas Prime Rebuild Program, Athena must report the current A, M, and D workstream positions; completed durable gates; active gate; remaining weighted gates; blockers; completion range and confidence; exact repository heads; relevant PR/commit/receipt lineage; next safe action; next approval gate; and what remains forbidden.
-
-Emberline is read-only unless an explicit `EMBERLINE UPDATE` Preview is separately approved. It does not activate Spear, fire an Arrow, close a migration wave, or authorize cutover.
-
-## 9. Current program position
+## Current program position
 
 ```text
-Codex main: c3e664d429d553a41975f9df47ba946dbe402550
-Prime main: 0c5c1c4887638efd61e8df701c58446047465f6d
 Codex authority: CANONICAL
 Prime state: SHADOW
-Gates 1-4: COMPLETE
-Gate 5: PAUSED BY JAYSON
-Persistent S1: DISABLED
-Artemis Local Operator: INACTIVE
-C07: DEFERRED TO GATE 8
+Gates 1-5: COMPLETE
+Gate 6: CHANGE PATH CONVERGENCE — closes through the reviewed Reforge
+Gate 7: NEXT — dual-path multi-file, delete fixture, replay, linked recovery, exact-head Noctua
+Gate 8: C07 protected reconciliation
+Persistent Thread Engine writer: DISABLED
+Sword standing authority: NONE
+Artemis Local Operator: INACTIVE / OPTIONAL
 Content movement: NOT AUTHORIZED
 Migration: NOT AUTHORIZED
 Phoenix Reborn: NOT CLAIMED
 Cutover: NOT AUTHORIZED
 ```
 
-The post-Solar-Eclipse alignment adopts Arrow-level operator semantics and does not resume Gate 5.
+## Immediate safe route
 
-## 10. Immediate safe route
+1. Complete exact-head Noctua and merged-main readback for the Gate 6 doctrine/Quest Reforge.
+2. Prepare only the Gate 7 dual-path proof Preview.
+3. Preserve C07 unchanged until Gate 8.
+4. Keep activation, migration, promotion, retirement, Drive mutation, and cutover behind separate exact gates.
 
-1. Keep Gate 5 paused until a later explicit Jayson instruction.
-2. Preserve C07 unchanged until Gate 8.
-3. Use the final post-Execute Decision Box to choose substantive Atlas work, Workboard review, Sunset, Solar Eclipse, Phoenix Flare, or hold.
-4. Do not automatically chain maintenance protocols.
-5. Keep S1, Artemis execution, migration, promotion, retirement, deletion, and cutover behind new exact gates.
-
-## 11. Program controls
-## 11A. Universal Bow/Arrow operator contract
+## Program controls
 
 ```text
-one Build Arrow
+Build artifact
 -> Strikeforce
--> one Execute Arrow
--> Strikeforce
--> compact Emberline
--> recommended next-move Decision Box
--> stop
-```
-
-Each Arrow is one immutable artifact, one PowerShell command, and one consolidated receipt. Internal checkpoints are machine-only. Repair appears only after verified failure. Build never grants Execute authority.
-
-
-- one repository per transaction;
-- exact base commit and expected state;
-- source and generated PR separation;
-- no raw private evidence in GitHub or packets;
-- no packet-selected code or policy;
-- no direct `main` writes, force-push, or automatic merge;
-- no ordinary Spear self-modification;
-- Stage 1 and Stage 3 require separate IDs, receipts, audit states, and approvals when Bow/Arrow is used;
-- Noctua before merge for sensitive work;
-- Jayson manual merge decision;
-- merged-main readback and retained lineage;
-- stop and preserve evidence on connector block or partial failure.
-
-## 12. Post-cutover state
-
-After explicit cutover:
-
-```text
-Prime canonical source
--> exact change proposal
--> versioned Spear packet and profile
--> validation and deterministic candidate
--> bounded draft PR
--> Noctua and human merge decision
+-> Noctua on exact PR heads
+-> separately authorized Execute artifact
 -> merged-main readback
 ```
 
-Spear becomes Atlas Prime's permanent controlled change platform. Its capabilities may evolve, but authority grows only through versioned contracts, tests, proof, explicit activation, and recovery evidence. Emberline reports the road; Bow and Arrow remains a bounded execution handoff rather than autonomous authority.
+- one repository subtransaction per draft PR;
+- linked missions may coordinate multiple repositories through one consolidated receipt;
+- exact base commit and expected file state;
+- source and generated PR separation;
+- no raw private evidence;
+- no packet-selected code or policy;
+- no direct-main, force-push, or automatic merge;
+- no ordinary Thread Engine self-modification;
+- Sword is required for Thread Engine self-change;
+- Jayson retains final merge authority;
+- preserve partial success and stop on block.
 
-Atlas Codex retention, rollback, and historical treatment require a separate approved sunsetting decision. Cutover does not imply deletion.
+## Post-cutover
 
-## 13. Completion rule
+```text
+Prime canonical source
+-> Athena-authored exact Weave
+-> Spear or Arrow/Bow intake
+-> Thread Engine candidate PR
+-> Noctua and Jayson merge decision
+-> merged-main readback
+```
 
-The Atlas Prime Rebuild Program is complete only when:
+Sword remains the mission-specific local fallback and Thread Engine self-change path.
 
-- all required Spear routes are proven and bounded;
-- every tracked Codex path is closed;
-- every Prime source has verified lineage;
-- registers and generators operate under contracts;
-- source and generated outputs are reproducible;
-- repository-wide Noctua passes;
-- Phoenix restore and rollback pass;
-- startup and continuity pass without requiring retired Google Drive Atlas manuals, mirrors, or handoffs;
-- every remaining Drive dependency is an explicit approved exception with recovery and exit rules;
-- Codex retention is defined;
-- Jayson explicitly approves cutover;
-- final migration, cutover, and maintenance-handoff records are durable.
+## Completion rule
+
+The rebuild is complete only when required Thread Engine profiles and Sword recovery are proven, every tracked Codex path is closed, every Prime source has verified lineage, registers and generators are reproducible, Noctua and Phoenix pass repository-wide, Drive dependencies are either retired or explicit exceptions, Codex retention is defined, and Jayson explicitly approves cutover.
 
 ## Quest Board architecture
 
 The parent Quest is `Atlas Prime Rebuild`.
 
-Child Campaigns include Codex-to-Prime migration, Google Drive dependency retirement, Spear/Bow/Arrow development, and Quest Board/Emberline architecture.
+Child Campaigns include:
 
-The Codex Active Workboard remains canonical. Prime Quest Board is the SHADOW successor until cutover.
+- Atlas Codex to Prime Migration;
+- Google Drive Dependency Retirement;
+- Atlas Change Path Convergence;
+- Quest Board and Emberline Architecture.
+
+The Codex Active Workboard remains canonical. Prime Quest Board remains SHADOW until cutover.
