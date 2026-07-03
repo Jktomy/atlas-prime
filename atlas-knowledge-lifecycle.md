@@ -28,7 +28,7 @@ supersedes: []
 cleanup_path: Keep as the single controlling lifecycle map. Specialized files may
   add detail but must not redefine actor authority, Phoenix meanings, or the order
   of promotion and recovery.
-last_verified: '2026-06-29'
+last_verified: '2026-07-03'
 ---
 
 # Atlas Knowledge Lifecycle
@@ -51,21 +51,34 @@ Session or milestone
 ├─ Reforge -> independent doctrine-reconciliation Preview
 └─ Phoenix Reborn -> independent recovery and integrity proof
 
+CONTROLLED BURN
+-> Athena distills one bounded context cluster
+-> one Burn Report preserves focused provenance
+-> Burn Report remains active provenance until later Sunset or Phoenix Burn review
+-> Controlled Burn never creates a Feather directly
+
 SUNSET
--> Athena authors one exact Sunset Packet Preview
+-> Athena reviews relevant Burn Reports and authors one exact Sunset Packet Preview
 -> Jayson approves COMPLETE SUNSET [Archive ID]
--> Spear validates and deterministically renders one Monthly Feather entry
+-> Spear validates and deterministically renders one Feather entry in the correct Monthly Feather Archive
 -> Noctua verifies the durable archive and continuity readback
 -> the session becomes archive-ready
 
-Phoenix Burn
--> Standard or Full archive, Feather, Golden Wing, active-source, alignment, and restart-readiness reconciliation
--> Reforge Preview when doctrine correction is needed
+LEARNED-KNOWLEDGE PROMOTION — NORMAL, NOT MANDATORY
+Feather corpus
+-> Standard or Full Phoenix Burn reconciles memory, active work, direction, source alignment, and Atlas Soul
+-> Phoenix Burn validates a Golden Wing candidate when recurrence and corroboration justify promotion
+-> Reforge authors the exact doctrine-reconciliation Preview
 -> exact separately approved source transaction
 -> Noctua audit
 -> Jayson-controlled merge
 -> merged-main readback
 -> Atlas absorbs
+
+DIRECT CORRECTION EXCEPTION
+confirmed doctrine contradiction or explicit Jayson instruction
+-> Reforge Preview without waiting for recurrence or Golden Wing promotion
+-> the same approval, audit, merge, and readback controls
 ```
 
 ## Semantic versus mechanical authority
@@ -124,11 +137,15 @@ Sunset is the essential archival closeout for a session.
 
 `COMPLETE SUNSET [Archive ID]` executes only the exact approved archive transaction. The session is not archive-ready until the durable archive and required Quest/Workboard continuity are read back and verified.
 
+Sunset is the sole session-closeout route that renders selected continuity as a Feather. It may incorporate or cite a Controlled Burn Report, but the Burn Report itself never becomes a Feather automatically.
+
 ### Monthly Feather Archives
 
-Prime's durable Essential Sunset Archive representation is one concise, verified, stable-ID entry in the correct Monthly Atlas Feather Archive unless a separately approved exception exists.
+Prime's durable Essential Sunset Archive representation is one concise, verified, stable-ID Feather entry in the correct Monthly Atlas Feather Archive unless a separately approved exception exists.
 
-Entries are append-oriented, stale-hash protected, and amendment-based. Closed months reject ordinary appends. Feathers are continuity provenance, not governing doctrine.
+A Feather is the individual continuity record. The Monthly Feather Archive is its append-oriented container, not a higher promotion tier.
+
+Entries are stale-hash protected and amendment-based. Closed months reject ordinary appends. Feathers are continuity provenance, not governing doctrine.
 
 ### Solar Eclipse
 
@@ -158,21 +175,31 @@ Phoenix Flare recommends. It does not write source, create an archive, update a 
 
 Controlled Burn is focused semantic distillation for one bounded topic, chat, workflow, archive cluster, or repeated context set.
 
-It preserves history, classifies findings, and routes doctrine contradictions to Reforge. Recurrence alone never grants promotion.
+It produces one Burn Report that preserves focused provenance, classifies findings, and routes doctrine contradictions to Reforge. A Burn Report is not a Feather and does not close a session.
+
+During active work, a durable Burn Report remains available for later Sunset or Phoenix Burn review. During chat closeout, Controlled Burn returns to Sunset, which selects only the continuity that belongs in the Feather.
+
+Recurrence alone never grants promotion.
 
 ### Golden Wing
 
 Golden Wing is a validated promotion holding surface, not a general archive. Candidates retain stable identity, Feather provenance, recurrence evidence, intended destination, conflicts, dependencies, status history, and Athena or explicit Jayson validation.
 
+The normal learned-knowledge route creates or validates Golden Wing candidates through Phoenix Burn. A Golden Wing is promotion-ready meaning, not doctrine; Reforge must still author the exact doctrine change.
+
 ### Phoenix Burn
 
-Phoenix Burn is broad Atlas reconciliation, not only Golden Wing promotion analysis.
+Phoenix Burn is Athena's broad documentary-memory consolidation and Atlas reconciliation process, not only Golden Wing promotion analysis.
 
-A **Standard Phoenix Burn** reviews every Essential Sunset Archive or Feather created since the last verified Burn, unresolved earlier findings, active source, routing, Quest/Workboard state, and open decisions.
+It clears and reconciles the documentary mind by comparing what happened, what Atlas is doing, where Atlas is going, and whether memory and direction remain aligned with active source and Atlas Soul.
 
-A **Full Phoenix Burn** reviews the complete archive and Feather corpus, all unresolved prior findings, active doctrine, and successor architecture.
+A **Standard Phoenix Burn** reviews every Essential Sunset Archive or Feather created since the last verified Burn, unresolved earlier findings and Golden Wings, active control surfaces, routing, Quest/Workboard state, open decisions, and every source changed or materially implicated since the previous Burn.
 
-Phoenix Burn classifies what is already absorbed, historical only, a Quest/Workboard continuity need, a Reforge candidate, protected external evidence, or an unresolved conflict. A restart-safe verdict requires either no source changes or merged-main readback of every required approved change.
+A **Full Phoenix Burn** reviews every tracked clean Atlas document and generated projection in the verified documentary inventory regardless of lifecycle class; the complete Burn Report / archive / Feather corpus; retired, superseded, and historical material for correct classification, routing, provenance, and non-governing posture; all Golden Wings and unresolved prior findings; active doctrine, routing, registries, Quest/Workboard state, Codex / Prime alignment, Atlas Soul identity surfaces, and successor architecture.
+
+Phoenix Burn classifies what is aligned and absorbed, stale or drifting, historical only, a Quest/Workboard continuity need, a Golden Wing candidate, a Reforge candidate, protected external evidence, or an unresolved conflict. A restart-safe verdict requires either no source changes or merged-main readback of every required approved change.
+
+Atlas Soul defines constitutional identity. Phoenix Burn protects Soul integrity by reconciling the documentary mind against that standard; it does not replace Atlas Soul, Codex source order, or Reforge authority.
 
 ### Reforge
 
@@ -189,7 +216,7 @@ Material is not `ABSORBED` merely because it appears in a packet, plan, branch, 
 1. Jayson-approved merge;
 2. merged-main commit identification;
 3. Noctua readback of the intended destination state;
-4. provenance closure from source Feather and Golden Wing candidate;
+4. provenance closure from the source Feather and Golden Wing candidate when the learned-knowledge promotion route applies, or from the direct contradiction / explicit instruction and its approved Reforge rationale when the direct-correction exception applies;
 5. transaction-ledger update;
 6. no unresolved loss or conflict affecting the claim.
 
