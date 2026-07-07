@@ -20,6 +20,7 @@ routes_from:
   - migration/atlas-codex/audits/atlas-codex-delta-0001-final-closeout-v1.md
   - migration/atlas-codex/audits/atlas-active-workboard-authority-alignment-v1.md
   - migration/atlas-codex/reconciliations/c04-atlas-prime-core-doctrine-v1.md
+  - migration/atlas-codex/reconciliations/c07-source-update-standard-v1.md
   - migration/atlas-codex/README.md
   - migration/atlas-codex/source-inventory.json
   - migration/atlas-codex/audits/source-inventory-preflight-v1.md
@@ -32,7 +33,7 @@ private_boundary: This migration map may contain clean source paths, target path
 evidence_boundary: This file is migration-planning evidence. Atlas Codex source, Atlas Prime source, Git history, original evidence systems, reconciliation records, Spear receipts, pull requests, Noctua reports, and Phoenix proofs remain distinct evidence sources.
 supersedes: []
 cleanup_path: Retain throughout the migration campaign. Replace only through a later versioned migration-map PR, and retain predecessor versions as migration evidence.
-last_verified: 2026-06-28
+last_verified: 2026-07-06
 ---
 
 # Atlas Codex to Atlas Prime Migration Map v1
@@ -60,6 +61,8 @@ Canonical inventory digest:
 Preliminary destination collision groups: 18
 C04 collision state: CLOSED_WITH_LINEAGE
 C04 closure record: migration/atlas-codex/reconciliations/c04-atlas-prime-core-doctrine-v1.md
+C07 collision state: CLOSED_WITH_LINEAGE
+C07 closure record: migration/atlas-codex/reconciliations/c07-source-update-standard-v1.md
 Semantic reconciliation complete: NO
 Program roadmap: PRESENT — PLANNING EVIDENCE ONLY
 Quest Board authority: SHADOW
@@ -140,7 +143,7 @@ This register began as provisional. Each unresolved collision group must be reva
 | C04 | `atlas-prime.md` | 7 | Protected root doctrine | Critical | `CLOSED_WITH_LINEAGE` — protected-source PR `#20` merged and read back; see `migration/atlas-codex/reconciliations/c04-atlas-prime-core-doctrine-v1.md`. |
 | C05 | `atlas-index.md` | 7 | Protected routing source | Critical | Exact reconstruction corrected the preliminary count from 6 to 7; resolve routing ownership and generated-versus-authored boundaries. |
 | C06 | `codex/governance/protected-source-boundary.md` | 6 | Protected governance | Critical | Consolidate without weakening private-source boundaries. |
-| C07 | `codex/codex-source-update-standard.md` | 5 | Protected source standard | Critical | Preserve Preview → Execute, recovery, readback, and audit safeguards. |
+| C07 | `codex/codex-source-update-standard.md` | 5 | Protected source standard | Critical | `CLOSED_WITH_LINEAGE` — PR `#34` merged/read back; see `migration/atlas-codex/reconciliations/c07-source-update-standard-v1.md`. |
 | C08 | `atlas-command-surface.md` | 4 | Protected root command surface | Critical | Reconcile current command semantics and successor routing. |
 | C09 | `atlas-aegis.md` | 3 | Protected safety doctrine | Critical | Preserve all hard stops and authority boundaries. |
 | C10 | `atlas-knowledge-lifecycle.md` | 3 | Protected lifecycle doctrine | Critical | Reconcile lifecycle states, source classes, retention, and supersession. |
@@ -153,11 +156,12 @@ This register began as provisional. Each unresolved collision group must be reva
 | C17 | `projects/odyssey/operations/runtime-governance/operation.md` | 2 | Protected/private-boundary route | Critical | Preserve clean pointers only; do not import private runtime values. |
 | C18 | `sunsetting-protocol.md` | 2 | Protected continuity protocol | Critical | Preserve durable/chat-only/unfinished/archive-safe distinctions and Workboard handoff. |
 
-### C04 closed collision lineage
+### Closed collision lineage
 
 | ID | State | Resolution | Source members | Protected-source PR | Merge commit | Final target SHA-256 |
 |---|---|---|---:|---|---|---|
 | C04 | `CLOSED_WITH_LINEAGE` | `SPLIT_INTO_MULTIPLE_TARGETS` | 7/7 accounted | `#20` | `6c4662cf76d76d4af3958c77044d4ba4e7488591` | `3aec2f99762149cb9e775b311c28ea99f28a94135a3317ced5faa28a563c5485` |
+| C07 | `CLOSED_WITH_LINEAGE` | `MERGE_INTO_ONE_TARGET_WITH_RETAINED_PREDECESSORS` | 5/5 accounted | `#34` | `1dd3d689931d52258f049a38546681c9498692dc` | `a59a835cc97a337b38fc797a0ef14bbb77223513db1010f21f6b5e2364ed021d` |
 
 C04 closed only the protected root-doctrine target. Its predecessor sources and temporary addenda remain retained and routed. No source deletion, retirement, broad content movement, Prime promotion, or cutover occurred.
 
@@ -286,8 +290,6 @@ The M1-A read-only evidence preflight and collision-review corpus were completed
 
 ## 11. Immediate next planning action
 
-The next safe planning action is:
+After Stage 1 merges, the next safe planning action is Stage 2 Codex Workboard synchronization, gated on readback of the exact Stage 1 Prime candidate blobs recorded in `source-bindings.json`. After Stage 2 merges, generated refresh remains a separate route for both repositories and the next M1 read-only recommendation is C06 protected-boundary governance.
 
-- Resume C07 read-only semantic reconciliation for `codex/codex-source-update-standard.md` using the accepted delta `0002` chain head and corrected effective inventory.
-- Do not create the disposition ledger, move content broadly, activate S1, retire predecessor source, promote Prime, or alter repository authority without a new exact Preview -> Execute gate.
-No content movement, target replacement, retirement, supersession, omission closure, Questboard transition, S1 work, or cutover is authorized by this map.
+No predecessor retirement, Prime promotion, Codex retirement, generated refresh, or cutover is authorized by this map.

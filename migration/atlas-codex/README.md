@@ -25,6 +25,7 @@ routes_to:
   - migration/atlas-codex/audits/atlas-codex-delta-0001-final-closeout-v1.md
   - migration/atlas-codex/audits/atlas-active-workboard-authority-alignment-v1.md
   - migration/atlas-codex/reconciliations/c04-atlas-prime-core-doctrine-v1.md
+  - migration/atlas-codex/reconciliations/c07-source-update-standard-v1.md
   - migration/atlas-codex/migration-map.md
   - migration/atlas-codex/atlas-prime-rebuild-program-roadmap-v1.md
   - migration/atlas-codex/workboard-to-quest-board-crosswalk-v1.md
@@ -33,7 +34,7 @@ private_boundary: This hub and its future child records may contain clean migrat
 evidence_boundary: This directory records migration provenance. Atlas Codex source, Git history, current Atlas Prime source, original evidence systems, Spear artifacts, Noctua reports, pull requests, merge records, and recovery receipts remain distinct evidence sources.
 supersedes: []
 cleanup_path: Keep as the routed migration evidence entry point until migration closes. After cutover, retain or supersede it only through an approved retention and sunsetting decision.
-last_verified: 2026-06-28
+last_verified: 2026-07-06
 ---
 
 # Atlas Codex Migration Evidence Hub
@@ -53,6 +54,7 @@ Effective inventory after delta 0002: 352 LIVE PATHS
 M0-D closure: CLOSED — GENERATED AND WORKBOARD READBACK VERIFIED
 Active Workboard authority: `Jktomy/atlas-codex/codex/atlas-active-workboard.md` — EXTERNAL COPIES NONCANONICAL
 C04 reconciliation: CLOSED_WITH_LINEAGE — PR #20 / `6c4662cf76d76d4af3958c77044d4ba4e7488591`
+C07 reconciliation: CLOSED_WITH_LINEAGE — PR #34 / `1dd3d689931d52258f049a38546681c9498692dc`
 Preliminary disposition mapping: PRESENT — NOT EXECUTION AUTHORITY
 Disposition ledger: NOT_STARTED
 Migration map: PRESENT — PLANNING EVIDENCE ONLY
@@ -168,7 +170,7 @@ The Codex Active Workboard remains canonical. Prime Quest Board is the SHADOW su
 
 The rebuild program may be coordinated by one immutable Arrow with sealed stages, but this does not activate S1, authorize content movement, promote Prime, retire Codex, or authorize cutover.
 
-The next safe planning gate is C07 read-only semantic reconciliation for `codex/codex-source-update-standard.md`, under a separate Preview -> Execute route.
+The next safe planning gate is Stage 2 Codex Workboard synchronization after Stage 1 Prime closure-source merge readback. Generated refresh, predecessor retirement, Prime promotion, Codex retirement, and cutover remain unauthorized.
 
 ## C04 protected-root-doctrine closure
 
@@ -192,6 +194,10 @@ Closure record:
 `migration/atlas-codex/reconciliations/c04-atlas-prime-core-doctrine-v1.md`
 
 No predecessor or addendum was deleted or retired. No broad content movement, disposition-ledger creation, S1 activation, Prime promotion, or cutover occurred.
+
+## C07 protected-source-standard closure
+
+C07 is closed with verified lineage for `codex/codex-source-update-standard.md`: PR #34, audited target head `80f8db6b666eae61cf4b22da07c6b0641371e118`, squash merge `1dd3d689931d52258f049a38546681c9498692dc`, blob `08a5fb5b9d27a6acb54cd971d0c31442f463b8c3`, SHA-256 `a59a835cc97a337b38fc797a0ef14bbb77223513db1010f21f6b5e2364ed021d`. Closure record: `migration/atlas-codex/reconciliations/c07-source-update-standard-v1.md`. Prime remains SHADOW. Codex Workboard synchronization remains pending until Stage 2. No predecessor source was deleted or retired.
 
 ## Remaining planned artifacts
 
