@@ -4,6 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -21,15 +22,17 @@ from production_adapter.recovery import classify_recovery
 
 BASE = "d81fda533e7a15dcb4cc4ae08163dcc1c23f2b05"
 HEAD = "2" * 40
-WORKBOARD_PATH = "codex/atlas-active-workboard.md"
-WORKBOARD_HEADER = (
-    "| Last Touched | Atlas Project | Operation | Work Item | Status | Priority | Last Known State | Notes |\n"
-    "| --- | --- | --- | --- | --- | --- | --- | --- |\n"
-)
-WORKBOARD_OLD_ROW = "| 2026-07-08 | Codex | Source Governance / Atlas Prime Rebuild | Thread Engine - Atlas Prime Transition | Ready for Athena | Critical | TE-C01 sealed. | Route proof pending. |"
-WORKBOARD_NEW_ROW = "| 2026-07-08 | Codex | Source Governance / Atlas Prime Rebuild | Thread Engine - Atlas Prime Transition | Ready for Athena | Critical | WORKBOARD_ROW_UPDATE_V1 merged and under live proof. | Routine row route proof recorded. |"
-WORKBOARD_OLD = (WORKBOARD_HEADER + WORKBOARD_OLD_ROW + "\n").encode("utf-8")
-WORKBOARD_NEW = (WORKBOARD_HEADER + WORKBOARD_NEW_ROW + "\n").encode("utf-8")
+PROTECTED_PATH = "governance/noctua.md"
+PROTECTED_OLD = b"Prime Noctua source before.\n"
+PROTECTED_NEW = b"Prime Noctua source after.\n"
+ACTIVE_STATE = {
+    "implementation_state": "THREAD_ENGINE_ACTIVE_MISSION_SCOPED",
+    "production_execution_authorized": True,
+    "proof_required": False,
+    "standing_authority": False,
+    "automatic_merge": False,
+    "direct_main": False,
+}
 
 
 def sha(data: bytes) -> str:
@@ -63,8 +66,8 @@ def base_mission(tmp: Path, operations: list[dict], declared_paths: list[str], c
         "remote_url": "https://github.com/Jktomy/atlas-prime.git",
         "base_sha": BASE,
         "branch": "source/gate-7f-unit",
-        "commit_message": "codex: unit production adapter mission",
-        "pr_title": "codex: unit production adapter mission",
+        "commit_message": "prime: unit production adapter mission",
+        "pr_title": "prime: unit production adapter mission",
         "pr_body": "Unit mission.\n",
         "declared_paths": declared_paths,
         "payload_root": "payloads",
@@ -165,117 +168,49 @@ def add_aegis_break_authority(data: dict, protected_paths: list[str]) -> dict:
     return data
 
 
-def row_hash(row: str) -> str:
-    return sha((row + "\n").encode("utf-8"))
-
-
-def add_workboard_row_update_authority(data: dict) -> dict:
-    data["workboard_row_update_authority"] = {
-        "route_identity": "WORKBOARD_ROW_UPDATE_V1",
-        "authority_id": data["authority_id"],
-        "operator": "Jayson",
-        "github_operator_login": "Jktomy",
-        "repository": data["repository"],
-        "base_sha": data["base_sha"],
-        "branch": data["branch"],
-        "workboard_path": WORKBOARD_PATH,
-        "workboard_source_blob": data["source_blobs"][WORKBOARD_PATH],
-        "row_identity": {
-            "Atlas Project": "Codex",
-            "Operation": "Source Governance / Atlas Prime Rebuild",
-            "Work Item": "Thread Engine - Atlas Prime Transition",
-        },
-        "allowed_fields": ["Last Known State", "Notes"],
-        "before_row_sha256": row_hash(WORKBOARD_OLD_ROW),
-        "after_row_sha256": row_hash(WORKBOARD_NEW_ROW),
-        "candidate_tree_sha256": data["candidate_tree_sha256"],
-        "final_pathset_sha256": data["final_pathset_sha256"],
-        "operation_set_sha256": operation_set_sha256(data["operations"]),
-        "stop_point": data["stop_point"],
-        "persistent_writer": data["persistent_writer"],
-        "direct_main_write": False,
-        "force_push": False,
-        "automatic_ready": False,
-        "automatic_merge": False,
-        "workflow_dispatch": False,
-        "standing_authority": "NO",
-    }
-    return data
-
-
-def build_protected_workboard_mission(tmp: Path, *, include_extra_protected: bool = False) -> tuple[Path, dict]:
+def build_protected_mission(tmp: Path, *, include_extra_protected: bool = False) -> tuple[Path, dict]:
     payloads = tmp / "payloads"
     payloads.mkdir()
-    (payloads / "workboard.md").write_bytes(WORKBOARD_NEW)
+    (payloads / "noctua.md").write_bytes(PROTECTED_NEW)
     candidate = tmp / "candidate"
-    (candidate / "codex").mkdir(parents=True)
-    (candidate / WORKBOARD_PATH).write_bytes(WORKBOARD_NEW)
+    (candidate / "governance").mkdir(parents=True)
+    (candidate / PROTECTED_PATH).write_bytes(PROTECTED_NEW)
     final_root = tmp / "final"
-    (final_root / "codex").mkdir(parents=True)
-    (final_root / WORKBOARD_PATH).write_bytes(WORKBOARD_NEW)
+    (final_root / "governance").mkdir(parents=True)
+    (final_root / PROTECTED_PATH).write_bytes(PROTECTED_NEW)
     operations = [
         {
-            "thread_id": "replace-workboard",
+            "thread_id": "replace-prime-noctua",
             "operation": "REPLACE",
-            "path": WORKBOARD_PATH,
-            "payload": "workboard.md",
-            "payload_sha256": sha(WORKBOARD_NEW),
-            "expected_output_sha256": sha(WORKBOARD_NEW),
-            "source_sha256": sha(WORKBOARD_OLD),
+            "path": PROTECTED_PATH,
+            "payload": "noctua.md",
+            "payload_sha256": sha(PROTECTED_NEW),
+            "expected_output_sha256": sha(PROTECTED_NEW),
+            "source_sha256": sha(PROTECTED_OLD),
         }
     ]
-    declared = [WORKBOARD_PATH]
-    protected = [WORKBOARD_PATH]
-    source_blobs = {WORKBOARD_PATH: "1" * 40}
+    declared = [PROTECTED_PATH]
+    protected = [PROTECTED_PATH]
+    source_blobs = {PROTECTED_PATH: "1" * 40}
     if include_extra_protected:
-        extra_data = b"noctua new\n"
-        (payloads / "noctua.md").write_bytes(extra_data)
-        (candidate / "noctua.md").write_bytes(extra_data)
-        (final_root / "noctua.md").write_bytes(extra_data)
+        extra_data = b"source hierarchy new\n"
+        (payloads / "source-hierarchy.md").write_bytes(extra_data)
+        (candidate / "governance" / "source-hierarchy.md").write_bytes(extra_data)
+        (final_root / "governance" / "source-hierarchy.md").write_bytes(extra_data)
         operations.append(
             {
-                "thread_id": "add-noctua",
+                "thread_id": "add-source-hierarchy",
                 "operation": "ADD",
-                "path": "noctua.md",
-                "payload": "noctua.md",
+                "path": "governance/source-hierarchy.md",
+                "payload": "source-hierarchy.md",
                 "payload_sha256": sha(extra_data),
                 "expected_output_sha256": sha(extra_data),
             }
         )
-        declared.append("noctua.md")
+        declared.append("governance/source-hierarchy.md")
     data = base_mission(tmp, operations, declared, candidate, final_root)
     data["source_blobs"] = source_blobs
     data = add_aegis_break_authority(data, protected)
-    data = bind_mission(data)
-    path = tmp / "mission.json"
-    write_json(path, data)
-    return path, data
-
-
-def build_workboard_row_update_mission(tmp: Path) -> tuple[Path, dict]:
-    payloads = tmp / "payloads"
-    payloads.mkdir()
-    (payloads / "workboard.md").write_bytes(WORKBOARD_NEW)
-    candidate = tmp / "candidate"
-    (candidate / "codex").mkdir(parents=True)
-    (candidate / WORKBOARD_PATH).write_bytes(WORKBOARD_NEW)
-    final_root = tmp / "final"
-    (final_root / "codex").mkdir(parents=True)
-    (final_root / WORKBOARD_PATH).write_bytes(WORKBOARD_NEW)
-    operations = [
-        {
-            "thread_id": "replace-workboard-row",
-            "operation": "REPLACE",
-            "path": WORKBOARD_PATH,
-            "payload": "workboard.md",
-            "payload_sha256": sha(WORKBOARD_NEW),
-            "expected_output_sha256": sha(WORKBOARD_NEW),
-            "source_sha256": sha(WORKBOARD_OLD),
-        }
-    ]
-    data = base_mission(tmp, operations, [WORKBOARD_PATH], candidate, final_root)
-    data["source_blobs"] = {WORKBOARD_PATH: "1" * 40}
-    data = add_workboard_row_update_authority(data)
     data = bind_mission(data)
     path = tmp / "mission.json"
     write_json(path, data)
@@ -345,8 +280,8 @@ class FakeRunner:
             (checkout / "docs").mkdir(parents=True)
             (checkout / "docs" / "replace.txt").write_bytes(b"old\n")
             (checkout / "docs" / "delete.txt").write_bytes(b"delete me\n")
-            (checkout / "codex").mkdir(parents=True)
-            (checkout / WORKBOARD_PATH).write_bytes(WORKBOARD_OLD)
+            (checkout / "governance").mkdir(parents=True)
+            (checkout / PROTECTED_PATH).write_bytes(PROTECTED_OLD)
             return Completed(tuple(args), 0, "", "")
         if args[:2] == ["git", "rev-parse"] and args[-1] == "HEAD":
             return Completed(tuple(args), 0, (HEAD if self.committed else BASE) + "\n", "")
@@ -412,13 +347,17 @@ class FakeRunner:
 
 
 class ProductionAdapterTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.activation_patcher = patch("production_adapter.adapter.load_activation_state", return_value=dict(ACTIVE_STATE))
+        self.activation_patcher.start()
+
+    def tearDown(self) -> None:
+        self.activation_patcher.stop()
+
     def execute(self, mission_path: Path, data: dict, **runner_kwargs) -> dict:
         protected = data.get("aegis_break_authority") is not None
-        workboard = data.get("workboard_row_update_authority") is not None
         aegis_break_protected_route = runner_kwargs.pop("aegis_break_protected_route", protected)
         aegis_break_authority_id = runner_kwargs.pop("aegis_break_authority_id", data["authority_id"] if protected else None)
-        workboard_row_update = runner_kwargs.pop("workboard_row_update", workboard)
-        workboard_row_update_authority_id = runner_kwargs.pop("workboard_row_update_authority_id", data["authority_id"] if workboard else None)
         return execute_mission(
             mission_path,
             mission_scoped=True,
@@ -426,8 +365,6 @@ class ProductionAdapterTests(unittest.TestCase):
             mission_sha256=data["mission_sha256"],
             aegis_break_protected_route=aegis_break_protected_route,
             aegis_break_authority_id=aegis_break_authority_id,
-            workboard_row_update=workboard_row_update,
-            workboard_row_update_authority_id=workboard_row_update_authority_id,
             work_root=mission_path.parent,
             package_root=mission_path.parent,
             runner=FakeRunner(data, **runner_kwargs),
@@ -435,7 +372,6 @@ class ProductionAdapterTests(unittest.TestCase):
 
     def execute_with_runner(self, mission_path: Path, data: dict) -> tuple[dict, FakeRunner]:
         protected = data.get("aegis_break_authority") is not None
-        workboard = data.get("workboard_row_update_authority") is not None
         runner = FakeRunner(data)
         receipt = execute_mission(
             mission_path,
@@ -444,8 +380,6 @@ class ProductionAdapterTests(unittest.TestCase):
             mission_sha256=data["mission_sha256"],
             aegis_break_protected_route=protected,
             aegis_break_authority_id=data["authority_id"] if protected else None,
-            workboard_row_update=workboard,
-            workboard_row_update_authority_id=data["authority_id"] if workboard else None,
             work_root=mission_path.parent,
             package_root=mission_path.parent,
             runner=runner,
@@ -547,12 +481,13 @@ class ProductionAdapterTests(unittest.TestCase):
                 ({"mission_sha256": "0" * 64}, "MISSION_SHA_MISMATCH"),
                 ({"remote_url": "https://example.invalid/repo.git"}, "REMOTE_REJECTED"),
                 ({"receipt_name": "../receipt.json"}, "RECEIPT_NAME_REJECTED"),
+                ({"declared_paths": ["README.md"]}, "PROTECTED_PATH"),
                 ({"declared_paths": [".github/workflows/x.yml"]}, "PROTECTED_PATH"),
                 ({"declared_paths": ["generated/x.md"]}, "PROTECTED_PATH"),
-                ({"declared_paths": ["codex/atlas-active-workboard.md"]}, "PROTECTED_PATH"),
-                ({"declared_paths": ["codex/thread-engine-spear-weave-contract.md"]}, "PROTECTED_PATH"),
+                ({"declared_paths": ["migration/codex-inheritance-manifest.md"]}, "PROTECTED_PATH"),
+                ({"declared_paths": ["quest-board/quest-board.md"]}, "PROTECTED_PATH"),
+                ({"declared_paths": ["governance/noctua.md"]}, "PROTECTED_PATH"),
                 ({"declared_paths": ["tools/thread-engine/production_adapter/adapter.py"]}, "PROTECTED_PATH"),
-                ({"declared_paths": ["tools/atlas-sword/engine/Invoke-AtlasSword.ps1"]}, "PROTECTED_PATH"),
                 ({"declared_paths": ["C:/x"]}, "PATH_REJECTED"),
                 ({"declared_paths": ["../x"]}, "PATH_REJECTED"),
                 ({"declared_paths": ["dir\\x"]}, "PATH_REJECTED"),
@@ -578,135 +513,27 @@ class ProductionAdapterTests(unittest.TestCase):
             with self.assertRaises(MissionError):
                 validate_mission(data)
 
-    def test_ordinary_thread_engine_mission_rejects_workboard(self) -> None:
+    def test_ordinary_thread_engine_mission_rejects_prime_protected_path(self) -> None:
         with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            _, data = build_protected_workboard_mission(Path(tmp_text))
+            _, data = build_protected_mission(Path(tmp_text))
             data.pop("aegis_break_authority")
             data = bind_mission(data)
             with self.assertRaises(MissionError) as raised:
                 validate_mission(data)
             self.assertEqual(raised.exception.code, "PROTECTED_PATH")
 
-    def test_workboard_row_update_accepts_exact_authorized_row(self) -> None:
+    def test_codex_workboard_route_is_schema_rejected(self) -> None:
         with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            mission_path, data = build_workboard_row_update_mission(Path(tmp_text))
-            receipt, runner = self.execute_with_runner(mission_path, data)
-            self.assertEqual(receipt["result"], "SUCCESS")
-            route = receipt["workboard_row_update_route"]
-            self.assertEqual(route["route_identity"], "WORKBOARD_ROW_UPDATE_V1")
-            self.assertEqual(route["authority_id"], data["authority_id"])
-            self.assertEqual(route["operator"], "Jayson")
-            self.assertEqual(route["expected_operator_login"], "Jktomy")
-            self.assertEqual(route["observed_operator_login"], "Jktomy")
-            self.assertEqual(route["workboard_path"], WORKBOARD_PATH)
-            self.assertEqual(route["workboard_source_blob"], "1" * 40)
-            self.assertEqual(route["row_identity"]["Work Item"], "Thread Engine - Atlas Prime Transition")
-            self.assertEqual(route["allowed_fields"], ["Last Known State", "Notes"])
-            self.assertEqual(route["before_row_sha256"], row_hash(WORKBOARD_OLD_ROW))
-            self.assertEqual(route["after_row_sha256"], row_hash(WORKBOARD_NEW_ROW))
-            self.assertEqual(route["operation_set_sha256"], operation_set_sha256(data["operations"]))
-            self.assertEqual(receipt["workboard_row_update_evidence"]["changed_fields"], ["Last Known State", "Notes"])
-            self.assertEqual(receipt["workboard_row_update_evidence"]["after_status"], "Ready for Athena")
-            self.assertEqual(route["standing_authority"], "NO")
-            self.assertFalse(route["direct_main_write"])
-            self.assertFalse(route["force_push"])
-            self.assertFalse(route["automatic_ready"])
-            self.assertFalse(route["automatic_merge"])
-            self.assertFalse(route["workflow_dispatch"])
-            self.assertTrue(receipt["draft_pr_only"])
-            self.assertTrue(receipt["human_merge_required"])
-            self.assertTrue(runner.committed)
-            self.assertTrue(runner.pr_created)
-            self.assertEqual(len([call for call in runner.calls if call[:2] == ("git", "clone")]), 1)
-            self.assertEqual(len([call for call in runner.calls if call == ("gh", "api", "user", "--jq", ".login")]), 1)
-            self.assertEqual(len([call for call in runner.calls if call[:2] == ("git", "commit")]), 1)
-            self.assertEqual(len([call for call in runner.calls if call[:3] == ("gh", "pr", "create")]), 1)
-            self.assertIn("--draft", next(call for call in runner.calls if call[:3] == ("gh", "pr", "create")))
-            self.assert_no_forbidden_delivery_actions(runner)
-
-    def test_workboard_row_update_rejects_absent_launch_intent(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            mission_path, data = build_workboard_row_update_mission(Path(tmp_text))
-            runner = FakeRunner(data)
-            with self.assertRaises(AdapterError) as raised:
-                execute_mission(
-                    mission_path,
-                    mission_scoped=True,
-                    execute_draft_pr=True,
-                    mission_sha256=data["mission_sha256"],
-                    workboard_row_update=False,
-                    workboard_row_update_authority_id=None,
-                    work_root=mission_path.parent,
-                    package_root=mission_path.parent,
-                    runner=runner,
-                )
-            self.assertEqual(raised.exception.code, "WORKBOARD_INTENT_REQUIRED")
-            self.assertEqual(raised.exception.stage, "PROTECTED_ROUTE_INTENT")
-            self.assertFalse(runner.committed)
-            self.assertFalse(runner.pr_created)
-
-    def test_workboard_row_update_rejects_wrong_launch_authority_id(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            mission_path, data = build_workboard_row_update_mission(Path(tmp_text))
-            with self.assertRaises(AdapterError) as raised:
-                self.execute(mission_path, data, workboard_row_update_authority_id="WRONG-AUTHORITY")
-            self.assertEqual(raised.exception.code, "WORKBOARD_AUTHORITY_MISMATCH")
-            self.assertEqual(raised.exception.stage, "PROTECTED_ROUTE_INTENT")
-
-    def test_workboard_row_update_rejects_authenticated_operator_mismatch(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            mission_path, data = build_workboard_row_update_mission(Path(tmp_text))
-            with self.assertRaises(AdapterError) as raised:
-                self.execute(mission_path, data, operator_login="OtherOperator")
-            self.assertEqual(raised.exception.code, "WORKBOARD_OPERATOR_MISMATCH")
-            self.assertEqual(raised.exception.stage, "OPERATOR_VERIFY")
-            self.assertEqual(raised.exception.receipt["workboard_row_update_route"]["observed_operator_login"], "OtherOperator")
-
-    def test_workboard_row_update_rejects_stale_source_blob(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            mission_path, data = build_workboard_row_update_mission(Path(tmp_text))
-            data["source_blobs"][WORKBOARD_PATH] = "0" * 40
-            data["workboard_row_update_authority"]["workboard_source_blob"] = "0" * 40
-            data = bind_mission(data)
-            write_json(mission_path, data)
-            with self.assertRaises(AdapterError) as raised:
-                self.execute(mission_path, data)
-            self.assertEqual(raised.exception.code, "SOURCE_BLOB_MISMATCH")
-            self.assertEqual(raised.exception.stage, "SOURCE_BLOB_VERIFY")
-
-    def test_workboard_row_update_rejects_extra_protected_path(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            _, data = build_workboard_row_update_mission(Path(tmp_text))
-            data["declared_paths"].append("noctua.md")
-            data["operations"].append(
-                {
-                    "thread_id": "add-noctua",
-                    "operation": "ADD",
-                    "path": "noctua.md",
-                    "payload": "noctua.md",
-                    "payload_sha256": sha(b"noctua\n"),
-                    "expected_output_sha256": sha(b"noctua\n"),
-                }
-            )
+            _, data = build_add_replace_delete_mission(Path(tmp_text), include_delete=False)
+            data["workboard_row_update_authority"] = {"route_identity": "WORKBOARD_ROW_UPDATE_V1"}
             data = bind_mission(data)
             with self.assertRaises(MissionError) as raised:
                 validate_mission(data)
-            self.assertEqual(raised.exception.code, "WORKBOARD_PATH_MISMATCH")
+            self.assertEqual(raised.exception.code, "UNKNOWN_PROPERTY")
 
-    def test_workboard_row_update_rejects_row_hash_mismatch(self) -> None:
+    def test_aegis_break_accepts_exact_prime_protected_source(self) -> None:
         with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            mission_path, data = build_workboard_row_update_mission(Path(tmp_text))
-            data["workboard_row_update_authority"]["after_row_sha256"] = "0" * 64
-            data = bind_mission(data)
-            write_json(mission_path, data)
-            with self.assertRaises(AdapterError) as raised:
-                self.execute(mission_path, data)
-            self.assertEqual(raised.exception.code, "WORKBOARD_ROW_HASH_MISMATCH")
-            self.assertEqual(raised.exception.stage, "CANDIDATE_STAGE")
-
-    def test_aegis_break_accepts_exact_authorized_workboard(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            mission_path, data = build_protected_workboard_mission(Path(tmp_text))
+            mission_path, data = build_protected_mission(Path(tmp_text))
             receipt, runner = self.execute_with_runner(mission_path, data)
             self.assertEqual(receipt["result"], "SUCCESS")
             self.assertEqual(receipt["head_sha"], HEAD)
@@ -719,10 +546,10 @@ class ProductionAdapterTests(unittest.TestCase):
             self.assertEqual(route["operator"], "Jayson")
             self.assertEqual(route["expected_operator_login"], "Jktomy")
             self.assertEqual(route["observed_operator_login"], "Jktomy")
-            self.assertEqual(route["declared_protected_paths"], [WORKBOARD_PATH])
-            self.assertEqual(route["exact_protected_paths"], [WORKBOARD_PATH])
-            self.assertEqual(route["protected_source_blobs"], {WORKBOARD_PATH: "1" * 40})
-            self.assertEqual(route["protected_source_blobs_sha256"], sha256_bytes(stable_json({WORKBOARD_PATH: "1" * 40}).encode("utf-8")))
+            self.assertEqual(route["declared_protected_paths"], [PROTECTED_PATH])
+            self.assertEqual(route["exact_protected_paths"], [PROTECTED_PATH])
+            self.assertEqual(route["protected_source_blobs"], {PROTECTED_PATH: "1" * 40})
+            self.assertEqual(route["protected_source_blobs_sha256"], sha256_bytes(stable_json({PROTECTED_PATH: "1" * 40}).encode("utf-8")))
             self.assertEqual(route["operation_set_sha256"], operation_set_sha256(data["operations"]))
             self.assertEqual(route["candidate_tree_sha256"], data["candidate_tree_sha256"])
             self.assertEqual(route["final_pathset_sha256"], data["final_pathset_sha256"])
@@ -752,16 +579,16 @@ class ProductionAdapterTests(unittest.TestCase):
 
     def test_aegis_break_rejects_extra_protected_path(self) -> None:
         with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            _, data = build_protected_workboard_mission(Path(tmp_text), include_extra_protected=True)
+            _, data = build_protected_mission(Path(tmp_text), include_extra_protected=True)
             with self.assertRaises(MissionError) as raised:
                 validate_mission(data)
             self.assertEqual(raised.exception.code, "AEGIS_BREAK_PATH_MISMATCH")
 
     def test_aegis_break_rejects_protected_replace_missing_source_blob(self) -> None:
         with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            _, data = build_protected_workboard_mission(Path(tmp_text))
-            data["source_blobs"].pop(WORKBOARD_PATH)
-            data = add_aegis_break_authority(data, [WORKBOARD_PATH])
+            _, data = build_protected_mission(Path(tmp_text))
+            data["source_blobs"].pop(PROTECTED_PATH)
+            data = add_aegis_break_authority(data, [PROTECTED_PATH])
             data = bind_mission(data)
             with self.assertRaises(MissionError) as raised:
                 validate_mission(data)
@@ -769,9 +596,9 @@ class ProductionAdapterTests(unittest.TestCase):
 
     def test_aegis_break_rejects_stale_source_blob(self) -> None:
         with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            mission_path, data = build_protected_workboard_mission(Path(tmp_text))
-            data["source_blobs"][WORKBOARD_PATH] = "0" * 40
-            data = add_aegis_break_authority(data, [WORKBOARD_PATH])
+            mission_path, data = build_protected_mission(Path(tmp_text))
+            data["source_blobs"][PROTECTED_PATH] = "0" * 40
+            data = add_aegis_break_authority(data, [PROTECTED_PATH])
             data = bind_mission(data)
             write_json(mission_path, data)
             with self.assertRaises(AdapterError) as raised:
@@ -781,7 +608,7 @@ class ProductionAdapterTests(unittest.TestCase):
 
     def test_aegis_break_rejects_absent_launch_intent(self) -> None:
         with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            mission_path, data = build_protected_workboard_mission(Path(tmp_text))
+            mission_path, data = build_protected_mission(Path(tmp_text))
             runner = FakeRunner(data)
             with self.assertRaises(AdapterError) as raised:
                 execute_mission(
@@ -802,7 +629,7 @@ class ProductionAdapterTests(unittest.TestCase):
 
     def test_aegis_break_rejects_wrong_launch_authority_id(self) -> None:
         with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            mission_path, data = build_protected_workboard_mission(Path(tmp_text))
+            mission_path, data = build_protected_mission(Path(tmp_text))
             runner = FakeRunner(data)
             with self.assertRaises(AdapterError) as raised:
                 execute_mission(
@@ -823,7 +650,7 @@ class ProductionAdapterTests(unittest.TestCase):
 
     def test_aegis_break_rejects_authenticated_operator_mismatch(self) -> None:
         with tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-            mission_path, data = build_protected_workboard_mission(Path(tmp_text))
+            mission_path, data = build_protected_mission(Path(tmp_text))
             runner = FakeRunner(data, operator_login="OtherOperator")
             with self.assertRaises(AdapterError) as raised:
                 execute_mission(
@@ -849,7 +676,7 @@ class ProductionAdapterTests(unittest.TestCase):
             ("authority_id", "WRONG-AUTHORITY", "AEGIS_BREAK_AUTHORITY_MISMATCH"),
             ("operator", "Athena", "AEGIS_BREAK_OPERATOR_MISMATCH"),
             ("github_operator_login", "OtherOperator", "AEGIS_BREAK_OPERATOR_MISMATCH"),
-            ("repository", "Jktomy/atlas-prime", "AEGIS_BREAK_BINDING_MISMATCH"),
+            ("repository", "Jktomy/atlas-codex", "AEGIS_BREAK_BINDING_MISMATCH"),
             ("base_sha", "0" * 40, "AEGIS_BREAK_BINDING_MISMATCH"),
             ("branch", "source/wrong-aegis-break-branch", "AEGIS_BREAK_BINDING_MISMATCH"),
             ("candidate_tree_sha256", "0" * 64, "AEGIS_BREAK_BINDING_MISMATCH"),
@@ -857,7 +684,7 @@ class ProductionAdapterTests(unittest.TestCase):
         ]
         for field, value, code in cases:
             with self.subTest(field=field), tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-                _, data = build_protected_workboard_mission(Path(tmp_text))
+                _, data = build_protected_mission(Path(tmp_text))
                 data["aegis_break_authority"][field] = value
                 data = bind_mission(data)
                 with self.assertRaises(MissionError) as raised:
@@ -875,7 +702,7 @@ class ProductionAdapterTests(unittest.TestCase):
         ]
         for field, value in cases:
             with self.subTest(field=field), tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-                _, data = build_protected_workboard_mission(Path(tmp_text))
+                _, data = build_protected_mission(Path(tmp_text))
                 data["aegis_break_authority"][field] = value
                 data = bind_mission(data)
                 with self.assertRaises(MissionError) as raised:
@@ -883,9 +710,9 @@ class ProductionAdapterTests(unittest.TestCase):
                 self.assertEqual(raised.exception.code, "AEGIS_BREAK_FORBIDDEN_ACTION")
 
     def test_aegis_break_does_not_authorize_thread_engine_self_change(self) -> None:
-        for self_change_path in ("tools/thread-engine/production_adapter/adapter.py", "thread-engine.md"):
+        for self_change_path in ("tools/thread-engine/production_adapter/adapter.py", "tools/thread-engine/README.md"):
             with self.subTest(self_change_path=self_change_path), tempfile.TemporaryDirectory(prefix="atlas-gate7f-unit-") as tmp_text:
-                _, data = build_protected_workboard_mission(Path(tmp_text))
+                _, data = build_protected_mission(Path(tmp_text))
                 data["declared_paths"] = [self_change_path]
                 data["operations"][0]["path"] = self_change_path
                 data["source_blobs"] = {self_change_path: "1" * 40}
@@ -989,21 +816,11 @@ class ProductionAdapterTests(unittest.TestCase):
             self.assertEqual(raised.exception.code, "MISSION_SHA_MISMATCH")
 
 
-    def test_powershell_launcher_prepares_missing_work_root(self) -> None:
+    def test_powershell_launcher_is_disabled_first(self) -> None:
         launcher = (ROOT / "Invoke-AtlasThreadEngineProductionAdapter.ps1").read_text(encoding="utf-8")
-        self.assertIn("[switch] $AegisBreakProtectedRoute", launcher)
-        self.assertIn("[string] $AegisBreakAuthorityId", launcher)
-        self.assertIn("Aegis Break protected-route intent requires an exact authority id.", launcher)
-        self.assertIn("--aegis-break-protected-route", launcher)
-        self.assertIn("--aegis-break-authority-id", launcher)
-        self.assertNotIn("$argumentList.Add((Resolve-Path -LiteralPath $WorkRoot).Path)", launcher)
-        self.assertIn("GetUnresolvedProviderPathFromPSPath($WorkRoot)", launcher)
-        self.assertIn("Test-Path -LiteralPath $resolvedWorkRoot -PathType Leaf", launcher)
-        self.assertIn("[System.IO.Directory]::CreateDirectory($resolvedWorkRoot)", launcher)
-        self.assertIn("Test-Path -LiteralPath $resolvedWorkRoot -PathType Container", launcher)
-        create_at = launcher.index("[System.IO.Directory]::CreateDirectory($resolvedWorkRoot)")
-        append_at = launcher.index("$argumentList.Add($resolvedWorkRoot)")
-        self.assertLess(create_at, append_at)
+        self.assertIn("PORT_CANDIDATE_DISABLED", launcher)
+        self.assertIn("throw", launcher)
+        self.assertNotIn("production_adapter.cli", launcher)
 
 if __name__ == "__main__":
     unittest.main()

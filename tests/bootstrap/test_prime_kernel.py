@@ -22,6 +22,7 @@ required = [
     "policies/protected-paths.json",
     "policies/operator-policy.json",
     "tools/thread-engine/PRIME-PORT-STATUS.json",
+    "tools/thread-engine/production_adapter/activation.py",
 ]
 
 missing = [p for p in required if not (ROOT / p).is_file()]
@@ -40,6 +41,12 @@ port = json.loads((ROOT / "tools/thread-engine/PRIME-PORT-STATUS.json").read_tex
 assert port["implementation_state"] == "PORT_CANDIDATE_DISABLED"
 assert port["production_execution_authorized"] is False
 assert port["proof_required"] is True
+assert port["codex_workboard_route"] == "ABSENT"
+assert port["protected_path_policy"] == "PRIME_NATIVE_JSON_ENFORCED"
+
+protected = json.loads((ROOT / "policies/protected-paths.json").read_text(encoding="utf-8"))
+for required_path in ("migration/**", "quest-board/**", "generated/**", "tools/thread-engine/**"):
+    assert required_path in protected["critical_paths"]
 
 if (ROOT / "generated").exists():
     raise SystemExit("The Prime bootstrap kernel must not include generated output.")

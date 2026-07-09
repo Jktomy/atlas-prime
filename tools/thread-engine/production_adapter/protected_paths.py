@@ -1,34 +1,36 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from pathlib import PurePosixPath
 
-PROTECTED_EXACT = {
-    "codex/atlas-active-workboard.md",
-    "codex/atlas-change-paths.md",
-    "codex/atlas-strikeforce.md",
-    "codex/codex-source-update-standard.md",
-    "codex/gate-7-dual-path-proof.md",
-    "codex/thread-engine-spear-weave-contract.md",
-    "atlas-aegis.md",
-    "atlas-sword.md",
-    "noctua.md",
-    "thread-engine.md",
-}
+POLICY_PATH = Path(__file__).resolve().parents[3] / "policies" / "protected-paths.json"
 
-PROTECTED_PREFIXES = (
-    ".git/",
-    ".github/workflows/",
-    "generated/",
-    "tools/atlas-sword/",
-    "tools/thread-engine/",
-)
 
-THREAD_ENGINE_SELF_CHANGE_EXACT = frozenset(
-    {
-        "codex/thread-engine-spear-weave-contract.md",
-        "thread-engine.md",
-    }
-)
+def _load_policy() -> tuple[frozenset[str], tuple[str, ...]]:
+    data = json.loads(POLICY_PATH.read_text(encoding="utf-8"))
+    if data.get("format_version") != "1.0" or data.get("default") != "deny":
+        raise AssertionError("Prime protected-path policy identity is invalid")
+    patterns = data.get("critical_paths")
+    if not isinstance(patterns, list) or not patterns or not all(isinstance(item, str) and item for item in patterns):
+        raise AssertionError("Prime protected-path policy must contain a non-empty string list")
+    exact: set[str] = set()
+    prefixes: list[str] = []
+    for pattern in patterns:
+        if pattern.endswith("/**") and "*" not in pattern[:-3]:
+            prefixes.append(pattern[:-2])
+        elif "*" not in pattern:
+            exact.add(pattern)
+        else:
+            raise AssertionError(f"unsupported Prime protected-path pattern: {pattern}")
+    if len(exact) + len(prefixes) != len(patterns):
+        raise AssertionError("duplicate Prime protected-path policy entry")
+    return frozenset(exact), tuple(prefixes)
+
+
+PROTECTED_EXACT, PROTECTED_PREFIXES = _load_policy()
+
+THREAD_ENGINE_SELF_CHANGE_EXACT = frozenset()
 
 THREAD_ENGINE_SELF_CHANGE_PREFIXES = (
     "tools/thread-engine/",

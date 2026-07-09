@@ -10,6 +10,9 @@
     "governance/**",
     "policies/**",
     "schemas/**",
+    "migration/**",
+    "quest-board/**",
+    "generated/**",
     "tools/thread-engine/**",
     ".github/workflows/**"
   ],

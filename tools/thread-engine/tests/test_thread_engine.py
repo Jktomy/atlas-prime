@@ -184,9 +184,9 @@ class ThreadEngineTests(unittest.TestCase):
             data.update(patch)
             self.expect_rejection(data, expected, code, stage)
 
-    def test_ordinary_bow_arrow_weave_rejects_workboard(self) -> None:
+    def test_ordinary_bow_arrow_weave_rejects_prime_critical_path(self) -> None:
         data = load_example("add-replace.example.json")
-        data["threads"][0]["path"] = "codex/atlas-active-workboard.md"
+        data["threads"][0]["path"] = "migration/codex-inheritance-manifest.md"
         self.expect_rejection(data, "protected path requires a separate route", "PROTECTED_PATH", "THREAD_SET_VERIFY")
 
     def test_add_and_replace_contract_rejections(self) -> None:

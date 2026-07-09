@@ -6,7 +6,7 @@ The source beneath this directory is copied at Build time from the verified Code
 1c43a5c7903a38a684b906e87a6475651a900a39
 ```
 
-It is a **port candidate**, not an activated production tool.
+It is a **Prime-native, disabled port candidate**, not an activated production tool.
 
 ```text
 Implementation:
@@ -19,6 +19,8 @@ Proof:
 REQUIRED IN PR-C03
 ```
 
-The Build script replaces exact repository identity strings and installs a production-launcher guard. It does not claim full Prime policy parity.
+The repaired candidate enforces this state inside the Python adapter as well as the CLI and PowerShell launcher. Disabled receipts report `PORT_CANDIDATE_DISABLED`, `thread_engine_active: false`, and `production_execution_authorized: false`.
 
-PR-C03 must audit every remaining Codex-bound assumption, run the complete tests, prove disablement, and produce one harmless mission-scoped draft PR before Prime Thread Engine may be called working.
+Live protected-path enforcement loads `policies/protected-paths.json`. The Codex Workboard route is absent from Prime's CLI, schema, implementation, receipts, examples, and positive tests.
+
+PR-C03 must activate the adapter through Aegis Break → Oathbringer, rerun the complete tests, and produce one harmless mission-scoped draft PR before Prime Thread Engine may be called working.

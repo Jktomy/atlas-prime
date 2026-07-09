@@ -10,10 +10,11 @@
   "standing_authority": false,
   "automatic_merge": false,
   "direct_main": false,
+  "codex_workboard_route": "ABSENT",
+  "protected_path_policy": "PRIME_NATIVE_JSON_ENFORCED",
   "known_disabled_routes": [
     "production adapter until PR-C03 proof",
-    "Aegis Break protected path route until Prime policy proof",
-    "Workboard row update route; Codex-specific semantics are not inherited"
+    "Aegis Break protected path route until PR-C03 proof"
   ],
   "next_gate": "PR-C03 exact port audit, repair, tests, harmless draft-PR proof, and disablement proof"
 }

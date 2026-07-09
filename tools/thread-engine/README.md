@@ -8,7 +8,7 @@ Runtime posture:
 implementation_state: PILOT_DISABLED
 runtime_mode: FIXTURE_ONLY
 persistent_writer: ABSENT
-production_adapters: THREAD_ENGINE_ACTIVE_MISSION_SCOPED / DRAFT_PR_ONLY
+production_adapters: PORT_CANDIDATE_DISABLED
 github_mutation: DISABLED
 network_access: DISABLED
 repository_checkout_mutation: DISABLED
@@ -20,7 +20,9 @@ The engine applies declared ADD and REPLACE fixture Threads inside a unique temp
 
 Every rejection receipt is deterministic and classified with `result = REJECTED`, `error_code`, `error_stage`, `stop_point`, checkpoint results, completed Thread results, and forbidden-action confirmation.
 
-Gate 7F added the production-adapter candidate under `production_adapter/`; Gate 7G activates it only as mission-scoped, draft-PR-only Thread Engine authority. The fixture core remains fixture-only. The production adapter requires an exact mission authority, mission SHA-256 binding, explicit mission-scoped draft-PR intent, Fresh Clone First, declared paths, protected-path enforcement, source locks, payload hashes, candidate-tree verification, final path-set verification, `git diff --check`, staged diff verification, one deterministic branch, one single-parent commit, one draft PR, and independent readback. It does not activate persistent writer authority, standing automation, ready transition, merge, workflow dispatch, generated-output disposition, repository-setting authority, cleanup, or production configuration.
+Gate 7F added the production-adapter candidate under `production_adapter/`; Prime Reborn PR-C03 may activate it only as mission-scoped, draft-PR-only Thread Engine authority. Until that separate activation source transaction merges, PowerShell, CLI, and direct Python execution all read `PRIME-PORT-STATUS.json` and fail closed. The fixture core remains fixture-only. When active, the production adapter requires an exact mission authority, mission SHA-256 binding, explicit mission-scoped draft-PR intent, Fresh Clone First, declared paths, protected-path enforcement, source locks, payload hashes, candidate-tree verification, final path-set verification, `git diff --check`, staged diff verification, one deterministic branch, one single-parent commit, one draft PR, and independent readback. It never activates persistent writer authority, standing automation, ready transition, merge, workflow dispatch, generated-output disposition, repository-setting authority, cleanup, or production configuration.
+
+Live protected-path enforcement loads the reviewed Prime source at `policies/protected-paths.json`; there is no second hard-coded path list. The policy covers Prime authority, governance, schema, migration, Quest Board, generated, workflow, and Thread Engine self-change boundaries.
 
 ## Aegis Break Protected Route
 
@@ -37,23 +39,9 @@ The protected route requires all normal production-adapter controls plus:
 - source blob entries for every protected `REPLACE` and `DELETE`;
 - draft-PR stop with no direct-main write, force push, automatic ready, automatic merge, workflow dispatch, cleanup, or standing authority.
 
-Thread Engine self-change remains outside this route. The protected policy centrally denies `thread-engine.md`, `codex/thread-engine-spear-weave-contract.md`, and `tools/thread-engine/**` as self-change targets even when Aegis Break authority is present.
+Thread Engine self-change remains outside this route. The Prime protected policy centrally denies `tools/thread-engine/**` as a self-change target even when Aegis Break authority is present.
 
-## Workboard Row Update Route
-
-`WORKBOARD_ROW_UPDATE_V1` is a separate production-adapter launch profile for routine updates to exactly one row in `codex/atlas-active-workboard.md`. It exists so ordinary Workboard status/readback changes do not need Aegis Break, while the Workboard path remains protected for ordinary Spear, Bow/Arrow, fixture Thread Engine, and ordinary production missions.
-
-The route requires all normal production-adapter controls plus:
-
-- `workboard_row_update_authority.route_identity = WORKBOARD_ROW_UPDATE_V1`;
-- explicit launcher or CLI intent: `-WorkboardRowUpdate -WorkboardRowUpdateAuthorityId <id>` or `--workboard-row-update --workboard-row-update-authority-id <id>`;
-- launch authority ID matching the mission authority ID;
-- authenticated GitHub operator readback through the exact read-only `gh api user --jq .login` command;
-- exact repository, base SHA, branch, Workboard path, Workboard source blob, row identity, allowed fields, before-row SHA-256, after-row SHA-256, operation-set SHA-256, candidate-tree SHA-256, and final-pathset SHA-256;
-- one Workboard `REPLACE` operation, one deterministic branch, one single-parent commit, one draft PR, and independent GitHub readback;
-- draft-PR stop with no direct-main write, force push, automatic ready, automatic merge, workflow dispatch, cleanup, branch deletion, or standing authority.
-
-The route fails closed if the mission changes Workboard front matter, table headers, column definitions, status/priority vocabulary, the Prime successor model, unrelated rows, deleted rows, added rows, or any undeclared field. It is not a Thread Engine self-change route and does not authorize any other protected path.
+Codex's `WORKBOARD_ROW_UPDATE_V1` route is not inherited. Its CLI flags, mission schema, implementation, receipt fields, examples, and positive tests are absent in Prime. Prime Quest Board changes remain protected and require a separately reviewed Prime-native route.
 
 ## Launcher
 
@@ -86,11 +74,3 @@ Aegis Break protected-route mission:
 ```
 
 The protected-route launcher fails closed unless the protected-route switch and exact authority ID are both supplied.
-
-Workboard row-update mission:
-
-```powershell
-./Invoke-AtlasThreadEngineProductionAdapter.ps1 -MissionPath ./mission.json -MissionSha256 <sha256> -MissionScopedDraftPr -ExecuteDraftPr -WorkboardRowUpdate -WorkboardRowUpdateAuthorityId <authority-id>
-```
-
-The Workboard row-update launcher fails closed unless the row-update switch and exact authority ID are both supplied.

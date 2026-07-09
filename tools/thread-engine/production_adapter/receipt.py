@@ -87,7 +87,7 @@ def forbidden_confirmation() -> dict[str, object]:
         "workflow_dispatch": False,
         "repository_setting_mutation": False,
         "generated_output_mutation": False,
-        "workboard_mutation": False,
+        "protected_board_mutation": False,
         "production_authority_activated": False,
         "standing_authority": "NO",
     }

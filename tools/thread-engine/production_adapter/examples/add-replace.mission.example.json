@@ -6,7 +6,7 @@
   "branch": "source/gate-7f-example-add-replace",
   "build_identity": "GATE7F-EXAMPLE-BUILD",
   "candidate_tree_sha256": "4c6b3ea45e4b133f767d3ac96536b27fd27ecccd7706c31feba50d8189271a3d",
-  "commit_message": "codex: example mission-scoped production adapter mission",
+  "commit_message": "prime: example mission-scoped production adapter mission",
   "declared_paths": [
     "example/add.txt",
     "example/replace.txt"
@@ -15,7 +15,7 @@
   "final_pathset_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
   "implementation_state": "THREAD_ENGINE_ACTIVE_MISSION_SCOPED",
   "mission_id": "GATE7F-EXAMPLE-ADD-REPLACE",
-  "mission_sha256": "fb4b9bf03dd8458dd91585187488eb5f3edb2c0c85d04f03508f22d81dd3ef98",
+  "mission_sha256": "6a5a1094352b3ef977ad89404564d7d77e8ac19ceb89f6facf2707e4f0f9b77f",
   "network_allowlist": [
     "https://github.com/Jktomy/atlas-prime.git",
     "https://api.github.com/repos/Jktomy/atlas-prime"
@@ -42,7 +42,7 @@
   "payload_root": "production_adapter/examples",
   "persistent_writer": "ABSENT",
   "pr_body": "Mission-scoped production-adapter example mission only.",
-  "pr_title": "codex: example mission-scoped production adapter mission",
+  "pr_title": "prime: example mission-scoped production adapter mission",
   "receipt_name": "gate-7f-production-adapter-example-receipt.json",
   "remote_url": "https://github.com/Jktomy/atlas-prime.git",
   "repository": "Jktomy/atlas-prime",

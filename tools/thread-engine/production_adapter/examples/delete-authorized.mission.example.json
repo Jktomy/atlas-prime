@@ -6,7 +6,7 @@
   "branch": "source/gate-7f-example-delete",
   "build_identity": "GATE7F-EXAMPLE-BUILD",
   "candidate_tree_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-  "commit_message": "codex: example mission-scoped production adapter delete mission",
+  "commit_message": "prime: example mission-scoped production adapter delete mission",
   "declared_paths": [
     "example/delete.txt"
   ],
@@ -15,7 +15,7 @@
   "final_pathset_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
   "implementation_state": "THREAD_ENGINE_ACTIVE_MISSION_SCOPED",
   "mission_id": "GATE7F-EXAMPLE-DELETE",
-  "mission_sha256": "1426cbba89eab9b9cacfbcdff8e530a7ce67eadd86dfaeaa188443bb2f7076df",
+  "mission_sha256": "f100fa8afd45e109dea82196d0e6a6119a8ed3c034b10c1e03e87b546bc08401",
   "network_allowlist": [
     "https://github.com/Jktomy/atlas-prime.git",
     "https://api.github.com/repos/Jktomy/atlas-prime"
@@ -32,7 +32,7 @@
   "payload_root": "production_adapter/examples",
   "persistent_writer": "ABSENT",
   "pr_body": "Mission-scoped production-adapter delete example mission only.",
-  "pr_title": "codex: example mission-scoped production adapter delete mission",
+  "pr_title": "prime: example mission-scoped production adapter delete mission",
   "receipt_name": "gate-7f-production-adapter-delete-example-receipt.json",
   "remote_url": "https://github.com/Jktomy/atlas-prime.git",
   "repository": "Jktomy/atlas-prime",

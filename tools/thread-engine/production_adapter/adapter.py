@@ -6,13 +6,16 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
+from .activation import (
+    ActivationError,
+    disabled_activation_state,
+    load_activation_state,
+    production_execution_enabled,
+    receipt_activation_fields,
+)
 from .authority import (
     EXPECTED_API,
     EXPECTED_REMOTE_URL,
-    WORKBOARD_ALLOWED_UPDATE_FIELDS,
-    WORKBOARD_PATH,
-    WORKBOARD_PRIORITY_VALUES,
-    WORKBOARD_STATUS_VALUES,
     Mission,
     MissionError,
     ThreadOperation,
@@ -26,6 +29,7 @@ from .receipt import declared_state_hash, forbidden_confirmation, sha256_bytes, 
 from .recovery import classify_recovery
 
 CHECKPOINTS = [
+    "ACTIVATION_GATE",
     "PACKAGE_AUDIT",
     "MISSION_PARSE",
     "MISSION_SCHEMA",
@@ -97,11 +101,12 @@ def _receipt(
     message: str | None = None,
     extra: dict[str, Any] | None = None,
     observed_operator_login: str | None = None,
+    activation_state: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    activation = activation_state or disabled_activation_state()
     body: dict[str, Any] = {
         "schema_version": "atlas-thread-engine-production-adapter-receipt-v2",
-        "implementation_state": "THREAD_ENGINE_ACTIVE_MISSION_SCOPED",
-        "adapter_mode": "DRAFT_PR_ONLY",
+        **receipt_activation_fields(activation),
         "mission_id": mission.mission_id if mission else "UNKNOWN",
         "authority_id": mission.authority_id if mission else "UNKNOWN",
         "build_identity": mission.build_identity if mission else "UNKNOWN",
@@ -119,8 +124,6 @@ def _receipt(
         "last_completed_checkpoint": journal.completed[-1] if journal.completed else None,
         "forbidden_action_confirmation": forbidden_confirmation(),
         "draft_pr_only": True,
-        "thread_engine_active": True,
-        "authority_scope": "MISSION_SCOPED",
         "production_authority_activated": False,
         "standing_authority": "NO",
         "human_merge_required": True,
@@ -159,39 +162,6 @@ def _receipt(
             "workflow_dispatch": mission.aegis_break_authority["workflow_dispatch"],
             "forbidden_action_confirmation": route_forbidden_confirmation,
         }
-    if mission and mission.workboard_row_update_authority:
-        authority = mission.workboard_row_update_authority
-        route_forbidden_confirmation = {
-            "direct_main_write": authority["direct_main_write"],
-            "force_push": authority["force_push"],
-            "automatic_ready": authority["automatic_ready"],
-            "automatic_merge": authority["automatic_merge"],
-            "workflow_dispatch": authority["workflow_dispatch"],
-            "standing_authority": authority["standing_authority"],
-        }
-        body["workboard_row_update_route"] = {
-            "route_identity": authority["route_identity"],
-            "authority_id": authority["authority_id"],
-            "operator": authority["operator"],
-            "expected_operator_login": authority["github_operator_login"],
-            "observed_operator_login": observed_operator_login,
-            "workboard_path": authority["workboard_path"],
-            "workboard_source_blob": authority["workboard_source_blob"],
-            "row_identity": authority["row_identity"],
-            "allowed_fields": authority["allowed_fields"],
-            "before_row_sha256": authority["before_row_sha256"],
-            "after_row_sha256": authority["after_row_sha256"],
-            "operation_set_sha256": operation_set_sha256(mission.data["operations"]),
-            "candidate_tree_sha256": mission.candidate_tree_sha256,
-            "final_pathset_sha256": mission.final_pathset_sha256,
-            "standing_authority": authority["standing_authority"],
-            "direct_main_write": authority["direct_main_write"],
-            "force_push": authority["force_push"],
-            "automatic_ready": authority["automatic_ready"],
-            "automatic_merge": authority["automatic_merge"],
-            "workflow_dispatch": authority["workflow_dispatch"],
-            "forbidden_action_confirmation": route_forbidden_confirmation,
-        }
     if extra:
         body.update(extra)
     return body
@@ -207,8 +177,9 @@ def _write_receipt(
     message: str | None = None,
     extra: dict[str, Any] | None = None,
     observed_operator_login: str | None = None,
+    activation_state: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    receipt = _receipt(mission, result, journal, stage, code, message, extra, observed_operator_login)
+    receipt = _receipt(mission, result, journal, stage, code, message, extra, observed_operator_login, activation_state)
     name = mission.receipt_name if mission else "production-adapter-rejection-receipt.json"
     write_evidence_json(evidence_root, name, receipt)
     return receipt
@@ -227,106 +198,6 @@ def _copy_payload(operation: ThreadOperation, payload_root: Path, target: Path) 
         raise AdapterError(f"expected output hash mismatch: {operation.thread_id}", "OUTPUT_HASH_MISMATCH", "CANDIDATE_STAGE")
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(payload, target)
-
-
-def _row_hash(row: str) -> str:
-    return sha256_bytes((row + "\n").encode("utf-8"))
-
-
-def _split_markdown_row(row: str) -> list[str]:
-    text = row.strip()
-    if not text.startswith("|") or not text.endswith("|"):
-        raise AdapterError("Workboard row must be a Markdown table row", "WORKBOARD_ROW_REJECTED", "CANDIDATE_STAGE")
-    return [cell.strip() for cell in text.strip("|").split("|")]
-
-
-def _is_separator_row(row: str) -> bool:
-    cells = _split_markdown_row(row)
-    return bool(cells) and all(cell and set(cell) <= {"-", ":"} for cell in cells)
-
-
-def _find_workboard_row(lines: list[str], identity: dict[str, str]) -> tuple[int, list[str], list[str]]:
-    matches: list[tuple[int, list[str], list[str]]] = []
-    for index in range(len(lines) - 2):
-        header = lines[index]
-        separator = lines[index + 1]
-        if not header.lstrip().startswith("|") or not separator.lstrip().startswith("|"):
-            continue
-        try:
-            header_cells = _split_markdown_row(header)
-            if not _is_separator_row(separator):
-                continue
-        except AdapterError:
-            continue
-        if not set(identity).issubset(header_cells):
-            continue
-        for row_index in range(index + 2, len(lines)):
-            row = lines[row_index]
-            if not row.lstrip().startswith("|"):
-                break
-            if _is_separator_row(row):
-                continue
-            cells = _split_markdown_row(row)
-            if len(cells) != len(header_cells):
-                raise AdapterError("Workboard row column count mismatch", "WORKBOARD_ROW_REJECTED", "CANDIDATE_STAGE")
-            row_map = dict(zip(header_cells, cells, strict=True))
-            if all(row_map.get(key) == value for key, value in identity.items()):
-                matches.append((row_index, header_cells, cells))
-    if len(matches) != 1:
-        raise AdapterError("Workboard row identity must match exactly one row", "WORKBOARD_ROW_IDENTITY_REJECTED", "CANDIDATE_STAGE")
-    return matches[0]
-
-
-def _validate_workboard_row_update(mission: Mission, checkout: Path, candidate_root: Path) -> dict[str, Any] | None:
-    authority = mission.workboard_row_update_authority
-    if not authority:
-        return None
-    if mission.declared_paths != (WORKBOARD_PATH,) or len(mission.operations) != 1:
-        raise AdapterError("Workboard row update route requires exactly one Workboard path", "WORKBOARD_PATH_MISMATCH", "CANDIDATE_STAGE")
-    operation = mission.operations[0]
-    if operation.operation != "REPLACE" or operation.path != WORKBOARD_PATH:
-        raise AdapterError("Workboard row update route requires one Workboard REPLACE", "WORKBOARD_OPERATION_REJECTED", "CANDIDATE_STAGE")
-    source_path = checkout / WORKBOARD_PATH
-    candidate_path = candidate_root / WORKBOARD_PATH
-    before_lines = source_path.read_text(encoding="utf-8").splitlines()
-    after_lines = candidate_path.read_text(encoding="utf-8").splitlines()
-    if len(before_lines) != len(after_lines):
-        raise AdapterError("Workboard row update must not add or remove lines", "WORKBOARD_STRUCTURE_REJECTED", "CANDIDATE_STAGE")
-    row_index, before_header, before_cells = _find_workboard_row(before_lines, authority["row_identity"])
-    after_index, after_header, after_cells = _find_workboard_row(after_lines, authority["row_identity"])
-    if row_index != after_index or before_header != after_header:
-        raise AdapterError("Workboard row update must not move rows or alter headers", "WORKBOARD_STRUCTURE_REJECTED", "CANDIDATE_STAGE")
-    changed_lines = [index for index, pair in enumerate(zip(before_lines, after_lines, strict=True)) if pair[0] != pair[1]]
-    if changed_lines != [row_index]:
-        raise AdapterError("Workboard row update must change exactly one declared row", "WORKBOARD_ROW_SCOPE_REJECTED", "CANDIDATE_STAGE")
-    before_row = before_lines[row_index]
-    after_row = after_lines[row_index]
-    if _row_hash(before_row) != authority["before_row_sha256"] or _row_hash(after_row) != authority["after_row_sha256"]:
-        raise AdapterError("Workboard row hash mismatch", "WORKBOARD_ROW_HASH_MISMATCH", "CANDIDATE_STAGE")
-    before_map = dict(zip(before_header, before_cells, strict=True))
-    after_map = dict(zip(after_header, after_cells, strict=True))
-    changed_fields = [field for field in before_header if before_map[field] != after_map[field]]
-    if not changed_fields:
-        raise AdapterError("Workboard row update must change at least one field", "WORKBOARD_ROW_SCOPE_REJECTED", "CANDIDATE_STAGE")
-    allowed_fields = set(authority["allowed_fields"])
-    if not set(changed_fields).issubset(allowed_fields):
-        raise AdapterError("Workboard row update changed an undeclared field", "WORKBOARD_FIELD_REJECTED", "CANDIDATE_STAGE")
-    if not set(changed_fields).issubset(WORKBOARD_ALLOWED_UPDATE_FIELDS):
-        raise AdapterError("Workboard row update changed a protected field", "WORKBOARD_FIELD_REJECTED", "CANDIDATE_STAGE")
-    if after_map.get("Status") not in WORKBOARD_STATUS_VALUES:
-        raise AdapterError("Workboard row update produced an invalid status", "WORKBOARD_STATUS_REJECTED", "CANDIDATE_STAGE")
-    if after_map.get("Priority") not in WORKBOARD_PRIORITY_VALUES:
-        raise AdapterError("Workboard row update produced an invalid priority", "WORKBOARD_PRIORITY_REJECTED", "CANDIDATE_STAGE")
-    return {
-        "workboard_row_update_evidence": {
-            "row_index": row_index,
-            "changed_fields": changed_fields,
-            "before_status": before_map.get("Status"),
-            "after_status": after_map.get("Status"),
-            "before_priority": before_map.get("Priority"),
-            "after_priority": after_map.get("Priority"),
-        }
-    }
 
 
 def _install_candidate(mission: Mission, package_root: Path, checkout: Path, candidate_root: Path) -> None:
@@ -391,8 +262,6 @@ def execute_mission(
     mission_sha256: str | None = None,
     aegis_break_protected_route: bool = False,
     aegis_break_authority_id: str | None = None,
-    workboard_row_update: bool = False,
-    workboard_row_update_authority_id: str | None = None,
     work_root: Path | None = None,
     package_root: Path | None = None,
     runner: GitRunner | None = None,
@@ -405,12 +274,22 @@ def execute_mission(
     mission: Mission | None = None
     checkout: Path | None = None
     observed_operator_login: str | None = None
-    workboard_evidence: dict[str, Any] | None = None
+    activation_state = disabled_activation_state()
     head = ""
     candidate_hash = ""
     commit_tree = ""
     package_root = (package_root or mission_path.resolve().parent).resolve()
     try:
+        journal.enter("ACTIVATION_GATE")
+        activation_state = load_activation_state()
+        if not production_execution_enabled(activation_state):
+            raise AdapterError(
+                "Prime Thread Engine production adapter is disabled",
+                "THREAD_ENGINE_DISABLED",
+                "ACTIVATION_GATE",
+            )
+        journal.complete("ACTIVATION_GATE")
+
         journal.enter("PACKAGE_AUDIT")
         reject_runtime_byproducts(package_root)
         journal.complete("PACKAGE_AUDIT")
@@ -426,8 +305,6 @@ def execute_mission(
         journal.complete("MISSION_INTEGRITY")
 
         journal.enter("PROTECTED_ROUTE_INTENT")
-        if aegis_break_protected_route and workboard_row_update:
-            raise AdapterError("only one protected route launch intent may be supplied", "PROTECTED_ROUTE_COLLISION", "PROTECTED_ROUTE_INTENT")
         if mission.aegis_break_authority:
             if not aegis_break_protected_route:
                 raise AdapterError("Aegis Break protected-route execution requires explicit launch intent", "AEGIS_BREAK_INTENT_REQUIRED", "PROTECTED_ROUTE_INTENT")
@@ -435,17 +312,8 @@ def execute_mission(
                 raise AdapterError("Aegis Break protected-route execution requires launch authority id", "AEGIS_BREAK_AUTHORITY_REQUIRED", "PROTECTED_ROUTE_INTENT")
             if aegis_break_authority_id != mission.aegis_break_authority["authority_id"]:
                 raise AdapterError("Aegis Break launch authority id mismatch", "AEGIS_BREAK_AUTHORITY_MISMATCH", "PROTECTED_ROUTE_INTENT")
-        elif mission.workboard_row_update_authority:
-            if not workboard_row_update:
-                raise AdapterError("Workboard row update route requires explicit launch intent", "WORKBOARD_INTENT_REQUIRED", "PROTECTED_ROUTE_INTENT")
-            if not workboard_row_update_authority_id:
-                raise AdapterError("Workboard row update route requires launch authority id", "WORKBOARD_AUTHORITY_REQUIRED", "PROTECTED_ROUTE_INTENT")
-            if workboard_row_update_authority_id != mission.workboard_row_update_authority["authority_id"]:
-                raise AdapterError("Workboard row update launch authority id mismatch", "WORKBOARD_AUTHORITY_MISMATCH", "PROTECTED_ROUTE_INTENT")
         elif aegis_break_protected_route or aegis_break_authority_id:
             raise AdapterError("Aegis Break launch intent supplied without mission authority", "AEGIS_BREAK_UNUSED", "PROTECTED_ROUTE_INTENT")
-        elif workboard_row_update or workboard_row_update_authority_id:
-            raise AdapterError("Workboard row update launch intent supplied without mission authority", "WORKBOARD_UNUSED", "PROTECTED_ROUTE_INTENT")
         journal.complete("PROTECTED_ROUTE_INTENT")
 
         disabled_hooks = root / "disabled-hooks"
@@ -466,10 +334,6 @@ def execute_mission(
             observed_operator_login = runner.run(["gh", "api", "user", "--jq", ".login"]).stdout.strip()
             if observed_operator_login != mission.aegis_break_authority["github_operator_login"]:
                 raise AdapterError("Aegis Break authenticated GitHub operator mismatch", "AEGIS_BREAK_OPERATOR_MISMATCH", "OPERATOR_VERIFY")
-        elif mission.workboard_row_update_authority:
-            observed_operator_login = runner.run(["gh", "api", "user", "--jq", ".login"]).stdout.strip()
-            if observed_operator_login != mission.workboard_row_update_authority["github_operator_login"]:
-                raise AdapterError("Workboard row update authenticated GitHub operator mismatch", "WORKBOARD_OPERATOR_MISMATCH", "OPERATOR_VERIFY")
         journal.complete("OPERATOR_VERIFY")
 
         journal.enter("REMOTE_LOCK")
@@ -513,7 +377,6 @@ def execute_mission(
         candidate_root = root / "candidate"
         candidate_root.mkdir()
         _install_candidate(mission, package_root, checkout, candidate_root)
-        workboard_evidence = _validate_workboard_row_update(mission, checkout, candidate_root)
         journal.complete("CANDIDATE_STAGE")
 
         journal.enter("PATH_POLICY_VERIFY")
@@ -652,20 +515,30 @@ def execute_mission(
                 "candidate_tree_sha256": candidate_hash,
                 "pr_readback": pr_readback,
                 "review_thread_count": review_thread_count,
-                **(workboard_evidence or {}),
             },
             observed_operator_login=observed_operator_login,
+            activation_state=activation_state,
         )
         journal.complete("RECEIPT")
         journal.enter("STOP")
         journal.complete("STOP")
         return receipt
-    except (AdapterError, MissionError, PolicyError, GitRunnerError, ReadbackError, OSError, ValueError, json.JSONDecodeError) as exc:
+    except (ActivationError, AdapterError, MissionError, PolicyError, GitRunnerError, ReadbackError, OSError, ValueError, json.JSONDecodeError) as exc:
         stage = exc.stage if isinstance(exc, AdapterError) else (journal.entered or "PACKAGE_AUDIT")
         code = exc.code if hasattr(exc, "code") else "ADAPTER_REJECTED"
         journal.reject(stage, str(exc))
         result = "PARTIAL" if isinstance(exc, AdapterError) and exc.partial else "REJECTED"
-        receipt = _write_receipt(evidence_root, mission, journal, result, stage, str(code), str(exc), observed_operator_login=observed_operator_login)
+        receipt = _write_receipt(
+            evidence_root,
+            mission,
+            journal,
+            result,
+            stage,
+            str(code),
+            str(exc),
+            observed_operator_login=observed_operator_login,
+            activation_state=activation_state,
+        )
         wrapped = exc if isinstance(exc, AdapterError) else AdapterError(str(exc), str(code), stage, partial=result == "PARTIAL")
         wrapped.receipt = receipt
         raise wrapped from exc

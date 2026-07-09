@@ -19,32 +19,6 @@ EXPECTED_API = "https://api.github.com/repos/Jktomy/atlas-prime"
 AEGIS_BREAK_ROUTE_IDENTITY = "AEGIS_BREAK_PROTECTED_PATH_V1"
 AEGIS_BREAK_OPERATOR = "Jayson"
 AEGIS_BREAK_GITHUB_OPERATOR_LOGIN = "Jktomy"
-WORKBOARD_ROW_UPDATE_ROUTE_IDENTITY = "WORKBOARD_ROW_UPDATE_V1"
-WORKBOARD_PATH = "codex/atlas-active-workboard.md"
-WORKBOARD_OPERATOR = "Jayson"
-WORKBOARD_GITHUB_OPERATOR_LOGIN = "Jktomy"
-WORKBOARD_STATUS_VALUES = frozenset({"Active", "Blocked", "Waiting", "Ready for Athena", "Parked", "Closeout-ready", "Complete"})
-WORKBOARD_PRIORITY_VALUES = frozenset({"Critical", "High", "Medium", "Low"})
-WORKBOARD_ALLOWED_UPDATE_FIELDS = frozenset(
-    {
-        "Last Touched",
-        "Status",
-        "Priority",
-        "Last Known State",
-        "Why Unfinished / Current Blocker",
-        "Blocker",
-        "Waiting on Jayson",
-        "Waiting on Athena",
-        "Waiting on External / Tool / Location",
-        "Next Physical Action",
-        "Next Athena Action",
-        "Source Confidence",
-        "Safety Boundary",
-        "Jump-Off Command",
-        "Sunset Source",
-        "Notes",
-    }
-)
 
 TOP_LEVEL_KEYS = {
     "schema_version",
@@ -72,7 +46,6 @@ TOP_LEVEL_KEYS = {
     "operations",
     "delete_authority_id",
     "aegis_break_authority",
-    "workboard_row_update_authority",
     "network_allowlist",
     "receipt_name",
     "stop_point",
@@ -108,34 +81,6 @@ AEGIS_BREAK_FALSE_FIELDS = {
     "automatic_merge",
     "workflow_dispatch",
 }
-WORKBOARD_ROW_UPDATE_KEYS = {
-    "route_identity",
-    "authority_id",
-    "operator",
-    "github_operator_login",
-    "repository",
-    "base_sha",
-    "branch",
-    "workboard_path",
-    "workboard_source_blob",
-    "row_identity",
-    "allowed_fields",
-    "before_row_sha256",
-    "after_row_sha256",
-    "candidate_tree_sha256",
-    "final_pathset_sha256",
-    "operation_set_sha256",
-    "stop_point",
-    "persistent_writer",
-    "direct_main_write",
-    "force_push",
-    "automatic_ready",
-    "automatic_merge",
-    "workflow_dispatch",
-    "standing_authority",
-}
-
-
 class MissionError(Exception):
     def __init__(self, message: str, code: str = "MISSION_REJECTED") -> None:
         super().__init__(message)
@@ -180,7 +125,6 @@ class Mission:
     receipt_name: str
     stop_point: str
     aegis_break_authority: dict[str, Any] | None
-    workboard_row_update_authority: dict[str, Any] | None
 
 
 def _reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -302,75 +246,6 @@ def _validate_aegis_break_authority(
     return dict(raw)
 
 
-def _validate_workboard_row_update_authority(
-    data: dict[str, Any],
-    protected_paths: tuple[str, ...],
-    source_blobs: dict[str, str],
-    operations_value: list[dict[str, Any]],
-) -> dict[str, Any] | None:
-    raw = data.get("workboard_row_update_authority")
-    if raw is None:
-        return None
-    if data.get("aegis_break_authority") is not None:
-        raise MissionError("protected route authorities must not be combined", "PROTECTED_ROUTE_COLLISION")
-    if protected_paths != (WORKBOARD_PATH,):
-        raise MissionError("Workboard row update authority permits only the Active Workboard path", "WORKBOARD_PATH_MISMATCH")
-    if set(source_blobs) != {WORKBOARD_PATH}:
-        raise MissionError("Workboard row update requires exactly the Workboard source blob", "WORKBOARD_SOURCE_BLOB_MISMATCH")
-    if len(operations_value) != 1:
-        raise MissionError("Workboard row update requires exactly one operation", "WORKBOARD_OPERATION_REJECTED")
-    operation = operations_value[0]
-    if operation.get("operation") != "REPLACE" or operation.get("path") != WORKBOARD_PATH:
-        raise MissionError("Workboard row update requires one Workboard REPLACE operation", "WORKBOARD_OPERATION_REJECTED")
-    if not isinstance(raw, dict):
-        raise MissionError("workboard_row_update_authority must be an object", "MISSION_SCHEMA")
-    unknown = set(raw) - WORKBOARD_ROW_UPDATE_KEYS
-    if unknown:
-        raise MissionError(f"unknown Workboard row update properties rejected: {', '.join(sorted(unknown))}", "UNKNOWN_PROPERTY")
-    missing = WORKBOARD_ROW_UPDATE_KEYS - set(raw)
-    if missing:
-        raise MissionError(f"missing Workboard row update properties: {', '.join(sorted(missing))}", "MISSION_SCHEMA")
-    if raw["route_identity"] != WORKBOARD_ROW_UPDATE_ROUTE_IDENTITY:
-        raise MissionError("Workboard row update route identity mismatch", "WORKBOARD_ROUTE_REJECTED")
-    if raw["authority_id"] != data["authority_id"]:
-        raise MissionError("Workboard row update authority_id mismatch", "WORKBOARD_AUTHORITY_MISMATCH")
-    if raw["operator"] != WORKBOARD_OPERATOR:
-        raise MissionError("Workboard row update operator mismatch", "WORKBOARD_OPERATOR_MISMATCH")
-    if raw["github_operator_login"] != WORKBOARD_GITHUB_OPERATOR_LOGIN:
-        raise MissionError("Workboard row update GitHub operator login mismatch", "WORKBOARD_OPERATOR_MISMATCH")
-    for field in ("repository", "base_sha", "branch", "candidate_tree_sha256", "final_pathset_sha256", "stop_point", "persistent_writer"):
-        if raw[field] != data[field]:
-            raise MissionError(f"Workboard row update {field} mismatch", "WORKBOARD_BINDING_MISMATCH")
-    for field in AEGIS_BREAK_FALSE_FIELDS:
-        if raw[field] is not False:
-            raise MissionError(f"Workboard row update forbidden action must remain false: {field}", "WORKBOARD_FORBIDDEN_ACTION")
-    if raw["standing_authority"] != "NO":
-        raise MissionError("Workboard row update standing_authority must be NO", "WORKBOARD_FORBIDDEN_ACTION")
-    if raw["workboard_path"] != WORKBOARD_PATH:
-        raise MissionError("Workboard row update path mismatch", "WORKBOARD_PATH_MISMATCH")
-    if raw["workboard_source_blob"] != source_blobs[WORKBOARD_PATH]:
-        raise MissionError("Workboard row update source blob mismatch", "WORKBOARD_SOURCE_BLOB_MISMATCH")
-    row_identity = raw["row_identity"]
-    if not isinstance(row_identity, dict) or not row_identity:
-        raise MissionError("Workboard row update row_identity must be a non-empty object", "MISSION_SCHEMA")
-    for key, value in row_identity.items():
-        if not isinstance(key, str) or not isinstance(value, str) or not key or not value:
-            raise MissionError("Workboard row_identity keys and values must be non-empty strings", "MISSION_SCHEMA")
-    allowed_fields = _require_string_list(raw["allowed_fields"], "allowed_fields")
-    if len(set(allowed_fields)) != len(allowed_fields):
-        raise MissionError("Workboard row update allowed_fields contains duplicates", "WORKBOARD_ALLOWED_FIELDS_REJECTED")
-    rejected_fields = sorted(set(allowed_fields) - WORKBOARD_ALLOWED_UPDATE_FIELDS)
-    if rejected_fields:
-        raise MissionError(f"Workboard row update field is not routine: {', '.join(rejected_fields)}", "WORKBOARD_FIELD_REJECTED")
-    _require_sha(raw["before_row_sha256"], "before_row_sha256", 64)
-    _require_sha(raw["after_row_sha256"], "after_row_sha256", 64)
-    if raw["before_row_sha256"] == raw["after_row_sha256"]:
-        raise MissionError("Workboard row update before and after row hashes must differ", "WORKBOARD_ROW_HASH_REJECTED")
-    if raw["operation_set_sha256"] != operation_set_sha256(operations_value):
-        raise MissionError("Workboard row update operation set hash mismatch", "WORKBOARD_OPERATION_SET_MISMATCH")
-    return dict(raw)
-
-
 def load_mission(path: Path) -> Mission:
     try:
         data = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_reject_duplicate_keys)
@@ -385,7 +260,7 @@ def validate_mission(data: dict[str, Any]) -> Mission:
     unknown = set(data) - TOP_LEVEL_KEYS
     if unknown:
         raise MissionError(f"unknown mission properties rejected: {', '.join(sorted(unknown))}", "UNKNOWN_PROPERTY")
-    missing = TOP_LEVEL_KEYS - set(data) - {"delete_authority_id", "aegis_break_authority", "workboard_row_update_authority"}
+    missing = TOP_LEVEL_KEYS - set(data) - {"delete_authority_id", "aegis_break_authority"}
     if missing:
         raise MissionError(f"missing mission properties: {', '.join(sorted(missing))}", "MISSION_SCHEMA")
 
@@ -419,10 +294,7 @@ def validate_mission(data: dict[str, Any]) -> Mission:
     if not isinstance(declared_paths_value, list) or not declared_paths_value or not all(isinstance(item, str) for item in declared_paths_value):
         raise MissionError("declared_paths must be a non-empty string array", "MISSION_SCHEMA")
     aegis_break_requested = data.get("aegis_break_authority") is not None
-    workboard_row_update_requested = data.get("workboard_row_update_authority") is not None
-    if aegis_break_requested and workboard_row_update_requested:
-        raise MissionError("protected route authorities must not be combined", "PROTECTED_ROUTE_COLLISION")
-    protected_route_requested = aegis_break_requested or workboard_row_update_requested
+    protected_route_requested = aegis_break_requested
     try:
         declared_paths = tuple(item for item in declared_paths_value)
         validate_declared_path_set(declared_paths, allow_protected=protected_route_requested)
@@ -509,8 +381,7 @@ def validate_mission(data: dict[str, Any]) -> Mission:
     if set(operation_paths) != set(declared_paths):
         raise MissionError("operation paths must match declared_paths exactly", "PATH_SET_MISMATCH")
     aegis_break_authority = _validate_aegis_break_authority(data, protected_paths, source_blobs, operations_value) if aegis_break_requested else None
-    workboard_row_update_authority = _validate_workboard_row_update_authority(data, protected_paths, source_blobs, operations_value) if workboard_row_update_requested else None
-    if protected_paths and aegis_break_authority is None and workboard_row_update_authority is None:
+    if protected_paths and aegis_break_authority is None:
         raise MissionError("protected path requires explicit protected route authority", "PROTECTED_PATH")
     delete_authority_id = data.get("delete_authority_id")
     if has_delete and not isinstance(delete_authority_id, str):
@@ -555,5 +426,4 @@ def validate_mission(data: dict[str, Any]) -> Mission:
         receipt_name=receipt_name,
         stop_point=stop_point,
         aegis_break_authority=aegis_break_authority,
-        workboard_row_update_authority=workboard_row_update_authority,
     )

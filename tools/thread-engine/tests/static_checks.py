@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import json
 import re
 from pathlib import Path
 
@@ -35,8 +36,13 @@ RUNTIME_SUFFIXES = {".pyc", ".pyo"}
 
 
 def check_python_ast() -> None:
-    for path in [ROOT / "engine" / "thread_engine.py", ROOT / "tools" / "build_package.py", Path(__file__)]:
+    for path in ROOT.rglob("*.py"):
         ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+
+
+def check_json_sources() -> None:
+    for path in ROOT.rglob("*.json"):
+        json.loads(path.read_text(encoding="utf-8"))
 
 
 def check_runtime_text() -> None:
@@ -63,6 +69,7 @@ def check_runtime_byproducts() -> None:
 
 def main() -> int:
     check_python_ast()
+    check_json_sources()
     check_runtime_text()
     check_python_dynamic_execution()
     check_runtime_byproducts()

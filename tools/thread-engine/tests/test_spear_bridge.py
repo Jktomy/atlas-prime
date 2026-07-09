@@ -79,8 +79,8 @@ def base_weave(threads: list[dict], *, delete_authority_id: str | None = None, m
         "repository": "Jktomy/atlas-prime",
         "base_sha": BASE,
         "branch": "source/gate-7g-a-unit",
-        "commit_message": "codex: unit Spear bridge mission",
-        "pr_title": "codex: unit Spear bridge mission",
+        "commit_message": "prime: unit Spear bridge mission",
+        "pr_title": "prime: unit Spear bridge mission",
         "pr_body": "Unit Spear bridge mission.\n",
         "threads": threads,
         "output_mission_filename": mission_name,
@@ -641,7 +641,7 @@ class SpearBridgeTests(unittest.TestCase):
             self.assertEqual(raised.exception.code, "DUPLICATE_JSON_KEY")
         cases = [
             ("../x", "PATH_REJECTED"),
-            ("codex/atlas-active-workboard.md", "PROTECTED_PATH"),
+            ("migration/codex-inheritance-manifest.md", "PROTECTED_PATH"),
         ]
         for path, code in cases:
             with self.subTest(path=path):

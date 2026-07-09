@@ -22,6 +22,13 @@ class ProductionAdapterStaticTests(unittest.TestCase):
         for path in ADAPTER.rglob("*.json"):
             json.loads(path.read_text(encoding="utf-8"))
 
+    def test_mission_examples_pass_prime_runtime_validation(self) -> None:
+        from production_adapter.authority import load_mission
+
+        for path in sorted((ADAPTER / "examples").glob("*.mission.example.json")):
+            mission = load_mission(path)
+            self.assertEqual(mission.repository, "Jktomy/atlas-prime")
+
     def test_no_dynamic_execution_or_shell_eval(self) -> None:
         forbidden_calls = {"eval", "exec", "compile", "__import__"}
         for path in ADAPTER.rglob("*.py"):
@@ -45,43 +52,27 @@ class ProductionAdapterStaticTests(unittest.TestCase):
         from production_adapter.protected_paths import PROTECTED_EXACT, PROTECTED_PREFIXES, THREAD_ENGINE_SELF_CHANGE_EXACT, THREAD_ENGINE_SELF_CHANGE_PREFIXES, is_thread_engine_self_change_path
         from pathlib import PurePosixPath
 
-        self.assertIn("thread-engine.md", THREAD_ENGINE_SELF_CHANGE_EXACT)
-        self.assertIn("codex/thread-engine-spear-weave-contract.md", THREAD_ENGINE_SELF_CHANGE_EXACT)
         self.assertTrue(THREAD_ENGINE_SELF_CHANGE_EXACT <= PROTECTED_EXACT)
         for prefix in THREAD_ENGINE_SELF_CHANGE_PREFIXES:
             self.assertIn(prefix, PROTECTED_PREFIXES)
-        self.assertTrue(is_thread_engine_self_change_path(PurePosixPath("thread-engine.md")))
+        self.assertFalse(is_thread_engine_self_change_path(PurePosixPath("governance/noctua.md")))
         self.assertTrue(is_thread_engine_self_change_path(PurePosixPath("tools/thread-engine/production_adapter/adapter.py")))
 
-    def test_cli_and_launcher_expose_explicit_protected_route_intent(self) -> None:
+    def test_cli_retains_only_prime_protected_route_and_launcher_is_disabled(self) -> None:
         cli = (ADAPTER / "cli.py").read_text(encoding="utf-8")
         launcher = (ROOT / "Invoke-AtlasThreadEngineProductionAdapter.ps1").read_text(encoding="utf-8")
         self.assertIn("--aegis-break-protected-route", cli)
         self.assertIn("--aegis-break-authority-id", cli)
-        self.assertIn("--workboard-row-update", cli)
-        self.assertIn("--workboard-row-update-authority-id", cli)
         self.assertIn("aegis_break_protected_route=args.aegis_break_protected_route", cli)
         self.assertIn("aegis_break_authority_id=args.aegis_break_authority_id", cli)
-        self.assertIn("workboard_row_update=args.workboard_row_update", cli)
-        self.assertIn("workboard_row_update_authority_id=args.workboard_row_update_authority_id", cli)
-        self.assertIn("[switch] $AegisBreakProtectedRoute", launcher)
-        self.assertIn("[string] $AegisBreakAuthorityId", launcher)
-        self.assertIn("[switch] $WorkboardRowUpdate", launcher)
-        self.assertIn("[string] $WorkboardRowUpdateAuthorityId", launcher)
-        self.assertIn("--aegis-break-protected-route", launcher)
-        self.assertIn("--aegis-break-authority-id", launcher)
-        self.assertIn("--workboard-row-update", launcher)
-        self.assertIn("--workboard-row-update-authority-id", launcher)
-        self.assertIn("Only one protected-route intent may be supplied.", launcher)
+        self.assertNotIn("workboard", cli.casefold())
+        self.assertIn("PORT_CANDIDATE_DISABLED", launcher)
+        self.assertIn("throw", launcher)
 
-    def test_workboard_row_update_authority_schema_is_present(self) -> None:
+    def test_codex_workboard_authority_schema_is_absent(self) -> None:
         schema = json.loads((ADAPTER / "production_mission.schema.json").read_text(encoding="utf-8"))
-        authority = schema["properties"]["workboard_row_update_authority"]
-        self.assertEqual(authority["properties"]["route_identity"]["const"], "WORKBOARD_ROW_UPDATE_V1")
-        self.assertEqual(authority["properties"]["workboard_path"]["const"], "codex/atlas-active-workboard.md")
-        self.assertEqual(authority["properties"]["operator"]["const"], "Jayson")
-        self.assertIn("before_row_sha256", authority["required"])
-        self.assertIn("after_row_sha256", authority["required"])
+        self.assertNotIn("workboard_row_update_authority", schema["properties"])
+        self.assertFalse(schema.get("additionalProperties", True))
 
     def test_git_runner_exact_templates_deny_unsafe_routes(self) -> None:
         from production_adapter.git_runner import GitRunner, GitRunnerError
@@ -94,8 +85,8 @@ class ProductionAdapterStaticTests(unittest.TestCase):
                 mission_branch="source/gate-7f-unit",
                 base_sha="d81fda533e7a15dcb4cc4ae08163dcc1c23f2b05",
                 declared_paths=("docs/new.txt",),
-                commit_message="codex: unit production adapter mission",
-                pr_title="codex: unit production adapter mission",
+                commit_message="prime: unit production adapter mission",
+                pr_title="prime: unit production adapter mission",
                 disabled_hooks=Path(tmp_text) / "hooks",
             )
             allowed = [
@@ -129,7 +120,7 @@ class ProductionAdapterStaticTests(unittest.TestCase):
                 ["gh", "pr", "ready", "1"],
                 ["gh", "pr", "edit", "1"],
                 ["gh", "workflow", "run", "x"],
-                ["gh", "pr", "create", "--repo", "Jktomy/atlas-prime", "--base", "main", "--head", "source/gate-7f-unit", "--title", "codex: unit production adapter mission", "--body-file", "body.md"],
+                ["gh", "pr", "create", "--repo", "Jktomy/atlas-prime", "--base", "main", "--head", "source/gate-7f-unit", "--title", "prime: unit production adapter mission", "--body-file", "body.md"],
             ]
             for args in denied:
                 with self.subTest(args=args), self.assertRaises(GitRunnerError):
