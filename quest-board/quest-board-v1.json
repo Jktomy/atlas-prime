@@ -1,0 +1,30 @@
+{
+  "canonical_repository": "Jktomy/atlas-prime",
+  "entries": [
+    {
+      "next_gate": "Complete migration waves, generated refresh, whole-program proof, and cutover",
+      "owner": "Atlas / Source Governance",
+      "quest_id": "PRIME-REBORN-QUEST-R01",
+      "source": "quests/prime-reborn.md",
+      "state": "ACTIVE"
+    },
+    {
+      "next_gate": "PF-C01 preview and Jayson-side hardware readiness",
+      "owner": "Odyssey / Prometheus Foundation",
+      "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
+      "source": "quests/prometheus-fire.md",
+      "state": "READY_FOR_CAMPAIGN_1_PREVIEW"
+    },
+    {
+      "next_gate": "NW-C01 readiness package and Jayson-side proof",
+      "owner": "Odyssey / Citadel-Gatehouse Infrastructure",
+      "quest_id": "QUEST-NOTUMS-WATCH-20260708",
+      "source": "quests/notums-watch.md",
+      "state": "READY_FOR_JAYSON_EXECUTION_PACKAGE"
+    }
+  ],
+  "format_version": "1.0",
+  "generated": false,
+  "predecessor_workboard_route": "ABSENT",
+  "state": "PRIME_REBORN_MIGRATION"
+}

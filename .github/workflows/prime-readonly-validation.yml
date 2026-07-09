@@ -32,6 +32,14 @@ jobs:
         run: python -B -m unittest discover -s tools/thread-engine/tests -p "test_*.py" -v
       - name: Thread Engine static checks
         run: python -B tools/thread-engine/tests/static_checks.py
+      - name: Atlas Sword static checks
+        run: python -B tools/atlas-sword/tests/static_checks.py
+      - name: Prime generator tests
+        run: python -B -m unittest discover -s tests/generators -p "test_*.py" -v
+      - name: Prime whole-program tests
+        run: python -B -m unittest discover -s tests/prime-program -p "test_*.py" -v
+      - name: Prime source validation
+        run: python -B tools/prime_checks/validate_prime.py
       - name: Prove active PowerShell launcher resolution
         shell: pwsh
         run: |

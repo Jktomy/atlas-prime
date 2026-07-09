@@ -1,0 +1,311 @@
+{
+  "$id": "https://atlas.local/schemas/sword-mission-v1.2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "branch": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "minLength": 1,
+          "type": "string"
+        }
+      ]
+    },
+    "change_method": {
+      "const": "OATHBRINGER"
+    },
+    "declared_paths": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "operation": {
+            "enum": [
+              "ADD",
+              "REPLACE",
+              "DELETE"
+            ]
+          },
+          "path": {
+            "minLength": 1,
+            "not": {
+              "pattern": "(^/|(^|/)\\.\\.(/|$)|\\\\)"
+            },
+            "type": "string"
+          },
+          "payload_sha256": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              }
+            ]
+          },
+          "source_blob": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "pattern": "^[0-9a-f]{40}$",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "required": [
+          "path",
+          "operation"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "execution_environment": {
+      "const": "POWERSHELL"
+    },
+    "expected_automation_effects": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "expected_base": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "expected_head": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        }
+      ]
+    },
+    "forbidden_actions": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "format_version": {
+      "const": "1.2"
+    },
+    "framework_state": {
+      "const": "PILOT_DISABLED"
+    },
+    "lane": {
+      "enum": [
+        "BUILD",
+        "REPAIR",
+        "EXECUTE"
+      ]
+    },
+    "mission_id": {
+      "minLength": 8,
+      "type": "string"
+    },
+    "pull_request": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "minimum": 1,
+          "type": "integer"
+        }
+      ]
+    },
+    "receipt_contract": {
+      "additionalProperties": false,
+      "properties": {
+        "automatic_retry": {
+          "const": false
+        },
+        "automatic_rollback": {
+          "const": false
+        },
+        "completion_flags_required": {
+          "const": true
+        },
+        "failure_exit_code": {
+          "const": 1
+        },
+        "interrupt_exit_code": {
+          "const": 130
+        },
+        "write_on_failure": {
+          "const": true
+        },
+        "write_on_interrupt": {
+          "const": true
+        }
+      },
+      "required": [
+        "write_on_interrupt",
+        "write_on_failure",
+        "completion_flags_required",
+        "automatic_retry",
+        "automatic_rollback",
+        "interrupt_exit_code",
+        "failure_exit_code"
+      ],
+      "type": "object"
+    },
+    "repository": {
+      "pattern": "^[^/\\s]+/[^/\\s]+$",
+      "type": "string"
+    },
+    "required_ci": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "conclusion": {
+            "const": "success"
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "run_id": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "minimum": 1,
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "conclusion"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "resume_from": {
+      "enum": [
+        "START",
+        "BODY_SYNCED",
+        "READY",
+        "MERGED",
+        "REMOTE_READBACK_PENDING"
+      ]
+    },
+    "runtime_mode": {
+      "const": "AUDIT_ONLY"
+    },
+    "stop_boundary": {
+      "minLength": 4,
+      "type": "string"
+    },
+    "sword_identity": {
+      "pattern": "^ATLAS-[A-Z0-9-]+$",
+      "type": "string"
+    },
+    "workflow_rules": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "appearance_grace_seconds": {
+            "maximum": 900,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "completion_timeout_seconds": {
+            "maximum": 3600,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "event": {
+            "const": "pull_request"
+          },
+          "expected_conclusion": {
+            "const": "success"
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "pull_request_paths": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "items": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array",
+                "uniqueItems": true
+              }
+            ]
+          },
+          "workflow_blob": {
+            "pattern": "^[0-9a-f]{40}$",
+            "type": "string"
+          },
+          "workflow_path": {
+            "minLength": 1,
+            "not": {
+              "pattern": "(^/|(^|/)\\.\\.(/|$)|\\\\)"
+            },
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "event",
+          "workflow_path",
+          "workflow_blob",
+          "pull_request_paths",
+          "appearance_grace_seconds",
+          "completion_timeout_seconds",
+          "expected_conclusion"
+        ],
+        "type": "object"
+      },
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "format_version",
+    "mission_id",
+    "sword_identity",
+    "change_method",
+    "execution_environment",
+    "lane",
+    "framework_state",
+    "runtime_mode",
+    "repository",
+    "expected_base",
+    "declared_paths",
+    "workflow_rules",
+    "receipt_contract",
+    "stop_boundary",
+    "forbidden_actions"
+  ],
+  "title": "Atlas Oathbringer Mission V1.2",
+  "type": "object"
+}
