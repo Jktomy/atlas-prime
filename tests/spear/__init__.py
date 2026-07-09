@@ -1,1 +1,0 @@
-# spear tests package marker

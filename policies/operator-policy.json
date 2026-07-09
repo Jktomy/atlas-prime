@@ -1,0 +1,9 @@
+{
+  "format_version": "1.0",
+  "github_operator_login": "Jktomy",
+  "human_operator": "Jayson",
+  "draft_pr_only": true,
+  "human_merge_required": true,
+  "standing_authority": false,
+  "cutover_requires_explicit_jayson_authorization": true
+}

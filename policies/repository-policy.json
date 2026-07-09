@@ -1,0 +1,13 @@
+{
+  "format_version": "1.0",
+  "repository": "Jktomy/atlas-prime",
+  "state": "SHADOW_CONSTRUCTION",
+  "canonical_source_until_cutover": "Jktomy/atlas-codex",
+  "direct_main_allowed": false,
+  "force_push_allowed": false,
+  "automatic_ready_allowed": false,
+  "automatic_merge_allowed": false,
+  "repository_settings_mutation_allowed": false,
+  "standing_writer_allowed": false,
+  "generated_output_authoritative": false
+}

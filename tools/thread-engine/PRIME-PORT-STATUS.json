@@ -1,0 +1,20 @@
+{
+  "format_version": "1.0",
+  "source_repository": "Jktomy/atlas-codex",
+  "source_head": "1c43a5c7903a38a684b906e87a6475651a900a39",
+  "target_repository": "Jktomy/atlas-prime",
+  "implementation_state": "PORT_CANDIDATE_DISABLED",
+  "production_execution_authorized": false,
+  "fixture_execution_authorized": false,
+  "proof_required": true,
+  "standing_authority": false,
+  "automatic_merge": false,
+  "direct_main": false,
+  "codex_workboard_route": "ABSENT",
+  "protected_path_policy": "PRIME_NATIVE_JSON_ENFORCED",
+  "known_disabled_routes": [
+    "production adapter until PR-C03 proof",
+    "Aegis Break protected path route until PR-C03 proof"
+  ],
+  "next_gate": "PR-C03 exact port audit, repair, tests, harmless draft-PR proof, and disablement proof"
+}

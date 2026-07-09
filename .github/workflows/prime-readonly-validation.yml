@@ -1,0 +1,47 @@
+name: Prime read-only validation
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: validate (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Prime kernel checks
+        run: python -B tests/bootstrap/test_prime_kernel.py
+      - name: Prime repository policy tests
+        run: python -B -m unittest discover -s tests/repository-policy -p "test_*.py" -v
+      - name: Prime privacy boundary tests
+        run: python -B -m unittest discover -s tests/privacy -p "test_*.py" -v
+      - name: Full Prime Thread Engine tests
+        run: python -B -m unittest discover -s tools/thread-engine/tests -p "test_*.py" -v
+      - name: Thread Engine static checks
+        run: python -B tools/thread-engine/tests/static_checks.py
+      - name: Prove disabled PowerShell production launcher
+        shell: pwsh
+        run: |
+          try {
+            & ./tools/thread-engine/Invoke-AtlasThreadEngineProductionAdapter.ps1
+            throw "disabled launcher unexpectedly returned success"
+          }
+          catch {
+            if ($_ -notmatch "PORT_CANDIDATE_DISABLED") {
+              throw
+            }
+            Write-Host "Prime production launcher disabled-state rejection: PASS"
+          }

@@ -1,0 +1,40 @@
+{
+  "base_fixture": "fixtures/base",
+  "engine_state": "PILOT_DISABLED",
+  "expected_base_tree_sha256": "e0b953e9072b3eccf5f8f05f22e8eb2b3df9f415c959d78d254bf09b3ad66a44",
+  "expected_candidate_tree_sha256": "945fd9053454c180bcf787d00e424769f97363234208b3ac8cb2eef00c47a9e1",
+  "forbidden_actions": [
+    "git clone",
+    "git checkout",
+    "git branch",
+    "git commit",
+    "git push",
+    "gh",
+    "github mutation",
+    "http mutation",
+    "workflow dispatch",
+    "pr creation or merge",
+    "repository setting mutation",
+    "direct-main write",
+    "force push",
+    "shell eval",
+    "caller-supplied executable command",
+    "arbitrary source-checkout mutation"
+  ],
+  "format_version": "atlas-thread-engine-weave-v1",
+  "mode": "FIXTURE_ONLY",
+  "payload_root": "fixtures/payloads",
+  "receipt_name": "delete-receipt.json",
+  "resume_from": "START",
+  "stop_boundary": "STOP",
+  "threads": [
+    {
+      "delete_authority_id": "GATE7B-FIXTURE-DELETE-AUTHORITY-EXAMPLE",
+      "operation": "DELETE",
+      "path": "delete.txt",
+      "source_sha256": "540bedb048129dcc46e20653c82b2a3495ee7047b60f4ab71b2136c5e0f32d20",
+      "thread_id": "thread-delete-fixture"
+    }
+  ],
+  "weave_id": "gate-7b-delete-contract-fixture"
+}

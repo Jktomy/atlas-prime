@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "files": {
+      "minItems": 1,
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "bytes": { "minimum": 0, "type": "integer" },
+          "path": { "minLength": 1, "type": "string" },
+          "sha256": { "pattern": "^[0-9a-f]{64}$", "type": "string" }
+        },
+        "required": ["path", "bytes", "sha256"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "manifest_identity": { "const": "atlas-thread-engine-spear-package-v1" }
+  },
+  "required": ["manifest_identity", "files"],
+  "type": "object"
+}
