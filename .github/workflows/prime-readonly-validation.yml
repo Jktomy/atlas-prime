@@ -32,16 +32,14 @@ jobs:
         run: python -B -m unittest discover -s tools/thread-engine/tests -p "test_*.py" -v
       - name: Thread Engine static checks
         run: python -B tools/thread-engine/tests/static_checks.py
-      - name: Prove disabled PowerShell production launcher
+      - name: Prove active PowerShell launcher resolution
         shell: pwsh
         run: |
-          try {
-            & ./tools/thread-engine/Invoke-AtlasThreadEngineProductionAdapter.ps1
-            throw "disabled launcher unexpectedly returned success"
+          $result = & ./tools/thread-engine/Invoke-AtlasThreadEngineProductionAdapter.ps1 -ResolverSelfTest | ConvertFrom-Json
+          if ($result.invocation -ne "native-argument-array") {
+            throw "Prime production launcher did not use native argument-array invocation"
           }
-          catch {
-            if ($_ -notmatch "PORT_CANDIDATE_DISABLED") {
-              throw
-            }
-            Write-Host "Prime production launcher disabled-state rejection: PASS"
+          if ($result.implementation_state -ne "THREAD_ENGINE_ACTIVE_MISSION_SCOPED") {
+            throw "Prime production launcher did not report active mission-scoped state"
           }
+          Write-Host "Prime production launcher active resolver proof: PASS"

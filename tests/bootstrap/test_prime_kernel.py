@@ -38,11 +38,16 @@ assert repo_policy["automatic_merge_allowed"] is False
 assert repo_policy["standing_writer_allowed"] is False
 
 port = json.loads((ROOT / "tools/thread-engine/PRIME-PORT-STATUS.json").read_text(encoding="utf-8"))
-assert port["implementation_state"] == "PORT_CANDIDATE_DISABLED"
-assert port["production_execution_authorized"] is False
-assert port["proof_required"] is True
+assert port["implementation_state"] == "THREAD_ENGINE_ACTIVE_MISSION_SCOPED"
+assert port["production_execution_authorized"] is True
+assert port["proof_required"] is False
+assert port["standing_authority"] is False
+assert port["automatic_merge"] is False
+assert port["direct_main"] is False
 assert port["codex_workboard_route"] == "ABSENT"
 assert port["protected_path_policy"] == "PRIME_NATIVE_JSON_ENFORCED"
+assert port["activation_route"] == "AEGIS_BREAK_TO_OATHBRINGER"
+assert port["harmless_pilot_state"] == "PENDING"
 
 protected = json.loads((ROOT / "policies/protected-paths.json").read_text(encoding="utf-8"))
 for required_path in ("migration/**", "quest-board/**", "generated/**", "tools/thread-engine/**"):

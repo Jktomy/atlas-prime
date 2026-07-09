@@ -58,7 +58,7 @@ class ProductionAdapterStaticTests(unittest.TestCase):
         self.assertFalse(is_thread_engine_self_change_path(PurePosixPath("governance/noctua.md")))
         self.assertTrue(is_thread_engine_self_change_path(PurePosixPath("tools/thread-engine/production_adapter/adapter.py")))
 
-    def test_cli_retains_only_prime_protected_route_and_launcher_is_disabled(self) -> None:
+    def test_cli_and_launcher_retain_only_prime_protected_route(self) -> None:
         cli = (ADAPTER / "cli.py").read_text(encoding="utf-8")
         launcher = (ROOT / "Invoke-AtlasThreadEngineProductionAdapter.ps1").read_text(encoding="utf-8")
         self.assertIn("--aegis-break-protected-route", cli)
@@ -66,8 +66,13 @@ class ProductionAdapterStaticTests(unittest.TestCase):
         self.assertIn("aegis_break_protected_route=args.aegis_break_protected_route", cli)
         self.assertIn("aegis_break_authority_id=args.aegis_break_authority_id", cli)
         self.assertNotIn("workboard", cli.casefold())
-        self.assertIn("PORT_CANDIDATE_DISABLED", launcher)
-        self.assertIn("throw", launcher)
+        self.assertIn("[switch] $AegisBreakProtectedRoute", launcher)
+        self.assertIn("[string] $AegisBreakAuthorityId", launcher)
+        self.assertIn("--aegis-break-protected-route", launcher)
+        self.assertIn("--aegis-break-authority-id", launcher)
+        self.assertIn("production_adapter.cli", launcher)
+        self.assertIn("ResolverSelfTest", launcher)
+        self.assertNotIn("workboard", launcher.casefold())
 
     def test_codex_workboard_authority_schema_is_absent(self) -> None:
         schema = json.loads((ADAPTER / "production_mission.schema.json").read_text(encoding="utf-8"))
