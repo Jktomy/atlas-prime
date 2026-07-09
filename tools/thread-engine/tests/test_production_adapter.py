@@ -816,11 +816,13 @@ class ProductionAdapterTests(unittest.TestCase):
             self.assertEqual(raised.exception.code, "MISSION_SHA_MISMATCH")
 
 
-    def test_powershell_launcher_is_disabled_first(self) -> None:
+    def test_powershell_launcher_is_active_and_bounded(self) -> None:
         launcher = (ROOT / "Invoke-AtlasThreadEngineProductionAdapter.ps1").read_text(encoding="utf-8")
-        self.assertIn("PORT_CANDIDATE_DISABLED", launcher)
-        self.assertIn("throw", launcher)
-        self.assertNotIn("production_adapter.cli", launcher)
+        self.assertIn("production_adapter.cli", launcher)
+        self.assertIn("--mission-scoped-draft-pr", launcher)
+        self.assertIn("--execute-draft-pr", launcher)
+        self.assertIn("--aegis-break-protected-route", launcher)
+        self.assertNotIn("workboard", launcher.casefold())
 
 if __name__ == "__main__":
     unittest.main()

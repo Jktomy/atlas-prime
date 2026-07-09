@@ -9,6 +9,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -27,25 +28,38 @@ ACTIVE = {
     "direct_main": False,
 }
 
+DISABLED = {
+    "implementation_state": DISABLED_STATE,
+    "production_execution_authorized": False,
+    "proof_required": True,
+    "standing_authority": False,
+    "automatic_merge": False,
+    "direct_main": False,
+}
+
 
 class ActivationTests(unittest.TestCase):
-    def test_repository_state_is_disabled_and_consistent(self) -> None:
+    def test_repository_state_is_active_mission_scoped_and_consistent(self) -> None:
         state = load_activation_state()
-        self.assertEqual(state["implementation_state"], DISABLED_STATE)
-        self.assertFalse(state["production_execution_authorized"])
-        self.assertTrue(state["proof_required"])
+        self.assertEqual(state["implementation_state"], ACTIVE_STATE)
+        self.assertTrue(state["production_execution_authorized"])
+        self.assertFalse(state["proof_required"])
+        self.assertFalse(state["standing_authority"])
+        self.assertFalse(state["automatic_merge"])
+        self.assertFalse(state["direct_main"])
 
     def test_direct_execute_mission_rejects_while_disabled_with_truthful_receipt(self) -> None:
         with tempfile.TemporaryDirectory(prefix="prime-thread-engine-disabled-") as tmp_text:
             root = Path(tmp_text)
-            with self.assertRaises(AdapterError) as raised:
-                execute_mission(
-                    root / "missing-mission.json",
-                    mission_scoped=True,
-                    execute_draft_pr=True,
-                    work_root=root,
-                    package_root=root,
-                )
+            with patch("production_adapter.adapter.load_activation_state", return_value=dict(DISABLED)):
+                with self.assertRaises(AdapterError) as raised:
+                    execute_mission(
+                        root / "missing-mission.json",
+                        mission_scoped=True,
+                        execute_draft_pr=True,
+                        work_root=root,
+                        package_root=root,
+                    )
             self.assertEqual(raised.exception.code, "THREAD_ENGINE_DISABLED")
             self.assertEqual(raised.exception.stage, "ACTIVATION_GATE")
             receipt = raised.exception.receipt
@@ -60,17 +74,18 @@ class ActivationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="prime-thread-engine-cli-disabled-") as tmp_text:
             root = Path(tmp_text)
             stderr = io.StringIO()
-            with contextlib.redirect_stderr(stderr):
-                result = cli_main(
-                    [
-                        "--mission",
-                        str(root / "missing-mission.json"),
-                        "--mission-scoped-draft-pr",
-                        "--execute-draft-pr",
-                        "--work-root",
-                        str(root),
-                    ]
-                )
+            with patch("production_adapter.adapter.load_activation_state", return_value=dict(DISABLED)):
+                with contextlib.redirect_stderr(stderr):
+                    result = cli_main(
+                        [
+                            "--mission",
+                            str(root / "missing-mission.json"),
+                            "--mission-scoped-draft-pr",
+                            "--execute-draft-pr",
+                            "--work-root",
+                            str(root),
+                        ]
+                    )
             self.assertEqual(result, 2)
             body = json.loads(stderr.getvalue())
             self.assertEqual(body["error_code"], "THREAD_ENGINE_DISABLED")
@@ -80,14 +95,62 @@ class ActivationTests(unittest.TestCase):
         pwsh = shutil.which("pwsh")
         if not pwsh:
             self.skipTest("PowerShell 7 is unavailable")
+        with tempfile.TemporaryDirectory(prefix="prime-thread-engine-pwsh-disabled-") as tmp_text:
+            copied_repo = Path(tmp_text) / "repo"
+            copied_root = copied_repo / "tools" / "thread-engine"
+            copied_root.parent.mkdir(parents=True)
+            shutil.copytree(ROOT, copied_root)
+            shutil.copytree(ROOT.parents[1] / "policies", copied_repo / "policies")
+            status_path = copied_root / "PRIME-PORT-STATUS.json"
+            status = json.loads(status_path.read_text(encoding="utf-8"))
+            status.update(DISABLED)
+            status_path.write_text(json.dumps(status), encoding="utf-8")
+            mission_path = copied_root / "disabled-proof-mission.json"
+            mission_path.write_text("{}\n", encoding="utf-8")
+            result = subprocess.run(
+                [
+                    pwsh,
+                    "-NoLogo",
+                    "-NoProfile",
+                    "-File",
+                    str(copied_root / "Invoke-AtlasThreadEngineProductionAdapter.ps1"),
+                    "-MissionPath",
+                    str(mission_path),
+                    "-MissionScopedDraftPr",
+                    "-ExecuteDraftPr",
+                    "-WorkRoot",
+                    str(copied_root / "work"),
+                ],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            output = result.stdout + result.stderr
+            self.assertIn("THREAD_ENGINE_DISABLED", output)
+            self.assertIn('"thread_engine_active": false', output)
+
+    def test_powershell_launcher_resolves_native_python_while_active(self) -> None:
+        pwsh = shutil.which("pwsh")
+        if not pwsh:
+            self.skipTest("PowerShell 7 is unavailable")
         result = subprocess.run(
-            [pwsh, "-NoLogo", "-NoProfile", "-File", str(ROOT / "Invoke-AtlasThreadEngineProductionAdapter.ps1")],
+            [
+                pwsh,
+                "-NoLogo",
+                "-NoProfile",
+                "-File",
+                str(ROOT / "Invoke-AtlasThreadEngineProductionAdapter.ps1"),
+                "-ResolverSelfTest",
+            ],
             capture_output=True,
             text=True,
             check=False,
         )
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn("PORT_CANDIDATE_DISABLED", result.stdout + result.stderr)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        body = json.loads(result.stdout)
+        self.assertEqual(body["invocation"], "native-argument-array")
+        self.assertEqual(body["implementation_state"], ACTIVE_STATE)
 
     def test_active_receipt_fields_are_derived_from_active_state(self) -> None:
         with tempfile.TemporaryDirectory(prefix="prime-thread-engine-active-receipt-") as tmp_text:
@@ -98,6 +161,7 @@ class ActivationTests(unittest.TestCase):
             self.assertTrue(receipt["thread_engine_active"])
             self.assertTrue(receipt["production_execution_authorized"])
             self.assertEqual(receipt["authority_scope"], "MISSION_SCOPED")
+            self.assertFalse(receipt["production_authority_activated"])
 
     def test_inconsistent_or_unsafe_activation_state_fails_closed(self) -> None:
         cases = [

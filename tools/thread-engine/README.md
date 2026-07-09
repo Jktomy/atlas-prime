@@ -1,14 +1,14 @@
 # Atlas Thread Engine
 
-Gate 7B provides a disabled Thread Engine source candidate only.
+Prime carries a fixture engine and a separately bounded production adapter. The fixture engine remains disabled and fixture-only. The production adapter is active only for exact mission-scoped draft-PR transactions; its harmless Prime-native pilot is the next proof gate.
 
 Runtime posture:
 
 ```text
-implementation_state: PILOT_DISABLED
-runtime_mode: FIXTURE_ONLY
+fixture_implementation_state: PILOT_DISABLED
+fixture_runtime_mode: FIXTURE_ONLY
 persistent_writer: ABSENT
-production_adapters: PORT_CANDIDATE_DISABLED
+production_adapter: THREAD_ENGINE_ACTIVE_MISSION_SCOPED
 github_mutation: DISABLED
 network_access: DISABLED
 repository_checkout_mutation: DISABLED
@@ -20,7 +20,7 @@ The engine applies declared ADD and REPLACE fixture Threads inside a unique temp
 
 Every rejection receipt is deterministic and classified with `result = REJECTED`, `error_code`, `error_stage`, `stop_point`, checkpoint results, completed Thread results, and forbidden-action confirmation.
 
-Gate 7F added the production-adapter candidate under `production_adapter/`; Prime Reborn PR-C03 may activate it only as mission-scoped, draft-PR-only Thread Engine authority. Until that separate activation source transaction merges, PowerShell, CLI, and direct Python execution all read `PRIME-PORT-STATUS.json` and fail closed. The fixture core remains fixture-only. When active, the production adapter requires an exact mission authority, mission SHA-256 binding, explicit mission-scoped draft-PR intent, Fresh Clone First, declared paths, protected-path enforcement, source locks, payload hashes, candidate-tree verification, final path-set verification, `git diff --check`, staged diff verification, one deterministic branch, one single-parent commit, one draft PR, and independent readback. It never activates persistent writer authority, standing automation, ready transition, merge, workflow dispatch, generated-output disposition, repository-setting authority, cleanup, or production configuration.
+The production adapter under `production_adapter/` is activated only as mission-scoped, draft-PR-only Thread Engine authority through Aegis Break → Oathbringer. PowerShell, CLI, and direct Python execution all read `PRIME-PORT-STATUS.json` and fail closed if the state is disabled, malformed, or violates a permanent invariant. The fixture core remains fixture-only. The active adapter requires an exact mission authority, mission SHA-256 binding, explicit mission-scoped draft-PR intent, Fresh Clone First, declared paths, protected-path enforcement, source locks, payload hashes, candidate-tree verification, final path-set verification, `git diff --check`, staged diff verification, one deterministic branch, one single-parent commit, one draft PR, and independent readback. It never activates persistent writer authority, standing automation, ready transition, merge, workflow dispatch, generated-output disposition, repository-setting authority, cleanup, or production configuration.
 
 Live protected-path enforcement loads the reviewed Prime source at `policies/protected-paths.json`; there is no second hard-coded path list. The policy covers Prime authority, governance, schema, migration, Quest Board, generated, workflow, and Thread Engine self-change boundaries.
 

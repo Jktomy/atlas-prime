@@ -3,18 +3,22 @@
   "source_repository": "Jktomy/atlas-codex",
   "source_head": "1c43a5c7903a38a684b906e87a6475651a900a39",
   "target_repository": "Jktomy/atlas-prime",
-  "implementation_state": "PORT_CANDIDATE_DISABLED",
-  "production_execution_authorized": false,
+  "implementation_state": "THREAD_ENGINE_ACTIVE_MISSION_SCOPED",
+  "production_execution_authorized": true,
   "fixture_execution_authorized": false,
-  "proof_required": true,
+  "proof_required": false,
   "standing_authority": false,
   "automatic_merge": false,
   "direct_main": false,
   "codex_workboard_route": "ABSENT",
   "protected_path_policy": "PRIME_NATIVE_JSON_ENFORCED",
+  "activation_route": "AEGIS_BREAK_TO_OATHBRINGER",
+  "harmless_pilot_state": "PENDING",
   "known_disabled_routes": [
-    "production adapter until PR-C03 proof",
-    "Aegis Break protected path route until PR-C03 proof"
+    "Thread Engine self-change",
+    "ready transition and merge",
+    "direct main and force push",
+    "standing or automatic authority"
   ],
-  "next_gate": "PR-C03 exact port audit, repair, tests, harmless draft-PR proof, and disablement proof"
+  "next_gate": "Prime-native harmless draft-PR pilot, exact readback, merge, and disablement proof"
 }
