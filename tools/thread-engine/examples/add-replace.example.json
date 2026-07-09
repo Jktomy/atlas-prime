@@ -1,0 +1,50 @@
+{
+  "base_fixture": "fixtures/base",
+  "engine_state": "PILOT_DISABLED",
+  "expected_base_tree_sha256": "e0b953e9072b3eccf5f8f05f22e8eb2b3df9f415c959d78d254bf09b3ad66a44",
+  "expected_candidate_tree_sha256": "dbe376de5a1f545e4686b52448e905781a352fd241256101266ccc23d7da5193",
+  "forbidden_actions": [
+    "git clone",
+    "git checkout",
+    "git branch",
+    "git commit",
+    "git push",
+    "gh",
+    "github mutation",
+    "http mutation",
+    "workflow dispatch",
+    "pr creation or merge",
+    "repository setting mutation",
+    "direct-main write",
+    "force push",
+    "shell eval",
+    "caller-supplied executable command",
+    "arbitrary source-checkout mutation"
+  ],
+  "format_version": "atlas-thread-engine-weave-v1",
+  "mode": "FIXTURE_ONLY",
+  "payload_root": "fixtures/payloads",
+  "receipt_name": "add-replace-receipt.json",
+  "resume_from": "START",
+  "stop_boundary": "STOP",
+  "threads": [
+    {
+      "expected_output_sha256": "4f91121485cdb31c68fbcd740e67f43c317a5048e4c4fa5b4a4e2ae8baf0ad0e",
+      "operation": "ADD",
+      "path": "added.txt",
+      "payload": "add.txt",
+      "payload_sha256": "4f91121485cdb31c68fbcd740e67f43c317a5048e4c4fa5b4a4e2ae8baf0ad0e",
+      "thread_id": "thread-add-fixture"
+    },
+    {
+      "expected_output_sha256": "2d760e0bc6e190b19f3f502a3ca3b1a0b9dfd1b552b0f0ff2857e77ef8cb489a",
+      "operation": "REPLACE",
+      "path": "replace.txt",
+      "payload": "replace.txt",
+      "payload_sha256": "2d760e0bc6e190b19f3f502a3ca3b1a0b9dfd1b552b0f0ff2857e77ef8cb489a",
+      "source_sha256": "48f2bc56e932f5c61879cc33a17cac139edfd96b4c7942d0640286f65b30611c",
+      "thread_id": "thread-replace-fixture"
+    }
+  ],
+  "weave_id": "gate-7b-add-replace-fixture"
+}

@@ -1,0 +1,37 @@
+{
+  "activation_authority": "ABSENT",
+  "authority_id": "GATE7G-A-EXAMPLE-AUTHORITY",
+  "base_sha": "d6e81106707dab43981ee62c3c7a660407fa89fb",
+  "branch": "source/example-spear-bridge-output",
+  "bridge_mode": "COMPILE_ONLY",
+  "build_identity": "GATE7G-A-EXAMPLE-BUILD",
+  "commit_message": "docs: example Spear bridge mission",
+  "compile_receipt_filename": "spear-compile-receipt.json",
+  "dispatch_authority": "ABSENT",
+  "execute_identity": "GATE7G-A-EXAMPLE-EXECUTE",
+  "implementation_state": "SPEAR_BRIDGE_DISABLED",
+  "output_mission_filename": "compiled-production-mission.json",
+  "persistent_writer": "ABSENT",
+  "pr_body": "Example compiled mission.\\n",
+  "pr_title": "docs: example Spear bridge mission",
+  "repository": "Jktomy/atlas-prime",
+  "route": "SPEAR_DIRECT",
+  "schema_version": "atlas-thread-engine-spear-weave-v1",
+  "standing_authority": "NO",
+  "stop_point": "MISSION_COMPILED",
+  "threads": [
+    {
+      "operation": "ADD",
+      "path": "docs/example-add.txt",
+      "payload": "add.txt",
+      "thread_id": "add-example"
+    },
+    {
+      "operation": "REPLACE",
+      "path": "docs/example-replace.txt",
+      "payload": "replace.txt",
+      "thread_id": "replace-example"
+    }
+  ],
+  "weave_id": "GATE7G-A-EXAMPLE-WEAVE"
+}

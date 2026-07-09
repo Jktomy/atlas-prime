@@ -1,0 +1,18 @@
+{
+  "format_version": "1.0",
+  "default": "deny",
+  "critical_paths": [
+    "README.md",
+    "bootstrap.md",
+    "atlas-prime.md",
+    "atlas-start-here.md",
+    "quests/**",
+    "governance/**",
+    "policies/**",
+    "schemas/**",
+    "tools/thread-engine/**",
+    ".github/workflows/**"
+  ],
+  "thread_engine_self_change": "denied",
+  "generated_source_mixing": "denied"
+}

@@ -1,0 +1,52 @@
+{
+  "activation_authority": "MISSION_SCOPED",
+  "adapter_mode": "DRAFT_PR_ONLY",
+  "authority_id": "GATE7F-EXAMPLE-AUTHORITY",
+  "base_sha": "cbf765a5fdfeb325e096932d10978a3644819ce1",
+  "branch": "source/gate-7f-example-add-replace",
+  "build_identity": "GATE7F-EXAMPLE-BUILD",
+  "candidate_tree_sha256": "4c6b3ea45e4b133f767d3ac96536b27fd27ecccd7706c31feba50d8189271a3d",
+  "commit_message": "codex: example mission-scoped production adapter mission",
+  "declared_paths": [
+    "example/add.txt",
+    "example/replace.txt"
+  ],
+  "execute_identity": "GATE7F-EXAMPLE-EXECUTE",
+  "final_pathset_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "implementation_state": "THREAD_ENGINE_ACTIVE_MISSION_SCOPED",
+  "mission_id": "GATE7F-EXAMPLE-ADD-REPLACE",
+  "mission_sha256": "fb4b9bf03dd8458dd91585187488eb5f3edb2c0c85d04f03508f22d81dd3ef98",
+  "network_allowlist": [
+    "https://github.com/Jktomy/atlas-prime.git",
+    "https://api.github.com/repos/Jktomy/atlas-prime"
+  ],
+  "operations": [
+    {
+      "expected_output_sha256": "61b41ac0e49796d1ca796d07f19da4cff9993e48aa95ef67b024a26b1615d9e0",
+      "operation": "ADD",
+      "path": "example/add.txt",
+      "payload": "payloads/add.txt",
+      "payload_sha256": "61b41ac0e49796d1ca796d07f19da4cff9993e48aa95ef67b024a26b1615d9e0",
+      "thread_id": "add-example"
+    },
+    {
+      "expected_output_sha256": "de7c58192d0ba7d27d691fc8b330a39eb5121db38e8e8c25169f382e8f30f902",
+      "operation": "REPLACE",
+      "path": "example/replace.txt",
+      "payload": "payloads/replace.txt",
+      "payload_sha256": "de7c58192d0ba7d27d691fc8b330a39eb5121db38e8e8c25169f382e8f30f902",
+      "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "thread_id": "replace-example"
+    }
+  ],
+  "payload_root": "production_adapter/examples",
+  "persistent_writer": "ABSENT",
+  "pr_body": "Mission-scoped production-adapter example mission only.",
+  "pr_title": "codex: example mission-scoped production adapter mission",
+  "receipt_name": "gate-7f-production-adapter-example-receipt.json",
+  "remote_url": "https://github.com/Jktomy/atlas-prime.git",
+  "repository": "Jktomy/atlas-prime",
+  "schema_version": "atlas-thread-engine-production-mission-v1",
+  "source_blobs": {},
+  "stop_point": "DRAFT_PR_READBACK"
+}
