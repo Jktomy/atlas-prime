@@ -1,0 +1,28 @@
+{
+  "closed_paths": 525,
+  "dispositions": {
+    "ARCHIVE": 171,
+    "EXCLUDE": 16,
+    "KEEP": 26,
+    "MERGE": 19,
+    "REGENERATE": 15,
+    "REMODEL": 278
+  },
+  "ledger_sha256": "586fa7794c158924ae150ba9498b23abf529a877907d00a677dc4e35249332a0",
+  "open_paths": 0,
+  "schema_version": "atlas-prime-source-disposition-summary-v1",
+  "source_head": "c892dc05ea56db0134a0e865f56d491f9c02ff85",
+  "source_repository": "Jktomy/atlas-codex",
+  "tracked_paths": 525,
+  "waves": {
+    "ARCHIVE": 171,
+    "EXCLUDE": 16,
+    "P0": 113,
+    "P1": 33,
+    "P2": 77,
+    "P3": 2,
+    "P4": 24,
+    "P5": 68,
+    "P6": 21
+  }
+}

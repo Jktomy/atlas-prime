@@ -1,0 +1,97 @@
+{
+  "branch": "source/example-build",
+  "change_method": "OATHBRINGER",
+  "declared_paths": [
+    {
+      "operation": "ADD",
+      "path": "tools/thread-engine/example.py",
+      "payload_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "source_blob": null
+    }
+  ],
+  "expected_automation_effects": [
+    "pull request verification workflows may run"
+  ],
+  "execution_environment": "POWERSHELL",
+  "expected_base": "1111111111111111111111111111111111111111",
+  "expected_head": "2222222222222222222222222222222222222222",
+  "forbidden_actions": [
+    "squash",
+    "rebase",
+    "auto merge",
+    "workflow dispatch",
+    "branch deletion",
+    "automatic retry",
+    "automatic rollback",
+    "automation branch disposition",
+    "PR body rewrite"
+  ],
+  "format_version": "1.2",
+  "framework_state": "PILOT_DISABLED",
+  "lane": "EXECUTE",
+  "mission_id": "EXAMPLE-RECOVERY-20260708",
+  "pull_request": 999999,
+  "receipt_contract": {
+    "automatic_retry": false,
+    "automatic_rollback": false,
+    "completion_flags_required": true,
+    "failure_exit_code": 1,
+    "interrupt_exit_code": 130,
+    "write_on_failure": true,
+    "write_on_interrupt": true
+  },
+  "repository": "Jktomy/atlas-prime",
+  "required_ci": [
+    {
+      "conclusion": "success",
+      "name": "Atlas Verify",
+      "run_id": null
+    }
+  ],
+  "resume_from": "BODY_SYNCED",
+  "runtime_mode": "AUDIT_ONLY",
+  "stop_boundary": "MERGED_MAIN_READBACK_COMPLETE",
+  "sword_identity": "ATLAS-EXAMPLE-RECOVERY-OATHBRINGER-V1-20260708",
+  "workflow_rules": [
+    {
+      "appearance_grace_seconds": 120,
+      "completion_timeout_seconds": 900,
+      "event": "pull_request",
+      "expected_conclusion": "success",
+      "name": "Atlas Verify",
+      "pull_request_paths": null,
+      "workflow_blob": "f98d61812ab702ba45101faeeadadc7ce34856c3",
+      "workflow_path": ".github/workflows/atlas-verify.yml"
+    },
+    {
+      "appearance_grace_seconds": 120,
+      "completion_timeout_seconds": 900,
+      "event": "pull_request",
+      "expected_conclusion": "success",
+      "name": "Atlas Verify Generated Index Artifacts",
+      "pull_request_paths": [
+        "*.md",
+        "artemis/**/*.md",
+        "atlas-prime-addenda/**/*.md",
+        "app-harvests/**/*.md",
+        "brainstorming/**/*.md",
+        "changelog/**/*.md",
+        "changelog-addenda/**/*.md",
+        "**/*.md",
+        "protocols/**/*.md",
+        "templates/**/*.md",
+        "projects/**/*.md",
+        "operations/**/*.md",
+        "session-harvests/**/*.md",
+        "source-notes/**/*.md",
+        "spark-catalog/**/*.md",
+        "tools/build_index.py",
+        "tests/generated_index/**",
+        ".github/workflows/atlas-generate-index-artifacts.yml",
+        ".github/workflows/atlas-publish-index-artifacts.yml"
+      ],
+      "workflow_blob": "d6cf6331da567a285db6aa25af5ee63bdc156b2a",
+      "workflow_path": ".github/workflows/atlas-generate-index-artifacts.yml"
+    }
+  ]
+}

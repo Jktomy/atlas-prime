@@ -1,0 +1,196 @@
+{
+  "codex_source_head": "c892dc05ea56db0134a0e865f56d491f9c02ff85",
+  "files": [
+    {
+      "bytes": 2130,
+      "path": ".github/workflows/prime-readonly-validation.yml",
+      "sha256": "217f35595852bcbe9cf33b7fc87b8cc4a04c0a5426930b5d7cfc26b468251d4c"
+    },
+    {
+      "bytes": 2765,
+      "path": "governance/source-lifecycle.md",
+      "sha256": "2861c893cd4aece0279b2e38b60825a0b0d5bc2fa44f761c160bfa5117b83c2b"
+    },
+    {
+      "bytes": 2446,
+      "path": "infrastructure/atlas-infrastructure-source.md",
+      "sha256": "c1fe862cc0011e221df321604b3830752f3054b4928a44df951fec2642817fec"
+    },
+    {
+      "bytes": 1261,
+      "path": "knowledge/atlas-source-compendium.md",
+      "sha256": "0962be8cb0438a20bb10db9110786f930ebd336053675f866f7b320d663dff53"
+    },
+    {
+      "bytes": 1108,
+      "path": "migration/codex-cutover.md",
+      "sha256": "a84f0aef492fcf4f1d42b6f9f437e1fc368a137c0b4ee025654ed580e052fa01"
+    },
+    {
+      "bytes": 186686,
+      "path": "migration/source-disposition-ledger.csv",
+      "sha256": "586fa7794c158924ae150ba9498b23abf529a877907d00a677dc4e35249332a0"
+    },
+    {
+      "bytes": 619,
+      "path": "migration/source-disposition-summary.json",
+      "sha256": "553bba7e9a64d0d359a54560c4c5f31b78dfeb75cb575e1d89ed3ca743ed48a7"
+    },
+    {
+      "bytes": 1703,
+      "path": "operations/artemis-runtime-and-routing.md",
+      "sha256": "274b7cce0031b9c61759058f35719e6c098aef67217575533ddbb00e7a0e7b9c"
+    },
+    {
+      "bytes": 1991,
+      "path": "operations/operation-registry.md",
+      "sha256": "b377e538ed1e1abf2b636d6f029cf4accff52a51d72e06206b82f8b8bdb9bd53"
+    },
+    {
+      "bytes": 1507,
+      "path": "operations/protocol-library.md",
+      "sha256": "b18b3a3598d718f9f499195a12ab98bd9d5bd6fa08a227ef0acea6ebe167b735"
+    },
+    {
+      "bytes": 2296,
+      "path": "projects/project-registry.md",
+      "sha256": "a137af96fa3c850cc513ec460f9e541884879d968f7704e0c09fcd7805153546"
+    },
+    {
+      "bytes": 1030,
+      "path": "quest-board/quest-board-v1.json",
+      "sha256": "3c23286bd185d0eb78a982558935957983bdae3d6541ae17a74ac76c8a8ed418"
+    },
+    {
+      "bytes": 13010,
+      "path": "quests/notums-watch.md",
+      "sha256": "ac07b89cde437fd774ec3d7cbd8c7fa6b44c551b3910608c8eb1296e3de0326f"
+    },
+    {
+      "bytes": 11884,
+      "path": "quests/prometheus-fire.md",
+      "sha256": "79e30304809b0db198a8632c8477fc646cad5f8030e8405cb6e06f6f3555cd6b"
+    },
+    {
+      "bytes": 2090,
+      "path": "recovery/phoenix-recovery.md",
+      "sha256": "eb63f59f23c8d0c27357955bd08202541c5553a1d665ea6fc11763251f064d94"
+    },
+    {
+      "bytes": 1942,
+      "path": "routing/command-surfaces.md",
+      "sha256": "03e94aa20f22d7da5cd8332bc8bbfabfc17a025f7c6fb207cb2df50488370ffe"
+    },
+    {
+      "bytes": 2726,
+      "path": "safety/atlas-safety-doctrine.md",
+      "sha256": "5c08bf59cdebf30048e0a11e92b0f60a37d5a6d10f98a5fa056bdf40bd35033a"
+    },
+    {
+      "bytes": 1085,
+      "path": "templates/preview-bundle-template.md",
+      "sha256": "81b8b1909ed49c5cbc7a02e1f69177fa813cb21c0d74030f400efaf19cb3c98e"
+    },
+    {
+      "bytes": 658,
+      "path": "templates/project-template.md",
+      "sha256": "69324e0d020a449709b395f4023920c3747967d8663296cca46d7fa073e27833"
+    },
+    {
+      "bytes": 839,
+      "path": "templates/protocol-template.md",
+      "sha256": "9c06eb3cd2057bcc4d3f9f0d27d5f333702a1a2bf90ccc6874145e9e2c1eba88"
+    },
+    {
+      "bytes": 664,
+      "path": "templates/source-file-template.md",
+      "sha256": "e948f25a579f81e7b4033beddf6928dfbf43fcb47cad62f6a1daf3d684d20600"
+    },
+    {
+      "bytes": 817,
+      "path": "templates/support-file-template.md",
+      "sha256": "1858cf43092b4060e897e60d6ad6d071359cf7db4144a0b020dc68ff0dd9f876"
+    },
+    {
+      "bytes": 2309,
+      "path": "tests/generators/test_build_index.py",
+      "sha256": "eb816417a2f25bf5cada249279ee28ddc65ff99e6c35fe6a2c58a3f40450f220"
+    },
+    {
+      "bytes": 1702,
+      "path": "tests/prime-program/test_prime_program.py",
+      "sha256": "e7941e82ea68047b9a6ca15d0e78561027e3883b96c2c9e3e6103a93b7e4a34b"
+    },
+    {
+      "bytes": 4650,
+      "path": "tools/atlas-sword/ARCHITECTURE.md",
+      "sha256": "6809d875b606fb81ff61e971de545b2e66a3b29f820f764ba59f803484901526"
+    },
+    {
+      "bytes": 1927,
+      "path": "tools/atlas-sword/engine/AtlasSword.Common.psm1",
+      "sha256": "668f9865d150a7c0543a91084fe344a0948232218098bf3f9defaecee5754452"
+    },
+    {
+      "bytes": 1461,
+      "path": "tools/atlas-sword/engine/Invoke-AtlasSword.ps1",
+      "sha256": "9107addd85ed096708accdb9649557a29d862f899ffab485fd935794419293b4"
+    },
+    {
+      "bytes": 32210,
+      "path": "tools/atlas-sword/engine/oathbringer_contract.py",
+      "sha256": "fe983269734648865f9e3b7898eba5863b21c1bb3d3e99c58ea916cfb85c9598"
+    },
+    {
+      "bytes": 2763,
+      "path": "tools/atlas-sword/examples/build.example.json",
+      "sha256": "45eb4c0c3ec21da815a7fed385c757d043f50e046ea53526774ca621f75ee370"
+    },
+    {
+      "bytes": 2942,
+      "path": "tools/atlas-sword/examples/execute.example.json",
+      "sha256": "3ea78eb4a41a2f9422ff031069a35b3332c7adb61d9948ce920a9235ba21b7a6"
+    },
+    {
+      "bytes": 2973,
+      "path": "tools/atlas-sword/examples/recovery.example.json",
+      "sha256": "ee3f899dd569ac68d0a5e129a6533e31e7f1bbf0712633f4a62eabe59c850eb9"
+    },
+    {
+      "bytes": 6689,
+      "path": "tools/atlas-sword/mission.schema.json",
+      "sha256": "9548096fca6f41aa932f3c1a06cd11587ba113c1c7b7a3f40b086009e74ab48f"
+    },
+    {
+      "bytes": 3225,
+      "path": "tools/atlas-sword/README.md",
+      "sha256": "d542f3c1e20a94d6336f72b44511dc75e760c4db9ee9127de6079c874debba1c"
+    },
+    {
+      "bytes": 17135,
+      "path": "tools/atlas-sword/tests/static_checks.py",
+      "sha256": "a974e741202f36e34553e85943dc2f53ee5e33ff770467e1d556b36c2669968a"
+    },
+    {
+      "bytes": 2963,
+      "path": "tools/atlas-sword/tests/test-contract.md",
+      "sha256": "750f768a56c50c763325a6a4bf8590a97e6bf979aa3cc81f41ef71346fedf374"
+    },
+    {
+      "bytes": 1997,
+      "path": "tools/atlas-sword/tools/build_package.py",
+      "sha256": "f423dba2d29267e8592e34fb8d6645ffa0cd8b9cdd62a1578ce38ffa527d0ad5"
+    },
+    {
+      "bytes": 18338,
+      "path": "tools/build_index.py",
+      "sha256": "03bb829686de585dae4f12afbca54b89852f0624135a365a827a20be0b86f1d6"
+    },
+    {
+      "bytes": 3862,
+      "path": "tools/prime_checks/validate_prime.py",
+      "sha256": "37c0adfeaf9ef07d9a0df5b51360e4ef622228be28095b251f07e9eefcd16ac8"
+    }
+  ],
+  "schema_version": "atlas-prime-migration-wave-source-v1"
+}
