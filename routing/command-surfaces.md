@@ -11,7 +11,7 @@ protected_level: "HIGH"
 
 # Prime Command and Routing Surfaces
 
-Start with `README.md`, then `bootstrap.md`, then this surface.
+Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then this surface.
 
 | Need | Canonical route |
 |---|---|
@@ -32,7 +32,7 @@ Start with `README.md`, then `bootstrap.md`, then this surface.
 | Reusable templates | `templates/preview-bundle-template.md`, `templates/project-template.md`, `templates/protocol-template.md`, `templates/source-file-template.md`, `templates/support-file-template.md` |
 | Proven delivery evidence | `proof/prime-thread-engine-bootstrap-proof.md`, `proof/prime-spear-arrow-bow-parity-r01.md` |
 | Generated projections | `tools/build_index.py`, `generated/` |
-| Migration and cutover evidence | `migration/codex-cutover.md`, `migration/rollback-map.md`, `migration/source-disposition-summary.json` |
+| Migration and cutover evidence | `migration/codex-cutover.md`, `migration/codex-inheritance-manifest.md`, `migration/predecessor-snapshot.md`, `migration/rollback-map.md`, `migration/source-disposition-summary.json` |
 
 ## Decision box
 
