@@ -7,6 +7,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SKIP_PARTS = {".git", "__pycache__", ".pytest_cache"}
 TEXT_SUFFIXES = {".md", ".json", ".py", ".ps1", ".yml", ".yaml", ".txt"}
+APPROVED_GENERATED = {
+    "atlas-duplicate-scope-report.md",
+    "atlas-file-inventory.md",
+    "atlas-metadata-inventory.md",
+    "atlas-orphan-report.md",
+    "atlas-routing-inventory.md",
+}
 PATTERNS = {
     "private_key": re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
     "github_token": re.compile(r"\bgh(?:p|o|u|s|r)_[A-Za-z0-9]{20,}\b"),
@@ -27,8 +34,16 @@ class PrivacyBoundaryTests(unittest.TestCase):
                     findings.append(f"{path.relative_to(ROOT).as_posix()}: {label}")
         self.assertEqual(findings, [])
 
-    def test_no_generated_or_runtime_byproducts_in_kernel(self) -> None:
-        self.assertFalse((ROOT / "generated").exists())
+    def test_generated_boundary_and_no_runtime_byproducts(self) -> None:
+        generated_root = ROOT / "generated"
+        if generated_root.exists():
+            generated_files = {
+                path.relative_to(generated_root).as_posix()
+                for path in generated_root.rglob("*")
+                if path.is_file()
+            }
+            self.assertEqual(generated_files, APPROVED_GENERATED)
+            self.assertEqual([path for path in generated_root.rglob("*") if path.is_symlink()], [])
         byproducts = [
             path.relative_to(ROOT).as_posix()
             for path in ROOT.rglob("*")
