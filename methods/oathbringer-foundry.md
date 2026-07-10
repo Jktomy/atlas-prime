@@ -65,7 +65,6 @@ or token-shaped/protected material.
 ## Invocation
 
 Use `tools/oathbringer-foundry/Invoke-OathbringerFoundry.ps1` or the Python
-CLI. The compiler requires an input root, a source root, and either a supplied
-read-only live-state snapshot or a fresh `gh` read-only binding. A successful
-compile is carrier preparation only; it never grants execution or merge
-authority.
+CLI. Production compilation requires an input root and a source root, then
+obtains a fresh `gh` read-only binding itself. A successful compile is carrier
+preparation only; it never grants execution or merge authority.

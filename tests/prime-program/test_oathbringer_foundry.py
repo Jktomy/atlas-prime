@@ -8,13 +8,15 @@ import tempfile
 import unittest
 import zipfile
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[2]
 FOUNDRY_ROOT = ROOT / "tools" / "oathbringer-foundry"
 sys.path.insert(0, str(FOUNDRY_ROOT))
 
-from foundry import FoundryError, bind_live_state, compile_carrier, load_json, verify_carrier
+import foundry as foundry_module
+from foundry import FoundryError, bind_live_state, compile_carrier, load_json, read_live_state, verify_carrier
 
 
 def digest(path: Path) -> str:
@@ -226,6 +228,41 @@ class OathbringerFoundryTests(unittest.TestCase):
         with self.assertRaisesRegex(FoundryError, "base SHA drift"):
             bind_live_state(repair, stale, ROOT)
 
+    def test_payload_and_audit_paths_cannot_replace_carrier_material(self) -> None:
+        mission = self._mission()
+        mission["operations"][0]["payload_path"] = "engine/oathbringer_github.py"
+        mission["oathbringer_mission"]["declared_paths"] = mission["operations"]
+        with self.assertRaisesRegex(FoundryError, "must be under payload"):
+            self._compile(mission)
+        execute = self._mission("EXECUTE")
+        execute["oathbringer_mission"]["independent_audit"]["receipt_path"] = "FORGE-RECEIPT.json"
+        with self.assertRaisesRegex(FoundryError, "must be under audit"):
+            self._compile(execute)
+
+    def test_live_binding_requires_exact_branch_and_actual_open_pull_set(self) -> None:
+        branch = "proof/foundry-harmless-r01"
+        with patch.object(foundry_module, "_gh_json", return_value=[{"ref": f"refs/heads/{branch}-suffix"}]):
+            self.assertFalse(foundry_module._target_branch_exists("Jktomy/atlas-prime", branch))
+        mission = self._mission("REPAIR")
+
+        def read(path: str):
+            if path.startswith("repos/Jktomy/atlas-prime/git/ref/heads/"):
+                return {"object": {"sha": "a" * 40}}
+            if path == "user":
+                return {"login": "Jktomy"}
+            if path.startswith("repos/Jktomy/atlas-prime/pulls?state=open"):
+                return [{"number": 91, "head": {"ref": branch}, "base": {"ref": "main"}}]
+            if path.startswith("repos/Jktomy/atlas-prime/git/matching-refs/"):
+                return [{"ref": f"refs/heads/{branch}"}]
+            if path == "repos/Jktomy/atlas-prime/pulls/91":
+                return {"number": 91, "state": "open", "head": {"sha": "b" * 40, "ref": branch}, "base": {"sha": "a" * 40, "ref": "main"}}
+            raise AssertionError(path)
+
+        with patch.object(foundry_module, "_gh_json", side_effect=read):
+            state = read_live_state(mission)
+        self.assertEqual(state["open_pull_request_count"], 1)
+        self.assertTrue(state["target_branch_exists"])
+
     def test_unsafe_paths_collisions_and_protected_material_fail_closed(self) -> None:
         mission = self._mission()
         mission["operations"][0]["path"] = "../escape.txt"
@@ -278,6 +315,12 @@ class OathbringerFoundryTests(unittest.TestCase):
         self.assertNotIn('add_argument("--live-state"', source)
         self.assertNotIn('add_argument("--bind-live"', source)
         self.assertIn("live = read_live_state(mission)", source)
+        launcher = (FOUNDRY_ROOT / "Invoke-OathbringerFoundry.ps1").read_text(encoding="utf-8")
+        readme = (FOUNDRY_ROOT / "README.md").read_text(encoding="utf-8")
+        doctrine = (ROOT / "methods" / "oathbringer-foundry.md").read_text(encoding="utf-8")
+        for surface in (launcher, readme, doctrine):
+            self.assertNotIn("--live-state", surface)
+            self.assertNotIn("--bind-live", surface)
 
 
 if __name__ == "__main__":

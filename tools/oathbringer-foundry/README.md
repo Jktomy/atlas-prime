@@ -15,13 +15,12 @@ Lessons register: `methods/sword-lessons.json`
 python -B tools/oathbringer-foundry/cli.py compile \
   --input-root <mission-input-directory> \
   --source-root . \
-  --live-state <read-only-live-state.json> \
   --output-dir <carrier-output-directory>
 ```
 
-Use `--bind-live` instead of `--live-state` to obtain the current GitHub lock
-through read-only `gh api` requests. The compiler prints only carrier identity,
-hashes, locks, and paths; it never prints a credential.
+Every production compile obtains the current GitHub lock through read-only `gh
+api` requests. The compiler prints only carrier identity, hashes, locks, and
+paths; it never prints a credential.
 
 ## Output
 

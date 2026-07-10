@@ -19,6 +19,7 @@ import zipfile
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any, Iterable, Mapping, Sequence
+from urllib.parse import quote
 
 
 COMPILER_IDENTITY = "SWORD_FORGE_COMPILER_V1"
@@ -329,12 +330,25 @@ def _gh_json(path: str) -> Any:
 
 
 def _target_branch_exists(repository: str, branch: str) -> bool:
-    """Use GitHub's read-only matching-refs endpoint; an empty list is normal."""
+    """Use matching refs as a prefix query, then require the exact ref."""
 
     encoded = branch.replace("/", "%2F")
     result = _gh_json(f"repos/{repository}/git/matching-refs/heads/{encoded}")
     _require(isinstance(result, list), "read-only target branch binding is malformed")
-    return bool(result)
+    return any(isinstance(item, dict) and item.get("ref") == f"refs/heads/{branch}" for item in result)
+
+
+def _open_target_pulls(repository: str, base_branch: str, branch: str) -> list[dict[str, Any]]:
+    """Read every open PR for the exact repository-owner head branch."""
+
+    owner = repository.split("/", 1)[0]
+    head = quote(f"{owner}:{branch}", safe="")
+    base = quote(base_branch, safe="")
+    result = _gh_json(f"repos/{repository}/pulls?state=open&head={head}&base={base}&per_page=100")
+    _require(isinstance(result, list) and all(isinstance(item, dict) for item in result), "read-only target pull-request binding is malformed")
+    for item in result:
+        _require(item.get("head", {}).get("ref") == branch and item.get("base", {}).get("ref") == base_branch, "read-only target pull-request binding drifted")
+    return list(result)
 
 
 def read_live_state(mission: Mapping[str, Any]) -> dict[str, Any]:
@@ -349,6 +363,7 @@ def read_live_state(mission: Mapping[str, Any]) -> dict[str, Any]:
     for item in source_lock["workflow_sources"]:
         content = _gh_json(f"repos/{repository}/contents/{item['path']}?ref={source_lock['expected_base']}")
         workflows[item["path"]] = str(content.get("sha") or "")
+    open_pulls = _open_target_pulls(repository, str(source_lock["base_branch"]), str(target_lock["branch"]))
     snapshot: dict[str, Any] = {
         "repository": repository,
         "base_branch": source_lock["base_branch"],
@@ -360,12 +375,13 @@ def read_live_state(mission: Mapping[str, Any]) -> dict[str, Any]:
         "pull_request_base_sha": None,
         "pull_request_state": None,
         "target_branch_exists": _target_branch_exists(repository, str(target_lock["branch"])),
-        "open_pull_request_count": 0,
+        "open_pull_request_count": len(open_pulls),
         "github_login": str(user.get("login") or ""),
         "workflow_blobs": workflows,
     }
     if mission["mode"] != "BUILD":
         pull = _gh_json(f"repos/{repository}/pulls/{target_lock['pull_request']}")
+        _require(any(int(item.get("number") or 0) == target_lock["pull_request"] for item in open_pulls), "target pull request is not the unique open branch pull request")
         snapshot["head_sha"] = str(pull.get("head", {}).get("sha") or "")
         snapshot["pull_request"] = int(pull.get("number") or 0)
         snapshot["pull_request_branch"] = str(pull.get("head", {}).get("ref") or "")
@@ -392,6 +408,7 @@ def _read_input_payloads(mission: Mapping[str, Any], input_root: Path) -> dict[s
         if payload_path is None:
             continue
         relative = safe_path(payload_path, f"operations[{index}].payload_path")
+        _require(relative.startswith("payload/"), f"payload {relative} must be under payload/")
         source = _regular_member(input_root, relative, f"payload {relative}")
         data = source.read_bytes()
         total += len(data)
@@ -486,7 +503,9 @@ def compile_carrier(
     )
     members["source/methods/sword-lessons.json"] = _regular_member(source_root, "methods/sword-lessons.json", "lessons register").read_bytes()
     members.update(_engine_materials(source_root))
-    members.update(_read_input_payloads(mission, input_root))
+    payloads = _read_input_payloads(mission, input_root)
+    _require(not set(members) & set(payloads), "payload overlaps compiler-controlled carrier material")
+    members.update(payloads)
 
     oathbringer = mission["oathbringer_mission"]
     if isinstance(oathbringer, dict):
@@ -494,6 +513,8 @@ def compile_carrier(
         audit = oathbringer.get("independent_audit")
         if isinstance(audit, dict):
             audit_path = safe_path(audit.get("receipt_path"), "independent audit receipt")
+            _require(audit_path.startswith("audit/"), "independent audit receipt must be under audit/")
+            _require(audit_path not in members, "independent audit receipt overlaps carrier material")
             audit_file = _regular_member(input_root, audit_path, "independent audit receipt")
             audit_bytes = audit_file.read_bytes()
             _scan_clean(audit_bytes, "independent audit receipt")
