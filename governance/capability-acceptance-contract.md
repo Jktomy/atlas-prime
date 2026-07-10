@@ -32,6 +32,10 @@ Only an exact receipt and canonical readback may move a capability to RESTORED, 
 | AJ-11 | Clean-clone recovery | Prime recovers from a clean clone without normal Codex dependency. |
 | AJ-12 | Merged-main validation | Final merged main passes complete Prime validation on Linux and Windows at the exact SHA. |
 
+## Legacy Oathbringer capability mapping
+
+`CAP-017` preserves the identity and historical proof language of the predecessor clone-first Sword capability. Prime does not need to reactivate that exact substrate. The GitHub-native Oathbringer route is the intended replacement, and AJ-04 through AJ-06 are the controlling acceptance journeys for moving `CAP-017` from `STILL_MISSING` to `REPLACED`.
+
 ## Verdict rule
 
 Each journey is PROVEN, BLOCKED, or UNPROVEN. PROVEN requires exact source and head identity, path and blob readback, applicable tests and CI, independent read-only reconciliation, and a durable receipt. BLOCKED requires the exact external boundary and evidence. UNPROVEN never implies failure, but it cannot be reported as active.
