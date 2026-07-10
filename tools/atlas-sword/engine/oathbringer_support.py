@@ -57,6 +57,14 @@ def resolve_workflow_applicability(changed_paths: Sequence[str], workflow_rules:
         result[name] = {'classification': 'REQUIRED' if applicable else 'NOT_APPLICABLE', 'applicable': applicable, 'reason': 'unfiltered pull_request trigger' if patterns is None else 'changed path matched pull_request path filter' if match else 'no changed path matched pull_request path filters', 'matched_path': None if match is None else match[0], 'matched_pattern': None if match is None else match[1], **rule}
     return result
 
+def verify_workflow_source_blobs(workflow_rules: Sequence[dict[str, Any]], source_tree: dict[str, dict[str, Any]]) -> None:
+    for index, rule in enumerate(workflow_rules):
+        _validate_workflow_rule(rule, index)
+        path = str(rule['workflow_path'])
+        entry = source_tree.get(path)
+        _require(entry is not None, f'workflow source missing from exact source tree: {path}')
+        _require(entry.get('sha') == rule['workflow_blob'], f'workflow source blob drift: {path}')
+
 def wait_for_required_workflows(client: Any, changed_paths: Sequence[str], workflow_rules: Sequence[dict[str, Any]], head_sha: str, *, sleep: Callable[[float], None]=time.sleep, monotonic: Callable[[], float]=time.monotonic, poll_seconds: float=3.0) -> dict[str, Any]:
     applicability = resolve_workflow_applicability(changed_paths, workflow_rules)
     required = {name: rule for name, rule in applicability.items() if rule['applicable']}
@@ -123,15 +131,32 @@ def atomic_write_json_with_sha256(path: Path, payload: dict[str, Any]) -> dict[s
         raise ReceiptWriteError(f'receipt write failed: {exc}') from exc
     return {'receipt_path': str(destination), 'receipt_sha256': digest, 'sidecar_path': str(sidecar)}
 
-def verify_manifest_if_present(package_root: Path) -> bool:
+def resolve_package_member(package_root: Path, relative_path: str) -> Path:
+    relative = _safe_relative_path(relative_path, 'package member path')
+    root = package_root.resolve()
+    member = (root / relative).resolve()
+    _require(member == root or root in member.parents, f'package member escapes root: {relative}')
+    _require(member.is_file(), f'package member missing: {relative}')
+    return member
+
+def verify_package_member(package_root: Path, relative_path: str, expected_sha256: str) -> Path:
+    member = resolve_package_member(package_root, relative_path)
+    observed = hashlib.sha256(member.read_bytes()).hexdigest()
+    _require(observed == expected_sha256, f'package member hash mismatch: {relative_path}')
+    return member
+
+def verify_required_manifest(package_root: Path) -> dict[str, Any]:
     path = package_root / 'MANIFEST.json'
-    if not path.is_file():
-        return False
+    _require(path.is_file(), 'production Oathbringer requires MANIFEST.json')
     manifest = json.loads(path.read_text(encoding='utf-8'))
-    for item in manifest.get('files', []):
+    files = manifest.get('files')
+    _require(isinstance(files, list) and files, 'MANIFEST.json must declare a non-empty files array')
+    seen: set[str] = set()
+    for item in files:
+        _require(isinstance(item, dict), 'manifest file entry must be an object')
         relative = _safe_relative_path(item.get('path'), 'manifest path')
-        member = (package_root / relative).resolve()
-        _require(member.is_file(), f'manifest member missing: {relative}')
-        _require(hashlib.sha256(member.read_bytes()).hexdigest() == item.get('sha256'), f'manifest hash mismatch: {relative}')
+        _require(relative not in seen, f'duplicate manifest member: {relative}')
+        seen.add(relative)
+        member = verify_package_member(package_root, relative, str(item.get('sha256') or ''))
         _require(member.stat().st_size == int(item.get('size')), f'manifest size mismatch: {relative}')
-    return True
+    return {'manifest_path': str(path.resolve()), 'member_count': len(files), 'members': sorted(seen)}
