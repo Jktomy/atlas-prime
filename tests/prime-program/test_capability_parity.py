@@ -112,6 +112,7 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertIn("REPLACED", acceptance)
 
     def test_route_terms_are_not_conflated(self) -> None:
+        records = {record["id"]: record for record in self.register["capabilities"]}
         change_routes = (ROOT / "governance/change-routes.md").read_text(encoding="utf-8")
         command_surfaces = (ROOT / "routing/command-surfaces.md").read_text(
             encoding="utf-8"
@@ -137,10 +138,11 @@ class CapabilityParityTests(unittest.TestCase):
 
         self.assertIn("Shardplate is the AI-assisted work surface", phoenix)
         self.assertIn("fresh Work context", spear)
-        self.assertIn(
-            "Production BUILD, REPAIR, and EXECUTE mechanics are not yet present",
-            sword,
-        )
+        self.assertIn("PILOT_READY_PROOF_PENDING", sword)
+        self.assertIn("present but not yet capability-proven", sword)
+        self.assertIn("Wave 3 completes AJ-04 through AJ-06", sword)
+        self.assertEqual(records["CAP-017"]["capability_disposition"], "STILL_MISSING")
+        self.assertEqual(records["CAP-017"]["activation_state"], "MISSING")
 
         self.assertIn("Aegis Break -> equivalent safe route", change_routes)
         self.assertNotIn("Aegis Break -> Phoenix Blade", change_routes)
