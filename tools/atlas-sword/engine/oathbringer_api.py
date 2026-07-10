@@ -37,6 +37,9 @@ class GitHubClient:
     def repo_path(self) -> str:
         return f'/repos/{self.repository}'
 
+    def get_authenticated_user(self) -> dict[str, Any]:
+        return self.request('GET', '/user')
+
     def get_ref(self, branch: str) -> dict[str, Any] | None:
         encoded = urllib.parse.quote(branch, safe='')
         return self.request('GET', f'{self.repo_path}/git/ref/heads/{encoded}', allow_404=True)
