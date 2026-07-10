@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:873a6627208ed16d77da0f59828e587ea453d1ad7d11fc9e07459d7420fd8ed4
+Source fingerprint: sha256:8a984ffdd4636857f60b0b53be1b0796b5c6c4af44193e7d695d40a3fac169da
 Generator format: 2
 Status: Generated support artifact
 
@@ -24,6 +24,7 @@ Status: Generated support artifact
 | `governance/source-lifecycle.md` | ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `infrastructure/atlas-infrastructure-source.md` | ACTIVE | ARCHITECTURE | missing | HIGH |
 | `knowledge/atlas-source-compendium.md` | ACTIVE | CORE_DOCTRINE | missing | MEDIUM |
+| `knowledge/context-pack-contract.md` | ACTIVE | PROTOCOL | missing | MEDIUM |
 | `methods/artemis-bow-and-arrow.md` | SHADOW_CONSTRUCTION | METHOD | missing | CRITICAL |
 | `methods/athenas-spear.md` | SHADOW_CONSTRUCTION | METHOD | missing | CRITICAL |
 | `methods/atlas-sword.md` | SHADOW_CONSTRUCTION | METHOD | missing | CRITICAL |
