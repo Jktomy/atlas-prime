@@ -29,11 +29,13 @@ Prime now contains:
 
 - the reusable schema `1.2` audit framework;
 - the GitHub-native production mission format `2.0`;
-- the thin PowerShell launcher and authenticated token handoff;
+- the thin PowerShell launcher and process-scoped authenticated token handoff;
 - deterministic BUILD, REPAIR, and EXECUTE adapters;
 - exact candidate-tree and final path-set verification;
-- workflow applicability and exact-head waits;
-- structured success, failure, and interruption receipts.
+- manifest-bound mission, payload, lessons, and independent-audit evidence;
+- authenticated GitHub-login readback;
+- hash-bound workflow-source verification, applicability, and exact-head waits;
+- structured success, failure, and interruption receipts with immediate partial-state recording.
 
 The production adapter is **present but not yet capability-proven**. Until Wave 3 completes AJ-04 through AJ-06 with harmless live GitHub transactions, CAP-017 remains `STILL_MISSING`, the framework state remains `PILOT_READY_PROOF_PENDING`, and Prime must not describe production Oathbringer as restored or generally active.
 
@@ -46,15 +48,19 @@ Fresh Clone First remains an emergency or compatibility substrate, not a mandato
 A production mission must bind:
 
 - `SWORD_FORGE_STANDARD_V1`;
-- the exact `prime-sword-lessons-v1` source SHA-256;
+- a required `MANIFEST.json` containing the exact invoked mission and every payload or evidence member used by the strike;
+- the exact `prime-sword-lessons-v1` file path and SHA-256;
 - every controlling lesson as `APPLIED` or `NOT_APPLICABLE` with a reason;
-- Jayson as authorizer and operator;
+- Jayson as authorizer and operator and the expected authenticated GitHub login;
 - approved Preview and explicit execution authorization;
 - exact repository, base branch, base SHA, mission branch, pull request, and head SHA as applicable;
 - the complete final operation inventory and payload hashes;
 - exact workflow source blobs and applicability;
+- a packaged, hash-bound GREEN independent-audit receipt for Execute;
 - separate Build, Repair, or Execute stop boundaries;
 - `DIRECT_MAIN`, `FORCE_PUSH`, `SCOPE_WIDENING`, and `TOKEN_PERSISTENCE` as forbidden actions.
+
+Unknown mission fields, external or unmanifested mission files, unmanifested payloads, mismatched authenticated users, drifted workflow blobs, and unbound audit receipts fail closed before permanence.
 
 ## Mandatory forge routing
 
