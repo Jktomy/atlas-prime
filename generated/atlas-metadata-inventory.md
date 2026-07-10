@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:eb3ad6cb3ffc6a0c98465f4c168f85052fde556aa123debd86b840f4eca5bc66
+Source fingerprint: sha256:268bd8b1ec7939a7f986912ebfdf5faa609efcd6f49d92e61b1870320d3543ea
 Generator format: 2
 Status: Generated support artifact
 
@@ -29,6 +29,7 @@ Status: Generated support artifact
 | `methods/artemis-bow-and-arrow.md` | COMPONENT_PROVEN_HOSTED_INVOCATION_UNAVAILABLE | METHOD | missing | CRITICAL |
 | `methods/athenas-spear.md` | COMPONENT_PROVEN_HOSTED_INTAKE_MISSING | METHOD | missing | CRITICAL |
 | `methods/atlas-sword.md` | PRODUCTION_ACTIVE | METHOD | missing | CRITICAL |
+| `methods/oathbringer-foundry.md` | IMPLEMENTATION_READY_ACCEPTANCE_PENDING | METHOD | missing | CRITICAL |
 | `methods/phoenix-blade.md` | ACTIVE_BOUNDED_METHOD | METHOD | missing | CRITICAL |
 | `methods/sword-forge-standard.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `migration/codex-cutover.md` | COMPLETE | REGISTER | missing | CRITICAL |
@@ -57,6 +58,7 @@ Status: Generated support artifact
 | `tools/atlas-sword/ARCHITECTURE.md` | missing | missing | missing | missing |
 | `tools/atlas-sword/README.md` | missing | missing | missing | missing |
 | `tools/atlas-sword/tests/test-contract.md` | missing | missing | missing | missing |
+| `tools/oathbringer-foundry/README.md` | missing | missing | missing | missing |
 | `tools/thread-engine/ARCHITECTURE.md` | missing | missing | missing | missing |
 | `tools/thread-engine/PRIME-PORT-STATUS.md` | missing | missing | missing | missing |
 | `tools/thread-engine/README.md` | missing | missing | missing | missing |
