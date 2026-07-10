@@ -17,6 +17,10 @@ class RepositoryPolicyTests(unittest.TestCase):
         repository = json.loads((ROOT / "policies" / "repository-policy.json").read_text(encoding="utf-8"))
         operator = json.loads((ROOT / "policies" / "operator-policy.json").read_text(encoding="utf-8"))
         self.assertEqual(repository["repository"], "Jktomy/atlas-prime")
+        self.assertEqual(repository["state"], "CANONICAL_ACTIVE")
+        self.assertEqual(repository["canonical_repository"], "Jktomy/atlas-prime")
+        self.assertEqual(repository["predecessor_repository"], "Jktomy/atlas-codex")
+        self.assertEqual(repository["predecessor_role"], "FROZEN_PREDECESSOR_ROLLBACK_EVIDENCE")
         for field in (
             "direct_main_allowed",
             "force_push_allowed",

@@ -1,7 +1,7 @@
 ---
 title: "Prime Aegis"
 atlas_id: "prime.governance.aegis"
-status: "SHADOW_CONSTRUCTION"
+status: "CANONICAL_ACTIVE"
 source_type: "CORE_DOCTRINE"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"

@@ -2,11 +2,12 @@
   "canonical_repository": "Jktomy/atlas-prime",
   "entries": [
     {
-      "next_gate": "Complete migration waves, generated refresh, whole-program proof, and cutover",
+      "completion_basis": "Prime Reborn cutover source merged after final whole-program Strikeforce GREEN",
+      "next_gate": "CLOSED",
       "owner": "Atlas / Source Governance",
       "quest_id": "PRIME-REBORN-QUEST-R01",
       "source": "quests/prime-reborn.md",
-      "state": "ACTIVE"
+      "state": "COMPLETE"
     },
     {
       "next_gate": "PF-C01 preview and Jayson-side hardware readiness",
@@ -25,6 +26,6 @@
   ],
   "format_version": "1.0",
   "generated": false,
-  "predecessor_workboard_route": "ABSENT",
-  "state": "PRIME_REBORN_MIGRATION"
+  "predecessor_workboard_route": "HISTORICAL_ONLY",
+  "state": "CANONICAL_ACTIVE"
 }

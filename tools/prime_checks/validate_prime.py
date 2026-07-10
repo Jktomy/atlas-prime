@@ -51,12 +51,39 @@ def main() -> int:
         raise SystemExit("disposition ledger does not close 525 unique Codex paths")
     if any(row["disposition"] not in DISPOSITIONS for row in rows):
         raise SystemExit("disposition ledger contains an invalid disposition")
+    if summary["schema_version"] != "atlas-prime-source-disposition-summary-v2":
+        raise SystemExit("disposition summary schema is not final")
     if summary["tracked_paths"] != 525 or summary["closed_paths"] != 525 or summary["open_paths"] != 0:
         raise SystemExit("disposition summary is not closed")
+    final_statuses = {
+        "MIGRATED",
+        "MERGED_INTO_DESTINATION",
+        "REMODELED_IN_PRIME",
+        "REGENERATED_IN_PRIME",
+        "ARCHIVED_IN_CODEX",
+        "EXCLUDED_WITH_PROOF",
+    }
+    if {row["final_status"] for row in rows} != final_statuses:
+        raise SystemExit("disposition ledger terminal status set is incomplete")
+    for field in (
+        "source_blob_sha1",
+        "source_class",
+        "current_authority",
+        "prime_target",
+        "migration_pr_or_ref",
+        "migration_commit",
+        "verification",
+        "privacy_classification",
+        "final_status",
+    ):
+        if any(not row[field].strip() for row in rows):
+            raise SystemExit(f"disposition ledger has blank final field: {field}")
 
     board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
-    if board["canonical_repository"] != "Jktomy/atlas-prime" or board["predecessor_workboard_route"] != "ABSENT":
+    if board["canonical_repository"] != "Jktomy/atlas-prime" or board["predecessor_workboard_route"] != "HISTORICAL_ONLY":
         raise SystemExit("Quest Board is not Prime-native")
+    if board["state"] != "CANONICAL_ACTIVE":
+        raise SystemExit("Quest Board is not canonical active")
     if {entry["source"] for entry in board["entries"]} != {
         "quests/prime-reborn.md",
         "quests/prometheus-fire.md",
@@ -69,6 +96,14 @@ def main() -> int:
         raise SystemExit("Prime Thread Engine is not active mission-scoped")
     if port["standing_authority"] or port["automatic_merge"] or port["direct_main"]:
         raise SystemExit("Prime Thread Engine permanent invariants are violated")
+    if port["canonical_repository"] != "Jktomy/atlas-prime" or port["harmless_pilot_state"] != "PROVEN_MERGED" or port["spear_arrow_bow_state"] != "PROVEN_MERGED":
+        raise SystemExit("Prime Thread Engine proof status is incomplete")
+
+    repository = json.loads((ROOT / "policies/repository-policy.json").read_text(encoding="utf-8"))
+    if repository["state"] != "CANONICAL_ACTIVE" or repository["canonical_repository"] != "Jktomy/atlas-prime":
+        raise SystemExit("Prime repository policy is not canonical active")
+    if repository["predecessor_role"] != "FROZEN_PREDECESSOR_ROLLBACK_EVIDENCE":
+        raise SystemExit("Codex predecessor role is not final")
 
     for path in ROOT.rglob("*"):
         if not path.is_file() or ".git" in path.parts or path.parts[-1].endswith((".pyc", ".pyo")):

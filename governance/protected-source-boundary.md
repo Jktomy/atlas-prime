@@ -1,7 +1,7 @@
 ---
 title: "Prime Protected Source Boundary"
 atlas_id: "prime.governance.protected-boundary"
-status: "SHADOW_CONSTRUCTION"
+status: "CANONICAL_ACTIVE"
 source_type: "POLICY"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
