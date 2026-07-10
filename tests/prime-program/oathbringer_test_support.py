@@ -17,11 +17,19 @@ og = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = og
 SPEC.loader.exec_module(og)
 
+
 def sha1_bytes(value: bytes) -> str:
     return hashlib.sha1(value).hexdigest()
 
+
 class FakeGitHubClient:
-    def __init__(self, login: str = "Jktomy") -> None:
+    def __init__(
+        self,
+        login: str = "Jktomy",
+        *,
+        pr_head_lag_reads: int = 0,
+        pr_head_never_converges: bool = False,
+    ) -> None:
         self.login = login
         self.base_branch = "main"
         self.base_commit = "a" * 40
@@ -33,6 +41,9 @@ class FakeGitHubClient:
         self.pull_requests: dict[int, dict] = {}
         self.next_pr = 1
         self.calls: list[tuple] = []
+        self.pr_head_lag_reads = max(0, int(pr_head_lag_reads))
+        self.pr_head_never_converges = bool(pr_head_never_converges)
+        self._pr_head_lag: dict[int, dict] = {}
 
     def get_authenticated_user(self):
         self.calls.append(("get_authenticated_user", self.login))
@@ -87,6 +98,14 @@ class FakeGitHubClient:
         if self.commits[sha]["parent"] != prior:
             raise AssertionError("not fast-forward")
         self.refs[branch] = sha
+        for number, pr in self.pull_requests.items():
+            if pr["head"]["ref"] == branch:
+                pr["head"]["sha"] = prior
+                self._pr_head_lag[number] = {
+                    "remaining": self.pr_head_lag_reads,
+                    "permanent": self.pr_head_never_converges,
+                    "stale": prior,
+                }
         self.calls.append(("update_ref", branch, sha))
 
     def find_open_pull_requests(self, branch: str, base_branch: str):
@@ -102,7 +121,17 @@ class FakeGitHubClient:
 
     def get_pull_request(self, number: int):
         pr = self.pull_requests[number]
-        pr["head"]["sha"] = self.refs[pr["head"]["ref"]]
+        lag = self._pr_head_lag.get(number)
+        if lag is None:
+            pr["head"]["sha"] = self.refs[pr["head"]["ref"]]
+        elif lag["permanent"]:
+            pr["head"]["sha"] = lag["stale"]
+        elif lag["remaining"] > 0:
+            pr["head"]["sha"] = lag["stale"]
+            lag["remaining"] -= 1
+        else:
+            pr["head"]["sha"] = self.refs[pr["head"]["ref"]]
+            self._pr_head_lag.pop(number, None)
         pr["base"]["sha"] = self.refs[pr["base"]["ref"]]
         return copy.deepcopy(pr)
 
@@ -133,6 +162,7 @@ class FakeGitHubClient:
         pr["state"] = "closed"
         self.calls.append(("merge_pull_request", number, expected_head, method))
         return {"merged": True, "sha": merge_sha, "message": "merged"}
+
 
 def base_mission(payload_sha: str, lessons_sha: str) -> dict:
     return {

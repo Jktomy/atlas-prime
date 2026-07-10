@@ -5,8 +5,10 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from oathbringer_test_support import FakeGitHubClient, base_mission, og
+import oathbringer_runtime as runtime
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -75,6 +77,52 @@ class OathbringerGitHubNativeTests(unittest.TestCase):
         self.assertEqual(self.client.commits[second["commit_sha"]]["parent"], first["commit_sha"])
         self.assertIn(("update_ref", repair["branch"], second["commit_sha"]), self.client.calls)
         self.assertTrue(self.client.pull_requests[1]["draft"])
+
+    def test_repair_waits_for_delayed_pr_head_without_repeating_mutation(self) -> None:
+        client = FakeGitHubClient(pr_head_lag_reads=2)
+        first, _ = self._run(self._mission(), client=client)
+        path = "proof/oathbringer-harmless.txt"
+        prior_blob = first["payload_blobs"][path]
+        payload = self.root / "payload/oathbringer-harmless.txt"
+        payload.write_text("Oathbringer delayed projection proof.\n", encoding="utf-8", newline="\n")
+        self.payload_sha = hashlib.sha256(payload.read_bytes()).hexdigest()
+        repair = self._mission()
+        repair.update({"lane": "REPAIR", "expected_head": first["commit_sha"], "pull_request": 1, "commit_message": "Proof: wait for delayed PR projection"})
+        repair.pop("pull_request_contract")
+        repair["declared_paths"][0].update({"operation": "REPLACE", "source_blob": prior_blob})
+        with patch.object(runtime, "REPAIR_READBACK_POLL_SECONDS", 0):
+            second, context = self._run(repair, client=client)
+        self.assertEqual(second["status"], "OATHBRINGER_REPAIR_PASS")
+        self.assertEqual(context.remote_state["repair_readback_attempts"], 3)
+        self.assertTrue(context.remote_state["repair_readback_converged"])
+        self.assertEqual(context.remote_state["repair_readback_branch_head"], second["commit_sha"])
+        self.assertEqual(context.remote_state["repair_readback_pr_head"], second["commit_sha"])
+        self.assertEqual(len([call for call in client.calls if call[0] == "update_ref"]), 1)
+
+    def test_repair_permanent_pr_head_lag_fails_closed_with_evidence(self) -> None:
+        client = FakeGitHubClient(pr_head_never_converges=True)
+        first, _ = self._run(self._mission(), client=client)
+        path = "proof/oathbringer-harmless.txt"
+        prior_blob = first["payload_blobs"][path]
+        payload = self.root / "payload/oathbringer-harmless.txt"
+        payload.write_text("Oathbringer permanent lag proof.\n", encoding="utf-8", newline="\n")
+        self.payload_sha = hashlib.sha256(payload.read_bytes()).hexdigest()
+        repair = self._mission()
+        repair.update({"lane": "REPAIR", "expected_head": first["commit_sha"], "pull_request": 1, "commit_message": "Proof: fail closed on permanent PR lag"})
+        repair.pop("pull_request_contract")
+        repair["declared_paths"][0].update({"operation": "REPLACE", "source_blob": prior_blob})
+        context = og.ExecutionContext()
+        with patch.object(runtime, "REPAIR_READBACK_TIMEOUT_SECONDS", 0), patch.object(runtime, "REPAIR_READBACK_POLL_SECONDS", 0):
+            with self.assertRaisesRegex(og.OathbringerError, "did not converge"):
+                self._run(repair, client=client, context=context)
+        self.assertEqual(len([call for call in client.calls if call[0] == "update_ref"]), 1)
+        self.assertEqual(context.ledger.current_stage, "REMOTE_READBACK")
+        self.assertTrue(context.mutation_performed)
+        self.assertFalse(context.remote_state["repair_readback_converged"])
+        self.assertEqual(context.remote_state["repair_readback_branch_head"], context.remote_state["commit_sha"])
+        self.assertEqual(context.remote_state["repair_readback_pr_head"], first["commit_sha"])
+        for key in ("candidate_tree_sha", "commit_sha", "branch", "branch_head", "pull_request"):
+            self.assertIn(key, context.remote_state)
 
     def test_execute_marks_ready_and_merges_only_packaged_audited_head(self) -> None:
         first, _ = self._run(self._mission())

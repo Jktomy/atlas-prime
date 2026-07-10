@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import time
 from pathlib import Path
 from typing import Any
 
@@ -17,6 +18,11 @@ from oathbringer_tree import (
     _verify_changed_paths, _verify_pr_identity,
 )
 
+
+REPAIR_READBACK_TIMEOUT_SECONDS = 10.0
+REPAIR_READBACK_POLL_SECONDS = 0.25
+
+
 def _enter(context: ExecutionContext, stage: str, percent: int, message: str, json_mode: bool) -> None:
     context.ledger.enter(stage, percent, message)
     if json_mode:
@@ -25,6 +31,7 @@ def _enter(context: ExecutionContext, stage: str, percent: int, message: str, js
         context.console.stage_enter(stage, percent, message)
     else:
         print(f'[{percent:>3}%] {stage} — {message}', flush=True)
+
 
 def _complete(context: ExecutionContext, detail: str, json_mode: bool) -> None:
     context.ledger.complete(detail)
@@ -35,6 +42,7 @@ def _complete(context: ExecutionContext, detail: str, json_mode: bool) -> None:
     else:
         print(f'      ✓ {detail}', flush=True)
 
+
 def _verify_authenticated_operator(mission: dict[str, Any], client: Any, context: ExecutionContext) -> str:
     user = client.get_authenticated_user()
     login = str(user.get('login') or '')
@@ -42,6 +50,47 @@ def _verify_authenticated_operator(mission: dict[str, Any], client: Any, context
     _require(login.casefold() == expected.casefold(), f'authenticated GitHub login mismatch: expected {expected}; observed {login or "<empty>"}')
     context.remote_state['authenticated_github_login'] = login
     return login
+
+
+def _wait_for_repair_head_convergence(
+    mission: dict[str, Any],
+    client: Any,
+    context: ExecutionContext,
+    *,
+    commit_sha: str,
+    pr_number: int,
+) -> dict[str, Any]:
+    """Wait briefly for GitHub's PR projection to catch the updated branch ref."""
+
+    deadline = time.monotonic() + REPAIR_READBACK_TIMEOUT_SECONDS
+    attempts = 0
+    branch_head: str | None = None
+    pr_head: str | None = None
+    while True:
+        attempts += 1
+        branch_ref = client.get_ref(mission['branch'])
+        branch_head = None if branch_ref is None else str(branch_ref['object']['sha'])
+        pr = client.get_pull_request(pr_number)
+        pr_head = str(pr['head']['sha'])
+        context.remote_state.update({
+            'repair_readback_attempts': attempts,
+            'repair_readback_branch_head': branch_head,
+            'repair_readback_pr_head': pr_head,
+            'repair_readback_timeout_seconds': REPAIR_READBACK_TIMEOUT_SECONDS,
+        })
+        if branch_head == commit_sha and pr_head == commit_sha:
+            context.remote_state['repair_readback_converged'] = True
+            return pr
+        if time.monotonic() >= deadline:
+            context.remote_state['repair_readback_converged'] = False
+            _require(
+                False,
+                f'REPAIR branch/PR head did not converge to {commit_sha} within '
+                f'{REPAIR_READBACK_TIMEOUT_SECONDS:.3f}s; '
+                f'branch={branch_head or "<missing>"}; pr={pr_head or "<missing>"}',
+            )
+        time.sleep(REPAIR_READBACK_POLL_SECONDS)
+
 
 def execute_source_change(mission: dict[str, Any], package_root: Path, client: Any, context: ExecutionContext, *, json_mode: bool) -> dict[str, Any]:
     lane = mission['lane']
@@ -97,19 +146,28 @@ def execute_source_change(mission: dict[str, Any], package_root: Path, client: A
         client.create_ref(mission['branch'], commit_sha)
         context.remote_state.update({'branch': mission['branch'], 'branch_head': commit_sha})
         pr = client.create_pull_request(mission['branch'], mission['base_branch'], mission['pull_request_contract'])
-        context.remote_state['pull_request'] = int(pr['number'])
+        pr_number = int(pr['number'])
+        context.remote_state['pull_request'] = pr_number
     else:
         client.update_ref(mission['branch'], commit_sha)
-        context.remote_state.update({'branch': mission['branch'], 'branch_head': commit_sha, 'pull_request': mission['pull_request']})
-        pr = client.get_pull_request(mission['pull_request'])
-    pr_number = int(pr['number'])
+        pr_number = int(mission['pull_request'])
+        context.remote_state.update({'branch': mission['branch'], 'branch_head': commit_sha, 'pull_request': pr_number})
     _complete(context, f"draft pull request #{pr_number} bound to {mission['branch']}", json_mode)
 
     _enter(context, 'REMOTE_READBACK', 84, 'read back exact branch, commit, pull request, and changed files', json_mode)
-    branch_ref = client.get_ref(mission['branch'])
-    _require(branch_ref is not None and branch_ref['object']['sha'] == commit_sha, 'branch readback mismatch')
-    pr = client.get_pull_request(pr_number)
-    _require(str(pr['head']['sha']) == commit_sha, 'pull request head readback mismatch')
+    if lane == 'REPAIR':
+        pr = _wait_for_repair_head_convergence(
+            mission,
+            client,
+            context,
+            commit_sha=commit_sha,
+            pr_number=pr_number,
+        )
+    else:
+        branch_ref = client.get_ref(mission['branch'])
+        _require(branch_ref is not None and branch_ref['object']['sha'] == commit_sha, 'branch readback mismatch')
+        pr = client.get_pull_request(pr_number)
+        _require(str(pr['head']['sha']) == commit_sha, 'pull request head readback mismatch')
     _require(pr.get('state') == 'open', 'pull request did not remain open')
     _require(pr.get('draft') is True, 'source-changing Oathbringer must stop at a draft pull request')
     files = client.list_pull_request_files(pr_number)
@@ -122,6 +180,7 @@ def execute_source_change(mission: dict[str, Any], package_root: Path, client: A
     _enter(context, 'STOP_BOUNDARY', 100, 'stop with the candidate isolated in the pull request', json_mode)
     _complete(context, str(mission['stop_boundary']), json_mode)
     return {'result': 'PASS', 'status': f'OATHBRINGER_{lane}_PASS', 'lane': lane, 'repository': mission['repository'], 'authenticated_github_login': login, 'branch': mission['branch'], 'pull_request': pr_number, 'commit_sha': commit_sha, 'expected_base': mission['expected_base'], 'prior_head': mission.get('expected_head'), 'changed_paths': changed_paths, 'payload_blobs': payload_blobs, 'workflow_gate': workflow_gate, 'stop_boundary': mission['stop_boundary']}
+
 
 def execute_merge(mission: dict[str, Any], package_root: Path, client: Any, context: ExecutionContext, *, json_mode: bool) -> dict[str, Any]:
     _enter(context, 'LIVE_IDENTITY', 15, 'verify authenticated operator and exact independently audited pull request head', json_mode)
@@ -177,6 +236,7 @@ def execute_merge(mission: dict[str, Any], package_root: Path, client: Any, cont
     _enter(context, 'STOP_BOUNDARY', 100, 'stop after merged-main readback', json_mode)
     _complete(context, str(mission['stop_boundary']), json_mode)
     return {'result': 'PASS', 'status': 'OATHBRINGER_EXECUTE_PASS', 'lane': 'EXECUTE', 'repository': mission['repository'], 'authenticated_github_login': login, 'pull_request': mission['pull_request'], 'audited_head': mission['expected_head'], 'merge_sha': merge_sha, 'base_head': base_ref['object']['sha'], 'changed_paths': changed_paths, 'workflow_gate': workflow_gate, 'stop_boundary': mission['stop_boundary']}
+
 
 def execute_mission(mission: dict[str, Any], package_root: Path, client: Any, *, mission_relative_path: str | None=None, json_mode: bool=False, context: ExecutionContext | None=None) -> tuple[dict[str, Any], ExecutionContext]:
     context = context or ExecutionContext()
