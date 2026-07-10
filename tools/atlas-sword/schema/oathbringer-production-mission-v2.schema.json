@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/tools/atlas-sword/schema/oathbringer-production-mission-v2.schema.json",
+  "title": "Oathbringer GitHub-native Production Mission v2",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "format_version",
+    "mission_id",
+    "sword_identity",
+    "forge_standard",
+    "lessons_register",
+    "lesson_applicability",
+    "change_method",
+    "execution_environment",
+    "operator_interface",
+    "framework_state",
+    "runtime_mode",
+    "lane",
+    "repository",
+    "base_branch",
+    "expected_base",
+    "branch",
+    "declared_paths",
+    "workflow_rules",
+    "receipt_contract",
+    "authorization",
+    "stop_boundary",
+    "forbidden_actions"
+  ],
+  "properties": {
+    "format_version": {"const": "2.0"},
+    "mission_id": {"type": "string", "minLength": 1},
+    "sword_identity": {"type": "string", "minLength": 1},
+    "forge_standard": {"const": "SWORD_FORGE_STANDARD_V1"},
+    "change_method": {"const": "OATHBRINGER"},
+    "execution_environment": {"const": "GITHUB"},
+    "operator_interface": {"const": "POWERSHELL"},
+    "framework_state": {"const": "PILOT_READY_PROOF_PENDING"},
+    "runtime_mode": {"const": "PRODUCTION_GITHUB_NATIVE"},
+    "lane": {"enum": ["BUILD", "REPAIR", "EXECUTE"]},
+    "repository": {"type": "string", "pattern": "^[^/\\s]+/[^/\\s]+$"},
+    "base_branch": {"type": "string", "minLength": 1},
+    "expected_base": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "expected_head": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+    "branch": {"type": "string", "minLength": 1},
+    "pull_request": {"type": ["integer", "null"], "minimum": 1},
+    "commit_message": {"type": "string", "minLength": 1},
+    "merge_method": {"enum": ["merge", "squash", "rebase"]},
+    "lessons_register": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "source_sha256"],
+      "properties": {
+        "schema_version": {"const": "prime-sword-lessons-v1"},
+        "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "lesson_applicability": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["lesson_id", "status"],
+        "properties": {
+          "lesson_id": {"type": "string", "pattern": "^SWORD-L[0-9]{3}$"},
+          "status": {"enum": ["APPLIED", "NOT_APPLICABLE"]},
+          "reason": {"type": "string"}
+        }
+      }
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["approved_preview", "execution_authorized", "authorizer", "operator"],
+      "properties": {
+        "approved_preview": {"const": true},
+        "execution_authorized": {"const": true},
+        "authorizer": {"const": "JAYSON"},
+        "operator": {"const": "JAYSON"}
+      }
+    },
+    "declared_paths": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "operation"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "operation": {"enum": ["ADD", "REPLACE", "DELETE", "RENAME", "MOVE"]},
+          "payload_path": {"type": "string", "minLength": 1},
+          "payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "source_path": {"type": "string", "minLength": 1},
+          "source_blob": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "mode": {"enum": ["100644", "100755"]}
+        }
+      }
+    },
+    "workflow_rules": {"type": "array"},
+    "receipt_contract": {"type": "object"},
+    "pull_request_contract": {"type": "object"},
+    "independent_audit": {"type": "object"},
+    "stop_boundary": {"type": "string", "minLength": 1},
+    "forbidden_actions": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": {"type": "string"}
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"lane": {"const": "BUILD"}}},
+      "then": {
+        "required": ["commit_message", "pull_request_contract"],
+        "properties": {
+          "expected_head": {"type": "null"},
+          "pull_request": {"type": "null"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"lane": {"const": "REPAIR"}}},
+      "then": {"required": ["commit_message", "expected_head", "pull_request"]}
+    },
+    {
+      "if": {"properties": {"lane": {"const": "EXECUTE"}}},
+      "then": {"required": ["expected_head", "pull_request", "independent_audit"]}
+    }
+  ]
+}
