@@ -3,12 +3,13 @@
   "$id": "https://github.com/Jktomy/atlas-prime/tools/atlas-sword/schema/oathbringer-production-mission-v2.schema.json",
   "title": "Oathbringer GitHub-native Production Mission v2",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "required": [
     "format_version",
     "mission_id",
     "sword_identity",
     "forge_standard",
+    "package_manifest_required",
     "lessons_register",
     "lesson_applicability",
     "change_method",
@@ -33,6 +34,7 @@
     "mission_id": {"type": "string", "minLength": 1},
     "sword_identity": {"type": "string", "minLength": 1},
     "forge_standard": {"const": "SWORD_FORGE_STANDARD_V1"},
+    "package_manifest_required": {"const": true},
     "change_method": {"const": "OATHBRINGER"},
     "execution_environment": {"const": "GITHUB"},
     "operator_interface": {"const": "POWERSHELL"},
@@ -50,9 +52,10 @@
     "lessons_register": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["schema_version", "source_sha256"],
+      "required": ["schema_version", "path", "source_sha256"],
       "properties": {
         "schema_version": {"const": "prime-sword-lessons-v1"},
+        "path": {"type": "string", "minLength": 1},
         "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
       }
     },
@@ -73,18 +76,20 @@
     "authorization": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["approved_preview", "execution_authorized", "authorizer", "operator"],
+      "required": ["approved_preview", "execution_authorized", "authorizer", "operator", "github_login"],
       "properties": {
         "approved_preview": {"const": true},
         "execution_authorized": {"const": true},
         "authorizer": {"const": "JAYSON"},
-        "operator": {"const": "JAYSON"}
+        "operator": {"const": "JAYSON"},
+        "github_login": {"type": "string", "pattern": "^[A-Za-z0-9-]+$"}
       }
     },
     "declared_paths": {
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "required": ["path", "operation"],
         "properties": {
           "path": {"type": "string", "minLength": 1},
@@ -100,7 +105,17 @@
     "workflow_rules": {"type": "array"},
     "receipt_contract": {"type": "object"},
     "pull_request_contract": {"type": "object"},
-    "independent_audit": {"type": "object"},
+    "independent_audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["verdict", "exact_head", "receipt_path", "receipt_sha256"],
+      "properties": {
+        "verdict": {"const": "GREEN"},
+        "exact_head": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "receipt_path": {"type": "string", "minLength": 1},
+        "receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
     "stop_boundary": {"type": "string", "minLength": 1},
     "forbidden_actions": {
       "type": "array",
