@@ -10,6 +10,7 @@ from oathbringer_test_support import FakeGitHubClient, base_mission, og
 
 ROOT = Path(__file__).resolve().parents[2]
 
+
 class OathbringerGitHubNativeTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
@@ -59,14 +60,18 @@ class OathbringerGitHubNativeTests(unittest.TestCase):
 
     def test_repair_fast_forwards_the_exact_existing_pr(self) -> None:
         first, _ = self._run(self._mission())
+        path = "proof/oathbringer-harmless.txt"
+        prior_blob = first["payload_blobs"][path]
         payload = self.root / "payload/oathbringer-harmless.txt"
         payload.write_text("Oathbringer repaired proof.\n", encoding="utf-8", newline="\n")
         self.payload_sha = hashlib.sha256(payload.read_bytes()).hexdigest()
         repair = self._mission()
         repair.update({"lane": "REPAIR", "expected_head": first["commit_sha"], "pull_request": 1, "commit_message": "Proof: repair harmless Oathbringer fixture"})
         repair.pop("pull_request_contract")
+        repair["declared_paths"][0].update({"operation": "REPLACE", "source_blob": prior_blob})
         second, _ = self._run(repair)
         self.assertEqual(second["status"], "OATHBRINGER_REPAIR_PASS")
+        self.assertEqual(second["changed_paths"], [path])
         self.assertEqual(self.client.commits[second["commit_sha"]]["parent"], first["commit_sha"])
         self.assertIn(("update_ref", repair["branch"], second["commit_sha"]), self.client.calls)
         self.assertTrue(self.client.pull_requests[1]["draft"])
@@ -159,6 +164,7 @@ class OathbringerGitHubNativeTests(unittest.TestCase):
         mission.pop("pull_request_contract")
         with self.assertRaisesRegex(og.OathbringerError, "independent audit"):
             og.validate_mission(mission)
+
 
 if __name__ == "__main__":
     unittest.main()
