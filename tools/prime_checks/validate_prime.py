@@ -35,6 +35,10 @@ REQUIRED = (
     "schemas/capability-parity-register.schema.json",
     "tools/thread-engine/PRIME-PORT-STATUS.json",
     "tools/atlas-sword/engine/oathbringer_contract.py",
+    "tools/oathbringer-foundry/foundry.py",
+    "tools/oathbringer-foundry/cli.py",
+    "tools/oathbringer-foundry/schema/foundry-mission-v1.schema.json",
+    "methods/oathbringer-foundry.md",
     "tools/build_index.py",
 )
 DISPOSITIONS = {"KEEP", "MERGE", "REMODEL", "REGENERATE", "ARCHIVE", "EXCLUDE"}
