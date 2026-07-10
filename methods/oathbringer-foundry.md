@@ -57,6 +57,9 @@ members, fixed ZIP metadata, stable file modes, and stored ZIP members. A
 repeated compile from identical normalized inputs is byte-identical across
 platforms.
 
+Current transport source hashes bind the checked source bytes; transport text
+is then normalized to UTF-8 without BOM and LF line endings inside the carrier.
+
 The compiler fails closed for moved base/head, missing authority, undeclared or
 missing final bytes, malformed JSON, unsafe paths, Unicode/case-fold collisions,
 non-regular files, archive-bomb limits, stale source/workflow locks, missing or

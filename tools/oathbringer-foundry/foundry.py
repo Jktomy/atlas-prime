@@ -129,11 +129,26 @@ def _regular_member(root: Path, relative: str, field: str) -> Path:
 
 
 def _scan_clean(data: bytes, field: str) -> None:
+    _require(not data.startswith(b"\xef\xbb\xbf"), f"{field} must be UTF-8 without BOM")
+    _require(b"\r" not in data, f"{field} must use LF line endings")
     try:
         text = data.decode("utf-8")
     except UnicodeDecodeError as exc:
         raise FoundryError(f"{field} is not UTF-8 clean text") from exc
     _require(SENSITIVE.search(text) is None, f"{field} contains protected or token-shaped material")
+
+
+def _canonical_engine_text(data: bytes, field: str) -> bytes:
+    """Normalize the locked current transport into canonical carrier text."""
+
+    _require(not data.startswith(b"\xef\xbb\xbf"), f"{field} must be UTF-8 without BOM")
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise FoundryError(f"{field} is not UTF-8 clean text") from exc
+    canonical = text.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
+    _scan_clean(canonical, field)
+    return canonical
 
 
 def _operation_paths(operations: Sequence[Mapping[str, Any]]) -> tuple[set[str], set[str]]:
@@ -429,8 +444,7 @@ def _engine_materials(source_root: Path) -> dict[str, bytes]:
     for source_path in _engine_source_paths(source_root):
         path = _regular_member(source_root, source_path, f"current transport {source_path}")
         relative = f"engine/{path.name}"
-        data = path.read_bytes()
-        _scan_clean(data, f"transport {relative}")
+        data = _canonical_engine_text(path.read_bytes(), f"transport {relative}")
         result[relative] = data
     _require("engine/Invoke-AtlasSword.ps1" in result and "engine/oathbringer_github.py" in result, "current Oathbringer transport is incomplete")
     return result
@@ -604,6 +618,7 @@ def verify_carrier(carrier: Path) -> dict[str, Any]:
             _require(name.casefold() not in folded, f"case-fold carrier member collision: {name}")
             folded.add(name.casefold())
             _require(not info.is_dir(), "carrier must not contain directory entries")
+            _require(not (info.flag_bits & 0x1), f"carrier encrypted member is forbidden: {name}")
             _require(stat.S_ISREG(info.external_attr >> 16), f"carrier member is not a regular file: {name}")
             _require(info.file_size <= MAX_MEMBER_BYTES, f"carrier member exceeds limit: {name}")
             _require(info.compress_type == zipfile.ZIP_STORED, f"carrier compression policy drift: {name}")

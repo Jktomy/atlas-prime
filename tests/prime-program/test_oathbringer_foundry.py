@@ -309,6 +309,10 @@ class OathbringerFoundryTests(unittest.TestCase):
         mission["oathbringer_mission"]["commit_message"] = "sk-" + "b" * 24
         with self.assertRaisesRegex(FoundryError, "protected"):
             self._compile(mission)
+        for raw, expected in ((b"\xef\xbb\xbfpublic\n", "without BOM"), (b"public\r\n", "LF line endings")):
+            self.payload.write_bytes(raw)
+            with self.assertRaisesRegex(FoundryError, expected):
+                self._compile(self._mission())
 
     def test_archive_path_attack_is_rejected(self) -> None:
         bad = self.root / "bad.zip"
@@ -343,6 +347,19 @@ class OathbringerFoundryTests(unittest.TestCase):
                 archive.writestr(info, source.read(item.filename))
         with self.assertRaisesRegex(FoundryError, "compression"):
             verify_carrier(compressed)
+
+    def test_archive_encryption_flag_is_rejected(self) -> None:
+        carrier = self._compile(self._mission()).carrier_path
+        original = zipfile.ZipFile.infolist
+
+        def encrypted(archive):
+            infos = original(archive)
+            infos[0].flag_bits |= 0x1
+            return infos
+
+        with patch.object(zipfile.ZipFile, "infolist", encrypted):
+            with self.assertRaisesRegex(FoundryError, "encrypted"):
+                verify_carrier(carrier)
 
     def test_source_has_no_mutating_client_or_secret_persistence(self) -> None:
         source = (FOUNDRY_ROOT / "foundry.py").read_text(encoding="utf-8")
