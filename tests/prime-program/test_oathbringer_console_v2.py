@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import io
+import json
 import sys
+import tempfile
 import unittest
+import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -10,12 +13,13 @@ ENGINE = ROOT / "tools/atlas-sword/engine"
 sys.path.insert(0, str(ENGINE))
 
 from oathbringer_console import OathbringerConsole, render_result_text
+from oathbringer_deflected import create as create_deflected_sword
 from oathbringer_support import wait_for_required_workflows
 
 
 MISSION = {
     "mission_id": "CONSOLE-V2-PROOF",
-    "sword_identity": "atlas-console-v2-r01",
+    "sword_identity": "atlas-console-v2-r02",
     "lane": "REPAIR",
     "repository": "Jktomy/atlas-prime",
     "expected_base": "a" * 40,
@@ -53,7 +57,7 @@ class ConsoleV2Tests(unittest.TestCase):
         console.render_success(
             {
                 "mission_id": "CONSOLE-V2-PROOF",
-                "sword_identity": "atlas-console-v2-r01",
+                "sword_identity": "atlas-console-v2-r02",
                 "lane": "REPAIR",
                 "repository": "Jktomy/atlas-prime",
                 "status": "OATHBRINGER_REPAIR_PASS",
@@ -91,7 +95,7 @@ class ConsoleV2Tests(unittest.TestCase):
             {
                 "status": "OATHBRINGER_FAILED_PRESERVED_PARTIAL_STATE",
                 "mission_id": "CONSOLE-V2-PROOF",
-                "sword_identity": "atlas-console-v2-r01",
+                "sword_identity": "atlas-console-v2-r02",
                 "lane": "REPAIR",
                 "repository": "Jktomy/atlas-prime",
                 "detail": "simulated commit failure",
@@ -132,16 +136,88 @@ class ConsoleV2Tests(unittest.TestCase):
         self.assertIn("STRIKE COMPLETE", output)
         self.assertNotIn("\x1b[", output)
 
-    def test_launcher_and_module_bind_deflected_sword_without_token_output(self) -> None:
-        launcher = (ENGINE / "Invoke-AtlasSword.ps1").read_text(encoding="utf-8")
-        module = (ENGINE / "AtlasSword.Common.psm1").read_text(encoding="utf-8")
-        self.assertIn("New-AtlasDeflectedSword", launcher)
-        self.assertIn("Atlas-Deflected-Sword", module)
-        self.assertIn("sanitized-remote-state.json", module)
-        self.assertIn("workflow-state.json", module)
-        self.assertNotIn("Write-Host $Token", module)
+    def test_python_creates_sanitized_deflected_sword(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            mission_path = root / "mission.json"
+            receipt_path = root / "receipt.json"
+            transcript_path = root / "terminal-output.txt"
+            mission_path.write_text(json.dumps(MISSION) + "\n", encoding="utf-8")
+            transcript_path.write_text("diagnostic output\n", encoding="utf-8")
+            (root / "MANIFEST.json").write_text('{"files": []}\n', encoding="utf-8")
+            receipt = {
+                "status": "OATHBRINGER_FAILED_PRESERVED_PARTIAL_STATE",
+                "mission_id": MISSION["mission_id"],
+                "sword_identity": MISSION["sword_identity"],
+                "lane": MISSION["lane"],
+                "repository": MISSION["repository"],
+                "detail": "simulated failure",
+                "remote_state": {
+                    "pull_request": 57,
+                    "authorization_header": "must not survive",
+                },
+                "stage_ledger": {
+                    "current_stage": "COMMIT",
+                    "last_completed_stage": "CANDIDATE_TREE",
+                },
+                "completion_flags": {"mutation_performed": True},
+                "result": {
+                    "workflow_gate": {
+                        "status": "FAIL",
+                        "required": {"Prime": {"token": "must not survive"}},
+                    }
+                },
+            }
+            receipt_path.write_text(json.dumps(receipt) + "\n", encoding="utf-8")
+            output_path = root / "Atlas-Deflected-Sword-test.zip"
+            observed = create_deflected_sword(
+                package_root=root,
+                mission_path=mission_path,
+                receipt_path=receipt_path,
+                transcript_path=transcript_path,
+                output_path=output_path,
+                mission=MISSION,
+                receipt=receipt,
+            )
+            self.assertEqual(observed, output_path.resolve())
+            with zipfile.ZipFile(observed) as archive:
+                names = set(archive.namelist())
+                self.assertTrue(
+                    {
+                        "receipt.json",
+                        "terminal-output.txt",
+                        "mission.json",
+                        "MANIFEST.json",
+                        "failure-summary.txt",
+                        "sanitized-remote-state.json",
+                        "workflow-state.json",
+                    }
+                    <= names
+                )
+                remote = json.loads(archive.read("sanitized-remote-state.json"))
+                workflow = json.loads(archive.read("workflow-state.json"))
+                self.assertEqual(remote["authorization_header"], "<redacted>")
+                self.assertEqual(
+                    workflow["required"]["Prime"]["token"],
+                    "<redacted>",
+                )
+
+    def test_power_shell_remains_ascii_only_and_thin(self) -> None:
+        launcher_path = ENGINE / "Invoke-AtlasSword.ps1"
+        module_path = ENGINE / "AtlasSword.Common.psm1"
+        launcher = launcher_path.read_text(encoding="ascii")
+        module = module_path.read_text(encoding="ascii")
+        self.assertIn("OATHBRINGER_DEFLECTED_SWORD_PATH", launcher)
+        self.assertIn("OATHBRINGER_TRANSCRIPT_PATH", launcher)
         self.assertIn("[switch]$NoColor", launcher)
         self.assertIn("[switch]$Ascii", launcher)
+        self.assertNotIn("New-AtlasDeflectedSword", launcher)
+        self.assertNotIn("ConvertFrom-Json", launcher)
+        self.assertNotIn("ConvertTo-Json", launcher)
+        self.assertNotIn("ConvertFrom-Json", module)
+        self.assertNotIn("ConvertTo-Json", module)
+        self.assertNotIn("Write-Host $Token", module)
+        self.assertIn("Invoke-AtlasOathbringer", module)
 
 
 class WorkflowClient:

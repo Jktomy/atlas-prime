@@ -8,6 +8,8 @@ from typing import Any
 
 from oathbringer_api import GitHubClient
 from oathbringer_console import OathbringerConsole, render_result_text
+from oathbringer_deflected import create as create_deflected_sword
+from oathbringer_deflected import resolve_path as resolve_deflected_sword_path
 from oathbringer_core import (
     CHANGE_METHOD,
     EXECUTION_ENVIRONMENT,
@@ -15,9 +17,7 @@ from oathbringer_core import (
     OPERATOR_INTERFACE,
     RUNTIME_MODE,
     ExecutionContext,
-    OathbringerError,
     _require,
-    validate_mission,
 )
 from oathbringer_runtime import changed_paths_between, execute_mission
 from oathbringer_support import atomic_write_json_with_sha256
@@ -70,6 +70,50 @@ def _default_receipt_path(mission_path: Path) -> Path:
     return mission_path.with_name(f"{mission_path.stem}.oathbringer.receipt.json")
 
 
+def _optional_environment_path(name: str) -> Path | None:
+    value = os.environ.get(name, "").strip()
+    return Path(value).expanduser().resolve() if value else None
+
+
+def _write_failure_artifacts(
+    *,
+    mission: dict[str, Any] | None,
+    receipt: dict[str, Any],
+    package_root: Path,
+    mission_path: Path,
+    receipt_path: Path,
+    console: OathbringerConsole | None,
+    interrupted: bool,
+    json_mode: bool,
+) -> Path | None:
+    explicit = os.environ.get("OATHBRINGER_DEFLECTED_SWORD_PATH", "").strip() or None
+    destination = resolve_deflected_sword_path(mission, receipt_path, explicit)
+    receipt["deflected_sword_path"] = str(destination)
+    atomic_write_json_with_sha256(receipt_path, receipt)
+
+    if not json_mode and console is not None:
+        console.render_failure(receipt, interrupted=interrupted)
+
+    try:
+        deflected = create_deflected_sword(
+            package_root=package_root,
+            mission_path=mission_path,
+            receipt_path=receipt_path,
+            transcript_path=_optional_environment_path("OATHBRINGER_TRANSCRIPT_PATH"),
+            output_path=destination,
+            mission=mission,
+            receipt=receipt,
+        )
+    except Exception as exc:
+        if not json_mode:
+            print(f"\nDeflected Sword creation failed safely: {exc}", flush=True)
+        return None
+
+    if not json_mode and console is not None:
+        console.render_deflected_sword(deflected)
+    return deflected
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mission", required=True)
@@ -77,6 +121,7 @@ def main() -> int:
     parser.add_argument("--receipt")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
+
     mission_path = Path(args.mission).resolve()
     package_root = Path(args.package_root).resolve()
     receipt_path = Path(args.receipt).resolve() if args.receipt else _default_receipt_path(mission_path)
@@ -84,6 +129,7 @@ def main() -> int:
     mission: dict[str, Any] | None = None
     result: dict[str, Any] | None = None
     console: OathbringerConsole | None = None
+
     try:
         _require(
             mission_path == package_root or package_root in mission_path.parents,
@@ -95,8 +141,12 @@ def main() -> int:
             console = OathbringerConsole()
             context.console = console
             console.begin(mission)
+
         token = os.environ.get("OATHBRINGER_GITHUB_TOKEN", "")
-        _require(bool(token), "OATHBRINGER_GITHUB_TOKEN was not provided by the thin PowerShell client")
+        _require(
+            bool(token),
+            "OATHBRINGER_GITHUB_TOKEN was not provided by the thin PowerShell client",
+        )
         client = GitHubClient(token, str(mission.get("repository") or ""))
         result, context = execute_mission(
             mission,
@@ -124,6 +174,7 @@ def main() -> int:
         else:
             print(render_result(result))
         return 0
+
     except KeyboardInterrupt:
         context.ledger.fail("operator interrupt")
         receipt = build_receipt(
@@ -134,16 +185,22 @@ def main() -> int:
             detail="operator interrupt",
             exit_code=130,
         )
-        try:
-            atomic_write_json_with_sha256(receipt_path, receipt)
-        finally:
-            if args.json:
-                print(json.dumps(receipt, indent=2, sort_keys=True))
-            elif console is not None:
-                console.render_failure(receipt, interrupted=True)
-            else:
-                print("\nOathbringer interrupted; partial state preserved in receipt.")
+        _write_failure_artifacts(
+            mission=mission,
+            receipt=receipt,
+            package_root=package_root,
+            mission_path=mission_path,
+            receipt_path=receipt_path,
+            console=console,
+            interrupted=True,
+            json_mode=args.json,
+        )
+        if args.json:
+            print(json.dumps(receipt, indent=2, sort_keys=True))
+        elif console is None:
+            print("\nOathbringer interrupted; partial state preserved in receipt.")
         return 130
+
     except Exception as exc:
         context.ledger.fail(str(exc))
         receipt = build_receipt(
@@ -154,15 +211,20 @@ def main() -> int:
             detail=str(exc),
             exit_code=1,
         )
-        try:
-            atomic_write_json_with_sha256(receipt_path, receipt)
-        finally:
-            if args.json:
-                print(json.dumps(receipt, indent=2, sort_keys=True))
-            elif console is not None:
-                console.render_failure(receipt)
-            else:
-                print(f"\nOathbringer failed closed: {exc}")
+        _write_failure_artifacts(
+            mission=mission,
+            receipt=receipt,
+            package_root=package_root,
+            mission_path=mission_path,
+            receipt_path=receipt_path,
+            console=console,
+            interrupted=False,
+            json_mode=args.json,
+        )
+        if args.json:
+            print(json.dumps(receipt, indent=2, sort_keys=True))
+        elif console is None:
+            print(f"\nOathbringer failed closed: {exc}")
         return 1
 
 
