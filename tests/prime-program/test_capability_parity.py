@@ -98,6 +98,9 @@ class CapabilityParityTests(unittest.TestCase):
 
     def test_route_terms_are_not_conflated(self) -> None:
         change_routes = (ROOT / "governance/change-routes.md").read_text(encoding="utf-8")
+        command_surfaces = (ROOT / "routing/command-surfaces.md").read_text(
+            encoding="utf-8"
+        )
         phoenix = (ROOT / "methods/phoenix-blade.md").read_text(encoding="utf-8")
         spear = (ROOT / "methods/athenas-spear.md").read_text(encoding="utf-8")
         sword = (ROOT / "methods/atlas-sword.md").read_text(encoding="utf-8")
@@ -135,6 +138,10 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertIn("GitHub-native", sword)
         self.assertIn("exact multi-file GitHub commit", acceptance)
         self.assertNotIn("clone-first BUILD", acceptance)
+
+        self.assertIn("routes to Phoenix Blade", command_surfaces)
+        self.assertIn("does not need to invoke a separate preflight command", command_surfaces)
+        self.assertIn("does not depend on ChatGPT Work / Codex", command_surfaces)
 
 
 if __name__ == "__main__":
