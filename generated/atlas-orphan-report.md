@@ -1,6 +1,6 @@
 # Atlas Orphan Candidate Report
 
-Source fingerprint: sha256:8a984ffdd4636857f60b0b53be1b0796b5c6c4af44193e7d695d40a3fac169da
+Source fingerprint: sha256:eb3ad6cb3ffc6a0c98465f4c168f85052fde556aa123debd86b840f4eca5bc66
 Generator format: 2
 Status: Generated support artifact
 
@@ -12,3 +12,4 @@ An orphan candidate is not deletion approval. Review routing, support-file statu
 
 | Path | Reason |
 |---|---|
+| `proof/oathbringer-production-acceptance-r01.md` | active metadata-bearing file not found in routing surfaces |
