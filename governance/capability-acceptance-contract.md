@@ -22,7 +22,7 @@ Only an exact receipt and canonical readback may move a capability to RESTORED, 
 | AJ-01 | Hosted Spear submission | Fresh Work/Athena submission reaches hosted Prime intake, invokes the singular Thread Engine, and creates a harmless immutable draft PR. |
 | AJ-02 | Hosted identity | Receipt distinguishes authorizer, event actor, triggering actor, workflow identity, workflow source SHA, credential principal, token mode, mission identity, run ID, and attempt. |
 | AJ-03 | Hosted rejection set | Non-owner, edited, stale, replayed, malformed, duplicate-branch, and duplicate-PR inputs reject without mutation. |
-| AJ-04 | Oathbringer BUILD | Fresh Windows-compatible clone-first BUILD creates one harmless draft PR with truthful stage and percentage display. |
+| AJ-04 | Oathbringer BUILD | A sealed Sword launched through the thin Oathbringer PowerShell client creates one exact multi-file GitHub commit and harmless draft PR while displaying truthful stage and plan-position percentage progress. |
 | AJ-05 | Oathbringer REPAIR | Exact current PR head receives one child commit through a fast-forward-only update and exact amended-head readback. |
 | AJ-06 | Oathbringer EXECUTE | A separately authorized exact audited head is merged only after applicable CI and independent readback. |
 | AJ-07 | Continuity update | Exactly one continuity entry changes without unrelated source changes. |
