@@ -21,7 +21,8 @@ def sha1_bytes(value: bytes) -> str:
     return hashlib.sha1(value).hexdigest()
 
 class FakeGitHubClient:
-    def __init__(self) -> None:
+    def __init__(self, login: str = "Jktomy") -> None:
+        self.login = login
         self.base_branch = "main"
         self.base_commit = "a" * 40
         self.base_tree_sha = "1" * 40
@@ -32,6 +33,10 @@ class FakeGitHubClient:
         self.pull_requests: dict[int, dict] = {}
         self.next_pr = 1
         self.calls: list[tuple] = []
+
+    def get_authenticated_user(self):
+        self.calls.append(("get_authenticated_user", self.login))
+        return {"login": self.login}
 
     def get_ref(self, branch: str):
         self.calls.append(("get_ref", branch))
@@ -90,7 +95,7 @@ class FakeGitHubClient:
     def create_pull_request(self, branch: str, base_branch: str, contract: dict):
         number = self.next_pr
         self.next_pr += 1
-        pr = {"number": number, "node_id": f"PR_{number}", "state": "open", "draft": True, "merged": False, "merged_at": None, "head": {"ref": branch, "sha": self.refs[branch]}, "base": {"ref": base_branch, "sha": self.refs[base_branch]}}
+        pr = {"number": number, "node_id": f"PR_{number}", "state": "open", "draft": True, "merged": False, "merged_at": None, "merge_commit_sha": None, "head": {"ref": branch, "sha": self.refs[branch]}, "base": {"ref": base_branch, "sha": self.refs[base_branch]}}
         self.pull_requests[number] = pr
         self.calls.append(("create_pull_request", number))
         return copy.deepcopy(pr)
@@ -124,17 +129,19 @@ class FakeGitHubClient:
         self.refs[pr["base"]["ref"]] = merge_sha
         pr["merged"] = True
         pr["merged_at"] = "2026-07-10T00:00:00Z"
+        pr["merge_commit_sha"] = merge_sha
         pr["state"] = "closed"
         self.calls.append(("merge_pull_request", number, expected_head, method))
         return {"merged": True, "sha": merge_sha, "message": "merged"}
 
-def base_mission(payload_sha: str) -> dict:
+def base_mission(payload_sha: str, lessons_sha: str) -> dict:
     return {
         "format_version": "2.0",
         "mission_id": "WAVE-03-HARMLESS-PROOF",
         "sword_identity": "atlas-prime-oathbringer-proof-r01",
         "forge_standard": "SWORD_FORGE_STANDARD_V1",
-        "lessons_register": {"schema_version": "prime-sword-lessons-v1", "source_sha256": "c" * 64},
+        "package_manifest_required": True,
+        "lessons_register": {"schema_version": "prime-sword-lessons-v1", "path": "source/methods/sword-lessons.json", "source_sha256": lessons_sha},
         "lesson_applicability": [{"lesson_id": f"SWORD-L{number:03d}", "status": "APPLIED"} for number in range(1, 14)],
         "change_method": "OATHBRINGER",
         "execution_environment": "GITHUB",
@@ -153,7 +160,7 @@ def base_mission(payload_sha: str) -> dict:
         "declared_paths": [{"path": "proof/oathbringer-harmless.txt", "operation": "ADD", "payload_path": "payload/oathbringer-harmless.txt", "payload_sha256": payload_sha}],
         "workflow_rules": [],
         "receipt_contract": {"write_on_interrupt": True, "write_on_failure": True, "write_on_success": True, "automatic_retry": False, "automatic_rollback": False, "interrupt_exit_code": 130, "failure_exit_code": 1},
-        "authorization": {"approved_preview": True, "execution_authorized": True, "authorizer": "JAYSON", "operator": "JAYSON"},
+        "authorization": {"approved_preview": True, "execution_authorized": True, "authorizer": "JAYSON", "operator": "JAYSON", "github_login": "Jktomy"},
         "stop_boundary": "Stop at the harmless draft pull request.",
         "forbidden_actions": ["DIRECT_MAIN", "FORCE_PUSH", "SCOPE_WIDENING", "TOKEN_PERSISTENCE"],
     }
