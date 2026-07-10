@@ -75,7 +75,7 @@ The lesson lifecycle is:
 
 ```text
 OBSERVED -> CORROBORATED -> VERIFIED -> ABSORBED
-                                  \-> SUPERSEDED
+                                  -> SUPERSEDED
 ```
 
 Only `VERIFIED` and `ABSORBED` lessons control future forging. A reusable mechanical lesson belongs in `methods/sword-lessons.json`. A fundamental process change requires a bounded source pull request updating this standard. One-off mission findings remain in the mission receipt or evidence.
