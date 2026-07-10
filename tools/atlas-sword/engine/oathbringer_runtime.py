@@ -19,12 +19,20 @@ from oathbringer_tree import (
 
 def _enter(context: ExecutionContext, stage: str, percent: int, message: str, json_mode: bool) -> None:
     context.ledger.enter(stage, percent, message)
-    if not json_mode:
+    if json_mode:
+        return
+    if context.console is not None:
+        context.console.stage_enter(stage, percent, message)
+    else:
         print(f'[{percent:>3}%] {stage} — {message}', flush=True)
 
 def _complete(context: ExecutionContext, detail: str, json_mode: bool) -> None:
     context.ledger.complete(detail)
-    if not json_mode:
+    if json_mode:
+        return
+    if context.console is not None:
+        context.console.stage_complete(detail)
+    else:
         print(f'      ✓ {detail}', flush=True)
 
 def _verify_authenticated_operator(mission: dict[str, Any], client: Any, context: ExecutionContext) -> str:
@@ -109,7 +117,7 @@ def execute_source_change(mission: dict[str, Any], package_root: Path, client: A
     _complete(context, f'remote readback verified at {commit_sha}', json_mode)
 
     _enter(context, 'WORKFLOW_GATE', 94, 'wait only for path-applicable exact-head workflows', json_mode)
-    workflow_gate = wait_for_required_workflows(client, changed_paths, mission['workflow_rules'], commit_sha)
+    workflow_gate = wait_for_required_workflows(client, changed_paths, mission['workflow_rules'], commit_sha, progress=None if context.console is None else context.console.workflow_heartbeat)
     _complete(context, 'all applicable workflows passed or were classified not applicable', json_mode)
     _enter(context, 'STOP_BOUNDARY', 100, 'stop with the candidate isolated in the pull request', json_mode)
     _complete(context, str(mission['stop_boundary']), json_mode)
@@ -128,7 +136,7 @@ def execute_merge(mission: dict[str, Any], package_root: Path, client: Any, cont
     _complete(context, f'authenticated as {login}; pull request #{mission["pull_request"]} exact head and workflow sources verified', json_mode)
 
     _enter(context, 'WORKFLOW_GATE', 45, 'verify all applicable exact-head workflows', json_mode)
-    workflow_gate = wait_for_required_workflows(client, changed_paths, mission['workflow_rules'], mission['expected_head'])
+    workflow_gate = wait_for_required_workflows(client, changed_paths, mission['workflow_rules'], mission['expected_head'], progress=None if context.console is None else context.console.workflow_heartbeat)
     _complete(context, 'applicable workflow gate is green', json_mode)
 
     _enter(context, 'INDEPENDENT_AUDIT', 65, 'verify and bind the packaged GREEN independent audit receipt', json_mode)
