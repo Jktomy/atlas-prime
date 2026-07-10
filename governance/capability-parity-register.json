@@ -227,13 +227,13 @@
       "id": "CAP-017",
       "domain": "Sword / Oathbringer",
       "capability": "Clone-first mission-specific Build/Repair/Execute packages",
-      "audit_status": "PROVEN_HISTORICALLY_BUT_NOT_DURABLY_OPERABLE",
+      "audit_status": "PRODUCTION_ADAPTER_PRESENT_LIVE_PROOF_PENDING",
       "audit_severity": "CRITICAL",
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "STILL_MISSING",
       "activation_state": "MISSING",
-      "current_state": "The checked-in Sword framework remains audit-only and lacks production adapters.",
-      "required_proof": "Fresh Windows-compatible BUILD, exact-head REPAIR, and separately authorized EXECUTE journeys."
+      "current_state": "Prime now contains the GitHub-native Oathbringer BUILD, REPAIR, and EXECUTE adapter in PILOT_READY_PROOF_PENDING state, but no harmless live production journey has yet been accepted.",
+      "required_proof": "AJ-04 BUILD, AJ-05 REPAIR, and AJ-06 EXECUTE must pass through the thin PowerShell client with exact receipts, GitHub readback, applicable CI, and independent reconciliation."
     },
     {
       "id": "CAP-018",

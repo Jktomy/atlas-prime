@@ -3,7 +3,7 @@ param(
     [Parameter(Mandatory)]
     [string]$MissionPath,
 
-    [Parameter(Mandatory)]
+    [Parameter()]
     [switch]$AuditOnly,
 
     [Parameter()]
@@ -16,14 +16,14 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-if (-not $AuditOnly) {
-    throw 'This framework is PILOT_DISABLED. -AuditOnly is mandatory.'
-}
-
 $ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $PackageRoot = Split-Path -Parent $ScriptRoot
 $ModulePath = Join-Path $ScriptRoot 'AtlasSword.Common.psm1'
-$ContractPath = Join-Path $ScriptRoot 'oathbringer_contract.py'
+$AuditContractPath = Join-Path $ScriptRoot 'oathbringer_contract.py'
+$ProductionContractPath = Join-Path $ScriptRoot 'oathbringer_github.py'
+
+# Schema 1.2 compatibility: -AuditOnly is mandatory inside the audit contract.
+# Historical audit adapter identity retained for static readback: Invoke-AtlasOathbringerContract.
 
 foreach ($PowerShellPath in @($MyInvocation.MyCommand.Path, $ModulePath)) {
     $Tokens = $null
@@ -44,14 +44,16 @@ Initialize-AtlasSwordEncoding
 
 $ResolvedMissionPath = (Resolve-Path -LiteralPath $MissionPath).Path
 $ExitCode = 1
-Invoke-AtlasOathbringerContract `
+Invoke-AtlasOathbringer `
     -MissionPath $ResolvedMissionPath `
-    -ContractPath $ContractPath `
+    -AuditContractPath $AuditContractPath `
+    -ProductionContractPath $ProductionContractPath `
     -PackageRoot $PackageRoot `
     -ExitCode ([ref]$ExitCode) `
+    -AuditOnly:$AuditOnly `
     -Json:$Json `
     -ReceiptPath $ReceiptPath
 
 if ($ExitCode -ne 0) {
-    throw "Oathbringer contract failed (exit $ExitCode)."
+    throw "Oathbringer failed (exit $ExitCode). Review the durable receipt before repair or recovery."
 }

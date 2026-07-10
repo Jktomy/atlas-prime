@@ -2,85 +2,158 @@
 
 ## Route and profile
 
-- **Sword** is the direct local fallback, recovery, and self-change route.
-- **Oathbringer** is the Sword change method.
-- The checked-in framework remains `PILOT_DISABLED` and `AUDIT_ONLY`.
+- **Sword** is Athena's sealed mission-specific repository payload.
+- **Oathbringer** is Jayson's PowerShell-operated GitHub change method.
+- The checked-in framework state is `PILOT_READY_PROOF_PENDING`.
+- Audit schema `1.2` remains available; production schema `2.0` is present but awaits Wave 3 live proof.
 
 ## Components
 
-### PowerShell launcher
+### Thin PowerShell client
 
-PowerShell owns:
+PowerShell owns only:
 
-- parser and encoding initialization;
-- explicit native argument-array construction;
+- parser and UTF-8 initialization;
 - Python resolution;
-- invocation of the Python Oathbringer contract;
-- streaming contract output to the host;
+- process-scoped GitHub authentication through `OATHBRINGER_GITHUB_TOKEN`, `GH_TOKEN`, `GITHUB_TOKEN`, or `gh auth token`;
+- explicit native argument-array construction;
+- invocation of the selected audit or production contract;
+- streaming stage and percentage output to the host;
+- restoration of the prior process environment;
 - nonzero result propagation without automatic host exit.
 
-### Python Oathbringer contract
+PowerShell does not author, patch, transform, or locally compose Atlas source. It never writes the GitHub token to disk or terminal output.
 
-Python owns:
+### Python audit contract
 
-- schema `1.2` validation;
-- `change_method = OATHBRINGER`;
-- `execution_environment = POWERSHELL`;
-- package manifest verification when present;
-- exact path normalization;
-- workflow path-filter matching;
-- exact workflow name, `pull_request` event, and head SHA filtering;
-- `REQUIRED` and `NOT_APPLICABLE` classification;
-- same-run refresh and newer-run precedence;
-- separate bounded appearance and completion waits;
-- exact untracked `ADD` audit planning;
-- stage-ledger truth;
-- failure and interrupt receipt classification;
-- receipt-contract validation;
-- atomic JSON receipt and SHA-256 sidecar writes;
-- parseable JSON mode and persistent terminal final display.
+The schema `1.2` audit contract owns historical audit-only validation, workflow fixtures, stage-ledger behavior, and receipt tests. It performs no GitHub mutation.
+
+### Python GitHub-native production adapter
+
+The production adapter owns:
+
+- schema `2.0` validation;
+- Forge Standard and lessons-register binding;
+- authorizer and operator authority checks;
+- exact repository, base, branch, pull-request, and head locks;
+- payload path and SHA-256 validation;
+- GitHub blob, tree, commit, ref, pull-request, ready, and merge operations;
+- complete candidate-tree and final changed-path verification;
+- exact-head workflow applicability and bounded waits;
+- success, failure, interruption, and partial-state receipts;
+- atomic receipt and SHA-256 sidecar writes;
+- parseable JSON output and interactive terminal stages.
+
+The adapter receives already-authored complete payload bytes. It never invents or reinterprets source content.
 
 ### Mission manifest
 
-A mission contains only mission-specific facts:
+A production mission contains mission-specific facts:
 
-- immutable identity and lane;
-- change method and execution environment;
-- repository, base, branch, pull request, and expected head;
-- declared file operations and hashes;
+- immutable identity and one lane: BUILD, REPAIR, or EXECUTE;
+- `SWORD_FORGE_STANDARD_V1`;
+- exact lessons-register SHA-256 and lesson applicability;
+- Jayson as authorizer and operator;
+- approved Preview and explicit execution authorization;
+- repository, base branch, exact base, branch, pull request, and expected head;
+- complete final file operations and payload hashes;
 - hash-bound workflow rules and path filters;
-- required CI;
 - receipt contract;
-- expected automation effects;
-- recovery state;
-- stop boundary;
-- forbidden actions.
+- independent audit receipt for EXECUTE;
+- stop boundary and forbidden actions.
 
 ### Payload
 
-Payload bytes remain outside the checkout until the complete declared output set
-has been validated.
+Complete candidate bytes remain in the sealed package until hashes, paths, authority, and live GitHub locks are validated. GitHub blobs are created from those exact bytes.
 
-## Future production state machine
+## Production state machine
+
+### BUILD
 
 ```text
-PACKAGE_AUDIT
--> PARSER_PREFLIGHT
--> MISSION_SCHEMA
--> READ_ONLY_LIVE_LOCKS
--> FRESH_CLONE
--> LOCAL_CANDIDATE_VALIDATION
--> EXACT_UNTRACKED_ADD_AUDIT
--> COMPLETE_DIFF_AUDIT
--> DECLARED_MUTATION
--> INDEPENDENT_REMOTE_READBACK
--> PATH_APPLICABLE_WORKFLOW_GATE
+PACKAGE_INTEGRITY
+-> MISSION_CONTRACT
+-> LIVE_IDENTITY
+-> TREE_READBACK
+-> PAYLOAD_AND_BLOBS
+-> CANDIDATE_TREE
+-> COMMIT
+-> BRANCH_AND_PR
+-> REMOTE_READBACK
+-> WORKFLOW_GATE
+-> RECEIPT
+-> STOP_AT_DRAFT_PR
+```
+
+### REPAIR
+
+```text
+PACKAGE_INTEGRITY
+-> MISSION_CONTRACT
+-> EXACT_PR_HEAD
+-> BASE_AND_HEAD_TREE_READBACK
+-> PAYLOAD_AND_BLOBS
+-> COMPLETE_FINAL_CANDIDATE_TREE
+-> SINGLE_PARENT_CHILD_COMMIT
+-> FAST_FORWARD_REF_UPDATE
+-> AMENDED_HEAD_READBACK
+-> WORKFLOW_GATE
+-> RECEIPT
+-> STOP_AT_DRAFT_PR
+```
+
+### EXECUTE
+
+```text
+PACKAGE_INTEGRITY
+-> MISSION_CONTRACT
+-> EXACT_PR_HEAD_AND_PATH_SET
+-> WORKFLOW_GATE
+-> INDEPENDENT_GREEN_AUDIT
+-> READY_TRANSITION_IF_NEEDED
+-> EXACT_HEAD_MERGE
+-> MERGED_MAIN_READBACK
 -> RECEIPT
 -> STOP
 ```
 
-Each transition is entered in the ledger before its operation begins. Recovery
-resumes from recorded state without replaying a completed mutation.
+Each stage is entered and displayed before its operation begins.
+
+## GitHub transaction rules
+
+### BUILD
+
+- current base branch must equal `expected_base`;
+- mission branch and matching open pull request must not already exist;
+- complete payload blobs are created through GitHub;
+- the candidate tree is compared with the exact base tree;
+- the complete changed path set must equal the declared final operation inventory;
+- one single-parent commit is created;
+- one new branch is created;
+- one draft pull request is opened;
+- branch, commit, pull request, path set, and applicable CI are read back;
+- stop before merge.
+
+### REPAIR
+
+- base branch, pull request, branch, and exact current head must match the mission;
+- the final operation inventory remains relative to the exact pull-request base;
+- the repaired tree is built on the exact current PR head;
+- one single-parent child commit is created;
+- the branch is updated fast-forward only with `force = false`;
+- the amended PR head and complete final changed path set are read back;
+- applicable CI is observed;
+- stop before merge.
+
+### EXECUTE
+
+- pull request identity, base, branch, exact head, and changed path set must match;
+- applicable exact-head CI must pass;
+- a separately created GREEN audit receipt must bind the exact head;
+- a draft PR may be marked ready without changing its head;
+- GitHub merge receives the exact expected head and sealed merge method;
+- merged PR and canonical base branch are read back;
+- branch deletion is not performed.
 
 ## Workflow gate
 
@@ -90,65 +163,33 @@ For each hash-bound workflow definition:
 read exact changed paths
 -> evaluate pull_request path filters
 -> classify REQUIRED or NOT_APPLICABLE
--> allow a bounded appearance grace for REQUIRED workflows
--> allow a separate bounded completion wait after appearance
+-> allow bounded appearance time for REQUIRED workflows
+-> allow separate bounded completion time after appearance
 -> fail closed on missing, failed, cancelled, or timed-out required workflows
 -> write a structured receipt on failure or interruption
 ```
 
-A workflow excluded by its own path filters is never polled forever.
+A workflow excluded by its own path filters is never polled indefinitely. Workflow observations are accepted only for the exact workflow name, `pull_request` event, and expected head SHA.
 
-Workflow observations are accepted only when the observed run matches the exact
-workflow name, `pull_request` event, and expected head SHA. A refreshed status for
-the same run replaces stale observations, and a newer matching run takes
-precedence over older matching runs.
+## Authentication boundary
 
-## Required lane behavior
+The PowerShell client resolves the token and places it only in the child process environment as `OATHBRINGER_GITHUB_TOKEN`. The adapter sends it only in GitHub API authorization headers. The prior environment is restored after the child exits.
 
-### BUILD
+The framework forbids:
 
-- fresh clone from the exact verified base;
-- install only the complete declared output set;
-- enumerate and assert exact untracked `ADD` paths;
-- apply intent-to-add only to approved new paths;
-- run `git diff --check`;
-- verify the complete changed-file boundary;
-- one deterministic branch and single-parent commit;
-- non-force push;
-- draft pull request;
-- independent readback;
-- wait only for applicable CI;
-- stop before merge.
-
-### REPAIR
-
-- diagnose before retry;
-- reproduce the defect in a disposable fixture when possible;
-- add a regression test;
-- fresh clone;
-- exact current pull-request head;
-- explicit non-overlapping-drift proof when main moved;
-- one child commit;
-- fast-forward-only branch update;
-- independent amended-head readback;
-- wait only for applicable CI;
-- stop before merge.
-
-### EXECUTE
-
-- fresh clone for exact verification;
-- exact audited base, head, file set, blobs, reviews, and applicable CI;
-- disclosed automation effects;
-- sealed merge method and expected head;
-- merged-main topology and tree readback;
-- preserve the source branch unless deletion has separate authority;
-- observe automation without inheriting authority;
-- stop at the declared boundary.
+- token persistence;
+- token printing;
+- direct-main ref writes;
+- force pushes;
+- silent scope expansion;
+- automatic rollback;
+- blind retry;
+- Thread Engine dependency.
 
 ## Failure posture
 
-Automatic retry, rollback, cleanup, force push, merge, and branch deletion are
-absent. Local receipt replacement is the only retry surface, bounded to
-transient Windows rename/replace locks. A normal failure writes a fail-closed
-receipt. An operator interruption writes a preserved-state receipt and exits
-with code `130`.
+A failure or operator interruption preserves the known remote state in a durable receipt. No automatic retry, rollback, cleanup, branch deletion, or force push occurs. Recovery begins from exact GitHub readback rather than replaying an assumed prior stage.
+
+## Proof boundary
+
+Wave 2 establishes source and deterministic mocked-transport proof. It does not promote production capability. Wave 3 must complete harmless live BUILD, REPAIR, and EXECUTE journeys before Prime may describe Oathbringer production as restored or active.

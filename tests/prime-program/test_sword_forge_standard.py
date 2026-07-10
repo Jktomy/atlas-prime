@@ -84,10 +84,21 @@ class SwordForgeStandardTests(unittest.TestCase):
         self.assertIn("do not silently rewrite", self.standard)
         self.assertIn("separate bounded source transaction", self.sword)
 
-    def test_wave_one_does_not_activate_production_mutation(self) -> None:
-        self.assertIn("Production BUILD, REPAIR, and EXECUTE mechanics are not yet present", self.sword)
-        self.assertIn("Production mutation adapters:** absent", self.framework)
-        self.assertIn("remains audit-only until Wave 2", self.framework)
+    def test_wave_two_adds_adapter_without_claiming_live_restoration(self) -> None:
+        self.assertIn("PILOT_READY_PROOF_PENDING", self.sword)
+        self.assertIn("production adapter is **present but not yet capability-proven**", self.sword)
+        self.assertIn("Production mutation adapter:** present; harmless live proof pending", self.framework)
+        self.assertIn("Wave 3 must prove AJ-04, AJ-05, and AJ-06", self.framework)
+        for path in (
+            "tools/atlas-sword/engine/oathbringer_api.py",
+            "tools/atlas-sword/engine/oathbringer_core.py",
+            "tools/atlas-sword/engine/oathbringer_github.py",
+            "tools/atlas-sword/engine/oathbringer_runtime.py",
+            "tools/atlas-sword/engine/oathbringer_support.py",
+            "tools/atlas-sword/engine/oathbringer_tree.py",
+            "tools/atlas-sword/schema/oathbringer-production-mission-v2.schema.json",
+        ):
+            self.assertTrue((ROOT / path).is_file(), path)
 
 
 if __name__ == "__main__":
