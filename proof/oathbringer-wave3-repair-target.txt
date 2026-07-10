@@ -1,0 +1,5 @@
+Atlas Prime Oathbringer Wave 3 repair target.
+Journey target: AJ-05 REPAIR and AJ-06 EXECUTE
+Base: 187a1699e95634bdb07f2ec13b4c58f3b1694d9a
+Purpose: provide one public-clean exact-head draft PR for live Oathbringer repair and execute proof.
+This file contains no private data.
