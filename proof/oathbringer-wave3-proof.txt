@@ -1,0 +1,5 @@
+Atlas Prime Oathbringer Wave 3 harmless proof.
+Journey: AJ-04 BUILD
+Base: 44e0d860a73fd9d934d3c5aa748db6913bc7292b
+Purpose: prove GitHub-native BUILD through the thin Oathbringer PowerShell client.
+This file is public-clean and contains no private data.
