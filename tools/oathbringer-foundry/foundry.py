@@ -31,7 +31,8 @@ MAX_TOTAL_BYTES = 8_388_608
 ZIP_EPOCH = (1980, 1, 1, 0, 0, 0)
 REQUIRED_FORBIDDEN = {"DIRECT_MAIN", "FORCE_PUSH", "SCOPE_WIDENING", "TOKEN_PERSISTENCE"}
 SENSITIVE = re.compile(
-    r"(?:\bgh[pousr]_[A-Za-z0-9]{20,}\b|\bAKIA[0-9A-Z]{16}\b|"
+    r"(?:\bgh[pousr]_[A-Za-z0-9]{20,}\b|\bgithub_pat_[A-Za-z0-9_]{20,}\b|"
+    r"\bsk-[A-Za-z0-9_-]{20,}\b|\bAKIA[0-9A-Z]{16}\b|"
     r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|"
     r"(?i:(?:api[_-]?key|access[_-]?token|password|secret)\s*[:=]\s*['\"][^'\"\r\n]{8,}['\"]))"
 )
@@ -576,8 +577,16 @@ def verify_carrier(carrier: Path) -> dict[str, Any]:
             data = archive.read(path)
             _require(len(data) == int(entry.get("size")), f"manifest size mismatch: {path}")
             _require(sha256(data) == entry.get("sha256"), f"manifest hash mismatch: {path}")
+        _require(names == set(declared) | {"MANIFEST.json", "SHA256SUMS.txt"}, "carrier contains undeclared members")
         sums = archive.read("SHA256SUMS.txt").decode("ascii")
+        sum_paths: set[str] = set()
         for line in sums.splitlines():
-            digest, path = line.split("  ", 1)
+            parts = line.split("  ", 1)
+            _require(len(parts) == 2, "checksum ledger is malformed")
+            digest, path = parts
+            _require(re.fullmatch(r"[0-9a-f]{64}", digest) is not None, f"checksum digest is malformed: {path}")
+            _require(path not in sum_paths, f"duplicate checksum member: {path}")
+            sum_paths.add(path)
             _require(path in names and sha256(archive.read(path)) == digest, f"checksum mismatch: {path}")
+        _require(sum_paths == names - {"SHA256SUMS.txt"}, "checksum ledger does not cover carrier exactly")
     return {"carrier_sha256": sha256(carrier.read_bytes()), "member_count": len(infos), "status": "PASS"}

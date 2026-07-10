@@ -242,6 +242,10 @@ class OathbringerFoundryTests(unittest.TestCase):
         mission = self._mission()
         with self.assertRaisesRegex(FoundryError, "protected"):
             self._compile(mission)
+        for token in ("github_pat_" + "a" * 24, "sk-" + "a" * 24):
+            self.payload.write_text(token + "\n", encoding="utf-8", newline="\n")
+            with self.assertRaisesRegex(FoundryError, "protected"):
+                self._compile(self._mission())
 
     def test_archive_path_attack_is_rejected(self) -> None:
         bad = self.root / "bad.zip"
@@ -249,6 +253,15 @@ class OathbringerFoundryTests(unittest.TestCase):
             archive.writestr("../escape.txt", "no")
         with self.assertRaisesRegex(FoundryError, "unsafe segment"):
             verify_carrier(bad)
+
+    def test_archive_extra_member_is_rejected(self) -> None:
+        carrier = self._compile(self._mission()).carrier_path
+        altered = self.root / "altered.zip"
+        shutil.copy2(carrier, altered)
+        with zipfile.ZipFile(altered, "a") as archive:
+            archive.writestr("undeclared.txt", "unexpected\n")
+        with self.assertRaisesRegex(FoundryError, "undeclared"):
+            verify_carrier(altered)
 
     def test_source_has_no_mutating_client_or_secret_persistence(self) -> None:
         source = (FOUNDRY_ROOT / "foundry.py").read_text(encoding="utf-8")
@@ -259,6 +272,12 @@ class OathbringerFoundryTests(unittest.TestCase):
         launcher = (FOUNDRY_ROOT / "Invoke-OathbringerFoundry.ps1").read_text(encoding="utf-8")
         self.assertIn("$PSScriptRoot", launcher)
         self.assertNotIn("Invoke-Expression", launcher)
+
+    def test_cli_requires_a_fresh_read_only_snapshot(self) -> None:
+        source = (FOUNDRY_ROOT / "cli.py").read_text(encoding="utf-8")
+        self.assertNotIn('add_argument("--live-state"', source)
+        self.assertNotIn('add_argument("--bind-live"', source)
+        self.assertIn("live = read_live_state(mission)", source)
 
 
 if __name__ == "__main__":

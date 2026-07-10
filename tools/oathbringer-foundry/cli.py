@@ -24,9 +24,6 @@ def main() -> int:
     compile_parser.add_argument("--input-root", required=True, type=Path)
     compile_parser.add_argument("--source-root", required=True, type=Path)
     compile_parser.add_argument("--output-dir", required=True, type=Path)
-    compile_parser.add_argument("--live-state", type=Path)
-    compile_parser.add_argument("--bind-live", action="store_true")
-    compile_parser.add_argument("--seen-mission-id", action="append", default=[])
     compile_parser.add_argument("--json", action="store_true")
     verify_parser = sub.add_parser("verify")
     verify_parser.add_argument("--carrier", required=True, type=Path)
@@ -44,16 +41,16 @@ def main() -> int:
         if args.command == "snapshot":
             _result(read_live_state(mission), args.json)
             return 0
-        if bool(args.live_state) == bool(args.bind_live):
-            raise FoundryError("compile requires exactly one of --live-state or --bind-live")
-        live = read_live_state(mission) if args.bind_live else load_json(args.live_state)
+        # Production compilation always obtains a new read-only GitHub snapshot.
+        # The injectable library argument exists solely to make the compiler's
+        # deterministic rejection rules independently unit-testable.
+        live = read_live_state(mission)
         result = compile_carrier(
             mission,
             input_root=args.input_root,
             source_root=args.source_root,
             output_dir=args.output_dir,
             live_state=live,
-            seen_mission_ids=args.seen_mission_id,
         )
         _result(
             {
