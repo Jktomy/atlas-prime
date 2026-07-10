@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:7a0f9d2bf812f42046a850cef87445fa6ef46663bfdb6a85eb3cdb897c84f098
+Source fingerprint: sha256:873a6627208ed16d77da0f59828e587ea453d1ad7d11fc9e07459d7420fd8ed4
 Generator format: 2
 Status: Generated support artifact
 
@@ -10,24 +10,24 @@ Status: Generated support artifact
 
 | Path | Status | Source type | Canonical scope | Protected level |
 |---|---|---|---|---|
-| `README.md` | SHADOW_CONSTRUCTION | BOOT | missing | CRITICAL |
-| `atlas-prime.md` | SHADOW_CONSTRUCTION | CORE_DOCTRINE | missing | CRITICAL |
-| `atlas-start-here.md` | SHADOW_CONSTRUCTION | BOOT | missing | CRITICAL |
-| `bootstrap.md` | SHADOW_CONSTRUCTION | BOOT | missing | CRITICAL |
-| `governance/atlas-aegis.md` | SHADOW_CONSTRUCTION | CORE_DOCTRINE | missing | CRITICAL |
-| `governance/atlas-strikeforce.md` | SHADOW_CONSTRUCTION | PROTOCOL | missing | CRITICAL |
-| `governance/change-routes.md` | SHADOW_CONSTRUCTION | PROTOCOL | missing | CRITICAL |
-| `governance/cutover-boundary.md` | SHADOW_CONSTRUCTION | PROTOCOL | missing | CRITICAL |
-| `governance/noctua.md` | SHADOW_CONSTRUCTION | PROTOCOL | missing | CRITICAL |
-| `governance/protected-source-boundary.md` | SHADOW_CONSTRUCTION | POLICY | missing | CRITICAL |
-| `governance/source-hierarchy.md` | SHADOW_CONSTRUCTION | CORE_DOCTRINE | missing | CRITICAL |
+| `README.md` | CANONICAL_ACTIVE | BOOT | missing | CRITICAL |
+| `atlas-prime.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
+| `atlas-start-here.md` | CANONICAL_ACTIVE | BOOT | missing | CRITICAL |
+| `bootstrap.md` | CANONICAL_ACTIVE | BOOT | missing | CRITICAL |
+| `governance/atlas-aegis.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
+| `governance/atlas-strikeforce.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
+| `governance/change-routes.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
+| `governance/cutover-boundary.md` | COMPLETE | PROTOCOL | missing | CRITICAL |
+| `governance/noctua.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
+| `governance/protected-source-boundary.md` | CANONICAL_ACTIVE | POLICY | missing | CRITICAL |
+| `governance/source-hierarchy.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `governance/source-lifecycle.md` | ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `infrastructure/atlas-infrastructure-source.md` | ACTIVE | ARCHITECTURE | missing | HIGH |
 | `knowledge/atlas-source-compendium.md` | ACTIVE | CORE_DOCTRINE | missing | MEDIUM |
 | `methods/artemis-bow-and-arrow.md` | SHADOW_CONSTRUCTION | METHOD | missing | CRITICAL |
 | `methods/athenas-spear.md` | SHADOW_CONSTRUCTION | METHOD | missing | CRITICAL |
 | `methods/atlas-sword.md` | SHADOW_CONSTRUCTION | METHOD | missing | CRITICAL |
-| `migration/codex-cutover.md` | IN_PROGRESS | REGISTER | missing | CRITICAL |
+| `migration/codex-cutover.md` | COMPLETE | REGISTER | missing | CRITICAL |
 | `migration/codex-inheritance-manifest.md` | SHADOW_CONSTRUCTION | REGISTER | missing | CRITICAL |
 | `migration/predecessor-snapshot.md` | PRESERVED | RECEIPT_POINTER | missing | CRITICAL |
 | `migration/rollback-map.md` | SHADOW_CONSTRUCTION | PROTOCOL | missing | CRITICAL |
@@ -38,7 +38,7 @@ Status: Generated support artifact
 | `proof/prime-spear-arrow-bow-parity-r01.md` | PROOF | PROOF | missing | STANDARD |
 | `proof/prime-thread-engine-bootstrap-proof.md` | PROOF | PROOF | missing | STANDARD |
 | `quests/notums-watch.md` | Active | Quest | Parent Quest for bringing Notum's Watch forward as Gatehouse/Citadel observability and rescue infrastructure, including the interim Notum vessel, future Notum Phoenix vessel, Nightwatcher lineage, and backup-capacity boundaries. | High |
-| `quests/prime-reborn.md` | Active | QUEST | missing | CRITICAL |
+| `quests/prime-reborn.md` | COMPLETE | QUEST | missing | CRITICAL |
 | `quests/prometheus-fire.md` | Active | Quest | Parent Quest for converting Prometheus into a stable, recoverable Proxmox compute platform with the approved Crucible VM, Nexus LXC, Matrix LXC, and future Plex LXC topology. | High |
 | `recovery/phoenix-recovery.md` | ACTIVE | RUNBOOK | missing | CRITICAL |
 | `routing/command-surfaces.md` | ACTIVE | REGISTER | missing | HIGH |
