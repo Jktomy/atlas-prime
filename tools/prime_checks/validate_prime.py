@@ -25,6 +25,7 @@ REQUIRED = (
     "quests/prime-reborn.md",
     "quests/prometheus-fire.md",
     "quests/notums-watch.md",
+    "quests/found-silverlight.md",
     "quest-board/quest-board-v1.json",
     "migration/source-disposition-ledger.csv",
     "migration/source-disposition-summary.json",
@@ -88,6 +89,7 @@ def main() -> int:
         "quests/prime-reborn.md",
         "quests/prometheus-fire.md",
         "quests/notums-watch.md",
+        "quests/found-silverlight.md",
     }:
         raise SystemExit("Quest Board source set is incomplete")
 
