@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/schemas/capability-parity-register.schema.json",
+  "title": "Atlas Prime capability parity register",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "canonical_repository",
+    "predecessor_repository",
+    "predecessor_head",
+    "prime_anchor",
+    "register_role",
+    "path_disposition_authority",
+    "capability_disposition_vocabulary",
+    "capability_disposition_counts",
+    "capabilities"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "atlas-prime-capability-parity-register-v1"
+    },
+    "canonical_repository": {
+      "const": "Jktomy/atlas-prime"
+    },
+    "predecessor_repository": {
+      "const": "Jktomy/atlas-codex"
+    },
+    "predecessor_head": {
+      "const": "c892dc05ea56db0134a0e865f56d491f9c02ff85"
+    },
+    "prime_anchor": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "register_role": {
+      "const": "CANONICAL_CAPABILITY_DISPOSITION"
+    },
+    "path_disposition_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "tracked_paths",
+        "closed_paths",
+        "open_paths",
+        "authority_boundary"
+      ],
+      "properties": {
+        "path": {
+          "const": "migration/source-disposition-summary.json"
+        },
+        "tracked_paths": {
+          "const": 525
+        },
+        "closed_paths": {
+          "const": 525
+        },
+        "open_paths": {
+          "const": 0
+        },
+        "authority_boundary": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "capability_disposition_vocabulary": {
+      "type": "array",
+      "prefixItems": [
+        { "const": "PRESERVED" },
+        { "const": "IMPROVED" },
+        { "const": "RESTORED" },
+        { "const": "REPLACED" },
+        { "const": "INTENTIONALLY_RETIRED" },
+        { "const": "BLOCKED" },
+        { "const": "STILL_MISSING" }
+      ],
+      "items": false,
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "capability_disposition_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "PRESERVED",
+        "IMPROVED",
+        "RESTORED",
+        "REPLACED",
+        "INTENTIONALLY_RETIRED",
+        "BLOCKED",
+        "STILL_MISSING"
+      ],
+      "properties": {
+        "PRESERVED": { "type": "integer", "minimum": 0 },
+        "IMPROVED": { "type": "integer", "minimum": 0 },
+        "RESTORED": { "type": "integer", "minimum": 0 },
+        "REPLACED": { "type": "integer", "minimum": 0 },
+        "INTENTIONALLY_RETIRED": { "type": "integer", "minimum": 0 },
+        "BLOCKED": { "type": "integer", "minimum": 0 },
+        "STILL_MISSING": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 28,
+      "maxItems": 28,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "domain",
+          "capability",
+          "audit_status",
+          "audit_severity",
+          "path_disposition",
+          "capability_disposition",
+          "activation_state",
+          "current_state",
+          "required_proof"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^CAP-[0-9]{3}$"
+          },
+          "domain": {
+            "type": "string",
+            "minLength": 1
+          },
+          "capability": {
+            "type": "string",
+            "minLength": 1
+          },
+          "audit_status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "audit_severity": {
+            "enum": ["CRITICAL", "GREEN", "HIGH", "RED", "YELLOW"]
+          },
+          "path_disposition": {
+            "enum": ["CURRENT_PRIME_NATIVE", "HISTORICAL_CLOSED", "NOT_A_PATH_CLAIM"]
+          },
+          "capability_disposition": {
+            "enum": [
+              "PRESERVED",
+              "IMPROVED",
+              "RESTORED",
+              "REPLACED",
+              "INTENTIONALLY_RETIRED",
+              "BLOCKED",
+              "STILL_MISSING"
+            ]
+          },
+          "activation_state": {
+            "enum": ["ACTIVE", "DISABLED_FIRST", "BLOCKED", "INTENTIONALLY_RETIRED", "MISSING"]
+          },
+          "current_state": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required_proof": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}
