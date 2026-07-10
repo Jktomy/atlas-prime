@@ -96,6 +96,21 @@ class CapabilityParityTests(unittest.TestCase):
             self.assertEqual(records[capability_id]["capability_disposition"], "STILL_MISSING")
             self.assertEqual(records[capability_id]["activation_state"], "MISSING")
 
+    def test_legacy_oathbringer_capability_maps_to_replacement_journeys(self) -> None:
+        records = {record["id"]: record for record in self.register["capabilities"]}
+        cap_017 = records["CAP-017"]
+        acceptance = (ROOT / "governance/capability-acceptance-contract.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("Clone-first", cap_017["capability"])
+        self.assertEqual(cap_017["path_disposition"], "HISTORICAL_CLOSED")
+        self.assertIn("CAP-017", acceptance)
+        self.assertIn("intended replacement", acceptance)
+        self.assertIn("AJ-04 through AJ-06", acceptance)
+        self.assertIn("STILL_MISSING", acceptance)
+        self.assertIn("REPLACED", acceptance)
+
     def test_route_terms_are_not_conflated(self) -> None:
         change_routes = (ROOT / "governance/change-routes.md").read_text(encoding="utf-8")
         command_surfaces = (ROOT / "routing/command-surfaces.md").read_text(
