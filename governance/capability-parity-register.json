@@ -25,10 +25,10 @@
     "PRESERVED": 4,
     "IMPROVED": 7,
     "RESTORED": 0,
-    "REPLACED": 0,
+    "REPLACED": 1,
     "INTENTIONALLY_RETIRED": 1,
     "BLOCKED": 0,
-    "STILL_MISSING": 16
+    "STILL_MISSING": 15
   },
   "capabilities": [
     {
@@ -227,13 +227,13 @@
       "id": "CAP-017",
       "domain": "Sword / Oathbringer",
       "capability": "Clone-first mission-specific Build/Repair/Execute packages",
-      "audit_status": "PRODUCTION_ADAPTER_PRESENT_LIVE_PROOF_PENDING",
-      "audit_severity": "CRITICAL",
+      "audit_status": "PRODUCTION_ROUTE_LIVE_PROVEN",
+      "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "Prime now contains the GitHub-native Oathbringer BUILD, REPAIR, and EXECUTE adapter in PILOT_READY_PROOF_PENDING state, but no harmless live production journey has yet been accepted.",
-      "required_proof": "AJ-04 BUILD, AJ-05 REPAIR, and AJ-06 EXECUTE must pass through the thin PowerShell client with exact receipts, GitHub readback, applicable CI, and independent reconciliation."
+      "capability_disposition": "REPLACED",
+      "activation_state": "ACTIVE",
+      "current_state": "Prime replaces the predecessor clone-first Sword capability with the GitHub-native Oathbringer BUILD, REPAIR, and EXECUTE route. AJ-04, AJ-05, and AJ-06 are live-proven through the thin PowerShell client with exact GitHub readback, applicable CI, and independent reconciliation.",
+      "required_proof": "Accepted by proof/oathbringer-production-acceptance-r01.md: AJ-04 BUILD, AJ-05 REPAIR, and AJ-06 EXECUTE."
     },
     {
       "id": "CAP-018",

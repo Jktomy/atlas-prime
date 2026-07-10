@@ -1,7 +1,7 @@
 ---
 title: "Atlas Sword and Oathbringer — Prime"
 atlas_id: "prime.method.oathbringer"
-status: "PRODUCTION_ADAPTER_PRESENT_PROOF_PENDING"
+status: "PRODUCTION_ACTIVE"
 source_type: "METHOD"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
@@ -35,9 +35,10 @@ Prime now contains:
 - manifest-bound mission, payload, lessons, and independent-audit evidence;
 - authenticated GitHub-login readback;
 - hash-bound workflow-source verification, applicability, and exact-head waits;
-- structured success, failure, and interruption receipts with immediate partial-state recording.
+- structured success, failure, and interruption receipts with immediate partial-state recording;
+- Console v2 colored progress, workflow heartbeat, compact diagnostic result blocks, and sanitized Deflected Sword packaging.
 
-The production adapter is **present but not yet capability-proven**. Until Wave 3 completes AJ-04 through AJ-06 with harmless live GitHub transactions, CAP-017 remains `STILL_MISSING`, the framework state remains `PILOT_READY_PROOF_PENDING`, and Prime must not describe production Oathbringer as restored or generally active.
+The GitHub-native production route is live-proven and active. AJ-04 BUILD, AJ-05 REPAIR, and AJ-06 EXECUTE passed through the thin PowerShell client with exact receipts, GitHub readback, applicable CI, and detached reconciliation. CAP-017 is therefore `REPLACED`, not restored as clone-first; the predecessor clone substrate remains historical compatibility evidence. Canonical acceptance evidence is recorded in `proof/oathbringer-production-acceptance-r01.md`.
 
 The production route is independent of Thread Engine and ChatGPT Work / Codex. It uses GitHub-native blob/tree/commit/ref/PR construction as its durable transaction, keeps PowerShell thin, records stage and percentage truth before each action, preserves failure and interruption ledgers, never persists the GitHub token, and never lets Thread Engine perform its own self-change.
 
