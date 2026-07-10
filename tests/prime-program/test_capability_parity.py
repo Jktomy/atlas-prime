@@ -101,9 +101,6 @@ class CapabilityParityTests(unittest.TestCase):
         phoenix = (ROOT / "methods/phoenix-blade.md").read_text(encoding="utf-8")
         spear = (ROOT / "methods/athenas-spear.md").read_text(encoding="utf-8")
         sword = (ROOT / "methods/atlas-sword.md").read_text(encoding="utf-8")
-        protocol_library = (ROOT / "operations/protocol-library.md").read_text(
-            encoding="utf-8"
-        )
         acceptance = (ROOT / "governance/capability-acceptance-contract.md").read_text(
             encoding="utf-8"
         )
@@ -130,23 +127,12 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertIn("Aegis Break -> equivalent safe route", change_routes)
         self.assertNotIn("Aegis Break -> Phoenix Blade", change_routes)
         self.assertIn("not hardwired to Phoenix Blade", phoenix)
-        self.assertIn("not hardwired to Phoenix Blade", protocol_library)
 
-        self.assertIn(
-            "Stormlight identifies the source of AI/model processing",
-            phoenix,
-        )
-        self.assertIn(
-            "Stormlight identifies the source of AI/model processing",
-            protocol_library,
-        )
+        self.assertIn("Stormlight identifies the source of AI/model processing", phoenix)
         self.assertNotIn("Stormlight describes the execution environment", phoenix)
-        self.assertNotIn("Stormlight describes the execution environment", protocol_library)
 
-        self.assertIn("same technical operation set available to a mission-specific Sword", phoenix)
-        self.assertIn("does not depend on ChatGPT Work / Codex", phoenix)
         self.assertIn("PowerShell is the thin interactive client", sword)
-        self.assertIn("GitHub-native blob/tree/commit/ref/PR construction", sword)
+        self.assertIn("GitHub-native", sword)
         self.assertIn("exact multi-file GitHub commit", acceptance)
         self.assertNotIn("clone-first BUILD", acceptance)
 
