@@ -98,12 +98,19 @@ def _unique_strings(values: Any, field_name: str) -> list[str]:
     _require(len(result) == len(set(result)), f'{field_name} contains duplicates')
     return result
 
+def _exact_keys(value: dict[str, Any], allowed: set[str], field_name: str) -> None:
+    unknown = sorted(set(value) - allowed)
+    _require(not unknown, f'{field_name} contains unknown fields: {unknown}')
+
 def validate_mission(mission: dict[str, Any]) -> None:
-    required = {'format_version', 'mission_id', 'sword_identity', 'forge_standard', 'lessons_register', 'lesson_applicability', 'change_method', 'execution_environment', 'operator_interface', 'framework_state', 'runtime_mode', 'lane', 'repository', 'base_branch', 'expected_base', 'branch', 'declared_paths', 'workflow_rules', 'receipt_contract', 'authorization', 'stop_boundary', 'forbidden_actions'}
+    allowed = {'format_version', 'mission_id', 'sword_identity', 'forge_standard', 'package_manifest_required', 'lessons_register', 'lesson_applicability', 'change_method', 'execution_environment', 'operator_interface', 'framework_state', 'runtime_mode', 'lane', 'repository', 'base_branch', 'expected_base', 'expected_head', 'branch', 'pull_request', 'commit_message', 'pull_request_contract', 'declared_paths', 'workflow_rules', 'receipt_contract', 'authorization', 'independent_audit', 'merge_method', 'stop_boundary', 'forbidden_actions'}
+    _exact_keys(mission, allowed, 'mission')
+    required = {'format_version', 'mission_id', 'sword_identity', 'forge_standard', 'package_manifest_required', 'lessons_register', 'lesson_applicability', 'change_method', 'execution_environment', 'operator_interface', 'framework_state', 'runtime_mode', 'lane', 'repository', 'base_branch', 'expected_base', 'branch', 'declared_paths', 'workflow_rules', 'receipt_contract', 'authorization', 'stop_boundary', 'forbidden_actions'}
     missing = sorted(required - set(mission))
     _require(not missing, f'mission missing required fields: {missing}')
     _require(mission['format_version'] == FORMAT_VERSION, f'format_version must be {FORMAT_VERSION}')
     _require(mission['forge_standard'] == FORGE_STANDARD, f'forge_standard must be {FORGE_STANDARD}')
+    _require(mission['package_manifest_required'] is True, 'production package manifest must be required')
     _require(mission['change_method'] == CHANGE_METHOD, 'change_method must be OATHBRINGER')
     _require(mission['execution_environment'] == EXECUTION_ENVIRONMENT, 'execution_environment must be GITHUB')
     _require(mission['operator_interface'] == OPERATOR_INTERFACE, 'operator_interface must be POWERSHELL')
@@ -117,15 +124,20 @@ def validate_mission(mission: dict[str, Any]) -> None:
     _require(branch != mission['base_branch'], 'mission branch must not be the base branch')
     _sha1(mission['expected_base'], 'expected_base')
     expected_head = _sha1(mission.get('expected_head'), 'expected_head', optional=True)
+
     lessons = mission['lessons_register']
     _require(isinstance(lessons, dict), 'lessons_register must be an object')
+    _exact_keys(lessons, {'schema_version', 'path', 'source_sha256'}, 'lessons_register')
     _require(lessons.get('schema_version') == LESSONS_SCHEMA, f'lessons register must be {LESSONS_SCHEMA}')
+    _safe_relative_path(lessons.get('path'), 'lessons_register.path')
     _sha256(lessons.get('source_sha256'), 'lessons_register.source_sha256')
+
     applicability = mission['lesson_applicability']
     _require(isinstance(applicability, list) and applicability, 'lesson_applicability must be non-empty')
     seen_lessons: set[str] = set()
     for index, item in enumerate(applicability):
         _require(isinstance(item, dict), f'lesson_applicability[{index}] must be an object')
+        _exact_keys(item, {'lesson_id', 'status', 'reason'}, f'lesson_applicability[{index}]')
         lesson_id = str(item.get('lesson_id') or '')
         _require(re.fullmatch('SWORD-L[0-9]{3}', lesson_id) is not None, f'invalid lesson id: {lesson_id}')
         _require(lesson_id not in seen_lessons, f'duplicate lesson classification: {lesson_id}')
@@ -134,12 +146,16 @@ def validate_mission(mission: dict[str, Any]) -> None:
         _require(status in {'APPLIED', 'NOT_APPLICABLE'}, f'invalid lesson status for {lesson_id}')
         if status == 'NOT_APPLICABLE':
             _require(bool(str(item.get('reason') or '').strip()), f'{lesson_id} requires a not-applicable reason')
+
     auth = mission['authorization']
     _require(isinstance(auth, dict), 'authorization must be an object')
+    _exact_keys(auth, {'approved_preview', 'execution_authorized', 'authorizer', 'operator', 'github_login'}, 'authorization')
     _require(auth.get('approved_preview') is True, 'approved Preview is required')
     _require(auth.get('execution_authorized') is True, 'execution authorization is required')
     _require(str(auth.get('authorizer') or '').upper() == 'JAYSON', 'authorizer must be JAYSON')
     _require(str(auth.get('operator') or '').upper() == 'JAYSON', 'operator must be JAYSON')
+    _require(re.fullmatch('[A-Za-z0-9-]+', str(auth.get('github_login') or '')) is not None, 'authorization.github_login is invalid')
+
     forbidden = set(_unique_strings(mission['forbidden_actions'], 'forbidden_actions'))
     required_forbidden = {'DIRECT_MAIN', 'FORCE_PUSH', 'SCOPE_WIDENING', 'TOKEN_PERSISTENCE'}
     _require(required_forbidden <= forbidden, f'forbidden_actions must include {sorted(required_forbidden)}')
@@ -148,14 +164,17 @@ def validate_mission(mission: dict[str, Any]) -> None:
     expected_receipt = {'write_on_interrupt': True, 'write_on_failure': True, 'write_on_success': True, 'automatic_retry': False, 'automatic_rollback': False, 'interrupt_exit_code': 130, 'failure_exit_code': 1}
     for key, value in expected_receipt.items():
         _require(receipt.get(key) == value, f'receipt contract mismatch for {key}')
+
     declared = mission['declared_paths']
     _require(isinstance(declared, list), 'declared_paths must be an array')
     if lane in {'BUILD', 'REPAIR'}:
         _require(bool(declared), 'source-changing lanes require declared_paths')
     seen_targets: set[str] = set()
     seen_sources: set[str] = set()
+    allowed_path_keys = {'path', 'operation', 'payload_path', 'payload_sha256', 'source_path', 'source_blob', 'mode'}
     for index, item in enumerate(declared):
         _require(isinstance(item, dict), f'declared_paths[{index}] must be an object')
+        _exact_keys(item, allowed_path_keys, f'declared_paths[{index}]')
         path = _safe_relative_path(item.get('path'), f'declared_paths[{index}].path')
         _require(path not in seen_targets, f'duplicate target path: {path}')
         seen_targets.add(path)
@@ -174,9 +193,11 @@ def validate_mission(mission: dict[str, Any]) -> None:
             if item.get('payload_path') is not None:
                 _safe_relative_path(item.get('payload_path'), f'payload_path for {path}')
                 _sha256(item.get('payload_sha256'), f'payload_sha256 for {path}')
+
     _require(isinstance(mission['workflow_rules'], list), 'workflow_rules must be an array')
     for index, rule in enumerate(mission['workflow_rules']):
         _validate_workflow_rule(rule, index)
+
     if lane == 'BUILD':
         _require(expected_head is None, 'BUILD expected_head must be null')
         _require(mission.get('pull_request') is None, 'BUILD pull_request must be null')
@@ -194,14 +215,17 @@ def validate_mission(mission: dict[str, Any]) -> None:
         _require(isinstance(mission.get('pull_request'), int) and mission['pull_request'] >= 1, 'EXECUTE pull_request is required')
         audit = mission.get('independent_audit')
         _require(isinstance(audit, dict), 'EXECUTE requires independent_audit')
+        _exact_keys(audit, {'verdict', 'exact_head', 'receipt_path', 'receipt_sha256'}, 'independent_audit')
         _require(audit.get('verdict') == 'GREEN', 'independent audit verdict must be GREEN')
         _require(audit.get('exact_head') == expected_head, 'independent audit must bind expected_head')
+        _safe_relative_path(audit.get('receipt_path'), 'independent_audit.receipt_path')
         _sha256(audit.get('receipt_sha256'), 'independent_audit.receipt_sha256')
         merge_method = str(mission.get('merge_method') or 'squash')
         _require(merge_method in {'merge', 'squash', 'rebase'}, 'invalid merge_method')
 
 def _validate_workflow_rule(rule: Any, index: int) -> None:
     _require(isinstance(rule, dict), f'workflow_rules[{index}] must be an object')
+    _exact_keys(rule, {'name', 'event', 'workflow_path', 'workflow_blob', 'appearance_grace_seconds', 'completion_timeout_seconds', 'expected_conclusion', 'pull_request_paths'}, f'workflow_rules[{index}]')
     _require(bool(str(rule.get('name') or '')), f'workflow_rules[{index}].name is required')
     _require(rule.get('event') == 'pull_request', f'workflow_rules[{index}].event must be pull_request')
     path = _safe_relative_path(rule.get('workflow_path'), f'workflow_rules[{index}].workflow_path')
