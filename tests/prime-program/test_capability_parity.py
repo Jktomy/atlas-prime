@@ -141,7 +141,7 @@ class CapabilityParityTests(unittest.TestCase):
 
         self.assertIn("routes to Phoenix Blade", command_surfaces)
         self.assertIn("does not need to invoke a separate preflight command", command_surfaces)
-        self.assertIn("does not depend on ChatGPT Work / Codex", command_surfaces)
+        self.assertIn("without requiring ChatGPT Work / Codex", command_surfaces)
 
 
 if __name__ == "__main__":
