@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 from oathbringer_core import (
     CHANGE_METHOD, EXECUTION_ENVIRONMENT, OPERATOR_INTERFACE, FORMAT_VERSION,
-    RUNTIME_MODE, ExecutionContext, OathbringerError, validate_mission, _require,
+    RUNTIME_MODE, ExecutionContext, _require,
 )
 from oathbringer_api import GitHubClient
 from oathbringer_support import atomic_write_json_with_sha256
@@ -35,11 +35,13 @@ def main() -> int:
     mission: dict[str, Any] | None = None
     result: dict[str, Any] | None = None
     try:
+        _require(mission_path == package_root or package_root in mission_path.parents, 'production mission must be inside the sealed package root')
+        mission_relative_path = mission_path.relative_to(package_root).as_posix()
         mission = json.loads(mission_path.read_text(encoding='utf-8'))
         token = os.environ.get('OATHBRINGER_GITHUB_TOKEN', '')
         _require(bool(token), 'OATHBRINGER_GITHUB_TOKEN was not provided by the thin PowerShell client')
         client = GitHubClient(token, str(mission.get('repository') or ''))
-        result, context = execute_mission(mission, package_root, client, json_mode=args.json, context=context)
+        result, context = execute_mission(mission, package_root, client, mission_relative_path=mission_relative_path, json_mode=args.json, context=context)
         result['mission_id'] = mission['mission_id']
         result['sword_identity'] = mission['sword_identity']
         receipt = build_receipt(mission, context, status=result['status'], result=result, detail=None, exit_code=0)
