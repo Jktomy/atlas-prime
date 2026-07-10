@@ -283,7 +283,7 @@ def bind_live_state(mission: Mapping[str, Any], live_state: Mapping[str, Any], s
 
     validate_mission(mission, source_root)
     _require(isinstance(live_state, dict), "live state must be an object")
-    _exact_keys(live_state, {"repository", "base_branch", "base_sha", "head_sha", "pull_request", "github_login", "workflow_blobs"}, "live state")
+    _exact_keys(live_state, {"repository", "base_branch", "base_sha", "head_sha", "pull_request", "pull_request_branch", "pull_request_base_branch", "pull_request_base_sha", "pull_request_state", "target_branch_exists", "open_pull_request_count", "github_login", "workflow_blobs"}, "live state")
     authority = mission["authority"]
     source_lock = mission["source_lock"]
     target_lock = mission["target_lock"]
@@ -291,9 +291,21 @@ def bind_live_state(mission: Mapping[str, Any], live_state: Mapping[str, Any], s
     _require(live_state.get("base_branch") == source_lock["base_branch"], "live base branch drift")
     _require(live_state.get("base_sha") == source_lock["expected_base"], "live base SHA drift")
     _require(re.fullmatch(r"[A-Za-z0-9-]+", str(live_state.get("github_login") or "")) is not None, "live GitHub identity is invalid")
-    if mission["mode"] != "BUILD":
+    _require(isinstance(live_state.get("target_branch_exists"), bool), "live target branch state is invalid")
+    _require(isinstance(live_state.get("open_pull_request_count"), int) and live_state["open_pull_request_count"] >= 0, "live open pull-request count is invalid")
+    if mission["mode"] == "BUILD":
+        _require(live_state["target_branch_exists"] is False, "BUILD target branch already exists")
+        _require(live_state["open_pull_request_count"] == 0, "BUILD already has an open target pull request")
+        _require(live_state.get("head_sha") is None and live_state.get("pull_request") is None, "BUILD must not bind an existing pull request")
+    else:
+        _require(live_state["target_branch_exists"] is True, "live target branch is missing")
+        _require(live_state["open_pull_request_count"] == 1, "live target pull-request set is ambiguous")
         _require(live_state.get("head_sha") == source_lock["expected_head"], "live pull-request head drift")
         _require(live_state.get("pull_request") == target_lock["pull_request"], "live pull-request identity drift")
+        _require(live_state.get("pull_request_branch") == target_lock["branch"], "live pull-request branch drift")
+        _require(live_state.get("pull_request_base_branch") == source_lock["base_branch"], "live pull-request base branch drift")
+        _require(live_state.get("pull_request_base_sha") == source_lock["expected_base"], "live pull-request base SHA drift")
+        _require(live_state.get("pull_request_state") == "open", "live pull request is not open")
     workflow_blobs = live_state.get("workflow_blobs")
     _require(isinstance(workflow_blobs, dict), "live workflow blobs must be an object")
     for item in source_lock["workflow_sources"]:
@@ -315,6 +327,15 @@ def _gh_json(path: str) -> Any:
         raise FoundryError("read-only GitHub binding returned invalid JSON") from exc
 
 
+def _target_branch_exists(repository: str, branch: str) -> bool:
+    """Use GitHub's read-only matching-refs endpoint; an empty list is normal."""
+
+    encoded = branch.replace("/", "%2F")
+    result = _gh_json(f"repos/{repository}/git/matching-refs/heads/{encoded}")
+    _require(isinstance(result, list), "read-only target branch binding is malformed")
+    return bool(result)
+
+
 def read_live_state(mission: Mapping[str, Any]) -> dict[str, Any]:
     """Obtain a fresh snapshot through read-only GitHub CLI API calls only."""
 
@@ -333,6 +354,12 @@ def read_live_state(mission: Mapping[str, Any]) -> dict[str, Any]:
         "base_sha": str(base_ref.get("object", {}).get("sha") or ""),
         "head_sha": None,
         "pull_request": None,
+        "pull_request_branch": None,
+        "pull_request_base_branch": None,
+        "pull_request_base_sha": None,
+        "pull_request_state": None,
+        "target_branch_exists": _target_branch_exists(repository, str(target_lock["branch"])),
+        "open_pull_request_count": 0,
         "github_login": str(user.get("login") or ""),
         "workflow_blobs": workflows,
     }
@@ -340,6 +367,11 @@ def read_live_state(mission: Mapping[str, Any]) -> dict[str, Any]:
         pull = _gh_json(f"repos/{repository}/pulls/{target_lock['pull_request']}")
         snapshot["head_sha"] = str(pull.get("head", {}).get("sha") or "")
         snapshot["pull_request"] = int(pull.get("number") or 0)
+        snapshot["pull_request_branch"] = str(pull.get("head", {}).get("ref") or "")
+        snapshot["pull_request_base_branch"] = str(pull.get("base", {}).get("ref") or "")
+        snapshot["pull_request_base_sha"] = str(pull.get("base", {}).get("sha") or "")
+        snapshot["pull_request_state"] = str(pull.get("state") or "").lower()
+        snapshot["open_pull_request_count"] = 1 if snapshot["pull_request_state"] == "open" else 0
     return snapshot
 
 

@@ -146,6 +146,12 @@ class OathbringerFoundryTests(unittest.TestCase):
             "base_sha": "a" * 40,
             "head_sha": mission["source_lock"]["expected_head"],
             "pull_request": mission["target_lock"]["pull_request"],
+            "pull_request_branch": None if mission["mode"] == "BUILD" else mission["target_lock"]["branch"],
+            "pull_request_base_branch": None if mission["mode"] == "BUILD" else "main",
+            "pull_request_base_sha": None if mission["mode"] == "BUILD" else "a" * 40,
+            "pull_request_state": None if mission["mode"] == "BUILD" else "open",
+            "target_branch_exists": mission["mode"] != "BUILD",
+            "open_pull_request_count": 0 if mission["mode"] == "BUILD" else 1,
             "github_login": "Jktomy",
             "workflow_blobs": {},
         }
@@ -207,6 +213,18 @@ class OathbringerFoundryTests(unittest.TestCase):
             bind_live_state(mission, stale, ROOT)
         with self.assertRaisesRegex(FoundryError, "replayed mission"):
             compile_carrier(mission, input_root=self.input_root, source_root=ROOT, output_dir=self.root / "replay", live_state=self._live(mission), seen_mission_ids=[mission["mission_id"]])
+
+    def test_existing_build_target_and_repair_pr_base_drift_are_rejected(self) -> None:
+        build = self._mission()
+        occupied = self._live(build)
+        occupied["target_branch_exists"] = True
+        with self.assertRaisesRegex(FoundryError, "target branch already exists"):
+            bind_live_state(build, occupied, ROOT)
+        repair = self._mission("REPAIR")
+        stale = self._live(repair)
+        stale["pull_request_base_sha"] = "c" * 40
+        with self.assertRaisesRegex(FoundryError, "base SHA drift"):
+            bind_live_state(repair, stale, ROOT)
 
     def test_unsafe_paths_collisions_and_protected_material_fail_closed(self) -> None:
         mission = self._mission()
