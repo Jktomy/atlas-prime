@@ -1,7 +1,7 @@
 ---
 title: "Prime Start Here"
 atlas_id: "prime.start-here"
-status: "SHADOW_CONSTRUCTION"
+status: "CANONICAL_ACTIVE"
 source_type: "BOOT"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
@@ -11,27 +11,23 @@ protected_level: "CRITICAL"
 
 # Prime Start Here
 
-## Current position
+Read in order:
 
-The Prime Reborn Quest is constructing a clean Prime source system.
+1. `README.md`
+2. `bootstrap.md`
+3. `routing/command-surfaces.md`
+4. `safety/atlas-safety-doctrine.md`
+5. `projects/project-registry.md`
+6. `operations/operation-registry.md`
+7. `quest-board/quest-board-v1.json`
+8. `tools/thread-engine/PRIME-PORT-STATUS.json`
+9. `recovery/phoenix-recovery.md`
 
-Read:
-
-- `quests/prime-reborn.md` for Quest position;
-- `migration/predecessor-snapshot.md` for the preserved predecessor identity;
-- `migration/codex-inheritance-manifest.md` for inheritance rules;
-- `governance/change-routes.md` for Build and Execute boundaries;
-- `tools/thread-engine/PRIME-PORT-STATUS.json` for actual tool posture.
-
-## Current authority
+Current authority:
 
 ```text
-Codex:
-CANONICAL
-
-Prime:
-SHADOW / CONSTRUCTION
-
-Thread Engine:
-PORT_CANDIDATE_DISABLED
+Prime: CANONICAL_ACTIVE
+Thread Engine: THREAD_ENGINE_ACTIVE_MISSION_SCOPED
+Codex Workboard route: ABSENT
+Codex repository: PREDECESSOR_EVIDENCE_ONLY
 ```

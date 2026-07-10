@@ -1,7 +1,7 @@
 ---
 title: "Prime Bootstrap"
 atlas_id: "prime.bootstrap"
-status: "SHADOW_CONSTRUCTION"
+status: "CANONICAL_ACTIVE"
 source_type: "BOOT"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
@@ -11,30 +11,19 @@ protected_level: "CRITICAL"
 
 # Prime Bootstrap
 
-## Source order during construction
+## Source order
 
 1. Current explicit Jayson instruction.
-2. Canonical `Jktomy/atlas-codex` source until verified cutover.
-3. Merged Prime SHADOW source as proposed successor architecture.
-4. Approved original or private evidence systems for protected facts.
+2. Merged `Jktomy/atlas-prime` canonical source.
+3. Approved original or private evidence systems for protected facts.
+4. Final Receipt Gemstones and frozen predecessor refs as evidence.
 5. Prior conversation context.
-6. Inference, clearly labeled.
+6. Clearly labeled inference.
 
-## Prime construction read order
+## Recovery bootstrap
 
-1. `README.md`
-2. `atlas-prime.md`
-3. `atlas-start-here.md`
-4. `quests/prime-reborn.md`
-5. `governance/source-hierarchy.md`
-6. `governance/change-routes.md`
-7. `migration/codex-inheritance-manifest.md`
-8. `migration/rollback-map.md`
+Clone Prime fresh, verify the expected main head, run the complete read-only validation workflow, compare generated projections as CURRENT, verify Thread Engine state, and follow `recovery/phoenix-recovery.md`. Normal bootstrap and recovery do not read from or write to `Jktomy/atlas-codex`.
 
 ## Change rule
 
-Preview precedes durable change.
-
-Every source mutation uses a narrow branch and draft PR, stops for exact-head Noctua review, and requires separate Jayson merge authority.
-
-Thread Engine starts disabled-first. No standing writer exists.
+Every durable mutation uses an exact branch and draft PR. Eligible source construction uses Athena Weave → Spear or Arrow/Bow → Prime Thread Engine. Protected Thread Engine self-change uses Aegis Break → Oathbringer. Merge follows exact-head Noctua, Ares, Athena reconciliation, and Strikeforce GREEN.

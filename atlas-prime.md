@@ -1,7 +1,7 @@
 ---
 title: "Atlas Prime Core"
 atlas_id: "atlas-prime.core"
-status: "SHADOW_CONSTRUCTION"
+status: "CANONICAL_ACTIVE"
 source_type: "CORE_DOCTRINE"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
@@ -11,39 +11,12 @@ protected_level: "CRITICAL"
 
 # Atlas Prime
 
-## Prime rule
+Atlas is the umbrella ecosystem and governance layer. Prime is its sole active clean-source repository.
 
-Atlas is the umbrella ecosystem and governance layer.
+Atlas has twelve Projects: Odyssey, Codex, Artemis, Phoenix, Beacon, Helios, Midas, Chiron, Raphael, Genesis, Pegasus, and Arcanum. Their durable ownership and Operations are defined by `projects/project-registry.md` and `operations/operation-registry.md`.
 
-Prime is the intended clean-source successor repository. Codex remains canonical until the Prime Reborn Quest proves inheritance, protected boundaries, recovery, rollback, and explicit cutover.
+Atlas governs. Athena advises and authors. Artemis coordinates. Phoenix protects. Aegis bounds. Noctua verifies. Ares challenges. Strikeforce reconciles. Jayson decides permanence.
 
-## Project model
+GitHub stores clean source, clean summaries, clean pointers, schemas, protocols, tests, generators, and non-authoritative projections. Secrets, protected raw evidence, PHI, raw finance evidence, account data, and private runtime values remain outside Prime.
 
-Atlas has twelve Projects:
-
-1. Odyssey
-2. Codex
-3. Artemis
-4. Phoenix
-5. Beacon
-6. Helios
-7. Midas
-8. Chiron
-9. Raphael
-10. Genesis
-11. Pegasus
-12. Arcanum
-
-## Authority
-
-Atlas governs. Athena advises and authors. Codex remembers. Artemis coordinates. Phoenix protects. Noctua verifies. Ares challenges. Jayson decides permanence.
-
-## Safety
-
-GitHub stores clean source, clean summaries, clean pointers, schemas, protocols, and generated projections. Secrets and protected raw evidence remain in their proper systems.
-
-## Construction boundary
-
-Prime remains SHADOW until explicit cutover.
-
-No bootstrap merge, tool proof, generated refresh, or successful test independently promotes Prime.
+`Jktomy/atlas-codex` is frozen predecessor and rollback evidence at `c892dc05ea56db0134a0e865f56d491f9c02ff85`. It is not required for normal Atlas use, routing, construction, recovery, or future source updates.

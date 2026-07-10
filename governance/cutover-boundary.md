@@ -1,7 +1,7 @@
 ---
 title: "Prime Cutover Boundary"
 atlas_id: "prime.governance.cutover"
-status: "SHADOW_CONSTRUCTION"
+status: "COMPLETE"
 source_type: "PROTOCOL"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
@@ -11,16 +11,8 @@ protected_level: "CRITICAL"
 
 # Prime Cutover Boundary
 
-Prime may become canonical only after:
+Prime canonical activation is authorized by the controlling Completion Gemstone and becomes effective when this exact cutover source transaction passes whole-program Strikeforce and merges.
 
-- all admitted Codex sources have closed dispositions;
-- Prime-native Thread Engine, Spear, and Arrow/Bow pass;
-- generated views reproduce from Prime source;
-- Quest continuity and one-live-authority tests pass;
-- protected boundaries are no weaker than Codex;
-- predecessor and Codex rollback are proven;
-- recovery succeeds from a clean clone;
-- final Phoenix Burn and Strikeforce are GREEN;
-- Jayson explicitly authorizes canonical cutover.
+The cutover candidate proves: 525/525 Codex dispositions closed with terminal statuses; Prime-native Thread Engine and harmless pilot; Spear and immutable Arrow/Bow parity; current non-authoritative projections; exact Quest Board; protected and privacy boundaries; predecessor branch/tag; rollback and disablement; and clean-clone recovery.
 
-No earlier success implies promotion.
+After merge, Prime is canonical and Codex is predecessor evidence only. No later generated refresh or receipt packaging changes that authority; those transactions report and preserve the merged source state.

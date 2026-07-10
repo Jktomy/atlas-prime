@@ -1,6 +1,6 @@
 # Atlas Thread Engine
 
-Prime carries a fixture engine and a separately bounded production adapter. The fixture engine remains disabled and fixture-only. The production adapter is active only for exact mission-scoped draft-PR transactions; its harmless Prime-native pilot is the next proof gate.
+Prime carries a fixture engine and a separately bounded production adapter. The fixture engine remains disabled and fixture-only. The production adapter is proven and active only for exact mission-scoped draft-PR transactions. Its harmless pilot, replay rejection, rollback/disablement, direct Spear, and immutable Arrow/Bow proofs are merged.
 
 Runtime posture:
 

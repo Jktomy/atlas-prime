@@ -38,7 +38,10 @@ if missing:
 
 repo_policy = json.loads((ROOT / "policies/repository-policy.json").read_text(encoding="utf-8"))
 assert repo_policy["repository"] == "Jktomy/atlas-prime"
-assert repo_policy["state"] == "SHADOW_CONSTRUCTION"
+assert repo_policy["state"] == "CANONICAL_ACTIVE"
+assert repo_policy["canonical_repository"] == "Jktomy/atlas-prime"
+assert repo_policy["predecessor_repository"] == "Jktomy/atlas-codex"
+assert repo_policy["predecessor_role"] == "FROZEN_PREDECESSOR_ROLLBACK_EVIDENCE"
 assert repo_policy["direct_main_allowed"] is False
 assert repo_policy["force_push_allowed"] is False
 assert repo_policy["automatic_merge_allowed"] is False
@@ -54,7 +57,10 @@ assert port["direct_main"] is False
 assert port["codex_workboard_route"] == "ABSENT"
 assert port["protected_path_policy"] == "PRIME_NATIVE_JSON_ENFORCED"
 assert port["activation_route"] == "AEGIS_BREAK_TO_OATHBRINGER"
-assert port["harmless_pilot_state"] == "PENDING"
+assert port["canonical_repository"] == "Jktomy/atlas-prime"
+assert port["harmless_pilot_state"] == "PROVEN_MERGED"
+assert port["spear_arrow_bow_state"] == "PROVEN_MERGED"
+assert port["next_gate"] == "NORMAL_PRIME_OPERATION"
 
 protected = json.loads((ROOT / "policies/protected-paths.json").read_text(encoding="utf-8"))
 for required_path in ("migration/**", "quest-board/**", "generated/**", "tools/thread-engine/**"):

@@ -1,7 +1,7 @@
 ---
 title: "Prime Strikeforce"
 atlas_id: "prime.governance.strikeforce"
-status: "SHADOW_CONSTRUCTION"
+status: "CANONICAL_ACTIVE"
 source_type: "PROTOCOL"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"

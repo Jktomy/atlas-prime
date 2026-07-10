@@ -11,7 +11,7 @@ protected_level: "CRITICAL"
 
 # Prime Source Lifecycle
 
-Prime is the constructed canonical authored source. While repository policy remains `SHADOW_CONSTRUCTION`, it becomes active authority only through the final cutover transaction. A source file controls only the scope declared by its metadata and routing. Tests, generated indexes, receipts, previews, issue text, chat, runtime state, and predecessor repositories are evidence or projections, not competing authority.
+Prime is the sole active canonical authored source. A source file controls only the scope declared by its metadata and routing. Tests, generated indexes, receipts, previews, issue text, chat, runtime state, and predecessor repositories are evidence or projections, not competing authority.
 
 ## Lifecycle
 

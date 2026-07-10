@@ -1,7 +1,7 @@
 ---
 title: "Prime Noctua"
 atlas_id: "prime.governance.noctua"
-status: "SHADOW_CONSTRUCTION"
+status: "CANONICAL_ACTIVE"
 source_type: "PROTOCOL"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"

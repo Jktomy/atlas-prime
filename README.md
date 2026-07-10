@@ -1,7 +1,7 @@
 ---
 title: "Prime"
 atlas_id: "prime.repository"
-status: "SHADOW_CONSTRUCTION"
+status: "CANONICAL_ACTIVE"
 source_type: "BOOT"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
@@ -11,18 +11,16 @@ protected_level: "CRITICAL"
 
 # Prime
 
-Prime is the intended successor clean-source repository for Atlas.
-
-During the Prime Reborn Quest:
+`Jktomy/atlas-prime` is the sole canonical clean-source repository for Atlas.
 
 ```text
-Prime:
-SHADOW / CONSTRUCTION
-
-Codex:
-CANONICAL
+Prime: CANONICAL / ACTIVE
+Thread Engine: ACTIVE / MISSION_SCOPED / DRAFT_PR_ONLY
+Codex repository: FROZEN PREDECESSOR / ROLLBACK EVIDENCE
 ```
 
-This kernel is intentionally small. It contains the minimum governance, recovery, and tool foundation needed to construct Prime through auditable Weaves.
+Start with `bootstrap.md`, then `routing/command-surfaces.md`.
 
-Generated projections do not govern. Runtime packages do not prove deployment. Jayson retains final permanence and cutover authority.
+Prime contains current authored identity, governance, routing, Projects, Operations, Quests, safety doctrine, recovery, infrastructure source, generators, working command surfaces, and bounded generated projections. Generated projections do not govern. Runtime packages do not prove deployment. Private or regulated evidence remains in its approved system.
+
+All durable source changes use a reviewed branch and draft PR. Eligible construction uses Prime Thread Engine. Thread Engine self-change uses Aegis Break → Oathbringer. Jayson retains permanence and protected external-action authority.
