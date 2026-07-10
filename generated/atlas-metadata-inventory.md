@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:8a984ffdd4636857f60b0b53be1b0796b5c6c4af44193e7d695d40a3fac169da
+Source fingerprint: sha256:eb3ad6cb3ffc6a0c98465f4c168f85052fde556aa123debd86b840f4eca5bc66
 Generator format: 2
 Status: Generated support artifact
 
@@ -16,6 +16,7 @@ Status: Generated support artifact
 | `bootstrap.md` | CANONICAL_ACTIVE | BOOT | missing | CRITICAL |
 | `governance/atlas-aegis.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `governance/atlas-strikeforce.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
+| `governance/capability-acceptance-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/change-routes.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/cutover-boundary.md` | COMPLETE | PROTOCOL | missing | CRITICAL |
 | `governance/noctua.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
@@ -25,9 +26,11 @@ Status: Generated support artifact
 | `infrastructure/atlas-infrastructure-source.md` | ACTIVE | ARCHITECTURE | missing | HIGH |
 | `knowledge/atlas-source-compendium.md` | ACTIVE | CORE_DOCTRINE | missing | MEDIUM |
 | `knowledge/context-pack-contract.md` | ACTIVE | PROTOCOL | missing | MEDIUM |
-| `methods/artemis-bow-and-arrow.md` | SHADOW_CONSTRUCTION | METHOD | missing | CRITICAL |
-| `methods/athenas-spear.md` | SHADOW_CONSTRUCTION | METHOD | missing | CRITICAL |
-| `methods/atlas-sword.md` | SHADOW_CONSTRUCTION | METHOD | missing | CRITICAL |
+| `methods/artemis-bow-and-arrow.md` | COMPONENT_PROVEN_HOSTED_INVOCATION_UNAVAILABLE | METHOD | missing | CRITICAL |
+| `methods/athenas-spear.md` | COMPONENT_PROVEN_HOSTED_INTAKE_MISSING | METHOD | missing | CRITICAL |
+| `methods/atlas-sword.md` | PRODUCTION_ACTIVE | METHOD | missing | CRITICAL |
+| `methods/phoenix-blade.md` | ACTIVE_BOUNDED_METHOD | METHOD | missing | CRITICAL |
+| `methods/sword-forge-standard.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `migration/codex-cutover.md` | COMPLETE | REGISTER | missing | CRITICAL |
 | `migration/codex-inheritance-manifest.md` | SHADOW_CONSTRUCTION | REGISTER | missing | CRITICAL |
 | `migration/predecessor-snapshot.md` | PRESERVED | RECEIPT_POINTER | missing | CRITICAL |
@@ -36,8 +39,10 @@ Status: Generated support artifact
 | `operations/operation-registry.md` | ACTIVE | REGISTER | missing | HIGH |
 | `operations/protocol-library.md` | ACTIVE | PROTOCOL | missing | HIGH |
 | `projects/project-registry.md` | ACTIVE | REGISTER | missing | HIGH |
+| `proof/oathbringer-production-acceptance-r01.md` | PROOF | PROOF | missing | STANDARD |
 | `proof/prime-spear-arrow-bow-parity-r01.md` | PROOF | PROOF | missing | STANDARD |
 | `proof/prime-thread-engine-bootstrap-proof.md` | PROOF | PROOF | missing | STANDARD |
+| `quests/found-silverlight.md` | Active | Quest | Parent Quest for establishing Atlas's private cognitive interface through Stormlight BEU accounting, the seven-pillar Glass Codex, and the Seon Apple Reminders integration. | High |
 | `quests/notums-watch.md` | Active | Quest | Parent Quest for bringing Notum's Watch forward as Gatehouse/Citadel observability and rescue infrastructure, including the interim Notum vessel, future Notum Phoenix vessel, Nightwatcher lineage, and backup-capacity boundaries. | High |
 | `quests/prime-reborn.md` | COMPLETE | QUEST | missing | CRITICAL |
 | `quests/prometheus-fire.md` | Active | Quest | Parent Quest for converting Prometheus into a stable, recoverable Proxmox compute platform with the approved Crucible VM, Nexus LXC, Matrix LXC, and future Plex LXC topology. | High |

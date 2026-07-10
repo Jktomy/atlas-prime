@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:8a984ffdd4636857f60b0b53be1b0796b5c6c4af44193e7d695d40a3fac169da
+Source fingerprint: sha256:eb3ad6cb3ffc6a0c98465f4c168f85052fde556aa123debd86b840f4eca5bc66
 Generator format: 2
 Status: Generated support artifact
 
@@ -16,6 +16,7 @@ Status: Generated support artifact
 | `bootstrap.md` | yes |
 | `governance/atlas-aegis.md` | yes |
 | `governance/atlas-strikeforce.md` | yes |
+| `governance/capability-acceptance-contract.md` | yes |
 | `governance/change-routes.md` | yes |
 | `governance/cutover-boundary.md` | yes |
 | `governance/noctua.md` | yes |
@@ -28,6 +29,8 @@ Status: Generated support artifact
 | `methods/artemis-bow-and-arrow.md` | yes |
 | `methods/athenas-spear.md` | yes |
 | `methods/atlas-sword.md` | yes |
+| `methods/phoenix-blade.md` | yes |
+| `methods/sword-forge-standard.md` | yes |
 | `migration/codex-cutover.md` | yes |
 | `migration/codex-inheritance-manifest.md` | yes |
 | `migration/predecessor-snapshot.md` | yes |
@@ -36,8 +39,10 @@ Status: Generated support artifact
 | `operations/operation-registry.md` | yes |
 | `operations/protocol-library.md` | yes |
 | `projects/project-registry.md` | yes |
+| `proof/oathbringer-production-acceptance-r01.md` | no |
 | `proof/prime-spear-arrow-bow-parity-r01.md` | yes |
 | `proof/prime-thread-engine-bootstrap-proof.md` | yes |
+| `quests/found-silverlight.md` | yes |
 | `quests/notums-watch.md` | yes |
 | `quests/prime-reborn.md` | yes |
 | `quests/prometheus-fire.md` | yes |
