@@ -1,0 +1,5 @@
+ATLAS OATHBRINGER FOUNDRY LIVE ACCEPTANCE
+Mission: ATLAS-FOUNDRY-LIVE-BUILD-20260710-R04
+Stage: BUILD
+Classification: PUBLIC_CLEAN
+This fixture is intentionally harmless and exists only to prove deterministic Foundry-to-Oathbringer delivery.
