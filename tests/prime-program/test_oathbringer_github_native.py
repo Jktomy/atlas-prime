@@ -145,6 +145,7 @@ class OathbringerGitHubNativeTests(unittest.TestCase):
         schema = json.loads((ROOT / "tools/atlas-sword/schema/oathbringer-production-mission-v2.schema.json").read_text(encoding="utf-8"))
         doctrine = (ROOT / "methods/atlas-sword.md").read_text(encoding="utf-8")
         readme = (ROOT / "tools/atlas-sword/README.md").read_text(encoding="utf-8")
+        proof = (ROOT / "proof/oathbringer-production-acceptance-r01.md").read_text(encoding="utf-8")
         self.assertIn("oathbringer_github.py", launcher)
         self.assertIn("Resolve-AtlasGitHubToken", module)
         self.assertIn("auth token", module)
@@ -153,9 +154,10 @@ class OathbringerGitHubNativeTests(unittest.TestCase):
         self.assertEqual(schema["properties"]["execution_environment"]["const"], "GITHUB")
         self.assertEqual(schema["properties"]["operator_interface"]["const"], "POWERSHELL")
         self.assertFalse(schema["additionalProperties"])
-        self.assertIn("PILOT_READY_PROOF_PENDING", doctrine)
+        self.assertIn("live-proven and active", doctrine)
         self.assertIn("Production mutation adapter", readme)
-        self.assertIn("Wave 3", readme)
+        self.assertIn("AJ-04 through AJ-06 live-proven", readme)
+        self.assertIn("AJ-06 EXECUTE  PROVEN", proof)
 
     def test_execute_rejects_audit_bound_to_another_head(self) -> None:
         mission = self._mission()

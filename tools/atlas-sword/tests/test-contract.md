@@ -1,10 +1,10 @@
 # Atlas Oathbringer Framework Test Contract
 
-The reusable framework is not production-restored until all required source tests and live acceptance journeys pass on their stated platforms.
+The reusable framework is production-active because the required source tests and live AJ-04 through AJ-06 acceptance journeys passed on their stated platforms. Future changes must preserve these controls and re-prove any altered boundary.
 
 ## Source-adoption tests
 
-These must pass before the Wave 2 source candidate is eligible for Noctua:
+These remain mandatory for every source candidate that changes the Oathbringer framework:
 
 | Test | Windows PowerShell 7 | Linux PowerShell 7 | Python 3 |
 |---|---:|---:|---:|
@@ -74,7 +74,7 @@ The schema `2.0` GitHub-native adapter must prove without live mutation:
 
 ## Live production acceptance
 
-Wave 3 must prove:
+Wave 3 proved:
 
 ### AJ-04 — BUILD
 
@@ -108,7 +108,7 @@ Wave 3 must prove:
 - merged-main readback;
 - durable receipt.
 
-CAP-017 remains `STILL_MISSING` until all three live journeys pass and their exact receipts are independently reconciled.
+All three live journeys passed and were independently reconciled. CAP-017 is `REPLACED` and `ACTIVE`; the durable evidence record is `proof/oathbringer-production-acceptance-r01.md`.
 
 ## Acceptance record
 

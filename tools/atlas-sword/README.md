@@ -1,12 +1,12 @@
 # Atlas Sword Framework
 
-**Implementation state:** `PILOT_READY_PROOF_PENDING`  
+**Implementation state:** `PRODUCTION_ACTIVE`  
 **Runtime modes:** `AUDIT_ONLY`, `PRODUCTION_GITHUB_NATIVE`  
 **Change method:** `OATHBRINGER`  
 **Operator interface:** `POWERSHELL`  
 **Execution environment:** `GITHUB`  
 **Preferred repository transaction:** `GITHUB_NATIVE`  
-**Production mutation adapter:** present; harmless live proof pending  
+**Production mutation adapter:** active; AJ-04 through AJ-06 live-proven  
 **Canonical doctrine:** `methods/atlas-sword.md`  
 **Forge standard:** `methods/sword-forge-standard.md`  
 **Lessons register:** `methods/sword-lessons.json`
@@ -43,7 +43,7 @@ Wave 2 adds a production-format `2.0` adapter that can:
 
 The adapter does not persist or print the GitHub token. It does not clone Atlas, author source, reinterpret payload bytes, force-push, write directly to `main`, broaden scope, or merge without a separate exact Execute mission.
 
-Production source is present, but the capability is not yet restored. Wave 3 must prove AJ-04, AJ-05, and AJ-06 with harmless live GitHub transactions before Prime may move CAP-017 from `STILL_MISSING` to `REPLACED`.
+Production Oathbringer is live-proven and active as Prime's GitHub-native replacement for predecessor clone-first CAP-017. AJ-04 BUILD, AJ-05 REPAIR, and AJ-06 EXECUTE passed through the thin PowerShell client with exact receipts, GitHub readback, applicable CI, and independent reconciliation. The durable acceptance record is `proof/oathbringer-production-acceptance-r01.md`.
 
 ## Mandatory forge inputs
 
@@ -64,7 +64,7 @@ Production missions use:
 
 ```text
 format_version = 2.0
-framework_state = PILOT_READY_PROOF_PENDING
+framework_state = schema-bound production compatibility value
 runtime_mode = PRODUCTION_GITHUB_NATIVE
 change_method = OATHBRINGER
 operator_interface = POWERSHELL

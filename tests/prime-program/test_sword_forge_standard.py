@@ -84,11 +84,16 @@ class SwordForgeStandardTests(unittest.TestCase):
         self.assertIn("do not silently rewrite", self.standard)
         self.assertIn("separate bounded source transaction", self.sword)
 
-    def test_wave_two_adds_adapter_without_claiming_live_restoration(self) -> None:
-        self.assertIn("PILOT_READY_PROOF_PENDING", self.sword)
-        self.assertIn("production adapter is **present but not yet capability-proven**", self.sword)
-        self.assertIn("Production mutation adapter:** present; harmless live proof pending", self.framework)
-        self.assertIn("Wave 3 must prove AJ-04, AJ-05, and AJ-06", self.framework)
+    def test_live_acceptance_promotes_the_production_adapter(self) -> None:
+        self.assertIn("live-proven and active", self.sword)
+        self.assertIn("CAP-017 is therefore `REPLACED`", self.sword)
+        self.assertIn(
+            "Production mutation adapter:** active; AJ-04 through AJ-06 live-proven",
+            self.framework,
+        )
+        self.assertIn("Production Oathbringer is live-proven and active", self.framework)
+        self.assertNotIn("present but not yet capability-proven", self.sword)
+        self.assertNotIn("harmless live proof pending", self.framework)
         for path in (
             "tools/atlas-sword/engine/oathbringer_api.py",
             "tools/atlas-sword/engine/oathbringer_core.py",

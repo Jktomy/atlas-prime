@@ -86,7 +86,6 @@ class CapabilityParityTests(unittest.TestCase):
             "CAP-010",
             "CAP-011",
             "CAP-015",
-            "CAP-017",
             "CAP-019",
             "CAP-020",
             "CAP-022",
@@ -96,28 +95,30 @@ class CapabilityParityTests(unittest.TestCase):
             self.assertEqual(records[capability_id]["capability_disposition"], "STILL_MISSING")
             self.assertEqual(records[capability_id]["activation_state"], "MISSING")
 
-    def test_legacy_oathbringer_capability_maps_to_replacement_journeys(self) -> None:
+    def test_legacy_oathbringer_capability_is_replaced_by_proven_journeys(self) -> None:
         records = {record["id"]: record for record in self.register["capabilities"]}
         cap_017 = records["CAP-017"]
         acceptance = (ROOT / "governance/capability-acceptance-contract.md").read_text(
             encoding="utf-8"
         )
+        proof = (ROOT / "proof/oathbringer-production-acceptance-r01.md").read_text(
+            encoding="utf-8"
+        )
 
         self.assertIn("Clone-first", cap_017["capability"])
         self.assertEqual(cap_017["path_disposition"], "HISTORICAL_CLOSED")
-        self.assertEqual(
-            cap_017["audit_status"],
-            "PRODUCTION_ADAPTER_PRESENT_LIVE_PROOF_PENDING",
-        )
-        self.assertIn("PILOT_READY_PROOF_PENDING", cap_017["current_state"])
-        self.assertIn("AJ-04 BUILD", cap_017["required_proof"])
-        self.assertIn("AJ-05 REPAIR", cap_017["required_proof"])
-        self.assertIn("AJ-06 EXECUTE", cap_017["required_proof"])
-        self.assertIn("CAP-017", acceptance)
-        self.assertIn("intended replacement", acceptance)
-        self.assertIn("AJ-04 through AJ-06", acceptance)
-        self.assertIn("STILL_MISSING", acceptance)
-        self.assertIn("REPLACED", acceptance)
+        self.assertEqual(cap_017["audit_status"], "PRODUCTION_ROUTE_LIVE_PROVEN")
+        self.assertEqual(cap_017["capability_disposition"], "REPLACED")
+        self.assertEqual(cap_017["activation_state"], "ACTIVE")
+        self.assertIn("AJ-04", cap_017["required_proof"])
+        self.assertIn("AJ-05", cap_017["required_proof"])
+        self.assertIn("AJ-06", cap_017["required_proof"])
+        self.assertIn("AJ-04, AJ-05, and AJ-06 are `PROVEN`", acceptance)
+        self.assertIn("`CAP-017` is `REPLACED` and `ACTIVE`", acceptance)
+        self.assertIn("AJ-04 BUILD    PROVEN", proof)
+        self.assertIn("AJ-05 REPAIR   PROVEN", proof)
+        self.assertIn("AJ-06 EXECUTE  PROVEN", proof)
+        self.assertIn("f670bf27073563af8beb830fccb916b519c80ac5", proof)
 
     def test_route_terms_are_not_conflated(self) -> None:
         records = {record["id"]: record for record in self.register["capabilities"]}
@@ -146,14 +147,13 @@ class CapabilityParityTests(unittest.TestCase):
 
         self.assertIn("Shardplate is the AI-assisted work surface", phoenix)
         self.assertIn("fresh Work context", spear)
-        self.assertIn("PILOT_READY_PROOF_PENDING", sword)
-        self.assertIn("present but not yet capability-proven", sword)
-        self.assertIn("Wave 3 completes AJ-04 through AJ-06", sword)
-        self.assertEqual(records["CAP-017"]["capability_disposition"], "STILL_MISSING")
-        self.assertEqual(records["CAP-017"]["activation_state"], "MISSING")
+        self.assertIn("live-proven and active", sword)
+        self.assertIn("CAP-017 is therefore `REPLACED`", sword)
+        self.assertEqual(records["CAP-017"]["capability_disposition"], "REPLACED")
+        self.assertEqual(records["CAP-017"]["activation_state"], "ACTIVE")
         self.assertEqual(
             records["CAP-017"]["audit_status"],
-            "PRODUCTION_ADAPTER_PRESENT_LIVE_PROOF_PENDING",
+            "PRODUCTION_ROUTE_LIVE_PROVEN",
         )
 
         self.assertIn("Aegis Break -> equivalent safe route", change_routes)

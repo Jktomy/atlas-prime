@@ -4,8 +4,8 @@
 
 - **Sword** is Athena's sealed mission-specific repository payload.
 - **Oathbringer** is Jayson's PowerShell-operated GitHub change method.
-- The checked-in framework state is `PILOT_READY_PROOF_PENDING`.
-- Audit schema `1.2` remains available; production schema `2.0` is present but awaits Wave 3 live proof.
+- The checked-in production route is capability-proven and active.
+- Audit schema `1.2` remains available; production schema `2.0` is live-proven for BUILD, REPAIR, and EXECUTE.
 
 ## Components
 
@@ -192,4 +192,6 @@ A failure or operator interruption preserves the known remote state in a durable
 
 ## Proof boundary
 
-Wave 2 establishes source and deterministic mocked-transport proof. It does not promote production capability. Wave 3 must complete harmless live BUILD, REPAIR, and EXECUTE journeys before Prime may describe Oathbringer production as restored or active.
+Wave 2 established source and deterministic mocked-transport proof. Wave 3 then completed harmless live BUILD, REPAIR, and EXECUTE journeys through the thin PowerShell client with exact GitHub readback, applicable CI, and independent reconciliation. The accepted evidence is recorded in `proof/oathbringer-production-acceptance-r01.md`.
+
+Production Oathbringer is active as the GitHub-native replacement for predecessor clone-first CAP-017. The route remains mission-scoped and carries no standing authority.
