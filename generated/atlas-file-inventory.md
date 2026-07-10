@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:eb3ad6cb3ffc6a0c98465f4c168f85052fde556aa123debd86b840f4eca5bc66
+Source fingerprint: sha256:268bd8b1ec7939a7f986912ebfdf5faa609efcd6f49d92e61b1870320d3543ea
 Generator format: 2
 Status: Generated support artifact
 
@@ -29,6 +29,7 @@ Status: Generated support artifact
 | `methods/artemis-bow-and-arrow.md` | methods | yes | none |
 | `methods/athenas-spear.md` | methods | yes | none |
 | `methods/atlas-sword.md` | methods | yes | policy-reference |
+| `methods/oathbringer-foundry.md` | methods | yes | policy-reference |
 | `methods/phoenix-blade.md` | methods | yes | none |
 | `methods/sword-forge-standard.md` | methods | yes | policy-reference |
 | `migration/codex-cutover.md` | migration | yes | none |
@@ -57,6 +58,7 @@ Status: Generated support artifact
 | `tools/atlas-sword/ARCHITECTURE.md` | tools | no | policy-reference |
 | `tools/atlas-sword/README.md` | tools | no | policy-reference |
 | `tools/atlas-sword/tests/test-contract.md` | tools | no | policy-reference |
+| `tools/oathbringer-foundry/README.md` | tools | no | none |
 | `tools/thread-engine/ARCHITECTURE.md` | tools | no | none |
 | `tools/thread-engine/PRIME-PORT-STATUS.md` | tools | no | none |
 | `tools/thread-engine/README.md` | tools | no | none |
