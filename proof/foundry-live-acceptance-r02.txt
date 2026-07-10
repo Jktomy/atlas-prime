@@ -1,5 +1,6 @@
 ATLAS OATHBRINGER FOUNDRY LIVE ACCEPTANCE
-Mission: ATLAS-FOUNDRY-LIVE-BUILD-20260710-R02
-Stage: BUILD
+Mission: ATLAS-FOUNDRY-LIVE-REPAIR-20260710-R03
+Stage: REPAIR
 Classification: PUBLIC_CLEAN
-This fixture is intentionally harmless and exists only to prove deterministic Foundry-to-Oathbringer delivery.
+Prior BUILD head: 11eb1fbdea1c51e2fa95f6b9e06c46aaff5835a2
+This harmless replacement proves Foundry-generated REPAIR fast-forward continuity on the existing draft PR.
