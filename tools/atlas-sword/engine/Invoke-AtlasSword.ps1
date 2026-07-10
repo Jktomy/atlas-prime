@@ -22,6 +22,9 @@ $ModulePath = Join-Path $ScriptRoot 'AtlasSword.Common.psm1'
 $AuditContractPath = Join-Path $ScriptRoot 'oathbringer_contract.py'
 $ProductionContractPath = Join-Path $ScriptRoot 'oathbringer_github.py'
 
+# Schema 1.2 compatibility: -AuditOnly is mandatory inside the audit contract.
+# Historical audit adapter identity retained for static readback: Invoke-AtlasOathbringerContract.
+
 foreach ($PowerShellPath in @($MyInvocation.MyCommand.Path, $ModulePath)) {
     $Tokens = $null
     $ParseErrors = $null
