@@ -414,7 +414,7 @@ def _material_entry(path: str, data: bytes) -> dict[str, Any]:
 
 
 def _carrier_launcher() -> bytes:
-    return b'''[CmdletBinding()]\nparam(\n    [string]$ReceiptPath = (Join-Path $PSScriptRoot '..\\oathbringer.receipt.json'),\n    [switch]$Json\n)\n$ErrorActionPreference = 'Stop'\n$root = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path\n$runner = Join-Path $root 'engine\\Invoke-AtlasSword.ps1'\n$args = @('-MissionPath', (Join-Path $root 'oathbringer-mission.json'), '-ReceiptPath', $ReceiptPath)\nif ($Json) { $args += '-Json' }\n& $runner @args\nexit $LASTEXITCODE\n'''
+    return b'''[CmdletBinding()]\nparam(\n    [string]$ReceiptPath = (Join-Path $PSScriptRoot '..\\oathbringer.receipt.json'),\n    [switch]$Json\n)\n$ErrorActionPreference = 'Stop'\n$root = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path\n$runner = Join-Path $root 'engine\\Invoke-AtlasSword.ps1'\n$invoke = @{\n    MissionPath = (Join-Path $root 'oathbringer-mission.json')\n    ReceiptPath = $ReceiptPath\n}\nif ($Json) { $invoke['Json'] = $true }\n& $runner @invoke\nexit $LASTEXITCODE\n'''
 
 
 def _read_input_payloads(mission: Mapping[str, Any], input_root: Path) -> dict[str, bytes]:

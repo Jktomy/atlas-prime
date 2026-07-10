@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -194,6 +195,69 @@ class OathbringerFoundryTests(unittest.TestCase):
             self.assertIn("SHA256SUMS.txt", names)
             self.assertTrue(all(info.compress_size == info.file_size for info in archive.infolist()))
 
+    def test_generated_launcher_binds_named_parameters_with_space_paths(self) -> None:
+        pwsh = shutil.which("pwsh")
+        self.assertIsNotNone(pwsh, "PowerShell 7 is required for launcher execution regression")
+
+        carrier_root = self.root / "carrier with spaces"
+        launcher_dir = carrier_root / "launcher"
+        engine_dir = carrier_root / "engine"
+        launcher_dir.mkdir(parents=True)
+        engine_dir.mkdir(parents=True)
+
+        launcher = launcher_dir / "Invoke-OathbringerCarrier.ps1"
+        launcher.write_bytes(foundry_module._carrier_launcher())
+
+        mission_path = carrier_root / "oathbringer-mission.json"
+        mission_path.write_text("{}\n", encoding="utf-8", newline="\n")
+        receipt_path = carrier_root / "receipt with spaces.json"
+
+        runner = engine_dir / "Invoke-AtlasSword.ps1"
+        runner.write_text(
+            """[CmdletBinding()]
+param(
+    [Parameter(Mandatory = $true)]
+    [string]$MissionPath,
+    [Parameter(Mandatory = $true)]
+    [string]$ReceiptPath,
+    [switch]$Json
+)
+[ordered]@{
+    mission_path = $MissionPath
+    receipt_path = $ReceiptPath
+    json = [bool]$Json
+} | ConvertTo-Json -Compress | Set-Content -LiteralPath $ReceiptPath -Encoding utf8NoBOM
+""",
+            encoding="utf-8",
+            newline="\n",
+        )
+
+        completed = subprocess.run(
+            [
+                pwsh,
+                "-NoLogo",
+                "-NoProfile",
+                "-NonInteractive",
+                "-File",
+                str(launcher),
+                "-ReceiptPath",
+                str(receipt_path),
+                "-Json",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        self.assertEqual(
+            completed.returncode,
+            0,
+            msg=f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}",
+        )
+        bound = json.loads(receipt_path.read_text(encoding="utf-8-sig"))
+        self.assertEqual(Path(bound["mission_path"]).resolve(), mission_path.resolve())
+        self.assertEqual(Path(bound["receipt_path"]).resolve(), receipt_path.resolve())
+        self.assertTrue(bound["json"])
     def test_carrier_embeds_a_valid_production_oathbringer_mission(self) -> None:
         result = self._compile(self._mission())
         extracted = self.root / "extracted"
