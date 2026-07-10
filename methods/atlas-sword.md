@@ -28,3 +28,19 @@ Prime currently contains the reusable audit framework and deterministic contract
 The production route must remain independent of Thread Engine and ChatGPT Work / Codex, use GitHub-native blob/tree/commit/ref/PR construction as its default durable transaction, keep PowerShell thin and deterministic mechanics subordinate to the sealed Sword, record stage and percentage truth before each action, preserve failure and interruption ledgers, and never let Thread Engine perform its own self-change.
 
 Fresh Clone First remains an emergency or compatibility substrate, not a mandatory Oathbringer construction path.
+
+## Mandatory forge routing
+
+Every request to build, repair, recover, or execute a Sword automatically routes through:
+
+1. `methods/sword-forge-standard.md`;
+2. `methods/sword-lessons.json`;
+3. this method source;
+4. `tools/atlas-sword/README.md`;
+5. the exact live repository, branch, pull request, and head state.
+
+No separate user phrase, preflight command, or memory prompt is required.
+
+A forged carrier must record `SWORD_FORGE_STANDARD_V1`, the lessons-register schema and source identity, every applied controlling lesson, and every not-applicable lesson with its mission-specific reason. Unknown applicability or an unclassified controlling lesson blocks carrier delivery.
+
+Strikeforce findings may repair the current Sword, but they never silently rewrite the Forge Standard or lessons register. Reusable lessons require a separate bounded source transaction with evidence and independent review.
