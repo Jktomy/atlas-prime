@@ -16,20 +16,23 @@ Start with `README.md`, then `bootstrap.md`, then this surface.
 | Need | Canonical route |
 |---|---|
 | Atlas identity and canonical authority | `atlas-prime.md`, `governance/source-hierarchy.md` |
-| Safety and execution boundaries | `safety/atlas-safety-doctrine.md`, `governance/noctua.md`, `governance/atlas-aegis.md` |
+| Safety and execution boundaries | `safety/atlas-safety-doctrine.md`, `governance/noctua.md`, `governance/atlas-aegis.md`, `governance/atlas-strikeforce.md`, `governance/protected-source-boundary.md`, `governance/cutover-boundary.md` |
 | Source changes | `governance/source-lifecycle.md`, `governance/change-routes.md` |
 | Projects | `projects/project-registry.md` |
 | Operations | `operations/operation-registry.md` |
 | Artemis, Hermes, Nexus | `operations/artemis-runtime-and-routing.md` |
-| Protocols and delivery methods | `operations/protocol-library.md`, `methods/` |
+| Protocols and delivery methods | `operations/protocol-library.md`, `methods/artemis-bow-and-arrow.md`, `methods/athenas-spear.md`, `methods/atlas-sword.md` |
 | Active Quests | `quest-board/quest-board-v1.json`, `quests/` |
 | Infrastructure source | `infrastructure/atlas-infrastructure-source.md` |
 | Backup, restore, recovery, rollback | `recovery/phoenix-recovery.md`, `migration/rollback-map.md` |
 | Knowledge lifecycle | `knowledge/atlas-source-compendium.md` |
 | Thread Engine | `tools/thread-engine/README.md`, `tools/thread-engine/PRIME-PORT-STATUS.json` |
 | Sword/Oathbringer | `tools/atlas-sword/README.md` |
+| Routing registry | `routing/command-surfaces.md` |
+| Reusable templates | `templates/preview-bundle-template.md`, `templates/project-template.md`, `templates/protocol-template.md`, `templates/source-file-template.md`, `templates/support-file-template.md` |
+| Proven delivery evidence | `proof/prime-thread-engine-bootstrap-proof.md`, `proof/prime-spear-arrow-bow-parity-r01.md` |
 | Generated projections | `tools/build_index.py`, `generated/` |
-| Migration and cutover evidence | `migration/` |
+| Migration and cutover evidence | `migration/codex-cutover.md`, `migration/rollback-map.md`, `migration/source-disposition-summary.json` |
 
 ## Decision box
 
