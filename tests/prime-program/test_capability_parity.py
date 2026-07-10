@@ -114,7 +114,7 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertIn("AJ-05", cap_017["required_proof"])
         self.assertIn("AJ-06", cap_017["required_proof"])
         self.assertIn("AJ-04, AJ-05, and AJ-06 are `PROVEN`", acceptance)
-        self.assertIn("CAP-017 is `REPLACED` and `ACTIVE`", acceptance)
+        self.assertIn("`CAP-017` is `REPLACED` and `ACTIVE`", acceptance)
         self.assertIn("AJ-04 BUILD    PROVEN", proof)
         self.assertIn("AJ-05 REPAIR   PROVEN", proof)
         self.assertIn("AJ-06 EXECUTE  PROVEN", proof)
