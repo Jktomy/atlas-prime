@@ -6,10 +6,10 @@ from pathlib import Path
 from typing import Any
 from oathbringer_core import (
     CHANGE_METHOD, EXECUTION_ENVIRONMENT, OPERATOR_INTERFACE, FORMAT_VERSION,
-    RUNTIME_MODE, ExecutionContext, OathbringerError, atomic_write_json_with_sha256,
-    validate_mission, _require,
+    RUNTIME_MODE, ExecutionContext, OathbringerError, validate_mission, _require,
 )
 from oathbringer_api import GitHubClient
+from oathbringer_support import atomic_write_json_with_sha256
 from oathbringer_runtime import execute_mission, changed_paths_between
 
 def render_result(result: dict[str, Any]) -> str:
