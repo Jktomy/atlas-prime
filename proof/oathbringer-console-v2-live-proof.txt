@@ -1,0 +1,6 @@
+Atlas Prime Oathbringer Console v2 live proof.
+Mission: OATHBRINGER-CONSOLE-V2-LIVE-PROOF
+Canonical base: ed21295da8ddcf1b1790ecf6fb559a3128e0e112
+Candidate console engine: f27edf34c3351fb788bac95f1c344e8ffa95d1bb
+Purpose: harmlessly prove colored Console v2 stages, workflow heartbeat, result diagnostics, and Deflected Sword readiness.
+This file is public-clean and contains no private data.
