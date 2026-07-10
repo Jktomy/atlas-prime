@@ -187,7 +187,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File .\engine\Invoke-AtlasSword.ps1 `
 
 ## Deflected Sword
 
-When a production strike fails or is interrupted, the thin PowerShell client attempts to create one sanitized diagnostic archive named:
+When a production strike fails or is interrupted, the deterministic Python adapter attempts to create one sanitized diagnostic archive named:
 
 ```text
 Atlas-Deflected-Sword-<MISSION-ID>-<REVISION>.zip

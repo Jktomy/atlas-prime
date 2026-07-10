@@ -17,7 +17,9 @@ from oathbringer_core import (
     OPERATOR_INTERFACE,
     RUNTIME_MODE,
     ExecutionContext,
+    OathbringerError,
     _require,
+    validate_mission,
 )
 from oathbringer_runtime import changed_paths_between, execute_mission
 from oathbringer_support import atomic_write_json_with_sha256
@@ -109,8 +111,8 @@ def _write_failure_artifacts(
             print(f"\nDeflected Sword creation failed safely: {exc}", flush=True)
         return None
 
-    if not json_mode and console is not None:
-        console.render_deflected_sword(deflected)
+    if not json_mode:
+        print(f"\nDeflected Sword: {deflected}", flush=True)
     return deflected
 
 
