@@ -23,25 +23,30 @@ class OathbringerGitHubNativeTests(unittest.TestCase):
         self.payload_sha = hashlib.sha256(payload.read_bytes()).hexdigest()
         self.lessons_sha = hashlib.sha256(lessons.read_bytes()).hexdigest()
         self.client = FakeGitHubClient()
-        self._write_manifest()
 
     def tearDown(self) -> None:
         self.temp.cleanup()
 
-    def _write_manifest(self, extra_paths: tuple[str, ...] = ()) -> None:
-        paths = ["payload/oathbringer-harmless.txt", "source/methods/sword-lessons.json", *extra_paths]
+    def _mission(self) -> dict:
+        return base_mission(self.payload_sha, self.lessons_sha)
+
+    def _seal(self, mission: dict, extra_paths: tuple[str, ...] = ()) -> None:
+        mission_path = self.root / "mission.json"
+        mission_path.write_text(json.dumps(mission, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+        paths = ["mission.json", "payload/oathbringer-harmless.txt", "source/methods/sword-lessons.json", *extra_paths]
         files = []
         for relative in paths:
             member = self.root / relative
             files.append({"path": relative, "sha256": hashlib.sha256(member.read_bytes()).hexdigest(), "size": member.stat().st_size})
         (self.root / "MANIFEST.json").write_text(json.dumps({"files": files}, indent=2) + "\n", encoding="utf-8", newline="\n")
 
-    def _mission(self) -> dict:
-        return base_mission(self.payload_sha, self.lessons_sha)
+    def _run(self, mission: dict, client=None, context=None, extra_paths: tuple[str, ...] = ()):
+        self._seal(mission, extra_paths)
+        return og.execute_mission(mission, self.root, client or self.client, mission_relative_path="mission.json", json_mode=True, context=context)
 
     def test_build_creates_exact_single_commit_draft_pr(self) -> None:
         mission = self._mission()
-        result, context = og.execute_mission(mission, self.root, self.client, json_mode=True)
+        result, context = self._run(mission)
         self.assertEqual(result["status"], "OATHBRINGER_BUILD_PASS")
         self.assertEqual(result["authenticated_github_login"], "Jktomy")
         self.assertEqual(result["changed_paths"], ["proof/oathbringer-harmless.txt"])
@@ -53,34 +58,30 @@ class OathbringerGitHubNativeTests(unittest.TestCase):
         self.assertNotIn("main", [call[1] for call in self.client.calls if call[0] == "create_ref"])
 
     def test_repair_fast_forwards_the_exact_existing_pr(self) -> None:
-        build = self._mission()
-        first, _ = og.execute_mission(build, self.root, self.client, json_mode=True)
+        first, _ = self._run(self._mission())
         payload = self.root / "payload/oathbringer-harmless.txt"
         payload.write_text("Oathbringer repaired proof.\n", encoding="utf-8", newline="\n")
         self.payload_sha = hashlib.sha256(payload.read_bytes()).hexdigest()
-        self._write_manifest()
         repair = self._mission()
         repair.update({"lane": "REPAIR", "expected_head": first["commit_sha"], "pull_request": 1, "commit_message": "Proof: repair harmless Oathbringer fixture"})
         repair.pop("pull_request_contract")
-        second, _ = og.execute_mission(repair, self.root, self.client, json_mode=True)
+        second, _ = self._run(repair)
         self.assertEqual(second["status"], "OATHBRINGER_REPAIR_PASS")
         self.assertEqual(self.client.commits[second["commit_sha"]]["parent"], first["commit_sha"])
         self.assertIn(("update_ref", repair["branch"], second["commit_sha"]), self.client.calls)
         self.assertTrue(self.client.pull_requests[1]["draft"])
 
     def test_execute_marks_ready_and_merges_only_packaged_audited_head(self) -> None:
-        build = self._mission()
-        first, _ = og.execute_mission(build, self.root, self.client, json_mode=True)
+        first, _ = self._run(self._mission())
         audit = self.root / "audit/green.json"
         audit.parent.mkdir(parents=True)
         audit.write_text(json.dumps({"verdict": "GREEN", "exact_head": first["commit_sha"]}) + "\n", encoding="utf-8", newline="\n")
         audit_sha = hashlib.sha256(audit.read_bytes()).hexdigest()
-        self._write_manifest(("audit/green.json",))
         execute = self._mission()
         execute.update({"lane": "EXECUTE", "expected_head": first["commit_sha"], "pull_request": 1, "independent_audit": {"verdict": "GREEN", "exact_head": first["commit_sha"], "receipt_path": "audit/green.json", "receipt_sha256": audit_sha}, "merge_method": "squash", "stop_boundary": "Stop after merged-main readback."})
         execute.pop("commit_message")
         execute.pop("pull_request_contract")
-        result, _ = og.execute_mission(execute, self.root, self.client, json_mode=True)
+        result, _ = self._run(execute, extra_paths=("audit/green.json",))
         self.assertEqual(result["status"], "OATHBRINGER_EXECUTE_PASS")
         self.assertTrue(self.client.pull_requests[1]["merged"])
         self.assertIn(("mark_ready", 1), self.client.calls)
@@ -89,21 +90,21 @@ class OathbringerGitHubNativeTests(unittest.TestCase):
     def test_identity_manifest_workflow_and_unknown_fields_fail_closed(self) -> None:
         mission = self._mission()
         with self.assertRaisesRegex(og.OathbringerError, "authenticated GitHub login mismatch"):
-            og.execute_mission(mission, self.root, FakeGitHubClient(login="someone-else"), json_mode=True)
+            self._run(mission, client=FakeGitHubClient(login="someone-else"))
+        self._seal(mission)
         (self.root / "MANIFEST.json").unlink()
         with self.assertRaisesRegex(og.OathbringerError, "requires MANIFEST"):
-            og.execute_mission(self._mission(), self.root, FakeGitHubClient(), json_mode=True)
-        self._write_manifest()
+            og.execute_mission(mission, self.root, FakeGitHubClient(), mission_relative_path="mission.json", json_mode=True)
         workflow_mission = self._mission()
         workflow_mission["workflow_rules"] = [{"name": "Prime read-only validation", "event": "pull_request", "workflow_path": ".github/workflows/prime.yml", "workflow_blob": "f" * 40, "appearance_grace_seconds": 1, "completion_timeout_seconds": 1, "expected_conclusion": "success"}]
         with self.assertRaisesRegex(og.OathbringerError, "workflow source missing"):
-            og.execute_mission(workflow_mission, self.root, FakeGitHubClient(), json_mode=True)
+            self._run(workflow_mission, client=FakeGitHubClient())
         unknown = self._mission()
         unknown["force"] = True
         with self.assertRaisesRegex(og.OathbringerError, "unknown fields"):
             og.validate_mission(unknown)
 
-    def test_unknown_lesson_status_and_payload_escape_fail_closed(self) -> None:
+    def test_unknown_lesson_status_payload_escape_and_unmanifested_member_fail_closed(self) -> None:
         mission = self._mission()
         mission["lesson_applicability"][0]["status"] = "UNKNOWN"
         with self.assertRaisesRegex(og.OathbringerError, "invalid lesson status"):
@@ -112,15 +113,21 @@ class OathbringerGitHubNativeTests(unittest.TestCase):
         mission["declared_paths"][0]["payload_path"] = "../outside.txt"
         with self.assertRaisesRegex(og.OathbringerError, "must not contain"):
             og.validate_mission(mission)
+        mission = self._mission()
+        self._seal(mission)
+        manifest = json.loads((self.root / "MANIFEST.json").read_text(encoding="utf-8"))
+        manifest["files"] = [item for item in manifest["files"] if item["path"] != "payload/oathbringer-harmless.txt"]
+        (self.root / "MANIFEST.json").write_text(json.dumps(manifest) + "\n", encoding="utf-8", newline="\n")
+        with self.assertRaisesRegex(og.OathbringerError, "absent from MANIFEST"):
+            og.execute_mission(mission, self.root, FakeGitHubClient(), mission_relative_path="mission.json", json_mode=True)
 
     def test_failure_after_candidate_tree_preserves_partial_remote_state(self) -> None:
         class CommitFailingClient(FakeGitHubClient):
             def create_commit(self, message: str, tree_sha: str, parent_sha: str) -> str:
                 raise RuntimeError("simulated commit failure")
-        mission = self._mission()
         context = og.ExecutionContext()
         with self.assertRaisesRegex(RuntimeError, "simulated commit failure"):
-            og.execute_mission(mission, self.root, CommitFailingClient(), json_mode=True, context=context)
+            self._run(self._mission(), client=CommitFailingClient(), context=context)
         self.assertTrue(context.github_called)
         self.assertTrue(context.mutation_performed)
         self.assertEqual(context.ledger.current_stage, "COMMIT")
