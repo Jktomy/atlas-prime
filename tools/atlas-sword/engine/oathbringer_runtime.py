@@ -170,19 +170,31 @@ def execute_merge(mission: dict[str, Any], package_root: Path, client: Any, cont
     _complete(context, str(mission['stop_boundary']), json_mode)
     return {'result': 'PASS', 'status': 'OATHBRINGER_EXECUTE_PASS', 'lane': 'EXECUTE', 'repository': mission['repository'], 'authenticated_github_login': login, 'pull_request': mission['pull_request'], 'audited_head': mission['expected_head'], 'merge_sha': merge_sha, 'base_head': base_ref['object']['sha'], 'changed_paths': changed_paths, 'workflow_gate': workflow_gate, 'stop_boundary': mission['stop_boundary']}
 
-def execute_mission(mission: dict[str, Any], package_root: Path, client: Any, *, json_mode: bool=False, context: ExecutionContext | None=None) -> tuple[dict[str, Any], ExecutionContext]:
+def execute_mission(mission: dict[str, Any], package_root: Path, client: Any, *, mission_relative_path: str | None=None, json_mode: bool=False, context: ExecutionContext | None=None) -> tuple[dict[str, Any], ExecutionContext]:
     context = context or ExecutionContext()
     _enter(context, 'MISSION_CONTRACT', 3, 'validate production mission and authority capsule', json_mode)
     validate_mission(mission)
     _complete(context, 'production mission contract validated', json_mode)
-    _enter(context, 'PACKAGE_INTEGRITY', 6, 'verify required carrier manifest and bound lessons source', json_mode)
+
+    _enter(context, 'PACKAGE_INTEGRITY', 6, 'verify required carrier manifest and all bound mission evidence', json_mode)
+    _require(bool(mission_relative_path), 'production mission path must be bound to the package manifest')
     manifest = verify_required_manifest(package_root)
+    members = set(manifest['members'])
+    required_members = {str(mission_relative_path), mission['lessons_register']['path']}
+    required_members.update(str(item['payload_path']) for item in mission['declared_paths'] if item.get('payload_path'))
+    if mission['lane'] == 'EXECUTE':
+        required_members.add(mission['independent_audit']['receipt_path'])
+    missing = sorted(required_members - members)
+    _require(not missing, f'bound package members are absent from MANIFEST.json: {missing}')
+    mission_file = verify_package_member(package_root, str(mission_relative_path), next(item['sha256'] for item in json.loads((package_root / 'MANIFEST.json').read_text(encoding='utf-8'))['files'] if item['path'] == mission_relative_path))
+    _require(json.loads(mission_file.read_text(encoding='utf-8')) == mission, 'invoked mission bytes do not match the manifest-bound mission')
     lessons = mission['lessons_register']
     verify_package_member(package_root, lessons['path'], lessons['source_sha256'])
-    _complete(context, f"manifest verified with {manifest['member_count']} members; lessons source bound", json_mode)
+    _complete(context, f"manifest verified with {manifest['member_count']} members; mission, payload, lessons, and audit evidence bound", json_mode)
+
     if mission['lane'] == 'EXECUTE':
         result = execute_merge(mission, package_root, client, context, json_mode=json_mode)
     else:
         result = execute_source_change(mission, package_root, client, context, json_mode=json_mode)
-    result.update({'format_version': FORMAT_VERSION, 'change_method': CHANGE_METHOD, 'execution_environment': EXECUTION_ENVIRONMENT, 'operator_interface': OPERATOR_INTERFACE, 'runtime_mode': RUNTIME_MODE, 'forge_standard': FORGE_STANDARD, 'manifest_verified': True, 'manifest_member_count': manifest['member_count'], 'stage_ledger': context.ledger.as_dict(), 'completion_flags': {'github_called': context.github_called, 'mutation_performed': context.mutation_performed, 'automatic_retry': False, 'automatic_rollback': False, 'token_persisted': False}})
+    result.update({'format_version': FORMAT_VERSION, 'change_method': CHANGE_METHOD, 'execution_environment': EXECUTION_ENVIRONMENT, 'operator_interface': OPERATOR_INTERFACE, 'runtime_mode': RUNTIME_MODE, 'forge_standard': FORGE_STANDARD, 'manifest_verified': True, 'manifest_member_count': manifest['member_count'], 'mission_manifest_path': mission_relative_path, 'stage_ledger': context.ledger.as_dict(), 'completion_flags': {'github_called': context.github_called, 'mutation_performed': context.mutation_performed, 'automatic_retry': False, 'automatic_rollback': False, 'token_persisted': False}})
     return (result, context)
