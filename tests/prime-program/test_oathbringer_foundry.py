@@ -16,6 +16,7 @@ FOUNDRY_ROOT = ROOT / "tools" / "oathbringer-foundry"
 sys.path.insert(0, str(FOUNDRY_ROOT))
 
 import foundry as foundry_module
+from cli import REPLAY_LEDGER_NAME, _read_replay_ledger, _record_replay_ledger
 from foundry import FoundryError, bind_live_state, compile_carrier, load_json, read_live_state, verify_carrier
 
 
@@ -32,6 +33,13 @@ class OathbringerFoundryTests(unittest.TestCase):
         self.payload = self.input_root / "payload" / "harmless.txt"
         self.payload.write_text("Foundry harmless fixture.\n", encoding="utf-8", newline="\n")
         self.lessons_sha = digest(ROOT / "methods" / "sword-lessons.json")
+        self.locked_source_paths = [
+            {"path": "methods/sword-lessons.json", "sha256": self.lessons_sha},
+            *[
+                {"path": path, "sha256": digest(ROOT / path)}
+                for path in foundry_module._engine_source_paths(ROOT)
+            ],
+        ]
 
     def tearDown(self) -> None:
         self.temp.cleanup()
@@ -127,7 +135,7 @@ class OathbringerFoundryTests(unittest.TestCase):
                 "expected_base": "a" * 40,
                 "expected_head": expected_head,
                 "workflow_sources": [],
-                "source_paths": [{"path": "methods/sword-lessons.json", "sha256": self.lessons_sha}],
+                "source_paths": [dict(item) for item in self.locked_source_paths],
             },
             "target_lock": {"branch": "proof/foundry-harmless-r01", "pull_request": pull_request},
             "operations": operations,
@@ -239,6 +247,20 @@ class OathbringerFoundryTests(unittest.TestCase):
         with self.assertRaisesRegex(FoundryError, "must be under audit"):
             self._compile(execute)
 
+    def test_every_current_engine_source_is_locked(self) -> None:
+        mission = self._mission()
+        mission["source_lock"]["source_paths"].pop()
+        with self.assertRaisesRegex(FoundryError, "every current engine file"):
+            self._compile(mission)
+
+    def test_production_replay_ledger_is_durable_and_fail_closed(self) -> None:
+        ledger = self.root / "ledger" / REPLAY_LEDGER_NAME
+        self.assertEqual(_read_replay_ledger(ledger), [])
+        _record_replay_ledger(ledger, "FOUNDRY-ONE")
+        self.assertEqual(_read_replay_ledger(ledger), ["FOUNDRY-ONE"])
+        with self.assertRaisesRegex(FoundryError, "replayed mission"):
+            _record_replay_ledger(ledger, "FOUNDRY-ONE")
+
     def test_live_binding_requires_exact_branch_and_actual_open_pull_set(self) -> None:
         branch = "proof/foundry-harmless-r01"
         with patch.object(foundry_module, "_gh_json", return_value=[{"ref": f"refs/heads/{branch}-suffix"}]):
@@ -283,6 +305,10 @@ class OathbringerFoundryTests(unittest.TestCase):
             self.payload.write_text(token + "\n", encoding="utf-8", newline="\n")
             with self.assertRaisesRegex(FoundryError, "protected"):
                 self._compile(self._mission())
+        mission = self._mission()
+        mission["oathbringer_mission"]["commit_message"] = "sk-" + "b" * 24
+        with self.assertRaisesRegex(FoundryError, "protected"):
+            self._compile(mission)
 
     def test_archive_path_attack_is_rejected(self) -> None:
         bad = self.root / "bad.zip"
@@ -300,6 +326,24 @@ class OathbringerFoundryTests(unittest.TestCase):
         with self.assertRaisesRegex(FoundryError, "undeclared"):
             verify_carrier(altered)
 
+    def test_archive_casefold_and_compression_attacks_are_rejected(self) -> None:
+        carrier = self._compile(self._mission()).carrier_path
+        casefold = self.root / "casefold.zip"
+        shutil.copy2(carrier, casefold)
+        with zipfile.ZipFile(casefold, "a") as archive:
+            archive.writestr("payload/HARMLESS.TXT", "collision\n")
+        with self.assertRaisesRegex(FoundryError, "case-fold"):
+            verify_carrier(casefold)
+        compressed = self.root / "compressed.zip"
+        with zipfile.ZipFile(carrier) as source, zipfile.ZipFile(compressed, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+            for item in source.infolist():
+                info = zipfile.ZipInfo(item.filename)
+                info.external_attr = 0o100644 << 16
+                info.compress_type = zipfile.ZIP_DEFLATED
+                archive.writestr(info, source.read(item.filename))
+        with self.assertRaisesRegex(FoundryError, "compression"):
+            verify_carrier(compressed)
+
     def test_source_has_no_mutating_client_or_secret_persistence(self) -> None:
         source = (FOUNDRY_ROOT / "foundry.py").read_text(encoding="utf-8")
         self.assertIn("read-only", source)
@@ -315,6 +359,8 @@ class OathbringerFoundryTests(unittest.TestCase):
         self.assertNotIn('add_argument("--live-state"', source)
         self.assertNotIn('add_argument("--bind-live"', source)
         self.assertIn("live = read_live_state(mission)", source)
+        self.assertIn("REPLAY_LEDGER_NAME", source)
+        self.assertIn("_record_replay_ledger", source)
         launcher = (FOUNDRY_ROOT / "Invoke-OathbringerFoundry.ps1").read_text(encoding="utf-8")
         readme = (FOUNDRY_ROOT / "README.md").read_text(encoding="utf-8")
         doctrine = (ROOT / "methods" / "oathbringer-foundry.md").read_text(encoding="utf-8")

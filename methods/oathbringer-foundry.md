@@ -45,7 +45,8 @@ Every carrier binds:
 - source and workflow blob identities;
 - the current `prime-sword-lessons-v1` register and a classification for every
   controlling lesson;
-- the current applicable Oathbringer transport source and a carrier manifest;
+- the complete current applicable Oathbringer transport source hashes and a
+  carrier manifest;
 - a deterministic Forge receipt, Deflected Sword configuration, and test
   contract.
 
@@ -61,6 +62,11 @@ missing final bytes, malformed JSON, unsafe paths, Unicode/case-fold collisions,
 non-regular files, archive-bomb limits, stale source/workflow locks, missing or
 unclassified lessons, replayed mission identity, mismatched independent audit,
 or token-shaped/protected material.
+
+Production compilation records successful mission identities in a durable
+output-directory replay ledger. Payloads and audit evidence are restricted to
+their dedicated namespaces and cannot replace compiler-controlled carrier
+material.
 
 ## Invocation
 

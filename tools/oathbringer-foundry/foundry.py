@@ -12,6 +12,7 @@ import json
 import os
 import re
 import shutil
+import stat
 import subprocess
 import tempfile
 import unicodedata
@@ -216,7 +217,8 @@ def validate_mission(mission: Mapping[str, Any], source_root: Path) -> None:
         _require(path not in source_paths, f"duplicate source path: {path}")
         source_paths.add(path)
         _sha256(item.get("sha256"), f"source_paths[{index}].sha256")
-    _require("methods/sword-lessons.json" in source_paths, "source lock must bind the lessons register")
+    expected_source_paths = {"methods/sword-lessons.json", *_engine_source_paths(source_root)}
+    _require(source_paths == expected_source_paths, "source lock must bind the lessons register and every current engine file")
 
     target_lock = mission["target_lock"]
     _require(isinstance(target_lock, dict), "target_lock must be an object")
@@ -424,9 +426,8 @@ def _engine_materials(source_root: Path) -> dict[str, bytes]:
     engine_root = source_root / "tools" / "atlas-sword" / "engine"
     _require(engine_root.is_dir(), "current Oathbringer engine is missing")
     result: dict[str, bytes] = {}
-    for path in sorted(engine_root.iterdir(), key=lambda item: item.name):
-        if not path.is_file() or path.is_symlink() or path.suffix not in {".py", ".ps1", ".psm1"}:
-            continue
+    for source_path in _engine_source_paths(source_root):
+        path = _regular_member(source_root, source_path, f"current transport {source_path}")
         relative = f"engine/{path.name}"
         data = path.read_bytes()
         _scan_clean(data, f"transport {relative}")
@@ -435,8 +436,23 @@ def _engine_materials(source_root: Path) -> dict[str, bytes]:
     return result
 
 
+def _engine_source_paths(source_root: Path) -> list[str]:
+    """Return the exact source-relative files that become carrier transport."""
+
+    engine_root = source_root / "tools" / "atlas-sword" / "engine"
+    _require(engine_root.is_dir(), "current Oathbringer engine is missing")
+    result: list[str] = []
+    for path in sorted(engine_root.iterdir(), key=lambda item: item.name):
+        if path.is_file() and not path.is_symlink() and path.suffix in {".py", ".ps1", ".psm1"}:
+            result.append(f"tools/atlas-sword/engine/{path.name}")
+    _require(result, "current Oathbringer engine is empty")
+    return result
+
+
 def _deterministic_zip(destination: Path, members: Mapping[str, bytes]) -> None:
     _require(len(members) <= MAX_MEMBERS, "carrier member limit exceeded")
+    folded = [name.casefold() for name in members]
+    _require(len(folded) == len(set(folded)), "carrier members contain a case-fold collision")
     total = sum(len(value) for value in members.values())
     _require(total <= MAX_TOTAL_BYTES, "carrier total limit exceeded")
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -547,6 +563,9 @@ def compile_carrier(
         "The carrier grants no new authority and never auto-retries, rolls back, readies, or merges.\n"
     ).encode("utf-8")
 
+    for path, data in members.items():
+        _scan_clean(data, f"carrier material {path}")
+
     manifest = {"format_version": "1.0", "files": [_material_entry(path, members[path]) for path in sorted(members)]}
     members["MANIFEST.json"] = canonical_json(manifest)
     checksums = "".join(f"{sha256(members[path])}  {path}\n" for path in sorted(members))
@@ -576,13 +595,18 @@ def verify_carrier(carrier: Path) -> dict[str, Any]:
         infos = archive.infolist()
         _require(0 < len(infos) <= MAX_MEMBERS, "carrier member count is unsafe")
         names: set[str] = set()
+        folded: set[str] = set()
         total = 0
         for info in infos:
             name = safe_path(info.filename, "carrier archive path")
             _require(name not in names, f"duplicate carrier member: {name}")
             names.add(name)
+            _require(name.casefold() not in folded, f"case-fold carrier member collision: {name}")
+            folded.add(name.casefold())
             _require(not info.is_dir(), "carrier must not contain directory entries")
+            _require(stat.S_ISREG(info.external_attr >> 16), f"carrier member is not a regular file: {name}")
             _require(info.file_size <= MAX_MEMBER_BYTES, f"carrier member exceeds limit: {name}")
+            _require(info.compress_type == zipfile.ZIP_STORED, f"carrier compression policy drift: {name}")
             _require(info.compress_size == info.file_size, f"carrier compression policy drift: {name}")
             total += info.file_size
         _require(total <= MAX_TOTAL_BYTES, "carrier total exceeds limit")

@@ -27,6 +27,8 @@ paths; it never prints a credential.
 One compile writes:
 
 - `Oathbringer-Foundry-<mission>-<revision>.zip` and its SHA-256 sidecar;
+- `FOUNDRY-REPLAY-LEDGER.json` in the output directory; a recorded mission
+  identity is rejected on later production compiles from that durable ledger;
 - an immutable `MANIFEST.json` and `SHA256SUMS.txt` inside the carrier;
 - canonical mission, authority, source/target locks, operation inventory,
   complete payload bytes, source lessons, transport library, launcher,
