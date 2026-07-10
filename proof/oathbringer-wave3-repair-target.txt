@@ -1,0 +1,6 @@
+Atlas Prime Oathbringer Wave 3 repaired target.
+Journey: AJ-05 REPAIR
+Base: 187a1699e95634bdb07f2ec13b4c58f3b1694d9a
+Prior head: 61f79757b7dfe91b335d4c7106521f8a8ebd0e5f
+Purpose: prove exact-head GitHub-native REPAIR through the thin Oathbringer PowerShell client.
+This file is public-clean and contains no private data.
