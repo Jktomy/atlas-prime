@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/tools/oathbringer-foundry/schema/foundry-mission-v1.schema.json",
+  "title": "Oathbringer Foundry Mission v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format_version",
+    "compiler_identity",
+    "mode",
+    "mission_id",
+    "revision",
+    "authority",
+    "source_lock",
+    "target_lock",
+    "operations",
+    "lesson_applicability",
+    "privacy_classification",
+    "stop_boundary",
+    "rollback",
+    "oathbringer_mission"
+  ],
+  "properties": {
+    "format_version": {"const": "1.0"},
+    "compiler_identity": {"const": "SWORD_FORGE_COMPILER_V1"},
+    "mode": {"enum": ["BUILD", "REPAIR", "RECOVERY", "EXECUTE"]},
+    "mission_id": {"type": "string", "minLength": 1},
+    "revision": {"type": "string", "pattern": "^R[0-9]{2,}$"},
+    "authority": {"type": "object"},
+    "source_lock": {"type": "object"},
+    "target_lock": {"type": "object"},
+    "operations": {"type": "array"},
+    "lesson_applicability": {"type": "array", "minItems": 1},
+    "privacy_classification": {"const": "PUBLIC_CLEAN"},
+    "stop_boundary": {"type": "string", "minLength": 1},
+    "rollback": {"type": "string", "minLength": 1},
+    "oathbringer_mission": {"type": ["object", "null"]}
+  }
+}
