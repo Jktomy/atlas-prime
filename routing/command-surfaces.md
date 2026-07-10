@@ -24,7 +24,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Artemis, Hermes, Nexus | `operations/artemis-runtime-and-routing.md` |
 | Protocols and delivery methods | `operations/protocol-library.md`, `methods/artemis-bow-and-arrow.md`, `methods/athenas-spear.md`, `methods/atlas-sword.md`, `methods/phoenix-blade.md` |
 | Athena direct construction or repair | `methods/phoenix-blade.md`, then the exact live repository or PR state |
-| Sword or Oathbringer request | `methods/atlas-sword.md`, `tools/atlas-sword/README.md`, then the exact live repository or PR state |
+| Sword or Oathbringer request | `methods/sword-forge-standard.md`, `methods/sword-lessons.json`, `methods/atlas-sword.md`, `tools/atlas-sword/README.md`, then the exact live repository or PR state |
 | Active Quests | `quest-board/quest-board-v1.json`, `quests/` |
 | Infrastructure source | `infrastructure/atlas-infrastructure-source.md` |
 | Backup, restore, recovery, rollback | `recovery/phoenix-recovery.md`, `migration/rollback-map.md` |
@@ -40,7 +40,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 
 A request for Athena to construct or repair Atlas directly routes to Phoenix Blade without requiring ChatGPT Work / Codex, Thread Engine, or Oathbringer.
 
-A request for a Sword automatically routes through the current Sword/Oathbringer doctrine and implementation source before package construction. The user does not need to invoke a separate preflight command.
+A request to build, repair, recover, execute, or otherwise make a Sword automatically routes first through `methods/sword-forge-standard.md` and `methods/sword-lessons.json`, then through current Sword/Oathbringer doctrine and implementation source, and finally through exact live GitHub target state. The user does not need to invoke a separate preflight command or remind Athena to recall earlier lessons.
 
 ## Decision box
 

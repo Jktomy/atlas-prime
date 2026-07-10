@@ -1,0 +1,151 @@
+{
+  "schema_version": "prime-sword-lessons-v1",
+  "forge_standard": "SWORD_FORGE_STANDARD_V1",
+  "canonical_repository": "Jktomy/atlas-prime",
+  "register_role": "CANONICAL_VERIFIED_SWORD_LESSONS",
+  "maturity_vocabulary": [
+    "OBSERVED",
+    "CORROBORATED",
+    "VERIFIED",
+    "ABSORBED",
+    "SUPERSEDED"
+  ],
+  "controlling_maturities": [
+    "VERIFIED",
+    "ABSORBED"
+  ],
+  "promotion_rule": "Strikeforce findings and mission receipts never self-promote. A bounded reviewed source change with evidence is required before a lesson becomes VERIFIED or ABSORBED.",
+  "application_rule": "Every controlling lesson whose trigger matches a Sword mission must be APPLIED or classified NOT_APPLICABLE with a mission-specific reason. UNKNOWN or missing classification blocks forging.",
+  "lessons": [
+    {
+      "lesson_id": "SWORD-L001",
+      "maturity": "ABSORBED",
+      "title": "Parse the launcher before mission action",
+      "trigger": "Every Sword carrier containing PowerShell",
+      "failure": "A PowerShell syntax defect stopped the mission before repository work began.",
+      "required_control": "Parse and smoke-test the exact packaged launcher before delivery, including package-relative path resolution.",
+      "applies_to": ["BUILD", "REPAIR", "RECOVERY", "EXECUTE"],
+      "evidence": ["Jktomy/atlas-codex#261"]
+    },
+    {
+      "lesson_id": "SWORD-L002",
+      "maturity": "ABSORBED",
+      "title": "Seal complete candidate bytes",
+      "trigger": "Every ADD or REPLACE operation",
+      "failure": "Malformed or brittle patches failed before the intended candidate could be constructed.",
+      "required_control": "Carry complete candidate bytes and hashes for additions and replacements; patches may be evidence but are not the sole payload authority.",
+      "applies_to": ["BUILD", "REPAIR", "RECOVERY"],
+      "evidence": ["Jktomy/atlas-codex#261", "Jktomy/atlas-prime#51"]
+    },
+    {
+      "lesson_id": "SWORD-L003",
+      "maturity": "ABSORBED",
+      "title": "Verify semantic postconditions",
+      "trigger": "Every source-changing Sword",
+      "failure": "A correct candidate was rejected by an overly broad or incorrect postcondition.",
+      "required_control": "Bind postconditions to the exact intended semantic change and test them against both the source and candidate state.",
+      "applies_to": ["BUILD", "REPAIR", "RECOVERY"],
+      "evidence": ["Jktomy/atlas-codex#261"]
+    },
+    {
+      "lesson_id": "SWORD-L004",
+      "maturity": "ABSORBED",
+      "title": "GitHub readback is remote authority",
+      "trigger": "Every operation that creates or changes GitHub state",
+      "failure": "A local pull-request body comparison falsely reported failure after the remote candidate had succeeded.",
+      "required_control": "Read back the exact remote branch, commit, pull request, files, and workflow state from GitHub; local serialization comparisons cannot overrule canonical readback.",
+      "applies_to": ["BUILD", "REPAIR", "RECOVERY", "EXECUTE"],
+      "evidence": ["Jktomy/atlas-codex#261"]
+    },
+    {
+      "lesson_id": "SWORD-L005",
+      "maturity": "ABSORBED",
+      "title": "Audit the exact final path set",
+      "trigger": "Every multi-file mission and every mission containing ADD, DELETE, RENAME, or MOVE",
+      "failure": "Tracked-only diff logic omitted an approved untracked ADD from the candidate audit.",
+      "required_control": "Compare the exact declared operation inventory with the final GitHub tree and changed-path set; clone fallback must enumerate untracked paths before intent-to-add.",
+      "applies_to": ["BUILD", "REPAIR", "RECOVERY"],
+      "evidence": ["Jktomy/atlas-codex#264", "Jktomy/atlas-codex#265"]
+    },
+    {
+      "lesson_id": "SWORD-L006",
+      "maturity": "VERIFIED",
+      "title": "Treat clone behavior as a compatibility profile",
+      "trigger": "Fresh Clone First or any local Git workspace is selected",
+      "failure": "Windows long paths, line-ending conversion, read-only cleanup, and Git-mediated byte checks caused deterministic clone-stage failures.",
+      "required_control": "Use command-scoped long-path and line-ending settings, deterministic cleanup, exact byte verification, and explicit clone-stage receipts.",
+      "applies_to": ["BUILD", "REPAIR", "RECOVERY"],
+      "evidence": ["Jktomy/atlas-codex#264", "Jktomy/atlas-codex#265"]
+    },
+    {
+      "lesson_id": "SWORD-L007",
+      "maturity": "ABSORBED",
+      "title": "Classify workflow applicability before waiting",
+      "trigger": "Every Sword that observes or requires GitHub Actions",
+      "failure": "Workflow monitoring could not distinguish required, not applicable, not appeared, running, timeout, and interrupted states.",
+      "required_control": "Derive workflow applicability from exact changed paths and workflow source, then use bounded appearance and completion waits with truthful state classification.",
+      "applies_to": ["BUILD", "REPAIR", "RECOVERY", "EXECUTE"],
+      "evidence": ["Jktomy/atlas-codex#265"]
+    },
+    {
+      "lesson_id": "SWORD-L008",
+      "maturity": "ABSORBED",
+      "title": "Record stage truth before action",
+      "trigger": "Every Oathbringer invocation",
+      "failure": "Failure and interruption evidence was ambiguous when stage entry and operation state were not recorded consistently.",
+      "required_control": "Enter each stage before its operation begins and emit structured success, failure, timeout, and operator-interrupt receipts with SHA-256 sidecars.",
+      "applies_to": ["BUILD", "REPAIR", "RECOVERY", "EXECUTE"],
+      "evidence": ["Jktomy/atlas-codex#265", "Jktomy/atlas-codex#270"]
+    },
+    {
+      "lesson_id": "SWORD-L009",
+      "maturity": "ABSORBED",
+      "title": "Bind live authority and exact heads",
+      "trigger": "Every Sword mission",
+      "failure": "Stale draft pull requests and historical evidence were mistaken for current authority.",
+      "required_control": "Bind current canonical source, live repository identity, exact base and head, mission authority, and stop boundary immediately before construction and execution.",
+      "applies_to": ["BUILD", "REPAIR", "RECOVERY", "EXECUTE"],
+      "evidence": ["Jktomy/atlas-codex#267", "Jktomy/atlas-codex#268", "Jktomy/atlas-prime#51"]
+    },
+    {
+      "lesson_id": "SWORD-L010",
+      "maturity": "VERIFIED",
+      "title": "Use one executor and fast-forward repair",
+      "trigger": "An existing branch or pull request is repaired",
+      "failure": "Competing writers or rewritten branch history can invalidate exact-head review and receipts.",
+      "required_control": "Permit one active executor per target branch, require exact-head recheck, create a single-parent child commit, and update the branch fast-forward only without force push.",
+      "applies_to": ["REPAIR", "RECOVERY"],
+      "evidence": ["Jktomy/atlas-codex#261", "Jktomy/atlas-prime#51"]
+    },
+    {
+      "lesson_id": "SWORD-L011",
+      "maturity": "ABSORBED",
+      "title": "Keep PowerShell thin and interactive",
+      "trigger": "Every Oathbringer carrier",
+      "failure": "Mixing source construction into the operator launcher increased platform-specific failure and obscured responsibility.",
+      "required_control": "PowerShell verifies, authenticates, displays truthful stage and percentage progress, transports sealed operations, observes GitHub, and writes receipts; it does not author or reinterpret source.",
+      "applies_to": ["BUILD", "REPAIR", "RECOVERY", "EXECUTE"],
+      "evidence": ["Jktomy/atlas-codex#270", "Jktomy/atlas-prime#51"]
+    },
+    {
+      "lesson_id": "SWORD-L012",
+      "maturity": "ABSORBED",
+      "title": "Contain power in the pull request",
+      "trigger": "Every source-changing Sword",
+      "failure": "Self-imposed path and size guardrails risked blocking reversible construction rather than protecting permanence.",
+      "required_control": "Allow arbitrary authorized clean-text multi-file construction inside the branch and pull request; enforce exact audit and separate permanence at the merge boundary.",
+      "applies_to": ["BUILD", "REPAIR", "RECOVERY"],
+      "evidence": ["Jktomy/atlas-prime#51"]
+    },
+    {
+      "lesson_id": "SWORD-L013",
+      "maturity": "ABSORBED",
+      "title": "Lessons never self-promote",
+      "trigger": "Every Strikeforce finding or mission closeout that suggests a reusable change",
+      "failure": "Unreviewed findings could silently alter future Sword behavior or create a second doctrine layer.",
+      "required_control": "Keep one-off findings in receipts; promote reusable controls only through a bounded reviewed update to this register or the Forge Standard.",
+      "applies_to": ["BUILD", "REPAIR", "RECOVERY", "EXECUTE"],
+      "evidence": ["Jktomy/atlas-codex#265", "Jktomy/atlas-prime#51"]
+    }
+  ]
+}
