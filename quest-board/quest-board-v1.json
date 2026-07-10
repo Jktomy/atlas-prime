@@ -10,6 +10,13 @@
       "state": "COMPLETE"
     },
     {
+      "next_gate": "FS-C01-M01 Define Investiture Preview",
+      "owner": "Codex / Source Governance",
+      "quest_id": "QUEST-FOUND-SILVERLIGHT-R01",
+      "source": "quests/found-silverlight.md",
+      "state": "READY_FOR_CAMPAIGN_1_PREVIEW"
+    },
+    {
       "next_gate": "PF-C01 preview and Jayson-side hardware readiness",
       "owner": "Odyssey / Prometheus Foundation",
       "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
