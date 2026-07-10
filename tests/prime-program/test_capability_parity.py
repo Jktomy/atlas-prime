@@ -105,6 +105,14 @@ class CapabilityParityTests(unittest.TestCase):
 
         self.assertIn("Clone-first", cap_017["capability"])
         self.assertEqual(cap_017["path_disposition"], "HISTORICAL_CLOSED")
+        self.assertEqual(
+            cap_017["audit_status"],
+            "PRODUCTION_ADAPTER_PRESENT_LIVE_PROOF_PENDING",
+        )
+        self.assertIn("PILOT_READY_PROOF_PENDING", cap_017["current_state"])
+        self.assertIn("AJ-04 BUILD", cap_017["required_proof"])
+        self.assertIn("AJ-05 REPAIR", cap_017["required_proof"])
+        self.assertIn("AJ-06 EXECUTE", cap_017["required_proof"])
         self.assertIn("CAP-017", acceptance)
         self.assertIn("intended replacement", acceptance)
         self.assertIn("AJ-04 through AJ-06", acceptance)
@@ -143,6 +151,10 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertIn("Wave 3 completes AJ-04 through AJ-06", sword)
         self.assertEqual(records["CAP-017"]["capability_disposition"], "STILL_MISSING")
         self.assertEqual(records["CAP-017"]["activation_state"], "MISSING")
+        self.assertEqual(
+            records["CAP-017"]["audit_status"],
+            "PRODUCTION_ADAPTER_PRESENT_LIVE_PROOF_PENDING",
+        )
 
         self.assertIn("Aegis Break -> equivalent safe route", change_routes)
         self.assertNotIn("Aegis Break -> Phoenix Blade", change_routes)
