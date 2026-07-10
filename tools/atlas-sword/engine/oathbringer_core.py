@@ -55,6 +55,7 @@ class ExecutionContext:
     github_called: bool = False
     mutation_performed: bool = False
     remote_state: dict[str, Any] = field(default_factory=dict)
+    console: Any | None = field(default=None, repr=False, compare=False)
 
 def _require(condition: bool, message: str) -> None:
     if not condition:

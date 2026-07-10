@@ -160,3 +160,45 @@ PowerShell is the thin launcher and human-facing host. The packaged deterministi
 ## Source and package manifest behavior
 
 A checked-in source checkout does not require a package manifest. When the framework is embedded in a sealed carrier, both audit and production runners verify `MANIFEST.json` when present and report whether package-manifest verification occurred.
+
+## Oathbringer Console v2
+
+Interactive production runs use a presentation-only console layer. The console does not make authority, scope, workflow, retry, rollback, or merge decisions.
+
+Console v2 provides:
+
+- an identity and safety-seal header before mutation;
+- colored stage and progress presentation with automatic plain-text fallback;
+- UTF-8 box drawing and symbols with an ASCII fallback;
+- workflow heartbeats that show elapsed time, exact run IDs, and current states without falsifying completion percentages;
+- compact success result blocks containing the diagnostic data Athena needs for normal copy-and-paste reconciliation;
+- detailed failure and interruption blocks containing the last completed stage, mutation posture, and sanitized remote identifiers;
+- unchanged color-free JSON mode for machine consumers.
+
+Color and Unicode can be disabled without changing execution behavior:
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File .\engine\Invoke-AtlasSword.ps1 `
+  -MissionPath .\mission.json `
+  -ReceiptPath .\oathbringer.receipt.json `
+  -NoColor `
+  -Ascii
+```
+
+## Deflected Sword
+
+When a production strike fails or is interrupted, the thin PowerShell client attempts to create one sanitized diagnostic archive named:
+
+```text
+Atlas-Deflected-Sword-<MISSION-ID>-<REVISION>.zip
+```
+
+The Deflected Sword may contain the durable receipt and internal receipt hash, terminal transcript, mission, package manifest, forge receipt, independent audit when applicable, failure summary, sanitized remote state, and workflow state. It never intentionally includes GitHub tokens, authorization headers, environment secrets, private runtime data, or arbitrary raw API dumps.
+
+Normal return behavior is:
+
+```text
+SUCCESS -> paste the Oathbringer result block
+FAILURE -> paste terminal diagnostics first
+DEEPER FORENSICS -> upload the single Deflected Sword ZIP
+```

@@ -65,7 +65,7 @@ def verify_workflow_source_blobs(workflow_rules: Sequence[dict[str, Any]], sourc
         _require(entry is not None, f'workflow source missing from exact source tree: {path}')
         _require(entry.get('sha') == rule['workflow_blob'], f'workflow source blob drift: {path}')
 
-def wait_for_required_workflows(client: Any, changed_paths: Sequence[str], workflow_rules: Sequence[dict[str, Any]], head_sha: str, *, sleep: Callable[[float], None]=time.sleep, monotonic: Callable[[], float]=time.monotonic, poll_seconds: float=3.0) -> dict[str, Any]:
+def wait_for_required_workflows(client: Any, changed_paths: Sequence[str], workflow_rules: Sequence[dict[str, Any]], head_sha: str, *, sleep: Callable[[float], None]=time.sleep, monotonic: Callable[[], float]=time.monotonic, poll_seconds: float=3.0, progress: Callable[[dict[str, Any]], None] | None=None) -> dict[str, Any]:
     applicability = resolve_workflow_applicability(changed_paths, workflow_rules)
     required = {name: rule for name, rule in applicability.items() if rule['applicable']}
     if not required:
@@ -104,6 +104,19 @@ def wait_for_required_workflows(client: Any, changed_paths: Sequence[str], workf
                 completed[name] = run
             elif now - first_seen[name] >= float(rule['completion_timeout_seconds']):
                 raise WorkflowGateError(f'required workflow timed out: {name}')
+        heartbeat_required: dict[str, dict[str, Any]] = {}
+        for name in sorted(required):
+            run = latest.get(name)
+            if run is None:
+                heartbeat_required[name] = {'status': 'WAITING_FOR_APPEARANCE', 'run_id': None, 'conclusion': None}
+            else:
+                heartbeat_required[name] = {
+                    'status': str(run.get('status') or 'UNKNOWN').upper(),
+                    'run_id': run.get('id') or run.get('databaseId'),
+                    'conclusion': run.get('conclusion'),
+                }
+        if progress is not None:
+            progress({'head_sha': head_sha, 'elapsed_seconds': elapsed, 'required': heartbeat_required})
         if len(completed) == len(required):
             return {'status': 'PASS', 'head_sha': head_sha, 'required': {name: {'rule': required[name], 'run': completed[name]} for name in sorted(required)}, 'not_applicable': {name: item for name, item in applicability.items() if not item['applicable']}, 'elapsed_seconds': elapsed}
         sleep(poll_seconds)
