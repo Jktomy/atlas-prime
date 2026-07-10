@@ -17,11 +17,12 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 |---|---|
 | Atlas identity and canonical authority | `atlas-prime.md`, `governance/source-hierarchy.md` |
 | Safety and execution boundaries | `safety/atlas-safety-doctrine.md`, `governance/noctua.md`, `governance/atlas-aegis.md`, `governance/atlas-strikeforce.md`, `governance/protected-source-boundary.md`, `governance/cutover-boundary.md` |
+| Capability parity and acceptance | `governance/capability-parity-register.json`, `schemas/capability-parity-register.schema.json`, `governance/capability-acceptance-contract.md` |
 | Source changes | `governance/source-lifecycle.md`, `governance/change-routes.md` |
 | Projects | `projects/project-registry.md` |
 | Operations | `operations/operation-registry.md` |
 | Artemis, Hermes, Nexus | `operations/artemis-runtime-and-routing.md` |
-| Protocols and delivery methods | `operations/protocol-library.md`, `methods/artemis-bow-and-arrow.md`, `methods/athenas-spear.md`, `methods/atlas-sword.md` |
+| Protocols and delivery methods | `operations/protocol-library.md`, `methods/artemis-bow-and-arrow.md`, `methods/athenas-spear.md`, `methods/atlas-sword.md`, `methods/phoenix-blade.md` |
 | Active Quests | `quest-board/quest-board-v1.json`, `quests/` |
 | Infrastructure source | `infrastructure/atlas-infrastructure-source.md` |
 | Backup, restore, recovery, rollback | `recovery/phoenix-recovery.md`, `migration/rollback-map.md` |

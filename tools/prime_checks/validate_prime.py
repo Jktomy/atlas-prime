@@ -13,12 +13,15 @@ REQUIRED = (
     "bootstrap.md",
     "governance/source-hierarchy.md",
     "governance/source-lifecycle.md",
+    "governance/capability-parity-register.json",
+    "governance/capability-acceptance-contract.md",
     "safety/atlas-safety-doctrine.md",
     "routing/command-surfaces.md",
     "projects/project-registry.md",
     "operations/operation-registry.md",
     "operations/artemis-runtime-and-routing.md",
     "operations/protocol-library.md",
+    "methods/phoenix-blade.md",
     "infrastructure/atlas-infrastructure-source.md",
     "recovery/phoenix-recovery.md",
     "knowledge/atlas-source-compendium.md",
@@ -29,6 +32,7 @@ REQUIRED = (
     "quest-board/quest-board-v1.json",
     "migration/source-disposition-ledger.csv",
     "migration/source-disposition-summary.json",
+    "schemas/capability-parity-register.schema.json",
     "tools/thread-engine/PRIME-PORT-STATUS.json",
     "tools/atlas-sword/engine/oathbringer_contract.py",
     "tools/build_index.py",
@@ -106,6 +110,67 @@ def main() -> int:
         raise SystemExit("Prime repository policy is not canonical active")
     if repository["predecessor_role"] != "FROZEN_PREDECESSOR_ROLLBACK_EVIDENCE":
         raise SystemExit("Codex predecessor role is not final")
+
+    capability_register = json.loads(
+        (ROOT / "governance/capability-parity-register.json").read_text(encoding="utf-8")
+    )
+    capability_schema = json.loads(
+        (ROOT / "schemas/capability-parity-register.schema.json").read_text(encoding="utf-8")
+    )
+    capabilities = capability_register.get("capabilities", [])
+    allowed_dispositions = {
+        "PRESERVED",
+        "IMPROVED",
+        "RESTORED",
+        "REPLACED",
+        "INTENTIONALLY_RETIRED",
+        "BLOCKED",
+        "STILL_MISSING",
+    }
+    if capability_register.get("schema_version") != "atlas-prime-capability-parity-register-v1":
+        raise SystemExit("capability parity register schema identity is invalid")
+    if capability_register.get("register_role") != "CANONICAL_CAPABILITY_DISPOSITION":
+        raise SystemExit("capability parity register role is invalid")
+    if (
+        capability_register.get("predecessor_head")
+        != "c892dc05ea56db0134a0e865f56d491f9c02ff85"
+    ):
+        raise SystemExit("capability parity predecessor evidence lock is invalid")
+    if len(capabilities) != 28 or [item.get("id") for item in capabilities] != [
+        f"CAP-{number:03d}" for number in range(1, 29)
+    ]:
+        raise SystemExit(
+            "capability parity register does not contain the exact 28-record identity set"
+        )
+    if len({item.get("capability") for item in capabilities}) != 28:
+        raise SystemExit("capability parity register contains duplicate capability names")
+    if (
+        set(capability_register.get("capability_disposition_vocabulary", []))
+        != allowed_dispositions
+    ):
+        raise SystemExit("capability parity disposition vocabulary is invalid")
+    observed_counts = {
+        value: sum(
+            item.get("capability_disposition") == value for item in capabilities
+        )
+        for value in allowed_dispositions
+    }
+    if observed_counts != capability_register.get("capability_disposition_counts"):
+        raise SystemExit("capability parity disposition counts do not match the records")
+    path_authority = capability_register.get("path_disposition_authority", {})
+    if (
+        path_authority.get("tracked_paths"),
+        path_authority.get("closed_paths"),
+        path_authority.get("open_paths"),
+    ) != (525, 525, 0):
+        raise SystemExit("path disposition evidence is not preserved exactly")
+    schema_enum = set(
+        capability_schema["properties"]["capabilities"]["items"]["properties"][
+            "capability_disposition"
+        ]["enum"]
+    )
+    if schema_enum != allowed_dispositions:
+        raise SystemExit("capability schema and register disposition vocabularies differ")
 
     for path in ROOT.rglob("*"):
         if not path.is_file() or ".git" in path.parts or path.parts[-1].endswith((".pyc", ".pyo")):
