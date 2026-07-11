@@ -27,6 +27,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Sword or Oathbringer request | `methods/sword-forge-standard.md`, `methods/sword-lessons.json`, `methods/atlas-sword.md`, `tools/atlas-sword/README.md`, then the exact live repository or PR state |
 | Oathbringer Foundry carrier compile | `methods/oathbringer-foundry.md`, `methods/sword-forge-standard.md`, `methods/sword-lessons.json`, `tools/oathbringer-foundry/README.md`, then exact current source and read-only live-state binding |
 | Active Quests | `quest-board/quest-board-v1.json`, `quests/` |
+| Lifecycle records and contracts | `lifecycle/README.md`, `lifecycle/lifecycle-contract.md`, `lifecycle/schemas/` |
 | Infrastructure source | `infrastructure/atlas-infrastructure-source.md` |
 | Backup, restore, recovery, rollback | `recovery/phoenix-recovery.md`, `migration/rollback-map.md` |
 | Knowledge lifecycle | `knowledge/atlas-source-compendium.md` |

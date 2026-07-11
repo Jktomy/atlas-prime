@@ -28,6 +28,8 @@ jobs:
         run: python -B -m unittest discover -s tests/repository-policy -p "test_*.py" -v
       - name: Prime privacy boundary tests
         run: python -B -m unittest discover -s tests/privacy -p "test_*.py" -v
+      - name: Prime lifecycle contract tests
+        run: python -B -m unittest discover -s tests/lifecycle -p "test_*.py" -v
       - name: Full Prime Thread Engine tests
         run: python -B -m unittest discover -s tools/thread-engine/tests -p "test_*.py" -v
       - name: Thread Engine static checks

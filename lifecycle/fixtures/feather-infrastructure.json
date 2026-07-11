@@ -1,0 +1,42 @@
+{
+  "schema_id": "atlas.lifecycle.feather",
+  "schema_version": "1.0.0",
+  "record_id": "FTR-N6K7WCAXD7SY5PFQSMXZ7BXC6P",
+  "authority": "NONCANONICAL_FIXTURE",
+  "project_id": "project-prometheus",
+  "operation_id": "operation-infrastructure",
+  "quest_scope": {
+    "scope_type": "ADMITTED_QUEST",
+    "quest_id": "prometheus-fire"
+  },
+  "campaign": "lifecycle-fixture",
+  "mission": "infrastructure-checkpoint",
+  "gate": "fixture-gate",
+  "lifecycle_status": "SEALED",
+  "context_summary": "Harmless checkpoint fixture for an infrastructure Quest.",
+  "concurrency": {
+    "expected_main_sha": "0000000000000000000000000000000000000000",
+    "expected_parent_feather": null,
+    "expected_quest_revision": 1,
+    "declared_source_fingerprint": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+  },
+  "durable_source_references": [
+    {
+      "ref_id": "prometheus-fire-source",
+      "authority": "CANONICAL_SOURCE",
+      "uri": "quests/prometheus-fire.md"
+    }
+  ],
+  "evidence_pointers": [],
+  "protected_data": {
+    "classification": "INTERNAL_CLEAN",
+    "clean_summary": "Fixture contains no protected values.",
+    "protected_pointers": []
+  },
+  "next_safe_action": "Validate the infrastructure fixture without changing Quest state.",
+  "next_approval_gate": "Fixture acceptance only.",
+  "supersession_lineage": {
+    "supersedes": [],
+    "superseded_by": null
+  }
+}

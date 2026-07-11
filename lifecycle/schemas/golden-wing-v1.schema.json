@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/golden-wing-v1.schema.json",
+  "title": "Atlas Golden Wing candidate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "record_id", "authority", "lifecycle_status",
+    "scope", "supporting_feather_ids", "originating_quest_ids",
+    "originating_project_ids", "operation_ids", "lesson",
+    "recurrence_evidence", "systemic_exception_justification", "counterexamples",
+    "noctua_findings", "ares_attacks", "missing_evidence",
+    "proposed_destination", "promotion_readiness", "protected_data",
+    "supersession_lineage"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.golden-wing" },
+    "schema_version": { "const": "1.0.0" },
+    "record_id": { "type": "string", "pattern": "^GWN-[A-Z2-7]{26}$" },
+    "authority": { "enum": ["CANONICAL_RECORD", "NONCANONICAL_FIXTURE"] },
+    "lifecycle_status": {
+      "enum": ["CANDIDATE", "GATHERING_EVIDENCE", "READY_FOR_PHOENIX_BURN", "ABSORBED", "REJECTED", "SUPERSEDED", "HISTORICAL"]
+    },
+    "scope": { "enum": ["QUEST", "PROJECT", "CROSS_PROJECT", "ATLAS_SYSTEMIC"] },
+    "supporting_feather_ids": {
+      "type": "array", "minItems": 1, "maxItems": 64, "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^FTR-[A-Z2-7]{26}$" }
+    },
+    "originating_quest_ids": {
+      "type": "array", "maxItems": 64, "uniqueItems": true,
+      "items": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }
+    },
+    "originating_project_ids": {
+      "type": "array", "minItems": 1, "maxItems": 64, "uniqueItems": true,
+      "items": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }
+    },
+    "operation_ids": {
+      "type": "array", "maxItems": 64, "uniqueItems": true,
+      "items": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }
+    },
+    "lesson": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "recurrence_evidence": { "$ref": "common-v1.schema.json#/$defs/source_references" },
+    "systemic_exception_justification": { "type": ["string", "null"], "maxLength": 4000 },
+    "counterexamples": { "$ref": "common-v1.schema.json#/$defs/bounded_text_list" },
+    "noctua_findings": { "$ref": "common-v1.schema.json#/$defs/bounded_text_list" },
+    "ares_attacks": { "$ref": "common-v1.schema.json#/$defs/bounded_text_list" },
+    "missing_evidence": { "$ref": "common-v1.schema.json#/$defs/bounded_text_list" },
+    "proposed_destination": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "promotion_readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "human_decision_required"],
+      "properties": {
+        "state": { "enum": ["NOT_READY", "EVIDENCE_COMPLETE", "APPROVED_FOR_REVIEW"] },
+        "human_decision_required": { "const": true }
+      }
+    },
+    "protected_data": { "$ref": "common-v1.schema.json#/$defs/protected_data" },
+    "supersession_lineage": { "$ref": "common-v1.schema.json#/$defs/supersession_lineage" }
+  }
+}

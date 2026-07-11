@@ -1,0 +1,43 @@
+{
+  "schema_id": "atlas.lifecycle.sunset",
+  "schema_version": "1.0.0",
+  "record_id": "SUN-HAQBSCY5LAJI4AR6YFQMYLBCPX",
+  "authority": "NONCANONICAL_FIXTURE",
+  "project_id": "project-raphael",
+  "operation_id": null,
+  "quest_scope": {
+    "scope_type": "NON_QUEST",
+    "work_scope": "Protected-domain continuity fixture."
+  },
+  "completion_assessment": "A clean summary and protected pointer are available.",
+  "decisions": ["Keep all protected evidence outside GitHub."],
+  "open_items": ["Resolve the pointer only in an approved evidence system."],
+  "next_safe_action": "Validate the clean summary and pointer boundary.",
+  "next_approval_gate": "Protected-source access remains separate.",
+  "latest_feather_id": null,
+  "concurrency": {
+    "expected_main_sha": "0000000000000000000000000000000000000000",
+    "expected_parent_feather": null,
+    "expected_quest_revision": null,
+    "declared_source_fingerprint": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+  },
+  "durable_source_references": [
+    {
+      "ref_id": "protected-boundary",
+      "authority": "CANONICAL_SOURCE",
+      "uri": "governance/protected-source-boundary.md"
+    }
+  ],
+  "evidence_pointers": [
+    {
+      "ref_id": "raphael-fixture-evidence",
+      "authority": "PROTECTED_POINTER",
+      "uri": "protected://fixture/raphael/continuity-evidence"
+    }
+  ],
+  "protected_data": {
+    "classification": "PROTECTED_POINTER_ONLY",
+    "clean_summary": "No health fact or record is stored in this fixture.",
+    "protected_pointers": ["protected://fixture/raphael/continuity-evidence"]
+  }
+}

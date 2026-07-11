@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/lifecycle-receipt-v1.schema.json",
+  "title": "Atlas lifecycle receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "record_id", "authority", "operation_id",
+    "trusted_contract", "subject", "independent_sidecar", "verification_limits",
+    "verification_result", "diagnostic_summary", "replay_key"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.receipt" },
+    "schema_version": { "const": "1.0.0" },
+    "record_id": { "type": "string", "pattern": "^LCR-[A-Z2-7]{26}$" },
+    "authority": { "enum": ["CANONICAL_RECORD", "NONCANONICAL_FIXTURE"] },
+    "operation_id": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+    "trusted_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_id", "schema_digest", "contract_digest"],
+      "properties": {
+        "schema_id": { "type": "string", "pattern": "^atlas[.]lifecycle[.][a-z-]+$" },
+        "schema_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+        "contract_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_id", "payload_digest", "source_fingerprint"],
+      "properties": {
+        "record_id": { "$ref": "common-v1.schema.json#/$defs/stable_id" },
+        "payload_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+        "source_fingerprint": { "$ref": "common-v1.schema.json#/$defs/fingerprint" }
+      }
+    },
+    "independent_sidecar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sidecar_uri", "sidecar_digest", "subject_digest_binding"],
+      "properties": {
+        "sidecar_uri": { "type": "string", "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$", "maxLength": 1024 },
+        "sidecar_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+        "subject_digest_binding": { "$ref": "common-v1.schema.json#/$defs/fingerprint" }
+      }
+    },
+    "verification_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_input_bytes", "max_archive_members", "max_member_bytes", "max_parse_depth"],
+      "properties": {
+        "max_input_bytes": { "type": "integer", "minimum": 1, "maximum": 104857600 },
+        "max_archive_members": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "max_member_bytes": { "type": "integer", "minimum": 1, "maximum": 52428800 },
+        "max_parse_depth": { "type": "integer", "minimum": 1, "maximum": 128 }
+      }
+    },
+    "verification_result": { "enum": ["PASS", "FAIL"] },
+    "diagnostic_summary": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "replay_key": { "$ref": "common-v1.schema.json#/$defs/fingerprint" }
+  }
+}

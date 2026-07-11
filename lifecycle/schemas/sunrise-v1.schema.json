@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/sunrise-v1.schema.json",
+  "title": "Atlas Sunrise reconstruction v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "record_id", "authority", "sunset_id",
+    "resolved_source_fingerprint", "current_position", "latest_feather_id",
+    "unresolved_blockers", "next_gate", "related_golden_wing_ids",
+    "exact_source_references", "stale_projection_warnings", "protected_data"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.sunrise" },
+    "schema_version": { "const": "1.0.0" },
+    "record_id": { "type": "string", "pattern": "^SRI-[A-Z2-7]{26}$" },
+    "authority": { "enum": ["CANONICAL_RECORD", "NONCANONICAL_FIXTURE"] },
+    "sunset_id": { "type": "string", "pattern": "^SUN-[A-Z2-7]{26}$" },
+    "resolved_source_fingerprint": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "current_position": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "latest_feather_id": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^FTR-[A-Z2-7]{26}$" }
+      ]
+    },
+    "unresolved_blockers": { "$ref": "common-v1.schema.json#/$defs/bounded_text_list" },
+    "next_gate": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "related_golden_wing_ids": {
+      "type": "array", "maxItems": 64, "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^GWN-[A-Z2-7]{26}$" }
+    },
+    "exact_source_references": { "$ref": "common-v1.schema.json#/$defs/source_references" },
+    "stale_projection_warnings": { "$ref": "common-v1.schema.json#/$defs/bounded_text_list" },
+    "protected_data": { "$ref": "common-v1.schema.json#/$defs/protected_data" }
+  }
+}

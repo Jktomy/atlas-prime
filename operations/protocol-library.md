@@ -14,6 +14,7 @@ protected_level: "HIGH"
 - **Argus** routes intake and sunrise review without silently promoting it to source.
 - **Spark** captures an idea or opportunity as noncanonical material until reviewed.
 - **Emberline** is an immutable preview and decision package; it does not execute itself.
+- **Quest Emberline** is a structured, non-executing Emberline subtype and the sole current-state authority for an admitted Quest after the lifecycle cutover is proven. It never advances a Quest by itself.
 - **Athena Weave** binds one exact change.
 - **Spear** is Athena's direct delivery of an exact Weave to Thread Engine. Component delivery is proven; hosted Work/Athena reachability is a separate capability.
 - **Arrow/Bow** is delegated immutable delivery of the same exact Weave to Thread Engine. Byte-equivalent component delivery is proven.
@@ -27,5 +28,7 @@ protected_level: "HIGH"
 - **Stormlight** identifies the source of AI/model processing: CLOUD, LOCAL, HYBRID, or NONE. It is not an operator, launcher, execution environment, credential principal, or engine.
 - **Phoenix Burn/Reborn** governs controlled removal, clean reconstruction, restore proof, and rollback.
 - **Sunrise/Sunset** governs activation and retirement with durable routing and lineage.
+- **Feather** is an immutable checkpoint with a stable permanent identity; archival and supersession preserve readback and do not create competing Quest authority.
+- **Golden Wing** is a reusable-lesson candidate supported across independent contexts; it is never doctrine and is never promoted automatically.
 
 Protocols do not broaden authority by being named. Each invocation must bind the repository, exact source, allowed actions, protected boundary, stop point, evidence, and rollback.

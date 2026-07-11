@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/quest-emberline-v1.schema.json",
+  "title": "Atlas Quest Emberline v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "record_id", "authority", "quest_id",
+    "project_id", "operation_ids", "quest_revision", "prior_emberline_id",
+    "current_position", "unresolved_blockers", "next_gate", "latest_feather_id",
+    "concurrency", "durable_source_references", "protected_data"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.quest-emberline" },
+    "schema_version": { "const": "1.0.0" },
+    "record_id": { "type": "string", "pattern": "^QEM-[A-Z2-7]{26}$" },
+    "authority": { "enum": ["CANONICAL_RECORD", "NONCANONICAL_FIXTURE"] },
+    "quest_id": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+    "project_id": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+    "operation_ids": {
+      "type": "array", "maxItems": 64, "uniqueItems": true,
+      "items": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }
+    },
+    "quest_revision": { "type": "integer", "minimum": 1 },
+    "prior_emberline_id": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^QEM-[A-Z2-7]{26}$" }
+      ]
+    },
+    "current_position": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "unresolved_blockers": { "$ref": "common-v1.schema.json#/$defs/bounded_text_list" },
+    "next_gate": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "latest_feather_id": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^FTR-[A-Z2-7]{26}$" }
+      ]
+    },
+    "concurrency": { "$ref": "common-v1.schema.json#/$defs/concurrency" },
+    "durable_source_references": { "$ref": "common-v1.schema.json#/$defs/source_references" },
+    "protected_data": { "$ref": "common-v1.schema.json#/$defs/protected_data" }
+  }
+}
