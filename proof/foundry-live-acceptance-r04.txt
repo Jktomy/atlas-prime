@@ -1,0 +1,6 @@
+ATLAS OATHBRINGER FOUNDRY LIVE ACCEPTANCE
+Mission: ATLAS-FOUNDRY-LIVE-REPAIR-20260710-R04
+Stage: REPAIR
+Classification: PUBLIC_CLEAN
+Prior BUILD head: 93dc448aa7a2208043ea3fb742576813d8e0a87c
+This harmless replacement proves Foundry-generated REPAIR fast-forward continuity on the existing draft PR.
