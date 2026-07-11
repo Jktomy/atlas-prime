@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:268bd8b1ec7939a7f986912ebfdf5faa609efcd6f49d92e61b1870320d3543ea
+Source fingerprint: sha256:6a6a38f3085b8feb235d341cbfc347067fd06c864f8e3e1849be93ae10c4afc4
 Generator format: 2
 Status: Generated support artifact
 
@@ -29,7 +29,7 @@ Status: Generated support artifact
 | `methods/artemis-bow-and-arrow.md` | COMPONENT_PROVEN_HOSTED_INVOCATION_UNAVAILABLE | METHOD | missing | CRITICAL |
 | `methods/athenas-spear.md` | COMPONENT_PROVEN_HOSTED_INTAKE_MISSING | METHOD | missing | CRITICAL |
 | `methods/atlas-sword.md` | PRODUCTION_ACTIVE | METHOD | missing | CRITICAL |
-| `methods/oathbringer-foundry.md` | IMPLEMENTATION_READY_ACCEPTANCE_PENDING | METHOD | missing | CRITICAL |
+| `methods/oathbringer-foundry.md` | PRODUCTION_ACTIVE | METHOD | missing | CRITICAL |
 | `methods/phoenix-blade.md` | ACTIVE_BOUNDED_METHOD | METHOD | missing | CRITICAL |
 | `methods/sword-forge-standard.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `migration/codex-cutover.md` | COMPLETE | REGISTER | missing | CRITICAL |
