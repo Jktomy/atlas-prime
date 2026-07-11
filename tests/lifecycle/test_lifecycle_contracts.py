@@ -24,6 +24,8 @@ ENTITY_SCHEMAS = {
     "atlas.lifecycle.sunrise": ("sunrise-v1.schema.json", "SRI"),
     "atlas.lifecycle.continuity": ("continuity-v1.schema.json", "CON"),
     "atlas.lifecycle.receipt": ("lifecycle-receipt-v1.schema.json", "LCR"),
+    "atlas.lifecycle.event": ("lifecycle-event-v1.schema.json", "LEV"),
+    "atlas.lifecycle.event-trust-root": ("lifecycle-event-trust-root-v1.schema.json", ""),
     "atlas.lifecycle.website-index": ("website-index-v1.schema.json", ""),
 }
 

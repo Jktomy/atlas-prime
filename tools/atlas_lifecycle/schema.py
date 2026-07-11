@@ -19,9 +19,13 @@ TRUSTED_SCHEMAS = {
     "atlas.lifecycle.sunrise": "sunrise-v1.schema.json",
     "atlas.lifecycle.continuity": "continuity-v1.schema.json",
     "atlas.lifecycle.receipt": "lifecycle-receipt-v1.schema.json",
+    "atlas.lifecycle.event": "lifecycle-event-v1.schema.json",
 }
 TRUSTED_PROJECTIONS = {
     ("atlas.lifecycle.website-index", "2.0.0"): "website-index-v2.schema.json",
+}
+TRUSTED_AUXILIARY_SCHEMAS = {
+    ("atlas.lifecycle.event-trust-root", "1.0.0"): "lifecycle-event-trust-root-v1.schema.json",
 }
 SCHEMA_DRAFT = "https://json-schema.org/draft/2020-12/schema"
 
@@ -45,6 +49,7 @@ class SchemaValidator:
             "common-v1.schema.json",
             *TRUSTED_SCHEMAS.values(),
             *TRUSTED_PROJECTIONS.values(),
+            *TRUSTED_AUXILIARY_SCHEMAS.values(),
         }:
             path = self.schema_dir / name
             schema = load_bounded(path)
@@ -76,6 +81,16 @@ class SchemaValidator:
                 "projection declares an untrusted schema identity or version",
             )
         self._validate(projection, self.schemas[name], name, "$")
+
+    def validate_event_trust_root(self, trust_root: dict[str, Any]) -> None:
+        key = (trust_root.get("schema_id"), trust_root.get("schema_version"))
+        name = TRUSTED_AUXILIARY_SCHEMAS.get(key)
+        if name is None:
+            raise LifecycleError(
+                "UNTRUSTED_EVENT_TRUST_ROOT",
+                "event trust root declares an untrusted schema identity or version",
+            )
+        self._validate(trust_root, self.schemas[name], name, "$")
 
     def _resolve(self, reference: str, current_name: str) -> tuple[dict[str, Any], str]:
         if "#" in reference:

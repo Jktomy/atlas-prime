@@ -1,7 +1,8 @@
 ---
 title: "Lifecycle Architecture Decision R01"
 atlas_id: "prime.lifecycle.architecture.r01"
-status: "CANONICAL_ACTIVE"
+status: "SUPERSEDED"
+superseded_by: "prime.lifecycle.architecture.r02"
 source_type: "ARCHITECTURE_DECISION"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Atlas"
@@ -10,6 +11,10 @@ protected_level: "CRITICAL"
 ---
 
 # Lifecycle Architecture Decision R01
+
+This decision is preserved as the G3 foundation. Lifecycle Architecture
+Decision R02 supersedes it for the shared receipt-driven event model without
+erasing this history.
 
 ## Decision
 

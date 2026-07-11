@@ -1,0 +1,87 @@
+{
+  "schema_id": "atlas.lifecycle.event",
+  "schema_version": "1.0.0",
+  "record_id": "LEV-BVUOYDIIUTS3L2VTVGXP6Y27PG",
+  "authority": "NONCANONICAL_FIXTURE",
+  "event_class": "CHECKPOINT",
+  "event_type": "WORK_PAUSED",
+  "target": {
+    "entity_type": "GATE",
+    "entity_id": "raphael-continuity.gate-fixture"
+  },
+  "position": {
+    "project_id": "raphael",
+    "operation_id": "operation-continuity-fixture",
+    "quest_id": "raphael-continuity-fixture",
+    "campaign_id": "campaign-fixture",
+    "mission_id": "mission-fixture",
+    "gate_id": "gate-fixture"
+  },
+  "expectations": {
+    "expected_main_sha": "0000000000000000000000000000000000000000",
+    "expected_entity_revision": 1,
+    "expected_quest_revision": 1,
+    "expected_gate_revision": 1,
+    "expected_prior_state": "Protected-domain fixture Gate is in progress.",
+    "expected_parent_checkpoint_id": null,
+    "expected_source_fingerprint": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+    "trusted_expectation_ref": {
+      "ref_id": "fixture-event-trust-root",
+      "authority": "CANONICAL_SOURCE",
+      "uri": "lifecycle/trust-roots/fixture-event-trust-root.json"
+    }
+  },
+  "evidence": {
+    "exact_subject_sha": "4444444444444444444444444444444444444444",
+    "accepted_evidence_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+    "trusted_acceptance_receipt_ref": null,
+    "evidence_pointers": [
+      {
+        "ref_id": "protected-lifecycle-evidence",
+        "authority": "PROTECTED_POINTER",
+        "uri": "protected://fixture/raphael/lifecycle-checkpoint"
+      }
+    ]
+  },
+  "protected_data": {
+    "classification": "PROTECTED_POINTER_ONLY",
+    "clean_summary": "Only a clean checkpoint summary and protected-source pointer are stored.",
+    "protected_pointers": ["protected://fixture/raphael/lifecycle-checkpoint"]
+  },
+  "semantic_author": "athena",
+  "route": {
+    "route_authority": "ATHENA_DIRECT",
+    "allowed_paths": ["lifecycle/events/protected-checkpoint-candidate.json"],
+    "direct_main": false,
+    "automatic_merge": false
+  },
+  "related_record_ids": ["FTR-N6K7WCAXD7SY5PFQSMXZ7BXC6P"],
+  "lineage": {
+    "parent_event_id": null,
+    "supersedes_event_id": null,
+    "invalidates_event_id": null,
+    "reverses_event_id": null,
+    "revokes_event_id": null,
+    "reopens_event_id": null
+  },
+  "replay_key": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "checkpoint": {
+    "completed_substeps": ["A clean protected-domain status conclusion is recorded."],
+    "remaining_work": ["Resume only after the approved private evidence review."],
+    "decisions": ["Keep protected evidence outside GitHub."],
+    "blockers": [],
+    "gate_state": "IN_PROGRESS",
+    "mission_state": "PAUSED",
+    "campaign_state": "IN_PROGRESS",
+    "quest_state": "IN_PROGRESS",
+    "next_safe_action": "Review the approved protected source and return only a clean conclusion.",
+    "next_approval_gate": "Protected-domain semantic review.",
+    "restart_position": "Resume at the same Gate after protected evidence is reviewed.",
+    "latest_feather_id": "FTR-N6K7WCAXD7SY5PFQSMXZ7BXC6P",
+    "consolidated_observation_count": 2,
+    "completion_receipt_created": false,
+    "position_advance_requested": false,
+    "resolved_blocker_ids": []
+  },
+  "transition": null
+}

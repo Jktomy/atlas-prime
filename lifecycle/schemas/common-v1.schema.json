@@ -5,7 +5,7 @@
   "$defs": {
     "stable_id": {
       "type": "string",
-      "pattern": "^(FTR|FAR|GWN|QEM|QCP|SUN|SRI|CON|LCR)-[A-Z2-7]{26}$"
+      "pattern": "^(FTR|FAR|GWN|QEM|QCP|SUN|SRI|CON|LCR|LEV)-[A-Z2-7]{26}$"
     },
     "git_sha": {
       "type": "string",
@@ -30,6 +30,12 @@
       "maxItems": 64,
       "uniqueItems": true,
       "items": { "$ref": "#/$defs/bounded_text" }
+    },
+    "repository_path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?)*$"
     },
     "source_reference": {
       "type": "object",
