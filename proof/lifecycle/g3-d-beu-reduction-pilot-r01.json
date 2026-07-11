@@ -1,0 +1,64 @@
+{
+  "schema_id": "atlas.lifecycle.beu-reduction-pilot",
+  "schema_version": "1.0.0",
+  "authority": "NONCANONICAL_MEASUREMENT_EVIDENCE",
+  "pilot_id": "G3-D-COMPACT-CONTEXT-R01",
+  "operation": "CLEAN_CONTEXT_RECONSTRUCTION",
+  "source_fingerprint": "sha256:2e08f746076245c88a0f7e3f74f20163a6ae8c7a92e6ac0dfc90517d73776aa0",
+  "fixture_paths": [
+    "lifecycle/fixtures/quest-emberline-context.json",
+    "lifecycle/fixtures/feather-quest-bound.json",
+    "lifecycle/fixtures/golden-wing-multi-context.json"
+  ],
+  "fixture_record_ids": [
+    "QEM-XOB2B4JGLKXTFXXBDGYQBYPEXD",
+    "FTR-KC44ORGJ3XNOVTQJUEICBUEVMS",
+    "GWN-3JC4IGKK6PH7PA7OAH5UHEKQIW"
+  ],
+  "manual_baseline": {
+    "model_visible_files": 3,
+    "model_visible_bytes": 4368,
+    "process_steps": [
+      "read-current-quest-emberline",
+      "read-latest-feather",
+      "read-related-golden-wing",
+      "resolve-stable-id-links",
+      "assemble-eight-context-fields",
+      "verify-reconstruction"
+    ],
+    "retries": 0,
+    "errors": 0,
+    "machine_execution_median_ns": 4600
+  },
+  "script_assisted": {
+    "model_visible_files": 1,
+    "model_visible_bytes": 622,
+    "process_steps": ["run-compact-context-command"],
+    "retries": 0,
+    "errors": 0,
+    "machine_execution_median_ns": 10400,
+    "context_sha256": "sha256:85eb3eabcbde94ca5229daf394905c12c2ecdf6c046744af842eecabc1a06e9b",
+    "protected_boundary_trials": 1,
+    "protected_boundary_rejections": 1
+  },
+  "comparison": {
+    "model_visible_file_reduction_percent": 66.67,
+    "model_visible_byte_reduction_percent": 85.76,
+    "manual_steps": 6,
+    "script_steps": 1,
+    "reconstruction_fields_total": 8,
+    "reconstruction_fields_exact": 8,
+    "reconstruction_accuracy_percent": 100.0,
+    "usage_saving_supported": true
+  },
+  "measurement_boundaries": {
+    "beu": "NOT_MEASURED",
+    "model_usage": "NOT_MEASURED",
+    "elapsed_agent_work": "NOT_MEASURED",
+    "real_workflow_human_interventions": "NOT_MEASURED",
+    "pilot_human_interventions": 0,
+    "manual_semantic_privacy_review": "NOT_MEASURED",
+    "machine_execution_is_not_agent_elapsed_work": true,
+    "hidden_model_calls": false
+  }
+}

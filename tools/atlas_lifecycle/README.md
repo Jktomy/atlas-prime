@@ -9,6 +9,7 @@ python -m tools.atlas_lifecycle validate
 python -m tools.atlas_lifecycle verify
 python -m tools.atlas_lifecycle context [--quest-id ID]
 python -m tools.atlas_lifecycle index build
+python -m tools.atlas_lifecycle pilot [--repetitions N]
 ```
 
 `validate` checks the trusted local schema catalog, bounded JSON, closed record
@@ -40,6 +41,14 @@ validates it against website-index v2, and compares it to
 file. Source revision is the exact `HEAD:lifecycle` Git tree object. The
 timestamp is deterministically derived from that tree identity, never a wall
 clock, so shallow checkouts and unrelated commits do not create false drift.
+
+`pilot` performs the G3-D reproducible measurement against three harmless
+noncanonical fixtures. It compares the files, bytes, and explicit process steps
+that a model-visible manual reconstruction would require with the one compact
+context result. It also measures local machine execution, exact field
+reconstruction, retries, errors, and a protected-boundary rejection. It makes
+no model call. BEU, model usage, agent elapsed work, and real-workflow human
+interventions remain `NOT_MEASURED` unless supplied by a trusted native meter.
 
 ## Evidence trust
 
