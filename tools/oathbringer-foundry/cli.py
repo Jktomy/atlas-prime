@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 from foundry import FoundryError, compile_carrier, load_json, read_live_state, verify_carrier
@@ -101,7 +102,7 @@ def main() -> int:
         )
         return 0
     except FoundryError as exc:
-        print(f"Foundry rejected: {exc}")
+        print(f"Foundry rejected: {exc}", file=sys.stderr)
         return 1
 
 

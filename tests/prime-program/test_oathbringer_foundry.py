@@ -176,6 +176,31 @@ class OathbringerFoundryTests(unittest.TestCase):
             live_state=self._live(mission),
         )
 
+    def test_embedded_runtime_mission_is_strictly_validated_at_compile_time(self) -> None:
+        mission = self._mission("BUILD")
+        mission["oathbringer_mission"]["unexpected_package_metadata"] = True
+        with self.assertRaisesRegex(FoundryError, "embedded Oathbringer mission rejected"):
+            self._compile(mission)
+
+    def test_multifile_repair_requires_the_complete_final_path_declaration(self) -> None:
+        mission = self._mission("REPAIR")
+        mission["oathbringer_mission"]["declared_paths"] = [dict(item) for item in mission["operations"]]
+        second_payload = self.input_root / "payload" / "second.txt"
+        second_payload.write_text("Second harmless repair fixture.\n", encoding="utf-8", newline="\n")
+        second = {
+            "path": "proof/foundry-second.txt",
+            "operation": "REPLACE",
+            "payload_path": "payload/second.txt",
+            "payload_sha256": digest(second_payload),
+            "source_blob": "c" * 40,
+        }
+        mission["operations"].append(second)
+        with self.assertRaisesRegex(FoundryError, "operations disagree"):
+            self._compile(mission)
+        mission["oathbringer_mission"]["declared_paths"].append(dict(second))
+        result = self._compile(mission, "complete-repair")
+        self.assertEqual(verify_carrier(result.carrier_path)["status"], "PASS")
+
     def test_repeated_compile_is_byte_identical_and_manifest_complete(self) -> None:
         mission = self._mission()
         first = self._compile(mission, "first")

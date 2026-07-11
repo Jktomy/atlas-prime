@@ -8,12 +8,14 @@ or credential-storage function.  ``read_live_state`` uses only read-only
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 import os
 import re
 import shutil
 import stat
 import subprocess
+import sys
 import tempfile
 import unicodedata
 import zipfile
@@ -273,6 +275,25 @@ def validate_mission(mission: Mapping[str, Any], source_root: Path) -> None:
     else:
         _require(isinstance(oathbringer, dict), f"{mode} requires an Oathbringer mission")
         _validate_oathbringer_binding(mission, oathbringer)
+        _validate_embedded_runtime_mission(oathbringer, source_root)
+
+
+def _validate_embedded_runtime_mission(oathbringer: Mapping[str, Any], source_root: Path) -> None:
+    """Run the current production runtime validator during Foundry compile."""
+
+    core_path = source_root / "tools" / "atlas-sword" / "engine" / "oathbringer_core.py"
+    _require(core_path.is_file() and not core_path.is_symlink(), "current Oathbringer validator is missing")
+    spec = importlib.util.spec_from_file_location("_atlas_foundry_oathbringer_core", core_path)
+    _require(spec is not None and spec.loader is not None, "current Oathbringer validator cannot be loaded")
+    module = importlib.util.module_from_spec(spec)
+    try:
+        sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+        module.validate_mission(dict(oathbringer))
+    except Exception as exc:
+        if isinstance(exc, FoundryError):
+            raise
+        raise FoundryError(f"embedded Oathbringer mission rejected: {exc}") from exc
 
 
 def _validate_oathbringer_binding(mission: Mapping[str, Any], oathbringer: Mapping[str, Any]) -> None:

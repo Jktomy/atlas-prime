@@ -8,6 +8,13 @@ GitHub mutation or grants authority.
 Canonical doctrine: `methods/oathbringer-foundry.md`
 Forge Standard: `methods/sword-forge-standard.md`
 Lessons register: `methods/sword-lessons.json`
+Delivery Standard: `methods/consistent-pr-delivery-standard.md`
+
+For human-operated BUILD, REPAIR, and EXECUTE preparation, use
+`Invoke-AtlasDeliveryStandard.ps1`. It preserves Foundry diagnostics and always
+finishes a sanitized outer evidence ZIP plus SHA-256 sidecar, including safe
+rejections. The carrier still runs through Oathbringer Console v2 and retains
+all existing exact-head, audit, authorization, and stop-boundary gates.
 
 ## Compile
 
