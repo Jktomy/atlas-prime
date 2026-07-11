@@ -36,6 +36,8 @@ Only an exact receipt and canonical readback may move a capability to RESTORED, 
 
 AJ-04, AJ-05, and AJ-06 are `PROVEN`. Their immutable GitHub identities, exact heads, workflow runs, changed-path readback, merge result, and independent reconciliation are recorded in `proof/oathbringer-production-acceptance-r01.md`.
 
+The R04 Foundry acceptance repeated the complete BUILD → REPAIR → independently audited EXECUTE chain on PR `#66`. It additionally proved deterministic carrier compilation, bounded read-only convergence when GitHub's pull-request projection lagged the branch update, and automatic local evidence packaging. The exact audited head merged to canonical `main` at `11d0db1c82c36c2bbdc07b02882da4f156b7b4e8`.
+
 ## Legacy Oathbringer capability mapping
 
 `CAP-017` preserves the identity and historical proof language of the predecessor clone-first Sword capability. Prime does not reactivate that exact substrate. The GitHub-native Oathbringer route is the accepted replacement, so `CAP-017` is `REPLACED` and `ACTIVE`.
