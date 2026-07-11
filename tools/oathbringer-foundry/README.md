@@ -16,6 +16,13 @@ finishes a sanitized outer evidence ZIP plus SHA-256 sidecar, including safe
 rejections. The carrier still runs through Oathbringer Console v2 and retains
 all existing exact-head, audit, authorization, and stop-boundary gates.
 
+Evidence verification requires three independent inputs: the ZIP, its sidecar,
+and the expected SHA-256 copied from the controlling receipt or handoff. The
+verifier rejects unknown receipt fields, untrusted identities, missing authority
+invariants, unexpected members, noncanonical paths, compression, special files,
+oversized archives or members, excessive JSON nesting, and any disagreement
+between the independent digest, sidecar, archive, manifest, and receipt binding.
+
 ## Compile
 
 ```text

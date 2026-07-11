@@ -11,7 +11,8 @@ without granting a new GitHub writer or standing merge authority.
 2. Keep package-only metadata outside both strict mission objects.
 3. Compile with `Invoke-AtlasDeliveryStandard.ps1`; the wrapper invokes Foundry
    with native argument arrays and preserves stdout and stderr independently.
-4. Verify the sealed carrier and the outer delivery evidence ZIP plus sidecar.
+4. Verify the sealed carrier and the outer delivery evidence using its ZIP,
+   sidecar, and an independently supplied expected SHA-256.
 5. Run the carrier through interactive Console v2 for BUILD, REPAIR, or EXECUTE.
 6. Require exact-head Ubuntu and Windows validation and a detached audit whose
    only head binding is `exact_head`.
@@ -31,6 +32,10 @@ without granting a new GitHub writer or standing merge authority.
 - A successful stop boundary cannot be reversed by nonessential later probes.
 - The outer evidence archive and checksum sidecar finish on success or safe
   rejection and contain only sanitized, public-clean material.
+- Evidence verification enforces the trusted receipt identity, exact member and
+  path contract, bounded stored bytes and JSON depth, and independent
+  expected-digest/sidecar/archive agreement; internal self-consistency alone is
+  never proof of authenticity.
 - The operator never persists credentials and never writes directly to main.
 
 ## Failure boundary

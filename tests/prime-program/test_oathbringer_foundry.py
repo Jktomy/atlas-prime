@@ -182,6 +182,11 @@ class OathbringerFoundryTests(unittest.TestCase):
         with self.assertRaisesRegex(FoundryError, "embedded Oathbringer mission rejected"):
             self._compile(mission)
 
+    def test_runtime_validator_is_loaded_from_the_trusted_coinstalled_engine(self) -> None:
+        source = (FOUNDRY_ROOT / "foundry.py").read_text(encoding="utf-8")
+        self.assertIn('Path(__file__).resolve().parents[1] / "atlas-sword"', source)
+        self.assertNotIn('core_path = source_root / "tools" / "atlas-sword"', source)
+
     def test_multifile_repair_requires_the_complete_final_path_declaration(self) -> None:
         mission = self._mission("REPAIR")
         mission["oathbringer_mission"]["declared_paths"] = [dict(item) for item in mission["operations"]]

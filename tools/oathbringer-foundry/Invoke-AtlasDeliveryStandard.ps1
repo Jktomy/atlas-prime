@@ -5,6 +5,8 @@ param(
     [Parameter(Mandatory, ParameterSetName = 'Compile')][string]$EvidenceZip,
     [Parameter(ParameterSetName = 'Compile')][string]$SourceRoot = (Join-Path $PSScriptRoot '..\..'),
     [Parameter(Mandatory, ParameterSetName = 'Verify')][string]$VerifyEvidenceZip,
+    [Parameter(Mandatory, ParameterSetName = 'Verify')][string]$VerifyEvidenceSidecar,
+    [Parameter(Mandatory, ParameterSetName = 'Verify')][string]$ExpectedEvidenceSha256,
     [Parameter(Mandatory, ParameterSetName = 'Resolver')][switch]$ResolverSelfTest
 )
 
@@ -30,7 +32,12 @@ $python = Get-Command python -ErrorAction SilentlyContinue
 if (-not $python) { $python = Get-Command py -ErrorAction Stop }
 $arguments = @('-B', $scriptPath)
 if ($PSCmdlet.ParameterSetName -eq 'Verify') {
-    $arguments += @('verify-evidence', '--evidence-zip', $VerifyEvidenceZip)
+    $arguments += @(
+        'verify-evidence',
+        '--evidence-zip', $VerifyEvidenceZip,
+        '--sidecar', $VerifyEvidenceSidecar,
+        '--expected-sha256', $ExpectedEvidenceSha256
+    )
 } else {
     $resolvedInput = (Resolve-Path -LiteralPath $InputRoot).Path
     $resolvedSource = (Resolve-Path -LiteralPath $SourceRoot).Path

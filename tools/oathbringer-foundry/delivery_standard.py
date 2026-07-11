@@ -25,12 +25,41 @@ IDENTITY = "CONSISTENT_PR_DELIVERY_STANDARD_R01"
 FORMAT_VERSION = "1.0"
 ZIP_EPOCH = (1980, 1, 1, 0, 0, 0)
 REQUIRED_PLATFORMS = ("ubuntu-latest", "windows-latest")
-SENSITIVE = re.compile(
-    r"(?:\bgh[pousr]_[A-Za-z0-9]{20,}\b|\bgithub_pat_[A-Za-z0-9_]{20,}\b|"
-    r"\bsk-[A-Za-z0-9_-]{20,}\b|\bAKIA[0-9A-Z]{16}\b|"
-    r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|"
-    r"(?i:(?:authorization|api[_-]?key|access[_-]?token|password|secret)\s*[:=]\s*[^\s]+))"
+EVIDENCE_MEMBERS = (
+    "DELIVERY-RECEIPT.json",
+    "MANIFEST.json",
+    "SHA256SUMS.txt",
+    "stderr.txt",
+    "stdout.txt",
 )
+MAX_ARCHIVE_BYTES = 4_194_304
+MAX_MEMBERS = len(EVIDENCE_MEMBERS)
+MAX_MEMBER_BYTES = 1_048_576
+MAX_TOTAL_BYTES = 2_097_152
+MAX_JSON_DEPTH = 16
+PEM_BLOCK = re.compile(
+    r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----.*?"
+    r"-----END (?:RSA |EC |OPENSSH )?PRIVATE KEY-----",
+    re.DOTALL,
+)
+SENSITIVE = re.compile(
+    r"(?:\b(?:Bearer|Basic)\s+[A-Za-z0-9._~+/=-]{8,}|"
+    r"\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}(?:\.[A-Za-z0-9_-]{8,})?\b|"
+    r"\bgh[pousr]_[A-Za-z0-9]{20,}\b|\bgithub_pat_[A-Za-z0-9_]{20,}\b|"
+    r"\bsk-[A-Za-z0-9_-]{20,}\b|\bAKIA[0-9A-Z]{16}\b|"
+    r"(?:authorization|api[_-]?key|access[_-]?token|password|secret|recovery[_-]?code)"
+    r"\s*[:=]\s*[^\r\n]+)",
+    re.IGNORECASE,
+)
+FOUNDRY_RESULT_KEYS = {
+    "carrier_path",
+    "carrier_sha256",
+    "manifest_sha256",
+    "forge_receipt_sha256",
+    "member_count",
+    "bound_live_state_sha256",
+    "compiler_is_writer",
+}
 
 
 class DeliveryError(RuntimeError):
@@ -54,7 +83,66 @@ def _sha256(data: bytes) -> str:
 
 def _sanitize(text: str) -> str:
     normalized = text.replace("\r\n", "\n").replace("\r", "\n")
-    return SENSITIVE.sub("[REDACTED]", normalized)
+    return SENSITIVE.sub("[REDACTED]", PEM_BLOCK.sub("[REDACTED]", normalized))
+
+
+def _pairs_no_duplicates(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise DeliveryError(f"duplicate JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def _json_depth(value: Any) -> int:
+    if isinstance(value, dict):
+        return 1 + max((_json_depth(item) for item in value.values()), default=0)
+    if isinstance(value, list):
+        return 1 + max((_json_depth(item) for item in value), default=0)
+    return 1
+
+
+def _bounded_json(data: bytes, field: str) -> Any:
+    if len(data) > MAX_MEMBER_BYTES:
+        raise DeliveryError(f"{field} exceeds the JSON byte limit")
+    try:
+        value = json.loads(data.decode("utf-8"), object_pairs_hook=_pairs_no_duplicates)
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise DeliveryError(f"{field} is not valid UTF-8 JSON") from exc
+    if _json_depth(value) > MAX_JSON_DEPTH:
+        raise DeliveryError(f"{field} exceeds the JSON depth limit")
+    return value
+
+
+def _require_sha256(value: Any, field: str) -> str:
+    text = str(value or "")
+    if re.fullmatch(r"[0-9a-f]{64}", text) is None:
+        raise DeliveryError(f"{field} must be a lowercase SHA-256")
+    return text
+
+
+def _validate_foundry_result(value: Any) -> dict[str, Any]:
+    if not isinstance(value, dict) or set(value) != FOUNDRY_RESULT_KEYS:
+        raise DeliveryError("Foundry result does not match the trusted result contract")
+    if value.get("compiler_is_writer") is not False:
+        raise DeliveryError("Foundry result incorrectly claims writer authority")
+    member_count = value.get("member_count")
+    if not isinstance(member_count, int) or isinstance(member_count, bool) or not 1 <= member_count <= 256:
+        raise DeliveryError("Foundry result member_count is invalid")
+    carrier_path = str(value.get("carrier_path") or "")
+    carrier_name = Path(carrier_path).name
+    if not carrier_name or carrier_name != carrier_path.replace("\\", "/").split("/")[-1] or "\n" in carrier_name:
+        raise DeliveryError("Foundry result carrier_path is invalid")
+    return {
+        "carrier_name": carrier_name,
+        "carrier_sha256": _require_sha256(value.get("carrier_sha256"), "carrier_sha256"),
+        "manifest_sha256": _require_sha256(value.get("manifest_sha256"), "manifest_sha256"),
+        "forge_receipt_sha256": _require_sha256(value.get("forge_receipt_sha256"), "forge_receipt_sha256"),
+        "member_count": member_count,
+        "bound_live_state_sha256": _require_sha256(value.get("bound_live_state_sha256"), "bound_live_state_sha256"),
+        "compiler_is_writer": False,
+    }
 
 
 def parse_ls_tree_record(record: str) -> dict[str, str]:
@@ -107,12 +195,10 @@ def parse_foundry_result(result: CommandResult) -> dict[str, Any]:
     if result.returncode != 0:
         raise DeliveryError(f"Foundry command failed: {diagnostic or 'no diagnostic returned'}")
     try:
-        value = json.loads(result.stdout)
-    except json.JSONDecodeError as exc:
+        value = json.loads(result.stdout, object_pairs_hook=_pairs_no_duplicates)
+    except (json.JSONDecodeError, DeliveryError) as exc:
         raise DeliveryError(f"Foundry returned invalid JSON: {diagnostic or 'no diagnostic returned'}") from exc
-    if not isinstance(value, dict):
-        raise DeliveryError("Foundry result must be a JSON object")
-    return value
+    return _validate_foundry_result(value)
 
 
 def retain_primary_success(primary: dict[str, Any], post_stop_probe: Callable[[], Any] | None) -> dict[str, Any]:
@@ -151,6 +237,8 @@ def _write_evidence_archive(output_zip: Path, evidence: dict[str, Any], stdout: 
         f"{_sha256(members[path])}  {path}\n" for path in sorted(members)
     ).encode("ascii")
     output_zip.parent.mkdir(parents=True, exist_ok=True)
+    if output_zip.is_symlink() or output_zip.with_suffix(output_zip.suffix + ".sha256").is_symlink():
+        raise DeliveryError("evidence output and sidecar must not be symlinks")
     with zipfile.ZipFile(output_zip, "w", compression=zipfile.ZIP_STORED, strict_timestamps=True) as archive:
         for path in sorted(members):
             info = zipfile.ZipInfo(path, ZIP_EPOCH)
@@ -199,6 +287,12 @@ def compile_with_evidence(
         "compiler_is_writer": False,
         "direct_main_write": False,
         "credential_persistence": False,
+        "evidence_contract": {
+            "archive_filename": evidence_zip.name,
+            "sidecar_filename": evidence_zip.name + ".sha256",
+            "required_members": list(EVIDENCE_MEMBERS),
+            "verification": "SIDECAR_PLUS_INDEPENDENT_SHA256",
+        },
     }
     failure: DeliveryError | None = None
     try:
@@ -210,42 +304,146 @@ def compile_with_evidence(
         failure = exc if isinstance(exc, DeliveryError) else DeliveryError(_sanitize(f"{type(exc).__name__}: {exc}"))
         receipt["diagnostic"] = str(failure)
     finally:
+        safe_stdout = _canonical_json(receipt.get("foundry", {})).decode("utf-8") if receipt["result"] == "SUCCESS" else ""
+        safe_stderr = "" if receipt["result"] == "SUCCESS" else captured.stderr
         receipt["evidence_sha256"] = _write_evidence_archive(
             evidence_zip,
             receipt,
-            captured.stdout,
-            captured.stderr,
+            safe_stdout,
+            safe_stderr,
         )
     if failure is not None:
         raise failure
     return receipt
 
 
-def verify_evidence(path: Path) -> dict[str, Any]:
+def _validate_receipt(receipt: Any, path: Path, sidecar_path: Path) -> None:
+    if not isinstance(receipt, dict):
+        raise DeliveryError("delivery receipt must be an object")
+    base_keys = {
+        "format_version", "identity", "result", "workflow_platforms",
+        "compiler_is_writer", "direct_main_write", "credential_persistence",
+        "evidence_contract",
+    }
+    allowed = base_keys | {"foundry", "diagnostic", "post_stop_warning"}
+    if not base_keys <= set(receipt) or not set(receipt) <= allowed:
+        raise DeliveryError("delivery receipt does not match the trusted contract")
+    if receipt["format_version"] != FORMAT_VERSION or receipt["identity"] != IDENTITY:
+        raise DeliveryError("delivery receipt identity is untrusted")
+    if receipt["workflow_platforms"] != list(REQUIRED_PLATFORMS):
+        raise DeliveryError("delivery receipt platform binding is invalid")
+    if any(receipt[key] is not False for key in ("compiler_is_writer", "direct_main_write", "credential_persistence")):
+        raise DeliveryError("delivery receipt violates authority invariants")
+    result = receipt.get("result")
+    if result == "SUCCESS":
+        if "foundry" not in receipt or "diagnostic" in receipt:
+            raise DeliveryError("successful delivery receipt is incomplete")
+        _validate_foundry_result({
+            "carrier_path": receipt["foundry"].get("carrier_name") if isinstance(receipt["foundry"], dict) else None,
+            **({key: value for key, value in receipt["foundry"].items() if key != "carrier_name"} if isinstance(receipt["foundry"], dict) else {}),
+        })
+    elif result == "REJECTED":
+        if "diagnostic" not in receipt or "foundry" in receipt or not isinstance(receipt["diagnostic"], str):
+            raise DeliveryError("rejected delivery receipt is incomplete")
+    else:
+        raise DeliveryError("delivery receipt result is invalid")
+    contract = receipt.get("evidence_contract")
+    expected_contract = {
+        "archive_filename": path.name,
+        "sidecar_filename": sidecar_path.name,
+        "required_members": list(EVIDENCE_MEMBERS),
+        "verification": "SIDECAR_PLUS_INDEPENDENT_SHA256",
+    }
+    if contract != expected_contract:
+        raise DeliveryError("delivery receipt evidence binding is invalid")
+
+
+def _verify_evidence(path: Path, *, sidecar_path: Path, expected_sha256: str) -> dict[str, Any]:
+    expected = _require_sha256(expected_sha256, "expected_sha256")
+    if not path.is_file() or path.is_symlink() or path.stat().st_size > MAX_ARCHIVE_BYTES:
+        raise DeliveryError("evidence archive is missing, linked, or oversized")
+    if not sidecar_path.is_file() or sidecar_path.is_symlink() or sidecar_path.stat().st_size > 256:
+        raise DeliveryError("independent evidence sidecar is missing or unsafe")
+    try:
+        sidecar = sidecar_path.read_text(encoding="ascii").splitlines()
+    except (OSError, UnicodeDecodeError) as exc:
+        raise DeliveryError("independent evidence sidecar is unreadable") from exc
+    if sidecar != [f"{expected}  {path.name}"]:
+        raise DeliveryError("independent evidence sidecar binding mismatch")
     data = path.read_bytes()
+    if _sha256(data) != expected:
+        raise DeliveryError("independent evidence SHA-256 mismatch")
     with zipfile.ZipFile(path, "r") as archive:
         infos = archive.infolist()
         names = [info.filename for info in infos]
-        if len(names) != len(set(names)) or any(info.is_dir() or not stat.S_ISREG(info.external_attr >> 16) for info in infos):
-            raise DeliveryError("evidence archive member set is unsafe")
-        manifest = json.loads(archive.read("MANIFEST.json"))
-        declared = {item["path"]: item for item in manifest["files"]}
-        if set(declared) != set(names) - {"MANIFEST.json", "SHA256SUMS.txt"}:
+        if len(infos) != MAX_MEMBERS or tuple(sorted(names)) != EVIDENCE_MEMBERS:
+            raise DeliveryError("evidence archive does not match the exact member contract")
+        total = 0
+        for info in infos:
+            if (
+                info.is_dir()
+                or info.flag_bits & 0x1
+                or not stat.S_ISREG(info.external_attr >> 16)
+                or info.compress_type != zipfile.ZIP_STORED
+                or info.file_size != info.compress_size
+                or info.file_size > MAX_MEMBER_BYTES
+                or "\\" in info.filename
+                or info.filename.startswith(("/", "//"))
+                or any(part in {"", ".", ".."} for part in info.filename.split("/"))
+            ):
+                raise DeliveryError(f"evidence archive member is unsafe: {info.filename}")
+            total += info.file_size
+        if total > MAX_TOTAL_BYTES:
+            raise DeliveryError("evidence archive exceeds the total byte limit")
+        manifest = _bounded_json(archive.read("MANIFEST.json"), "MANIFEST.json")
+        if not isinstance(manifest, dict) or set(manifest) != {"format_version", "files"} or manifest["format_version"] != FORMAT_VERSION or not isinstance(manifest["files"], list):
+            raise DeliveryError("evidence manifest does not match the trusted contract")
+        declared: dict[str, dict[str, Any]] = {}
+        for item in manifest["files"]:
+            if not isinstance(item, dict) or set(item) != {"path", "bytes", "sha256"}:
+                raise DeliveryError("evidence manifest entry is malformed")
+            member = item["path"]
+            if member in declared or not isinstance(member, str) or not isinstance(item["bytes"], int) or isinstance(item["bytes"], bool):
+                raise DeliveryError("evidence manifest entry is malformed")
+            _require_sha256(item["sha256"], f"manifest hash {member}")
+            declared[member] = item
+        if set(declared) != set(EVIDENCE_MEMBERS) - {"MANIFEST.json", "SHA256SUMS.txt"}:
             raise DeliveryError("evidence manifest coverage mismatch")
         for member, item in declared.items():
             payload = archive.read(member)
             if len(payload) != item["bytes"] or _sha256(payload) != item["sha256"]:
                 raise DeliveryError(f"evidence manifest mismatch: {member}")
-        sums = {}
-        for line in archive.read("SHA256SUMS.txt").decode("ascii").splitlines():
-            digest, member = line.split("  ", 1)
+        sums: dict[str, str] = {}
+        try:
+            sum_lines = archive.read("SHA256SUMS.txt").decode("ascii").splitlines()
+        except UnicodeDecodeError as exc:
+            raise DeliveryError("evidence checksum ledger is not ASCII") from exc
+        for line in sum_lines:
+            parts = line.split("  ", 1)
+            if len(parts) != 2:
+                raise DeliveryError("evidence checksum ledger is malformed")
+            digest, member = parts
+            _require_sha256(digest, f"checksum {member}")
+            if member in sums:
+                raise DeliveryError("evidence checksum ledger contains duplicates")
             sums[member] = digest
-        if set(sums) != set(names) - {"SHA256SUMS.txt"}:
+        if set(sums) != set(EVIDENCE_MEMBERS) - {"SHA256SUMS.txt"}:
             raise DeliveryError("evidence checksum coverage mismatch")
         for member, digest in sums.items():
             if _sha256(archive.read(member)) != digest:
                 raise DeliveryError(f"evidence checksum mismatch: {member}")
+        receipt = _bounded_json(archive.read("DELIVERY-RECEIPT.json"), "DELIVERY-RECEIPT.json")
+        _validate_receipt(receipt, path, sidecar_path)
     return {"status": "PASS", "sha256": _sha256(data), "member_count": len(names)}
+
+
+def verify_evidence(path: Path, *, sidecar_path: Path, expected_sha256: str) -> dict[str, Any]:
+    try:
+        return _verify_evidence(path, sidecar_path=sidecar_path, expected_sha256=expected_sha256)
+    except DeliveryError:
+        raise
+    except (OSError, KeyError, ValueError, OverflowError, zipfile.BadZipFile) as exc:
+        raise DeliveryError(f"evidence archive verification failed: {type(exc).__name__}") from exc
 
 
 def main() -> int:
@@ -258,10 +456,12 @@ def main() -> int:
     compile_parser.add_argument("--evidence-zip", required=True, type=Path)
     verify_parser = sub.add_parser("verify-evidence")
     verify_parser.add_argument("--evidence-zip", required=True, type=Path)
+    verify_parser.add_argument("--sidecar", required=True, type=Path)
+    verify_parser.add_argument("--expected-sha256", required=True)
     args = parser.parse_args()
     try:
         if args.command == "verify-evidence":
-            print(json.dumps(verify_evidence(args.evidence_zip), indent=2, sort_keys=True))
+            print(json.dumps(verify_evidence(args.evidence_zip, sidecar_path=args.sidecar, expected_sha256=args.expected_sha256), indent=2, sort_keys=True))
             return 0
         result = compile_with_evidence(
             input_root=args.input_root,

@@ -275,13 +275,13 @@ def validate_mission(mission: Mapping[str, Any], source_root: Path) -> None:
     else:
         _require(isinstance(oathbringer, dict), f"{mode} requires an Oathbringer mission")
         _validate_oathbringer_binding(mission, oathbringer)
-        _validate_embedded_runtime_mission(oathbringer, source_root)
+        _validate_embedded_runtime_mission(oathbringer)
 
 
-def _validate_embedded_runtime_mission(oathbringer: Mapping[str, Any], source_root: Path) -> None:
-    """Run the current production runtime validator during Foundry compile."""
+def _validate_embedded_runtime_mission(oathbringer: Mapping[str, Any]) -> None:
+    """Run the trusted co-installed production validator during compilation."""
 
-    core_path = source_root / "tools" / "atlas-sword" / "engine" / "oathbringer_core.py"
+    core_path = Path(__file__).resolve().parents[1] / "atlas-sword" / "engine" / "oathbringer_core.py"
     _require(core_path.is_file() and not core_path.is_symlink(), "current Oathbringer validator is missing")
     spec = importlib.util.spec_from_file_location("_atlas_foundry_oathbringer_core", core_path)
     _require(spec is not None and spec.loader is not None, "current Oathbringer validator cannot be loaded")
