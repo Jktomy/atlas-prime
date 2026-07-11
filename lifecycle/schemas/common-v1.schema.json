@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/common-v1.schema.json",
+  "title": "Atlas lifecycle common definitions v1",
+  "$defs": {
+    "stable_id": {
+      "type": "string",
+      "pattern": "^(FTR|FAR|GWN|QEM|QCP|SUN|SRI|CON|LCR)-[A-Z2-7]{26}$"
+    },
+    "git_sha": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "atlas_identity": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+      "maxLength": 128
+    },
+    "bounded_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000
+    },
+    "bounded_text_list": {
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/bounded_text" }
+    },
+    "source_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref_id", "authority", "uri"],
+      "properties": {
+        "ref_id": { "$ref": "#/$defs/atlas_identity" },
+        "authority": {
+          "enum": ["CANONICAL_SOURCE", "EVIDENCE_POINTER", "PROTECTED_POINTER"]
+        },
+        "uri": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "digest": { "$ref": "#/$defs/fingerprint" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "authority": { "const": "PROTECTED_POINTER" } },
+            "required": ["authority"]
+          },
+          "then": {
+            "properties": {
+              "uri": {
+                "pattern": "^protected://[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "uri": {
+                "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "source_references": {
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/source_reference" }
+    },
+    "protected_data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "clean_summary", "protected_pointers"],
+      "properties": {
+        "classification": {
+          "enum": ["PUBLIC", "INTERNAL_CLEAN", "PROTECTED_POINTER_ONLY"]
+        },
+        "clean_summary": { "$ref": "#/$defs/bounded_text" },
+        "protected_pointers": {
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^protected://[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$",
+            "maxLength": 1024
+          }
+        }
+      }
+    },
+    "quest_scope": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["scope_type", "quest_id"],
+          "properties": {
+            "scope_type": { "const": "ADMITTED_QUEST" },
+            "quest_id": { "$ref": "#/$defs/atlas_identity" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["scope_type", "candidate_quest_ref"],
+          "properties": {
+            "scope_type": { "const": "CANDIDATE_QUEST" },
+            "candidate_quest_ref": { "$ref": "#/$defs/atlas_identity" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["scope_type", "work_scope"],
+          "properties": {
+            "scope_type": { "const": "NON_QUEST" },
+            "work_scope": { "$ref": "#/$defs/bounded_text" }
+          }
+        }
+      ]
+    },
+    "concurrency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expected_main_sha",
+        "expected_parent_feather",
+        "expected_quest_revision",
+        "declared_source_fingerprint"
+      ],
+      "properties": {
+        "expected_main_sha": { "$ref": "#/$defs/git_sha" },
+        "expected_parent_feather": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "string", "pattern": "^FTR-[A-Z2-7]{26}$" }
+          ]
+        },
+        "expected_quest_revision": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "integer", "minimum": 0 }
+          ]
+        },
+        "declared_source_fingerprint": { "$ref": "#/$defs/fingerprint" }
+      }
+    },
+    "supersession_lineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["supersedes", "superseded_by"],
+      "properties": {
+        "supersedes": {
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/stable_id" }
+        },
+        "superseded_by": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/stable_id" }
+          ]
+        }
+      }
+    }
+  }
+}

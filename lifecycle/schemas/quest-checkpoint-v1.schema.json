@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/quest-checkpoint-v1.schema.json",
+  "title": "Atlas Quest checkpoint v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "record_id", "authority", "quest_id",
+    "quest_revision", "emberline_id", "feather_id", "checkpoint_summary",
+    "gate", "evidence_pointers", "protected_data", "concurrency"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.quest-checkpoint" },
+    "schema_version": { "const": "1.0.0" },
+    "record_id": { "type": "string", "pattern": "^QCP-[A-Z2-7]{26}$" },
+    "authority": { "enum": ["CANONICAL_RECORD", "NONCANONICAL_FIXTURE"] },
+    "quest_id": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+    "quest_revision": { "type": "integer", "minimum": 1 },
+    "emberline_id": { "type": "string", "pattern": "^QEM-[A-Z2-7]{26}$" },
+    "feather_id": { "type": "string", "pattern": "^FTR-[A-Z2-7]{26}$" },
+    "checkpoint_summary": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "gate": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "evidence_pointers": { "$ref": "common-v1.schema.json#/$defs/source_references" },
+    "protected_data": { "$ref": "common-v1.schema.json#/$defs/protected_data" },
+    "concurrency": { "$ref": "common-v1.schema.json#/$defs/concurrency" }
+  }
+}

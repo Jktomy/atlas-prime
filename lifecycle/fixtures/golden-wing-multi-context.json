@@ -1,0 +1,47 @@
+{
+  "schema_id": "atlas.lifecycle.golden-wing",
+  "schema_version": "1.0.0",
+  "record_id": "GWN-3JC4IGKK6PH7PA7OAH5UHEKQIW",
+  "authority": "NONCANONICAL_FIXTURE",
+  "lifecycle_status": "CANDIDATE",
+  "scope": "CROSS_PROJECT",
+  "supporting_feather_ids": [
+    "FTR-KC44ORGJ3XNOVTQJUEICBUEVMS",
+    "FTR-N6K7WCAXD7SY5PFQSMXZ7BXC6P"
+  ],
+  "originating_quest_ids": ["found-silverlight", "prometheus-fire"],
+  "originating_project_ids": ["project-codex", "project-prometheus"],
+  "operation_ids": ["operation-source-governance"],
+  "lesson": "Exact source locks and clean pointers improve continuity across independent contexts.",
+  "recurrence_evidence": [
+    {
+      "ref_id": "fixture-recurrence-one",
+      "authority": "EVIDENCE_POINTER",
+      "uri": "proof/fixtures/recurrence-one.json"
+    },
+    {
+      "ref_id": "fixture-recurrence-two",
+      "authority": "EVIDENCE_POINTER",
+      "uri": "proof/fixtures/recurrence-two.json"
+    }
+  ],
+  "systemic_exception_justification": null,
+  "counterexamples": ["A stale source lock still requires rejection."],
+  "noctua_findings": ["Candidate wording does not claim doctrine."],
+  "ares_attacks": ["Remove one independent context and require rejection of advancement."],
+  "missing_evidence": ["Phoenix Burn review has not occurred."],
+  "proposed_destination": "A future source-governance lesson after human review.",
+  "promotion_readiness": {
+    "state": "NOT_READY",
+    "human_decision_required": true
+  },
+  "protected_data": {
+    "classification": "INTERNAL_CLEAN",
+    "clean_summary": "Fixture contains no protected values.",
+    "protected_pointers": []
+  },
+  "supersession_lineage": {
+    "supersedes": [],
+    "superseded_by": null
+  }
+}

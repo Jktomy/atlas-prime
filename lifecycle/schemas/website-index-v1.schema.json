@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/website-index-v1.schema.json",
+  "title": "Atlas website-facing lifecycle index v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "authority", "generator_version",
+    "generated_timestamp", "source_fingerprint", "records"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.website-index" },
+    "schema_version": { "const": "1.0.0" },
+    "authority": { "const": "GENERATED_NONCANONICAL_PROJECTION" },
+    "generator_version": { "type": "string", "pattern": "^[0-9]+[.][0-9]+[.][0-9]+$" },
+    "generated_timestamp": { "type": "string", "format": "date-time" },
+    "source_fingerprint": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "records": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "record_id", "record_type", "lifecycle_status", "project_ids",
+          "operation_ids", "quest_ids", "candidate_quest_refs",
+          "related_record_ids", "protected_warning", "promotion_readiness",
+          "source_record_digest"
+        ],
+        "properties": {
+          "record_id": { "$ref": "common-v1.schema.json#/$defs/stable_id" },
+          "record_type": {
+            "enum": ["FEATHER", "FEATHER_ARCHIVE", "GOLDEN_WING", "QUEST_EMBERLINE", "QUEST_CHECKPOINT", "SUNSET", "SUNRISE", "CONTINUITY", "LIFECYCLE_RECEIPT"]
+          },
+          "lifecycle_status": { "type": "string", "minLength": 1, "maxLength": 64 },
+          "project_ids": {
+            "type": "array", "maxItems": 64, "uniqueItems": true,
+            "items": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }
+          },
+          "operation_ids": {
+            "type": "array", "maxItems": 64, "uniqueItems": true,
+            "items": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }
+          },
+          "quest_ids": {
+            "type": "array", "maxItems": 64, "uniqueItems": true,
+            "items": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }
+          },
+          "candidate_quest_refs": {
+            "type": "array", "maxItems": 64, "uniqueItems": true,
+            "items": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }
+          },
+          "related_record_ids": {
+            "type": "array", "maxItems": 128, "uniqueItems": true,
+            "items": { "$ref": "common-v1.schema.json#/$defs/stable_id" }
+          },
+          "protected_warning": { "type": "boolean" },
+          "promotion_readiness": { "type": ["string", "null"], "maxLength": 64 },
+          "source_record_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" }
+        }
+      }
+    }
+  }
+}

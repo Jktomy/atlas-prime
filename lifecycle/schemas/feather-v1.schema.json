@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/feather-v1.schema.json",
+  "title": "Atlas Feather v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "record_id", "authority", "project_id",
+    "operation_id", "quest_scope", "campaign", "mission", "gate",
+    "lifecycle_status", "context_summary", "concurrency",
+    "durable_source_references", "evidence_pointers", "protected_data",
+    "next_safe_action", "next_approval_gate", "supersession_lineage"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.feather" },
+    "schema_version": { "const": "1.0.0" },
+    "record_id": { "type": "string", "pattern": "^FTR-[A-Z2-7]{26}$" },
+    "authority": { "enum": ["CANONICAL_RECORD", "NONCANONICAL_FIXTURE"] },
+    "project_id": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+    "operation_id": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }
+      ]
+    },
+    "quest_scope": { "$ref": "common-v1.schema.json#/$defs/quest_scope" },
+    "campaign": { "type": ["string", "null"], "maxLength": 256 },
+    "mission": { "type": ["string", "null"], "maxLength": 256 },
+    "gate": { "type": ["string", "null"], "maxLength": 256 },
+    "lifecycle_status": {
+      "enum": ["DRAFT", "SEALED", "ARCHIVED", "SUPERSEDED", "INVALIDATED"]
+    },
+    "context_summary": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "concurrency": { "$ref": "common-v1.schema.json#/$defs/concurrency" },
+    "durable_source_references": { "$ref": "common-v1.schema.json#/$defs/source_references" },
+    "evidence_pointers": { "$ref": "common-v1.schema.json#/$defs/source_references" },
+    "protected_data": { "$ref": "common-v1.schema.json#/$defs/protected_data" },
+    "next_safe_action": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "next_approval_gate": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "supersession_lineage": { "$ref": "common-v1.schema.json#/$defs/supersession_lineage" }
+  }
+}

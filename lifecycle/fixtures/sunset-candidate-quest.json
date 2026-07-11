@@ -1,0 +1,37 @@
+{
+  "schema_id": "atlas.lifecycle.sunset",
+  "schema_version": "1.0.0",
+  "record_id": "SUN-GYTCBGCZSIKL65PNKDW6RQT2LB",
+  "authority": "NONCANONICAL_FIXTURE",
+  "project_id": "project-atlas",
+  "operation_id": "operation-source-governance",
+  "quest_scope": {
+    "scope_type": "CANDIDATE_QUEST",
+    "candidate_quest_ref": "notums-watch-candidate"
+  },
+  "completion_assessment": "Candidate work is paused without canonical Quest admission.",
+  "decisions": ["Preserve candidate status until a current valid admission handoff exists."],
+  "open_items": ["Obtain or author an explicit Quest admission decision."],
+  "next_safe_action": "Validate the candidate-only lifecycle path.",
+  "next_approval_gate": "Explicit Quest admission decision.",
+  "latest_feather_id": null,
+  "concurrency": {
+    "expected_main_sha": "0000000000000000000000000000000000000000",
+    "expected_parent_feather": null,
+    "expected_quest_revision": null,
+    "declared_source_fingerprint": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+  },
+  "durable_source_references": [
+    {
+      "ref_id": "quest-admission-doctrine",
+      "authority": "CANONICAL_SOURCE",
+      "uri": "lifecycle/lifecycle-contract.md"
+    }
+  ],
+  "evidence_pointers": [],
+  "protected_data": {
+    "classification": "INTERNAL_CLEAN",
+    "clean_summary": "Fixture contains no protected values.",
+    "protected_pointers": []
+  }
+}
