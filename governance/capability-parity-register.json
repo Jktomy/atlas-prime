@@ -227,7 +227,7 @@
       "id": "CAP-017",
       "domain": "Sword / Oathbringer",
       "capability": "Clone-first mission-specific Build/Repair/Execute packages",
-      "audit_status": "PRODUCTION_ROUTE_AND_FOUNDRY_LIVE_PROVEN",
+      "audit_status": "PRODUCTION_ROUTE_LIVE_PROVEN",
       "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "REPLACED",
