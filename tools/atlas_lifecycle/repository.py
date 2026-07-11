@@ -35,6 +35,7 @@ class ValidationResult:
     source_fingerprint: str
     stale_records: tuple[str, ...]
     canonical_records: tuple[dict[str, Any], ...]
+    fixture_records: tuple[dict[str, Any], ...]
 
 
 def observed_head(repo_root: Path) -> str:
@@ -221,4 +222,5 @@ def validate_repository(
         source_fingerprint=f"sha256:{fingerprint.hexdigest()}",
         stale_records=tuple(stale),
         canonical_records=tuple(canonical),
+        fixture_records=tuple(record for record, fixture in loaded if fixture),
     )

@@ -1,0 +1,33 @@
+{
+  "schema_id": "atlas.lifecycle.quest-emberline",
+  "schema_version": "1.0.0",
+  "record_id": "QEM-XOB2B4JGLKXTFXXBDGYQBYPEXD",
+  "authority": "NONCANONICAL_FIXTURE",
+  "quest_id": "found-silverlight",
+  "project_id": "project-codex",
+  "operation_ids": ["operation-source-governance"],
+  "quest_revision": 1,
+  "prior_emberline_id": null,
+  "current_position": "Gate remains in progress at a verified restart point.",
+  "unresolved_blockers": ["One harmless fixture blocker remains."],
+  "next_gate": "Complete the declared fixture acceptance checklist.",
+  "latest_feather_id": "FTR-KC44ORGJ3XNOVTQJUEICBUEVMS",
+  "concurrency": {
+    "expected_main_sha": "0000000000000000000000000000000000000000",
+    "expected_parent_feather": "FTR-KC44ORGJ3XNOVTQJUEICBUEVMS",
+    "expected_quest_revision": 0,
+    "declared_source_fingerprint": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+  },
+  "durable_source_references": [
+    {
+      "ref_id": "found-silverlight-source",
+      "authority": "CANONICAL_SOURCE",
+      "uri": "quests/found-silverlight.md"
+    }
+  ],
+  "protected_data": {
+    "classification": "INTERNAL_CLEAN",
+    "clean_summary": "Fixture contains no protected values.",
+    "protected_pointers": []
+  }
+}

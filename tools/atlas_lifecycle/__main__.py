@@ -7,6 +7,7 @@ from pathlib import Path
 from . import __version__
 from .errors import LifecycleError
 from .evidence import verify_bound_evidence
+from .pilot import run_context_pilot
 from .projection import INDEX_RELATIVE_PATH, check_website_index, compact_context
 from .repository import validate_repository
 
@@ -28,12 +29,24 @@ def build_parser() -> argparse.ArgumentParser:
     index = subcommands.add_parser("index", help="website-facing lifecycle projection checks")
     index_commands = index.add_subparsers(dest="index_command", required=True)
     index_commands.add_parser("build", help="compute and compare the index without writing")
+    pilot = subcommands.add_parser("pilot", help="measure manual versus compact context reconstruction")
+    pilot.add_argument("--repetitions", type=int, default=500)
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
     try:
+        if args.command == "pilot":
+            print(
+                json.dumps(
+                    run_context_pilot(args.repo_root, repetitions=args.repetitions),
+                    sort_keys=True,
+                    separators=(",", ":"),
+                )
+            )
+            return 0
+
         if args.command in {"context", "index"}:
             check, snapshot = check_website_index(args.repo_root)
             if args.command == "context":
