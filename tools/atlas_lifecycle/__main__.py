@@ -7,6 +7,7 @@ from pathlib import Path
 from . import __version__
 from .errors import LifecycleError
 from .evidence import verify_bound_evidence
+from .projection import INDEX_RELATIVE_PATH, check_website_index, compact_context
 from .repository import validate_repository
 
 
@@ -22,12 +23,39 @@ def build_parser() -> argparse.ArgumentParser:
     verify.add_argument("--sidecar", type=Path)
     verify.add_argument("--receipt", type=Path)
     verify.add_argument("--trust-root", type=Path)
+    context = subcommands.add_parser("context", help="return one compact deterministic Quest context")
+    context.add_argument("--quest-id")
+    index = subcommands.add_parser("index", help="website-facing lifecycle projection checks")
+    index_commands = index.add_subparsers(dest="index_command", required=True)
+    index_commands.add_parser("build", help="compute and compare the index without writing")
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
     try:
+        if args.command in {"context", "index"}:
+            check, snapshot = check_website_index(args.repo_root)
+            if args.command == "context":
+                output = compact_context(
+                    snapshot,
+                    quest_id=args.quest_id,
+                    projection_warning=check.warning,
+                )
+            else:
+                output = {
+                    "authority": "GENERATED_NONCANONICAL_PROJECTION",
+                    "command": "index build",
+                    "expected_digest": check.expected_digest,
+                    "index_path": INDEX_RELATIVE_PATH.as_posix(),
+                    "index_status": check.status,
+                    "mode": "CHECK_ONLY",
+                    "source_fingerprint": check.source_fingerprint,
+                    "source_revision": check.source_revision,
+                }
+            print(json.dumps(output, sort_keys=True, separators=(",", ":")))
+            return 0
+
         result = validate_repository(
             args.repo_root,
             check_stale=args.command == "verify",

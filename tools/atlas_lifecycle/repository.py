@@ -34,6 +34,7 @@ class ValidationResult:
     trust_roots: int
     source_fingerprint: str
     stale_records: tuple[str, ...]
+    canonical_records: tuple[dict[str, Any], ...]
 
 
 def observed_head(repo_root: Path) -> str:
@@ -219,4 +220,5 @@ def validate_repository(
         trust_roots=trust_root_count,
         source_fingerprint=f"sha256:{fingerprint.hexdigest()}",
         stale_records=tuple(stale),
+        canonical_records=tuple(canonical),
     )

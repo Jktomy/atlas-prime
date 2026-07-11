@@ -78,10 +78,15 @@ represented only by a sanitized summary, classification, and bounded
 `generated/lifecycle/` may contain deterministic website-facing indexes. Each
 projection declares noncanonical authority, schema and generator versions,
 source fingerprint, and generated timestamp. The timestamp is derived from the
-locked source revision, never the generator's wall clock, so repeated builds
-are byte-identical. Consumers use stable IDs and relationships, never physical
-source paths as identity. Stale fingerprints are an error. The initial website
-contract is read-only.
+locked lifecycle Git tree revision, never the generator's wall clock, so
+repeated builds are byte-identical even in a shallow checkout. Consumers use
+stable IDs and relationships, never physical source paths as identity. Stale
+fingerprints are an error. The initial website contract is read-only.
+
+Website index v2 carries compact restart and relationship fields while
+preserving stable IDs as identity. During Level 1A, `index build` computes and
+validates this projection only in memory and reports `CURRENT`, `STALE`,
+`MISSING`, or `INVALID`; it never publishes or rewrites generated source.
 
 ## Acceptance
 
