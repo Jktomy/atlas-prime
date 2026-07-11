@@ -7,6 +7,8 @@ only Level 1A read-only mechanics:
 ```text
 python -m tools.atlas_lifecycle validate
 python -m tools.atlas_lifecycle verify
+python -m tools.atlas_lifecycle context [--quest-id ID]
+python -m tools.atlas_lifecycle index build
 ```
 
 `validate` checks the trusted local schema catalog, bounded JSON, closed record
@@ -23,8 +25,21 @@ promote a Golden Wing, or run as a service. It executes only the fixed
 `git rev-parse HEAD` readback needed for stale-state verification.
 
 Code presence does not activate Level 1B or Level 1C. Candidate generation,
-context/index mechanics, branch-scoped apply, Thread Engine profiles, Foundry
-integration, and GitHub automation are outside G3-B.
+branch-scoped apply, Thread Engine profiles, Foundry integration, and GitHub
+automation remain outside G3-C.
+
+`context` emits only current Quest position, latest valid Feather, unresolved
+blockers, next gate, related Golden Wings, exact source references, source
+fingerprint, and stale-projection warnings. With no canonical Quest Emberline it
+returns the same bounded shape with null position values. If several admitted
+Quests exist, an exact `--quest-id` is required.
+
+`index build` is check-only. It computes the complete website index in memory,
+validates it against website-index v2, and compares it to
+`generated/lifecycle/website-index-v2.json` without creating or changing that
+file. Source revision is the exact `HEAD:lifecycle` Git tree object. The
+timestamp is deterministically derived from that tree identity, never a wall
+clock, so shallow checkouts and unrelated commits do not create false drift.
 
 ## Evidence trust
 

@@ -20,6 +20,9 @@ TRUSTED_SCHEMAS = {
     "atlas.lifecycle.continuity": "continuity-v1.schema.json",
     "atlas.lifecycle.receipt": "lifecycle-receipt-v1.schema.json",
 }
+TRUSTED_PROJECTIONS = {
+    ("atlas.lifecycle.website-index", "2.0.0"): "website-index-v2.schema.json",
+}
 SCHEMA_DRAFT = "https://json-schema.org/draft/2020-12/schema"
 
 
@@ -38,7 +41,11 @@ class SchemaValidator:
     def __init__(self, schema_dir: Path) -> None:
         self.schema_dir = schema_dir.resolve()
         self.schemas: dict[str, dict[str, Any]] = {}
-        for name in {"common-v1.schema.json", *TRUSTED_SCHEMAS.values()}:
+        for name in {
+            "common-v1.schema.json",
+            *TRUSTED_SCHEMAS.values(),
+            *TRUSTED_PROJECTIONS.values(),
+        }:
             path = self.schema_dir / name
             schema = load_bounded(path)
             if schema.get("$schema") != SCHEMA_DRAFT:
@@ -59,6 +66,16 @@ class SchemaValidator:
         if name is None:
             raise LifecycleError("UNTRUSTED_SCHEMA_ID", "record declares an untrusted schema identity")
         self._validate(record, self.schemas[name], name, "$")
+
+    def validate_projection(self, projection: dict[str, Any]) -> None:
+        key = (projection.get("schema_id"), projection.get("schema_version"))
+        name = TRUSTED_PROJECTIONS.get(key)
+        if name is None:
+            raise LifecycleError(
+                "UNTRUSTED_PROJECTION_SCHEMA",
+                "projection declares an untrusted schema identity or version",
+            )
+        self._validate(projection, self.schemas[name], name, "$")
 
     def _resolve(self, reference: str, current_name: str) -> tuple[dict[str, Any], str]:
         if "#" in reference:

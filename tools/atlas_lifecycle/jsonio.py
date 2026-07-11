@@ -41,13 +41,20 @@ def _forbid_constant(value: str) -> None:
     raise LifecycleError("NONFINITE_FORBIDDEN", "non-finite values are forbidden")
 
 
-def _check_bounds(value: Any, depth: int = 0, count: list[int] | None = None) -> None:
+def _check_bounds(
+    value: Any,
+    depth: int = 0,
+    count: list[int] | None = None,
+    *,
+    max_depth: int = MAX_JSON_DEPTH,
+    max_nodes: int = MAX_JSON_NODES,
+) -> None:
     if count is None:
         count = [0]
     count[0] += 1
-    if count[0] > MAX_JSON_NODES:
+    if count[0] > max_nodes:
         raise LifecycleError("JSON_NODE_LIMIT", "JSON node count exceeds the trusted limit")
-    if depth > MAX_JSON_DEPTH:
+    if depth > max_depth:
         raise LifecycleError("JSON_DEPTH_LIMIT", "JSON parsing depth exceeds the trusted limit")
     if isinstance(value, str) and unicodedata.normalize("NFC", value) != value:
         raise LifecycleError("NONCANONICAL_UNICODE", "JSON strings must be NFC normalized")
@@ -55,14 +62,21 @@ def _check_bounds(value: Any, depth: int = 0, count: list[int] | None = None) ->
         for key, nested in value.items():
             if unicodedata.normalize("NFC", key) != key:
                 raise LifecycleError("NONCANONICAL_UNICODE", "JSON keys must be NFC normalized")
-            _check_bounds(nested, depth + 1, count)
+            _check_bounds(nested, depth + 1, count, max_depth=max_depth, max_nodes=max_nodes)
     elif isinstance(value, list):
         for nested in value:
-            _check_bounds(nested, depth + 1, count)
+            _check_bounds(nested, depth + 1, count, max_depth=max_depth, max_nodes=max_nodes)
 
 
-def loads_bounded(data: bytes, *, label: str = "JSON input") -> dict[str, Any]:
-    if len(data) > MAX_JSON_BYTES:
+def loads_bounded(
+    data: bytes,
+    *,
+    label: str = "JSON input",
+    max_bytes: int = MAX_JSON_BYTES,
+    max_depth: int = MAX_JSON_DEPTH,
+    max_nodes: int = MAX_JSON_NODES,
+) -> dict[str, Any]:
+    if len(data) > max_bytes:
         raise LifecycleError("JSON_SIZE_LIMIT", f"{label} exceeds the trusted byte limit")
     try:
         text = data.decode("utf-8")
@@ -81,7 +95,7 @@ def loads_bounded(data: bytes, *, label: str = "JSON input") -> dict[str, Any]:
         raise LifecycleError("MALFORMED_JSON", f"{label} is malformed JSON") from exc
     if not isinstance(value, dict):
         raise LifecycleError("ROOT_NOT_OBJECT", f"{label} root must be an object")
-    _check_bounds(value)
+    _check_bounds(value, max_depth=max_depth, max_nodes=max_nodes)
     return value
 
 
@@ -89,30 +103,36 @@ def load_bounded(path: Path) -> dict[str, Any]:
     return loads_bounded(read_bounded(path), label=path.name)
 
 
-def read_bounded(path: Path) -> bytes:
+def read_bounded(path: Path, *, max_bytes: int = MAX_JSON_BYTES) -> bytes:
     try:
         size = path.stat().st_size
     except OSError as exc:
         raise LifecycleError("INPUT_UNAVAILABLE", "JSON input is unavailable") from exc
     if not path.is_file() or path.is_symlink():
         raise LifecycleError("INPUT_NOT_REGULAR", "JSON input must be a regular file")
-    if size > MAX_JSON_BYTES:
+    if size > max_bytes:
         raise LifecycleError("JSON_SIZE_LIMIT", "JSON input exceeds the trusted byte limit")
     try:
         with path.open("rb") as handle:
-            data = handle.read(MAX_JSON_BYTES + 1)
+            data = handle.read(max_bytes + 1)
     except OSError as exc:
         raise LifecycleError("INPUT_UNAVAILABLE", "JSON input is unavailable") from exc
-    if len(data) > MAX_JSON_BYTES:
+    if len(data) > max_bytes:
         raise LifecycleError("JSON_SIZE_LIMIT", "JSON input exceeds the trusted byte limit")
     return data
 
 
-def canonical_bytes(value: dict[str, Any], *, omit_record_id: bool = False) -> bytes:
+def canonical_bytes(
+    value: dict[str, Any],
+    *,
+    omit_record_id: bool = False,
+    max_depth: int = MAX_JSON_DEPTH,
+    max_nodes: int = MAX_JSON_NODES,
+) -> bytes:
     payload = dict(value)
     if omit_record_id:
         payload.pop("record_id", None)
-    _check_bounds(payload)
+    _check_bounds(payload, max_depth=max_depth, max_nodes=max_nodes)
     return (
         json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
         + "\n"
