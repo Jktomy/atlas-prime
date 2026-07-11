@@ -37,7 +37,7 @@ last_verified: 2026-07-10
 **Owning Operation:** Operation Source Governance  
 **Supporting Projects:** Artemis, Odyssey, Phoenix  
 **Current lane:** `PLAN -> VERIFY`  
-**Current route:** `Official Quest source -> FS-C01-M01 Preview -> staged mission execution`  
+**Current route:** `Official Quest source -> accepted Foundry/Oathbringer substrate -> FS-C01-M01 Preview -> staged mission execution`  
 **Current state:** `READY_FOR_CAMPAIGN_1_PREVIEW`
 
 ## 2. Purpose
@@ -276,6 +276,8 @@ Found Silverlight is complete only when:
 Quest state: READY_FOR_CAMPAIGN_1_PREVIEW
 Current Campaign: FS-C01 — Infuse the Gemstone
 Next Mission: FS-C01-M01 — Define Investiture
+Source-governance substrate: FOUNDRY_OATHBRINGER_R04_ACCEPTED
+Acceptance main: 11d0db1c82c36c2bbdc07b02882da4f156b7b4e8
 Runtime deployment: NOT STARTED
 External-system action: NOT AUTHORIZED
 ```

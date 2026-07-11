@@ -1,7 +1,7 @@
 ---
 title: "Oathbringer Foundry — Prime"
 atlas_id: "prime.method.oathbringer-foundry"
-status: "IMPLEMENTATION_READY_ACCEPTANCE_PENDING"
+status: "PRODUCTION_ACTIVE"
 source_type: "METHOD"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
@@ -77,3 +77,21 @@ Use `tools/oathbringer-foundry/Invoke-OathbringerFoundry.ps1` or the Python
 CLI. Production compilation requires an input root and a source root, then
 obtains a fresh `gh` read-only binding itself. A successful compile is carrier
 preparation only; it never grants execution or merge authority.
+
+## Live production acceptance
+
+The complete Foundry-to-Oathbringer carrier chain is live-proven and active.
+
+The R04 acceptance transaction established:
+
+- deterministic double compilation for BUILD, REPAIR, and EXECUTE carriers;
+- exact source, workflow, mission, payload, and independent-audit binding;
+- BUILD creation of draft PR `#66` at `93dc448aa7a2208043ea3fb742576813d8e0a87c`;
+- REPAIR fast-forward to direct-child head `ab33dd486e9022d26f793b85034ebfe1f307025f`;
+- bounded read-only branch and pull-request head convergence without repeated mutation;
+- exact audited-head ready transition and squash merge to canonical `main` at `11d0db1c82c36c2bbdc07b02882da4f156b7b4e8`;
+- automatic local evidence ZIP packaging without broadening GitHub authority.
+
+Canonical proof is recorded in `proof/oathbringer-production-acceptance-r01.md`.
+
+This acceptance does not grant standing authority. Every carrier remains mission-specific, exact-state bound, separately authorized, and subject to its declared stop boundary.

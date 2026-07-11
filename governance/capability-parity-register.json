@@ -232,8 +232,8 @@
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "REPLACED",
       "activation_state": "ACTIVE",
-      "current_state": "Prime replaces the predecessor clone-first Sword capability with the GitHub-native Oathbringer BUILD, REPAIR, and EXECUTE route. AJ-04, AJ-05, and AJ-06 are live-proven through the thin PowerShell client with exact GitHub readback, applicable CI, and independent reconciliation.",
-      "required_proof": "Accepted by proof/oathbringer-production-acceptance-r01.md: AJ-04 BUILD, AJ-05 REPAIR, and AJ-06 EXECUTE."
+      "current_state": "Prime replaces the predecessor clone-first Sword capability with the GitHub-native Oathbringer BUILD, REPAIR, and EXECUTE route plus the deterministic SWORD_FORGE_COMPILER_V1 carrier compiler. R04 live acceptance on PR #66 proved deterministic double compilation, exact BUILD and direct-child REPAIR, bounded read-only PR-head convergence, independently audited EXECUTE, canonical-main readback, and automatic local evidence ZIP packaging.",
+      "required_proof": "Accepted by proof/oathbringer-production-acceptance-r01.md: AJ-04 BUILD, AJ-05 REPAIR, AJ-06 EXECUTE, Console v2, and Foundry R04 end-to-end acceptance through PR #66 and merge 11d0db1c82c36c2bbdc07b02882da4f156b7b4e8."
     },
     {
       "id": "CAP-018",

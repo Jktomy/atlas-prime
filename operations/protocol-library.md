@@ -19,7 +19,7 @@ protected_level: "HIGH"
 - **Arrow/Bow** is delegated immutable delivery of the same exact Weave to Thread Engine. Byte-equivalent component delivery is proven.
 - **Thread Engine** performs exact mission-scoped draft-PR execution and stops after readback.
 - **Sword** is one sealed, mission-specific package containing Athena's complete exact payload and binding build, repair, execute, recovery, evidence, and campaign identity.
-- **Oathbringer** is Jayson's GitHub-native execution method. PowerShell is the thin interactive client; it displays stage and percentage truth, transports the sealed Sword, observes GitHub state and workflows, and writes receipts. The reusable production route remains disabled until proven.
+- **Oathbringer** is Jayson's live-proven GitHub-native execution method. PowerShell is the thin interactive client; it displays stage and percentage truth, transports a deterministic Foundry-compiled Sword, observes GitHub state and workflows, writes receipts, and may package local evidence automatically. BUILD, REPAIR, and separately authorized EXECUTE remain exact-state bound and grant no standing authority.
 - **Phoenix Blade** is Athena's direct repository-construction method with Sword-equivalent technical capability. It does not depend on ChatGPT Work / Codex, Oathbringer, or Thread Engine and may repair those systems.
 - **Aegis Break** selects or constructs a safe equivalent route when the normal route is obstructed; it is not hardwired to Phoenix Blade and is not a general bypass.
 - **Shardplate** is an AI-assisted work surface, never a mutation route.
