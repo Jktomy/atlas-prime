@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:cdab49021302f45532ecec2e3b906a85336693c71307e611bd372067d1f16794
+Source fingerprint: sha256:9a841b93f3461a79cf0accbcee9e15899ed1e974947bba97e954b188c8923bc4
 Generator format: 2
 Status: Generated support artifact
 
@@ -29,6 +29,7 @@ Status: Generated support artifact
 | `lifecycle/README.md` | lifecycle | yes | none |
 | `lifecycle/architecture-decision-r01.md` | lifecycle | yes | none |
 | `lifecycle/lifecycle-contract.md` | lifecycle | yes | policy-reference |
+| `lifecycle/trust-roots/README.md` | lifecycle | yes | none |
 | `methods/artemis-bow-and-arrow.md` | methods | yes | none |
 | `methods/athenas-spear.md` | methods | yes | none |
 | `methods/atlas-sword.md` | methods | yes | policy-reference |
@@ -62,6 +63,7 @@ Status: Generated support artifact
 | `tools/atlas-sword/ARCHITECTURE.md` | tools | no | policy-reference |
 | `tools/atlas-sword/README.md` | tools | no | policy-reference |
 | `tools/atlas-sword/tests/test-contract.md` | tools | no | policy-reference |
+| `tools/atlas_lifecycle/README.md` | tools | no | none |
 | `tools/oathbringer-foundry/README.md` | tools | no | none |
 | `tools/thread-engine/ARCHITECTURE.md` | tools | no | none |
 | `tools/thread-engine/PRIME-PORT-STATUS.md` | tools | no | none |

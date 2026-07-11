@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:cdab49021302f45532ecec2e3b906a85336693c71307e611bd372067d1f16794
+Source fingerprint: sha256:9a841b93f3461a79cf0accbcee9e15899ed1e974947bba97e954b188c8923bc4
 Generator format: 2
 Status: Generated support artifact
 
@@ -29,6 +29,7 @@ Status: Generated support artifact
 | `lifecycle/README.md` | CANONICAL_ACTIVE | REGISTER | missing | HIGH |
 | `lifecycle/architecture-decision-r01.md` | CANONICAL_ACTIVE | ARCHITECTURE_DECISION | missing | CRITICAL |
 | `lifecycle/lifecycle-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
+| `lifecycle/trust-roots/README.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `methods/artemis-bow-and-arrow.md` | COMPONENT_PROVEN_HOSTED_INVOCATION_UNAVAILABLE | METHOD | missing | CRITICAL |
 | `methods/athenas-spear.md` | COMPONENT_PROVEN_HOSTED_INTAKE_MISSING | METHOD | missing | CRITICAL |
 | `methods/atlas-sword.md` | PRODUCTION_ACTIVE | METHOD | missing | CRITICAL |
@@ -62,6 +63,7 @@ Status: Generated support artifact
 | `tools/atlas-sword/ARCHITECTURE.md` | missing | missing | missing | missing |
 | `tools/atlas-sword/README.md` | missing | missing | missing | missing |
 | `tools/atlas-sword/tests/test-contract.md` | missing | missing | missing | missing |
+| `tools/atlas_lifecycle/README.md` | missing | missing | missing | missing |
 | `tools/oathbringer-foundry/README.md` | missing | missing | missing | missing |
 | `tools/thread-engine/ARCHITECTURE.md` | missing | missing | missing | missing |
 | `tools/thread-engine/PRIME-PORT-STATUS.md` | missing | missing | missing | missing |
