@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/lifecycle-event-trust-root-v1.schema.json",
+  "title": "Atlas lifecycle event external trust root v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "trust_root_id", "expected_main_sha",
+    "expected_entity_revision", "expected_quest_revision",
+    "accepted_event_schema_id", "accepted_event_schema_digest",
+    "acceptance_contract_ref", "acceptance_contract_digest",
+    "expected_evidence_sha", "allowed_route_authority", "allowed_paths"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.event-trust-root" },
+    "schema_version": { "const": "1.0.0" },
+    "trust_root_id": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+    "expected_main_sha": { "$ref": "common-v1.schema.json#/$defs/git_sha" },
+    "expected_entity_revision": { "type": "integer", "minimum": 0 },
+    "expected_quest_revision": {
+      "oneOf": [{ "type": "null" }, { "type": "integer", "minimum": 0 }]
+    },
+    "accepted_event_schema_id": { "const": "atlas.lifecycle.event" },
+    "accepted_event_schema_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "acceptance_contract_ref": { "$ref": "common-v1.schema.json#/$defs/source_reference" },
+    "acceptance_contract_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "expected_evidence_sha": { "$ref": "common-v1.schema.json#/$defs/git_sha" },
+    "allowed_route_authority": {
+      "enum": [
+        "ATHENA_DIRECT", "SPEAR_THREAD_ENGINE", "ARROW_BOW_THREAD_ENGINE",
+        "AEGIS_BREAK_THREAD_ENGINE_PROTECTED", "AEGIS_BREAK_OATHBRINGER", "PHOENIX_BLADE"
+      ]
+    },
+    "allowed_paths": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": { "$ref": "common-v1.schema.json#/$defs/repository_path" }
+    }
+  }
+}

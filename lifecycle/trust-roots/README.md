@@ -15,12 +15,26 @@ This directory is reserved for independently authored expectations used by the
 read-only lifecycle evidence verifier. A submitted archive, receipt, sidecar,
 or transition bundle cannot create, replace, or select its own trusted facts.
 
-Each trust root is a strict UTF-8 JSON object containing exactly:
+The G3 evidence-bundle trust root is a strict UTF-8 JSON object containing
+exactly:
 
 - `schema_id`: `atlas.lifecycle.trust-root.v1`;
 - `expected_subject_digest`: the independently expected archive SHA-256;
 - `trusted_schema_digest`: the expected local receipt-schema SHA-256;
 - `trusted_contract_digest`: the expected lifecycle-contract SHA-256.
+
+The G4 lifecycle-event trust root validates against
+`lifecycle-event-trust-root-v1.schema.json` and independently binds:
+
+- expected canonical main, entity revision, and optional Quest revision;
+- accepted event schema identity and digest;
+- acceptance contract reference and digest;
+- exact expected evidence or merge SHA;
+- allowed route authority and exact allowed paths.
+
+An event points to this repository-controlled trust root; the submitted event,
+receipt, archive, or sidecar cannot create or replace it. G4-A defines the
+contract only and introduces no live event trust root.
 
 Trust roots are ordinary canonical authored source: exact-base review, protected
 boundary review, branch and draft PR, CI, Aegis, and merge readback apply. The

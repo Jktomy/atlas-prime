@@ -24,6 +24,7 @@ CANONICAL_DIRS = (
     "sunrises",
     "continuity",
     "receipts",
+    "events",
 )
 
 
@@ -73,13 +74,14 @@ def validate_repository(
         fingerprint.update(b"\0")
         fingerprint.update(hashlib.sha256(data).digest())
 
-    contract_path = lifecycle / "lifecycle-contract.md"
-    contract_data = read_bounded(contract_path)
-    try:
-        contract_data.decode("utf-8")
-    except UnicodeDecodeError as exc:
-        raise LifecycleError("INVALID_UTF8", "lifecycle contract is not valid UTF-8") from exc
-    add_source(contract_path, contract_data)
+    for contract_name in ("lifecycle-contract.md", "lifecycle-event-contract.md"):
+        contract_path = lifecycle / contract_name
+        contract_data = read_bounded(contract_path)
+        try:
+            contract_data.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise LifecycleError("INVALID_UTF8", "lifecycle contract is not valid UTF-8") from exc
+        add_source(contract_path, contract_data)
     for schema_path in sorted((lifecycle / "schemas").glob("*.json")):
         schema_data = read_bounded(schema_path)
         loads_bounded(schema_data, label=schema_path.name)
@@ -112,13 +114,18 @@ def validate_repository(
             ):
                 raise LifecycleError("TRUST_ROOT_MEMBER", "trust-root filename is invalid")
             trust = loads_bounded(trust_data, label=trust_path.name)
-            if set(trust) != trust_keys or trust.get("schema_id") != "atlas.lifecycle.trust-root.v1":
+            if trust.get("schema_id") == "atlas.lifecycle.trust-root.v1":
+                if set(trust) != trust_keys:
+                    raise LifecycleError("TRUST_ROOT_CONTRACT", "trusted expectation has an invalid contract")
+                if any(
+                    digest_pattern.fullmatch(trust[field]) is None
+                    for field in trust_keys - {"schema_id"}
+                ):
+                    raise LifecycleError("TRUST_ROOT_DIGEST", "trusted expectation contains an invalid digest")
+            elif trust.get("schema_id") == "atlas.lifecycle.event-trust-root":
+                validator.validate_event_trust_root(trust)
+            else:
                 raise LifecycleError("TRUST_ROOT_CONTRACT", "trusted expectation has an invalid contract")
-            if any(
-                digest_pattern.fullmatch(trust[field]) is None
-                for field in trust_keys - {"schema_id"}
-            ):
-                raise LifecycleError("TRUST_ROOT_DIGEST", "trusted expectation contains an invalid digest")
             trust_root_count += 1
         add_source(trust_path, trust_data)
     sources: list[tuple[Path, bool]] = []

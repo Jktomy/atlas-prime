@@ -24,6 +24,7 @@ protected_level: "CRITICAL"
 | Sunrise | `lifecycle/sunrises/` | `SRI` | immutable reconstruction |
 | Continuity | `lifecycle/continuity/` | `CON` | immutable recovery record |
 | Lifecycle receipt | `lifecycle/receipts/` | `LCR` | immutable independent binding |
+| Lifecycle event | `lifecycle/events/` | `LEV` | append-only or explicit correction event |
 
 Only schema-valid `.json` files belong in canonical record directories.
 Filenames are the case-sensitive `record_id` plus `.json`. Test fixtures live
@@ -40,6 +41,12 @@ Golden Wing states are `CANDIDATE`, `GATHERING_EVIDENCE`,
 `HISTORICAL`. Advancement requires recurrence across independent contexts or
 one explicitly justified systemic exception. The engine never creates or
 promotes a Golden Wing automatically.
+
+Lifecycle events use the one-envelope contract in
+`lifecycle-event-contract.md`. `CHECKPOINT` events preserve an in-progress
+position. `TRANSITION` events describe an Athena-authored requested state
+change and require independently trusted acceptance evidence. An ordinary
+merge or generated projection cannot create an authoritative transition.
 
 Quest Emberlines use monotonically increasing integer revisions. A mutation
 must bind the current record ID, revision, and canonical `main` SHA. Candidate

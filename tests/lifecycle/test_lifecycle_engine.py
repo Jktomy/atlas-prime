@@ -139,6 +139,15 @@ class LifecycleEngineTests(unittest.TestCase):
             self.assertNotEqual(changed.source_fingerprint, baseline.source_fingerprint)
             contract.write_bytes(original)
 
+            event_contract = repo / "lifecycle/lifecycle-event-contract.md"
+            event_original = event_contract.read_bytes()
+            event_contract.write_bytes(event_original + b"\nHarmless event contract fixture.\n")
+            event_changed = validate_repository(repo)
+            self.assertNotEqual(
+                event_changed.source_fingerprint, baseline.source_fingerprint
+            )
+            event_contract.write_bytes(event_original)
+
             trust = repo / "lifecycle/trust-roots/fixture.json"
             write_json(
                 trust,
@@ -152,6 +161,35 @@ class LifecycleEngineTests(unittest.TestCase):
             with_trust = validate_repository(repo)
             self.assertEqual(with_trust.trust_roots, 1)
             self.assertNotEqual(with_trust.source_fingerprint, baseline.source_fingerprint)
+
+            event_trust = repo / "lifecycle/trust-roots/event-fixture.json"
+            write_json(
+                event_trust,
+                {
+                    "schema_id": "atlas.lifecycle.event-trust-root",
+                    "schema_version": "1.0.0",
+                    "trust_root_id": "event-fixture",
+                    "expected_main_sha": "0" * 40,
+                    "expected_entity_revision": 1,
+                    "expected_quest_revision": 1,
+                    "accepted_event_schema_id": "atlas.lifecycle.event",
+                    "accepted_event_schema_digest": "sha256:" + "4" * 64,
+                    "acceptance_contract_ref": {
+                        "ref_id": "lifecycle-event-contract",
+                        "authority": "CANONICAL_SOURCE",
+                        "uri": "lifecycle/lifecycle-event-contract.md",
+                    },
+                    "acceptance_contract_digest": "sha256:" + "5" * 64,
+                    "expected_evidence_sha": "6" * 40,
+                    "allowed_route_authority": "ATHENA_DIRECT",
+                    "allowed_paths": ["lifecycle/events/event-fixture.json"],
+                },
+            )
+            with_event_trust = validate_repository(repo)
+            self.assertEqual(with_event_trust.trust_roots, 2)
+            self.assertNotEqual(
+                with_event_trust.source_fingerprint, with_trust.source_fingerprint
+            )
 
             trust.write_text('{"schema_id":"atlas.lifecycle.trust-root.v1"}\n', encoding="utf-8")
             with self.assertRaises(LifecycleError) as raised:

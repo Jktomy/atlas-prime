@@ -1,0 +1,93 @@
+{
+  "schema_id": "atlas.lifecycle.event",
+  "schema_version": "1.0.0",
+  "record_id": "LEV-CTNL73NPCTPRYXPVBZVZHA4TSD",
+  "authority": "NONCANONICAL_FIXTURE",
+  "event_class": "CHECKPOINT",
+  "event_type": "GATE_PROGRESS_RECORDED",
+  "target": {
+    "entity_type": "GATE",
+    "entity_id": "found-silverlight.gate-fixture"
+  },
+  "position": {
+    "project_id": "project-codex",
+    "operation_id": "operation-source-governance",
+    "quest_id": "found-silverlight",
+    "campaign_id": "campaign-fixture",
+    "mission_id": "mission-fixture",
+    "gate_id": "gate-fixture"
+  },
+  "expectations": {
+    "expected_main_sha": "0000000000000000000000000000000000000000",
+    "expected_entity_revision": 1,
+    "expected_quest_revision": 1,
+    "expected_gate_revision": 1,
+    "expected_prior_state": "Gate is in progress at revision one.",
+    "expected_parent_checkpoint_id": null,
+    "expected_source_fingerprint": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+    "trusted_expectation_ref": {
+      "ref_id": "fixture-event-trust-root",
+      "authority": "CANONICAL_SOURCE",
+      "uri": "lifecycle/trust-roots/fixture-event-trust-root.json"
+    }
+  },
+  "evidence": {
+    "exact_subject_sha": "1111111111111111111111111111111111111111",
+    "accepted_evidence_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "trusted_acceptance_receipt_ref": null,
+    "evidence_pointers": [
+      {
+        "ref_id": "sunset-fixture",
+        "authority": "EVIDENCE_POINTER",
+        "uri": "lifecycle/fixtures/sunset-quest-bound.json"
+      }
+    ]
+  },
+  "protected_data": {
+    "classification": "INTERNAL_CLEAN",
+    "clean_summary": "Harmless checkpoint fixture contains no protected values.",
+    "protected_pointers": []
+  },
+  "semantic_author": "athena",
+  "route": {
+    "route_authority": "ATHENA_DIRECT",
+    "allowed_paths": ["lifecycle/events/checkpoint-candidate.json"],
+    "direct_main": false,
+    "automatic_merge": false
+  },
+  "related_record_ids": [
+    "FTR-KC44ORGJ3XNOVTQJUEICBUEVMS",
+    "SUN-JDK2IGIG73TO64WEKM4PVOX2ST"
+  ],
+  "lineage": {
+    "parent_event_id": null,
+    "supersedes_event_id": null,
+    "invalidates_event_id": null,
+    "reverses_event_id": null,
+    "revokes_event_id": null,
+    "reopens_event_id": null
+  },
+  "replay_key": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+  "checkpoint": {
+    "completed_substeps": [
+      "Harmless fixture substep one is complete.",
+      "Harmless fixture evidence is linked."
+    ],
+    "remaining_work": ["Complete the declared fixture acceptance checklist."],
+    "decisions": ["Preserve the current Gate and consolidate minor observations."],
+    "blockers": ["One harmless fixture blocker remains open."],
+    "gate_state": "IN_PROGRESS",
+    "mission_state": "IN_PROGRESS",
+    "campaign_state": "IN_PROGRESS",
+    "quest_state": "IN_PROGRESS",
+    "next_safe_action": "Complete the remaining harmless fixture checklist item.",
+    "next_approval_gate": "Fixture acceptance review.",
+    "restart_position": "Resume at the current Gate without advancing lifecycle state.",
+    "latest_feather_id": "FTR-KC44ORGJ3XNOVTQJUEICBUEVMS",
+    "consolidated_observation_count": 3,
+    "completion_receipt_created": false,
+    "position_advance_requested": false,
+    "resolved_blocker_ids": []
+  },
+  "transition": null
+}

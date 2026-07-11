@@ -1,0 +1,85 @@
+{
+  "schema_id": "atlas.lifecycle.event",
+  "schema_version": "1.0.0",
+  "record_id": "LEV-OSDJND63O3UWGXOSZIWBUP5QEI",
+  "authority": "NONCANONICAL_FIXTURE",
+  "event_class": "TRANSITION",
+  "event_type": "COMPLETION_REVOKED",
+  "target": {
+    "entity_type": "GATE",
+    "entity_id": "found-silverlight.gate-fixture"
+  },
+  "position": {
+    "project_id": "project-codex",
+    "operation_id": "operation-source-governance",
+    "quest_id": "found-silverlight",
+    "campaign_id": "campaign-fixture",
+    "mission_id": "mission-fixture",
+    "gate_id": "gate-fixture"
+  },
+  "expectations": {
+    "expected_main_sha": "0000000000000000000000000000000000000000",
+    "expected_entity_revision": 2,
+    "expected_quest_revision": 2,
+    "expected_gate_revision": 2,
+    "expected_prior_state": "Gate is complete under the referenced transition.",
+    "expected_parent_checkpoint_id": "LEV-CTNL73NPCTPRYXPVBZVZHA4TSD",
+    "expected_source_fingerprint": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+    "trusted_expectation_ref": {
+      "ref_id": "fixture-event-trust-root",
+      "authority": "CANONICAL_SOURCE",
+      "uri": "lifecycle/trust-roots/fixture-event-trust-root.json"
+    }
+  },
+  "evidence": {
+    "exact_subject_sha": "3333333333333333333333333333333333333333",
+    "accepted_evidence_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+    "trusted_acceptance_receipt_ref": {
+      "ref_id": "fixture-completion-revocation-receipt",
+      "authority": "EVIDENCE_POINTER",
+      "uri": "proof/fixture-completion-revocation-receipt.json"
+    },
+    "evidence_pointers": [
+      {
+        "ref_id": "gate-completion-fixture",
+        "authority": "EVIDENCE_POINTER",
+        "uri": "lifecycle/fixtures/lifecycle-event-gate-completed.json"
+      }
+    ]
+  },
+  "protected_data": {
+    "classification": "INTERNAL_CLEAN",
+    "clean_summary": "Harmless revocation fixture contains no protected values.",
+    "protected_pointers": []
+  },
+  "semantic_author": "athena",
+  "route": {
+    "route_authority": "ATHENA_DIRECT",
+    "allowed_paths": ["lifecycle/events/completion-revocation-candidate.json"],
+    "direct_main": false,
+    "automatic_merge": false
+  },
+  "related_record_ids": ["LEV-DTF3UE2XNNKGA4L2FF5TNXZFQD"],
+  "lineage": {
+    "parent_event_id": "LEV-DTF3UE2XNNKGA4L2FF5TNXZFQD",
+    "supersedes_event_id": null,
+    "invalidates_event_id": null,
+    "reverses_event_id": null,
+    "revokes_event_id": "LEV-DTF3UE2XNNKGA4L2FF5TNXZFQD",
+    "reopens_event_id": null
+  },
+  "replay_key": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "checkpoint": null,
+  "transition": {
+    "requested_resulting_state": "Gate returns to in progress because accepted completion evidence was revoked.",
+    "declared_next_gate": "gate-fixture",
+    "acceptance_criteria": [
+      "The prior completion transition is identified exactly.",
+      "Independent evidence proves the completion acceptance is no longer valid."
+    ],
+    "authorized_blocker_ids": [],
+    "acceptance_semantically_authored": true,
+    "ordinary_merge_event": false,
+    "generated_output_trigger": false
+  }
+}

@@ -15,10 +15,16 @@ python -m tools.atlas_lifecycle pilot [--repetitions N]
 `validate` checks the trusted local schema catalog, bounded JSON, closed record
 shapes, stable IDs, protected-data rules, canonical bytes, duplicate identities,
 and replay identifiers. Its source fingerprint binds the lifecycle contract,
-every lifecycle schema, canonical trust-root doctrine and expectations, record
+the lifecycle-event contract, every lifecycle schema, canonical trust-root doctrine and expectations, record
 paths, and canonical record payloads. `verify` adds exact-HEAD, parent-Feather, and Quest
 revision checks. Its optional archive mode requires a ZIP, independent sidecar,
 receipt, and a repository-controlled external trust root.
+
+G4-A adds one trusted `atlas.lifecycle.event` envelope for `CHECKPOINT` and
+`TRANSITION` fixtures plus a separate closed external event trust-root schema.
+This is contract validation only: it does not plan a delta, generate a
+candidate, write a canonical event, invoke Thread Engine or Foundry, or process
+GitHub activity.
 
 The engine does not call a model, author meaning, infer completion, mutate a
 record, write a file, invoke GitHub, create a branch or PR, advance a Quest,
@@ -27,7 +33,7 @@ promote a Golden Wing, or run as a service. It executes only the fixed
 
 Code presence does not activate Level 1B or Level 1C. Candidate generation,
 branch-scoped apply, Thread Engine profiles, Foundry integration, and GitHub
-automation remain outside G3-C.
+automation remain unactivated and outside G4-A.
 
 `context` emits only current Quest position, latest valid Feather, unresolved
 blockers, next gate, related Golden Wings, exact source references, source

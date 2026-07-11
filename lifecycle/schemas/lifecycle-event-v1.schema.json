@@ -1,0 +1,289 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/lifecycle-event-v1.schema.json",
+  "title": "Atlas shared lifecycle event envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "record_id", "authority", "event_class",
+    "event_type", "target", "position", "expectations", "evidence",
+    "protected_data", "semantic_author", "route", "related_record_ids",
+    "lineage", "replay_key", "checkpoint", "transition"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.event" },
+    "schema_version": { "const": "1.0.0" },
+    "record_id": { "type": "string", "pattern": "^LEV-[A-Z2-7]{26}$" },
+    "authority": { "enum": ["CANONICAL_RECORD", "NONCANONICAL_FIXTURE"] },
+    "event_class": { "enum": ["CHECKPOINT", "TRANSITION"] },
+    "event_type": { "type": "string" },
+    "target": { "$ref": "#/$defs/target" },
+    "position": { "$ref": "#/$defs/position" },
+    "expectations": { "$ref": "#/$defs/expectations" },
+    "evidence": { "$ref": "#/$defs/evidence" },
+    "protected_data": { "$ref": "common-v1.schema.json#/$defs/protected_data" },
+    "semantic_author": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+    "route": { "$ref": "#/$defs/route" },
+    "related_record_ids": {
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": { "$ref": "common-v1.schema.json#/$defs/stable_id" }
+    },
+    "lineage": { "$ref": "#/$defs/lineage" },
+    "replay_key": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "checkpoint": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/checkpoint_payload" }
+      ]
+    },
+    "transition": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/transition_payload" }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "event_class": { "const": "CHECKPOINT" } },
+        "required": ["event_class"]
+      },
+      "then": {
+        "properties": {
+          "event_type": {
+            "enum": [
+              "GATE_PROGRESS_RECORDED", "WORK_CHECKPOINT_ACCEPTED",
+              "WORK_PAUSED", "WORK_RESUMED", "EVIDENCE_ADDED",
+              "DECISION_RECORDED", "BLOCKER_DISCOVERED", "APPROACH_SUPERSEDED"
+            ]
+          },
+          "position": {
+            "properties": {
+              "quest_id": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+              "campaign_id": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+              "mission_id": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+              "gate_id": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }
+            }
+          },
+          "checkpoint": { "$ref": "#/$defs/checkpoint_payload" },
+          "transition": { "type": "null" }
+        }
+      },
+      "else": {
+        "properties": {
+          "event_type": {
+            "enum": [
+              "LANDMARK_COMPLETED", "GATE_COMPLETED", "MISSION_COMPLETED",
+              "CAMPAIGN_COMPLETED", "QUEST_COMPLETED", "QUEST_REOPENED",
+              "BLOCKER_RESOLVED", "BLOCKER_REOPENED", "QUEST_ADMITTED",
+              "FEATHER_SEALED", "FEATHER_ARCHIVED", "FEATHER_SUPERSEDED",
+              "GOLDEN_WING_EVIDENCE_ADDED", "ACCEPTANCE_PROVEN",
+              "ACCEPTANCE_REVOKED", "COMPLETION_REVOKED", "CAPABILITY_RESTORED",
+              "CAPABILITY_REVOKED", "SUNSET_CHECKPOINT_ACCEPTED",
+              "SUNRISE_CONTEXT_VERIFIED", "TRANSITION_SUPERSEDED"
+            ]
+          },
+          "evidence": {
+            "properties": {
+              "trusted_acceptance_receipt_ref": {
+                "$ref": "common-v1.schema.json#/$defs/source_reference"
+              }
+            }
+          },
+          "checkpoint": { "type": "null" },
+          "transition": { "$ref": "#/$defs/transition_payload" }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "nullable_identity": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }
+      ]
+    },
+    "nullable_event_id": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^LEV-[A-Z2-7]{26}$" }
+      ]
+    },
+    "nullable_receipt_reference": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "common-v1.schema.json#/$defs/source_reference" }
+      ]
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entity_type", "entity_id"],
+      "properties": {
+        "entity_type": {
+          "enum": [
+            "QUEST", "CAMPAIGN", "MISSION", "GATE", "LANDMARK", "BLOCKER",
+            "FEATHER", "GOLDEN_WING", "ACCEPTANCE", "CAPABILITY", "SUNSET", "SUNRISE"
+          ]
+        },
+        "entity_id": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }
+      }
+    },
+    "position": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "project_id", "operation_id", "quest_id", "campaign_id", "mission_id", "gate_id"
+      ],
+      "properties": {
+        "project_id": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+        "operation_id": { "$ref": "#/$defs/nullable_identity" },
+        "quest_id": { "$ref": "#/$defs/nullable_identity" },
+        "campaign_id": { "$ref": "#/$defs/nullable_identity" },
+        "mission_id": { "$ref": "#/$defs/nullable_identity" },
+        "gate_id": { "$ref": "#/$defs/nullable_identity" }
+      }
+    },
+    "expectations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expected_main_sha", "expected_entity_revision", "expected_quest_revision",
+        "expected_gate_revision", "expected_prior_state", "expected_parent_checkpoint_id",
+        "expected_source_fingerprint", "trusted_expectation_ref"
+      ],
+      "properties": {
+        "expected_main_sha": { "$ref": "common-v1.schema.json#/$defs/git_sha" },
+        "expected_entity_revision": { "type": "integer", "minimum": 0 },
+        "expected_quest_revision": {
+          "oneOf": [{ "type": "null" }, { "type": "integer", "minimum": 0 }]
+        },
+        "expected_gate_revision": {
+          "oneOf": [{ "type": "null" }, { "type": "integer", "minimum": 0 }]
+        },
+        "expected_prior_state": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+        "expected_parent_checkpoint_id": { "$ref": "#/$defs/nullable_event_id" },
+        "expected_source_fingerprint": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+        "trusted_expectation_ref": { "$ref": "common-v1.schema.json#/$defs/source_reference" }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exact_subject_sha", "accepted_evidence_digest",
+        "trusted_acceptance_receipt_ref", "evidence_pointers"
+      ],
+      "properties": {
+        "exact_subject_sha": { "$ref": "common-v1.schema.json#/$defs/git_sha" },
+        "accepted_evidence_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+        "trusted_acceptance_receipt_ref": { "$ref": "#/$defs/nullable_receipt_reference" },
+        "evidence_pointers": { "$ref": "common-v1.schema.json#/$defs/source_references" }
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["route_authority", "allowed_paths", "direct_main", "automatic_merge"],
+      "properties": {
+        "route_authority": {
+          "enum": [
+            "ATHENA_DIRECT", "SPEAR_THREAD_ENGINE", "ARROW_BOW_THREAD_ENGINE",
+            "AEGIS_BREAK_THREAD_ENGINE_PROTECTED", "AEGIS_BREAK_OATHBRINGER", "PHOENIX_BLADE"
+          ]
+        },
+        "allowed_paths": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": { "$ref": "common-v1.schema.json#/$defs/repository_path" }
+        },
+        "direct_main": { "const": false },
+        "automatic_merge": { "const": false }
+      }
+    },
+    "lineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "parent_event_id", "supersedes_event_id", "invalidates_event_id",
+        "reverses_event_id", "revokes_event_id", "reopens_event_id"
+      ],
+      "properties": {
+        "parent_event_id": { "$ref": "#/$defs/nullable_event_id" },
+        "supersedes_event_id": { "$ref": "#/$defs/nullable_event_id" },
+        "invalidates_event_id": { "$ref": "#/$defs/nullable_event_id" },
+        "reverses_event_id": { "$ref": "#/$defs/nullable_event_id" },
+        "revokes_event_id": { "$ref": "#/$defs/nullable_event_id" },
+        "reopens_event_id": { "$ref": "#/$defs/nullable_event_id" }
+      }
+    },
+    "checkpoint_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "completed_substeps", "remaining_work", "decisions", "blockers",
+        "gate_state", "mission_state", "campaign_state", "quest_state",
+        "next_safe_action", "next_approval_gate", "restart_position",
+        "latest_feather_id", "consolidated_observation_count",
+        "completion_receipt_created", "position_advance_requested", "resolved_blocker_ids"
+      ],
+      "properties": {
+        "completed_substeps": { "$ref": "common-v1.schema.json#/$defs/bounded_text_list" },
+        "remaining_work": { "$ref": "common-v1.schema.json#/$defs/bounded_text_list" },
+        "decisions": { "$ref": "common-v1.schema.json#/$defs/bounded_text_list" },
+        "blockers": { "$ref": "common-v1.schema.json#/$defs/bounded_text_list" },
+        "gate_state": { "const": "IN_PROGRESS" },
+        "mission_state": { "enum": ["NOT_STARTED", "IN_PROGRESS", "PAUSED", "BLOCKED"] },
+        "campaign_state": { "enum": ["NOT_STARTED", "IN_PROGRESS", "PAUSED", "BLOCKED"] },
+        "quest_state": { "enum": ["NOT_STARTED", "IN_PROGRESS", "PAUSED", "BLOCKED"] },
+        "next_safe_action": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+        "next_approval_gate": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+        "restart_position": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+        "latest_feather_id": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "string", "pattern": "^FTR-[A-Z2-7]{26}$" }
+          ]
+        },
+        "consolidated_observation_count": { "type": "integer", "minimum": 1 },
+        "completion_receipt_created": { "const": false },
+        "position_advance_requested": { "const": false },
+        "resolved_blocker_ids": { "type": "array", "maxItems": 0 }
+      }
+    },
+    "transition_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requested_resulting_state", "declared_next_gate", "acceptance_criteria",
+        "authorized_blocker_ids", "acceptance_semantically_authored",
+        "ordinary_merge_event", "generated_output_trigger"
+      ],
+      "properties": {
+        "requested_resulting_state": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+        "declared_next_gate": { "$ref": "#/$defs/nullable_identity" },
+        "acceptance_criteria": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": { "$ref": "common-v1.schema.json#/$defs/bounded_text" }
+        },
+        "authorized_blocker_ids": {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }
+        },
+        "acceptance_semantically_authored": { "const": true },
+        "ordinary_merge_event": { "const": false },
+        "generated_output_trigger": { "const": false }
+      }
+    }
+  }
+}

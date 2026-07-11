@@ -21,6 +21,7 @@ PREFIX_BY_SCHEMA = {
     "atlas.lifecycle.sunrise": "SRI",
     "atlas.lifecycle.continuity": "CON",
     "atlas.lifecycle.receipt": "LCR",
+    "atlas.lifecycle.event": "LEV",
 }
 
 

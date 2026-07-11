@@ -13,7 +13,7 @@ protected_level: "HIGH"
 
 This tree contains structured lifecycle source for Feathers, Feather Archives,
 Golden Wings, Quest Emberlines, Quest checkpoints, Sunset, Sunrise, continuity,
-and lifecycle receipts.
+lifecycle receipts, and the shared checkpoint/transition event envelope.
 
 Authority is deliberately narrow:
 
@@ -27,6 +27,8 @@ Authority is deliberately narrow:
 - Golden Wings are reusable-lesson candidates, never doctrine.
 - `fixtures/` is harmless test material and has no Atlas authority.
 - `generated/lifecycle/` is a deterministic, noncanonical projection.
+- `events/` is append-only canonical history only after the applicable apply
+  level is activated; G4-A adds noncanonical event fixtures, not live events.
 
 All canonical records are strict UTF-8 JSON. They must validate against the
 declared schema, use canonical serialization, pass the protected-source

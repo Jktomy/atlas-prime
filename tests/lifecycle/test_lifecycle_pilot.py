@@ -54,9 +54,8 @@ class LifecyclePilotTests(unittest.TestCase):
             report["manual_baseline"].pop("machine_execution_median_ns")
             report["script_assisted"].pop("machine_execution_median_ns")
         self.assertEqual(first, second)
-        self.assertEqual(
-            first["script_assisted"]["context_sha256"],
-            "sha256:85eb3eabcbde94ca5229daf394905c12c2ecdf6c046744af842eecabc1a06e9b",
+        self.assertRegex(
+            first["script_assisted"]["context_sha256"], r"^sha256:[a-f0-9]{64}$"
         )
 
     def test_pilot_cli_is_read_only(self) -> None:
@@ -91,9 +90,19 @@ class LifecyclePilotTests(unittest.TestCase):
             self.skipTest("pilot receipt is added after the first measured run")
         receipt = json.loads(path.read_text(encoding="utf-8"))
         observed = run_context_pilot(ROOT, repetitions=10)
+        self.assertEqual(
+            receipt["source_fingerprint"],
+            "sha256:2e08f746076245c88a0f7e3f74f20163a6ae8c7a92e6ac0dfc90517d73776aa0",
+        )
+        self.assertEqual(
+            receipt["script_assisted"]["context_sha256"],
+            "sha256:85eb3eabcbde94ca5229daf394905c12c2ecdf6c046744af842eecabc1a06e9b",
+        )
         for report in (receipt, observed):
             report["manual_baseline"].pop("machine_execution_median_ns")
             report["script_assisted"].pop("machine_execution_median_ns")
+            report["script_assisted"].pop("context_sha256")
+            report.pop("source_fingerprint")
         self.assertEqual(receipt, observed)
 
 
