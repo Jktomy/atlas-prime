@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import hashlib
+import re
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 from .errors import LifecycleError
-from .jsonio import canonical_bytes, load_bounded, stable_record_id
+from .jsonio import canonical_bytes, loads_bounded, read_bounded, stable_record_id
 from .limits import MAX_RECORDS
 from .protection import enforce_clean_values, enforce_pointer_contract
 from .schema import SchemaValidator
@@ -30,6 +31,7 @@ CANONICAL_DIRS = (
 class ValidationResult:
     records: int
     fixtures: int
+    trust_roots: int
     source_fingerprint: str
     stale_records: tuple[str, ...]
 
@@ -58,6 +60,65 @@ def validate_repository(
     root = repo_root.resolve()
     lifecycle = root / "lifecycle"
     validator = SchemaValidator(lifecycle / "schemas")
+    fingerprint = hashlib.sha256()
+
+    def add_source(path: Path, data: bytes) -> None:
+        try:
+            relative = path.resolve().relative_to(root).as_posix()
+        except ValueError as exc:
+            raise LifecycleError("SOURCE_PATH_ESCAPE", "lifecycle source path leaves the repository") from exc
+        fingerprint.update(relative.encode("utf-8"))
+        fingerprint.update(b"\0")
+        fingerprint.update(hashlib.sha256(data).digest())
+
+    contract_path = lifecycle / "lifecycle-contract.md"
+    contract_data = read_bounded(contract_path)
+    try:
+        contract_data.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise LifecycleError("INVALID_UTF8", "lifecycle contract is not valid UTF-8") from exc
+    add_source(contract_path, contract_data)
+    for schema_path in sorted((lifecycle / "schemas").glob("*.json")):
+        schema_data = read_bounded(schema_path)
+        loads_bounded(schema_data, label=schema_path.name)
+        add_source(schema_path, schema_data)
+
+    trust_root_count = 0
+    trust_dir = lifecycle / "trust-roots"
+    if not trust_dir.is_dir() or trust_dir.is_symlink():
+        raise LifecycleError("TRUST_ROOT_LOCATION", "repository-controlled trust-root directory is invalid")
+    trust_keys = {
+        "schema_id",
+        "expected_subject_digest",
+        "trusted_contract_digest",
+        "trusted_schema_digest",
+    }
+    digest_pattern = re.compile(r"sha256:[a-f0-9]{64}")
+    for trust_path in sorted(trust_dir.iterdir()):
+        if not trust_path.is_file() or trust_path.is_symlink():
+            raise LifecycleError("TRUST_ROOT_MEMBER", "trust-root directory contains an unsafe member")
+        trust_data = read_bounded(trust_path)
+        if trust_path.name == "README.md":
+            try:
+                trust_data.decode("utf-8")
+            except UnicodeDecodeError as exc:
+                raise LifecycleError("INVALID_UTF8", "trust-root doctrine is not valid UTF-8") from exc
+        else:
+            if (
+                trust_path.suffix != ".json"
+                or re.fullmatch(r"[a-z0-9][a-z0-9._-]{0,127}[.]json", trust_path.name) is None
+            ):
+                raise LifecycleError("TRUST_ROOT_MEMBER", "trust-root filename is invalid")
+            trust = loads_bounded(trust_data, label=trust_path.name)
+            if set(trust) != trust_keys or trust.get("schema_id") != "atlas.lifecycle.trust-root.v1":
+                raise LifecycleError("TRUST_ROOT_CONTRACT", "trusted expectation has an invalid contract")
+            if any(
+                digest_pattern.fullmatch(trust[field]) is None
+                for field in trust_keys - {"schema_id"}
+            ):
+                raise LifecycleError("TRUST_ROOT_DIGEST", "trusted expectation contains an invalid digest")
+            trust_root_count += 1
+        add_source(trust_path, trust_data)
     sources: list[tuple[Path, bool]] = []
     for name in CANONICAL_DIRS:
         directory = lifecycle / name
@@ -74,7 +135,6 @@ def validate_repository(
     seen_payloads: set[str] = set()
     seen_replays: set[str] = set()
     loaded: list[tuple[dict[str, Any], bool]] = []
-    fingerprint = hashlib.sha256()
     stale: list[str] = []
     canonical_count = 0
     fixture_count = 0
@@ -83,7 +143,8 @@ def validate_repository(
     for path, fixture in sources:
         if path.suffix != ".json" or not path.is_file() or path.is_symlink():
             raise LifecycleError("UNSAFE_RECORD_MEMBER", "record trees may contain only regular JSON files")
-        record = load_bounded(path)
+        record_data = read_bounded(path)
+        record = loads_bounded(record_data, label=path.name)
         validator.validate_record(record)
         enforce_clean_values(record)
         enforce_pointer_contract(record)
@@ -113,15 +174,13 @@ def validate_repository(
             canonical_count += 1
             if path.name != f"{identifier}.json":
                 raise LifecycleError("CANONICAL_FILENAME_MISMATCH", "canonical filename must equal the stable record ID")
-            if path.read_bytes() != canonical_bytes(record):
+            if record_data != canonical_bytes(record):
                 raise LifecycleError("NONCANONICAL_SERIALIZATION", "canonical record bytes are not deterministic")
             concurrency = record.get("concurrency")
             if check_stale and isinstance(concurrency, dict):
                 if concurrency.get("expected_main_sha") != current_head:
                     stale.append(identifier)
-        fingerprint.update(identifier.encode("ascii"))
-        fingerprint.update(b"\0")
-        fingerprint.update(hashlib.sha256(canonical_bytes(record)).digest())
+        add_source(path, canonical_bytes(record))
         loaded.append((record, fixture))
 
     canonical = [record for record, fixture in loaded if not fixture]
@@ -157,6 +216,7 @@ def validate_repository(
     return ValidationResult(
         records=canonical_count,
         fixtures=fixture_count,
+        trust_roots=trust_root_count,
         source_fingerprint=f"sha256:{fingerprint.hexdigest()}",
         stale_records=tuple(stale),
     )

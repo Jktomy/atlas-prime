@@ -125,6 +125,39 @@ class LifecycleEngineTests(unittest.TestCase):
         original["next_safe_action"] = "tampered"
         self.assertNotEqual(stable_record_id(original), original["record_id"])
 
+    def test_source_fingerprint_binds_contract_schemas_and_trust_roots(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            repo = Path(raw)
+            shutil.copytree(ROOT / "lifecycle", repo / "lifecycle")
+            baseline = validate_repository(repo)
+            self.assertEqual(baseline.trust_roots, 0)
+
+            contract = repo / "lifecycle/lifecycle-contract.md"
+            original = contract.read_bytes()
+            contract.write_bytes(original + b"\nHarmless fingerprint fixture.\n")
+            changed = validate_repository(repo)
+            self.assertNotEqual(changed.source_fingerprint, baseline.source_fingerprint)
+            contract.write_bytes(original)
+
+            trust = repo / "lifecycle/trust-roots/fixture.json"
+            write_json(
+                trust,
+                {
+                    "schema_id": "atlas.lifecycle.trust-root.v1",
+                    "expected_subject_digest": "sha256:" + "1" * 64,
+                    "trusted_schema_digest": "sha256:" + "2" * 64,
+                    "trusted_contract_digest": "sha256:" + "3" * 64,
+                },
+            )
+            with_trust = validate_repository(repo)
+            self.assertEqual(with_trust.trust_roots, 1)
+            self.assertNotEqual(with_trust.source_fingerprint, baseline.source_fingerprint)
+
+            trust.write_text('{"schema_id":"atlas.lifecycle.trust-root.v1"}\n', encoding="utf-8")
+            with self.assertRaises(LifecycleError) as raised:
+                validate_repository(repo)
+            self.assertEqual(raised.exception.code, "TRUST_ROOT_CONTRACT")
+
     def test_repository_rejects_stale_main_parent_and_replay(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             repo = Path(raw)

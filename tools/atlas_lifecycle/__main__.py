@@ -59,6 +59,7 @@ def main() -> int:
             "engine_version": __version__,
             "fixtures": result.fixtures,
             "records": result.records,
+            "trust_roots": result.trust_roots,
             "source_fingerprint": result.source_fingerprint,
             "status": "PASS",
         }

@@ -11,7 +11,9 @@ python -m tools.atlas_lifecycle verify
 
 `validate` checks the trusted local schema catalog, bounded JSON, closed record
 shapes, stable IDs, protected-data rules, canonical bytes, duplicate identities,
-and replay identifiers. `verify` adds exact-HEAD, parent-Feather, and Quest
+and replay identifiers. Its source fingerprint binds the lifecycle contract,
+every lifecycle schema, canonical trust-root doctrine and expectations, record
+paths, and canonical record payloads. `verify` adds exact-HEAD, parent-Feather, and Quest
 revision checks. Its optional archive mode requires a ZIP, independent sidecar,
 receipt, and a repository-controlled external trust root.
 
