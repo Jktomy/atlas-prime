@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:129bb841d649fc347c83fe3866a99d5e231a38dfebb4e874c1c515bde8a8967b
+Source fingerprint: sha256:23f579936be9a87b81c85f6bc3f16a207b1a9cd90d6aa9e8967329e9babe5866
 Generator format: 2
 Status: Generated support artifact
 
@@ -45,6 +45,7 @@ Status: Generated support artifact
 | `operations/operation-registry.md` | yes |
 | `operations/protocol-library.md` | yes |
 | `projects/project-registry.md` | yes |
+| `proof/lifecycle/g3-d-beu-reduction-pilot-r01.md` | no |
 | `proof/oathbringer-production-acceptance-r01.md` | no |
 | `proof/prime-spear-arrow-bow-parity-r01.md` | yes |
 | `proof/prime-thread-engine-bootstrap-proof.md` | yes |
