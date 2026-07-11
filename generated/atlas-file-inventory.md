@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:6a6a38f3085b8feb235d341cbfc347067fd06c864f8e3e1849be93ae10c4afc4
+Source fingerprint: sha256:2ac5053963e2cf5d8ffca91ebba91322f26133620a260400abe500063011ea7b
 Generator format: 2
 Status: Generated support artifact
 
@@ -29,6 +29,7 @@ Status: Generated support artifact
 | `methods/artemis-bow-and-arrow.md` | methods | yes | none |
 | `methods/athenas-spear.md` | methods | yes | none |
 | `methods/atlas-sword.md` | methods | yes | policy-reference |
+| `methods/consistent-pr-delivery-standard.md` | methods | no | none |
 | `methods/oathbringer-foundry.md` | methods | yes | policy-reference |
 | `methods/phoenix-blade.md` | methods | yes | none |
 | `methods/sword-forge-standard.md` | methods | yes | policy-reference |

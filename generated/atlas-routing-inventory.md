@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:6a6a38f3085b8feb235d341cbfc347067fd06c864f8e3e1849be93ae10c4afc4
+Source fingerprint: sha256:2ac5053963e2cf5d8ffca91ebba91322f26133620a260400abe500063011ea7b
 Generator format: 2
 Status: Generated support artifact
 
@@ -29,6 +29,7 @@ Status: Generated support artifact
 | `methods/artemis-bow-and-arrow.md` | yes |
 | `methods/athenas-spear.md` | yes |
 | `methods/atlas-sword.md` | yes |
+| `methods/consistent-pr-delivery-standard.md` | no |
 | `methods/oathbringer-foundry.md` | yes |
 | `methods/phoenix-blade.md` | yes |
 | `methods/sword-forge-standard.md` | yes |
