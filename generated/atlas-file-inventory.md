@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:23f579936be9a87b81c85f6bc3f16a207b1a9cd90d6aa9e8967329e9babe5866
+Source fingerprint: sha256:6104701c30d6dbd58acc27c917eab397ba6f6f0a76eff712b810341e7bc6ee8b
 Generator format: 2
 Status: Generated support artifact
 
@@ -28,7 +28,9 @@ Status: Generated support artifact
 | `knowledge/context-pack-contract.md` | knowledge | yes | policy-reference |
 | `lifecycle/README.md` | lifecycle | yes | none |
 | `lifecycle/architecture-decision-r01.md` | lifecycle | yes | none |
+| `lifecycle/architecture-decision-r02.md` | lifecycle | yes | none |
 | `lifecycle/lifecycle-contract.md` | lifecycle | yes | policy-reference |
+| `lifecycle/lifecycle-event-contract.md` | lifecycle | yes | none |
 | `lifecycle/trust-roots/README.md` | lifecycle | yes | none |
 | `methods/artemis-bow-and-arrow.md` | methods | yes | none |
 | `methods/athenas-spear.md` | methods | yes | none |

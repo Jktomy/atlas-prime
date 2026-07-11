@@ -1,6 +1,6 @@
 # Atlas Orphan Candidate Report
 
-Source fingerprint: sha256:23f579936be9a87b81c85f6bc3f16a207b1a9cd90d6aa9e8967329e9babe5866
+Source fingerprint: sha256:6104701c30d6dbd58acc27c917eab397ba6f6f0a76eff712b810341e7bc6ee8b
 Generator format: 2
 Status: Generated support artifact
 
@@ -13,6 +13,8 @@ An orphan candidate is not deletion approval. Review routing, support-file statu
 | Path | Reason |
 |---|---|
 | `lifecycle/architecture-decision-r01.md` | active metadata-bearing file not found in routing surfaces |
+| `lifecycle/architecture-decision-r02.md` | active metadata-bearing file not found in routing surfaces |
+| `lifecycle/lifecycle-event-contract.md` | active metadata-bearing file not found in routing surfaces |
 | `lifecycle/trust-roots/README.md` | active metadata-bearing file not found in routing surfaces |
 | `proof/lifecycle/g3-d-beu-reduction-pilot-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `proof/oathbringer-production-acceptance-r01.md` | active metadata-bearing file not found in routing surfaces |

@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:23f579936be9a87b81c85f6bc3f16a207b1a9cd90d6aa9e8967329e9babe5866
+Source fingerprint: sha256:6104701c30d6dbd58acc27c917eab397ba6f6f0a76eff712b810341e7bc6ee8b
 Generator format: 2
 Status: Generated support artifact
 
@@ -27,8 +27,10 @@ Status: Generated support artifact
 | `knowledge/atlas-source-compendium.md` | ACTIVE | CORE_DOCTRINE | missing | MEDIUM |
 | `knowledge/context-pack-contract.md` | ACTIVE | PROTOCOL | missing | MEDIUM |
 | `lifecycle/README.md` | CANONICAL_ACTIVE | REGISTER | missing | HIGH |
-| `lifecycle/architecture-decision-r01.md` | CANONICAL_ACTIVE | ARCHITECTURE_DECISION | missing | CRITICAL |
+| `lifecycle/architecture-decision-r01.md` | SUPERSEDED | ARCHITECTURE_DECISION | missing | CRITICAL |
+| `lifecycle/architecture-decision-r02.md` | CANONICAL_ACTIVE | ARCHITECTURE_DECISION | missing | CRITICAL |
 | `lifecycle/lifecycle-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
+| `lifecycle/lifecycle-event-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `lifecycle/trust-roots/README.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `methods/artemis-bow-and-arrow.md` | COMPONENT_PROVEN_HOSTED_INVOCATION_UNAVAILABLE | METHOD | missing | CRITICAL |
 | `methods/athenas-spear.md` | COMPONENT_PROVEN_HOSTED_INTAKE_MISSING | METHOD | missing | CRITICAL |
