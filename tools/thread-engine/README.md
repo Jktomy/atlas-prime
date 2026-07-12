@@ -22,7 +22,25 @@ Every rejection receipt is deterministic and classified with `result = REJECTED`
 
 The production adapter under `production_adapter/` is activated only as mission-scoped, draft-PR-only Thread Engine authority through Aegis Break → Oathbringer. PowerShell, CLI, and direct Python execution all read `PRIME-PORT-STATUS.json` and fail closed if the state is disabled, malformed, or violates a permanent invariant. The fixture core remains fixture-only. The active adapter requires an exact mission authority, mission SHA-256 binding, explicit mission-scoped draft-PR intent, Fresh Clone First, declared paths, protected-path enforcement, source locks, payload hashes, candidate-tree verification, final path-set verification, `git diff --check`, staged diff verification, one deterministic branch, one single-parent commit, one draft PR, and independent readback. It never activates persistent writer authority, standing automation, ready transition, merge, workflow dispatch, generated-output disposition, repository-setting authority, cleanup, or production configuration.
 
-Live protected-path enforcement loads the reviewed Prime source at `policies/protected-paths.json`; there is no second hard-coded path list. The policy covers Prime authority, governance, schema, migration, Quest Board, generated, workflow, and Thread Engine self-change boundaries.
+Live protected-path enforcement loads the reviewed Prime source at `policies/protected-paths.json`; there is no second hard-coded path list. The policy covers Prime authority, governance, schema, migration, lifecycle, Quest Board, generated, workflow, and Thread Engine self-change boundaries.
+
+## Lifecycle Construction Profiles
+
+G4-D1 adds the closed `LIFECYCLE_CHECKPOINT_V1` and `LIFECYCLE_TRANSITION_V1`
+profiles for exact lifecycle-event construction. A profile binds the semantic
+event ID, route-declared immutable path, target entity and revision locks,
+source fingerprint, candidate event/manifest/receipt/set digests, independent
+trust and state digests, replay key, lineage, protected-data class, and rollback
+and reversal contracts. Transition profiles additionally require an independent
+accepted-receipt digest.
+
+The adapter accepts one protected `ADD` below `lifecycle/events/`, verifies the
+exact three-file G4-C candidate set under `payload/lifecycle-candidate/`, rejects
+record-ID/replay-key reuse, missing parents, and a concurrently claimed entity
+revision, and then uses the existing one-branch, one-commit, draft-PR-only Aegis
+Break route. The physical event path never replaces `record_id` as identity.
+The profile performs no semantic authorship, Quest advancement, acceptance
+decision, automatic ready, automatic merge, or direct-main write.
 
 ## Aegis Break Protected Route
 

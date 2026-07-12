@@ -47,6 +47,7 @@ class RepositoryPolicyTests(unittest.TestCase):
             "policies/repository-policy.json",
             "schemas/thread-engine/mission.json",
             "migration/codex-inheritance-manifest.md",
+            "lifecycle/events/fixture-event.json",
             "quest-board/quest-board.md",
             "generated/atlas-health.md",
             "tools/thread-engine/production_adapter/adapter.py",

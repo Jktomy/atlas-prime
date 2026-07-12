@@ -14,6 +14,8 @@ protected_level: "HIGH"
 This tree contains structured lifecycle source for Feathers, Feather Archives,
 Golden Wings, Quest Emberlines, Quest checkpoints, Sunset, Sunrise, continuity,
 lifecycle receipts, and the shared checkpoint/transition event envelope.
+`lifecycle-construction-contract.md` defines the closed Thread Engine and
+Foundry construction binding without changing semantic authority.
 
 Authority is deliberately narrow:
 
@@ -32,6 +34,9 @@ Authority is deliberately narrow:
 - explicit Level 1B candidate generation writes exact event, manifest, and
   receipt bytes only to a fresh system-temporary directory; it grants no
   canonical or GitHub authority.
+- Level 1C construction requires the closed lifecycle profile, protected
+  mission-scoped routing, one branch, one commit, one draft PR, and exact
+  readback; it grants no ready, merge, or direct-main authority.
 
 All canonical records are strict UTF-8 JSON. They must validate against the
 declared schema, use canonical serialization, pass the protected-source

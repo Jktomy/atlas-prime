@@ -75,7 +75,11 @@ def validate_repository(
         fingerprint.update(b"\0")
         fingerprint.update(hashlib.sha256(data).digest())
 
-    for contract_name in ("lifecycle-contract.md", "lifecycle-event-contract.md"):
+    for contract_name in (
+        "lifecycle-contract.md",
+        "lifecycle-event-contract.md",
+        "lifecycle-construction-contract.md",
+    ):
         contract_path = lifecycle / contract_name
         contract_data = read_bounded(contract_path)
         try:

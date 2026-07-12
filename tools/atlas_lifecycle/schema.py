@@ -34,6 +34,10 @@ TRUSTED_AUXILIARY_SCHEMAS = {
         "atlas.lifecycle.event-candidate-receipt",
         "1.0.0",
     ): "lifecycle-event-candidate-receipt-v1.schema.json",
+    (
+        "atlas.lifecycle.construction-profile",
+        "1.0.0",
+    ): "lifecycle-construction-profile-v1.schema.json",
 }
 SCHEMA_DRAFT = "https://json-schema.org/draft/2020-12/schema"
 
@@ -105,6 +109,9 @@ class SchemaValidator:
 
     def validate_event_candidate_receipt(self, receipt: dict[str, Any]) -> None:
         self._validate_auxiliary(receipt, "atlas.lifecycle.event-candidate-receipt")
+
+    def validate_lifecycle_construction_profile(self, profile: dict[str, Any]) -> None:
+        self._validate_auxiliary(profile, "atlas.lifecycle.construction-profile")
 
     def _validate_auxiliary(self, value: dict[str, Any], expected_schema_id: str) -> None:
         key = (value.get("schema_id"), value.get("schema_version"))

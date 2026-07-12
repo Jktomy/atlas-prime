@@ -75,6 +75,9 @@
         "additionalProperties": false
       }
     },
+    "lifecycle_profile": {
+      "$ref": "../../../lifecycle/schemas/lifecycle-construction-profile-v1.schema.json"
+    },
     "delete_authority_id": { "type": "string" },
     "aegis_break_authority": {
       "type": "object",
