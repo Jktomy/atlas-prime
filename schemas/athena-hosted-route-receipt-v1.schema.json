@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/athena-hosted-route-receipt-v1.schema.json",
+  "title": "Athena hosted route receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "result",
+    "route",
+    "identity",
+    "request_sha256",
+    "carrier_sha256",
+    "replay_key",
+    "stage",
+    "stop_point",
+    "mutation",
+    "forbidden_action_confirmation"
+  ],
+  "properties": {
+    "schema_version": { "const": "atlas.athena.hosted-route-receipt.v1" },
+    "result": { "enum": ["SUCCESS", "REJECTED", "BLOCKED"] },
+    "route": { "enum": ["SPEAR_DIRECT", "ARROW_BOW_HOSTED", "AEGIS_BREAK_PROTECTED", "AEGIS_BREAK_TO_OATHBRINGER"] },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authorizer",
+        "semantic_operator",
+        "requesting_surface",
+        "event_actor",
+        "triggering_actor",
+        "workflow_ref",
+        "workflow_source_sha",
+        "credential_principal",
+        "token_mode",
+        "mission_id",
+        "run_id",
+        "run_attempt"
+      ],
+      "properties": {
+        "authorizer": { "const": "Jayson" },
+        "semantic_operator": { "type": "string", "minLength": 1 },
+        "requesting_surface": { "type": "string", "minLength": 1 },
+        "event_actor": { "type": "string", "minLength": 1 },
+        "triggering_actor": { "type": "string", "minLength": 1 },
+        "workflow_ref": { "type": "string", "minLength": 1 },
+        "workflow_source_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "credential_principal": { "type": "string", "minLength": 1 },
+        "token_mode": { "enum": ["GITHUB_TOKEN", "USER_SESSION_TOKEN"] },
+        "mission_id": { "type": "string", "minLength": 1 },
+        "run_id": { "type": "string", "pattern": "^[0-9]+$" },
+        "run_attempt": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "request_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "carrier_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "compile_receipt_sha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+    "adapter_receipt_sha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+    "replay_key": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "stage": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "error_code": { "type": ["string", "null"], "maxLength": 120 },
+    "stop_point": { "enum": ["PRE_MUTATION_REJECTION", "ROUTE_HANDOFF_REQUIRED", "DRAFT_PR_READBACK"] },
+    "mutation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["occurred", "branch", "pull_request", "head_sha", "draft"],
+      "properties": {
+        "occurred": { "type": "boolean" },
+        "branch": { "type": ["string", "null"] },
+        "pull_request": { "type": ["integer", "null"], "minimum": 1 },
+        "head_sha": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" },
+        "draft": { "type": ["boolean", "null"] }
+      }
+    },
+    "forbidden_action_confirmation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["direct_main", "force_push", "ready", "merge", "settings", "standing_authority", "second_writer"],
+      "properties": {
+        "direct_main": { "const": false },
+        "force_push": { "const": false },
+        "ready": { "const": false },
+        "merge": { "const": false },
+        "settings": { "const": false },
+        "standing_authority": { "const": false },
+        "second_writer": { "const": false }
+      }
+    }
+  }
+}
+
