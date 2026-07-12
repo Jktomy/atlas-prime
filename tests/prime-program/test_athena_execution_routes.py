@@ -319,6 +319,21 @@ class AthenaExecutionRouteContractTests(unittest.TestCase):
         with self.assertRaises(ContractValidationError):
             validate_schema(schema, nondraft_success)
 
+        for omitted in (
+            "compile_receipt_sha256",
+            "adapter_receipt_sha256",
+            "error_code",
+        ):
+            missing_state = deepcopy(success)
+            del missing_state[omitted]
+            with self.assertRaises(ContractValidationError):
+                validate_schema(schema, missing_state)
+
+        wrong_hosted_token = deepcopy(success)
+        wrong_hosted_token["identity"]["token_mode"] = "USER_SESSION_TOKEN"
+        with self.assertRaises(ContractValidationError):
+            validate_schema(schema, wrong_hosted_token)
+
 
 if __name__ == "__main__":
     unittest.main()

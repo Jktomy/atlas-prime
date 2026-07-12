@@ -11,8 +11,11 @@
     "identity",
     "request_sha256",
     "carrier_sha256",
+    "compile_receipt_sha256",
+    "adapter_receipt_sha256",
     "replay_key",
     "stage",
+    "error_code",
     "stop_point",
     "mutation",
     "rollback",
@@ -179,6 +182,21 @@
       "then": {
         "properties": {
           "stop_point": { "const": "PRE_MUTATION_REJECTION" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "route": { "const": "ARROW_BOW_HOSTED" } },
+        "required": ["route"]
+      },
+      "then": {
+        "properties": {
+          "identity": {
+            "properties": {
+              "token_mode": { "const": "GITHUB_TOKEN" }
+            }
+          }
         }
       }
     }
