@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from . import __version__
+from .candidate import generate_event_candidate
 from .errors import LifecycleError
 from .evidence import verify_bound_evidence
 from .pilot import run_context_pilot
@@ -32,7 +33,7 @@ def build_parser() -> argparse.ArgumentParser:
     index_commands.add_parser("build", help="compute and compare the index without writing")
     pilot = subcommands.add_parser("pilot", help="measure manual versus compact context reconstruction")
     pilot.add_argument("--repetitions", type=int, default=500)
-    event = subcommands.add_parser("event", help="read-only lifecycle event mechanics")
+    event = subcommands.add_parser("event", help="lifecycle event plan and candidate mechanics")
     event_commands = event.add_subparsers(dest="event_command", required=True)
     event_plan = event_commands.add_parser("plan", help="validate and propose deterministic deltas")
     event_plan.add_argument("--event", type=Path, required=True)
@@ -40,6 +41,15 @@ def build_parser() -> argparse.ArgumentParser:
     event_plan.add_argument("--expected-trust-root-digest", required=True)
     event_plan.add_argument("--state", type=Path, required=True)
     event_plan.add_argument("--expected-state-digest", required=True)
+    event_candidate = event_commands.add_parser(
+        "candidate", help="generate exact lifecycle event candidate bytes in temporary output"
+    )
+    event_candidate.add_argument("--event", type=Path, required=True)
+    event_candidate.add_argument("--trust-root", type=Path, required=True)
+    event_candidate.add_argument("--expected-trust-root-digest", required=True)
+    event_candidate.add_argument("--state", type=Path, required=True)
+    event_candidate.add_argument("--expected-state-digest", required=True)
+    event_candidate.add_argument("--output-dir", type=Path, required=True)
     return parser
 
 
@@ -57,16 +67,28 @@ def main() -> int:
             return 0
 
         if args.command == "event":
+            if args.event_command == "candidate":
+                output = generate_event_candidate(
+                    args.repo_root,
+                    args.event,
+                    args.trust_root,
+                    args.expected_trust_root_digest,
+                    args.state,
+                    args.expected_state_digest,
+                    args.output_dir,
+                )
+            else:
+                output = plan_event(
+                    args.repo_root,
+                    args.event,
+                    args.trust_root,
+                    args.expected_trust_root_digest,
+                    args.state,
+                    args.expected_state_digest,
+                )
             print(
                 json.dumps(
-                    plan_event(
-                        args.repo_root,
-                        args.event,
-                        args.trust_root,
-                        args.expected_trust_root_digest,
-                        args.state,
-                        args.expected_state_digest,
-                    ),
+                    output,
                     sort_keys=True,
                     separators=(",", ":"),
                 )
@@ -141,9 +163,24 @@ def main() -> int:
         )
         return 0
     except LifecycleError as exc:
+        candidate_failure = (
+            getattr(args, "command", None) == "event"
+            and getattr(args, "event_command", None) == "candidate"
+        )
+        failure = {
+            "authority": "TEMPORARY_CANDIDATE_ONLY" if candidate_failure else "READ_ONLY",
+            "status": "FAIL",
+            **exc.sanitized(),
+        }
+        if candidate_failure:
+            failure.update({
+                "canonical_writes": False,
+                "github_actions": [],
+                "temporary_output_state": "ABSENT_OR_PARTIAL_REVIEW_REQUIRED",
+            })
         print(
             json.dumps(
-                {"authority": "READ_ONLY", "status": "FAIL", **exc.sanitized()},
+                failure,
                 sort_keys=True,
                 separators=(",", ":"),
             )

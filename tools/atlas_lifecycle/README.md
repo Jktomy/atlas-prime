@@ -1,8 +1,8 @@
 # Atlas Lifecycle Engine
 
 `tools.atlas_lifecycle` is the Prime-native deterministic lifecycle package.
-Its classification is `SCRIPT ASSIST — LEVEL 1`. This G3-B transaction exposes
-only Level 1A read-only mechanics:
+Its classification is `SCRIPT ASSIST — LEVEL 1`. It exposes Level 1A read-only
+mechanics and the explicit Level 1B temporary candidate command:
 
 ```text
 python -m tools.atlas_lifecycle validate
@@ -11,6 +11,7 @@ python -m tools.atlas_lifecycle context [--quest-id ID]
 python -m tools.atlas_lifecycle index build
 python -m tools.atlas_lifecycle pilot [--repetitions N]
 python -m tools.atlas_lifecycle event plan --event EVENT --trust-root TRUST --expected-trust-root-digest SHA256 --state STATE --expected-state-digest SHA256
+python -m tools.atlas_lifecycle event candidate --event EVENT --trust-root TRUST --expected-trust-root-digest SHA256 --state STATE --expected-state-digest SHA256 --output-dir NEW_SYSTEM_TEMP_DIR
 ```
 
 `validate` checks the trusted local schema catalog, bounded JSON, closed record
@@ -32,14 +33,25 @@ This is contract validation only: it does not plan a delta, generate a
 candidate, write a canonical event, invoke Thread Engine or Foundry, or process
 GitHub activity.
 
-The engine does not call a model, author meaning, infer completion, mutate a
-record, write a file, invoke GitHub, create a branch or PR, advance a Quest,
-promote a Golden Wing, or run as a service. It executes only the fixed
-`git rev-parse HEAD` readback needed for stale-state verification.
+The engine does not call a model, author meaning, infer completion, mutate
+canonical source, invoke GitHub, create a branch or PR, advance a Quest,
+promote a Golden Wing, or run as a service. Level 1A executes only the fixed
+`git rev-parse HEAD` readback needed for stale-state verification. The explicit
+Level 1B command has only the temporary write boundary described below.
 
-Code presence does not activate Level 1B or Level 1C. Candidate generation,
-branch-scoped apply, Thread Engine profiles, Foundry integration, and GitHub
-automation remain unactivated and outside G4-B.
+Level 1B runs only through an explicit `event candidate` invocation. It first
+performs the complete read-only plan, then writes exactly `event.json`,
+`candidate-manifest.json`, and `candidate-receipt.json` into one new directory
+beneath the system temporary root. The event bytes remain content-addressed;
+both manifest and receipt bind the permanent event ID and exact immutable
+repository path. They also bind the expected base and entity revision plus the
+independently supplied trust-root and state-snapshot digests. Existing output,
+repository output, path reuse, and case-fold collisions fail closed. Repeated
+generation into two fresh output directories is byte-identical.
+
+Level 1B does not write canonical source, invoke GitHub, advance a Quest, or
+activate branch-scoped apply. Level 1C, Thread Engine lifecycle profiles,
+Foundry integration, and GitHub automation remain unactivated during G4-C.
 
 `event plan` is the G4-B read-only planner. It validates the event, external
 trust root, and closed current-state snapshot; resolves exact prior state;

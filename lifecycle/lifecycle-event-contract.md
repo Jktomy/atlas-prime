@@ -115,6 +115,23 @@ trust root to match an independently supplied digest from the controlling
 handoff and the current-state snapshot to match its independent digest; the
 submitted event cannot select or replace either digest.
 
+## Level 1B candidate generation
+
+G4-C may serialize an Athena-authored, fully validated event into a new system
+temporary directory only. The deterministic candidate set contains the exact
+event bytes, one closed allowed-path manifest, and one closed candidate
+receipt. Manifest and receipt each bind the permanent event `record_id`, the
+exact immutable repository path, expected canonical base, expected entity
+revision, trusted event-schema digest, acceptance-contract digest, external
+trust-root digest, and current-state snapshot digest. Existing output, an
+occupied or case-fold-colliding event path, and any repository output fail
+closed. Repeat generation into separate fresh temporary directories must be
+byte-identical.
+
+This candidate set is not canonical evidence and grants no branch, repository,
+GitHub, Quest advancement, Thread Engine, Foundry, ready, merge, or direct-main
+authority. Level 1C remains inactive during G4-C.
+
 GitHub receives only clean summaries and `protected://` pointers. Structural
 validation is defense in depth; Athena remains responsible for semantic privacy
 interpretation.

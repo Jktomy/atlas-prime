@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/lifecycle-event-candidate-manifest-v1.schema.json",
+  "title": "Atlas lifecycle event temporary candidate manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "authority", "engine_class",
+    "event_binding", "locks", "trusted_bindings", "allowed_paths",
+    "write_boundary"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.event-candidate-manifest" },
+    "schema_version": { "const": "1.0.0" },
+    "authority": { "const": "TEMPORARY_CANDIDATE_ONLY" },
+    "engine_class": { "const": "SCRIPT_ASSIST_LEVEL_1B" },
+    "event_binding": { "$ref": "#/$defs/event_binding" },
+    "locks": { "$ref": "#/$defs/locks" },
+    "trusted_bindings": { "$ref": "#/$defs/trusted_bindings" },
+    "allowed_paths": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "lifecycle-event-v1.schema.json#/$defs/event_repository_path" }
+    },
+    "write_boundary": { "$ref": "#/$defs/write_boundary" }
+  },
+  "$defs": {
+    "event_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id", "repository_path", "artifact_path", "schema_id",
+        "schema_version", "event_class", "event_type", "payload_digest"
+      ],
+      "properties": {
+        "record_id": { "type": "string", "pattern": "^LEV-[A-Z2-7]{26}$" },
+        "repository_path": { "$ref": "lifecycle-event-v1.schema.json#/$defs/event_repository_path" },
+        "artifact_path": { "const": "event.json" },
+        "schema_id": { "const": "atlas.lifecycle.event" },
+        "schema_version": { "const": "1.0.0" },
+        "event_class": { "enum": ["CHECKPOINT", "TRANSITION"] },
+        "event_type": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "payload_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" }
+      }
+    },
+    "locks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expected_main_sha", "expected_entity_revision",
+        "expected_quest_revision", "expected_gate_revision",
+        "expected_parent_checkpoint_id", "expected_source_fingerprint",
+        "route_authority"
+      ],
+      "properties": {
+        "expected_main_sha": { "$ref": "common-v1.schema.json#/$defs/git_sha" },
+        "expected_entity_revision": { "type": "integer", "minimum": 0 },
+        "expected_quest_revision": {
+          "oneOf": [{ "type": "null" }, { "type": "integer", "minimum": 0 }]
+        },
+        "expected_gate_revision": {
+          "oneOf": [{ "type": "null" }, { "type": "integer", "minimum": 0 }]
+        },
+        "expected_parent_checkpoint_id": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "string", "pattern": "^LEV-[A-Z2-7]{26}$" }
+          ]
+        },
+        "expected_source_fingerprint": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+        "route_authority": {
+          "$ref": "lifecycle-event-v1.schema.json#/$defs/route/properties/route_authority"
+        }
+      }
+    },
+    "trusted_bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trust_root_digest", "state_snapshot_digest",
+        "accepted_event_schema_digest", "acceptance_contract_digest"
+      ],
+      "properties": {
+        "trust_root_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+        "state_snapshot_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+        "accepted_event_schema_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+        "acceptance_contract_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" }
+      }
+    },
+    "write_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "output_scope", "canonical_writes", "direct_main",
+        "github_actions", "automatic_merge"
+      ],
+      "properties": {
+        "output_scope": { "const": "SYSTEM_TEMPORARY_DIRECTORY" },
+        "canonical_writes": { "const": false },
+        "direct_main": { "const": false },
+        "github_actions": { "type": "array", "maxItems": 0 },
+        "automatic_merge": { "const": false }
+      }
+    }
+  }
+}
