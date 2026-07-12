@@ -29,6 +29,9 @@ Authority is deliberately narrow:
 - `generated/lifecycle/` is a deterministic, noncanonical projection.
 - `events/` is append-only canonical history only after the applicable apply
   level is activated; G4-A adds noncanonical event fixtures, not live events.
+- explicit Level 1B candidate generation writes exact event, manifest, and
+  receipt bytes only to a fresh system-temporary directory; it grants no
+  canonical or GitHub authority.
 
 All canonical records are strict UTF-8 JSON. They must validate against the
 declared schema, use canonical serialization, pass the protected-source

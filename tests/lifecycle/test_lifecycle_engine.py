@@ -51,7 +51,12 @@ class LifecycleEngineTests(unittest.TestCase):
                         self.assertTrue(names.isdisjoint(forbidden_imports))
                     elif isinstance(node, ast.ImportFrom) and node.module:
                         self.assertNotIn(node.module.split(".", 1)[0], forbidden_imports)
-                for call in forbidden_calls:
+                path_forbidden_calls = forbidden_calls
+                if path.name == "candidate.py":
+                    path_forbidden_calls = ("eval(", "exec(", "__import__(", ".unlink(")
+                    self.assertIn("SYSTEM_TEMPORARY_DIRECTORY", text)
+                    self.assertIn("CANDIDATE_REPOSITORY_WRITE", text)
+                for call in path_forbidden_calls:
                     self.assertNotIn(call, text)
                 self.assertNotIn("gh ", text)
                 self.assertNotIn("api.github", text.casefold())

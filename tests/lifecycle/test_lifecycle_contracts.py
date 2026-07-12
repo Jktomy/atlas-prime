@@ -26,6 +26,12 @@ ENTITY_SCHEMAS = {
     "atlas.lifecycle.receipt": ("lifecycle-receipt-v1.schema.json", "LCR"),
     "atlas.lifecycle.event": ("lifecycle-event-v1.schema.json", "LEV"),
     "atlas.lifecycle.event-trust-root": ("lifecycle-event-trust-root-v1.schema.json", ""),
+    "atlas.lifecycle.event-candidate-manifest": (
+        "lifecycle-event-candidate-manifest-v1.schema.json", ""
+    ),
+    "atlas.lifecycle.event-candidate-receipt": (
+        "lifecycle-event-candidate-receipt-v1.schema.json", ""
+    ),
     "atlas.lifecycle.website-index": ("website-index-v1.schema.json", ""),
 }
 

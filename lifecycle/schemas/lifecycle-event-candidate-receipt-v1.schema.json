@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/lifecycle-event-candidate-receipt-v1.schema.json",
+  "title": "Atlas lifecycle event temporary candidate receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "authority", "engine_class",
+    "event_record_id", "repository_path", "candidate_payload_digest",
+    "manifest_digest", "expected_main_sha", "expected_entity_revision",
+    "trust_root_digest", "state_snapshot_digest", "replay_key",
+    "output_members", "write_boundary", "verification_result"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.event-candidate-receipt" },
+    "schema_version": { "const": "1.0.0" },
+    "authority": { "const": "TEMPORARY_CANDIDATE_ONLY" },
+    "engine_class": { "const": "SCRIPT_ASSIST_LEVEL_1B" },
+    "event_record_id": { "type": "string", "pattern": "^LEV-[A-Z2-7]{26}$" },
+    "repository_path": { "$ref": "lifecycle-event-v1.schema.json#/$defs/event_repository_path" },
+    "candidate_payload_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "manifest_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "expected_main_sha": { "$ref": "common-v1.schema.json#/$defs/git_sha" },
+    "expected_entity_revision": { "type": "integer", "minimum": 0 },
+    "trust_root_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "state_snapshot_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "replay_key": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "output_members": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["artifact_path", "digest"],
+        "properties": {
+          "artifact_path": { "enum": ["event.json", "candidate-manifest.json"] },
+          "digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" }
+        }
+      }
+    },
+    "write_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "output_scope", "canonical_writes", "direct_main",
+        "github_actions", "automatic_merge"
+      ],
+      "properties": {
+        "output_scope": { "const": "SYSTEM_TEMPORARY_DIRECTORY" },
+        "canonical_writes": { "const": false },
+        "direct_main": { "const": false },
+        "github_actions": { "type": "array", "maxItems": 0 },
+        "automatic_merge": { "const": false }
+      }
+    },
+    "verification_result": { "const": "PASS" }
+  }
+}

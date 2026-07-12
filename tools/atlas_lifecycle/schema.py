@@ -26,6 +26,14 @@ TRUSTED_PROJECTIONS = {
 }
 TRUSTED_AUXILIARY_SCHEMAS = {
     ("atlas.lifecycle.event-trust-root", "1.0.0"): "lifecycle-event-trust-root-v1.schema.json",
+    (
+        "atlas.lifecycle.event-candidate-manifest",
+        "1.0.0",
+    ): "lifecycle-event-candidate-manifest-v1.schema.json",
+    (
+        "atlas.lifecycle.event-candidate-receipt",
+        "1.0.0",
+    ): "lifecycle-event-candidate-receipt-v1.schema.json",
 }
 SCHEMA_DRAFT = "https://json-schema.org/draft/2020-12/schema"
 
@@ -91,6 +99,22 @@ class SchemaValidator:
                 "event trust root declares an untrusted schema identity or version",
             )
         self._validate(trust_root, self.schemas[name], name, "$")
+
+    def validate_event_candidate_manifest(self, manifest: dict[str, Any]) -> None:
+        self._validate_auxiliary(manifest, "atlas.lifecycle.event-candidate-manifest")
+
+    def validate_event_candidate_receipt(self, receipt: dict[str, Any]) -> None:
+        self._validate_auxiliary(receipt, "atlas.lifecycle.event-candidate-receipt")
+
+    def _validate_auxiliary(self, value: dict[str, Any], expected_schema_id: str) -> None:
+        key = (value.get("schema_id"), value.get("schema_version"))
+        name = TRUSTED_AUXILIARY_SCHEMAS.get(key)
+        if name is None or key[0] != expected_schema_id:
+            raise LifecycleError(
+                "UNTRUSTED_AUXILIARY_SCHEMA",
+                "auxiliary lifecycle object declares an untrusted schema identity or version",
+            )
+        self._validate(value, self.schemas[name], name, "$")
 
     def _resolve(self, reference: str, current_name: str) -> tuple[dict[str, Any], str]:
         if "#" in reference:
