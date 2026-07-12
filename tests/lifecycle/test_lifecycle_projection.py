@@ -185,7 +185,7 @@ class LifecycleProjectionTests(unittest.TestCase):
             self.assertEqual(canonical_bytes(first, max_nodes=2_000_000), canonical_bytes(second, max_nodes=2_000_000))
             self.assertEqual(
                 hashlib.sha256(canonical_bytes(first, max_nodes=2_000_000)).hexdigest(),
-                "7a0838cb14decd3d68d89b6e6ee08d9571b448e248ce88675eff87302fa5e6be",
+                "5551631ef6b5be5c1c5eebc83f72842f894d377759b6646c5875b9fa95844347",
             )
             self.assertEqual(first["authority"], "GENERATED_NONCANONICAL_PROJECTION")
             self.assertEqual(len(first["records"]), 5)

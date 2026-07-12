@@ -53,6 +53,7 @@ REQUIRED = (
     "tools/atlas_lifecycle/schema.py",
     "tools/atlas_lifecycle/projection.py",
     "tools/atlas_lifecycle/pilot.py",
+    "tools/atlas_lifecycle/planner.py",
     "proof/lifecycle/g3-d-beu-reduction-pilot-r01.json",
     "proof/lifecycle/g3-d-beu-reduction-pilot-r01.md",
     "quests/prime-reborn.md",
