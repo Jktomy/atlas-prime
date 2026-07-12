@@ -34,6 +34,9 @@
     "privacy_classification": {"const": "PUBLIC_CLEAN"},
     "stop_boundary": {"type": "string", "minLength": 1},
     "rollback": {"type": "string", "minLength": 1},
-    "oathbringer_mission": {"type": ["object", "null"]}
+    "oathbringer_mission": {"type": ["object", "null"]},
+    "lifecycle_profile": {
+      "$ref": "../../../lifecycle/schemas/lifecycle-construction-profile-v1.schema.json"
+    }
   }
 }

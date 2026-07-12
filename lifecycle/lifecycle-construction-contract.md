@@ -50,4 +50,7 @@ binding. That adapter may package and verify exact construction bytes and
 digests only; it does not evaluate semantic completion or gain GitHub authority.
 
 The Thread Engine profile lands first. The Foundry binding follows as a separate
-authored transaction so neither review surface can mask the other.
+authored transaction so neither review surface can mask the other. The Foundry
+binding is BUILD-only, preserves the exact three-file G4-C candidate set, emits
+only a non-writer packaging receipt, and repeats trusted candidate verification
+from the sealed carrier. It gains no GitHub or semantic authority.

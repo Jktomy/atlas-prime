@@ -57,3 +57,19 @@ python -B tools/oathbringer-foundry/cli.py verify --carrier <carrier.zip>
 The extracted carrier launcher remains current-directory-independent. It starts
 the pre-bound Oathbringer mission only; user/operator invocation and every
 existing Oathbringer gate remain required.
+
+## Lifecycle carrier binding
+
+G4-D2 permits one optional shared lifecycle construction profile in BUILD mode.
+It accepts exactly one route-declared `ADD` under `lifecycle/events/` and
+preserves the complete G4-C `event.json`, `candidate-manifest.json`, and
+`candidate-receipt.json` set under `payload/lifecycle-candidate/`. The compiler
+validates the profile and candidate against Prime's fixed coinstalled lifecycle
+schemas, binds the event ID, immutable repository path, exact base and revision
+locks, trust/state/candidate digests, and records a non-writer, no-GitHub-authority
+Forge receipt. Sealed-carrier verification repeats the independent candidate
+readback.
+
+This binding only packages deterministic bytes. It cannot author meaning,
+accept a transition, advance a Quest, open or ready a pull request, merge, or
+write canonical source.
