@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:1b6ec2bab3295c4f06eaadae01aa8bba1ab6c3186d0a06e5c0e78e3c5d632fcb
+Source fingerprint: sha256:b21da8096326d651fc75bc3324fea25128292a07e88cada3852f91728ce5952b
 Generator format: 2
 Status: Generated support artifact
 
@@ -56,6 +56,7 @@ Status: Generated support artifact
 | `quests/notums-watch.md` | Active | Quest | Parent Quest for bringing Notum's Watch forward as Gatehouse/Citadel observability and rescue infrastructure, including the interim Notum vessel, future Notum Phoenix vessel, Nightwatcher lineage, and backup-capacity boundaries. | High |
 | `quests/prime-reborn.md` | COMPLETE | QUEST | missing | CRITICAL |
 | `quests/prometheus-fire.md` | Active | Quest | Parent Quest for converting Prometheus into a stable, recoverable Proxmox compute platform with the approved Crucible VM, Nexus LXC, Matrix LXC, and future Plex LXC topology. | High |
+| `quests/repairing-prime.md` | Active | Quest | Repair Prime's missing execution, agentic, continuity, Quest, generated-parity, acceptance, and closeout capabilities without rebuilding accepted foundations or weakening Atlas boundaries. | Critical |
 | `recovery/phoenix-recovery.md` | ACTIVE | RUNBOOK | missing | CRITICAL |
 | `routing/command-surfaces.md` | ACTIVE | REGISTER | missing | HIGH |
 | `safety/atlas-safety-doctrine.md` | ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
