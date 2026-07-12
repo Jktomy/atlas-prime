@@ -196,6 +196,46 @@ class LifecycleEngineTests(unittest.TestCase):
                 validate_repository(repo)
             self.assertEqual(raised.exception.code, "TRUST_ROOT_CONTRACT")
 
+    def test_repository_accepts_only_route_bound_event_filename_exception(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            repo = Path(raw)
+            shutil.copytree(ROOT / "lifecycle", repo / "lifecycle")
+            fixture_path = repo / "lifecycle/fixtures/lifecycle-event-checkpoint.json"
+            event = json.loads(fixture_path.read_text())
+            fixture_path.unlink()
+            event["authority"] = "CANONICAL_RECORD"
+            event["record_id"] = stable_record_id(event)
+            declared = event["route"]["allowed_paths"][0]
+            event_path = repo / Path(*declared.split("/"))
+            write_json(event_path, event, canonical=True)
+
+            result = validate_repository(repo)
+            self.assertEqual(result.records, 1)
+            self.assertEqual(result.canonical_records[0]["record_id"], event["record_id"])
+
+            mismatched = event_path.with_name(f'{event["record_id"]}.json')
+            event_path.rename(mismatched)
+            with self.assertRaises(LifecycleError) as raised:
+                validate_repository(repo)
+            self.assertEqual(raised.exception.code, "EVENT_PATH_MISMATCH")
+
+        with tempfile.TemporaryDirectory() as raw:
+            repo = Path(raw)
+            shutil.copytree(ROOT / "lifecycle", repo / "lifecycle")
+            sunset = json.loads((
+                repo / "lifecycle/fixtures/sunset-non-quest.json"
+            ).read_text())
+            sunset["authority"] = "CANONICAL_RECORD"
+            sunset["record_id"] = stable_record_id(sunset)
+            write_json(
+                repo / "lifecycle/sunsets/semantic-name.json",
+                sunset,
+                canonical=True,
+            )
+            with self.assertRaises(LifecycleError) as raised:
+                validate_repository(repo)
+            self.assertEqual(raised.exception.code, "CANONICAL_FILENAME_MISMATCH")
+
     def test_repository_rejects_stale_main_parent_and_replay(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             repo = Path(raw)

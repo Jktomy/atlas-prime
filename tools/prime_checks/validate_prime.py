@@ -48,6 +48,7 @@ REQUIRED = (
     "tools/atlas_lifecycle/README.md",
     "tools/atlas_lifecycle/__main__.py",
     "tools/atlas_lifecycle/evidence.py",
+    "tools/atlas_lifecycle/event_paths.py",
     "tools/atlas_lifecycle/jsonio.py",
     "tools/atlas_lifecycle/repository.py",
     "tools/atlas_lifecycle/schema.py",

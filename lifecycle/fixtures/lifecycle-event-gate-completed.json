@@ -1,7 +1,7 @@
 {
   "schema_id": "atlas.lifecycle.event",
   "schema_version": "1.0.0",
-  "record_id": "LEV-DTF3UE2XNNKGA4L2FF5TNXZFQD",
+  "record_id": "LEV-JJ2PAL6AKWDDR4E345DG3BWMDL",
   "authority": "NONCANONICAL_FIXTURE",
   "event_class": "TRANSITION",
   "event_type": "GATE_COMPLETED",
@@ -23,7 +23,7 @@
     "expected_quest_revision": 1,
     "expected_gate_revision": 1,
     "expected_prior_state": "Gate is in progress with one accepted checkpoint.",
-    "expected_parent_checkpoint_id": "LEV-CTNL73NPCTPRYXPVBZVZHA4TSD",
+    "expected_parent_checkpoint_id": "LEV-4VSJUA33K2ZD5EQCR36RJTZTIE",
     "expected_source_fingerprint": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
     "trusted_expectation_ref": {
       "ref_id": "fixture-event-trust-root",
@@ -55,13 +55,13 @@
   "semantic_author": "athena",
   "route": {
     "route_authority": "ATHENA_DIRECT",
-    "allowed_paths": ["lifecycle/events/gate-completion-candidate.json"],
+    "allowed_paths": ["lifecycle/events/found-silverlight-gate-completed-r01.json"],
     "direct_main": false,
     "automatic_merge": false
   },
-  "related_record_ids": ["LEV-CTNL73NPCTPRYXPVBZVZHA4TSD"],
+  "related_record_ids": ["LEV-4VSJUA33K2ZD5EQCR36RJTZTIE"],
   "lineage": {
-    "parent_event_id": "LEV-CTNL73NPCTPRYXPVBZVZHA4TSD",
+    "parent_event_id": "LEV-4VSJUA33K2ZD5EQCR36RJTZTIE",
     "supersedes_event_id": null,
     "invalidates_event_id": null,
     "reverses_event_id": null,

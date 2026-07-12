@@ -18,6 +18,10 @@ shapes, stable IDs, protected-data rules, canonical bytes, duplicate identities,
 and replay identifiers. Its source fingerprint binds the lifecycle contract,
 the lifecycle-event contract, every lifecycle schema, canonical trust-root
 doctrine and expectations, record paths, and canonical record payloads.
+Canonical lifecycle events use the one exact immutable path declared in their
+authorized route. That event-only path exception is content-addressed, bound to
+the physical file, and case-fold collision checked; every other lifecycle
+record retains the `<record_id>.json` rule. Event identity remains `record_id`.
 `verify` adds exact-HEAD, parent-Feather, and Quest revision checks. Its optional
 archive mode requires a ZIP, independent sidecar, receipt, and a
 repository-controlled external trust root.

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from .errors import LifecycleError
+from .event_paths import bind_event_storage_path
 from .jsonio import canonical_bytes, loads_bounded, read_bounded, stable_record_id
 from .limits import MAX_RECORDS
 from .protection import enforce_clean_values, enforce_pointer_contract
@@ -143,6 +144,7 @@ def validate_repository(
     seen_ids: set[str] = set()
     seen_payloads: set[str] = set()
     seen_replays: set[str] = set()
+    seen_event_paths: set[str] = set()
     loaded: list[tuple[dict[str, Any], bool]] = []
     stale: list[str] = []
     canonical_count = 0
@@ -181,7 +183,10 @@ def validate_repository(
             fixture_count += 1
         else:
             canonical_count += 1
-            if path.name != f"{identifier}.json":
+            relative_path = path.resolve().relative_to(root).as_posix()
+            if record.get("schema_id") == "atlas.lifecycle.event":
+                bind_event_storage_path(record, relative_path, seen_event_paths)
+            elif path.name != f"{identifier}.json":
                 raise LifecycleError("CANONICAL_FILENAME_MISMATCH", "canonical filename must equal the stable record ID")
             if record_data != canonical_bytes(record):
                 raise LifecycleError("NONCANONICAL_SERIALIZATION", "canonical record bytes are not deterministic")

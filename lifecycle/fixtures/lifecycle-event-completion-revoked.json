@@ -1,7 +1,7 @@
 {
   "schema_id": "atlas.lifecycle.event",
   "schema_version": "1.0.0",
-  "record_id": "LEV-OSDJND63O3UWGXOSZIWBUP5QEI",
+  "record_id": "LEV-57CE4K4CFB52LOUGNV2UZUECGI",
   "authority": "NONCANONICAL_FIXTURE",
   "event_class": "TRANSITION",
   "event_type": "COMPLETION_REVOKED",
@@ -23,7 +23,7 @@
     "expected_quest_revision": 2,
     "expected_gate_revision": 2,
     "expected_prior_state": "Gate is complete under the referenced transition.",
-    "expected_parent_checkpoint_id": "LEV-CTNL73NPCTPRYXPVBZVZHA4TSD",
+    "expected_parent_checkpoint_id": "LEV-4VSJUA33K2ZD5EQCR36RJTZTIE",
     "expected_source_fingerprint": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
     "trusted_expectation_ref": {
       "ref_id": "fixture-event-trust-root",
@@ -55,17 +55,17 @@
   "semantic_author": "athena",
   "route": {
     "route_authority": "ATHENA_DIRECT",
-    "allowed_paths": ["lifecycle/events/completion-revocation-candidate.json"],
+    "allowed_paths": ["lifecycle/events/found-silverlight-completion-revoked-r01.json"],
     "direct_main": false,
     "automatic_merge": false
   },
-  "related_record_ids": ["LEV-DTF3UE2XNNKGA4L2FF5TNXZFQD"],
+  "related_record_ids": ["LEV-JJ2PAL6AKWDDR4E345DG3BWMDL"],
   "lineage": {
-    "parent_event_id": "LEV-DTF3UE2XNNKGA4L2FF5TNXZFQD",
+    "parent_event_id": "LEV-JJ2PAL6AKWDDR4E345DG3BWMDL",
     "supersedes_event_id": null,
     "invalidates_event_id": null,
     "reverses_event_id": null,
-    "revokes_event_id": "LEV-DTF3UE2XNNKGA4L2FF5TNXZFQD",
+    "revokes_event_id": "LEV-JJ2PAL6AKWDDR4E345DG3BWMDL",
     "reopens_event_id": null
   },
   "replay_key": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",

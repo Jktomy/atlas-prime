@@ -1,7 +1,7 @@
 {
   "schema_id": "atlas.lifecycle.event",
   "schema_version": "1.0.0",
-  "record_id": "LEV-BVUOYDIIUTS3L2VTVGXP6Y27PG",
+  "record_id": "LEV-UAFMJ6VBSWD2F6EV4J3DLIUULS",
   "authority": "NONCANONICAL_FIXTURE",
   "event_class": "CHECKPOINT",
   "event_type": "WORK_PAUSED",
@@ -51,7 +51,7 @@
   "semantic_author": "athena",
   "route": {
     "route_authority": "ATHENA_DIRECT",
-    "allowed_paths": ["lifecycle/events/protected-checkpoint-candidate.json"],
+    "allowed_paths": ["lifecycle/events/raphael-work-paused-r01.json"],
     "direct_main": false,
     "automatic_merge": false
   },
