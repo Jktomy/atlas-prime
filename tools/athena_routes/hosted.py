@@ -224,6 +224,94 @@ def assert_no_replay(branch: str) -> None:
         raise HostedRouteError("historical mission pull request already exists", "REPLAY_PULL_REQUEST_EXISTS")
 
 
+def read_remote_state(branch: str) -> dict[str, Any]:
+    ref = subprocess.run(
+        ["gh", "api", f"repos/{REPOSITORY}/git/ref/heads/{quote(branch, safe='')}"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    branch_exists = ref.returncode == 0
+    head_sha: str | None = None
+    if branch_exists:
+        try:
+            head_sha = json.loads(ref.stdout)["object"]["sha"]
+        except (KeyError, TypeError, json.JSONDecodeError) as exc:
+            raise HostedRouteError("remote branch readback was malformed", "REMOTE_STATE_READBACK_FAILED") from exc
+        if not isinstance(head_sha, str) or not SHA40.fullmatch(head_sha):
+            raise HostedRouteError("remote branch head was malformed", "REMOTE_STATE_READBACK_FAILED")
+    elif "404" not in ref.stderr and "Not Found" not in ref.stderr:
+        raise HostedRouteError("remote branch readback failed", "REMOTE_STATE_READBACK_FAILED")
+    prs = subprocess.run(
+        [
+            "gh", "pr", "list", "--repo", REPOSITORY, "--state", "all", "--head", branch,
+            "--json", "number,state,isDraft,headRefName,headRefOid",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if prs.returncode != 0:
+        raise HostedRouteError("remote pull-request readback failed", "REMOTE_STATE_READBACK_FAILED")
+    try:
+        pull_requests = json.loads(prs.stdout)
+    except json.JSONDecodeError as exc:
+        raise HostedRouteError("remote pull-request readback was malformed", "REMOTE_STATE_READBACK_FAILED") from exc
+    if not isinstance(pull_requests, list) or len(pull_requests) > 1:
+        raise HostedRouteError("remote pull-request state was ambiguous", "REMOTE_STATE_READBACK_FAILED")
+    pull_request = pull_requests[0] if pull_requests else None
+    if pull_request is not None and not isinstance(pull_request, dict):
+        raise HostedRouteError("remote pull-request state was malformed", "REMOTE_STATE_READBACK_FAILED")
+    return {
+        "readback": "VERIFIED",
+        "branch_exists": branch_exists,
+        "head_sha": head_sha,
+        "pull_request": pull_request,
+    }
+
+
+def sanitized_adapter_evidence(raw: dict[str, Any], branch: str, remote: dict[str, Any]) -> dict[str, Any]:
+    checkpoints = []
+    for item in raw.get("checkpoint_results", []):
+        if not isinstance(item, dict):
+            continue
+        checkpoint = safe_evidence_code(item.get("checkpoint"), "UNKNOWN_CHECKPOINT")
+        status = safe_evidence_code(str(item.get("status", "")).upper(), "UNKNOWN_STATUS")
+        checkpoints.append({"checkpoint": checkpoint, "status": status})
+    pr = remote.get("pull_request") if isinstance(remote.get("pull_request"), dict) else None
+    return {
+        "schema_version": "atlas.athena.thread-engine-evidence.v1",
+        "source_receipt_sha256": sha256_bytes(stable_json(raw).encode("utf-8")),
+        "result": safe_evidence_code(raw.get("result"), "UNKNOWN_RESULT"),
+        "error_code": None if raw.get("error_code") is None else safe_evidence_code(raw.get("error_code"), "THREAD_ENGINE_REJECTED"),
+        "error_stage": None if raw.get("error_stage") is None else safe_evidence_code(raw.get("error_stage"), "THREAD_ENGINE_REJECTED"),
+        "branch": branch,
+        "checkpoint_results": checkpoints,
+        "remote_state": {
+            "readback": remote.get("readback", "UNAVAILABLE"),
+            "branch_exists": remote.get("branch_exists"),
+            "head_sha": remote.get("head_sha"),
+            "pull_request": None if pr is None else {
+                "number": pr.get("number") if isinstance(pr.get("number"), int) else None,
+                "state": pr.get("state") if pr.get("state") in {"OPEN", "CLOSED", "MERGED"} else None,
+                "is_draft": pr.get("isDraft") if isinstance(pr.get("isDraft"), bool) else None,
+                "head_ref_name": pr.get("headRefName") if pr.get("headRefName") == branch else None,
+                "head_ref_oid": pr.get("headRefOid") if isinstance(pr.get("headRefOid"), str) and SHA40.fullmatch(pr["headRefOid"]) else None,
+            },
+        },
+    }
+
+
+def completed_remote_checkpoint(raw: dict[str, Any]) -> bool:
+    mutation_checkpoints = {"PUSH", "DRAFT_PR", "READBACK", "RECEIPT", "STOP"}
+    return any(
+        isinstance(item, dict)
+        and item.get("checkpoint") in mutation_checkpoints
+        and item.get("status") == "completed"
+        for item in raw.get("checkpoint_results", [])
+    )
+
+
 def build_request(values: dict[str, str], package: Any, event_bytes: bytes, run: dict[str, Any]) -> dict[str, Any]:
     actor = ((run.get("actor") or {}).get("login"))
     triggering_actor = ((run.get("triggering_actor") or {}).get("login"))
@@ -324,6 +412,72 @@ def no_mutation_receipt(values: dict[str, str], *, code: str, route: str, result
     }
     validate_schema(load_schema(RECEIPT_SCHEMA), receipt)
     return receipt
+
+
+def preserve_engine_failure(
+    *,
+    values: dict[str, str],
+    package: Any,
+    request: dict[str, Any],
+    expected_sha: str,
+    compile_receipt_sha256: str,
+    receipt_path: Path,
+    raw: dict[str, Any],
+    fallback_code: str,
+    known_mutation: bool,
+    remote_probe: Callable[[str], dict[str, Any]],
+) -> dict[str, Any]:
+    branch = package.weave["branch"]
+    try:
+        remote = remote_probe(branch)
+    except Exception:
+        remote = {"readback": "UNAVAILABLE", "branch_exists": None, "head_sha": None, "pull_request": None}
+    adapter_path = receipt_path.with_name("thread-engine-evidence.json")
+    evidence = sanitized_adapter_evidence(raw, branch, remote)
+    write_json(adapter_path, evidence)
+    pr = remote.get("pull_request") if isinstance(remote.get("pull_request"), dict) else None
+    remote_mutation = bool(remote.get("branch_exists") or pr)
+    absence_proven = remote.get("readback") == "VERIFIED" and not remote.get("branch_exists") and pr is None
+    mutation_possible = known_mutation or completed_remote_checkpoint(raw) or remote_mutation or not absence_proven
+    code_fallback = "THREAD_ENGINE_PARTIAL" if raw.get("result") == "PARTIAL" else fallback_code
+    code = safe_evidence_code(raw.get("error_code"), code_fallback)
+    if not mutation_possible:
+        receipt = no_mutation_receipt(
+            values,
+            code=code,
+            route="ARROW_BOW_HOSTED",
+            result="REJECTED",
+            carrier_sha256=expected_sha,
+            mission_id=package.weave["weave_id"],
+        )
+        write_json(receipt_path, receipt)
+        return receipt
+    partial = {
+        "schema_version": "atlas.athena.hosted-route-receipt.v1",
+        "result": "PARTIAL",
+        "route": "ARROW_BOW_HOSTED",
+        "identity": identity_from(values, package.weave["weave_id"]),
+        "request_sha256": sha256_bytes(stable_json(request).encode("utf-8")),
+        "carrier_sha256": expected_sha,
+        "compile_receipt_sha256": compile_receipt_sha256,
+        "adapter_receipt_sha256": sha256_bytes(adapter_path.read_bytes()),
+        "replay_key": request["replay_key"],
+        "stage": safe_evidence_code(raw.get("error_stage"), "THREAD_ENGINE_PARTIAL"),
+        "error_code": code,
+        "stop_point": "PARTIAL_STATE_PRESERVED",
+        "mutation": {
+            "occurred": True,
+            "branch": branch,
+            "pull_request": pr.get("number") if pr and isinstance(pr.get("number"), int) else None,
+            "head_sha": remote.get("head_sha") if isinstance(remote.get("head_sha"), str) and SHA40.fullmatch(remote["head_sha"]) else None,
+            "draft": pr.get("isDraft") if pr and isinstance(pr.get("isDraft"), bool) else None,
+        },
+        "rollback": {"pre_merge": "PRESERVE_PARTIAL_STATE_AND_REVIEW", "post_merge": "NO_MERGE_OCCURRED", "force_or_history_rewrite": False},
+        "forbidden_action_confirmation": {"direct_main": False, "force_push": False, "ready": False, "merge": False, "settings": False, "standing_authority": False, "second_writer": False},
+    }
+    validate_schema(load_schema(RECEIPT_SCHEMA), partial)
+    write_json(receipt_path, partial)
+    return partial
 
 
 def _engine_imports() -> tuple[Any, Any, Any, Any]:
@@ -440,6 +594,7 @@ def run_hosted(
     run_metadata: dict[str, Any] | None = None,
     engine: tuple[Any, Any, Any, Any] | None = None,
     replay_probe: Callable[[str], None] = assert_no_replay,
+    remote_probe: Callable[[str], dict[str, Any]] = read_remote_state,
 ) -> dict[str, Any]:
     values = required_environment(env)
     expected_sha = values["ATHENA_ARROW_SHA256"]
@@ -457,6 +612,10 @@ def run_hosted(
         temp = Path(temporary)
         carrier_path = temp / "arrow.zip"
         carrier_path.write_bytes(carrier_data)
+        package: Any | None = None
+        request: dict[str, Any] | None = None
+        compile_receipt_sha256: str | None = None
+        adapter_started = False
         try:
             package = read_spear_package(carrier_path, expected_sha)
             privacy_scan(package)
@@ -489,6 +648,7 @@ def run_hosted(
             compile_receipt_path = compiled / compile_receipt["compile_receipt_filename"]
             compile_receipt_sha256 = sha256_bytes(compile_receipt_path.read_bytes())
             try:
+                adapter_started = True
                 adapter_receipt = execute_mission(
                     mission_path,
                     mission_scoped=True,
@@ -497,77 +657,101 @@ def run_hosted(
                     work_root=temp,
                     package_root=compiled,
                 )
-            except AdapterError as exc:
+            except Exception as exc:
                 raw = getattr(exc, "receipt", None)
-                if isinstance(raw, dict):
-                    adapter_path = receipt_path.with_name("thread-engine-receipt.json")
-                    write_json(adapter_path, raw)
-                if isinstance(raw, dict) and raw.get("result") == "PARTIAL":
-                    pr = raw.get("pr_readback") or {}
-                    partial = {
-                        "schema_version": "atlas.athena.hosted-route-receipt.v1",
-                        "result": "PARTIAL",
-                        "route": "ARROW_BOW_HOSTED",
-                        "identity": identity_from(values, package.weave["weave_id"]),
-                        "request_sha256": sha256_bytes(stable_json(request).encode("utf-8")),
-                        "carrier_sha256": expected_sha,
-                        "compile_receipt_sha256": compile_receipt_sha256,
-                        "adapter_receipt_sha256": sha256_bytes(adapter_path.read_bytes()),
-                        "replay_key": request["replay_key"],
-                        "stage": safe_evidence_code(raw.get("error_stage"), "THREAD_ENGINE_PARTIAL"),
-                        "error_code": safe_evidence_code(raw.get("error_code"), "THREAD_ENGINE_PARTIAL"),
-                        "stop_point": "PARTIAL_STATE_PRESERVED",
-                        "mutation": {
-                            "occurred": True,
-                            "branch": package.weave["branch"],
-                            "pull_request": pr.get("number"),
-                            "head_sha": raw.get("head_sha"),
-                            "draft": pr.get("isDraft"),
-                        },
-                        "rollback": {"pre_merge": "PRESERVE_PARTIAL_STATE_AND_REVIEW", "post_merge": "NO_MERGE_OCCURRED", "force_or_history_rewrite": False},
-                        "forbidden_action_confirmation": {"direct_main": False, "force_push": False, "ready": False, "merge": False, "settings": False, "standing_authority": False, "second_writer": False},
+                if not isinstance(raw, dict):
+                    raw = {
+                        "result": "UNKNOWN_RESULT",
+                        "error_code": safe_error_code(exc, "THREAD_ENGINE_STATE_UNKNOWN"),
+                        "error_stage": "THREAD_ENGINE_INVOCATION",
+                        "checkpoint_results": [],
                     }
-                    validate_schema(load_schema(RECEIPT_SCHEMA), partial)
-                    write_json(receipt_path, partial)
-                    return partial
-                raise HostedRouteError(
-                    "Thread Engine rejected before remote mutation",
-                    safe_evidence_code(getattr(exc, "code", None), "THREAD_ENGINE_REJECTED"),
-                ) from exc
-            pr = adapter_receipt["pr_readback"]
-            adapter_path = receipt_path.with_name("thread-engine-receipt.json")
-            write_json(adapter_path, adapter_receipt)
-            receipt = {
-                "schema_version": "atlas.athena.hosted-route-receipt.v1",
-                "result": "SUCCESS",
-                "route": "ARROW_BOW_HOSTED",
-                "identity": identity_from(values, package.weave["weave_id"]),
-                "request_sha256": sha256_bytes(stable_json(request).encode("utf-8")),
-                "carrier_sha256": expected_sha,
-                "compile_receipt_sha256": compile_receipt_sha256,
-                "adapter_receipt_sha256": sha256_bytes(adapter_path.read_bytes()),
-                "replay_key": request["replay_key"],
-                "stage": "DRAFT_PR_READBACK",
-                "error_code": None,
-                "stop_point": "DRAFT_PR_READBACK",
-                "mutation": {
-                    "occurred": True,
-                    "branch": package.weave["branch"],
-                    "pull_request": pr["number"],
+                return preserve_engine_failure(
+                    values=values,
+                    package=package,
+                    request=request,
+                    expected_sha=expected_sha,
+                    compile_receipt_sha256=compile_receipt_sha256,
+                    receipt_path=receipt_path,
+                    raw=raw,
+                    fallback_code="THREAD_ENGINE_REJECTED",
+                    known_mutation=False,
+                    remote_probe=remote_probe,
+                )
+            try:
+                pr = adapter_receipt["pr_readback"]
+                success_remote = {
+                    "readback": "VERIFIED",
+                    "branch_exists": True,
                     "head_sha": adapter_receipt["head_sha"],
-                    "draft": pr["isDraft"],
-                },
-                "rollback": {"pre_merge": "CLOSE_DRAFT_PR", "post_merge": "REVIEWED_REVERT_PR", "force_or_history_rewrite": False},
-                "forbidden_action_confirmation": {"direct_main": False, "force_push": False, "ready": False, "merge": False, "settings": False, "standing_authority": False, "second_writer": False},
-            }
-            validate_schema(load_schema(RECEIPT_SCHEMA), receipt)
-            write_json(receipt_path, receipt)
-            return receipt
+                    "pull_request": pr,
+                }
+                adapter_path = receipt_path.with_name("thread-engine-evidence.json")
+                write_json(adapter_path, sanitized_adapter_evidence(adapter_receipt, package.weave["branch"], success_remote))
+                receipt = {
+                    "schema_version": "atlas.athena.hosted-route-receipt.v1",
+                    "result": "SUCCESS",
+                    "route": "ARROW_BOW_HOSTED",
+                    "identity": identity_from(values, package.weave["weave_id"]),
+                    "request_sha256": sha256_bytes(stable_json(request).encode("utf-8")),
+                    "carrier_sha256": expected_sha,
+                    "compile_receipt_sha256": compile_receipt_sha256,
+                    "adapter_receipt_sha256": sha256_bytes(adapter_path.read_bytes()),
+                    "replay_key": request["replay_key"],
+                    "stage": "DRAFT_PR_READBACK",
+                    "error_code": None,
+                    "stop_point": "DRAFT_PR_READBACK",
+                    "mutation": {
+                        "occurred": True,
+                        "branch": package.weave["branch"],
+                        "pull_request": pr["number"],
+                        "head_sha": adapter_receipt["head_sha"],
+                        "draft": pr["isDraft"],
+                    },
+                    "rollback": {"pre_merge": "CLOSE_DRAFT_PR", "post_merge": "REVIEWED_REVERT_PR", "force_or_history_rewrite": False},
+                    "forbidden_action_confirmation": {"direct_main": False, "force_push": False, "ready": False, "merge": False, "settings": False, "standing_authority": False, "second_writer": False},
+                }
+                validate_schema(load_schema(RECEIPT_SCHEMA), receipt)
+                write_json(receipt_path, receipt)
+                return receipt
+            except Exception as exc:
+                raw = adapter_receipt if isinstance(adapter_receipt, dict) else {}
+                raw = {**raw, "result": "PARTIAL", "error_code": safe_error_code(exc, "POST_RETURN_PROCESSING_FAILED"), "error_stage": "POST_RETURN_PROCESSING"}
+                return preserve_engine_failure(
+                    values=values,
+                    package=package,
+                    request=request,
+                    expected_sha=expected_sha,
+                    compile_receipt_sha256=compile_receipt_sha256,
+                    receipt_path=receipt_path,
+                    raw=raw,
+                    fallback_code="POST_RETURN_PROCESSING_FAILED",
+                    known_mutation=True,
+                    remote_probe=remote_probe,
+                )
         except HostedRouteError as exc:
             receipt = no_mutation_receipt(values, code=exc.code, route=exc.route, result=exc.result, carrier_sha256=expected_sha)
             write_json(receipt_path, receipt)
             return receipt
         except Exception as exc:
+            if adapter_started and package is not None and request is not None and compile_receipt_sha256 is not None:
+                return preserve_engine_failure(
+                    values=values,
+                    package=package,
+                    request=request,
+                    expected_sha=expected_sha,
+                    compile_receipt_sha256=compile_receipt_sha256,
+                    receipt_path=receipt_path,
+                    raw={
+                        "result": "PARTIAL",
+                        "error_code": safe_error_code(exc, "THREAD_ENGINE_STATE_UNKNOWN"),
+                        "error_stage": "THREAD_ENGINE_STATE_RECONCILIATION",
+                        "checkpoint_results": [],
+                    },
+                    fallback_code="THREAD_ENGINE_STATE_UNKNOWN",
+                    known_mutation=True,
+                    remote_probe=remote_probe,
+                )
             code = safe_error_code(exc, "HOSTED_ROUTE_REJECTED")
             receipt = no_mutation_receipt(values, code=code, route="ARROW_BOW_HOSTED", result="REJECTED", carrier_sha256=expected_sha)
             write_json(receipt_path, receipt)

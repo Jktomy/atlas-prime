@@ -352,13 +352,134 @@ class HostedRouteTests(unittest.TestCase):
                 run_metadata=run_metadata(),
                 engine=tuple(engine),
                 replay_probe=lambda _branch: None,
+                remote_probe=lambda branch: {
+                    "readback": "VERIFIED",
+                    "branch_exists": True,
+                    "head_sha": "d" * 40,
+                    "pull_request": None,
+                },
             )
-            self.assertTrue((root / "evidence" / "thread-engine-receipt.json").is_file())
+            self.assertTrue((root / "evidence" / "thread-engine-evidence.json").is_file())
+            persisted = "\n".join(path.read_text(encoding="utf-8") for path in (root / "evidence").iterdir())
         self.assertEqual(receipt["result"], "PARTIAL")
         self.assertEqual(receipt["error_code"], "THREAD_ENGINE_PARTIAL")
         self.assertEqual(receipt["stage"], "THREAD_ENGINE_PARTIAL")
         self.assertEqual(receipt["stop_point"], "PARTIAL_STATE_PRESERVED")
         self.assertEqual(receipt["rollback"]["pre_merge"], "PRESERVE_PARTIAL_STATE_AND_REVIEW")
+        self.assertNotIn("unsafe error detail", persisted)
+        self.assertNotIn("unsafe stage detail", persisted)
+
+    def test_failures_after_push_and_pr_creation_are_conservative_partial(self) -> None:
+        carrier = b"fake-arrow-zip"
+        digest = hashlib.sha256(carrier).hexdigest()
+        scenarios = (
+            (
+                "after-push",
+                [{"checkpoint": "PUSH", "status": "completed"}, {"checkpoint": "DRAFT_PR", "status": "rejected"}],
+                {"readback": "VERIFIED", "branch_exists": True, "head_sha": "d" * 40, "pull_request": None},
+            ),
+            (
+                "after-pr",
+                [{"checkpoint": "PUSH", "status": "completed"}, {"checkpoint": "DRAFT_PR", "status": "completed"}, {"checkpoint": "READBACK", "status": "rejected"}],
+                {
+                    "readback": "VERIFIED",
+                    "branch_exists": True,
+                    "head_sha": "d" * 40,
+                    "pull_request": {"number": 101, "state": "OPEN", "isDraft": True, "headRefName": package(digest).weave["branch"], "headRefOid": "d" * 40},
+                },
+            ),
+        )
+        for label, checkpoints, remote in scenarios:
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                event = root / "event.json"
+                event.write_text("{}\n", encoding="utf-8")
+                engine = list(success_engine(digest))
+
+                def rejected_adapter(_path: Path, **_kwargs: object) -> dict:
+                    raise FakeAdapterError({
+                        "result": "REJECTED",
+                        "error_code": "GH_COMMAND_FAILED",
+                        "error_stage": "READBACK",
+                        "message": "private diagnostic do-not-echo",
+                        "checkpoint_results": checkpoints,
+                    })
+
+                engine[1] = rejected_adapter
+                receipt = run_hosted(
+                    base64.b64encode(carrier).decode("ascii"),
+                    env=base_environment(event, digest),
+                    receipt_path=root / "evidence" / "receipt.json",
+                    work_root=root / "work",
+                    run_metadata=run_metadata(),
+                    engine=tuple(engine),
+                    replay_probe=lambda _branch: None,
+                    remote_probe=lambda _branch, observed=remote: observed,
+                )
+                persisted = "\n".join(path.read_text(encoding="utf-8") for path in (root / "evidence").iterdir())
+                self.assertEqual(receipt["result"], "PARTIAL")
+                self.assertTrue(receipt["mutation"]["occurred"])
+                self.assertNotIn("private diagnostic do-not-echo", persisted)
+
+    def test_failed_remote_absence_readback_and_post_return_failure_are_partial(self) -> None:
+        carrier = b"fake-arrow-zip"
+        digest = hashlib.sha256(carrier).hexdigest()
+        for label, adapter, remote_probe in (
+            (
+                "absence-unavailable",
+                lambda _path, **_kwargs: (_ for _ in ()).throw(FakeAdapterError({"result": "REJECTED", "error_code": "ADAPTER_REJECTED", "error_stage": "COMMIT", "checkpoint_results": []})),
+                lambda _branch: (_ for _ in ()).throw(RuntimeError("readback unavailable")),
+            ),
+            (
+                "post-return",
+                lambda _path, **_kwargs: {"result": "SUCCESS", "head_sha": "d" * 40, "pr_readback": {"isDraft": True}},
+                lambda branch: {"readback": "VERIFIED", "branch_exists": True, "head_sha": "d" * 40, "pull_request": {"number": 101, "state": "OPEN", "isDraft": True, "headRefName": branch, "headRefOid": "d" * 40}},
+            ),
+        ):
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                event = root / "event.json"
+                event.write_text("{}\n", encoding="utf-8")
+                engine = list(success_engine(digest))
+                engine[1] = adapter
+                receipt = run_hosted(
+                    base64.b64encode(carrier).decode("ascii"),
+                    env=base_environment(event, digest),
+                    receipt_path=root / "evidence" / "receipt.json",
+                    work_root=root / "work",
+                    run_metadata=run_metadata(),
+                    engine=tuple(engine),
+                    replay_probe=lambda _branch: None,
+                    remote_probe=remote_probe,
+                )
+                self.assertEqual(receipt["result"], "PARTIAL")
+                self.assertTrue(receipt["mutation"]["occurred"])
+
+    def test_pre_push_failure_is_rejected_only_after_verified_absence(self) -> None:
+        carrier = b"fake-arrow-zip"
+        digest = hashlib.sha256(carrier).hexdigest()
+        engine = list(success_engine(digest))
+
+        def pre_push_failure(_path: Path, **_kwargs: object) -> dict:
+            raise FakeAdapterError({"result": "REJECTED", "error_code": "COMMIT_REJECTED", "error_stage": "COMMIT", "checkpoint_results": []})
+
+        engine[1] = pre_push_failure
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            event = root / "event.json"
+            event.write_text("{}\n", encoding="utf-8")
+            receipt = run_hosted(
+                base64.b64encode(carrier).decode("ascii"),
+                env=base_environment(event, digest),
+                receipt_path=root / "evidence" / "receipt.json",
+                work_root=root / "work",
+                run_metadata=run_metadata(),
+                engine=tuple(engine),
+                replay_probe=lambda _branch: None,
+                remote_probe=lambda _branch: {"readback": "VERIFIED", "branch_exists": False, "head_sha": None, "pull_request": None},
+            )
+        self.assertEqual(receipt["result"], "REJECTED")
+        self.assertFalse(receipt["mutation"]["occurred"])
 
     def test_workflow_is_owner_only_thin_and_has_no_merge_or_force_route(self) -> None:
         workflow = (ROOT / ".github/workflows/athena-bow-hosted.yml").read_text(encoding="utf-8")
