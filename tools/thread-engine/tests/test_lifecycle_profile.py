@@ -298,6 +298,28 @@ class LifecycleProfileTests(unittest.TestCase):
                 verify_lifecycle_candidate_package(data["lifecycle_profile"], tmp)
             self.assertEqual(raised.exception.code, "LIFECYCLE_TRUSTED_SCHEMA")
 
+        with tempfile.TemporaryDirectory(prefix="atlas-g4d1-") as raw:
+            tmp = Path(raw)
+            _, data, candidate_root = build_lifecycle_mission(tmp)
+            receipt = load_bounded(candidate_root / "candidate-receipt.json")
+            receipt["replay_key"] = "sha256:" + "9" * 64
+            write_canonical(candidate_root / "candidate-receipt.json", receipt)
+            event_digest = file_fingerprint(candidate_root / "event.json")
+            manifest_digest = file_fingerprint(candidate_root / "candidate-manifest.json")
+            receipt_digest = file_fingerprint(candidate_root / "candidate-receipt.json")
+            profile = copy.deepcopy(data["lifecycle_profile"])
+            profile["candidate_receipt_digest"] = receipt_digest
+            profile["candidate_set_digest"] = fingerprint(canonical_bytes({
+                "members": [
+                    {"artifact_path": "event.json", "digest": event_digest},
+                    {"artifact_path": "candidate-manifest.json", "digest": manifest_digest},
+                    {"artifact_path": "candidate-receipt.json", "digest": receipt_digest},
+                ]
+            }))
+            with self.assertRaises(LifecycleProfileError) as raised:
+                verify_lifecycle_candidate_package(profile, tmp)
+            self.assertEqual(raised.exception.code, "LIFECYCLE_CANDIDATE_BINDING")
+
     def test_profile_rejects_revision_route_and_transition_receipt_drift(self) -> None:
         cases = (
             ("expected_entity_revision", 99, "LIFECYCLE_CANDIDATE_BINDING"),

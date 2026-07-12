@@ -328,10 +328,20 @@ def verify_lifecycle_candidate_package(profile: dict[str, Any], package_root: Pa
         or set_digest != profile["candidate_set_digest"]
         or binding.get("record_id") != profile["event_record_id"]
         or binding.get("repository_path") != profile["repository_path"]
+        or binding.get("artifact_path") != "event.json"
+        or binding.get("schema_id") != profile["event_schema_id"]
+        or binding.get("schema_version") != profile["event_schema_version"]
+        or binding.get("event_class") != profile["event_class"]
+        or binding.get("event_type") != profile["event_type"]
         or binding.get("payload_digest") != event_digest
         or manifest.get("allowed_paths") != profile["allowed_paths"]
         or locks.get("expected_main_sha") != profile["expected_main_sha"]
         or locks.get("expected_entity_revision") != profile["expected_entity_revision"]
+        or locks.get("expected_quest_revision") != profile["expected_quest_revision"]
+        or locks.get("expected_gate_revision") != profile["expected_gate_revision"]
+        or locks.get("expected_parent_checkpoint_id") != profile["expected_parent_event_id"]
+        or locks.get("expected_source_fingerprint") != profile["expected_source_fingerprint"]
+        or locks.get("route_authority") != profile["route_authority"]
         or trusted.get("trust_root_digest") != profile["trust_root_digest"]
         or trusted.get("state_snapshot_digest") != profile["state_snapshot_digest"]
         or trusted.get("accepted_event_schema_digest") != _trusted_digest(
@@ -344,8 +354,11 @@ def verify_lifecycle_candidate_package(profile: dict[str, Any], package_root: Pa
         or receipt.get("repository_path") != profile["repository_path"]
         or receipt.get("candidate_payload_digest") != event_digest
         or receipt.get("manifest_digest") != manifest_digest
+        or receipt.get("expected_main_sha") != profile["expected_main_sha"]
+        or receipt.get("expected_entity_revision") != profile["expected_entity_revision"]
         or receipt.get("trust_root_digest") != profile["trust_root_digest"]
         or receipt.get("state_snapshot_digest") != profile["state_snapshot_digest"]
+        or receipt.get("replay_key") != profile["replay_key"]
         or receipt.get("output_members") != output_members[:2]
     ):
         raise LifecycleProfileError("lifecycle candidate cross-binding is invalid", "LIFECYCLE_CANDIDATE_BINDING")
