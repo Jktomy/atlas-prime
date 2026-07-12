@@ -99,6 +99,10 @@ the submitted payload. A payload, archive, receipt, sidecar, and claimed digest
 cannot collectively replace their trusted expectations. Verification retains
 bounded bytes, members, paths, parsing depth, schema identity, independent
 sidecar/receipt binding, sanitized failure evidence, and preserved diagnostics.
+The read-only planner additionally requires the repository-controlled event
+trust root to match an independently supplied digest from the controlling
+handoff and the current-state snapshot to match its independent digest; the
+submitted event cannot select or replace either digest.
 
 GitHub receives only clean summaries and `protected://` pointers. Structural
 validation is defense in depth; Athena remains responsible for semantic privacy

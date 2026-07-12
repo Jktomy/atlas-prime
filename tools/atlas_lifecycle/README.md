@@ -10,15 +10,17 @@ python -m tools.atlas_lifecycle verify
 python -m tools.atlas_lifecycle context [--quest-id ID]
 python -m tools.atlas_lifecycle index build
 python -m tools.atlas_lifecycle pilot [--repetitions N]
+python -m tools.atlas_lifecycle event plan --event EVENT --trust-root TRUST --expected-trust-root-digest SHA256 --state STATE --expected-state-digest SHA256
 ```
 
 `validate` checks the trusted local schema catalog, bounded JSON, closed record
 shapes, stable IDs, protected-data rules, canonical bytes, duplicate identities,
 and replay identifiers. Its source fingerprint binds the lifecycle contract,
-the lifecycle-event contract, every lifecycle schema, canonical trust-root doctrine and expectations, record
-paths, and canonical record payloads. `verify` adds exact-HEAD, parent-Feather, and Quest
-revision checks. Its optional archive mode requires a ZIP, independent sidecar,
-receipt, and a repository-controlled external trust root.
+the lifecycle-event contract, every lifecycle schema, canonical trust-root
+doctrine and expectations, record paths, and canonical record payloads.
+`verify` adds exact-HEAD, parent-Feather, and Quest revision checks. Its optional
+archive mode requires a ZIP, independent sidecar, receipt, and a
+repository-controlled external trust root.
 
 G4-A adds one trusted `atlas.lifecycle.event` envelope for `CHECKPOINT` and
 `TRANSITION` fixtures plus a separate closed external event trust-root schema.
@@ -33,7 +35,17 @@ promote a Golden Wing, or run as a service. It executes only the fixed
 
 Code presence does not activate Level 1B or Level 1C. Candidate generation,
 branch-scoped apply, Thread Engine profiles, Foundry integration, and GitHub
-automation remain unactivated and outside G4-A.
+automation remain unactivated and outside G4-B.
+
+`event plan` is the G4-B read-only planner. It validates the event, external
+trust root, and closed current-state snapshot; resolves exact prior state;
+rejects stale, replayed, concurrent, unauthorized, missing-target, and
+incomplete-acceptance inputs; and prints deterministic proposed deltas. It
+does not create candidate bytes, write any file, or invoke GitHub.
+The trust-root file must come from `lifecycle/trust-roots/` and match an
+independently supplied SHA-256 expectation from the controlling handoff.
+The current-state snapshot likewise requires an independently supplied digest,
+so replacing an event, trust root, and state snapshot together cannot pass.
 
 `context` emits only current Quest position, latest valid Feather, unresolved
 blockers, next gate, related Golden Wings, exact source references, source

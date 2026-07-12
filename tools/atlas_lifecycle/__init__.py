@@ -7,4 +7,4 @@ grants no activation or mutation authority.
 from .errors import LifecycleError
 
 __all__ = ["LifecycleError"]
-__version__ = "0.4.0"
+__version__ = "0.5.0"
