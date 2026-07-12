@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/athena-hosted-route-request-v1.schema.json",
+  "title": "Athena hosted route request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "authorizer",
+    "semantic_operator",
+    "requesting_surface",
+    "repository",
+    "base_sha",
+    "route",
+    "mission_id",
+    "carrier_sha256",
+    "event_identity",
+    "credential_identity",
+    "replay_key",
+    "protected_path_classification",
+    "stop_boundary",
+    "forbidden_actions"
+  ],
+  "properties": {
+    "schema_version": { "const": "atlas.athena.hosted-route-request.v1" },
+    "authorizer": { "const": "Jayson" },
+    "semantic_operator": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "requesting_surface": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "repository": { "const": "Jktomy/atlas-prime" },
+    "base_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "route": { "const": "ARROW_BOW_HOSTED" },
+    "mission_id": { "type": "string", "pattern": "^[A-Za-z0-9._-]{1,128}$" },
+    "carrier_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "event_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_name",
+        "event_action",
+        "event_node_or_delivery_id",
+        "created_at",
+        "updated_at",
+        "event_payload_sha256",
+        "event_actor",
+        "triggering_actor",
+        "workflow_ref",
+        "workflow_source_sha",
+        "run_id",
+        "run_attempt"
+      ],
+      "properties": {
+        "event_name": { "enum": ["workflow_dispatch", "issues", "issue_comment"] },
+        "event_action": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "event_node_or_delivery_id": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "event_payload_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "event_actor": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "triggering_actor": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "workflow_ref": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "workflow_source_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "run_id": { "type": "string", "pattern": "^[0-9]+$" },
+        "run_attempt": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "credential_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["credential_principal", "token_mode"],
+      "properties": {
+        "credential_principal": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "token_mode": { "const": "GITHUB_TOKEN" }
+      }
+    },
+    "replay_key": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "protected_path_classification": { "const": "ORDINARY" },
+    "stop_boundary": { "const": "DRAFT_PR_READBACK" },
+    "forbidden_actions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["direct_main", "force_push", "ready", "merge", "settings", "standing_authority", "second_writer"],
+      "properties": {
+        "direct_main": { "const": false },
+        "force_push": { "const": false },
+        "ready": { "const": false },
+        "merge": { "const": false },
+        "settings": { "const": false },
+        "standing_authority": { "const": false },
+        "second_writer": { "const": false }
+      }
+    }
+  }
+}
