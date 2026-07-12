@@ -34,6 +34,7 @@ CHECKPOINTS = [
     "MISSION_PARSE",
     "MISSION_SCHEMA",
     "MISSION_INTEGRITY",
+    "LIFECYCLE_PROFILE_VERIFY",
     "PROTECTED_ROUTE_INTENT",
     "OPERATOR_VERIFY",
     "REMOTE_LOCK",
@@ -41,6 +42,7 @@ CHECKPOINTS = [
     "FRESH_CLONE",
     "CLEAN_START",
     "SOURCE_BLOB_VERIFY",
+    "LIFECYCLE_REPLAY_VERIFY",
     "CANDIDATE_STAGE",
     "PATH_POLICY_VERIFY",
     "TREE_VERIFY",
@@ -278,6 +280,7 @@ def execute_mission(
     head = ""
     candidate_hash = ""
     commit_tree = ""
+    lifecycle_evidence: dict[str, Any] | None = None
     package_root = (package_root or mission_path.resolve().parent).resolve()
     try:
         journal.enter("ACTIVATION_GATE")
@@ -303,6 +306,20 @@ def execute_mission(
         journal.complete("MISSION_SCHEMA")
         journal.enter("MISSION_INTEGRITY")
         journal.complete("MISSION_INTEGRITY")
+
+        if mission.lifecycle_profile:
+            journal.enter("LIFECYCLE_PROFILE_VERIFY")
+            try:
+                from .lifecycle_profile import verify_lifecycle_candidate_package
+
+                lifecycle_evidence = verify_lifecycle_candidate_package(mission.lifecycle_profile, package_root)
+            except Exception as exc:
+                raise AdapterError(
+                    str(exc),
+                    str(getattr(exc, "code", "LIFECYCLE_PROFILE_REJECTED")),
+                    "LIFECYCLE_PROFILE_VERIFY",
+                ) from exc
+            journal.complete("LIFECYCLE_PROFILE_VERIFY")
 
         journal.enter("PROTECTED_ROUTE_INTENT")
         if mission.aegis_break_authority:
@@ -372,6 +389,20 @@ def execute_mission(
             if observed_blob != expected_blob:
                 raise AdapterError(f"source blob mismatch: {path}", "SOURCE_BLOB_MISMATCH", "SOURCE_BLOB_VERIFY")
         journal.complete("SOURCE_BLOB_VERIFY")
+
+        if mission.lifecycle_profile:
+            journal.enter("LIFECYCLE_REPLAY_VERIFY")
+            try:
+                from .lifecycle_profile import reject_lifecycle_replay
+
+                reject_lifecycle_replay(checkout, mission.lifecycle_profile)
+            except Exception as exc:
+                raise AdapterError(
+                    str(exc),
+                    str(getattr(exc, "code", "LIFECYCLE_PROFILE_REJECTED")),
+                    "LIFECYCLE_REPLAY_VERIFY",
+                ) from exc
+            journal.complete("LIFECYCLE_REPLAY_VERIFY")
 
         journal.enter("CANDIDATE_STAGE")
         candidate_root = root / "candidate"
@@ -515,6 +546,7 @@ def execute_mission(
                 "candidate_tree_sha256": candidate_hash,
                 "pr_readback": pr_readback,
                 "review_thread_count": review_thread_count,
+                **({"lifecycle_profile": lifecycle_evidence} if lifecycle_evidence is not None else {}),
             },
             observed_operator_login=observed_operator_login,
             activation_state=activation_state,

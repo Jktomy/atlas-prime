@@ -44,6 +44,7 @@ TOP_LEVEL_KEYS = {
     "final_pathset_sha256",
     "source_blobs",
     "operations",
+    "lifecycle_profile",
     "delete_authority_id",
     "aegis_break_authority",
     "network_allowlist",
@@ -125,6 +126,7 @@ class Mission:
     receipt_name: str
     stop_point: str
     aegis_break_authority: dict[str, Any] | None
+    lifecycle_profile: dict[str, Any] | None
 
 
 def _reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -260,7 +262,7 @@ def validate_mission(data: dict[str, Any]) -> Mission:
     unknown = set(data) - TOP_LEVEL_KEYS
     if unknown:
         raise MissionError(f"unknown mission properties rejected: {', '.join(sorted(unknown))}", "UNKNOWN_PROPERTY")
-    missing = TOP_LEVEL_KEYS - set(data) - {"delete_authority_id", "aegis_break_authority"}
+    missing = TOP_LEVEL_KEYS - set(data) - {"delete_authority_id", "aegis_break_authority", "lifecycle_profile"}
     if missing:
         raise MissionError(f"missing mission properties: {', '.join(sorted(missing))}", "MISSION_SCHEMA")
 
@@ -401,6 +403,15 @@ def validate_mission(data: dict[str, Any]) -> Mission:
     if stop_point != REQUIRED_STOP_POINT:
         raise MissionError("stop_point must be DRAFT_PR_READBACK", "STOP_POINT_REJECTED")
 
+    lifecycle_profile = None
+    if data.get("lifecycle_profile") is not None:
+        from .lifecycle_profile import LifecycleProfileError, validate_lifecycle_profile
+
+        try:
+            lifecycle_profile = validate_lifecycle_profile(data["lifecycle_profile"], data)
+        except LifecycleProfileError as exc:
+            raise MissionError(str(exc), exc.code) from exc
+
     return Mission(
         data=data,
         mission_id=_require_string(data, "mission_id"),
@@ -426,4 +437,5 @@ def validate_mission(data: dict[str, Any]) -> Mission:
         receipt_name=receipt_name,
         stop_point=stop_point,
         aegis_break_authority=aegis_break_authority,
+        lifecycle_profile=lifecycle_profile,
     )

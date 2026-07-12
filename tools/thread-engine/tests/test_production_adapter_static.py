@@ -79,6 +79,20 @@ class ProductionAdapterStaticTests(unittest.TestCase):
         self.assertNotIn("workboard_row_update_authority", schema["properties"])
         self.assertFalse(schema.get("additionalProperties", True))
 
+    def test_lifecycle_profile_is_closed_and_uses_the_protected_draft_route(self) -> None:
+        schema = json.loads((ADAPTER / "production_mission.schema.json").read_text(encoding="utf-8"))
+        self.assertEqual(
+            schema["properties"]["lifecycle_profile"]["$ref"],
+            "../../../lifecycle/schemas/lifecycle-construction-profile-v1.schema.json",
+        )
+        source = (ADAPTER / "lifecycle_profile.py").read_text(encoding="utf-8")
+        self.assertIn('"AEGIS_BREAK_THREAD_ENGINE_PROTECTED"', source)
+        self.assertIn('"DRAFT_PR_READBACK"', source)
+        self.assertNotIn("importlib", source)
+        self.assertNotIn("subprocess", source)
+        self.assertNotIn("automatic_ready\": True", source)
+        self.assertNotIn("automatic_merge\": True", source)
+
     def test_git_runner_exact_templates_deny_unsafe_routes(self) -> None:
         from production_adapter.git_runner import GitRunner, GitRunnerError
         from production_adapter.readback import REVIEW_THREAD_QUERY

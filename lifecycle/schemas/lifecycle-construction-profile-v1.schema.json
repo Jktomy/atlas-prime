@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/lifecycle-construction-profile-v1.schema.json",
+  "title": "Atlas lifecycle construction profile v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "profile_id", "event_record_id",
+    "event_class", "event_type", "event_schema_id", "event_schema_version",
+    "semantic_author", "repository_path", "allowed_paths", "candidate_root",
+    "route_authority", "target_entity_type", "target_entity_id",
+    "expected_main_sha", "expected_entity_revision",
+    "expected_quest_revision", "expected_gate_revision",
+    "expected_parent_event_id", "expected_source_fingerprint",
+    "candidate_event_digest", "candidate_manifest_digest",
+    "candidate_receipt_digest", "candidate_set_digest", "trust_root_digest",
+    "state_snapshot_digest", "trusted_acceptance_receipt_digest",
+    "protected_data_classification", "replay_key", "lineage",
+    "rollback_contract", "reversal_contract", "stop_boundary",
+    "write_boundary"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.construction-profile" },
+    "schema_version": { "const": "1.0.0" },
+    "profile_id": { "enum": ["LIFECYCLE_CHECKPOINT_V1", "LIFECYCLE_TRANSITION_V1"] },
+    "event_record_id": { "type": "string", "pattern": "^LEV-[A-Z2-7]{26}$" },
+    "event_class": { "enum": ["CHECKPOINT", "TRANSITION"] },
+    "event_type": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "event_schema_id": { "const": "atlas.lifecycle.event" },
+    "event_schema_version": { "const": "1.0.0" },
+    "semantic_author": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+    "repository_path": { "$ref": "lifecycle-event-v1.schema.json#/$defs/event_repository_path" },
+    "allowed_paths": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "lifecycle-event-v1.schema.json#/$defs/event_repository_path" }
+    },
+    "candidate_root": { "const": "payload/lifecycle-candidate" },
+    "route_authority": { "const": "AEGIS_BREAK_THREAD_ENGINE_PROTECTED" },
+    "target_entity_type": {
+      "enum": [
+        "QUEST", "CAMPAIGN", "MISSION", "GATE", "LANDMARK", "BLOCKER",
+        "FEATHER", "GOLDEN_WING", "ACCEPTANCE", "CAPABILITY", "SUNSET", "SUNRISE"
+      ]
+    },
+    "target_entity_id": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+    "expected_main_sha": { "$ref": "common-v1.schema.json#/$defs/git_sha" },
+    "expected_entity_revision": { "type": "integer", "minimum": 0 },
+    "expected_quest_revision": { "$ref": "#/$defs/nullable_revision" },
+    "expected_gate_revision": { "$ref": "#/$defs/nullable_revision" },
+    "expected_parent_event_id": { "$ref": "#/$defs/nullable_event_id" },
+    "expected_source_fingerprint": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "candidate_event_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "candidate_manifest_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "candidate_receipt_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "candidate_set_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "trust_root_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "state_snapshot_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "trusted_acceptance_receipt_digest": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "common-v1.schema.json#/$defs/fingerprint" }
+      ]
+    },
+    "protected_data_classification": {
+      "enum": ["PUBLIC", "INTERNAL_CLEAN", "PROTECTED_POINTER_ONLY"]
+    },
+    "replay_key": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "lineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "parent_event_id", "supersedes_event_id", "invalidates_event_id",
+        "reverses_event_id", "revokes_event_id", "reopens_event_id"
+      ],
+      "properties": {
+        "parent_event_id": { "$ref": "#/$defs/nullable_event_id" },
+        "supersedes_event_id": { "$ref": "#/$defs/nullable_event_id" },
+        "invalidates_event_id": { "$ref": "#/$defs/nullable_event_id" },
+        "reverses_event_id": { "$ref": "#/$defs/nullable_event_id" },
+        "revokes_event_id": { "$ref": "#/$defs/nullable_event_id" },
+        "reopens_event_id": { "$ref": "#/$defs/nullable_event_id" }
+      }
+    },
+    "rollback_contract": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "reversal_contract": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "stop_boundary": { "const": "DRAFT_PR_READBACK" },
+    "write_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "branch_scoped_only", "canonical_writes", "direct_main",
+        "automatic_ready", "automatic_merge", "standing_authority"
+      ],
+      "properties": {
+        "branch_scoped_only": { "const": true },
+        "canonical_writes": { "const": false },
+        "direct_main": { "const": false },
+        "automatic_ready": { "const": false },
+        "automatic_merge": { "const": false },
+        "standing_authority": { "const": false }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "event_class": { "const": "CHECKPOINT" } }, "required": ["event_class"] },
+      "then": {
+        "properties": {
+          "profile_id": { "const": "LIFECYCLE_CHECKPOINT_V1" },
+          "trusted_acceptance_receipt_digest": { "type": "null" }
+        }
+      },
+      "else": {
+        "properties": {
+          "profile_id": { "const": "LIFECYCLE_TRANSITION_V1" },
+          "trusted_acceptance_receipt_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "nullable_revision": {
+      "oneOf": [{ "type": "null" }, { "type": "integer", "minimum": 0 }]
+    },
+    "nullable_event_id": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^LEV-[A-Z2-7]{26}$" }
+      ]
+    }
+  }
+}

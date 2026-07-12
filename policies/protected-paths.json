@@ -11,6 +11,7 @@
     "policies/**",
     "schemas/**",
     "migration/**",
+    "lifecycle/**",
     "quest-board/**",
     "generated/**",
     "tools/thread-engine/**",

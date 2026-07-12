@@ -32,6 +32,9 @@ ENTITY_SCHEMAS = {
     "atlas.lifecycle.event-candidate-receipt": (
         "lifecycle-event-candidate-receipt-v1.schema.json", ""
     ),
+    "atlas.lifecycle.construction-profile": (
+        "lifecycle-construction-profile-v1.schema.json", ""
+    ),
     "atlas.lifecycle.website-index": ("website-index-v1.schema.json", ""),
 }
 
