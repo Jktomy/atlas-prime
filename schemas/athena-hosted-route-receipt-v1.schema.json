@@ -23,7 +23,7 @@
   ],
   "properties": {
     "schema_version": { "const": "atlas.athena.hosted-route-receipt.v1" },
-    "result": { "enum": ["SUCCESS", "REJECTED", "BLOCKED"] },
+    "result": { "enum": ["SUCCESS", "REJECTED", "BLOCKED", "PARTIAL"] },
     "route": { "enum": ["SPEAR_DIRECT", "ARROW_BOW_HOSTED", "AEGIS_BREAK_PROTECTED", "AEGIS_BREAK_TO_OATHBRINGER"] },
     "identity": {
       "type": "object",
@@ -64,7 +64,7 @@
     "replay_key": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
     "stage": { "type": "string", "minLength": 1, "maxLength": 100 },
     "error_code": { "type": ["string", "null"], "maxLength": 120 },
-    "stop_point": { "enum": ["PRE_MUTATION_REJECTION", "ROUTE_HANDOFF_REQUIRED", "DRAFT_PR_READBACK"] },
+    "stop_point": { "enum": ["PRE_MUTATION_REJECTION", "ROUTE_HANDOFF_REQUIRED", "PARTIAL_STATE_PRESERVED", "DRAFT_PR_READBACK"] },
     "mutation": {
       "type": "object",
       "additionalProperties": false,
@@ -82,8 +82,8 @@
       "additionalProperties": false,
       "required": ["pre_merge", "post_merge", "force_or_history_rewrite"],
       "properties": {
-        "pre_merge": { "enum": ["CLOSE_DRAFT_PR", "NO_MUTATION_REQUIRED"] },
-        "post_merge": { "enum": ["REVIEWED_REVERT_PR", "NO_MUTATION_REQUIRED"] },
+        "pre_merge": { "enum": ["CLOSE_DRAFT_PR", "NO_MUTATION_REQUIRED", "PRESERVE_PARTIAL_STATE_AND_REVIEW"] },
+        "post_merge": { "enum": ["REVIEWED_REVERT_PR", "NO_MUTATION_REQUIRED", "NO_MERGE_OCCURRED"] },
         "force_or_history_rewrite": { "const": false }
       }
     },
@@ -195,6 +195,32 @@
           "identity": {
             "properties": {
               "token_mode": { "const": "GITHUB_TOKEN" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "result": { "const": "PARTIAL" } },
+        "required": ["result"]
+      },
+      "then": {
+        "properties": {
+          "stop_point": { "const": "PARTIAL_STATE_PRESERVED" },
+          "error_code": { "type": "string", "minLength": 1 },
+          "compile_receipt_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "adapter_receipt_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "mutation": {
+            "properties": {
+              "occurred": { "const": true },
+              "branch": { "type": "string", "minLength": 1 }
+            }
+          },
+          "rollback": {
+            "properties": {
+              "pre_merge": { "const": "PRESERVE_PARTIAL_STATE_AND_REVIEW" },
+              "post_merge": { "const": "NO_MERGE_OCCURRED" }
             }
           }
         }

@@ -18,7 +18,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Atlas identity and canonical authority | `atlas-prime.md`, `governance/source-hierarchy.md` |
 | Safety and execution boundaries | `safety/atlas-safety-doctrine.md`, `governance/noctua.md`, `governance/atlas-aegis.md`, `governance/atlas-strikeforce.md`, `governance/protected-source-boundary.md`, `governance/cutover-boundary.md` |
 | Capability parity and acceptance | `governance/capability-parity-register.json`, `schemas/capability-parity-register.schema.json`, `governance/capability-acceptance-contract.md` |
-| Athena execution-route parity and hosted identity | `governance/athena-execution-route-contract.md`, `schemas/athena-hosted-route-request-v1.schema.json`, `schemas/athena-hosted-route-receipt-v1.schema.json` |
+| Athena execution-route parity and hosted identity | `governance/athena-execution-route-contract.md`, `schemas/athena-hosted-route-request-v1.schema.json`, `schemas/athena-hosted-route-receipt-v1.schema.json`, `tools/athena_routes/README.md` |
 | Source changes and route selection | `governance/source-lifecycle.md`, `governance/change-routes.md` |
 | Projects | `projects/project-registry.md` |
 | Operations | `operations/operation-registry.md` |

@@ -334,6 +334,32 @@ class AthenaExecutionRouteContractTests(unittest.TestCase):
         with self.assertRaises(ContractValidationError):
             validate_schema(schema, wrong_hosted_token)
 
+        partial = deepcopy(success)
+        partial.update(
+            {
+                "result": "PARTIAL",
+                "error_code": "PR_READBACK_MISMATCH",
+                "stop_point": "PARTIAL_STATE_PRESERVED",
+                "mutation": {
+                    "occurred": True,
+                    "branch": "agent/rp-c01-pilot-r01",
+                    "pull_request": None,
+                    "head_sha": "9" * 40,
+                    "draft": None,
+                },
+                "rollback": {
+                    "pre_merge": "PRESERVE_PARTIAL_STATE_AND_REVIEW",
+                    "post_merge": "NO_MERGE_OCCURRED",
+                    "force_or_history_rewrite": False,
+                },
+            }
+        )
+        validate_schema(schema, partial)
+        false_partial = deepcopy(partial)
+        false_partial["mutation"]["occurred"] = False
+        with self.assertRaises(ContractValidationError):
+            validate_schema(schema, false_partial)
+
 
 if __name__ == "__main__":
     unittest.main()
