@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:4ea5e1df653a704c2f3fbca8f333a55664c4e05fafb1549ef7aed19c049af62f
+Source fingerprint: sha256:d3623317fea9968b840e0ecdeb4cb1d058c407d79bd0393dc96ef83844220877
 Generator format: 2
 Status: Generated support artifact
 
