@@ -27,8 +27,18 @@ protected_level: "CRITICAL"
 | Lifecycle event | `lifecycle/events/` | `LEV` | append-only or explicit correction event |
 
 Only schema-valid `.json` files belong in canonical record directories.
-Filenames are the case-sensitive `record_id` plus `.json`. Test fixtures live
-only under `lifecycle/fixtures/` and declare `authority: NONCANONICAL_FIXTURE`.
+Except for lifecycle events, filenames are the case-sensitive `record_id` plus
+`.json`. A lifecycle event is the sole filename exception: its authorized route
+must declare one exact immutable repository-relative `.json` path beneath
+`lifecycle/events/` before candidate generation. The event's full canonical
+payload, including that declared path, remains in `record_id` derivation; only
+`record_id` itself is omitted. The path is storage location, never identity,
+and cannot be reused for another event. Readers, projections, relationships,
+lineage, replay protection, and supersession continue to use `record_id`.
+Candidate manifests and lifecycle receipts must independently bind both the
+permanent event ID and exact path. No other lifecycle record type receives this
+exception. Test fixtures live only under `lifecycle/fixtures/` and declare
+`authority: NONCANONICAL_FIXTURE`.
 
 ## Lifecycle rules
 

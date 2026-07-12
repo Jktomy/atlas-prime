@@ -21,6 +21,17 @@ Canonical events will live under `lifecycle/events/` only after the applicable
 apply level and authority cutover are separately accepted. G4-A contains
 harmless `NONCANONICAL_FIXTURE` events only.
 
+Lifecycle events are the sole exception to the general `<record_id>.json`
+canonical filename rule. Before candidate generation, the authorized route
+declares exactly one immutable repository-relative path beneath
+`lifecycle/events/` ending in `.json`. It must pass normalization, traversal,
+absolute-path, collision, case-fold, and protected-boundary checks. That exact
+path is part of the content-addressed payload and cannot be reused by a
+different event. Candidate manifests and receipts bind the exact path together
+with the permanent `record_id`. All readers, projections, relationships,
+lineage, replay protection, and supersession resolve identity by `record_id`,
+never by physical path. No other record type inherits this exception.
+
 The envelope carries target, Project and optional Operation, lifecycle
 position, exact state expectations, evidence, protected-data classification,
 semantic author, route authority, allowed paths, related records, replay key,

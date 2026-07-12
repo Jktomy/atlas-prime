@@ -34,9 +34,17 @@
     "allowed_paths": {
       "type": "array",
       "minItems": 1,
-      "maxItems": 64,
+      "maxItems": 1,
       "uniqueItems": true,
-      "items": { "$ref": "common-v1.schema.json#/$defs/repository_path" }
+      "items": {
+        "allOf": [
+          { "$ref": "common-v1.schema.json#/$defs/repository_path" },
+          {
+            "type": "string",
+            "pattern": "^lifecycle/events/[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?[.]json$"
+          }
+        ]
+      }
     }
   }
 }
