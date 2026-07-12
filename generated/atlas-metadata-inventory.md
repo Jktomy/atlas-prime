@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:83c0397fa2e3b8bcb3288d4c651f604a5116abe92c56131c5e93c00ce4758eea
+Source fingerprint: sha256:053466fe2a6cbc69df2ba1781f1e3af8a0f241a034d86c60635f9a706e71bad7
 Generator format: 2
 Status: Generated support artifact
 
@@ -66,6 +66,7 @@ Status: Generated support artifact
 | `templates/protocol-template.md` | Active | Template | Template for Atlas Protocol files, including purpose, trigger phrases, allowed sources, forbidden actions, outputs, verification, and maintenance fields. | Medium |
 | `templates/source-file-template.md` | Active | Template | General Atlas source-file template defining standard metadata, purpose, scope, source boundaries, routing, evidence limits, and maintenance expectations. | Medium |
 | `templates/support-file-template.md` | Active | Template | Atlas support-file template defining temporary or lower-risk support roles, parent-source routing, private boundaries, evidence boundaries, cleanup path, and maintenance expectations. | Medium |
+| `tools/athena_routes/README.md` | missing | missing | missing | missing |
 | `tools/atlas-sword/ARCHITECTURE.md` | missing | missing | missing | missing |
 | `tools/atlas-sword/README.md` | missing | missing | missing | missing |
 | `tools/atlas-sword/tests/test-contract.md` | missing | missing | missing | missing |

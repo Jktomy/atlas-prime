@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:83c0397fa2e3b8bcb3288d4c651f604a5116abe92c56131c5e93c00ce4758eea
+Source fingerprint: sha256:053466fe2a6cbc69df2ba1781f1e3af8a0f241a034d86c60635f9a706e71bad7
 Generator format: 2
 Status: Generated support artifact
 
@@ -66,6 +66,7 @@ Status: Generated support artifact
 | `templates/protocol-template.md` | templates | yes | none |
 | `templates/source-file-template.md` | templates | yes | policy-reference |
 | `templates/support-file-template.md` | templates | yes | none |
+| `tools/athena_routes/README.md` | tools | no | none |
 | `tools/atlas-sword/ARCHITECTURE.md` | tools | no | policy-reference |
 | `tools/atlas-sword/README.md` | tools | no | policy-reference |
 | `tools/atlas-sword/tests/test-contract.md` | tools | no | policy-reference |
