@@ -45,6 +45,8 @@ Machine-stable invariants:
 THREAD_ENGINE_SELF_CHANGE_ROUTE=AEGIS_BREAK_TO_OATHBRINGER
 NORMAL_STOP_BOUNDARY=DRAFT_PR_READBACK
 COMPONENT_EVIDENCE_CANNOT_ASSERT_ROUTE_GATE
+ROLLBACK_PRE_MERGE=CLOSE_DRAFT_PR
+ROLLBACK_POST_MERGE=REVIEWED_REVERT_PR
 ```
 
 ## Trusted request identity
@@ -62,6 +64,12 @@ Every hosted request validates against
   identity, and base SHA;
 - exact protected-path classification and the draft-PR stop boundary.
 
+The hosted request schema accepts only `ARROW_BOW_HOSTED`, an ephemeral
+`GITHUB_TOKEN`, and `ORDINARY` path classification. Direct Spear uses the
+existing local compiler and adapter mission contracts. Protected, generated,
+self-change, and unresolved inputs stop before an executable hosted request is
+formed and receive only a sanitized rejection or handoff receipt.
+
 The submitted request cannot select its trusted workflow SHA, credential
 principal, event actor, triggering actor, run identity, or repository owner.
 Those values come from the hosted platform and are read back independently.
@@ -74,6 +82,14 @@ authorizer, semantic operator, requesting surface, event actor, triggering
 actor, workflow identity/source SHA, credential principal, token mode, mission,
 run, and attempt. It binds the input carrier, compiler receipt, adapter receipt,
 branch, draft PR, and exact remote head when those stages exist.
+
+Receipt conditionals make the result coherent: `SUCCESS` requires compiler and
+adapter receipts plus a new branch, draft PR, and exact head at
+`DRAFT_PR_READBACK`; `REJECTED` and `BLOCKED` require no mutation, null remote
+identities, an error code, and a pre-mutation rejection or route handoff. Every
+receipt binds rollback: close the draft PR before merge, use a new reviewed
+revert PR after merge, and never force-update or rewrite history. A no-mutation
+result records that no rollback is required.
 
 The replay key is checked before write authority. Any matching current or
 historical branch, open/closed/merged PR, accepted receipt, or completed mission
@@ -120,6 +136,21 @@ hash mismatch; unsafe or duplicate paths; branch or PR collision; ambiguous
 credential principal; workflow-source drift; protected-path mismatch; generated
 mixing; private material; or any request for direct main, force push, ready,
 merge, cleanup, settings, standing authority, or a second writer.
+
+## Pre-ingress privacy boundary
+
+Only a locally pre-screened, public-clean, size-bounded carrier may cross into a
+GitHub event or workflow input. Secrets, credentials, tokens, MFA or recovery
+data, private keys, real environment values, PHI, finance/account evidence, IP
+addresses, network maps, device registers, private runtime values, and raw
+private exports must remain outside GitHub; hosted rejection is defense in
+depth, not permission to submit them.
+
+Event bodies, logs, step summaries, comments, artifacts, receipts, and failure
+diagnostics never echo carrier bytes, payload text, private-looking matches, or
+unrestricted command output. They expose only bounded identities, hashes,
+paths already classified as public-clean, stage names, and sanitized error
+codes.
 
 ## Evidence boundary
 

@@ -28,7 +28,7 @@
     "requesting_surface": { "type": "string", "minLength": 1, "maxLength": 120 },
     "repository": { "const": "Jktomy/atlas-prime" },
     "base_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
-    "route": { "enum": ["SPEAR_DIRECT", "ARROW_BOW_HOSTED"] },
+    "route": { "const": "ARROW_BOW_HOSTED" },
     "mission_id": { "type": "string", "pattern": "^[A-Za-z0-9._-]{1,128}$" },
     "carrier_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
     "event_identity": {
@@ -69,13 +69,11 @@
       "required": ["credential_principal", "token_mode"],
       "properties": {
         "credential_principal": { "type": "string", "minLength": 1, "maxLength": 120 },
-        "token_mode": { "enum": ["GITHUB_TOKEN", "USER_SESSION_TOKEN"] }
+        "token_mode": { "const": "GITHUB_TOKEN" }
       }
     },
     "replay_key": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
-    "protected_path_classification": {
-      "enum": ["ORDINARY", "PROTECTED_AEGIS_REQUIRED", "THREAD_ENGINE_SELF_CHANGE", "GENERATED_SOURCE_MIXING", "UNRESOLVED"]
-    },
+    "protected_path_classification": { "const": "ORDINARY" },
     "stop_boundary": { "const": "DRAFT_PR_READBACK" },
     "forbidden_actions": {
       "type": "object",

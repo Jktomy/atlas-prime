@@ -15,6 +15,7 @@
     "stage",
     "stop_point",
     "mutation",
+    "rollback",
     "forbidden_action_confirmation"
   ],
   "properties": {
@@ -73,6 +74,16 @@
         "draft": { "type": ["boolean", "null"] }
       }
     },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pre_merge", "post_merge", "force_or_history_rewrite"],
+      "properties": {
+        "pre_merge": { "enum": ["CLOSE_DRAFT_PR", "NO_MUTATION_REQUIRED"] },
+        "post_merge": { "enum": ["REVIEWED_REVERT_PR", "NO_MUTATION_REQUIRED"] },
+        "force_or_history_rewrite": { "const": false }
+      }
+    },
     "forbidden_action_confirmation": {
       "type": "object",
       "additionalProperties": false,
@@ -87,5 +98,89 @@
         "second_writer": { "const": false }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "result": { "const": "SUCCESS" } },
+        "required": ["result"]
+      },
+      "then": {
+        "properties": {
+          "route": { "enum": ["SPEAR_DIRECT", "ARROW_BOW_HOSTED"] },
+          "stop_point": { "const": "DRAFT_PR_READBACK" },
+          "error_code": { "type": "null" },
+          "compile_receipt_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "adapter_receipt_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "mutation": {
+            "properties": {
+              "occurred": { "const": true },
+              "branch": { "type": "string", "minLength": 1 },
+              "pull_request": { "type": "integer", "minimum": 1 },
+              "head_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+              "draft": { "const": true }
+            }
+          },
+          "rollback": {
+            "properties": {
+              "pre_merge": { "const": "CLOSE_DRAFT_PR" },
+              "post_merge": { "const": "REVIEWED_REVERT_PR" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "result": { "enum": ["REJECTED", "BLOCKED"] } },
+        "required": ["result"]
+      },
+      "then": {
+        "properties": {
+          "stop_point": { "enum": ["PRE_MUTATION_REJECTION", "ROUTE_HANDOFF_REQUIRED"] },
+          "error_code": { "type": "string", "minLength": 1 },
+          "compile_receipt_sha256": { "type": "null" },
+          "adapter_receipt_sha256": { "type": "null" },
+          "mutation": {
+            "properties": {
+              "occurred": { "const": false },
+              "branch": { "type": "null" },
+              "pull_request": { "type": "null" },
+              "head_sha": { "type": "null" },
+              "draft": { "type": "null" }
+            }
+          },
+          "rollback": {
+            "properties": {
+              "pre_merge": { "const": "NO_MUTATION_REQUIRED" },
+              "post_merge": { "const": "NO_MUTATION_REQUIRED" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "result": { "const": "BLOCKED" } },
+        "required": ["result"]
+      },
+      "then": {
+        "properties": {
+          "route": { "enum": ["AEGIS_BREAK_PROTECTED", "AEGIS_BREAK_TO_OATHBRINGER"] },
+          "stop_point": { "const": "ROUTE_HANDOFF_REQUIRED" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "result": { "const": "REJECTED" } },
+        "required": ["result"]
+      },
+      "then": {
+        "properties": {
+          "stop_point": { "const": "PRE_MUTATION_REJECTION" }
+        }
+      }
+    }
+  ]
 }
