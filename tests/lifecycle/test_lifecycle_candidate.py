@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -324,6 +325,29 @@ class LifecycleCandidateTests(unittest.TestCase):
             self.assertEqual(result["engine_class"], "SCRIPT_ASSIST_LEVEL_1B")
             self.assertEqual(result["event_id"], event["record_id"])
             self.assertTrue(output.is_dir())
+
+    @unittest.skipUnless(os.name == "nt", "Windows alias parity fixture")
+    def test_windows_case_alias_uses_filesystem_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            directory = Path(raw)
+            repo, event, event_path, trust_path, state_path = self.prepare(directory)
+            alias_parent = Path(str(directory).swapcase())
+            output = alias_parent / "case-alias-candidate"
+            result = generate_event_candidate(
+                repo,
+                event_path,
+                trust_path,
+                digest(trust_path),
+                state_path,
+                digest(state_path),
+                output,
+            )
+            self.assertEqual(result["event_id"], event["record_id"])
+            self.assertTrue(output.is_dir())
+
+        source = (ROOT / "tools/atlas_lifecycle/candidate.py").read_text(encoding="utf-8")
+        self.assertIn("os.path.samefile", source)
+        self.assertNotIn("relative_to(temporary_root)", source)
 
 
 if __name__ == "__main__":

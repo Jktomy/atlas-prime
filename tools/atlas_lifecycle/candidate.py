@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import os
 import tempfile
 from pathlib import Path
 from typing import Any
@@ -31,6 +32,36 @@ def _write_boundary() -> dict[str, Any]:
     }
 
 
+def _path_is_at_or_below(start: Path, boundary: Path, *, reject_symlinks: bool) -> bool:
+    """Compare existing path ancestry by filesystem identity, including Windows aliases."""
+    cursor = start.absolute()
+    if any(part == ".." for part in cursor.parts):
+        return False
+    for _ in range(len(cursor.parts) + 2):
+        if reject_symlinks and cursor.is_symlink():
+            raise LifecycleError("CANDIDATE_OUTPUT_SYMLINK", "candidate output ancestry contains a symlink")
+        try:
+            if os.path.samefile(cursor, boundary):
+                return True
+        except OSError as exc:
+            raise LifecycleError(
+                "CANDIDATE_OUTPUT_IDENTITY",
+                "candidate output ancestry identity is unavailable",
+            ) from exc
+        parent = cursor.parent
+        try:
+            at_root = os.path.samefile(parent, cursor)
+        except OSError as exc:
+            raise LifecycleError(
+                "CANDIDATE_OUTPUT_IDENTITY",
+                "candidate output ancestry identity is unavailable",
+            ) from exc
+        if at_root:
+            return False
+        cursor = parent
+    return False
+
+
 def _validated_output_path(repo_root: Path, output_dir: Path) -> Path:
     if not output_dir.is_absolute():
         raise LifecycleError("CANDIDATE_OUTPUT_PATH", "candidate output directory must be absolute")
@@ -40,37 +71,17 @@ def _validated_output_path(repo_root: Path, output_dir: Path) -> Path:
     if not parent.is_dir() or parent.is_symlink():
         raise LifecycleError("CANDIDATE_OUTPUT_PARENT", "candidate output parent must be a regular directory")
     temporary_root = Path(tempfile.gettempdir()).resolve()
-    try:
-        lexical_parent = parent.absolute().relative_to(temporary_root)
-    except ValueError as exc:
+    if not _path_is_at_or_below(parent, temporary_root, reject_symlinks=True):
         raise LifecycleError(
             "CANDIDATE_OUTPUT_BOUNDARY",
             "candidate output must remain beneath the system temporary directory",
-        ) from exc
-    if any(part in {"", ".", ".."} for part in lexical_parent.parts):
-        raise LifecycleError("CANDIDATE_OUTPUT_PATH", "candidate output path is not normalized")
-    lexical_cursor = temporary_root
-    for part in lexical_parent.parts:
-        lexical_cursor = lexical_cursor / part
-        if lexical_cursor.is_symlink():
-            raise LifecycleError("CANDIDATE_OUTPUT_SYMLINK", "candidate output ancestry contains a symlink")
+        )
     resolved_parent = parent.resolve()
-    try:
-        relative_parent = resolved_parent.relative_to(temporary_root)
-    except ValueError as exc:
-        raise LifecycleError(
-            "CANDIDATE_OUTPUT_BOUNDARY",
-            "candidate output must remain beneath the system temporary directory",
-        ) from exc
     resolved_output = resolved_parent / output_dir.name
     folded_name = output_dir.name.casefold()
     if any(member.name.casefold() == folded_name for member in resolved_parent.iterdir()):
         raise LifecycleError("CANDIDATE_OUTPUT_COLLISION", "candidate output name case-fold collides")
-    try:
-        resolved_output.relative_to(repo_root.resolve())
-    except ValueError:
-        pass
-    else:
+    if _path_is_at_or_below(resolved_parent, repo_root.resolve(), reject_symlinks=False):
         raise LifecycleError("CANDIDATE_REPOSITORY_WRITE", "candidate output cannot be inside the repository")
     return resolved_output
 
