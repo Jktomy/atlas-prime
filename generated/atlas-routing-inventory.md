@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:d3623317fea9968b840e0ecdeb4cb1d058c407d79bd0393dc96ef83844220877
+Source fingerprint: sha256:a4e9a71bfad5b70911994f794920080467d1a6bba09010d0be38e0d84396623f
 Generator format: 2
 Status: Generated support artifact
 
@@ -29,6 +29,7 @@ Status: Generated support artifact
 | `lifecycle/README.md` | yes |
 | `lifecycle/architecture-decision-r01.md` | no |
 | `lifecycle/architecture-decision-r02.md` | no |
+| `lifecycle/lifecycle-construction-contract.md` | no |
 | `lifecycle/lifecycle-contract.md` | yes |
 | `lifecycle/lifecycle-event-contract.md` | no |
 | `lifecycle/trust-roots/README.md` | no |
