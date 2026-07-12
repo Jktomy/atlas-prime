@@ -91,6 +91,13 @@ receipt binds rollback: close the draft PR before merge, use a new reviewed
 revert PR after merge, and never force-update or rewrite history. A no-mutation
 result records that no rollback is required.
 
+A Thread Engine `PARTIAL` result is never collapsed into success or rejection.
+The hosted receipt binds both underlying receipt hashes, the declared branch and
+any observed PR/head, the exact sanitized error code, and
+`PARTIAL_STATE_PRESERVED`. It stops all retry, preserves remote evidence, and
+requires `PRESERVE_PARTIAL_STATE_AND_REVIEW`; no automatic cleanup, force
+update, branch reuse, or blind retry is allowed.
+
 The replay key is checked before write authority. Any matching current or
 historical branch, open/closed/merged PR, accepted receipt, or completed mission
 rejects without mutation. A retry never force-updates, reuses a mutable branch,

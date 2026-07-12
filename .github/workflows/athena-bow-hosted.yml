@@ -1,0 +1,111 @@
+name: Athena hosted Bow intake
+
+on:
+  workflow_dispatch:
+    inputs:
+      arrow_b64:
+        description: Locally pre-screened public-clean immutable Arrow carrier (strict Base64, max 60 KB).
+        required: true
+        type: string
+      arrow_sha256:
+        description: Lowercase SHA-256 of the decoded Arrow carrier.
+        required: true
+        type: string
+      public_clean_confirmation:
+        description: Confirm that protected/private material was excluded before GitHub ingress.
+        required: true
+        type: choice
+        options:
+          - PUBLIC_CLEAN_CONFIRMED
+
+permissions:
+  contents: read
+
+concurrency:
+  group: athena-hosted-bow-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    name: Read-only owner, carrier, privacy, route, and replay preflight
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      GH_TOKEN: ${{ github.token }}
+      ATHENA_ARROW_B64: ${{ inputs.arrow_b64 }}
+      ATHENA_ARROW_SHA256: ${{ inputs.arrow_sha256 }}
+      ATHENA_PUBLIC_CLEAN_CONFIRMATION: ${{ inputs.public_clean_confirmation }}
+    steps:
+      - name: Check out exact workflow source
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: ${{ github.workflow_sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Validate hosted Arrow/Bow request without mutation
+        run: >-
+          python -B -m tools.athena_routes.cli
+          --preflight-only
+          --receipt-dir "$RUNNER_TEMP/athena-preflight-evidence"
+          --work-root "$RUNNER_TEMP/athena-preflight-work"
+      - name: Upload sanitized preflight evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: athena-hosted-bow-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/athena-preflight-evidence/
+          if-no-files-found: error
+          retention-days: 14
+
+  invoke:
+    name: Revalidate and invoke singular Thread Engine
+    needs: preflight
+    if: >-
+      needs.preflight.result == 'success' &&
+      github.actor == github.repository_owner &&
+      github.triggering_actor == github.repository_owner &&
+      inputs.public_clean_confirmation == 'PUBLIC_CLEAN_CONFIRMED'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+      pull-requests: write
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      GH_TOKEN: ${{ github.token }}
+      ATHENA_ARROW_B64: ${{ inputs.arrow_b64 }}
+      ATHENA_ARROW_SHA256: ${{ inputs.arrow_sha256 }}
+      ATHENA_PUBLIC_CLEAN_CONFIRMATION: ${{ inputs.public_clean_confirmation }}
+    steps:
+      - name: Check out exact workflow source
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: ${{ github.workflow_sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Configure ephemeral GitHub credential helper
+        run: gh auth setup-git
+      - name: Revalidate and invoke hosted Arrow/Bow route
+        run: >-
+          python -B -m tools.athena_routes.cli
+          --receipt-dir "$RUNNER_TEMP/athena-route-evidence"
+          --work-root "$RUNNER_TEMP/athena-route-work"
+      - name: Upload sanitized route evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: athena-hosted-bow-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/athena-route-evidence/
+          if-no-files-found: error
+          retention-days: 14

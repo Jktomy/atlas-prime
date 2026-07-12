@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 REQUIRED = (
+    ".github/workflows/athena-bow-hosted.yml",
     "README.md",
     "atlas-prime.md",
     "bootstrap.md",
@@ -76,6 +77,11 @@ REQUIRED = (
     "schemas/athena-hosted-route-request-v1.schema.json",
     "schemas/athena-hosted-route-receipt-v1.schema.json",
     "tools/thread-engine/PRIME-PORT-STATUS.json",
+    "tools/athena_routes/README.md",
+    "tools/athena_routes/__init__.py",
+    "tools/athena_routes/schema.py",
+    "tools/athena_routes/hosted.py",
+    "tools/athena_routes/cli.py",
     "tools/atlas-sword/engine/oathbringer_contract.py",
     "tools/oathbringer-foundry/foundry.py",
     "tools/oathbringer-foundry/cli.py",
