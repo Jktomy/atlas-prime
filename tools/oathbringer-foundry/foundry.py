@@ -25,6 +25,17 @@ from typing import Any, Iterable, Mapping, Sequence
 from urllib.parse import quote
 
 
+PRIME_ROOT = Path(__file__).resolve().parents[2]
+if str(PRIME_ROOT) not in sys.path:
+    sys.path.insert(0, str(PRIME_ROOT))
+
+from tools.atlas_lifecycle.candidate import verify_candidate_set
+from tools.atlas_lifecycle.errors import LifecycleError
+from tools.atlas_lifecycle.jsonio import load_bounded
+from tools.atlas_lifecycle.protection import enforce_clean_values, enforce_pointer_contract
+from tools.atlas_lifecycle.schema import SchemaValidator
+
+
 COMPILER_IDENTITY = "SWORD_FORGE_COMPILER_V1"
 FORMAT_VERSION = "1.0"
 FORGE_STANDARD = "SWORD_FORGE_STANDARD_V1"
@@ -32,6 +43,8 @@ LESSONS_SCHEMA = "prime-sword-lessons-v1"
 MAX_MEMBERS = 256
 MAX_MEMBER_BYTES = 1_048_576
 MAX_TOTAL_BYTES = 8_388_608
+MAX_JSON_DEPTH = 64
+MAX_JSON_NODES = 20_000
 ZIP_EPOCH = (1980, 1, 1, 0, 0, 0)
 REQUIRED_FORBIDDEN = {"DIRECT_MAIN", "FORCE_PUSH", "SCOPE_WIDENING", "TOKEN_PERSISTENCE"}
 SENSITIVE = re.compile(
@@ -60,13 +73,47 @@ def _pairs_no_duplicates(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     return result
 
 
+def _reject_float(value: str) -> None:
+    raise FoundryError("floating-point JSON values are forbidden")
+
+
+def _check_json_bounds(value: Any, depth: int = 0, count: list[int] | None = None) -> None:
+    if count is None:
+        count = [0]
+    count[0] += 1
+    _require(depth <= MAX_JSON_DEPTH and count[0] <= MAX_JSON_NODES, "JSON input exceeds parsing bounds")
+    if isinstance(value, dict):
+        for nested in value.values():
+            _check_json_bounds(nested, depth + 1, count)
+    elif isinstance(value, list):
+        for nested in value:
+            _check_json_bounds(nested, depth + 1, count)
+
+
+def _loads_json(data: bytes, label: str) -> dict[str, Any]:
+    _require(len(data) <= MAX_MEMBER_BYTES, f"{label} exceeds the JSON byte limit")
+    try:
+        value = json.loads(
+            data.decode("utf-8"),
+            object_pairs_hook=_pairs_no_duplicates,
+            parse_float=_reject_float,
+            parse_constant=_reject_float,
+        )
+    except FoundryError:
+        raise
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise FoundryError(f"{label} is invalid UTF-8 JSON") from exc
+    _require(isinstance(value, dict), f"{label} root must be an object")
+    _check_json_bounds(value)
+    return value
+
+
 def load_json(path: Path) -> dict[str, Any]:
     try:
-        value = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_pairs_no_duplicates)
-    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise FoundryError(f"invalid UTF-8 JSON: {path}") from exc
-    _require(isinstance(value, dict), f"JSON root must be an object: {path}")
-    return value
+        _require(path.is_file() and not path.is_symlink(), "JSON input must be a regular file")
+        return _loads_json(path.read_bytes(), path.name)
+    except OSError as exc:
+        raise FoundryError("JSON input is unavailable") from exc
 
 
 def canonical_json(value: Any) -> bytes:
@@ -188,7 +235,7 @@ def _load_lessons(source_root: Path) -> list[str]:
 
 
 def validate_mission(mission: Mapping[str, Any], source_root: Path) -> None:
-    _exact_keys(mission, {"format_version", "compiler_identity", "mode", "mission_id", "revision", "authority", "source_lock", "target_lock", "operations", "lesson_applicability", "privacy_classification", "stop_boundary", "rollback", "oathbringer_mission"}, "foundry mission")
+    _exact_keys(mission, {"format_version", "compiler_identity", "mode", "mission_id", "revision", "authority", "source_lock", "target_lock", "operations", "lesson_applicability", "privacy_classification", "stop_boundary", "rollback", "oathbringer_mission", "lifecycle_profile"}, "foundry mission")
     required = {"format_version", "compiler_identity", "mode", "mission_id", "revision", "authority", "source_lock", "target_lock", "operations", "lesson_applicability", "privacy_classification", "stop_boundary", "rollback", "oathbringer_mission"}
     _require(required <= set(mission), f"foundry mission is missing: {sorted(required - set(mission))}")
     _require(mission["format_version"] == FORMAT_VERSION, f"format_version must be {FORMAT_VERSION}")
@@ -276,6 +323,78 @@ def validate_mission(mission: Mapping[str, Any], source_root: Path) -> None:
         _require(isinstance(oathbringer, dict), f"{mode} requires an Oathbringer mission")
         _validate_oathbringer_binding(mission, oathbringer)
         _validate_embedded_runtime_mission(oathbringer)
+    if mission.get("lifecycle_profile") is not None:
+        _validate_lifecycle_binding(mission, source_root)
+
+
+def _validate_lifecycle_binding(mission: Mapping[str, Any], source_root: Path) -> None:
+    profile = mission.get("lifecycle_profile")
+    _require(isinstance(profile, dict), "lifecycle profile must be an object")
+    try:
+        SchemaValidator(PRIME_ROOT / "lifecycle/schemas").validate_lifecycle_construction_profile(profile)
+        enforce_clean_values(profile)
+    except LifecycleError as exc:
+        raise FoundryError("lifecycle profile violates the trusted contract") from exc
+    _require(mission["mode"] == "BUILD", "lifecycle carrier is BUILD-only")
+    _require(profile["expected_main_sha"] == mission["source_lock"]["expected_base"], "lifecycle profile base disagrees")
+    _require(profile["route_authority"] == "AEGIS_BREAK_THREAD_ENGINE_PROTECTED", "lifecycle route authority disagrees")
+    _require(profile["stop_boundary"] == "DRAFT_PR_READBACK", "lifecycle profile must stop at draft readback")
+    operations = mission["operations"]
+    _require(isinstance(operations, list) and len(operations) == 1, "lifecycle carrier requires one operation")
+    operation = operations[0]
+    _require(
+        operation.get("operation") == "ADD"
+        and operation.get("path") == profile["repository_path"]
+        and operation.get("payload_path") == "payload/lifecycle-candidate/event.json"
+        and operation.get("payload_sha256") == profile["candidate_event_digest"].removeprefix("sha256:"),
+        "lifecycle operation does not match its construction profile",
+    )
+
+
+def _lifecycle_materials(mission: Mapping[str, Any], input_root: Path, source_root: Path) -> tuple[dict[str, bytes], dict[str, Any] | None]:
+    profile = mission.get("lifecycle_profile")
+    if not isinstance(profile, dict):
+        return {}, None
+    candidate_root = input_root / "payload/lifecycle-candidate"
+    for path in (input_root / "payload", candidate_root):
+        _require(not path.is_symlink(), "lifecycle candidate path contains a symlink")
+    try:
+        candidate_root.resolve().relative_to(input_root.resolve())
+    except ValueError as exc:
+        raise FoundryError("lifecycle candidate path escapes the input root") from exc
+    try:
+        set_digest = verify_candidate_set(
+            candidate_root,
+            PRIME_ROOT / "lifecycle/schemas",
+            expected_event_id=profile["event_record_id"],
+            expected_repository_path=profile["repository_path"],
+            expected_trust_root_digest=profile["trust_root_digest"],
+            expected_state_digest=profile["state_snapshot_digest"],
+        )
+        event = load_bounded(candidate_root / "event.json")
+        enforce_clean_values(event)
+        enforce_pointer_contract(event)
+    except LifecycleError as exc:
+        raise FoundryError("lifecycle candidate set violates the trusted contract") from exc
+    _require(set_digest == profile["candidate_set_digest"], "lifecycle candidate-set digest mismatch")
+    materials: dict[str, bytes] = {}
+    for name, digest_field in (
+        ("candidate-manifest.json", "candidate_manifest_digest"),
+        ("candidate-receipt.json", "candidate_receipt_digest"),
+    ):
+        path = _regular_member(candidate_root, name, f"lifecycle candidate {name}")
+        data = path.read_bytes()
+        _require(f"sha256:{sha256(data)}" == profile[digest_field], f"lifecycle {name} digest mismatch")
+        materials[f"payload/lifecycle-candidate/{name}"] = data
+    evidence = {
+        "profile_digest": f"sha256:{sha256(canonical_json(profile))}",
+        "event_record_id": profile["event_record_id"],
+        "repository_path": profile["repository_path"],
+        "candidate_set_digest": set_digest,
+        "compiler_is_writer": False,
+        "github_authority": False,
+    }
+    return materials, evidence
 
 
 def _validate_embedded_runtime_mission(oathbringer: Mapping[str, Any]) -> None:
@@ -557,6 +676,9 @@ def compile_carrier(
     payloads = _read_input_payloads(mission, input_root)
     _require(not set(members) & set(payloads), "payload overlaps compiler-controlled carrier material")
     members.update(payloads)
+    lifecycle_materials, lifecycle_evidence = _lifecycle_materials(mission, input_root, source_root)
+    _require(not set(members) & set(lifecycle_materials), "lifecycle candidate overlaps carrier material")
+    members.update(lifecycle_materials)
 
     oathbringer = mission["oathbringer_mission"]
     if isinstance(oathbringer, dict):
@@ -590,6 +712,8 @@ def compile_carrier(
         "automatic_ready": False,
         "automatic_merge": False,
     }
+    if lifecycle_evidence is not None:
+        receipt["lifecycle_carrier"] = lifecycle_evidence
     members["FORGE-RECEIPT.json"] = canonical_json(receipt)
     members["README-FIRST.md"] = (
         "# Oathbringer Foundry Carrier\n\n"
@@ -647,7 +771,7 @@ def verify_carrier(carrier: Path) -> dict[str, Any]:
             total += info.file_size
         _require(total <= MAX_TOTAL_BYTES, "carrier total exceeds limit")
         _require("MANIFEST.json" in names and "SHA256SUMS.txt" in names and "FORGE-RECEIPT.json" in names, "carrier control members are missing")
-        manifest = json.loads(archive.read("MANIFEST.json").decode("utf-8"), object_pairs_hook=_pairs_no_duplicates)
+        manifest = _loads_json(archive.read("MANIFEST.json"), "carrier manifest")
         entries = manifest.get("files")
         _require(isinstance(entries, list) and entries, "carrier manifest is malformed")
         declared = {str(item.get("path")): item for item in entries if isinstance(item, dict)}
@@ -670,4 +794,53 @@ def verify_carrier(carrier: Path) -> dict[str, Any]:
             sum_paths.add(path)
             _require(path in names and sha256(archive.read(path)) == digest, f"checksum mismatch: {path}")
         _require(sum_paths == names - {"SHA256SUMS.txt"}, "checksum ledger does not cover carrier exactly")
+        foundry_mission = _loads_json(archive.read("foundry-mission.json"), "sealed Foundry mission")
+        profile_present = "lifecycle_profile" in foundry_mission
+        profile = foundry_mission.get("lifecycle_profile")
+        candidate_names = {name for name in names if name.startswith("payload/lifecycle-candidate/")}
+        if profile_present:
+            _require(isinstance(profile, dict), "sealed lifecycle profile is malformed")
+            try:
+                SchemaValidator(PRIME_ROOT / "lifecycle/schemas").validate_lifecycle_construction_profile(profile)
+                enforce_clean_values(profile)
+            except LifecycleError as exc:
+                raise FoundryError("sealed lifecycle profile violates the trusted contract") from exc
+        else:
+            _require(not candidate_names, "lifecycle candidate members require a lifecycle profile")
+        if isinstance(profile, dict):
+            expected = {
+                "payload/lifecycle-candidate/event.json",
+                "payload/lifecycle-candidate/candidate-manifest.json",
+                "payload/lifecycle-candidate/candidate-receipt.json",
+            }
+            _require(expected <= names, "lifecycle carrier candidate set is incomplete")
+            forge_receipt = _loads_json(archive.read("FORGE-RECEIPT.json"), "sealed Forge receipt")
+            lifecycle_receipt = forge_receipt.get("lifecycle_carrier")
+            _require(isinstance(lifecycle_receipt, dict), "lifecycle carrier receipt binding is missing")
+            _exact_keys(
+                lifecycle_receipt,
+                {"profile_digest", "event_record_id", "repository_path", "candidate_set_digest", "compiler_is_writer", "github_authority"},
+                "lifecycle carrier receipt",
+            )
+            _require(lifecycle_receipt.get("profile_digest") == f"sha256:{sha256(canonical_json(profile))}", "lifecycle carrier profile receipt mismatch")
+            _require(lifecycle_receipt.get("event_record_id") == profile.get("event_record_id"), "lifecycle carrier event receipt mismatch")
+            _require(lifecycle_receipt.get("repository_path") == profile.get("repository_path"), "lifecycle carrier path receipt mismatch")
+            _require(lifecycle_receipt.get("candidate_set_digest") == profile.get("candidate_set_digest"), "lifecycle carrier set receipt mismatch")
+            _require(lifecycle_receipt.get("compiler_is_writer") is False and lifecycle_receipt.get("github_authority") is False, "lifecycle carrier authority widened")
+            with tempfile.TemporaryDirectory(prefix="atlas-foundry-lifecycle-verify-") as raw:
+                candidate_root = Path(raw)
+                for name in ("event.json", "candidate-manifest.json", "candidate-receipt.json"):
+                    candidate_root.joinpath(name).write_bytes(archive.read(f"payload/lifecycle-candidate/{name}"))
+                try:
+                    set_digest = verify_candidate_set(
+                        candidate_root,
+                        PRIME_ROOT / "lifecycle/schemas",
+                        expected_event_id=profile["event_record_id"],
+                        expected_repository_path=profile["repository_path"],
+                        expected_trust_root_digest=profile["trust_root_digest"],
+                        expected_state_digest=profile["state_snapshot_digest"],
+                    )
+                except LifecycleError as exc:
+                    raise FoundryError("sealed lifecycle candidate violates the trusted contract") from exc
+                _require(set_digest == profile["candidate_set_digest"], "sealed lifecycle candidate-set digest mismatch")
     return {"carrier_sha256": sha256(carrier.read_bytes()), "member_count": len(infos), "status": "PASS"}
