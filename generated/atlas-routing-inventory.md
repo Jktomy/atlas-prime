@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:b21da8096326d651fc75bc3324fea25128292a07e88cada3852f91728ce5952b
+Source fingerprint: sha256:83c0397fa2e3b8bcb3288d4c651f604a5116abe92c56131c5e93c00ce4758eea
 Generator format: 2
 Status: Generated support artifact
 
@@ -14,6 +14,7 @@ Status: Generated support artifact
 | `atlas-prime.md` | yes |
 | `atlas-start-here.md` | yes |
 | `bootstrap.md` | yes |
+| `governance/athena-execution-route-contract.md` | yes |
 | `governance/atlas-aegis.md` | yes |
 | `governance/atlas-strikeforce.md` | yes |
 | `governance/capability-acceptance-contract.md` | yes |
