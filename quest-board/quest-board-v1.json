@@ -10,6 +10,13 @@
       "state": "COMPLETE"
     },
     {
+      "next_gate": "RP-C01-M01 Preview — Define Execution-Route Parity",
+      "owner": "Codex / Source Governance",
+      "quest_id": "QUEST-REPAIRING-PRIME-R01",
+      "source": "quests/repairing-prime.md",
+      "state": "READY_FOR_CAMPAIGN_1_PREVIEW"
+    },
+    {
       "next_gate": "FS-C01-M01 Preview \u2014 Define Investiture",
       "owner": "Codex / Source Governance",
       "quest_id": "QUEST-FOUND-SILVERLIGHT-R01",

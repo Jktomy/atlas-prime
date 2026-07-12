@@ -47,6 +47,56 @@ class PrimeProgramTests(unittest.TestCase):
         self.assertEqual(board["state"], "CANONICAL_ACTIVE")
         self.assertEqual(next(item for item in board["entries"] if item["quest_id"] == "PRIME-REBORN-QUEST-R01")["state"], "COMPLETE")
 
+    def test_repairing_prime_is_admitted_without_changing_independent_quests(self) -> None:
+        board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(board["entries"]), 5)
+        repairing_prime = [
+            item
+            for item in board["entries"]
+            if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01"
+        ]
+        self.assertEqual(
+            repairing_prime,
+            [
+                {
+                    "next_gate": "RP-C01-M01 Preview — Define Execution-Route Parity",
+                    "owner": "Codex / Source Governance",
+                    "quest_id": "QUEST-REPAIRING-PRIME-R01",
+                    "source": "quests/repairing-prime.md",
+                    "state": "READY_FOR_CAMPAIGN_1_PREVIEW",
+                }
+            ],
+        )
+        self.assertEqual(
+            {
+                item["quest_id"]: (item["source"], item["state"], item["next_gate"])
+                for item in board["entries"]
+                if item["quest_id"] != "QUEST-REPAIRING-PRIME-R01"
+            },
+            {
+                "PRIME-REBORN-QUEST-R01": (
+                    "quests/prime-reborn.md",
+                    "COMPLETE",
+                    "CLOSED",
+                ),
+                "QUEST-FOUND-SILVERLIGHT-R01": (
+                    "quests/found-silverlight.md",
+                    "READY_FOR_CAMPAIGN_1_PREVIEW",
+                    "FS-C01-M01 Preview — Define Investiture",
+                ),
+                "QUEST-PROMETHEUS-FIRE-20260701": (
+                    "quests/prometheus-fire.md",
+                    "READY_FOR_CAMPAIGN_1_PREVIEW",
+                    "PF-C01 preview and Jayson-side hardware readiness",
+                ),
+                "QUEST-NOTUMS-WATCH-20260708": (
+                    "quests/notums-watch.md",
+                    "READY_FOR_JAYSON_EXECUTION_PACKAGE",
+                    "NW-C01 readiness package and Jayson-side proof",
+                ),
+            },
+        )
+
     def test_prime_is_canonical_and_codex_is_predecessor_only(self) -> None:
         policy = json.loads((ROOT / "policies/repository-policy.json").read_text(encoding="utf-8"))
         self.assertEqual(policy["state"], "CANONICAL_ACTIVE")
@@ -63,6 +113,7 @@ class PrimeProgramTests(unittest.TestCase):
             "operations/operation-registry.md",
             "infrastructure/atlas-infrastructure-source.md",
             "recovery/phoenix-recovery.md",
+            "quests/repairing-prime.md",
             "tools/atlas-sword/engine/oathbringer_contract.py",
             "tools/build_index.py",
         )

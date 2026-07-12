@@ -64,6 +64,7 @@ REQUIRED = (
     "proof/lifecycle/g3-d-beu-reduction-pilot-r01.json",
     "proof/lifecycle/g3-d-beu-reduction-pilot-r01.md",
     "quests/prime-reborn.md",
+    "quests/repairing-prime.md",
     "quests/prometheus-fire.md",
     "quests/notums-watch.md",
     "quests/found-silverlight.md",
@@ -133,11 +134,25 @@ def main() -> int:
         raise SystemExit("Quest Board is not canonical active")
     if {entry["source"] for entry in board["entries"]} != {
         "quests/prime-reborn.md",
+        "quests/repairing-prime.md",
         "quests/prometheus-fire.md",
         "quests/notums-watch.md",
         "quests/found-silverlight.md",
     }:
         raise SystemExit("Quest Board source set is incomplete")
+    repairing_prime = [
+        entry
+        for entry in board["entries"]
+        if entry.get("quest_id") == "QUEST-REPAIRING-PRIME-R01"
+    ]
+    if len(repairing_prime) != 1 or repairing_prime[0] != {
+        "next_gate": "RP-C01-M01 Preview — Define Execution-Route Parity",
+        "owner": "Codex / Source Governance",
+        "quest_id": "QUEST-REPAIRING-PRIME-R01",
+        "source": "quests/repairing-prime.md",
+        "state": "READY_FOR_CAMPAIGN_1_PREVIEW",
+    }:
+        raise SystemExit("Repairing Prime Quest admission is not exact")
 
     port = json.loads((ROOT / "tools/thread-engine/PRIME-PORT-STATUS.json").read_text(encoding="utf-8"))
     if port["implementation_state"] != "THREAD_ENGINE_ACTIVE_MISSION_SCOPED":
