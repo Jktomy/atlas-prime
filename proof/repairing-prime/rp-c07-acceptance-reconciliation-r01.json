@@ -1,0 +1,65 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c07-acceptance-reconciliation.v1",
+  "campaign": "RP-C07",
+  "campaign_gate": "AJ_01_THROUGH_AJ_12_RECONCILED",
+  "campaign_gate_state": "ACCEPTED",
+  "journeys": {
+    "AJ-01": {"state": "UNPROVEN", "boundary": "FRESH_WORK_ATHENA_ORIGIN_RECEIPT_REQUIRED"},
+    "AJ-02": {"state": "PROVEN", "evidence": "HOSTED_IDENTITY_RECEIPT_EXACT_READBACK"},
+    "AJ-03": {"state": "UNPROVEN", "missing": ["NON_OWNER", "EDITED_INPUT", "REPLAY", "DUPLICATE_BRANCH", "DUPLICATE_PR"]},
+    "AJ-04": {"state": "PROVEN", "evidence": "proof/oathbringer-production-acceptance-r01.md"},
+    "AJ-05": {"state": "PROVEN", "evidence": "proof/oathbringer-production-acceptance-r01.md"},
+    "AJ-06": {"state": "PROVEN", "evidence": "proof/oathbringer-production-acceptance-r01.md"},
+    "AJ-07": {"state": "PROVEN", "evidence": "proof/repairing-prime/rp-c05-continuity-evidence-r01.json"},
+    "AJ-08": {"state": "PROVEN", "evidence": "proof/repairing-prime/rp-c05-continuity-evidence-r01.json"},
+    "AJ-09": {"state": "PROVEN", "evidence": "proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.json"},
+    "AJ-10": {"state": "PROVEN", "evidence": "proof/repairing-prime/rp-c05-continuity-evidence-r01.json"},
+    "AJ-11": {"state": "UNPROVEN", "boundary": "RP_C08_FINAL_MAIN_CLEAN_CLONE_REQUIRED"},
+    "AJ-12": {"state": "UNPROVEN", "boundary": "RP_C08_FINAL_MERGED_MAIN_UBUNTU_WINDOWS_REQUIRED"}
+  },
+  "hosted_identity": {
+    "workflow_run": 29218494916,
+    "workflow_attempt": 1,
+    "artifact_id": 8267408007,
+    "artifact_zip_sha256": "1dcd960646af96177d412fd5f5d159c193d477ab25074517b38b1750ca34bba3",
+    "receipt_sha256": "110622846e1d42c65801eb7547ea56d783ee275ca48a33f3194b26d6cea1020e",
+    "identity": {
+      "authorizer": "Jayson",
+      "event_actor": "Jktomy",
+      "triggering_actor": "Jktomy",
+      "workflow_ref": "Jktomy/atlas-prime/.github/workflows/athena-bow-hosted.yml@refs/heads/main",
+      "workflow_source_sha": "175c42b208e4d94b2380875541c2489443011a97",
+      "credential_principal": "GITHUB_ACTIONS_REPOSITORY_TOKEN:Jktomy/atlas-prime",
+      "token_mode": "GITHUB_TOKEN",
+      "mission_id": "RP-C01-HOSTED-BOW-PROOF-R02",
+      "run_id": "29218494916",
+      "run_attempt": 1
+    },
+    "carrier_sha256": "31a2c504e9de8bc9348e4460b1b9eec59552bdd0fa60e9898a506fb9bf4c8345",
+    "pull_request": 114,
+    "head_sha": "0b8ad61bfa6ca6986111cbcc7205f352d8077acc",
+    "exact_head_ci_run": 29218544058,
+    "detached_review": "GREEN",
+    "merge_sha": "ef1d137947227fa84e850d5d37275199bbfc5d96"
+  },
+  "partial_rejection_evidence": [
+    {"run": 29215564172, "code": "CARRIER_BASE64_REJECTED", "mutation": false},
+    {"run": 29215594376, "code": "PROTECTED_AEGIS_REQUIRED", "mutation": false},
+    {"run": 29215615801, "code": "THREAD_ENGINE_SELF_CHANGE", "mutation": false},
+    {"run": 29215638810, "code": "GENERATED_SOURCE_MIXING", "mutation": false},
+    {"run": 29215778360, "code": "BASE_STALE", "mutation": false}
+  ],
+  "historical_clean_clone": {
+    "state": "REGRESSION_EVIDENCE_NOT_FINAL_AJ11_ACCEPTANCE",
+    "release_tag": "atlas-prime-reborn-canonical-20260710",
+    "head_sha": "9d0725fa0bce9461239cab10b4608ff3831d31fa",
+    "tree_sha": "1e7e59f446c849449e6a526897844596402f26c8",
+    "tests_passed": 113,
+    "generated_status": "CURRENT",
+    "normal_codex_dependency": false,
+    "receipt_gemstone_sha256": "9dc2726e30f6b3ff8748804e991feb1441a03dcd715212d9cf391203dbfc22e7"
+  },
+  "campaign_promotion": {"RP-C07": "COMPLETE", "RP-C08": "IN_PROGRESS"},
+  "capability_promotion": "NONE",
+  "forbidden_promotions": {"RP-C01_COMPLETE": false, "QUEST_COMPLETE": false, "CAP_027_ACTIVE": false, "permanence_granted": false, "standing_authority": false}
+}

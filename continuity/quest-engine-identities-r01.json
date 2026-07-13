@@ -18,8 +18,8 @@
       {"mission_id": "RP-C06-M05", "state": "PROVEN"}, {"mission_id": "RP-C06-M06", "state": "PROVEN"},
       {"mission_id": "RP-C06-M07", "state": "PROVEN"}
     ]},
-    {"campaign_id": "RP-C07", "gate_id": "AJ_01_THROUGH_AJ_12_RECONCILED", "state": "IN_PROGRESS", "missions": []},
-    {"campaign_id": "RP-C08", "gate_id": "REPAIRING_PRIME_COMPLETE", "state": "PENDING", "missions": []}
+    {"campaign_id": "RP-C07", "gate_id": "AJ_01_THROUGH_AJ_12_RECONCILED", "state": "COMPLETE", "missions": []},
+    {"campaign_id": "RP-C08", "gate_id": "REPAIRING_PRIME_COMPLETE", "state": "IN_PROGRESS", "missions": []}
   ],
   "state_rules": {
     "allowed_campaign_transitions": ["PENDING->IN_PROGRESS", "IN_PROGRESS->BLOCKED", "BLOCKED->IN_PROGRESS", "IN_PROGRESS->COMPLETE"],

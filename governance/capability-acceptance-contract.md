@@ -55,6 +55,32 @@ PR-collision rejection in run `29226787273`, generated refresh PR `#140`, and
 separate authored acceptance transaction close M05 and RP-C06 without changing
 those boundaries.
 
+## RP-C07 controlling dispositions
+
+RP-C07 reconciles every required journey from exact evidence. The controlling
+states are:
+
+```text
+AJ-01 UNPROVEN
+AJ-02 PROVEN
+AJ-03 UNPROVEN
+AJ-04 PROVEN
+AJ-05 PROVEN
+AJ-06 PROVEN
+AJ-07 PROVEN
+AJ-08 PROVEN
+AJ-09 PROVEN
+AJ-10 PROVEN
+AJ-11 UNPROVEN
+AJ-12 UNPROVEN
+```
+
+The exact evidence and smallest missing actions are recorded in
+`proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md`. RP-C07
+completion means the matrix is truthfully reconciled; it does not make an
+unproven or blocked journey available, complete RP-C01, activate CAP-027, or
+replace the final-main AJ-11 and AJ-12 work assigned to RP-C08.
+
 ## Legacy Oathbringer capability mapping
 
 `CAP-017` preserves the identity and historical proof language of the predecessor clone-first Sword capability. Prime does not reactivate that exact substrate. The GitHub-native Oathbringer route is the accepted replacement, so `CAP-017` is `REPLACED` and `ACTIVE`.
