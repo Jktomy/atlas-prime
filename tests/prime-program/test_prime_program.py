@@ -58,7 +58,7 @@ class PrimeProgramTests(unittest.TestCase):
             repairing_prime,
             [
                 {
-                    "next_gate": "RP-C06 Preview — Deterministic Conservation and Generated Parity",
+                    "next_gate": "RP-C06-M05 — Hosted PR-collision rejection",
                     "owner": "Codex / Source Governance",
                     "quest_id": "QUEST-REPAIRING-PRIME-R01",
                     "source": "quests/repairing-prime.md",

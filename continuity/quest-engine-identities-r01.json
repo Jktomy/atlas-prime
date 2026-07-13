@@ -13,10 +13,10 @@
     {"campaign_id": "RP-C04", "gate_id": "RESONANCE_EVIDENCE_RECONCILED", "state": "COMPLETE", "missions": []},
     {"campaign_id": "RP-C05", "gate_id": "QUEST_ENGINE_AND_CONTINUITY_PROVEN", "state": "COMPLETE", "missions": []},
     {"campaign_id": "RP-C06", "gate_id": "DETERMINISTIC_CONSERVATION_AND_GENERATED_PARITY_PROVEN", "state": "IN_PROGRESS", "missions": [
-      {"mission_id": "RP-C06-M01", "state": "UNPROVEN"}, {"mission_id": "RP-C06-M02", "state": "UNPROVEN"},
-      {"mission_id": "RP-C06-M03", "state": "UNPROVEN"}, {"mission_id": "RP-C06-M04", "state": "UNPROVEN"},
-      {"mission_id": "RP-C06-M05", "state": "UNPROVEN"}, {"mission_id": "RP-C06-M06", "state": "UNPROVEN"},
-      {"mission_id": "RP-C06-M07", "state": "UNPROVEN"}
+      {"mission_id": "RP-C06-M01", "state": "PROVEN"}, {"mission_id": "RP-C06-M02", "state": "PROVEN"},
+      {"mission_id": "RP-C06-M03", "state": "PROVEN"}, {"mission_id": "RP-C06-M04", "state": "PROVEN"},
+      {"mission_id": "RP-C06-M05", "state": "PARTIAL"}, {"mission_id": "RP-C06-M06", "state": "PROVEN"},
+      {"mission_id": "RP-C06-M07", "state": "PROVEN"}
     ]},
     {"campaign_id": "RP-C07", "gate_id": "AJ_01_THROUGH_AJ_12_RECONCILED", "state": "PENDING", "missions": []},
     {"campaign_id": "RP-C08", "gate_id": "REPAIRING_PRIME_COMPLETE", "state": "PENDING", "missions": []}
