@@ -278,6 +278,7 @@ def prepare_package(
             f"- Exact base: `{register['base_sha']}`\n"
             f"- Source fingerprint: `{register['source_fingerprint']}`\n"
             f"- Workflow run: `{register['workflow_run_id']}` attempt `{register['workflow_run_attempt']}`\n"
+            f"- Replay identity: `sha256:{replay_digest}`\n"
             "- Ubuntu/Windows register parity: exact\n"
             "- Route: singular Thread Engine; draft PR readback stop\n"
             "- Quest/capability promotion: none\n"

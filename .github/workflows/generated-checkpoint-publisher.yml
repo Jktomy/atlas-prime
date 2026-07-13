@@ -26,7 +26,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: generated-checkpoint-${{ inputs.mission_id }}
+  group: generated-checkpoint-publisher-jktomy-atlas-prime
   cancel-in-progress: false
 
 jobs:

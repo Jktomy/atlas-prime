@@ -21,6 +21,7 @@ from production_adapter.authority import MissionError, load_mission
 from production_adapter.generated_checkpoint import (
     GeneratedCheckpointError,
     verify_generated_checkpoint_environment,
+    verify_generated_checkpoint_history,
     verify_generated_checkpoint_package,
 )
 from production_adapter.git_runner import Completed, GitRunnerError
@@ -322,6 +323,50 @@ class GeneratedCheckpointTests(unittest.TestCase):
             self.assertEqual(getattr(raised.exception, "code", None), "BRANCH_EXISTS")
             self.assertEqual(raised.exception.receipt["result"], "REJECTED")
             self.assertEqual(len([call for call in replay_runner.calls if call[:2] == ("git", "push")]), 0)
+
+    def test_history_rejects_open_collision_and_each_replay_axis(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="generated-checkpoint-") as raw:
+            root = Path(raw) / "repo"
+            self.make_repo(root)
+            register_path, reconciliation_path, _ = self.build_evidence(root)
+            mission = prepare_package(
+                root,
+                register_path,
+                reconciliation_path,
+                Path(raw) / "package",
+                replay_nonce=NONCE,
+                public_clean_confirmation="PUBLIC_CLEAN_CONFIRMED",
+            )
+            profile = mission["generated_checkpoint_profile"]
+            base_item = {
+                "number": 800,
+                "state": "MERGED",
+                "isDraft": False,
+                "headRefName": "generated/checkpoint-historical-000000000000",
+                "headRefOid": "c" * 40,
+                "title": "generated: deterministic checkpoint HISTORICAL-MISSION",
+                "body": "Historical checkpoint.\n",
+            }
+            open_item = dict(base_item, state="OPEN")
+            with self.assertRaises(GeneratedCheckpointError) as raised:
+                verify_generated_checkpoint_history(profile, [open_item])
+            self.assertEqual(raised.exception.code, "GENERATED_CHECKPOINT_PR_COLLISION")
+
+            mission_replay = dict(base_item, title=mission["pr_title"])
+            with self.assertRaises(GeneratedCheckpointError) as raised:
+                verify_generated_checkpoint_history(profile, [mission_replay])
+            self.assertEqual(raised.exception.code, "GENERATED_CHECKPOINT_MISSION_REPLAY")
+
+            nonce_replay = dict(
+                base_item,
+                body=f"- Replay identity: `sha256:{profile['replay_nonce_sha256']}`\n",
+            )
+            with self.assertRaises(GeneratedCheckpointError) as raised:
+                verify_generated_checkpoint_history(profile, [nonce_replay])
+            self.assertEqual(raised.exception.code, "GENERATED_CHECKPOINT_NONCE_REPLAY")
+
+            evidence = verify_generated_checkpoint_history(profile, [base_item])
+            self.assertEqual(evidence["checkpoint_entries_checked"], 1)
 
     def test_preparer_has_no_process_or_github_route(self) -> None:
         source = (ROOT / "tools" / "generated_checkpoint" / "core.py").read_text(encoding="utf-8")

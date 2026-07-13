@@ -271,6 +271,41 @@ def verify_generated_checkpoint_checkout(profile: dict[str, Any], checkout: Path
     }
 
 
+def verify_generated_checkpoint_history(profile: dict[str, Any], pull_requests: Any) -> dict[str, Any]:
+    if not isinstance(pull_requests, list) or len(pull_requests) > 1000:
+        raise GeneratedCheckpointError("generated checkpoint PR history is malformed or unbounded", "GENERATED_CHECKPOINT_HISTORY")
+    expected_title = f"generated: deterministic checkpoint {profile['mission_id']}"
+    replay_marker = f"Replay identity: `sha256:{profile['replay_nonce_sha256']}`"
+    checkpoint_count = 0
+    for item in pull_requests:
+        if not isinstance(item, dict) or set(item) != {
+            "number", "state", "isDraft", "headRefName", "headRefOid", "title", "body"
+        }:
+            raise GeneratedCheckpointError("generated checkpoint PR history entry is malformed", "GENERATED_CHECKPOINT_HISTORY")
+        head = item["headRefName"]
+        title = item["title"]
+        body = item["body"]
+        if not isinstance(head, str) or not isinstance(title, str) or not isinstance(body, str):
+            raise GeneratedCheckpointError("generated checkpoint PR history text is malformed", "GENERATED_CHECKPOINT_HISTORY")
+        is_checkpoint = head.startswith("generated/checkpoint-") or title.startswith("generated: deterministic checkpoint ")
+        if not is_checkpoint:
+            continue
+        checkpoint_count += 1
+        if item["state"] == "OPEN":
+            raise GeneratedCheckpointError("another generated checkpoint PR is already open", "GENERATED_CHECKPOINT_PR_COLLISION")
+        if title == expected_title:
+            raise GeneratedCheckpointError("generated checkpoint mission identity was already used", "GENERATED_CHECKPOINT_MISSION_REPLAY")
+        if replay_marker in body:
+            raise GeneratedCheckpointError("generated checkpoint nonce identity was already used", "GENERATED_CHECKPOINT_NONCE_REPLAY")
+    return {
+        "history_entries_checked": len(pull_requests),
+        "checkpoint_entries_checked": checkpoint_count,
+        "open_checkpoint_prs": 0,
+        "mission_identity_reused": False,
+        "nonce_identity_reused": False,
+    }
+
+
 def verify_generated_checkpoint_environment(profile: dict[str, Any], environment: Mapping[str, str] | None = None) -> dict[str, Any]:
     env = environment or os.environ
     expected = {

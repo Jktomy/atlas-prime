@@ -96,6 +96,7 @@ class ProductionAdapterStaticTests(unittest.TestCase):
         self.assertIn("windows-latest", workflow)
         self.assertIn("--generated-checkpoint-route", workflow)
         self.assertIn("github.triggering_actor == github.repository_owner", workflow)
+        self.assertIn("group: generated-checkpoint-publisher-jktomy-atlas-prime", workflow)
         self.assertIn("PRE_PUSH_REMOTE_LOCK", (ADAPTER / "adapter.py").read_text(encoding="utf-8"))
         self.assertIn("fresh_clone_reproduction", source)
 

@@ -53,6 +53,7 @@ CHECKPOINTS = [
     "COMMIT",
     "COMMIT_VERIFY",
     "PRE_PUSH_REMOTE_LOCK",
+    "PRE_PUSH_COLLISION_LOCK",
     "PUSH",
     "DRAFT_PR",
     "READBACK",
@@ -410,6 +411,27 @@ def execute_mission(
             raise AdapterError("matching mission PR readback is malformed", "PR_READBACK_INVALID", "DUPLICATE_CHECK")
         if prs:
             raise AdapterError("matching mission PR already exists", "PR_EXISTS", "DUPLICATE_CHECK")
+        if mission.generated_checkpoint_profile:
+            try:
+                from .generated_checkpoint import verify_generated_checkpoint_history
+
+                history_text = runner.run([
+                    "gh", "pr", "list", "--repo", mission.repository, "--state", "all",
+                    "--limit", "1000", "--json",
+                    "number,state,isDraft,headRefName,headRefOid,title,body",
+                ]).stdout.strip()
+                history = json.loads(history_text)
+                history_evidence = verify_generated_checkpoint_history(
+                    mission.generated_checkpoint_profile, history
+                )
+                assert generated_checkpoint_evidence is not None
+                generated_checkpoint_evidence["durable_identity_readback"] = history_evidence
+            except Exception as exc:
+                raise AdapterError(
+                    str(exc),
+                    str(getattr(exc, "code", "GENERATED_CHECKPOINT_HISTORY")),
+                    "DUPLICATE_CHECK",
+                ) from exc
         journal.complete("DUPLICATE_CHECK")
 
         journal.enter("FRESH_CLONE")
@@ -533,6 +555,31 @@ def execute_mission(
         if not remote or remote[0] != mission.base_sha:
             raise AdapterError("canonical main changed before push", "STALE_BASE", "PRE_PUSH_REMOTE_LOCK")
         journal.complete("PRE_PUSH_REMOTE_LOCK")
+
+        if mission.generated_checkpoint_profile:
+            journal.enter("PRE_PUSH_COLLISION_LOCK")
+            branch_remote = runner.run(
+                ["git", "ls-remote", mission.remote_url, f"refs/heads/{mission.branch}"]
+            ).stdout.strip()
+            if branch_remote:
+                raise AdapterError("mission branch appeared before push", "BRANCH_EXISTS", "PRE_PUSH_COLLISION_LOCK")
+            try:
+                from .generated_checkpoint import verify_generated_checkpoint_history
+
+                history_text = runner.run([
+                    "gh", "pr", "list", "--repo", mission.repository, "--state", "all",
+                    "--limit", "1000", "--json",
+                    "number,state,isDraft,headRefName,headRefOid,title,body",
+                ]).stdout.strip()
+                history = json.loads(history_text)
+                verify_generated_checkpoint_history(mission.generated_checkpoint_profile, history)
+            except Exception as exc:
+                raise AdapterError(
+                    str(exc),
+                    str(getattr(exc, "code", "GENERATED_CHECKPOINT_HISTORY")),
+                    "PRE_PUSH_COLLISION_LOCK",
+                ) from exc
+            journal.complete("PRE_PUSH_COLLISION_LOCK")
 
         journal.enter("PUSH")
         runner.run(["git", "push", "-u", "origin", mission.branch], cwd=checkout)
