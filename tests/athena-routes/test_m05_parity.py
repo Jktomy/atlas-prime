@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import json
 import unittest
+from pathlib import Path
 
 from tools.athena_routes.hosted import sha256_bytes, stable_json
 from tools.athena_routes.m05_parity import (
@@ -152,6 +153,15 @@ def records() -> tuple[dict, dict, dict, dict, dict[str, bytes]]:
 
 
 class M05ParityTests(unittest.TestCase):
+    def test_success_checkpoint_sequence_tracks_production_adapter_order(self) -> None:
+        adapter_source = (Path(__file__).resolve().parents[2] / "tools/thread-engine/production_adapter/adapter.py").read_text(encoding="utf-8")
+        positions = [adapter_source.index(f'journal.enter("{checkpoint}")') for checkpoint in SUCCESS_CHECKPOINT_SEQUENCE]
+        self.assertEqual(positions, sorted(positions))
+        self.assertEqual(
+            SUCCESS_CHECKPOINT_SEQUENCE[SUCCESS_CHECKPOINT_SEQUENCE.index("COMMIT_VERIFY") + 1],
+            "PRE_PUSH_REMOTE_LOCK",
+        )
+
     def test_exact_same_carrier_route_join_builds_closed_nonpromoting_evidence(self) -> None:
         evidence = build_m05_parity_evidence(*records())
         validate_schema(json.loads(PARITY_SCHEMA.read_text(encoding="utf-8")), evidence)

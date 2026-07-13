@@ -115,7 +115,8 @@ def success_engine(carrier_sha256: str, *, path: str = "proof/repairing-prime/ho
                     "ACTIVATION_GATE", "PACKAGE_AUDIT", "MISSION_PARSE", "MISSION_SCHEMA", "MISSION_INTEGRITY",
                     "PROTECTED_ROUTE_INTENT", "OPERATOR_VERIFY", "REMOTE_LOCK", "DUPLICATE_CHECK", "FRESH_CLONE",
                     "CLEAN_START", "SOURCE_BLOB_VERIFY", "CANDIDATE_STAGE", "PATH_POLICY_VERIFY", "TREE_VERIFY",
-                    "INSTALL", "DIFF_CHECK", "STAGE_VERIFY", "COMMIT", "COMMIT_VERIFY", "PUSH", "DRAFT_PR", "READBACK",
+                    "INSTALL", "DIFF_CHECK", "STAGE_VERIFY", "COMMIT", "COMMIT_VERIFY", "PRE_PUSH_REMOTE_LOCK",
+                    "PUSH", "DRAFT_PR", "READBACK",
                 )
             ],
             "forbidden_action_confirmation": {
