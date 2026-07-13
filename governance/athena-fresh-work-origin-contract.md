@@ -18,23 +18,40 @@ routes_to:
 
 # Athena Fresh Work Origin Bridge Contract
 
-This contract adds the missing fresh ChatGPT Work/Athena origin boundary to the
-already accepted owner-guided publisher. It does not replace the hosted Bow
-workflow, Spear compiler, singular Thread Engine, or any accepted v1 receipt.
+This contract defines the missing fresh ChatGPT Work/Athena origin boundary for
+the already accepted owner-guided route. It does not replace the hosted Bow
+workflow, Spear compiler, singular existing Thread Engine, or any accepted v1
+receipt.
 
-Construction, schemas, local tests, and a draft pull request do not prove
-`CAP-015`, `AJ-01`, `RP-C01-M02`, or the `ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN`
-gate. Those identities remain unproven until one genuinely fresh Jayson-started
-Work/Athena task completes the required live journey and a separate authored
-reconciliation accepts the evidence.
+Construction, schemas, local tests, a read-only origin plan, and a draft pull
+request do not prove `CAP-015`, `AJ-01`, `RP-C01-M02`, or the
+`ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN` gate. Those identities remain unproven
+until a genuinely fresh Jayson-started Work/Athena task completes the live
+journey and a separate reviewed authored reconciliation accepts the evidence.
 
-## Existing route remains singular
+## Construction boundary
+
+The current construction has no dispatch-capable implementation. It may:
+
+1. validate a closed public-safe origin receipt;
+2. re-hash and bind the exact carrier and guided Preview;
+3. consume an independently obtained full-binding platform readback;
+4. produce only a read-only, non-executable dispatch plan; or
+5. record the truthful `TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE` blocked state.
+
+It may not invoke guided Execute, dispatch a workflow, call the adapter, create
+or update a branch or pull request, mark ready, merge, change settings, clean
+up remote state, load a verifier dynamically, accept trust through command-line
+or environment strings, or become a second writer.
+
+The intended future route remains:
 
 ```text
 fresh Work/Athena origin receipt
-  -> trusted external origin verifier
-  -> exact existing guided Preview
-  -> exact existing guided Execute
+  -> trusted platform-origin readback
+  -> exact read-only binding plan
+  -> separately authorized protected integration
+  -> existing guided Execute
   -> existing athena-bow-hosted workflow
   -> existing Spear compiler
   -> singular existing Thread Engine
@@ -43,81 +60,84 @@ fresh Work/Athena origin receipt
   -> exact readback
 ```
 
-The bridge wraps the existing guided publisher. It contains no Git tree,
-commit, branch, push, pull-request, ready, merge, cleanup, settings, credential,
-adapter, or second-writer implementation. The hosted route remains the sole
-source of mutation and rollback truth.
+The arrow between the read-only plan and guided Execute is deliberately absent
+from this construction. Adding it requires a later protected Preview and
+separate Jayson authorization after an actual platform trust anchor exists.
 
 ## Identity separation
 
-The bridge keeps these identities distinct:
+The origin boundary keeps these identities distinct:
 
 - human authorizer: `Jayson`;
 - semantic invoker: `Athena`;
 - originating surface: `CHATGPT_WORK`;
 - privacy-safe task identity SHA-256;
 - origin nonce SHA-256;
-- GitHub actor and triggering actor from the hosted workflow;
+- canonical mission, base, carrier, Preview, and workflow-blob identities;
+- GitHub actor and triggering actor from a later hosted workflow;
 - hosted workflow source, run, and attempt;
 - ephemeral GitHub Actions credential principal;
 - singular Thread Engine identity and receipts.
 
-The existing hosted v1 receipt may retain its historical owner-guided route
-labels. The fresh Work journey receipt is a separate outer receipt that binds a
+The existing hosted v1 receipt retains its historical owner-guided labels. A
+future fresh Work journey receipt will be a separate outer receipt that binds a
 verified external origin to the exact guided Execute receipt and hosted run. It
 must never rewrite or reinterpret accepted historical evidence.
 
-## Trusted verifier gate
+## Trusted platform readback
 
-A caller-authored JSON statement, prompt, screenshot, transcript, or string that
-claims `Athena` or `ChatGPT Work` is not origin proof.
+A caller-authored JSON statement, callable, prompt, screenshot, transcript,
+repository file, command argument, or environment value that claims `Athena` or
+`ChatGPT Work` is not origin proof.
 
-Before dispatch, the bridge requires an independently trusted verifier supplied
-by the platform runtime. The verifier must affirm exactly:
+The read-only planner accepts a readback interface only as a construction seam
+for platform integration tests. Its output is always
+`READ_ONLY_CANDIDATE_NOT_EXECUTABLE`, carries
+`remote_dispatch_authority=false`, and cannot invoke the guided publisher.
+Consequently, even a false test double cannot cause a remote mutation.
 
+A real future platform integration must independently bind all of:
+
+- origin receipt SHA-256;
 - verification method;
 - verification evidence SHA-256;
 - task identity SHA-256;
-- origin nonce SHA-256.
+- origin nonce SHA-256;
+- mission identity;
+- canonical base SHA;
+- carrier SHA-256;
+- Preview SHA-256;
+- hosted workflow blob SHA.
 
-The only accepted verification methods are:
+The only contract-eligible verification methods are:
 
 ```text
 PLATFORM_SIGNED_ATTESTATION
 INDEPENDENT_PLATFORM_READBACK
 ```
 
-If no trusted verifier is available, the bridge returns
-`TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE`, records no remote dispatch, and leaves
-`CAP-015` missing. Verification failure or field drift also stops before
-dispatch. The command-line entry point deliberately supplies no verifier; a
-future platform-runtime integration must inject the trusted verifier through
-the library API rather than through caller-controlled command arguments,
-environment strings, shell commands, or repository content.
+If no trusted platform readback exists, the command-line boundary records
+`TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE`, reports no remote dispatch possibility,
+and leaves `CAP-015` missing.
 
 ## Closed origin receipt
 
 `schemas/athena-fresh-work-origin-receipt-v1.schema.json` is closed and accepts
-only public-safe hashes and bounded timestamps. It binds:
+only public-safe hashes and bounded timestamps. It binds issuer, verification
+method, authorizer, semantic invoker, originating surface, task and nonce
+hashes, mission, base, carrier, Preview, workflow blob, and verification
+evidence digest.
 
-- issuer and verification method;
-- authorizer, semantic invoker, and originating surface;
-- task identity and origin nonce hashes;
-- issued and expiry timestamps;
-- mission, canonical base, carrier, Preview, and workflow-blob identities;
-- verification-evidence digest;
-- explicit confirmation that raw task or conversation identifiers, transcript,
-  prompt, account email, credentials, paths, network values, and private data
-  are absent.
-
-The origin receipt lifetime is at most fifteen minutes. It must be canonical
-UTF-8 JSON, a regular file, size bounded, outside canonical Prime source, and
-valid at the moment of verification.
+It also requires explicit confirmation that raw task or conversation
+identifiers, transcripts, prompts, account email, credentials, local paths,
+network values, and private data are absent. The receipt lifetime is at most
+fifteen minutes. It must be canonical UTF-8 JSON, a regular file, size-bounded,
+outside canonical Prime source, and valid at the moment of readback.
 
 ## Exact binding and privacy boundary
 
-Before dispatch, the bridge independently re-hashes the local carrier and
-Preview and requires exact equality with the origin receipt for:
+Before producing a read-only plan, the construction independently re-hashes the
+carrier and Preview and requires exact equality with the origin receipt for:
 
 - Preview SHA-256;
 - carrier SHA-256;
@@ -125,57 +145,48 @@ Preview and requires exact equality with the origin receipt for:
 - canonical-main SHA;
 - hosted workflow blob SHA.
 
-Origin, Preview, carrier, guided Execute receipt, and journey receipt remain
-outside canonical Prime source. Raw task identifiers, conversations, prompts,
-transcripts, account identifiers, local paths, credentials, private runtime
-values, network values, PHI, finance/account material, and private exports never
-enter GitHub through this bridge.
+Origin, Preview, carrier, blocked journey receipt, and any future guided receipt
+remain outside canonical Prime source. Raw task identifiers, conversations,
+prompts, transcripts, account identifiers, local paths, credentials, private
+runtime values, network values, PHI, finance/account material, and private
+exports never enter GitHub through this boundary.
 
-## Durable intent and partial-state rule
+## Blocked and future journey receipts
 
-After origin verification and before invoking guided Execute, the bridge
-exclusively reserves the journey receipt and records a no-retry intent. Guided
-Execute independently retains its existing durable intent and dispatch
-readback.
-
-If dispatch is ambiguous, readback fails, or final journey publication fails:
+The current command-line surface can emit only a closed `BLOCKED` journey
+receipt with:
 
 ```text
-PARTIAL_STATE_PRESERVED
-PRESERVE_AND_REVIEW_NO_RETRY
+PRE_DISPATCH_BLOCKED
+NO_REMOTE_MUTATION
+remote_dispatch_possible=false
 ```
 
-Do not retry, reuse the origin nonce, mission, branch, pull request, carrier, or
-receipt path. Do not force-update, delete, clean up, or rewrite history. The
-preserved bridge intent and hosted-route receipt govern.
+`schemas/athena-fresh-work-journey-receipt-v1.schema.json` also reserves
+`DISPATCHED` and `PARTIAL` states for a later protected platform integration.
+Their presence in the schema is not current implementation or authority.
+Current source tests prohibit imports or calls to guided Execute and prohibit
+workflow-dispatch or repository-writer implementations.
 
-## Journey receipt
-
-`schemas/athena-fresh-work-journey-receipt-v1.schema.json` records exactly one of:
-
-- `BLOCKED` before dispatch;
-- `DISPATCHED` with exact hosted workflow run readback;
-- `PARTIAL` with preserved no-retry state.
-
-The receipt binds the external origin receipt digest, verifier evidence digest,
-task and nonce hashes, Preview, carrier, mission, base, workflow blob, guided
-Execute receipt digest, and hosted workflow run identity when known. It records
-that the bridge itself performed no Git or pull-request mutation and grants no
-standing authority.
+A future integration that can dispatch must first add durable no-retry intent,
+exact guided receipt binding, and truthful partial-state conservation through a
+separate protected transaction. Ambiguous dispatch must remain
+`PARTIAL_STATE_PRESERVED` with `PRESERVE_AND_REVIEW_NO_RETRY`.
 
 ## Construction and live acceptance boundaries
 
-This construction transaction may add the contract, schemas, bridge library,
-tests, routing, and validation only. It must not change the hosted workflow,
-Thread Engine, capability register, Repairing Prime Quest state, Quest Board,
-continuity register, generated projections, or acceptance evidence.
+This transaction may add only the contract, schemas, read-only bridge library,
+tests, routing, and documentation. It must not change the hosted workflow,
+guided publisher, Thread Engine, capability register, Repairing Prime Quest,
+Quest Board, continuity register, generated projections, or acceptance
+evidence.
 
 A later live journey must begin in a genuinely new Jayson-started Work/Athena
 task and prove:
 
 1. independently verified fresh origin;
 2. exact origin-to-carrier-to-Preview binding;
-3. one existing guided publisher dispatch;
+3. one separately authorized integration into existing guided Execute;
 4. one hosted workflow run through the singular Thread Engine;
 5. one immutable mission branch and draft pull request;
 6. exact remote path, blob, tree, base, branch, head, and draft-state readback;
