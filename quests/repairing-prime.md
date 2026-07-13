@@ -163,7 +163,10 @@ Strikeforce; Quest Board closeout; Phoenix recovery; and restart-safe Sunset.
 
 Capability reconciliation evidence:
 `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md`. The 28-record
-ledger is reconciled at 11 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED,
-1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 4 STILL_MISSING. This is a partial
-closeout boundary only: CAP-010, CAP-011, CAP-015, and CAP-027 remain missing,
-and RP-C08 stays in progress.
+ledger was initially reconciled at 11 RESTORED and 4 STILL_MISSING. A later
+fresh hosted multi-file journey and separate reconciliation at
+`proof/repairing-prime/rp-c08-cap011-reconciliation-r01.md` restore CAP-011.
+The current counts are 12 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED,
+1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 3 STILL_MISSING. This remains a partial
+closeout boundary: CAP-010, CAP-015, and CAP-027 are still missing, and RP-C08
+stays in progress.
