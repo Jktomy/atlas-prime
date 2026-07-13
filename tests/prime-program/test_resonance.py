@@ -60,12 +60,21 @@ class ResonanceContractTests(unittest.TestCase):
         reused = copy.deepcopy(self.fixture["findings"])
         reused[1]["lane_id"] = reused[0]["lane_id"]
         cases.append((reused, "LANE_REUSE_REJECTED"))
+        agent_reused = copy.deepcopy(self.fixture["findings"])
+        agent_reused[1]["agent_identity"]["agent_id"] = agent_reused[0]["agent_identity"]["agent_id"]
+        cases.append((agent_reused, "AGENT_ID_REUSE_REJECTED"))
+        warrant_reused = copy.deepcopy(self.fixture["findings"])
+        warrant_reused[1]["independence"]["warrant_id"] = warrant_reused[0]["independence"]["warrant_id"]
+        cases.append((warrant_reused, "WARRANT_ID_REUSE_REJECTED"))
         visible = copy.deepcopy(self.fixture["findings"])
         visible[0]["independence"]["prior_lane_visibility"] = True
         cases.append((visible, "FINDING_SCHEMA_INVALID"))
         local = copy.deepcopy(self.fixture["findings"])
         local[0]["agent_identity"]["stormlight"] = "LOCAL"
         cases.append((local, "LOCAL_RUNTIME_PROOF_REQUIRED"))
+        hybrid = copy.deepcopy(self.fixture["findings"])
+        hybrid[0]["agent_identity"]["stormlight"] = "HYBRID"
+        cases.append((hybrid, "LOCAL_RUNTIME_PROOF_REQUIRED"))
         evidence = copy.deepcopy(self.fixture["findings"])
         evidence[0]["evidence"][0]["sha256"] = "9" * 64
         cases.append((evidence, "FINDING_EVIDENCE_MISMATCH"))

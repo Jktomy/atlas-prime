@@ -45,7 +45,7 @@ def validate_finding(finding: dict[str, Any], *, input_sha256: str) -> None:
         raise ResonanceValidationError("FINDING_INPUT_MISMATCH")
     if finding["independence"]["prior_lane_visibility"]:
         raise ResonanceValidationError("FINDING_NOT_INDEPENDENT")
-    if finding["agent_identity"]["stormlight"] == "LOCAL":
+    if finding["agent_identity"]["stormlight"] in {"LOCAL", "HYBRID"}:
         raise ResonanceValidationError("LOCAL_RUNTIME_PROOF_REQUIRED")
     if len({item["source"] for item in finding["evidence"]}) != len(finding["evidence"]):
         raise ResonanceValidationError("FINDING_EVIDENCE_DUPLICATE")
@@ -68,10 +68,16 @@ def reconcile_findings(findings: list[dict[str, Any]], *, input_sha256: str, reg
         validate_finding(finding, input_sha256=input_sha256)
     ids = [finding["finding_id"] for finding in findings]
     lanes = [finding["lane_id"] for finding in findings]
+    agents = [finding["agent_identity"]["agent_id"] for finding in findings]
+    warrants = [finding["independence"]["warrant_id"] for finding in findings]
     if len(ids) != len(set(ids)):
         raise ResonanceValidationError("FINDING_ID_DUPLICATE")
     if len(lanes) != len(set(lanes)):
         raise ResonanceValidationError("LANE_REUSE_REJECTED")
+    if len(agents) != len(set(agents)):
+        raise ResonanceValidationError("AGENT_ID_REUSE_REJECTED")
+    if len(warrants) != len(set(warrants)):
+        raise ResonanceValidationError("WARRANT_ID_REUSE_REJECTED")
 
     grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for finding in findings:

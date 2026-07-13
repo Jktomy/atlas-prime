@@ -36,8 +36,8 @@ declared semantic claim key, and records one of:
 
 Provider count, model identity, confidence, eloquence, and majority do not
 decide truth. Conflicts are not averaged away. Missing evidence, input drift,
-lane reuse, prior-lane visibility, duplicate identity, or unproved local-model
-execution fails closed.
+lane, agent, or warrant reuse, prior-lane visibility, duplicate identity, or
+unproved LOCAL or HYBRID model execution fails closed.
 
 ## Athena Refraction
 
