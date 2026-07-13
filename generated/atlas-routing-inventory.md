@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:48f6f7e5053aad7fddf4cda3f74a24e260870f34c614d6ac85cb3d758689de8d
+Source fingerprint: sha256:2fa1716b80874d89734eb597441d0c64273c46b532b3e91707e9bf8128f6185e
 Generator format: 2
 Status: Generated support artifact
 
@@ -102,6 +102,7 @@ Status: Generated support artifact
 | `tools/atlas-sword/tests/test-contract.md` | no |
 | `tools/atlas_lifecycle/README.md` | yes |
 | `tools/generated_checkpoint/README.md` | yes |
+| `tools/investiture_accounting/README.md` | yes |
 | `tools/oathbringer-foundry/README.md` | yes |
 | `tools/prime_continuity/README.md` | yes |
 | `tools/resonance/README.md` | yes |
