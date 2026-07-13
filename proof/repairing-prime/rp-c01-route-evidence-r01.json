@@ -16,22 +16,56 @@
     "detached_review": "GREEN"
   },
   "hosted_bow": {
-    "state": "PARTIAL_PUSH_PROVEN_DRAFT_PR_SETTING_BLOCKED",
-    "workflow_run": 29215013196,
-    "workflow_source_sha": "c49b280b00233c2bbccc2f8d49e438607bcd89e9",
-    "carrier_sha256": "e71309d3ff1473bf7133b747b671351b4ddfb903fd864caf51aea02f48a3f2f1",
-    "hosted_receipt_sha256": "09d50fedaa1eb6a6fd20e35781a0dc4e1935498d6c8150050a6586146ff88ca5",
-    "sanitized_engine_evidence_sha256": "186b526c4165589efba3ad855f7cd0204f370b76a290f4586398c487ea310af8",
-    "pushed_head_sha": "d7ec2cbf414a474e8cc2faceb540856d9f0d33d0",
-    "hosted_result": "PARTIAL",
-    "hosted_error_stage": "DRAFT_PR",
-    "recovery_pull_request": 100,
-    "recovery_merge_sha": "ee87effb88ef8c1f881a5e58259155b36dacf878",
-    "repository_setting": {
-      "default_workflow_permissions": "read",
-      "can_approve_pull_request_reviews": false
+    "state": "PROVEN_MERGED_AUTHENTICATED_HOSTED_ROUTE",
+    "mission_id": "RP-C01-HOSTED-BOW-PROOF-R02",
+    "base_sha": "175c42b208e4d94b2380875541c2489443011a97",
+    "workflow_run": 29218494916,
+    "workflow_source_sha": "175c42b208e4d94b2380875541c2489443011a97",
+    "carrier_nonce": "rp-c01-hosted-bow-20260712-r02-nonce-01",
+    "carrier_sha256": "31a2c504e9de8bc9348e4460b1b9eec59552bdd0fa60e9898a506fb9bf4c8345",
+    "deterministic_branch": "source/athena-bow-d6847b1c2ee57defeed7",
+    "replay_key": "sha256:8b9282132b4cf620ea75ef8ad97b9949f18c3f5ebe9efaef48b66e652a765ad1",
+    "preflight_request_sha256": "2df18900adde8e97e84625790039036749c84093b6c8d6af8678a7377bffe90f",
+    "preflight_result_sha256": "9ae3947301acb9c1ee54cd7e5eb40dfff349f5aa741db0e31194b7d81947df09",
+    "invocation_request_sha256": "e81bf82093ace4e55e994019c808f6f4c51fc6e23d5d1d8ea35763c54e2a031c",
+    "compile_receipt_sha256": "1b2fd2589ce5d27fa44c7dea2cec5b49e38eb075fa3a64eb20dba5a7c9aa4a68",
+    "hosted_receipt_sha256": "110622846e1d42c65801eb7547ea56d783ee275ca48a33f3194b26d6cea1020e",
+    "sanitized_engine_evidence_sha256": "c62696fc308c492ff2cd84bc2bae570a572b8a6c2639e34f118fa629bb372046",
+    "hosted_result": "SUCCESS",
+    "hosted_stop_point": "DRAFT_PR_READBACK",
+    "pull_request": 114,
+    "head_sha": "0b8ad61bfa6ca6986111cbcc7205f352d8077acc",
+    "exact_head_ci_run": 29218544058,
+    "exact_head_ci": "GREEN_UBUNTU_WINDOWS",
+    "detached_review": "GREEN",
+    "merge_sha": "ef1d137947227fa84e850d5d37275199bbfc5d96",
+    "forbidden_actions": "ALL_FALSE",
+    "uploaded_artifacts": {
+      "preflight": {
+        "name": "athena-hosted-bow-preflight-29218494916-1",
+        "artifact_id": 8267405463,
+        "zip_sha256": "0e8eb79e8afe2da9288f3ed896eff25bc9cc2d33d7ee697b3655b224e3c04875",
+        "expires_at": "2026-07-27T01:58:04Z"
+      },
+      "route": {
+        "name": "athena-hosted-bow-29218494916-1",
+        "artifact_id": 8267408007,
+        "zip_sha256": "1dcd960646af96177d412fd5f5d159c193d477ab25074517b38b1750ca34bba3",
+        "expires_at": "2026-07-27T01:58:19Z"
+      }
     },
-    "smallest_external_action": "Enable the repository Actions setting that allows GitHub Actions to create pull requests, then run a new post-setting carrier with a new mission and current base."
+    "repository_setting": {
+      "default_workflow_permissions": "write",
+      "can_approve_pull_request_reviews": true
+    },
+    "prior_partial_attempt": {
+      "workflow_run": 29215013196,
+      "carrier_sha256": "e71309d3ff1473bf7133b747b671351b4ddfb903fd864caf51aea02f48a3f2f1",
+      "pushed_head_sha": "d7ec2cbf414a474e8cc2faceb540856d9f0d33d0",
+      "result": "PARTIAL_DRAFT_PR_SETTING_BLOCKED",
+      "recovery_pull_request": 100,
+      "recovery_merge_sha": "ee87effb88ef8c1f881a5e58259155b36dacf878"
+    }
   },
   "live_rejections": [
     {"run": 29215564172, "result": "REJECTED", "code": "CARRIER_BASE64_REJECTED", "mutation": false},
@@ -44,7 +78,7 @@
     "RP-C01-M01": "PROVEN_MERGED",
     "RP-C01-M02": "UNPROVEN_FRESH_ATHENA_CONTROL_NOT_OBSERVED",
     "RP-C01-M03": "PROVEN_MERGED_AUTHENTICATED_LOCAL_ROUTE",
-    "RP-C01-M04": "PARTIAL_SETTING_BLOCKED",
+    "RP-C01-M04": "PROVEN_MERGED_AUTHENTICATED_HOSTED_ROUTE",
     "RP-C01-M05": "COMPONENT_PARITY_PRESERVED_END_TO_END_NOT_PROVEN",
     "RP-C01-M06": "HANDOFF_DETECTION_PROVEN_PROTECTED_EXECUTION_NOT_RUN",
     "RP-C01-M07": "PARTIAL_REJECTION_MATRIX_PROVEN",
