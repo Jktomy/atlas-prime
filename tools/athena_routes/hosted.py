@@ -194,7 +194,7 @@ def identity_from(values: dict[str, str], mission_id: str) -> dict[str, Any]:
 
 def expected_mission_branch(mission_id: str, base_sha: str) -> str:
     material = {"repository": REPOSITORY, "mission_id": mission_id, "base_sha": base_sha}
-    return "agent/athena-bow-" + sha256_bytes(stable_json(material).encode("utf-8"))[:20]
+    return "source/athena-bow-" + sha256_bytes(stable_json(material).encode("utf-8"))[:20]
 
 
 def assert_no_replay(branch: str) -> None:
