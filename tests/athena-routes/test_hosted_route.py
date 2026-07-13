@@ -22,6 +22,7 @@ from tools.athena_routes.hosted import (  # noqa: E402
     run_hosted,
     safe_error_code,
 )
+from tools.athena_routes.cli import event_environment  # noqa: E402
 
 
 def base_environment(event_path: Path, carrier_sha256: str) -> dict[str, str]:
@@ -145,6 +146,19 @@ class HostedRouteTests(unittest.TestCase):
                 with self.assertRaises(HostedRouteError) as raised:
                     required_environment(invalid)
                 self.assertEqual(raised.exception.code, code)
+
+    def test_workflow_inputs_are_read_from_event_without_carrier_environment_echo(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            event = Path(temporary) / "event.json"
+            event.write_text(json.dumps({"inputs": {
+                "arrow_b64": "cHVibGljLWNsZWFu",
+                "arrow_sha256": "0" * 64,
+                "public_clean_confirmation": "PUBLIC_CLEAN_CONFIRMED",
+            }}), encoding="utf-8")
+            environment, encoded = event_environment({"GITHUB_EVENT_PATH": str(event)})
+        self.assertEqual(encoded, "cHVibGljLWNsZWFu")
+        self.assertNotIn("ATHENA_ARROW_B64", environment)
+        self.assertEqual(environment["ATHENA_ARROW_SHA256"], "0" * 64)
 
     def test_hash_mismatch_receipt_records_observed_not_claimed_carrier(self) -> None:
         carrier = b"observed-arrow"
@@ -494,10 +508,13 @@ class HostedRouteTests(unittest.TestCase):
         self.assertIn("contents: write", workflow)
         self.assertIn("pull-requests: write", workflow)
         self.assertIn("contents: read", workflow)
+        self.assertIn("pull-requests: read", workflow)
         self.assertIn("needs: preflight", workflow)
         self.assertIn("--preflight-only", workflow)
         self.assertIn("persist-credentials: false", workflow)
         self.assertIn("python -B -m tools.athena_routes.cli", workflow)
+        self.assertNotIn("ATHENA_ARROW_B64:", workflow)
+        self.assertNotIn("ATHENA_ARROW_SHA256:", workflow)
         self.assertNotRegex(workflow, r"uses:\s+[^\s]+@v\d")
         for forbidden in ("pull_request_target", "force-push", "git push", "gh pr create", "gh pr merge", "gh workflow run"):
             self.assertNotIn(forbidden, workflow)

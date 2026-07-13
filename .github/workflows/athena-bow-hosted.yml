@@ -32,12 +32,10 @@ jobs:
     permissions:
       actions: read
       contents: read
+      pull-requests: read
     env:
       PYTHONDONTWRITEBYTECODE: "1"
       GH_TOKEN: ${{ github.token }}
-      ATHENA_ARROW_B64: ${{ inputs.arrow_b64 }}
-      ATHENA_ARROW_SHA256: ${{ inputs.arrow_sha256 }}
-      ATHENA_PUBLIC_CLEAN_CONFIRMATION: ${{ inputs.public_clean_confirmation }}
     steps:
       - name: Check out exact workflow source
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
@@ -80,9 +78,6 @@ jobs:
     env:
       PYTHONDONTWRITEBYTECODE: "1"
       GH_TOKEN: ${{ github.token }}
-      ATHENA_ARROW_B64: ${{ inputs.arrow_b64 }}
-      ATHENA_ARROW_SHA256: ${{ inputs.arrow_sha256 }}
-      ATHENA_PUBLIC_CLEAN_CONFIRMATION: ${{ inputs.public_clean_confirmation }}
     steps:
       - name: Check out exact workflow source
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
