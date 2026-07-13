@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:5f4b120a3127c5cf395a506fdc71105ed9ca593db29feb515069e44bd50a8383
+Source fingerprint: sha256:823bc7b2f10bf8a8d90c0d049fb5c709001e17f511535447451c287aa0af79fd
 Generator format: 2
 Status: Generated support artifact
 
@@ -58,6 +58,7 @@ Status: Generated support artifact
 | `proof/prime-thread-engine-bootstrap-proof.md` | yes |
 | `proof/repairing-prime/direct-spear-pilot-r01.md` | no |
 | `proof/repairing-prime/hosted-bow-pilot-r01.md` | no |
+| `proof/repairing-prime/hosted-bow-proof-r02.md` | no |
 | `proof/repairing-prime/rp-c01-route-evidence-r01.md` | no |
 | `quests/found-silverlight.md` | yes |
 | `quests/notums-watch.md` | yes |
