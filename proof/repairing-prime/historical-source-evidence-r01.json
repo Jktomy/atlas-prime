@@ -5,6 +5,16 @@
       "source": "quests/repairing-prime.md",
       "sha256": "318d611ef8979cb6d9f029c57c45fb2ad89eb95de6c25028951ab491e296c42e",
       "snapshot": "quests-repairing-prime-318d611e.source"
+    },
+    {
+      "source": "governance/change-routes.md",
+      "sha256": "196e6b664d1b871f4c6b9146e5347d55eef5768920efd4e1a42013556263812b",
+      "snapshot": "governance-change-routes-196e6b66.source"
+    },
+    {
+      "source": "operations/protocol-library.md",
+      "sha256": "2caa88be9f314fb9c36973cea789497c7b5cce06ed97b2743e6db589bd5257ac",
+      "snapshot": "operations-protocol-library-2caa88be.source"
     }
   ]
 }

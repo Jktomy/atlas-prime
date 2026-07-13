@@ -25,7 +25,7 @@ protected_level: "HIGH"
 - **Aegis Break** selects or constructs a safe equivalent route when the normal route is obstructed; it is not hardwired to Phoenix Blade and is not a general bypass.
 - **Shardplate** is an AI-assisted work surface, never a mutation route.
 - **Fresh Clone First** is one repository substrate. Exact GitHub-native blob/tree/commit construction is an equivalent substrate when it preserves the same locks, candidate proof, draft-PR boundary, and readback.
-- **Spirallight**, **Chromelight**, and **Emberlight** identify trusted reported OpenAI, Google, and Atlas-controlled local-model tokens respectively under `governance/investiture-source-identity-contract.md`. They are accounting identities, never an operator, work surface, route, launcher, runtime, credential principal, engine, or permanence authority.
+- **Stormlight** identifies the source of AI/model processing: CLOUD, LOCAL, HYBRID, or NONE. It is not an operator, launcher, execution environment, credential principal, or engine.
 - **Phoenix Burn/Reborn** governs controlled removal, clean reconstruction, restore proof, and rollback.
 - **Sunrise/Sunset** governs activation and retirement with durable routing and lineage.
 - **Feather** is an immutable checkpoint with a stable permanent identity; archival and supersession preserve readback and do not create competing Quest authority.

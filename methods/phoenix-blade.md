@@ -21,8 +21,8 @@ Aegis Break selects or constructs a safe equivalent route when the normal route 
 
 Shardplate is the AI-assisted work surface. ChatGPT Work / Codex may be Shardplate, but Shardplate is never the mutation route or source of permanence authority.
 
-Stormlight identifies the source of AI/model processing: CLOUD, LOCAL, HYBRID, or NONE. Stormlight does not identify an operator, credential principal, launcher, repository substrate, or engine.
+Model provider, model, runtime, and Atlas runtime-control status are bound independently. Trusted reported OpenAI, Google, or Atlas-controlled local-model tokens map only to Spirallight, Chromelight, or Emberlight under `governance/investiture-source-identity-contract.md`. Unreported model use is `UNAVAILABLE`; deterministic non-model work has no Light and zero BEU. A Light does not identify an operator, work surface, credential principal, launcher, repository substrate, engine, route, or permanence authority.
 
 Fresh Clone First is one repository substrate available to stateful routes. An exact GitHub-native tree transaction is an equivalent construction substrate when it preserves the same source locks, payload identity, candidate-tree proof, draft-PR containment, and readback.
 
-For every invocation, bind the authorizer, operator, delivery route, launcher, repository engine, repository substrate, work surface, Stormlight source, exact source, allowed operations, stop boundary, proof, and rollback independently.
+For every invocation, bind the authorizer, operator, provider, model, runtime control, delivery route, launcher, repository engine, repository substrate, work surface, accounting Light or no-Light status, exact source, allowed operations, stop boundary, proof, and rollback independently.
