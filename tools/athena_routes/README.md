@@ -73,6 +73,43 @@ Execute journey, hosted receipt, exact draft-PR readback, exact-head CI,
 detached review, merge, and canonical readback are accepted separately. It does
 not prove fresh Work/Athena origin or CAP-015.
 
+## Fresh Work/Athena origin construction
+
+The canonical construction surface is
+`governance/athena-fresh-work-origin-contract.md`, implemented by
+`tools.athena_routes.fresh_work_bridge` and bounded by
+`schemas/athena-fresh-work-origin-receipt-v1.schema.json` plus
+`schemas/athena-fresh-work-journey-receipt-v1.schema.json`.
+
+The bridge is currently read-only. It validates one canonical, short-lived,
+public-safe origin receipt, re-hashes the exact carrier and Preview, and can
+compare them with a full-binding platform readback supplied through a library
+seam.
+
+It contains no import or call to the guided publisher, no workflow-dispatch
+implementation, and no Git, branch, pull-request, adapter, ready, merge,
+cleanup, settings, credential, or second-writer path. Even an untrusted test
+callback can produce only `READ_ONLY_CANDIDATE_NOT_EXECUTABLE` with
+`remote_dispatch_authority=false` and `guided_execute_invoked=false`.
+
+The command-line entry point never accepts a verifier. It records only the
+truthful `TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE` blocked journey receipt with no
+remote dispatch possibility. Caller-authored JSON, prompt text, screenshots,
+transcripts, command arguments, environment strings, repository files, or
+arbitrary callables cannot activate CAP-015.
+
+A later protected transaction may wire an independently trusted platform
+readback to the existing guided Execute route only after a real ChatGPT Work
+trust anchor exists and Jayson approves that integration. That later transaction
+must add durable no-retry intent and truthful partial-state conservation before
+any dispatch is possible.
+
+Construction, schemas, tests, and read-only plans do not prove CAP-015, AJ-01,
+RP-C01-M02, or the RP-C01 gate. Acceptance still requires a genuinely fresh
+Jayson-started Work/Athena task, one live hosted journey through the singular
+Thread Engine, exact draft-PR and blob readback, exact-head Ubuntu and Windows
+validation, detached review, and separate authored reconciliation.
+
 ## RP-C01-M05 parity join
 
 Preview retains the exact Spear compile receipt and every compiled file digest,
