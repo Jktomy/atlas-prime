@@ -10,6 +10,8 @@ from oathbringer_api import GitHubClient
 from oathbringer_console import OathbringerConsole, render_result_text
 from oathbringer_deflected import create as create_deflected_sword
 from oathbringer_deflected import resolve_path as resolve_deflected_sword_path
+from oathbringer_deflected import sanitize_evidence
+from oathbringer_deflected import verify as verify_deflected_sword
 from oathbringer_core import (
     CHANGE_METHOD,
     EXECUTION_ENVIRONMENT,
@@ -38,7 +40,7 @@ def build_receipt(
     detail: str | None,
     exit_code: int,
 ) -> dict[str, Any]:
-    return {
+    receipt = {
         "receipt_version": "2.0",
         "format_version": FORMAT_VERSION,
         "change_method": CHANGE_METHOD,
@@ -58,7 +60,7 @@ def build_receipt(
         "remote_state": context.remote_state,
         "stage_ledger": context.ledger.as_dict(),
         "completion_flags": {
-            "receipt_written": True,
+            "receipt_written": False,
             "github_called": context.github_called,
             "mutation_performed": context.mutation_performed,
             "automatic_retry": False,
@@ -66,6 +68,7 @@ def build_receipt(
             "token_persisted": False,
         },
     }
+    return sanitize_evidence(receipt)
 
 
 def _default_receipt_path(mission_path: Path) -> Path:
@@ -75,6 +78,35 @@ def _default_receipt_path(mission_path: Path) -> Path:
 def _optional_environment_path(name: str) -> Path | None:
     value = os.environ.get(name, "").strip()
     return Path(value).expanduser().resolve() if value else None
+
+
+def _sanitize_receipt_in_place(receipt: dict[str, Any]) -> None:
+    sanitized = sanitize_evidence(receipt)
+    receipt.clear()
+    receipt.update(sanitized)
+
+
+def _record_artifact_failure(receipt: dict[str, Any], error_code: str) -> None:
+    failures = receipt.setdefault("artifact_failures", [])
+    if isinstance(failures, list) and error_code not in {item.get("error_code") for item in failures if isinstance(item, dict)}:
+        failures.append({"error_code": error_code})
+
+
+def _try_write_receipt(receipt_path: Path, receipt: dict[str, Any]) -> bool:
+    flags = receipt.setdefault("completion_flags", {})
+    if isinstance(flags, dict):
+        flags["receipt_written"] = True
+    _sanitize_receipt_in_place(receipt)
+    try:
+        atomic_write_json_with_sha256(receipt_path, receipt)
+        return True
+    except Exception:
+        current_flags = receipt.setdefault("completion_flags", {})
+        if isinstance(current_flags, dict):
+            current_flags["receipt_written"] = False
+        _record_artifact_failure(receipt, "RECEIPT_WRITE_FAILED")
+        _sanitize_receipt_in_place(receipt)
+        return False
 
 
 def _write_failure_artifacts(
@@ -89,12 +121,21 @@ def _write_failure_artifacts(
     json_mode: bool,
 ) -> Path | None:
     explicit = os.environ.get("OATHBRINGER_DEFLECTED_SWORD_PATH", "").strip() or None
-    destination = resolve_deflected_sword_path(mission, receipt_path, explicit)
-    receipt["deflected_sword_path"] = str(destination)
-    atomic_write_json_with_sha256(receipt_path, receipt)
+    try:
+        destination = resolve_deflected_sword_path(mission, receipt_path, explicit)
+    except Exception:
+        receipt["deflected_sword"] = {"created": False, "error_code": "DEFLECTED_SWORD_PATH_FAILED"}
+        _record_artifact_failure(receipt, "DEFLECTED_SWORD_PATH_FAILED")
+        _try_write_receipt(receipt_path, receipt)
+        return None
+    receipt["deflected_sword_path"] = sanitize_evidence(str(destination))
+    _try_write_receipt(receipt_path, receipt)
 
     if not json_mode and console is not None:
-        console.render_failure(receipt, interrupted=interrupted)
+        try:
+            console.render_failure(receipt, interrupted=interrupted)
+        except Exception:
+            _record_artifact_failure(receipt, "CONSOLE_RENDER_FAILED")
 
     try:
         deflected = create_deflected_sword(
@@ -106,13 +147,28 @@ def _write_failure_artifacts(
             mission=mission,
             receipt=receipt,
         )
-    except Exception as exc:
+        verification = verify_deflected_sword(deflected)
+        receipt["deflected_sword"] = {
+            "created": True,
+            "archive_path": sanitize_evidence(verification["archive_path"]),
+            "archive_sha256": verification["archive_sha256"],
+            "sidecar_path": sanitize_evidence(verification["sidecar_path"]),
+            "member_count": verification["member_count"],
+        }
+        _try_write_receipt(receipt_path, receipt)
+    except Exception:
+        receipt["deflected_sword"] = {
+            "created": False,
+            "error_code": "DEFLECTED_SWORD_CREATE_FAILED",
+        }
+        _record_artifact_failure(receipt, "DEFLECTED_SWORD_CREATE_FAILED")
+        _try_write_receipt(receipt_path, receipt)
         if not json_mode:
-            print(f"\nDeflected Sword creation failed safely: {exc}", flush=True)
+            print("\nDeflected Sword creation failed safely.", flush=True)
         return None
 
     if not json_mode:
-        print(f"\nDeflected Sword: {deflected}", flush=True)
+        print(f"\nDeflected Sword: {sanitize_evidence(str(deflected))}", flush=True)
     return deflected
 
 
@@ -168,6 +224,7 @@ def main() -> int:
             detail=None,
             exit_code=0,
         )
+        receipt["completion_flags"]["receipt_written"] = True
         result["receipt_write"] = atomic_write_json_with_sha256(receipt_path, receipt)
         if args.json:
             print(json.dumps(result, indent=2, sort_keys=True))

@@ -101,8 +101,18 @@ def main() -> int:
             args.json,
         )
         return 0
-    except FoundryError as exc:
-        print(f"Foundry rejected: {exc}", file=sys.stderr)
+    except Exception as exc:
+        if getattr(args, "json", False):
+            _result(
+                {
+                    "error_code": "FOUNDRY_REJECTED",
+                    "result": "REJECTED",
+                },
+                True,
+            )
+        else:
+            detail = str(exc) if isinstance(exc, FoundryError) else "carrier input could not be safely processed"
+            print(f"Foundry rejected: {detail}", file=sys.stderr)
         return 1
 
 
