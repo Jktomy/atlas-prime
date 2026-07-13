@@ -1,6 +1,6 @@
 # Atlas Orphan Candidate Report
 
-Source fingerprint: sha256:2c30367ef214524759183feee28744040adad4a9f8b83292ab2caafeff437fe5
+Source fingerprint: sha256:948364b9a98ca80995d50e06015ed4ba518061d8a4697811887ec96c7e3d6c0e
 Generator format: 2
 Status: Generated support artifact
 
@@ -12,7 +12,6 @@ An orphan candidate is not deletion approval. Review routing, support-file statu
 
 | Path | Reason |
 |---|---|
-| `governance/quest-engine-continuity-contract.md` | active metadata-bearing file not found in routing surfaces |
 | `lifecycle/architecture-decision-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `lifecycle/architecture-decision-r02.md` | active metadata-bearing file not found in routing surfaces |
 | `lifecycle/lifecycle-construction-contract.md` | active metadata-bearing file not found in routing surfaces |
@@ -21,4 +20,5 @@ An orphan candidate is not deletion approval. Review routing, support-file statu
 | `proof/lifecycle/g3-d-beu-reduction-pilot-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `proof/oathbringer-production-acceptance-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `proof/repairing-prime/rp-c01-route-evidence-r01.md` | active metadata-bearing file not found in routing surfaces |
+| `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `routing/interaction-contract.md` | active metadata-bearing file not found in routing surfaces |
