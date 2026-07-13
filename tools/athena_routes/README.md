@@ -75,10 +75,16 @@ not prove fresh Work/Athena origin or CAP-015.
 
 ## Fresh Work/Athena origin construction
 
-`tools.athena_routes.fresh_work_bridge` is currently a read-only construction
-boundary. It validates one canonical, short-lived, public-safe origin receipt,
-re-hashes the exact carrier and Preview, and can compare them with a full-binding
-platform readback supplied through a library seam.
+The canonical construction surface is
+`governance/athena-fresh-work-origin-contract.md`, implemented by
+`tools.athena_routes.fresh_work_bridge` and bounded by
+`schemas/athena-fresh-work-origin-receipt-v1.schema.json` plus
+`schemas/athena-fresh-work-journey-receipt-v1.schema.json`.
+
+The bridge is currently read-only. It validates one canonical, short-lived,
+public-safe origin receipt, re-hashes the exact carrier and Preview, and can
+compare them with a full-binding platform readback supplied through a library
+seam.
 
 It contains no import or call to the guided publisher, no workflow-dispatch
 implementation, and no Git, branch, pull-request, adapter, ready, merge,
