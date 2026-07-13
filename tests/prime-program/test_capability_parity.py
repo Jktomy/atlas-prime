@@ -76,22 +76,25 @@ class CapabilityParityTests(unittest.TestCase):
     def test_control_plane_does_not_claim_unproven_activation(self) -> None:
         records = {record["id"]: record for record in self.register["capabilities"]}
         for capability_id in (
-            "CAP-002",
-            "CAP-003",
-            "CAP-004",
-            "CAP-005",
-            "CAP-006",
-            "CAP-008",
-            "CAP-009",
             "CAP-010",
             "CAP-011",
             "CAP-015",
-            "CAP-022",
-            "CAP-023",
             "CAP-027",
         ):
             self.assertEqual(records[capability_id]["capability_disposition"], "STILL_MISSING")
             self.assertEqual(records[capability_id]["activation_state"], "MISSING")
+
+    def test_deferred_rp_c05_and_hosted_intake_capabilities_are_restored(self) -> None:
+        records = {record["id"]: record for record in self.register["capabilities"]}
+        newly_restored = {
+            "CAP-002", "CAP-003", "CAP-004", "CAP-005", "CAP-006",
+            "CAP-008", "CAP-009", "CAP-022", "CAP-023",
+        }
+        for capability_id in newly_restored:
+            self.assertEqual(records[capability_id]["capability_disposition"], "RESTORED")
+            self.assertEqual(records[capability_id]["activation_state"], "ACTIVE")
+        self.assertIn("fresh Work/Athena origin remains separately missing", records["CAP-009"]["current_state"])
+        self.assertIn("at least two authored paths", records["CAP-011"]["required_proof"])
 
     def test_generated_parity_and_publisher_are_restored_by_aj09(self) -> None:
         records = {record["id"]: record for record in self.register["capabilities"]}

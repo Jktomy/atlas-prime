@@ -24,11 +24,11 @@
   "capability_disposition_counts": {
     "PRESERVED": 4,
     "IMPROVED": 7,
-    "RESTORED": 2,
+    "RESTORED": 11,
     "REPLACED": 1,
     "INTENTIONALLY_RETIRED": 1,
     "BLOCKED": 0,
-    "STILL_MISSING": 13
+    "STILL_MISSING": 4
   },
   "capabilities": [
     {
@@ -47,61 +47,61 @@
       "id": "CAP-002",
       "domain": "Startup",
       "capability": "Deterministic startup/read order",
-      "audit_status": "PRESERVED_BUT_NARROWER",
-      "audit_severity": "YELLOW",
+      "audit_status": "RESTORED_FRESH_CONTEXT_PROVEN",
+      "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "Prime has deterministic startup source but lacks continuity, closeout, and reachability checks.",
-      "required_proof": "Fresh-context restart journey with durable next-gate reconstruction."
+      "capability_disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "current_state": "Prime startup validates canonical Quest and continuity source, and accepted AJ-10 reconstructs the exact next gate from a fresh clone without chat memory.",
+      "required_proof": "Accepted RP-C05 command/startup transaction and AJ-10 fresh-context reconstruction in proof/repairing-prime/rp-c05-continuity-evidence-r01.md."
     },
     {
       "id": "CAP-003",
       "domain": "Command surface",
       "capability": "Full conversational routing doctrine",
-      "audit_status": "DEGRADED",
-      "audit_severity": "RED",
+      "audit_status": "RESTORED_CANONICAL_ROUTE_SURFACE",
+      "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "Prime exposes a compact route table but not the complete interaction contract.",
-      "required_proof": "Route-line, Preview to Execute, method-reporting, and decision-gate acceptance tests."
+      "capability_disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "current_state": "Prime exposes the canonical source order, route table, automatic method routing, Preview-to-Execute boundary, decision box, stop conditions, rollback, and next-action contract.",
+      "required_proof": "Accepted RP-C05 command/startup transaction, routing/command-surfaces.md, and exact-head command-surface tests."
     },
     {
       "id": "CAP-004",
       "domain": "Command surface",
       "capability": "Operational dashboard / Emberline",
-      "audit_status": "MISSING_ACTIVE_SUCCESSOR",
-      "audit_severity": "RED",
+      "audit_status": "RESTORED_DETERMINISTIC_EMBERLINE",
+      "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "No Prime-native continuity-backed Emberline projection exists.",
-      "required_proof": "Deterministic non-authoritative projection from Quest and continuity source."
+      "capability_disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "current_state": "Prime renders a deterministic non-authoritative Emberline from canonical continuity source; generated and projected output never governs.",
+      "required_proof": "Accepted RP-C05 deterministic Emberline evidence in proof/repairing-prime/rp-c05-continuity-evidence-r01.json."
     },
     {
       "id": "CAP-005",
       "domain": "Continuity",
       "capability": "Atlas-wide unfinished-work register",
-      "audit_status": "FUNCTIONALLY_LOST",
-      "audit_severity": "CRITICAL",
+      "audit_status": "RESTORED_CANONICAL_CONTINUITY",
+      "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "Quest Board is canonical but does not carry operational unfinished-work detail.",
-      "required_proof": "Prime continuity schema, canonical register, and restart readback."
+      "capability_disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "current_state": "Prime has a schema-validated canonical continuity register covering every active Quest with exact source digests, blockers, next action, and approval boundary.",
+      "required_proof": "Accepted RP-C05 continuity foundation and restart readback in proof/repairing-prime/rp-c05-continuity-evidence-r01.md."
     },
     {
       "id": "CAP-006",
       "domain": "Continuity",
       "capability": "Routine bounded continuity-row updates",
-      "audit_status": "INTENTIONALLY_REMOVED_WITHOUT_EQUIVALENT",
-      "audit_severity": "CRITICAL",
+      "audit_status": "RESTORED_ONE_ENTRY_UPDATE_PROVEN",
+      "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "Prime has no one-entry continuity update route.",
-      "required_proof": "Exactly one entry changes through a bounded draft-PR transaction."
+      "capability_disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "current_state": "Prime plans stale-bound, replay-ledger-bound one-entry continuity updates; accepted AJ-07 changed exactly one canonical entry through a reviewed draft PR.",
+      "required_proof": "AJ-07 transaction #120 and accepted RP-C05 evidence in proof/repairing-prime/rp-c05-continuity-evidence-r01.json."
     },
     {
       "id": "CAP-007",
@@ -119,25 +119,25 @@
       "id": "CAP-008",
       "domain": "Quest operations",
       "capability": "Routine Quest admission/update without validator code edits",
-      "audit_status": "BRITTLE",
-      "audit_severity": "RED",
+      "audit_status": "RESTORED_SCHEMA_DRIVEN_ADMISSION_PROVEN",
+      "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "Prime validation hard-codes the current four Quest source paths.",
-      "required_proof": "Schema-driven valid admission with unchanged validator code."
+      "capability_disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "current_state": "Prime admits a later valid Quest through schema and registry rules without changing validator or continuity-engine code; accepted AJ-08 preserves the exact hashes.",
+      "required_proof": "AJ-08 transaction #121 and unchanged validator/engine hashes in proof/repairing-prime/rp-c05-continuity-evidence-r01.json."
     },
     {
       "id": "CAP-009",
       "domain": "Hosted execution",
       "capability": "Athena-facing hosted IssueOps",
-      "audit_status": "FUNCTIONALLY_LOST",
-      "audit_severity": "CRITICAL",
+      "audit_status": "RESTORED_HOSTED_INTAKE_LIVE_PROVEN",
+      "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "No Prime hosted intake or launcher exists.",
-      "required_proof": "Owner-authorized hosted intake invokes the singular Thread Engine and creates a harmless draft PR."
+      "capability_disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "current_state": "Prime has an owner-authorized hosted Arrow/Bow intake that invokes the singular Thread Engine and stops at exact harmless draft-PR readback; fresh Work/Athena origin remains separately missing under CAP-015.",
+      "required_proof": "Hosted R02 run 29218494916, PR #114, exact-head CI, detached review, and canonical readback in proof/repairing-prime/rp-c01-route-evidence-r01.md."
     },
     {
       "id": "CAP-010",
@@ -155,13 +155,13 @@
       "id": "CAP-011",
       "domain": "Hosted execution",
       "capability": "Guarded multi-file source-pack PR workflow",
-      "audit_status": "FUNCTIONALLY_LOST",
+      "audit_status": "SINGLE_PATH_LIVE_MULTI_FILE_UNPROVEN",
       "audit_severity": "HIGH",
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "STILL_MISSING",
       "activation_state": "MISSING",
-      "current_state": "Prime exact mission packages and the singular engine exist, but the guarded hosted source-pack user journey is not proven.",
-      "required_proof": "Hosted exact mission carrier compiles to one immutable draft-PR transaction with exact readback."
+      "current_state": "Hosted R02 proves immutable carrier-to-PR mechanics for one authored path, while multi-file compilation is local-test evidence only; the live multi-file source-pack journey remains unproven.",
+      "required_proof": "One owner-hosted ordinary carrier with at least two authored paths must create one immutable draft PR with exact path/blob/head readback, exact-head CI, detached review, and canonical readback."
     },
     {
       "id": "CAP-012",
@@ -287,25 +287,25 @@
       "id": "CAP-022",
       "domain": "Closeout / continuity",
       "capability": "Sunset closeout and restart-safe archive handoff",
-      "audit_status": "FUNCTIONALLY_LOST_FROM_ACTIVE_SOURCE",
-      "audit_severity": "CRITICAL",
+      "audit_status": "RESTORED_SUNSET_RESTART_PROVEN",
+      "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "Prime has lifecycle doctrine but no active restart-safe Sunset route.",
-      "required_proof": "Sunset writes bounded continuity and a fresh context reconstructs the next safe gate."
+      "capability_disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "current_state": "Prime seals restart-safe Sunset snapshots against canonical continuity and accepted AJ-10 proves fresh-context reconstruction of the exact next safe gate.",
+      "required_proof": "AJ-10 transaction #124, fresh-clone Sunset/Sunrise digests, and reconstruction in proof/repairing-prime/rp-c05-continuity-evidence-r01.json."
     },
     {
       "id": "CAP-023",
       "domain": "Closeout / continuity",
       "capability": "Sunrise / Argus surfacing of unfinished work",
-      "audit_status": "MISSING",
-      "audit_severity": "HIGH",
+      "audit_status": "RESTORED_SUNRISE_ARGUS_PROVEN",
+      "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "No Prime operational continuity source feeds Sunrise or Argus.",
-      "required_proof": "Durable continuity projection and next-action selection without chat memory."
+      "capability_disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "current_state": "Canonical continuity feeds digest-bound Sunrise reconstruction and deterministic read-only Argus priority surfacing without chat memory.",
+      "required_proof": "Accepted RP-C05 deterministic Sunrise and Argus evidence in proof/repairing-prime/rp-c05-continuity-evidence-r01.json."
     },
     {
       "id": "CAP-024",
