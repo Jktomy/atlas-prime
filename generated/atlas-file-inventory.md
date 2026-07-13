@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:823bc7b2f10bf8a8d90c0d049fb5c709001e17f511535447451c287aa0af79fd
+Source fingerprint: sha256:2c30367ef214524759183feee28744040adad4a9f8b83292ab2caafeff437fe5
 Generator format: 2
 Status: Generated support artifact
 
@@ -24,6 +24,7 @@ Status: Generated support artifact
 | `governance/cutover-boundary.md` | governance | yes | none |
 | `governance/noctua.md` | governance | yes | none |
 | `governance/protected-source-boundary.md` | governance | yes | policy-reference |
+| `governance/quest-engine-continuity-contract.md` | governance | yes | none |
 | `governance/resonance-reconciliation-contract.md` | governance | yes | none |
 | `governance/source-hierarchy.md` | governance | yes | none |
 | `governance/source-lifecycle.md` | governance | yes | none |
@@ -67,6 +68,7 @@ Status: Generated support artifact
 | `quests/repairing-prime.md` | quests | yes | policy-reference |
 | `recovery/phoenix-recovery.md` | recovery | yes | none |
 | `routing/command-surfaces.md` | routing | yes | none |
+| `routing/interaction-contract.md` | routing | yes | none |
 | `safety/atlas-safety-doctrine.md` | safety | yes | policy-reference |
 | `templates/preview-bundle-template.md` | templates | yes | policy-reference |
 | `templates/project-template.md` | templates | yes | none |
@@ -80,6 +82,7 @@ Status: Generated support artifact
 | `tools/atlas-sword/tests/test-contract.md` | tools | no | policy-reference |
 | `tools/atlas_lifecycle/README.md` | tools | no | none |
 | `tools/oathbringer-foundry/README.md` | tools | no | none |
+| `tools/prime_continuity/README.md` | tools | no | none |
 | `tools/resonance/README.md` | tools | no | none |
 | `tools/thread-engine/ARCHITECTURE.md` | tools | no | none |
 | `tools/thread-engine/PRIME-PORT-STATUS.md` | tools | no | none |
