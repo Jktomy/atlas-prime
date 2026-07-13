@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:d785c8dca2c7ea2ea188755459400ec21a337ae4696b1e678afec55a674f65a8
+Source fingerprint: sha256:5f4b120a3127c5cf395a506fdc71105ed9ca593db29feb515069e44bd50a8383
 Generator format: 2
 Status: Generated support artifact
 
@@ -24,6 +24,7 @@ Status: Generated support artifact
 | `governance/cutover-boundary.md` | yes |
 | `governance/noctua.md` | yes |
 | `governance/protected-source-boundary.md` | yes |
+| `governance/resonance-reconciliation-contract.md` | yes |
 | `governance/source-hierarchy.md` | yes |
 | `governance/source-lifecycle.md` | yes |
 | `infrastructure/atlas-infrastructure-source.md` | yes |
@@ -78,6 +79,7 @@ Status: Generated support artifact
 | `tools/atlas-sword/tests/test-contract.md` | no |
 | `tools/atlas_lifecycle/README.md` | yes |
 | `tools/oathbringer-foundry/README.md` | yes |
+| `tools/resonance/README.md` | yes |
 | `tools/thread-engine/ARCHITECTURE.md` | no |
 | `tools/thread-engine/PRIME-PORT-STATUS.md` | no |
 | `tools/thread-engine/README.md` | yes |

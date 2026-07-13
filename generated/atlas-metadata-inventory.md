@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:d785c8dca2c7ea2ea188755459400ec21a337ae4696b1e678afec55a674f65a8
+Source fingerprint: sha256:5f4b120a3127c5cf395a506fdc71105ed9ca593db29feb515069e44bd50a8383
 Generator format: 2
 Status: Generated support artifact
 
@@ -24,6 +24,7 @@ Status: Generated support artifact
 | `governance/cutover-boundary.md` | COMPLETE | PROTOCOL | missing | CRITICAL |
 | `governance/noctua.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/protected-source-boundary.md` | CANONICAL_ACTIVE | POLICY | missing | CRITICAL |
+| `governance/resonance-reconciliation-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/source-hierarchy.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `governance/source-lifecycle.md` | ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `infrastructure/atlas-infrastructure-source.md` | ACTIVE | ARCHITECTURE | missing | HIGH |
@@ -78,6 +79,7 @@ Status: Generated support artifact
 | `tools/atlas-sword/tests/test-contract.md` | missing | missing | missing | missing |
 | `tools/atlas_lifecycle/README.md` | missing | missing | missing | missing |
 | `tools/oathbringer-foundry/README.md` | missing | missing | missing | missing |
+| `tools/resonance/README.md` | missing | missing | missing | missing |
 | `tools/thread-engine/ARCHITECTURE.md` | missing | missing | missing | missing |
 | `tools/thread-engine/PRIME-PORT-STATUS.md` | missing | missing | missing | missing |
 | `tools/thread-engine/README.md` | missing | missing | missing | missing |

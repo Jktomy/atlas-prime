@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:d785c8dca2c7ea2ea188755459400ec21a337ae4696b1e678afec55a674f65a8
+Source fingerprint: sha256:5f4b120a3127c5cf395a506fdc71105ed9ca593db29feb515069e44bd50a8383
 Generator format: 2
 Status: Generated support artifact
 
@@ -24,6 +24,7 @@ Status: Generated support artifact
 | `governance/cutover-boundary.md` | governance | yes | none |
 | `governance/noctua.md` | governance | yes | none |
 | `governance/protected-source-boundary.md` | governance | yes | policy-reference |
+| `governance/resonance-reconciliation-contract.md` | governance | yes | none |
 | `governance/source-hierarchy.md` | governance | yes | none |
 | `governance/source-lifecycle.md` | governance | yes | none |
 | `infrastructure/atlas-infrastructure-source.md` | infrastructure | yes | policy-reference |
@@ -78,6 +79,7 @@ Status: Generated support artifact
 | `tools/atlas-sword/tests/test-contract.md` | tools | no | policy-reference |
 | `tools/atlas_lifecycle/README.md` | tools | no | none |
 | `tools/oathbringer-foundry/README.md` | tools | no | none |
+| `tools/resonance/README.md` | tools | no | none |
 | `tools/thread-engine/ARCHITECTURE.md` | tools | no | none |
 | `tools/thread-engine/PRIME-PORT-STATUS.md` | tools | no | none |
 | `tools/thread-engine/README.md` | tools | no | none |
