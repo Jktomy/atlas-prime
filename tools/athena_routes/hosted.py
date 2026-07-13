@@ -553,7 +553,7 @@ def preflight_hosted(
                     values,
                     code=classification,
                     route=route,
-                    result="BLOCKED",
+                    result="BLOCKED" if route != "ARROW_BOW_HOSTED" else "REJECTED",
                     carrier_sha256=expected_sha,
                     mission_id=package.weave["weave_id"],
                 )
@@ -626,7 +626,7 @@ def run_hosted(
                     values,
                     code=classification,
                     route=route,
-                    result="BLOCKED",
+                    result="BLOCKED" if route != "ARROW_BOW_HOSTED" else "REJECTED",
                     carrier_sha256=expected_sha,
                     mission_id=package.weave["weave_id"],
                 )

@@ -343,6 +343,37 @@ class HostedRouteTests(unittest.TestCase):
         self.assertEqual(receipt["stop_point"], "ROUTE_HANDOFF_REQUIRED")
         self.assertEqual(calls, [])
 
+    def test_generated_source_mixing_rejects_coherently_before_compiler(self) -> None:
+        carrier = b"fake-arrow-zip"
+        digest = hashlib.sha256(carrier).hexdigest()
+        calls: list[str] = []
+        engine = list(success_engine(digest, path="generated/forbidden-source-mix.md"))
+
+        def compile_spy(*_args: object, **_kwargs: object) -> dict:
+            calls.append("compile")
+            return {}
+
+        engine[2] = compile_spy
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            event = root / "event.json"
+            event.write_text("{}\n", encoding="utf-8")
+            receipt = run_hosted(
+                base64.b64encode(carrier).decode("ascii"),
+                env=base_environment(event, digest),
+                receipt_path=root / "evidence" / "receipt.json",
+                work_root=root / "work",
+                run_metadata=run_metadata(),
+                engine=tuple(engine),
+                replay_probe=lambda _branch: None,
+            )
+        self.assertEqual(receipt["result"], "REJECTED")
+        self.assertEqual(receipt["route"], "ARROW_BOW_HOSTED")
+        self.assertEqual(receipt["error_code"], "GENERATED_SOURCE_MIXING")
+        self.assertEqual(receipt["stop_point"], "PRE_MUTATION_REJECTION")
+        self.assertFalse(receipt["mutation"]["occurred"])
+        self.assertEqual(calls, [])
+
     def test_partial_adapter_state_is_preserved_and_blocks_retry(self) -> None:
         carrier = b"fake-arrow-zip"
         digest = hashlib.sha256(carrier).hexdigest()
