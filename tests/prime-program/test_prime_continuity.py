@@ -83,13 +83,18 @@ class PrimeContinuityTests(unittest.TestCase):
 
     def test_one_entry_plan_is_stale_bound_and_non_mutating(self) -> None:
         before = copy.deepcopy(self.register)
+        entry_revision = next(
+            entry["revision"]
+            for entry in self.register["entries"]
+            if entry["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
+        )
         candidate = plan_one_entry_update(
             self.register,
             self.board,
             self.identities,
             continuity_id="CONT-REPAIRING-PRIME-R01",
             expected_register_sha256=sha256(self.register),
-            expected_entry_revision=1,
+            expected_entry_revision=entry_revision,
             event_id="RP-C05-AJ07-PREVIEW-R01",
             changes={"next_action": "Run the bounded AJ-07 continuity update proof."},
         )
@@ -108,7 +113,7 @@ class PrimeContinuityTests(unittest.TestCase):
                 self.identities,
                 continuity_id="CONT-REPAIRING-PRIME-R01",
                 expected_register_sha256="0" * 64,
-                expected_entry_revision=1,
+                expected_entry_revision=entry_revision,
                 event_id="RP-C05-STALE-R01",
                 changes={"next_action": "Rejected"},
             )
@@ -119,7 +124,7 @@ class PrimeContinuityTests(unittest.TestCase):
                 self.identities,
                 continuity_id="CONT-REPAIRING-PRIME-R01",
                 expected_register_sha256=sha256(self.register),
-                expected_entry_revision=1,
+                expected_entry_revision=entry_revision,
                 event_id="RP-C05-WIDEN-R01",
                 changes={"quest_source": "quests/other.md"},
             )
@@ -132,7 +137,7 @@ class PrimeContinuityTests(unittest.TestCase):
                 self.identities,
                 continuity_id="CONT-REPAIRING-PRIME-R01",
                 expected_register_sha256=sha256(replay),
-                expected_entry_revision=1,
+                expected_entry_revision=entry_revision,
                 event_id="RP-C05-REPLAY-R01",
                 changes={"next_action": "Rejected replay"},
             )
@@ -143,7 +148,7 @@ class PrimeContinuityTests(unittest.TestCase):
                 self.identities,
                 continuity_id="CONT-REPAIRING-PRIME-R01",
                 expected_register_sha256=sha256(self.register),
-                expected_entry_revision=1,
+                expected_entry_revision=entry_revision,
                 event_id="RP-C05-PROMOTE-R01",
                 changes={"quest_state": "COMPLETE", "blockers": "not-an-array"},
             )
@@ -154,7 +159,7 @@ class PrimeContinuityTests(unittest.TestCase):
                 self.identities,
                 continuity_id="CONT-REPAIRING-PRIME-R01",
                 expected_register_sha256=sha256(self.register),
-                expected_entry_revision=1,
+                expected_entry_revision=entry_revision,
                 event_id="RP-C05-IDENTITY-BYPASS-R01",
                 changes={"campaign_id": None, "mission_id": None, "gate_id": "ATTACKER_GATE"},
             )
