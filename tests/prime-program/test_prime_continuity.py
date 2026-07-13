@@ -147,6 +147,17 @@ class PrimeContinuityTests(unittest.TestCase):
                 event_id="RP-C05-PROMOTE-R01",
                 changes={"quest_state": "COMPLETE", "blockers": "not-an-array"},
             )
+        with self.assertRaisesRegex(ContinuityError, "UPDATE_IDENTITY_BINDING_INVALID"):
+            plan_one_entry_update(
+                self.register,
+                self.board,
+                self.identities,
+                continuity_id="CONT-REPAIRING-PRIME-R01",
+                expected_register_sha256=sha256(self.register),
+                expected_entry_revision=1,
+                event_id="RP-C05-IDENTITY-BYPASS-R01",
+                changes={"campaign_id": None, "mission_id": None, "gate_id": "ATTACKER_GATE"},
+            )
 
     def test_emberline_sunset_sunrise_and_argus_are_deterministic(self) -> None:
         self.assertEqual(render_emberline(self.register), render_emberline(copy.deepcopy(self.register)))

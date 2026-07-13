@@ -151,7 +151,9 @@ def plan_one_entry_update(register: dict[str, Any], board: dict[str, Any], ident
         raise ContinuityError("UPDATE_NOT_SINGLE_ENTRY")
     validate_register(candidate, board, root=root)
     entry = matches[0]
-    if entry["quest_id"] == identities["quest_id"] and entry["campaign_id"] is not None:
+    if entry["quest_id"] == identities["quest_id"]:
+        if entry["campaign_id"] is None:
+            raise ContinuityError("UPDATE_IDENTITY_BINDING_INVALID")
         campaigns = {item["campaign_id"]: item for item in identities["campaigns"]}
         campaign = campaigns.get(entry["campaign_id"])
         if campaign is None or entry["gate_id"] != campaign["gate_id"]:
