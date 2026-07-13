@@ -1,0 +1,55 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c01-route-evidence.v1",
+  "campaign": "RP-C01",
+  "campaign_gate": "ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN",
+  "campaign_gate_state": "NOT_PROVEN",
+  "direct_spear": {
+    "state": "PROVEN_MERGED_AUTHENTICATED_LOCAL_ROUTE",
+    "carrier_sha256": "5ff52ffd5bb320e91b85d68cc3c476b38a33862ab5d1ef9211d902febb6f646f",
+    "compile_receipt_sha256": "f3db776b80c62e15d9e48204979070d594868921d0b9c02a08b7a75732efaf44",
+    "adapter_receipt_sha256": "f1305a72124df877494015b9172b15418e0b52e6e3ac6ebf9f12afc735190548",
+    "base_sha": "fe54331df6600a03a94c72d094743725388105c4",
+    "head_sha": "fa20c23c532f3c684862a028720fe9debd7db855",
+    "pull_request": 102,
+    "merge_sha": "2ed53467a83569afea1d6c07e06d1d2ab52c75ff",
+    "ci_run": 29215320609,
+    "detached_review": "GREEN"
+  },
+  "hosted_bow": {
+    "state": "PARTIAL_PUSH_PROVEN_DRAFT_PR_SETTING_BLOCKED",
+    "workflow_run": 29215013196,
+    "workflow_source_sha": "c49b280b00233c2bbccc2f8d49e438607bcd89e9",
+    "carrier_sha256": "e71309d3ff1473bf7133b747b671351b4ddfb903fd864caf51aea02f48a3f2f1",
+    "hosted_receipt_sha256": "09d50fedaa1eb6a6fd20e35781a0dc4e1935498d6c8150050a6586146ff88ca5",
+    "sanitized_engine_evidence_sha256": "186b526c4165589efba3ad855f7cd0204f370b76a290f4586398c487ea310af8",
+    "pushed_head_sha": "d7ec2cbf414a474e8cc2faceb540856d9f0d33d0",
+    "hosted_result": "PARTIAL",
+    "hosted_error_stage": "DRAFT_PR",
+    "recovery_pull_request": 100,
+    "recovery_merge_sha": "ee87effb88ef8c1f881a5e58259155b36dacf878",
+    "repository_setting": {
+      "default_workflow_permissions": "read",
+      "can_approve_pull_request_reviews": false
+    },
+    "smallest_external_action": "Enable the repository Actions setting that allows GitHub Actions to create pull requests, then run a new post-setting carrier with a new mission and current base."
+  },
+  "live_rejections": [
+    {"run": 29215564172, "result": "REJECTED", "code": "CARRIER_BASE64_REJECTED", "mutation": false},
+    {"run": 29215594376, "result": "BLOCKED", "code": "PROTECTED_AEGIS_REQUIRED", "route": "AEGIS_BREAK_PROTECTED", "mutation": false},
+    {"run": 29215615801, "result": "BLOCKED", "code": "THREAD_ENGINE_SELF_CHANGE", "route": "AEGIS_BREAK_TO_OATHBRINGER", "mutation": false},
+    {"run": 29215638810, "result": "REJECTED", "code": "GENERATED_SOURCE_MIXING", "mutation": false},
+    {"run": 29215778360, "result": "REJECTED", "code": "BASE_STALE", "mutation": false}
+  ],
+  "mission_states": {
+    "RP-C01-M01": "PROVEN_MERGED",
+    "RP-C01-M02": "UNPROVEN_FRESH_ATHENA_CONTROL_NOT_OBSERVED",
+    "RP-C01-M03": "PROVEN_MERGED_AUTHENTICATED_LOCAL_ROUTE",
+    "RP-C01-M04": "PARTIAL_SETTING_BLOCKED",
+    "RP-C01-M05": "COMPONENT_PARITY_PRESERVED_END_TO_END_NOT_PROVEN",
+    "RP-C01-M06": "HANDOFF_DETECTION_PROVEN_PROTECTED_EXECUTION_NOT_RUN",
+    "RP-C01-M07": "PARTIAL_REJECTION_MATRIX_PROVEN",
+    "RP-C01-M08": "NOT_PROVEN"
+  },
+  "capability_promotion": "NONE",
+  "acceptance_journey_promotion": "NONE"
+}
