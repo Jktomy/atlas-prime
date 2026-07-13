@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:2c30367ef214524759183feee28744040adad4a9f8b83292ab2caafeff437fe5
+Source fingerprint: sha256:948364b9a98ca80995d50e06015ed4ba518061d8a4697811887ec96c7e3d6c0e
 Generator format: 2
 Status: Generated support artifact
 
@@ -61,8 +61,10 @@ Status: Generated support artifact
 | `proof/repairing-prime/hosted-bow-pilot-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/hosted-bow-proof-r02.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c01-route-evidence-r01.md` | HOSTED_AND_DIRECT_PROVEN_GATE_INCOMPLETE | PROOF | missing | MEDIUM |
+| `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | ACCEPTED | PROOF | missing | HIGH |
 | `quests/found-silverlight.md` | Active | Quest | Parent Quest for establishing Atlas's private cognitive interface through Stormlight BEU accounting, the seven-pillar Glass Codex, and the Seon Apple Reminders integration. | High |
 | `quests/notums-watch.md` | Active | Quest | Parent Quest for bringing Notum's Watch forward as Gatehouse/Citadel observability and rescue infrastructure, including the interim Notum vessel, future Notum Phoenix vessel, Nightwatcher lineage, and backup-capacity boundaries. | High |
+| `quests/prime-continuity-proof.md` | READY_FOR_CAMPAIGN_1_PREVIEW | QUEST | missing | MEDIUM |
 | `quests/prime-reborn.md` | COMPLETE | QUEST | missing | CRITICAL |
 | `quests/prometheus-fire.md` | Active | Quest | Parent Quest for converting Prometheus into a stable, recoverable Proxmox compute platform with the approved Crucible VM, Nexus LXC, Matrix LXC, and future Plex LXC topology. | High |
 | `quests/repairing-prime.md` | Active | Quest | Repair Prime's missing execution, agentic, continuity, Quest, generated-parity, acceptance, and closeout capabilities without rebuilding accepted foundations or weakening Atlas boundaries. | Critical |

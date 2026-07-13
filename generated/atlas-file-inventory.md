@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:2c30367ef214524759183feee28744040adad4a9f8b83292ab2caafeff437fe5
+Source fingerprint: sha256:948364b9a98ca80995d50e06015ed4ba518061d8a4697811887ec96c7e3d6c0e
 Generator format: 2
 Status: Generated support artifact
 
@@ -61,8 +61,10 @@ Status: Generated support artifact
 | `proof/repairing-prime/hosted-bow-pilot-r01.md` | proof | no | none |
 | `proof/repairing-prime/hosted-bow-proof-r02.md` | proof | no | none |
 | `proof/repairing-prime/rp-c01-route-evidence-r01.md` | proof | yes | none |
+| `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | proof | yes | none |
 | `quests/found-silverlight.md` | quests | yes | policy-reference |
 | `quests/notums-watch.md` | quests | yes | policy-reference |
+| `quests/prime-continuity-proof.md` | quests | yes | none |
 | `quests/prime-reborn.md` | quests | yes | none |
 | `quests/prometheus-fire.md` | quests | yes | policy-reference |
 | `quests/repairing-prime.md` | quests | yes | policy-reference |

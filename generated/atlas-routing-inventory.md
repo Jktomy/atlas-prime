@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:2c30367ef214524759183feee28744040adad4a9f8b83292ab2caafeff437fe5
+Source fingerprint: sha256:948364b9a98ca80995d50e06015ed4ba518061d8a4697811887ec96c7e3d6c0e
 Generator format: 2
 Status: Generated support artifact
 
@@ -24,7 +24,7 @@ Status: Generated support artifact
 | `governance/cutover-boundary.md` | yes |
 | `governance/noctua.md` | yes |
 | `governance/protected-source-boundary.md` | yes |
-| `governance/quest-engine-continuity-contract.md` | no |
+| `governance/quest-engine-continuity-contract.md` | yes |
 | `governance/resonance-reconciliation-contract.md` | yes |
 | `governance/source-hierarchy.md` | yes |
 | `governance/source-lifecycle.md` | yes |
@@ -61,8 +61,10 @@ Status: Generated support artifact
 | `proof/repairing-prime/hosted-bow-pilot-r01.md` | no |
 | `proof/repairing-prime/hosted-bow-proof-r02.md` | no |
 | `proof/repairing-prime/rp-c01-route-evidence-r01.md` | no |
+| `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | no |
 | `quests/found-silverlight.md` | yes |
 | `quests/notums-watch.md` | yes |
+| `quests/prime-continuity-proof.md` | yes |
 | `quests/prime-reborn.md` | yes |
 | `quests/prometheus-fire.md` | yes |
 | `quests/repairing-prime.md` | yes |
@@ -82,7 +84,7 @@ Status: Generated support artifact
 | `tools/atlas-sword/tests/test-contract.md` | no |
 | `tools/atlas_lifecycle/README.md` | yes |
 | `tools/oathbringer-foundry/README.md` | yes |
-| `tools/prime_continuity/README.md` | no |
+| `tools/prime_continuity/README.md` | yes |
 | `tools/resonance/README.md` | yes |
 | `tools/thread-engine/ARCHITECTURE.md` | no |
 | `tools/thread-engine/PRIME-PORT-STATUS.md` | no |
