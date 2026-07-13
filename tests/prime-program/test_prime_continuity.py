@@ -53,6 +53,12 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(repairing_board["next_gate"], "RP-C06 Preview — Deterministic Conservation and Generated Parity")
         self.assertEqual(repairing_continuity["campaign_id"], "RP-C06")
         self.assertEqual(repairing_continuity["gate_id"], rp_c06["gate_id"])
+        self.assertEqual(rp_c06["state"], "IN_PROGRESS")
+        self.assertEqual(
+            [mission["mission_id"] for mission in rp_c06["missions"]],
+            [f"RP-C06-M{index:02d}" for index in range(1, 8)],
+        )
+        self.assertEqual({mission["state"] for mission in rp_c06["missions"]}, {"UNPROVEN"})
         self.assertIn("fresh-clone Sunrise", repairing_continuity["current_position"])
         self.assertNotIn("await", repairing_continuity["current_position"].lower())
         rp_c01 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C01")
