@@ -67,6 +67,32 @@
       "recovery_merge_sha": "ee87effb88ef8c1f881a5e58259155b36dacf878"
     }
   },
+  "m05_same_carrier_parity": {
+    "state": "PROVEN",
+    "mission_id": "RP-C01-M05-PARITY-LIVE-R01",
+    "canonical_base": "50bfd7e3f13215fb005dd85a95e010761a9fec7b",
+    "carrier_sha256": "451a5622ac07ed02b887fda98508d7ddb243addf60947abb606f904ca63f1479",
+    "compile_receipt_sha256": "671b1031c8cf6d8a9f58462cf306adffa0263ef38a55d4c1d855469a6f3a33bd",
+    "canonical_mission_sha256": "19bb39a1ee26a142d922a19ae62d3e19cd14fb91ac5979a42b2c3e8d2212dec6",
+    "output_mission_sha256": "1848a599bb9e932baa626ee87976b06e46c04936ba450bf8049398a2a04dedda",
+    "candidate_tree_sha256": "ddce0ce811a64502753daf7a985ca9847feb4b7d423cdd4a73b3e00dbdd8e462",
+    "final_pathset_sha256": "dc267301c1ffa63e0a39968a697a1194be368f50921d111c2555e6242f32bb16",
+    "preview_sha256": "a5b28a920032fd9635d5070550cf75ce1f570b57d5a3cae0a66df9c0e3d3ab2a",
+    "execute_sha256": "ae5c92161b04f86856ecd254666dd301a9669fa7f6825d18dc872372ae908cd9",
+    "workflow_run": 29237393648,
+    "hosted_route_receipt_sha256": "68e0d370197cd4effb342fbf311b29b5968ea2e0d708d0ddf12177f635bc4a3b",
+    "raw_adapter_receipt_sha256": "38e391ff2966c3ce8ea2ddcf60a44d18d7eae270192c802c7c484379ca790b0c",
+    "sanitized_adapter_evidence_sha256": "1f61e902535c5bc5fe112b0b77a97b4a9aa3b470f31a255df7b60f6f5d5afa38",
+    "parity_evidence_sha256": "588306d3a0858d0a477f1aaf0ca170dc8b77e0cac6ab775e76716044559f68e8",
+    "parity_result": "PARITY_VERIFIED",
+    "pull_request": 161,
+    "head_sha": "e48cc2ca6d0e0b9226265a3e7bfd3b8df7df46c2",
+    "exact_head_ci": {"run": 29237591203, "windows_job": 86775798001, "ubuntu_job": 86775798063, "result": "GREEN"},
+    "detached_review": "GREEN",
+    "merge_sha": "df66ae78dac1991db3902537fe338a4191d0da11",
+    "canonical_readback": "EXACT",
+    "evidence": "proof/repairing-prime/rp-c01-m05-parity-acceptance-r01.json"
+  },
   "guided_dependency_retirement": {
     "mission": "RP-C01-M08",
     "state": "PARTIAL",
@@ -106,7 +132,7 @@
     "RP-C01-M02": "UNPROVEN_FRESH_ATHENA_CONTROL_NOT_OBSERVED",
     "RP-C01-M03": "PROVEN_MERGED_AUTHENTICATED_LOCAL_ROUTE",
     "RP-C01-M04": "PROVEN_MERGED_AUTHENTICATED_HOSTED_ROUTE",
-    "RP-C01-M05": "COMPONENT_PARITY_PRESERVED_END_TO_END_NOT_PROVEN",
+    "RP-C01-M05": "PROVEN_SAME_CARRIER_DIRECT_AND_GUIDED_HOSTED_PARITY",
     "RP-C01-M06": "HANDOFF_DETECTION_PROVEN_PROTECTED_EXECUTION_NOT_RUN",
     "RP-C01-M07": "PARTIAL_ONLY_GENUINE_NON_OWNER_LIVE_REJECTION_MISSING",
     "RP-C01-M08": "PARTIAL_JAYSON_CARRIER_CREATION_ATTACHMENT_PLACEMENT_NOT_REQUIRED_FREE_FORM_INTAKE_ACCEPTANCE_MISSING"

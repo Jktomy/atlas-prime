@@ -55,12 +55,12 @@ class RpC01M07LiveRejectionTests(unittest.TestCase):
 
     def test_continuity_advances_once_and_prior_boundaries_remain(self) -> None:
         repairing = next(item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
-        self.assertEqual(self.continuity["register_revision"], 14)
-        self.assertEqual(repairing["revision"], 13)
-        self.assertEqual(repairing["last_event_id"], "RP-C01-M07-LIVE-REJECTION-RECONCILIATION-R01")
+        self.assertEqual(self.continuity["register_revision"], 15)
+        self.assertEqual(repairing["revision"], 14)
+        self.assertEqual(repairing["last_event_id"], "RP-C01-M05-PARITY-ACCEPTANCE-R01")
         self.assertEqual(repairing["quest_state"], "IN_PROGRESS")
         self.assertTrue(any("genuine non-owner" in blocker for blocker in repairing["blockers"]))
-        self.assertTrue(any("RP-C01-M05" in blocker for blocker in repairing["blockers"]))
+        self.assertFalse(any("RP-C01-M05" in blocker for blocker in repairing["blockers"]))
 
 
 if __name__ == "__main__":

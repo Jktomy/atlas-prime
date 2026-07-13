@@ -5,7 +5,7 @@
     {"campaign_id": "RP-C01", "gate_id": "ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN", "state": "IN_PROGRESS", "missions": [
       {"mission_id": "RP-C01-M01", "state": "PROVEN"}, {"mission_id": "RP-C01-M02", "state": "UNPROVEN"},
       {"mission_id": "RP-C01-M03", "state": "PROVEN"}, {"mission_id": "RP-C01-M04", "state": "PROVEN"},
-      {"mission_id": "RP-C01-M05", "state": "UNPROVEN"}, {"mission_id": "RP-C01-M06", "state": "PARTIAL"},
+      {"mission_id": "RP-C01-M05", "state": "PROVEN"}, {"mission_id": "RP-C01-M06", "state": "PARTIAL"},
       {"mission_id": "RP-C01-M07", "state": "PARTIAL"}, {"mission_id": "RP-C01-M08", "state": "PARTIAL"}
     ]},
     {"campaign_id": "RP-C02", "gate_id": "SHARED_AGENTIC_WARRANTS_ACCEPTED", "state": "COMPLETE", "missions": []},
