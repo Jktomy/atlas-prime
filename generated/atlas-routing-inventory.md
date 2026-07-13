@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:823bc7b2f10bf8a8d90c0d049fb5c709001e17f511535447451c287aa0af79fd
+Source fingerprint: sha256:2c30367ef214524759183feee28744040adad4a9f8b83292ab2caafeff437fe5
 Generator format: 2
 Status: Generated support artifact
 
@@ -24,6 +24,7 @@ Status: Generated support artifact
 | `governance/cutover-boundary.md` | yes |
 | `governance/noctua.md` | yes |
 | `governance/protected-source-boundary.md` | yes |
+| `governance/quest-engine-continuity-contract.md` | no |
 | `governance/resonance-reconciliation-contract.md` | yes |
 | `governance/source-hierarchy.md` | yes |
 | `governance/source-lifecycle.md` | yes |
@@ -67,6 +68,7 @@ Status: Generated support artifact
 | `quests/repairing-prime.md` | yes |
 | `recovery/phoenix-recovery.md` | yes |
 | `routing/command-surfaces.md` | yes |
+| `routing/interaction-contract.md` | no |
 | `safety/atlas-safety-doctrine.md` | yes |
 | `templates/preview-bundle-template.md` | yes |
 | `templates/project-template.md` | yes |
@@ -80,6 +82,7 @@ Status: Generated support artifact
 | `tools/atlas-sword/tests/test-contract.md` | no |
 | `tools/atlas_lifecycle/README.md` | yes |
 | `tools/oathbringer-foundry/README.md` | yes |
+| `tools/prime_continuity/README.md` | no |
 | `tools/resonance/README.md` | yes |
 | `tools/thread-engine/ARCHITECTURE.md` | no |
 | `tools/thread-engine/PRIME-PORT-STATUS.md` | no |

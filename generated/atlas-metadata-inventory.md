@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:823bc7b2f10bf8a8d90c0d049fb5c709001e17f511535447451c287aa0af79fd
+Source fingerprint: sha256:2c30367ef214524759183feee28744040adad4a9f8b83292ab2caafeff437fe5
 Generator format: 2
 Status: Generated support artifact
 
@@ -24,6 +24,7 @@ Status: Generated support artifact
 | `governance/cutover-boundary.md` | COMPLETE | PROTOCOL | missing | CRITICAL |
 | `governance/noctua.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/protected-source-boundary.md` | CANONICAL_ACTIVE | POLICY | missing | CRITICAL |
+| `governance/quest-engine-continuity-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/resonance-reconciliation-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/source-hierarchy.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `governance/source-lifecycle.md` | ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
@@ -67,6 +68,7 @@ Status: Generated support artifact
 | `quests/repairing-prime.md` | Active | Quest | Repair Prime's missing execution, agentic, continuity, Quest, generated-parity, acceptance, and closeout capabilities without rebuilding accepted foundations or weakening Atlas boundaries. | Critical |
 | `recovery/phoenix-recovery.md` | ACTIVE | RUNBOOK | missing | CRITICAL |
 | `routing/command-surfaces.md` | ACTIVE | REGISTER | missing | HIGH |
+| `routing/interaction-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | HIGH |
 | `safety/atlas-safety-doctrine.md` | ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `templates/preview-bundle-template.md` | Active | Template | Template for Atlas Preview Bundles, including preview classification, runtime impact, affected files, verification plan, and execute-ready summary. | Medium |
 | `templates/project-template.md` | Active | Template | Template for defining Atlas Projects, including purpose, operations, active source boundaries, routing, evidence boundaries, and maintenance fields. | Medium |
@@ -80,6 +82,7 @@ Status: Generated support artifact
 | `tools/atlas-sword/tests/test-contract.md` | missing | missing | missing | missing |
 | `tools/atlas_lifecycle/README.md` | missing | missing | missing | missing |
 | `tools/oathbringer-foundry/README.md` | missing | missing | missing | missing |
+| `tools/prime_continuity/README.md` | missing | missing | missing | missing |
 | `tools/resonance/README.md` | missing | missing | missing | missing |
 | `tools/thread-engine/ARCHITECTURE.md` | missing | missing | missing | missing |
 | `tools/thread-engine/PRIME-PORT-STATUS.md` | missing | missing | missing | missing |
