@@ -174,12 +174,19 @@ remote mutation or workflow-dispatch authority.
 
 Execute requires the exact Preview receipt SHA-256, revalidates every Preview
 fact against current GitHub state and carrier bytes, requires an owner session
-and a fresh launch nonce, and dispatches only the existing hosted workflow. The
+and a fresh launch nonce plus explicit public-clean confirmation, and dispatches
+only the existing hosted workflow. The
 carrier is passed as JSON on standard input, never as a command-line argument
 or normal log output. Execute may read back the created workflow run but cannot
 call the adapter, create or update a branch or PR, retry partial state, mark a
 PR ready, merge, change settings, or become a second writer. The hosted route
 receipt remains authoritative for mutation and rollback.
+
+A nondeterministic branch or any matching current or historical branch/PR
+identity rejects during Preview. If dispatch may have occurred but exact run
+readback is unavailable or inconsistent, the publisher writes a sanitized
+`PARTIAL_STATE_PRESERVED` receipt, forbids retry, and requires preserve and
+review.
 
 Guided component existence and local tests do not promote CAP-010. Acceptance
 requires a fresh live Preview-to-Execute journey through the hosted route,

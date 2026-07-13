@@ -9,6 +9,7 @@ import sys
 import tempfile
 from pathlib import Path
 from typing import Any, Callable
+from urllib.parse import quote
 
 from .hosted import (
     MAX_CARRIER_BYTES,
@@ -17,6 +18,7 @@ from .hosted import (
     HostedRouteError,
     _engine_imports,
     classify_paths,
+    expected_mission_branch,
     load_schema,
     privacy_scan,
     sha256_bytes,
@@ -36,6 +38,7 @@ REMOTE_URL = f"https://github.com/{REPOSITORY}.git"
 SHA40 = re.compile(r"^[a-f0-9]{40}$")
 SHA64 = re.compile(r"^[a-f0-9]{64}$")
 RUN_URL = re.compile(r"^https://github[.]com/Jktomy/atlas-prime/actions/runs/([0-9]+)$")
+LAUNCH_NONCE = re.compile(r"^[A-Za-z0-9._:-]{24,200}$")
 
 
 class GuidedPublisherError(RuntimeError):
@@ -83,6 +86,32 @@ def _read_live_identity(runner: Runner) -> tuple[str, str]:
     if not SHA40.fullmatch(main_sha) or not SHA40.fullmatch(workflow_sha):
         raise GuidedPublisherError("canonical GitHub identity is malformed", "GITHUB_IDENTITY_INVALID")
     return main_sha, workflow_sha
+
+
+def _assert_no_replay(runner: Runner, branch: str) -> None:
+    ref = runner(
+        ["gh", "api", f"repos/{REPOSITORY}/git/ref/heads/{quote(branch, safe='')}"],
+        check=False,
+        capture_output=True,
+        text=True,
+        input=None,
+    )
+    if ref.returncode == 0:
+        raise GuidedPublisherError("guided mission branch already exists", "REPLAY_BRANCH_EXISTS")
+    if "404" not in ref.stderr and "Not Found" not in ref.stderr:
+        raise GuidedPublisherError("guided branch replay readback failed", "REPLAY_READBACK_FAILED")
+    raw_prs = _run(
+        runner,
+        ["gh", "pr", "list", "--repo", REPOSITORY, "--state", "all", "--head", branch, "--json", "number,state"],
+    )
+    try:
+        prs = json.loads(raw_prs)
+    except json.JSONDecodeError as exc:
+        raise GuidedPublisherError("guided PR replay readback failed", "REPLAY_READBACK_FAILED") from exc
+    if not isinstance(prs, list):
+        raise GuidedPublisherError("guided PR replay readback failed", "REPLAY_READBACK_FAILED")
+    if prs:
+        raise GuidedPublisherError("guided mission PR already exists", "REPLAY_PR_EXISTS")
 
 
 def _load_preview(path: Path) -> tuple[dict[str, Any], str]:
@@ -136,6 +165,10 @@ def build_preview(
     main_sha, workflow_blob_sha = _read_live_identity(runner)
     if package.weave.get("base_sha") != main_sha:
         raise GuidedPublisherError("guided carrier base is not canonical main", "STALE_BASE")
+    expected_branch = expected_mission_branch(package.weave.get("weave_id", ""), main_sha)
+    if package.weave.get("branch") != expected_branch:
+        raise GuidedPublisherError("guided carrier branch is not deterministic", "GUIDED_BRANCH_MISMATCH")
+    _assert_no_replay(runner, expected_branch)
     with tempfile.TemporaryDirectory(prefix="atlas-guided-preview-") as temporary:
         try:
             compile_receipt = compiler(
@@ -198,6 +231,7 @@ def execute_preview(
     *,
     confirmed_preview_sha256: str,
     launch_nonce: str,
+    public_clean_confirmation: str,
     runner: Runner = subprocess.run,
     package_reader: Callable[[Path, str], Any] | None = None,
     compiler: Callable[..., dict[str, Any]] | None = None,
@@ -205,8 +239,10 @@ def execute_preview(
     preview, observed_preview_sha = _load_preview(preview_path)
     if not SHA64.fullmatch(confirmed_preview_sha256) or confirmed_preview_sha256 != observed_preview_sha:
         raise GuidedPublisherError("exact guided Preview confirmation is required", "PREVIEW_CONFIRMATION_MISMATCH")
-    if not isinstance(launch_nonce, str) or not 24 <= len(launch_nonce) <= 200:
+    if not isinstance(launch_nonce, str) or LAUNCH_NONCE.fullmatch(launch_nonce) is None:
         raise GuidedPublisherError("guided launch nonce length rejected", "LAUNCH_NONCE_REJECTED")
+    if public_clean_confirmation != "PUBLIC_CLEAN_CONFIRMED":
+        raise GuidedPublisherError("explicit public-clean confirmation is required", "PRE_INGRESS_PRIVACY_REQUIRED")
     rebuilt = build_preview(
         carrier_path,
         runner=runner,
@@ -224,32 +260,43 @@ def execute_preview(
         "arrow_sha256": preview["carrier_sha256"],
         "public_clean_confirmation": "PUBLIC_CLEAN_CONFIRMED",
     }
-    output = _run(
-        runner,
+    dispatch_call = runner(
         ["gh", "workflow", "run", WORKFLOW, "--repo", REPOSITORY, "--ref", "main", "--json"],
-        input_text=json.dumps(dispatch, sort_keys=True, separators=(",", ":")),
+        check=False,
+        capture_output=True,
+        text=True,
+        input=json.dumps(dispatch, sort_keys=True, separators=(",", ":")),
     )
-    match = RUN_URL.fullmatch(output)
-    if match is None:
-        raise GuidedPublisherError("hosted workflow run identity was not returned", "DISPATCH_READBACK_FAILED")
-    run_id = int(match.group(1))
-    raw_run = _run(runner, ["gh", "api", f"repos/{REPOSITORY}/actions/runs/{run_id}"])
-    try:
-        run = json.loads(raw_run)
-    except json.JSONDecodeError as exc:
-        raise GuidedPublisherError("hosted workflow run readback was malformed", "DISPATCH_READBACK_FAILED") from exc
-    if (
-        not isinstance(run, dict)
-        or run.get("id") != run_id
-        or run.get("event") != "workflow_dispatch"
-        or run.get("head_sha") != preview["canonical_main_sha"]
-        or (run.get("actor") or {}).get("login") != OWNER
-        or (run.get("triggering_actor") or {}).get("login") != OWNER
-    ):
-        raise GuidedPublisherError("hosted workflow run identity mismatch", "DISPATCH_READBACK_FAILED")
-    receipt = {
+    output = dispatch_call.stdout.strip()
+    match = RUN_URL.fullmatch(output) if dispatch_call.returncode == 0 else None
+    run_id = int(match.group(1)) if match is not None else None
+    run: dict[str, Any] | None = None
+    if run_id is not None:
+        run_readback = runner(
+            ["gh", "api", f"repos/{REPOSITORY}/actions/runs/{run_id}"],
+            check=False,
+            capture_output=True,
+            text=True,
+            input=None,
+        )
+        if run_readback.returncode == 0:
+            try:
+                candidate = json.loads(run_readback.stdout)
+            except json.JSONDecodeError:
+                candidate = None
+            if isinstance(candidate, dict):
+                run = candidate
+    exact_readback = (
+        run_id is not None
+        and run is not None
+        and run.get("id") == run_id
+        and run.get("event") == "workflow_dispatch"
+        and run.get("head_sha") == preview["canonical_main_sha"]
+        and (run.get("actor") or {}).get("login") == OWNER
+        and (run.get("triggering_actor") or {}).get("login") == OWNER
+    )
+    common = {
         "schema_version": "atlas.athena.guided-intake-execute-receipt.v1",
-        "result": "DISPATCHED",
         "repository": REPOSITORY,
         "preview_sha256": observed_preview_sha,
         "carrier_sha256": preview["carrier_sha256"],
@@ -259,14 +306,27 @@ def execute_preview(
         "workflow_ref": preview["workflow_ref"],
         "workflow_blob_sha": preview["workflow_blob_sha"],
         "launch_nonce_sha256": sha256_bytes(launch_nonce.encode("utf-8")),
+        "public_clean_confirmation": public_clean_confirmation,
         "dispatch_transport": "GH_WORKFLOW_JSON_STDIN",
         "workflow_run_id": run_id,
-        "workflow_run_url": output,
-        "workflow_run_head_sha": run["head_sha"],
-        "stop_point": "HOSTED_WORKFLOW_DISPATCH_READBACK",
-        "rollback": "HOSTED_ROUTE_RECEIPT_GOVERNS",
+        "workflow_run_url": output if match is not None else None,
+        "workflow_run_head_sha": run.get("head_sha") if isinstance(run, dict) and SHA40.fullmatch(str(run.get("head_sha", ""))) else None,
         "forbidden_actions": dict(FORBIDDEN_ACTIONS),
     }
+    if exact_readback:
+        receipt = common | {
+            "result": "DISPATCHED",
+            "error_code": None,
+            "stop_point": "HOSTED_WORKFLOW_DISPATCH_READBACK",
+            "rollback": "HOSTED_ROUTE_RECEIPT_GOVERNS",
+        }
+    else:
+        receipt = common | {
+            "result": "PARTIAL",
+            "error_code": "DISPATCH_READBACK_FAILED",
+            "stop_point": "PARTIAL_STATE_PRESERVED",
+            "rollback": "PRESERVE_AND_REVIEW_NO_RETRY",
+        }
     try:
         validate_schema(load_schema(EXECUTE_SCHEMA), receipt)
     except (HostedRouteError, SchemaValidationError) as exc:
@@ -285,6 +345,7 @@ def main(argv: list[str] | None = None) -> int:
     execute_parser.add_argument("--preview", required=True, type=Path)
     execute_parser.add_argument("--confirm-preview-sha256", required=True)
     execute_parser.add_argument("--launch-nonce", required=True)
+    execute_parser.add_argument("--public-clean-confirmation", required=True, choices=["PUBLIC_CLEAN_CONFIRMED"])
     execute_parser.add_argument("--receipt", required=True, type=Path)
     args = parser.parse_args(argv)
     try:
@@ -297,6 +358,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.carrier.resolve(),
                 confirmed_preview_sha256=args.confirm_preview_sha256,
                 launch_nonce=args.launch_nonce,
+                public_clean_confirmation=args.public_clean_confirmation,
             )
             target = args.receipt.resolve()
         write_json(target, receipt)
@@ -309,7 +371,7 @@ def main(argv: list[str] | None = None) -> int:
         "receipt_sha256": sha256_bytes(target.read_bytes()),
         "stop_point": receipt["stop_point"],
     }))
-    return 0
+    return 0 if receipt["result"] in {"ACCEPTED", "DISPATCHED"} else 2
 
 
 if __name__ == "__main__":

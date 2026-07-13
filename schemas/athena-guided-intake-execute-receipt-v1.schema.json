@@ -4,10 +4,11 @@
   "title": "Athena guided intake execute receipt",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "result", "repository", "preview_sha256", "carrier_sha256", "mission_id", "mission_sha256", "canonical_main_sha", "workflow_ref", "workflow_blob_sha", "launch_nonce_sha256", "dispatch_transport", "workflow_run_id", "workflow_run_url", "workflow_run_head_sha", "stop_point", "rollback", "forbidden_actions"],
+  "required": ["schema_version", "result", "error_code", "repository", "preview_sha256", "carrier_sha256", "mission_id", "mission_sha256", "canonical_main_sha", "workflow_ref", "workflow_blob_sha", "launch_nonce_sha256", "public_clean_confirmation", "dispatch_transport", "workflow_run_id", "workflow_run_url", "workflow_run_head_sha", "stop_point", "rollback", "forbidden_actions"],
   "properties": {
     "schema_version": {"const": "atlas.athena.guided-intake-execute-receipt.v1"},
-    "result": {"const": "DISPATCHED"},
+    "result": {"enum": ["DISPATCHED", "PARTIAL"]},
+    "error_code": {"type": ["string", "null"], "pattern": "^[A-Z][A-Z0-9_]{0,79}$"},
     "repository": {"const": "Jktomy/atlas-prime"},
     "preview_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "carrier_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
@@ -17,12 +18,13 @@
     "workflow_ref": {"const": "Jktomy/atlas-prime/.github/workflows/athena-bow-hosted.yml@refs/heads/main"},
     "workflow_blob_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
     "launch_nonce_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "public_clean_confirmation": {"const": "PUBLIC_CLEAN_CONFIRMED"},
     "dispatch_transport": {"const": "GH_WORKFLOW_JSON_STDIN"},
-    "workflow_run_id": {"type": "integer", "minimum": 1},
-    "workflow_run_url": {"type": "string", "pattern": "^https://github[.]com/Jktomy/atlas-prime/actions/runs/[0-9]+$"},
-    "workflow_run_head_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
-    "stop_point": {"const": "HOSTED_WORKFLOW_DISPATCH_READBACK"},
-    "rollback": {"const": "HOSTED_ROUTE_RECEIPT_GOVERNS"},
+    "workflow_run_id": {"type": ["integer", "null"], "minimum": 1},
+    "workflow_run_url": {"type": ["string", "null"], "pattern": "^https://github[.]com/Jktomy/atlas-prime/actions/runs/[0-9]+$"},
+    "workflow_run_head_sha": {"type": ["string", "null"], "pattern": "^[a-f0-9]{40}$"},
+    "stop_point": {"enum": ["HOSTED_WORKFLOW_DISPATCH_READBACK", "PARTIAL_STATE_PRESERVED"]},
+    "rollback": {"enum": ["HOSTED_ROUTE_RECEIPT_GOVERNS", "PRESERVE_AND_REVIEW_NO_RETRY"]},
     "forbidden_actions": {
       "type": "object",
       "additionalProperties": false,
@@ -40,5 +42,30 @@
         "standing_authority": {"const": false}
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"result": {"const": "DISPATCHED"}}},
+      "then": {
+        "properties": {
+          "error_code": {"const": null},
+          "workflow_run_id": {"type": "integer", "minimum": 1},
+          "workflow_run_url": {"type": "string", "pattern": "^https://github[.]com/Jktomy/atlas-prime/actions/runs/[0-9]+$"},
+          "workflow_run_head_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+          "stop_point": {"const": "HOSTED_WORKFLOW_DISPATCH_READBACK"},
+          "rollback": {"const": "HOSTED_ROUTE_RECEIPT_GOVERNS"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"result": {"const": "PARTIAL"}}},
+      "then": {
+        "properties": {
+          "error_code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{0,79}$"},
+          "stop_point": {"const": "PARTIAL_STATE_PRESERVED"},
+          "rollback": {"const": "PRESERVE_AND_REVIEW_NO_RETRY"}
+        }
+      }
+    }
+  ]
 }
