@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:79ede66f6e3128db17c65384757ccb7236b383da65ef180ba7e0a04a8b8eee6f
+Source fingerprint: sha256:a9e108b3f748bf735068fb691bb4575b6f25ef116dd9bd5def5639b9fc57b9d9
 Generator format: 2
 Status: Generated support artifact
 
@@ -86,12 +86,13 @@ Status: Generated support artifact
 | `tools/atlas-sword/README.md` | tools | no | policy-reference |
 | `tools/atlas-sword/tests/test-contract.md` | tools | no | policy-reference |
 | `tools/atlas_lifecycle/README.md` | tools | no | none |
+| `tools/generated_checkpoint/README.md` | tools | no | none |
 | `tools/oathbringer-foundry/README.md` | tools | no | none |
 | `tools/prime_continuity/README.md` | tools | no | none |
 | `tools/resonance/README.md` | tools | no | none |
 | `tools/thread-engine/ARCHITECTURE.md` | tools | no | none |
 | `tools/thread-engine/PRIME-PORT-STATUS.md` | tools | no | none |
-| `tools/thread-engine/README.md` | tools | no | none |
+| `tools/thread-engine/README.md` | tools | no | policy-reference |
 | `tools/thread-engine/tests/production-adapter-contract.md` | tools | no | none |
 | `tools/thread-engine/tests/spear-bridge-contract.md` | tools | no | none |
 | `tools/thread-engine/tests/test-contract.md` | tools | no | none |
