@@ -66,6 +66,13 @@ class PrimeProgramTests(unittest.TestCase):
                 }
             ],
         )
+        repairing_source = (ROOT / "quests/repairing-prime.md").read_text(encoding="utf-8")
+        conservation = (ROOT / "governance/deterministic-conservation-contract.md").read_text(encoding="utf-8")
+        for mission in (f"RP-C06-M{index:02d}" for index in range(1, 8)):
+            self.assertIn(mission, repairing_source)
+        self.assertIn("Former G4-E means only the construction layer", conservation)
+        self.assertIn("Former G4-F means only the later live", conservation)
+        self.assertIn("invokes only the singular Thread Engine", conservation)
         independent = {
             item["quest_id"]: (item["source"], item["state"], item["next_gate"])
             for item in board["entries"]

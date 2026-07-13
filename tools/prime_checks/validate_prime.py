@@ -31,6 +31,7 @@ REQUIRED = (
     "schemas/shardblade-permanence-approval-v1.schema.json",
     "schemas/shardblade-permanence-receipt-v1.schema.json",
     "tools/agentic_warrants/permanence.py",
+    "governance/deterministic-conservation-contract.md",
     "governance/athena-execution-route-contract.md",
     "safety/atlas-safety-doctrine.md",
     "routing/command-surfaces.md",

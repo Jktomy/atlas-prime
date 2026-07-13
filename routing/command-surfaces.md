@@ -22,6 +22,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Agent identity and capability warrants | `governance/agentic-warrant-contract.md`, `schemas/agentic-capability-warrant-v1.schema.json`, `schemas/agentic-approval-record-v1.schema.json`, `schemas/agentic-warrant-receipt-v1.schema.json` |
 | Shardplate work-surface and Shardblade permanence contract (`CONTRACT_ONLY_NOT_ACTIVATED`) | `governance/shard-doctrine.md`, `schemas/shardblade-permanence-request-v1.schema.json`, `schemas/shardblade-permanence-approval-v1.schema.json`, `schemas/shardblade-permanence-receipt-v1.schema.json`, `tools/agentic_warrants/permanence.py` |
 | Investiture source identity and Light-name migration | `governance/investiture-source-identity-contract.md` |
+| Deterministic conservation and generated-checkpoint contract | `governance/deterministic-conservation-contract.md`; the hosted publisher remains a later RP-C06 mission |
 | Chromelight provider evidence and account boundary | `governance/chromelight-provider-boundary.md`, `schemas/chromelight-evidence-register-v1.schema.json`, `proof/repairing-prime/rp-c03-chromelight-evidence-r01.json` |
 | Resonance independent finding reconciliation | `governance/resonance-reconciliation-contract.md`, `schemas/resonance-finding-v1.schema.json`, `schemas/aberration-register-v1.schema.json`, `tools/resonance/README.md`, `proof/repairing-prime/rp-c04-aberration-register-r01.json` |
 | Source changes and route selection | `governance/source-lifecycle.md`, `governance/change-routes.md` |

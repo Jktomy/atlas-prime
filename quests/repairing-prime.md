@@ -118,6 +118,16 @@ Reconcile former G4-E/G4-F, deterministic projections, cross-platform parity,
 the bounded generated-only publisher, replay protection, evidence conservation,
 and authored/generated separation.
 
+Missions:
+
+1. `RP-C06-M01` Bind the former G4-E construction and G4-F live-acceptance meanings without restoring obsolete phase authority.
+2. `RP-C06-M02` Prove deterministic five-report projection bytes from one exact source.
+3. `RP-C06-M03` Prove hosted Ubuntu/Windows byte-hash parity.
+4. `RP-C06-M04` Prove the owner-triggered generated-only route invokes the singular Thread Engine and stops at exact draft-PR readback.
+5. `RP-C06-M05` Prove stale-base, replay, branch-collision, and PR-collision rejection without new mutation.
+6. `RP-C06-M06` Conserve sanitized workflow, parity, Thread Engine, PR, and canonical readback evidence.
+7. `RP-C06-M07` Prove authored/generated separation and reconcile AJ-09 without self-promotion.
+
 **Gate:** `DETERMINISTIC_CONSERVATION_AND_GENERATED_PARITY_PROVEN`
 
 ## RP-C07 — Acceptance Journey Closure
