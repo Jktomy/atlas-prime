@@ -95,15 +95,25 @@
   },
   "guided_dependency_retirement": {
     "mission": "RP-C01-M08",
-    "state": "PARTIAL",
-    "accepted_subclaim": "JAYSON_CARRIER_CREATION_ATTACHMENT_PLACEMENT_NOT_REQUIRED",
+    "state": "PROVEN",
+    "accepted_subclaims": [
+      "JAYSON_CARRIER_CREATION_ATTACHMENT_PLACEMENT_NOT_REQUIRED",
+      "ROUTINE_FREE_FORM_INTAKE_TO_CANONICAL_CARRIER_LIVE_ACCEPTANCE"
+    ],
     "construction_pull_request": 150,
     "construction_merge_sha": "f30c682e711cd3b92ffb5252734a48813fd5b493",
-    "live_workflow_run": 29231950571,
-    "live_pull_request": 151,
-    "live_merge_sha": "93f19b44b830c05bf9ec57356da66af4ac4a444c",
-    "missing": ["ROUTINE_FREE_FORM_INTAKE_TO_CANONICAL_CARRIER_LIVE_ACCEPTANCE"],
-    "evidence": "proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.json"
+    "guided_live_workflow_run": 29231950571,
+    "guided_live_pull_request": 151,
+    "guided_live_merge_sha": "93f19b44b830c05bf9ec57356da66af4ac4a444c",
+    "free_form_live_workflow_run": 29241109167,
+    "free_form_live_pull_request": 166,
+    "free_form_live_head_sha": "4bc22f8203ab0603025fc63fe0862eaddf58f3ef",
+    "free_form_live_merge_sha": "429ae7d068f9dde943a47b7cf3795073b9d1fc93",
+    "free_form_live_exact_head_ci": {"run": 29261247288, "ubuntu_job": 86854800780, "windows_job": 86854800816, "result": "GREEN"},
+    "free_form_live_detached_review": "GREEN",
+    "missing": [],
+    "historical_partial_evidence": "proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.json",
+    "evidence": "proof/repairing-prime/rp-c01-m08-free-form-acceptance-r01.json"
   },
   "m07_live_rejection_sequence": {
     "state": "PARTIAL_NON_OWNER_MISSING",
@@ -135,7 +145,7 @@
     "RP-C01-M05": "PROVEN_SAME_CARRIER_DIRECT_AND_GUIDED_HOSTED_PARITY",
     "RP-C01-M06": "HANDOFF_DETECTION_PROVEN_PROTECTED_EXECUTION_NOT_RUN",
     "RP-C01-M07": "PARTIAL_ONLY_GENUINE_NON_OWNER_LIVE_REJECTION_MISSING",
-    "RP-C01-M08": "PARTIAL_JAYSON_CARRIER_CREATION_ATTACHMENT_PLACEMENT_NOT_REQUIRED_FREE_FORM_INTAKE_ACCEPTANCE_MISSING"
+    "RP-C01-M08": "PROVEN_ROUTINE_FREE_FORM_INTAKE_TO_CANONICAL_CARRIER_LIVE_ACCEPTANCE"
   },
   "capability_promotion": "NONE",
   "acceptance_journey_promotion": "NONE"

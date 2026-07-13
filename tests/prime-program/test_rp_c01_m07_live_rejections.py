@@ -53,14 +53,22 @@ class RpC01M07LiveRejectionTests(unittest.TestCase):
         self.assertEqual({item["run"] for item in self.proof["superseded_no_mutation_diagnostics"]}, {29233989153, 29234050494})
         self.assertTrue(all(item["mutation"] is False for item in self.proof["superseded_no_mutation_diagnostics"]))
 
-    def test_continuity_advances_once_and_prior_boundaries_remain(self) -> None:
+    def test_continuity_preserves_m07_and_prior_boundaries(self) -> None:
         repairing = next(item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
-        self.assertEqual(self.continuity["register_revision"], 15)
-        self.assertEqual(repairing["revision"], 14)
-        self.assertEqual(repairing["last_event_id"], "RP-C01-M05-PARITY-ACCEPTANCE-R01")
+        events = self.continuity["event_ids"]
+        m07_event = "RP-C01-M07-LIVE-REJECTION-RECONCILIATION-R01"
+        m05_event = "RP-C01-M05-PARITY-ACCEPTANCE-R01"
+        m08_event = "RP-C01-M08-FREE-FORM-ACCEPTANCE-R01"
+        self.assertEqual(events.count(m07_event), 1)
+        self.assertLess(events.index(m07_event), events.index(m05_event))
+        self.assertLess(events.index(m07_event), events.index(m08_event))
+        self.assertGreaterEqual(self.continuity["register_revision"], 15)
+        self.assertGreaterEqual(repairing["revision"], 14)
+        self.assertIn(repairing["last_event_id"], events)
         self.assertEqual(repairing["quest_state"], "IN_PROGRESS")
         self.assertTrue(any("genuine non-owner" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("RP-C01-M05" in blocker for blocker in repairing["blockers"]))
+        self.assertFalse(any("RP-C01-M08" in blocker for blocker in repairing["blockers"]))
 
 
 if __name__ == "__main__":

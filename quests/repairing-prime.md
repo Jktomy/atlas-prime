@@ -22,7 +22,7 @@ routes_to:
 private_boundary: "Store only clean doctrine, schemas, code, sanitized evidence, and non-secret status. Keep secrets, credentials, PHI, finance/account evidence, IP addresses, network maps, device registers, and private runtime values outside Prime."
 evidence_boundary: "Capabilities and journeys move only from exact receipts, live proof where required, independent review, and canonical readback. Code existence and generated output do not prove availability."
 cleanup_path: "Close only after RP-C01 through RP-C08, all capability and acceptance reconciliation, generated refresh, clean-clone proof, independent whole-Quest Strikeforce, Quest Board closeout, Phoenix recovery, and restart-safe Sunset."
-last_verified: 2026-07-12
+last_verified: 2026-07-13
 ---
 
 # Quest — Repairing Prime
@@ -91,12 +91,14 @@ and AJ-03 remain incomplete, but live edited-input, intentional replay,
 duplicate-branch, and duplicate-PR trials now reject before mutation. Only a
 genuine non-owner live rejection remains missing from that matrix.
 
-Accepted partial evidence:
-`proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.md`. M08 is
-PARTIAL: Jayson carrier creation, attachment, and placement are not required by
-the accepted guided journey, but the ordinary free-form mission-fields intake
-to canonical mission/carrier construction has not completed a fresh live
-acceptance. This does not promote CAP-015, AJ-01, or the RP-C01 gate.
+Accepted evidence:
+`proof/repairing-prime/rp-c01-m08-free-form-acceptance-r01.md`. M08 is PROVEN
+from the accepted guided dependency-retirement journey plus the ordinary
+free-form mission-fields intake that constructed the canonical mission and
+immutable carrier and completed the fresh hosted journey through exact draft-PR
+readback, exact-head Ubuntu/Windows validation, detached review, merge, and
+canonical readback. The earlier partial reconciliation remains historical
+evidence. This does not promote CAP-015, AJ-01, AJ-03, or the RP-C01 gate.
 
 Accepted evidence:
 `proof/repairing-prime/rp-c01-m05-parity-acceptance-r01.md`. M05 is PROVEN from

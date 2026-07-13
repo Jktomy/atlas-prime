@@ -1,0 +1,107 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c01-m08-free-form-acceptance.v1",
+  "campaign": "RP-C01",
+  "mission": "RP-C01-M08",
+  "mission_state": "PROVEN",
+  "campaign_gate": "ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN",
+  "campaign_gate_state": "NOT_PROVEN",
+  "transaction_base_sha": "429ae7d068f9dde943a47b7cf3795073b9d1fc93",
+  "accepted_subclaims": [
+    "JAYSON_CARRIER_CREATION_ATTACHMENT_PLACEMENT_NOT_REQUIRED",
+    "ROUTINE_FREE_FORM_INTAKE_TO_CANONICAL_CARRIER_LIVE_ACCEPTANCE"
+  ],
+  "construction_evidence": {
+    "pull_request": 164,
+    "base_sha": "39fb5cf46fe4ee8c5c5201d97f34b26b53cdf6b1",
+    "head_sha": "d25fecbc2e3c9273990521eb7785ff412dff669e",
+    "result": "MERGED",
+    "promotion": "NONE"
+  },
+  "live_evidence": {
+    "mission_id": "RP-C01-M08-FREE-FORM-LIVE-R01",
+    "canonical_base_sha": "063dd2334f768494a6d0bf4085f5ccffd9799198",
+    "workflow_run": 29241109167,
+    "workflow_source_sha": "063dd2334f768494a6d0bf4085f5ccffd9799198",
+    "event_actor": "Jktomy",
+    "triggering_actor": "Jktomy",
+    "authorizer": "Jayson",
+    "semantic_operator": "Codex SOL Goal",
+    "requesting_surface": "Codex",
+    "origin_classification": "OWNER_GUIDED_LOCAL_NOT_FRESH_WORK_ORIGIN",
+    "carrier_sha256": "4fef7ea12d8d3a37c12423910f5cf0fb0aa54e426433d4cbf0d7965be87422fb",
+    "mission_lock_sha256": "69699b26081beb4e34e37545da5b4ec986309b1a6691e56ba7a849c9d968a940",
+    "mission_sha256": "6a94eaf3f64594a845caa31c22cd732089e69bc3a9be8b5c6afca2e54c2955ff",
+    "compile_receipt_sha256": "d1a43381733521c76364c941953ff72b2d2fb02af5b1489ac022c519b34aa2b0",
+    "replay_key": "sha256:39c34543ca699483eca9ab5ccc8dc143b39cc7c27316a3015525432aa9c9fa28",
+    "candidate_tree_sha256": "b53b1a3af0fbe0274b39b0ff27fa3e8d7b18fa481ca593a0fdfb53e605e16766",
+    "commit_tree": "08645166a25c523f1f0acaf83c64e04787059c6b",
+    "checkpoint_count": 24,
+    "singular_thread_engine": true,
+    "hosted_result": "SUCCESS",
+    "hosted_stop_point": "DRAFT_PR_READBACK",
+    "branch": "source/athena-bow-69699b26081beb4e34e3",
+    "pull_request": 166,
+    "head_sha": "4bc22f8203ab0603025fc63fe0862eaddf58f3ef",
+    "exact_head_ci": {
+      "run": 29261247288,
+      "ubuntu_job": 86854800780,
+      "windows_job": 86854800816,
+      "result": "GREEN"
+    },
+    "detached_review": "GREEN",
+    "merge_sha": "429ae7d068f9dde943a47b7cf3795073b9d1fc93",
+    "canonical_readback": "EXACT",
+    "forbidden_action_confirmation": "ALL_FALSE_OR_NO",
+    "artifacts": {
+      "preflight": {
+        "id": 8275439940,
+        "name": "athena-hosted-bow-preflight-29241109167-1",
+        "archive_sha256": "ab445544481823c5d67df31ca6850e285bb6d28f8c7e31d30641d7fe4fb01efe",
+        "expires_at": "2026-07-27T09:59:22Z",
+        "members": {
+          "athena-hosted-preflight-result.json": "52123788b3271c07d3c971fc7f2271c971fccd8e5e0dfef69e43a3a7e348708c",
+          "athena-hosted-route-request.json": "f8fd4320fd93603bb2f4132ff1ee9f3a59939dd809b214dd32879589e3c62cac"
+        }
+      },
+      "route": {
+        "id": 8275453366,
+        "name": "athena-hosted-bow-29241109167-1",
+        "archive_sha256": "ed712359390cc1678cd41575eb4e906b5b67cf58a0394ba1b8352f311769452c",
+        "expires_at": "2026-07-27T09:59:57Z",
+        "members": {
+          "athena-hosted-route-receipt.json": "30838d732fd29b8116a53ef38e650da5554397bcf965a6df1642345966a93243",
+          "athena-hosted-route-request.json": "4c5684e433da0ec0791d175a83540498ed4be8c8223ad453ac97c54ea76fc9d4",
+          "thread-engine-evidence.json": "677878da7774b43c76dd32ab6150c96bad7dcc82a316ae2fe28a74c4b43bfab0"
+        }
+      }
+    }
+  },
+  "remaining_boundaries": [
+    "RP-C01-M02_FRESH_WORK_ATHENA_ORIGIN",
+    "RP-C01-M06_PROTECTED_EXECUTION",
+    "RP-C01-M07_GENUINE_NON_OWNER",
+    "CAP_015",
+    "CAP_027",
+    "AJ_01",
+    "AJ_03",
+    "AJ_11",
+    "AJ_12"
+  ],
+  "capability_promotion": "NONE",
+  "acceptance_journey_promotion": "NONE",
+  "forbidden_promotions": {
+    "RP_C01_COMPLETE": false,
+    "RP_C08_COMPLETE": false,
+    "REPAIRING_PRIME_COMPLETE": false,
+    "CAP_015": false,
+    "CAP_027": false,
+    "AJ_01": false,
+    "AJ_03": false,
+    "AJ_11": false,
+    "AJ_12": false,
+    "protected_execution": false,
+    "fresh_work_origin": false,
+    "permanence_granted": false,
+    "standing_authority": false
+  }
+}

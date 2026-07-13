@@ -55,16 +55,20 @@ Its controlled fixture PR was closed unmerged and its branch deleted; canonical
 main did not move. A genuine non-owner live trial remains missing, so M07 and
 AJ-03 remain incomplete. Actual protected-route execution also remains absent.
 
-The later guided journey recorded at
-`proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.md` proves that
-Jayson need not create, attach, or place the routine carrier. Jayson supplied
-the controlling Goal authority and authenticated owner session; Codex built the
-fresh mission and immutable carrier outside the repository and carried Preview,
-Execute, hosted draft-PR creation, exact readback, CI, detached review, merge,
-and canonical readback through completion. M08 remains PARTIAL because the
-accepted publisher still requires an already built immutable carrier path; an
-ordinary free-form mission-fields-to-canonical-carrier live acceptance is still
-missing.
+The guided journey recorded at
+`proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.md` first proved
+that Jayson need not create, attach, or place the routine carrier. The later
+ordinary free-form journey is accepted at
+`proof/repairing-prime/rp-c01-m08-free-form-acceptance-r01.md`. Hosted run
+`29241109167` constructed the canonical mission and immutable carrier from
+public-clean free-form mission fields, invoked the singular Thread Engine,
+created draft PR #166, and read back exact head
+`4bc22f8203ab0603025fc63fe0862eaddf58f3ef`. Exact-head validation run
+`29261247288` passed Ubuntu and Windows, detached review was GREEN, and the
+reviewed proof merged as `429ae7d068f9dde943a47b7cf3795073b9d1fc93`
+with exact canonical readback. M08 is PROVEN. This does not assert fresh
+Work/Athena origin or promote any capability, acceptance journey, Campaign,
+Quest, permanence, or standing authority.
 
 The M05 acceptance at
 `proof/repairing-prime/rp-c01-m05-parity-acceptance-r01.md` proves end-to-end
@@ -78,8 +82,8 @@ review independently rebuilt the closed parity record byte for byte; the proof
 merged as `df66ae78dac1991db3902537fe338a4191d0da11`; and canonical main reproduced
 the payload hash. M05 is PROVEN, with no CAP or AJ promotion.
 
-M04 hosted Bow is now proven. The broader
+M04 hosted Bow and M08 routine free-form intake are now proven. The broader
 `ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN` gate remains unproven because fresh
-Work/Athena origin, protected execution, genuine non-owner rejection, complete
-M08 intake, and the remaining mission-level acceptance evidence are still
-incomplete. No CAP or AJ promotion is authorized.
+Work/Athena origin, protected execution, genuine non-owner rejection, and the
+remaining mission-level acceptance evidence are still incomplete. No CAP or AJ
+promotion is authorized.
