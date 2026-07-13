@@ -97,6 +97,9 @@ class ProductionAdapterStaticTests(unittest.TestCase):
         self.assertIn("--generated-checkpoint-route", workflow)
         self.assertIn("github.triggering_actor == github.repository_owner", workflow)
         self.assertIn("group: generated-checkpoint-publisher-jktomy-atlas-prime", workflow)
+        self.assertIn("--github-event $env:GITHUB_EVENT_PATH", workflow)
+        self.assertNotIn("INPUT_REPLAY_NONCE", workflow)
+        self.assertNotIn("--replay-nonce", workflow)
         self.assertIn("PRE_PUSH_REMOTE_LOCK", (ADAPTER / "adapter.py").read_text(encoding="utf-8"))
         self.assertIn("fresh_clone_reproduction", source)
 

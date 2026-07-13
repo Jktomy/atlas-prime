@@ -274,7 +274,15 @@ def execute_mission(
 ) -> dict[str, Any]:
     if not mission_scoped or not execute_draft_pr:
         raise AdapterError("explicit mission-scoped and draft-PR-only execution intent required", "INTENT_REQUIRED", "PACKAGE_AUDIT")
-    root = Path(tempfile.mkdtemp(prefix="atlas-gate7f-adapter-", dir=str(work_root) if work_root else None))
+    try:
+        if work_root is not None:
+            work_root = work_root.resolve(strict=False)
+            if work_root.exists() and (not work_root.is_dir() or work_root.is_symlink()):
+                raise OSError("unsafe work root")
+            work_root.mkdir(parents=True, exist_ok=True)
+        root = Path(tempfile.mkdtemp(prefix="atlas-gate7f-adapter-", dir=str(work_root) if work_root else None))
+    except OSError as exc:
+        raise AdapterError("adapter work root is unavailable", "WORK_ROOT_REJECTED", "PACKAGE_AUDIT") from exc
     evidence_root = root / "evidence"
     journal = Journal(evidence_root / "state-journal.jsonl")
     mission: Mission | None = None

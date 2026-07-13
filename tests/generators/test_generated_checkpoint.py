@@ -30,6 +30,7 @@ from tools.build_index import APPROVED_OUTPUTS, build_outputs, output_bytes
 from tools.generated_checkpoint.core import (
     PreparationError,
     build_hash_register,
+    load_github_event_inputs,
     prepare_package,
     reconcile_registers,
     git_blob_sha,
@@ -295,7 +296,7 @@ class GeneratedCheckpointTests(unittest.TestCase):
                     execute_draft_pr=True,
                     mission_sha256=mission["mission_sha256"],
                     generated_checkpoint_route=True,
-                    work_root=Path(raw),
+                    work_root=Path(raw) / "nested" / "thread-engine-work",
                     package_root=package,
                     runner=runner,
                 )
@@ -373,6 +374,22 @@ class GeneratedCheckpointTests(unittest.TestCase):
         self.assertNotIn("subprocess", source)
         self.assertNotIn("gh pr", source)
         self.assertNotIn("git ", source.casefold())
+
+    def test_github_event_inputs_are_closed_without_workflow_echo(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="generated-checkpoint-") as raw:
+            event_path = Path(raw) / "event.json"
+            inputs = {
+                "base_sha": BASE,
+                "mission_id": MISSION_ID,
+                "replay_nonce": NONCE,
+                "public_clean_confirmation": "PUBLIC_CLEAN_CONFIRMED",
+            }
+            event_path.write_text(json.dumps({"inputs": inputs}), encoding="utf-8", newline="\n")
+            self.assertEqual(load_github_event_inputs(event_path), inputs)
+            event_path.write_text(json.dumps({"inputs": {**inputs, "extra": "rejected"}}), encoding="utf-8", newline="\n")
+            with self.assertRaises(PreparationError) as raised:
+                load_github_event_inputs(event_path)
+            self.assertEqual(raised.exception.code, "GENERATED_CHECKPOINT_EVENT")
 
 
 if __name__ == "__main__":
