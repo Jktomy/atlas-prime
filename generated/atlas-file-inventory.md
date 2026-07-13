@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:ebf6432d63f2297dd479725bc6fafe995c94b0c5b37b608a3c3f82b0ab5779b7
+Source fingerprint: sha256:f7d619a4cbec1317a64f090ae516bd0aedb6128c022249cbbbf4264aff82d8ee
 Generator format: 2
 Status: Generated support artifact
 
@@ -19,9 +19,10 @@ Status: Generated support artifact
 | `governance/atlas-aegis.md` | governance | yes | none |
 | `governance/atlas-strikeforce.md` | governance | yes | none |
 | `governance/capability-acceptance-contract.md` | governance | yes | policy-reference |
-| `governance/change-routes.md` | governance | yes | none |
+| `governance/change-routes.md` | governance | yes | policy-reference |
 | `governance/chromelight-provider-boundary.md` | governance | yes | policy-reference |
 | `governance/cutover-boundary.md` | governance | yes | none |
+| `governance/investiture-source-identity-contract.md` | governance | yes | review |
 | `governance/noctua.md` | governance | yes | none |
 | `governance/protected-source-boundary.md` | governance | yes | policy-reference |
 | `governance/quest-engine-continuity-contract.md` | governance | yes | none |
@@ -43,7 +44,7 @@ Status: Generated support artifact
 | `methods/atlas-sword.md` | methods | yes | policy-reference |
 | `methods/consistent-pr-delivery-standard.md` | methods | no | none |
 | `methods/oathbringer-foundry.md` | methods | yes | policy-reference |
-| `methods/phoenix-blade.md` | methods | yes | none |
+| `methods/phoenix-blade.md` | methods | yes | policy-reference |
 | `methods/sword-forge-standard.md` | methods | yes | policy-reference |
 | `migration/codex-cutover.md` | migration | yes | none |
 | `migration/codex-inheritance-manifest.md` | migration | yes | none |
@@ -51,7 +52,7 @@ Status: Generated support artifact
 | `migration/rollback-map.md` | migration | yes | none |
 | `operations/artemis-runtime-and-routing.md` | operations | yes | none |
 | `operations/operation-registry.md` | operations | yes | none |
-| `operations/protocol-library.md` | operations | yes | none |
+| `operations/protocol-library.md` | operations | yes | policy-reference |
 | `projects/project-registry.md` | projects | yes | policy-reference |
 | `proof/lifecycle/g3-d-beu-reduction-pilot-r01.md` | proof | yes | none |
 | `proof/oathbringer-production-acceptance-r01.md` | proof | yes | none |
