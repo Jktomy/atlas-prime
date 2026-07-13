@@ -23,7 +23,7 @@ protected_level: "CRITICAL"
 | Normal repository engine | Prime Thread Engine, singular |
 | Repository substrate | Exact GitHub-native tree transaction or Fresh Clone First |
 | AI-assisted work surface | Shardplate |
-| Provider, model, and runtime identity | Bound independently; trusted reported tokens map only to Spirallight, Chromelight, or Emberlight under `governance/investiture-source-identity-contract.md` |
+| AI/model processing source | Stormlight: CLOUD, LOCAL, HYBRID, or NONE |
 
 ```text
 Spear -> Thread Engine

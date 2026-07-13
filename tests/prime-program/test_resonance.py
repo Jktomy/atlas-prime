@@ -36,15 +36,20 @@ class ResonanceContractTests(unittest.TestCase):
             validate_schema(self.register_schema, extra)
 
     def test_historical_repository_evidence_survives_current_source_advance(self) -> None:
-        evidence = next(
-            item["evidence"][0]
-            for item in self.fixture["findings"]
-            if item["evidence"][0]["source"] == "quests/repairing-prime.md"
-        )
-        current = hashlib.sha256((ROOT / evidence["source"]).read_bytes()).hexdigest()
-        snapshot = ROOT / "proof/repairing-prime/historical-sources/quests-repairing-prime-318d611e.source"
-        self.assertNotEqual(current, evidence["sha256"])
-        self.assertEqual(hashlib.sha256(snapshot.read_bytes()).hexdigest(), evidence["sha256"])
+        registry = json.loads((ROOT / "proof/repairing-prime/historical-source-evidence-r01.json").read_text(encoding="utf-8"))
+        records = {(item["source"], item["sha256"]): item["snapshot"] for item in registry["records"]}
+        drifted = []
+        for finding in self.fixture["findings"]:
+            for evidence in finding["evidence"]:
+                if evidence["evidence_type"] != "REPOSITORY_FILE":
+                    continue
+                current = hashlib.sha256((ROOT / evidence["source"]).read_bytes()).hexdigest()
+                if current == evidence["sha256"]:
+                    continue
+                drifted.append(evidence["source"])
+                snapshot = ROOT / "proof/repairing-prime/historical-sources" / records[(evidence["source"], evidence["sha256"])]
+                self.assertEqual(hashlib.sha256(snapshot.read_bytes()).hexdigest(), evidence["sha256"])
+        self.assertEqual(set(drifted), {"quests/repairing-prime.md", "governance/change-routes.md", "operations/protocol-library.md"})
         self.reconcile()
 
     def test_aberration_register_preserves_consensus_conflict_and_novel(self) -> None:

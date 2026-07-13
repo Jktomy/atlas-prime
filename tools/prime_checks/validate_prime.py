@@ -25,6 +25,7 @@ REQUIRED = (
     "governance/source-lifecycle.md",
     "governance/capability-parity-register.json",
     "governance/capability-acceptance-contract.md",
+    "governance/investiture-source-identity-contract.md",
     "governance/athena-execution-route-contract.md",
     "safety/atlas-safety-doctrine.md",
     "routing/command-surfaces.md",

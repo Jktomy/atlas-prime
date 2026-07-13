@@ -141,7 +141,7 @@ class CapabilityParityTests(unittest.TestCase):
             "Normal repository engine",
             "Repository substrate",
             "AI-assisted work surface",
-            "AI/model processing source",
+            "Provider, model, and runtime identity",
         ):
             self.assertIn(term, change_routes)
 
@@ -160,8 +160,10 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertNotIn("Aegis Break -> Phoenix Blade", change_routes)
         self.assertIn("not hardwired to Phoenix Blade", phoenix)
 
-        self.assertIn("Stormlight identifies the source of AI/model processing", phoenix)
-        self.assertNotIn("Stormlight describes the execution environment", phoenix)
+        self.assertIn("Trusted reported OpenAI, Google, or Atlas-controlled local-model tokens", phoenix)
+        self.assertIn("Unreported model use is `UNAVAILABLE`", phoenix)
+        self.assertIn("deterministic non-model work has no Light and zero BEU", phoenix)
+        self.assertNotIn("Stormlight identifies", phoenix)
 
         self.assertIn("PowerShell is the thin interactive client", sword)
         self.assertIn("GitHub-native", sword)

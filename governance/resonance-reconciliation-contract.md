@@ -22,8 +22,10 @@ can see another lane's output. Refract does not ask providers to vote, share a
 conversation, converge early, or infer authority from a model name.
 
 Every finding binds the exact input, semantic claim key, statement, evidence,
-confidence, agent/provider/model/Stormlight identity, warrant, independence
-posture, and seal time. A sealed finding is a candidate, never doctrine.
+confidence, agent/provider/model identity, the legacy v1 `stormlight` source
+classifier, warrant, independence posture, and seal time. That compatibility
+field is not a current Light or BEU record. A sealed finding is a candidate,
+never doctrine.
 
 ## Aberration Register
 
@@ -37,7 +39,7 @@ declared semantic claim key, and records one of:
 Provider count, model identity, confidence, eloquence, and majority do not
 decide truth. Conflicts are not averaged away. Missing evidence, input drift,
 lane, agent, or warrant reuse, prior-lane visibility, duplicate identity, or
-unproved LOCAL or HYBRID model execution fails closed.
+an unproved legacy v1 `LOCAL` or `HYBRID` model-source claim fails closed.
 
 ## Athena Refraction
 
@@ -52,10 +54,12 @@ decision requires separately authorized evidence and permanence boundaries.
 
 ## Runtime and gate truth
 
-The committed fixtures are provider-neutral test evidence with Stormlight
-`NONE`; they are not model output. Local-model work remains
+The committed fixtures are provider-neutral deterministic test evidence with
+the legacy v1 `stormlight` field set to `NONE`; they are not model output and
+have no current Light. Local-model work remains
 `BLOCKED_RUNTIME_PROOF_ABSENT`, contributes no finding, and cannot be relabeled
-as CLOUD or fixture execution.
+as a provider run or fixture execution. The accepted v1 schemas and proof bytes
+remain historical compatibility evidence and are not rewritten.
 
 The committed deterministic projection is
 `proof/repairing-prime/rp-c04-aberration-register-r01.json`. It remains an open

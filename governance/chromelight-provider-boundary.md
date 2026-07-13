@@ -11,6 +11,16 @@ protected_level: "CRITICAL"
 
 # Chromelight provider and account boundary
 
+## Accounting-name separation
+
+This RP-C03 proper name and gate preserve the accepted provider/account lineage.
+They are not token accounting evidence. Under
+`governance/investiture-source-identity-contract.md`, accounting Chromelight is
+created only from trusted provider/runtime-reported Google model tokens. Public
+eligibility research, a Google product label, or the legacy v1 `stormlight`
+field neither emits Chromelight nor activates a provider, account, repository,
+model, runtime, capability, or route.
+
 RP-C03 reconciles public evidence about Google eligibility, the Atlas Gemini
 Scout role, Jules, and Antigravity Shardplate. Evidence reconciliation is not
 provider enrollment, account acceptance, installation, authentication,
