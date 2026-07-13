@@ -40,7 +40,7 @@ class Cap015FreshWorkBridgeSourceTests(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertIn('status: "CONSTRUCTION_ONLY_NOT_ACTIVATED"', contract)
-        self.assertIn("does not prove", contract)
+        self.assertIn("do not prove", contract)
         self.assertIn("TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE", contract)
         self.assertIn("singular existing Thread Engine", contract)
         self.assertIn("separate reviewed authored reconciliation", contract)
