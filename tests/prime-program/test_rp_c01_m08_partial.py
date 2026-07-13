@@ -38,7 +38,7 @@ class RpC01M08PartialTests(unittest.TestCase):
         missions = {item["mission_id"]: item["state"] for item in campaign["missions"]}
         self.assertEqual(missions["RP-C01-M08"], "PARTIAL")
         self.assertEqual(missions["RP-C01-M02"], "UNPROVEN")
-        self.assertEqual(missions["RP-C01-M05"], "UNPROVEN")
+        self.assertEqual(missions["RP-C01-M05"], "PROVEN")
         self.assertEqual(missions["RP-C01-M06"], "PARTIAL")
         self.assertEqual(missions["RP-C01-M07"], "PARTIAL")
         self.assertEqual(campaign["state"], "IN_PROGRESS")

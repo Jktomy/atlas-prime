@@ -66,8 +66,20 @@ accepted publisher still requires an already built immutable carrier path; an
 ordinary free-form mission-fields-to-canonical-carrier live acceptance is still
 missing.
 
+The M05 acceptance at
+`proof/repairing-prime/rp-c01-m05-parity-acceptance-r01.md` proves end-to-end
+Arrow/Spear byte and receipt parity with one fresh immutable carrier. Its
+retained direct compiler output and the guided hosted run `29237393648` join on
+the exact carrier, canonical mission, compiler receipt, candidate tree, final
+pathset, deterministic branch, and single declared payload. The hosted route
+itself invoked the singular Thread Engine, created draft PR #161, and performed
+exact PR/head readback. Exact-head CI passed on Ubuntu and Windows; detached
+review independently rebuilt the closed parity record byte for byte; the proof
+merged as `df66ae78dac1991db3902537fe338a4191d0da11`; and canonical main reproduced
+the payload hash. M05 is PROVEN, with no CAP or AJ promotion.
+
 M04 hosted Bow is now proven. The broader
 `ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN` gate remains unproven because fresh
-Work/Athena origin, end-to-end route parity, complete M08 intake, and the
-remaining mission-level acceptance evidence are still incomplete. No CAP or AJ
-promotion is authorized.
+Work/Athena origin, protected execution, genuine non-owner rejection, complete
+M08 intake, and the remaining mission-level acceptance evidence are still
+incomplete. No CAP or AJ promotion is authorized.

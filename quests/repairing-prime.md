@@ -98,6 +98,15 @@ the accepted guided journey, but the ordinary free-form mission-fields intake
 to canonical mission/carrier construction has not completed a fresh live
 acceptance. This does not promote CAP-015, AJ-01, or the RP-C01 gate.
 
+Accepted evidence:
+`proof/repairing-prime/rp-c01-m05-parity-acceptance-r01.md`. M05 is PROVEN from
+one fresh immutable carrier retained through direct compilation and the guided
+hosted Bow route, with exact compiler-receipt, mission, candidate-tree,
+final-pathset, singular-adapter, draft-PR readback, exact-head CI, detached
+review, merge, and canonical-main readback evidence. This mission-only
+acceptance does not promote a capability, acceptance journey, or the RP-C01
+gate.
+
 ## RP-C02 — Shared Agentic Doctrine and Capability Warrants
 
 Define agent identity, authority, warrants, delegation, evidence, suspension,

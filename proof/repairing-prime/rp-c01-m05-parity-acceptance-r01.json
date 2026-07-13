@@ -1,0 +1,97 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c01-m05-parity-acceptance.v1",
+  "campaign": "RP-C01",
+  "mission": "RP-C01-M05",
+  "mission_state": "PROVEN",
+  "campaign_gate": "ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN",
+  "campaign_gate_state": "NOT_PROVEN",
+  "transaction_base_sha": "df66ae78dac1991db3902537fe338a4191d0da11",
+  "construction_evidence": {
+    "pull_request": 159,
+    "base_sha": "03bb96bbe1e2524bf9ded78697cfc8e9eef3c679",
+    "head_sha": "1a403b5d01f6da5a15cf25b799d819fa51be4b3d",
+    "merge_sha": "8e17687d62a73b210d596fd0509a4bf86f53475a",
+    "exact_head_ci": {"run": 29236881144, "windows_job": 86773496956, "ubuntu_job": 86773496954, "result": "GREEN"},
+    "detached_review": "GREEN",
+    "promotion": "NONE"
+  },
+  "same_carrier_journey": {
+    "mission_id": "RP-C01-M05-PARITY-LIVE-R01",
+    "canonical_base_sha": "50bfd7e3f13215fb005dd85a95e010761a9fec7b",
+    "carrier_nonce_sha256": "d9fb81cbdfbbeb67872cee54bb005ec503387723cda4ddab7d0aea878fb7bef2",
+    "launch_nonce_sha256": "c5afb965ddd23c294cb1e769008a4161b3384fb37cc2fa1074b79a512cf92b61",
+    "carrier_sha256": "451a5622ac07ed02b887fda98508d7ddb243addf60947abb606f904ca63f1479",
+    "manifest_sha256": "e2d8e40df30df2554a9149e9e6b2715d9ba90dcb118ce4b83c6388332ef913e8",
+    "weave_sha256": "9b46814024f1cafae8b674d045db9befc5f844c918e9d2e0212d6b6da6c0b96e",
+    "mission_lock_sha256": "2909bb221901f7ed421d606615aa7758cb2e870f5b5162f79ef7d4d3bcd36c6e",
+    "canonical_mission_sha256": "19bb39a1ee26a142d922a19ae62d3e19cd14fb91ac5979a42b2c3e8d2212dec6",
+    "output_mission_sha256": "1848a599bb9e932baa626ee87976b06e46c04936ba450bf8049398a2a04dedda",
+    "payload_path": "proof/repairing-prime/rp-c01-m05-parity-live-r01.md",
+    "payload_sha256": "cc9b05ae71775894cd6eb46b8533658ba690bc6534a7d5fec5d590ec77be01b8",
+    "candidate_tree_sha256": "ddce0ce811a64502753daf7a985ca9847feb4b7d423cdd4a73b3e00dbdd8e462",
+    "final_pathset_sha256": "dc267301c1ffa63e0a39968a697a1194be368f50921d111c2555e6242f32bb16",
+    "deterministic_branch": "source/athena-bow-2909bb221901f7ed421d",
+    "branch_final_state": "DELETED_AFTER_MERGE"
+  },
+  "direct_compilation": {
+    "compile_receipt_schema": "atlas-thread-engine-spear-compile-receipt-v1",
+    "compile_receipt_sha256": "671b1031c8cf6d8a9f58462cf306adffa0263ef38a55d4c1d855469a6f3a33bd",
+    "compiled_inventory_sha256": "d90bc88d32842d4cfdaf8cda8e077cdb7382abecefae12fed2620750a162d94c",
+    "retained_files": [
+      {"path": "PAYLOADS/rp-c01-m05-parity-live-r01.md", "bytes": 748, "sha256": "cc9b05ae71775894cd6eb46b8533658ba690bc6534a7d5fec5d590ec77be01b8"},
+      {"path": "rp-c01-m05-parity-live-r01-compile-receipt.json", "bytes": 1768, "sha256": "671b1031c8cf6d8a9f58462cf306adffa0263ef38a55d4c1d855469a6f3a33bd"},
+      {"path": "rp-c01-m05-parity-live-r01-mission.json", "bytes": 2324, "sha256": "1848a599bb9e932baa626ee87976b06e46c04936ba450bf8049398a2a04dedda"}
+    ]
+  },
+  "guided_and_hosted_evidence": {
+    "preview_sha256": "a5b28a920032fd9635d5070550cf75ce1f570b57d5a3cae0a66df9c0e3d3ab2a",
+    "preview_result": "ACCEPTED",
+    "execute_sha256": "ae5c92161b04f86856ecd254666dd301a9669fa7f6825d18dc872372ae908cd9",
+    "execute_result": "DISPATCHED",
+    "workflow_run": 29237393648,
+    "workflow_source_sha": "50bfd7e3f13215fb005dd85a95e010761a9fec7b",
+    "preflight_job": 86775156986,
+    "invoke_job": 86775198808,
+    "hosted_result": "SUCCESS",
+    "hosted_stop_point": "DRAFT_PR_READBACK",
+    "hosted_route_receipt_sha256": "68e0d370197cd4effb342fbf311b29b5968ea2e0d708d0ddf12177f635bc4a3b",
+    "hosted_request_sha256": "74d07d9a1aa75b84ceb877baee143438acade52cd649f01368fe53efeed4a737",
+    "preflight_request_sha256": "743d0397be71a2fc8f6169eb2facb0a33cd9edf0fbb3054e0eabd541a6ab41ba",
+    "preflight_result_sha256": "5a3513a0db52b38e3836f91ada51325016602d7bb4df7e3b2d4f97f80bb9f195",
+    "sanitized_adapter_evidence_sha256": "1f61e902535c5bc5fe112b0b77a97b4a9aa3b470f31a255df7b60f6f5d5afa38",
+    "raw_adapter_receipt_sha256": "38e391ff2966c3ce8ea2ddcf60a44d18d7eae270192c802c7c484379ca790b0c",
+    "adapter_commit_tree": "b84b09384b4044bad3b010f6ac146b1e3ab1041a",
+    "checkpoint_count": 24,
+    "checkpoint_sequence_sha256": "e8280cea75706171d4626b328803e054a3534ef6c26e4463bf0d97023adb0e97",
+    "pre_push_remote_lock_position": "BETWEEN_COMMIT_VERIFY_AND_PUSH",
+    "forbidden_action_confirmation": "ALL_FALSE_OR_NO",
+    "singular_adapter_execution": true,
+    "artifacts": {
+      "preflight": {"id": 8273977035, "name": "athena-hosted-bow-preflight-29237393648-1", "archive_sha256": "0f858f7ca0b7e1db1fba2f1e3f8b025b7a82f72121b3988e286ec49f6cc11c6b", "expires_at": "2026-07-27T08:59:53Z"},
+      "route": {"id": 8273983788, "name": "athena-hosted-bow-29237393648-1", "archive_sha256": "49b454b5c7e32e9dd7b9ba7fc015499ea51a8b3f6b01657690b4fed0627c50d4", "expires_at": "2026-07-27T09:00:12Z"}
+    }
+  },
+  "parity_verification": {
+    "evidence_path": "proof/repairing-prime/rp-c01-m05-parity-evidence-r01.json",
+    "evidence_sha256": "588306d3a0858d0a477f1aaf0ca170dc8b77e0cac6ab775e76716044559f68e8",
+    "result": "PARITY_VERIFIED",
+    "independent_rebuild": "BYTE_FOR_BYTE_EXACT",
+    "invariants": ["SAME_CARRIER", "SAME_MISSION", "SAME_COMPILER_RECEIPT", "SAME_CANDIDATE_TREE", "SAME_BRANCH", "EXACT_DRAFT_PR_READBACK", "SINGULAR_ADAPTER_EXECUTION", "ALL_FORBIDDEN_ACTIONS_FALSE"]
+  },
+  "live_pull_request": {
+    "number": 161,
+    "base_sha": "50bfd7e3f13215fb005dd85a95e010761a9fec7b",
+    "head_sha": "e48cc2ca6d0e0b9226265a3e7bfd3b8df7df46c2",
+    "commit_tree": "b84b09384b4044bad3b010f6ac146b1e3ab1041a",
+    "route_created_draft": true,
+    "exact_readback": "VERIFIED",
+    "exact_head_ci": {"run": 29237591203, "windows_job": 86775798001, "ubuntu_job": 86775798063, "result": "GREEN"},
+    "detached_review": "GREEN",
+    "merge_sha": "df66ae78dac1991db3902537fe338a4191d0da11",
+    "canonical_payload_readback": {"path": "proof/repairing-prime/rp-c01-m05-parity-live-r01.md", "git_blob": "3979d89ac620eb03b87cef04e0017135fca842e9", "sha256": "cc9b05ae71775894cd6eb46b8533658ba690bc6534a7d5fec5d590ec77be01b8", "result": "EXACT"}
+  },
+  "remaining_boundaries": ["RP-C01-M02_FRESH_WORK_ATHENA_ORIGIN", "RP-C01-M06_PROTECTED_EXECUTION", "RP-C01-M07_GENUINE_NON_OWNER", "RP-C01-M08_FREE_FORM_INTAKE_LIVE_ACCEPTANCE"],
+  "capability_promotion": "NONE",
+  "acceptance_journey_promotion": "NONE",
+  "forbidden_promotions": {"RP_C01_COMPLETE": false, "RP_C08_COMPLETE": false, "CAP_015": false, "CAP_027": false, "AJ_01": false, "AJ_03": false, "protected_execution": false, "fresh_work_origin": false, "permanence_granted": false, "standing_authority": false}
+}
