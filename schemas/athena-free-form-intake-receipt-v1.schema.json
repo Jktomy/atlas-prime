@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/athena-free-form-intake-receipt-v1.schema.json",
+  "title": "Athena free-form carrier construction receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "result", "repository", "normalized_fields_sha256", "canonical_main_sha", "workflow_ref", "workflow_blob_sha", "mission_id", "carrier_nonce_sha256", "carrier_filename", "carrier_bytes", "carrier_sha256", "manifest_sha256", "weave_sha256", "mission_lock_sha256", "compile_receipt_schema_version", "compile_receipt_filename", "compile_receipt_sha256", "output_mission_filename", "output_mission_sha256", "mission_sha256", "candidate_tree_sha256", "final_pathset_sha256", "compiled_inventory", "preview_filename", "preview_sha256", "deterministic_branch", "path_classification", "paths", "public_clean", "origin_classification", "stop_point", "next_step", "rollback", "promotion_boundary", "forbidden_actions"],
+  "properties": {
+    "schema_version": {"const": "atlas.athena.free-form-intake-receipt.v1"},
+    "result": {"const": "CONSTRUCTED"},
+    "repository": {"const": "Jktomy/atlas-prime"},
+    "normalized_fields_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "canonical_main_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "workflow_ref": {"const": "Jktomy/atlas-prime/.github/workflows/athena-bow-hosted.yml@refs/heads/main"},
+    "workflow_blob_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "mission_id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)*$"},
+    "carrier_nonce_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "carrier_filename": {"const": "carrier.zip"},
+    "carrier_bytes": {"type": "integer", "minimum": 1},
+    "carrier_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "weave_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "mission_lock_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "compile_receipt_schema_version": {"const": "atlas-thread-engine-spear-compile-receipt-v1"},
+    "compile_receipt_filename": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*-compile-receipt[.]json$"},
+    "compile_receipt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "output_mission_filename": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*-mission[.]json$"},
+    "output_mission_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "mission_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "candidate_tree_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "final_pathset_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "compiled_inventory": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "bytes", "sha256"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1, "maxLength": 260},
+          "bytes": {"type": "integer", "minimum": 1},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        }
+      }
+    },
+    "preview_filename": {"const": "preview.json"},
+    "preview_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "deterministic_branch": {"type": "string", "pattern": "^source/athena-bow-[a-f0-9]{20}$"},
+    "path_classification": {"const": "ORDINARY"},
+    "paths": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["operation", "path", "bytes", "payload_sha256"],
+        "properties": {
+          "operation": {"enum": ["ADD", "REPLACE"]},
+          "path": {"type": "string", "minLength": 1, "maxLength": 240},
+          "bytes": {"type": "integer", "minimum": 0},
+          "payload_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        }
+      }
+    },
+    "public_clean": {"const": true},
+    "origin_classification": {"const": "OWNER_GUIDED_LOCAL_NOT_FRESH_WORK_ORIGIN"},
+    "stop_point": {"const": "FREE_FORM_CARRIER_CONSTRUCTED"},
+    "next_step": {"const": "GUIDED_PREVIEW_CONFIRMATION_REQUIRED"},
+    "rollback": {"const": "DELETE_UNDISPATCHED_LOCAL_OUTPUT_DIRECTORY"},
+    "promotion_boundary": {"const": "LIVE_HOSTED_ACCEPTANCE_AND_SEPARATE_AUTHORED_RECONCILIATION_REQUIRED"},
+    "forbidden_actions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adapter_invocation", "branch_write", "direct_main", "force_push", "merge", "pr_write", "ready", "repository_settings", "second_writer", "standing_authority", "workflow_dispatch"],
+      "properties": {
+        "adapter_invocation": {"const": false},
+        "branch_write": {"const": false},
+        "direct_main": {"const": false},
+        "force_push": {"const": false},
+        "merge": {"const": false},
+        "pr_write": {"const": false},
+        "ready": {"const": false},
+        "repository_settings": {"const": false},
+        "second_writer": {"const": false},
+        "standing_authority": {"const": false},
+        "workflow_dispatch": {"const": false}
+      }
+    }
+  }
+}
