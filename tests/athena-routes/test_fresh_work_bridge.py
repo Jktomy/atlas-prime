@@ -5,11 +5,11 @@ import tempfile
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
-from unittest.mock import patch
 
 from tools.athena_routes.fresh_work_bridge import (
     FreshWorkBridgeError,
-    execute_fresh_work,
+    build_unavailable_receipt,
+    build_verified_dispatch_plan,
 )
 from tools.athena_routes.hosted import sha256_bytes, stable_json
 
@@ -32,7 +32,6 @@ class FreshWorkBridgeTests(unittest.TestCase):
         self.preview = self.root / "preview.json"
         self.origin = self.root / "origin.json"
         self.journey = self.root / "journey.json"
-        self.guided = self.root / "guided.json"
 
         self.preview_value = {
             "canonical_main_sha": MAIN,
@@ -88,35 +87,42 @@ class FreshWorkBridgeTests(unittest.TestCase):
             newline="\n",
         )
 
-    def verifier(self, receipt: dict) -> dict:
+    def readback(self, receipt: dict, origin_sha: str) -> dict:
         return {
             "verified": True,
+            "origin_receipt_sha256": origin_sha,
             "verification_method": receipt["verification_method"],
             "verification_evidence_sha256": receipt[
                 "verification_evidence_sha256"
             ],
             "task_identity_sha256": receipt["task_identity_sha256"],
             "origin_nonce_sha256": receipt["origin_nonce_sha256"],
+            "mission_id": receipt["mission_id"],
+            "base_sha": receipt["base_sha"],
+            "carrier_sha256": receipt["carrier_sha256"],
+            "preview_sha256": receipt["preview_sha256"],
+            "workflow_blob_sha": receipt["workflow_blob_sha"],
         }
 
-    def execute(self, *, verifier=None):
-        return execute_fresh_work(
+    def plan(self, *, readback=None):
+        return build_verified_dispatch_plan(
+            self.origin,
+            self.preview,
+            self.carrier,
+            confirmed_preview_sha256=self.preview_sha,
+            readback=readback,
+            now=NOW,
+        )
+
+    def test_current_cli_boundary_records_no_verifier_without_dispatch(self) -> None:
+        receipt = build_unavailable_receipt(
             self.origin,
             self.preview,
             self.carrier,
             self.journey,
-            self.guided,
             confirmed_preview_sha256=self.preview_sha,
-            launch_nonce="fresh-work-launch-nonce-000001",
-            public_clean_confirmation="PUBLIC_CLEAN_CONFIRMED",
-            verifier=verifier,
             now=NOW,
         )
-
-    def test_missing_trusted_verifier_blocks_before_guided_dispatch(self) -> None:
-        with patch("tools.athena_routes.fresh_work_bridge.execute_preview") as guided:
-            receipt = self.execute(verifier=None)
-        guided.assert_not_called()
         self.assertEqual(receipt["result"], "BLOCKED")
         self.assertEqual(
             receipt["error_code"],
@@ -126,108 +132,90 @@ class FreshWorkBridgeTests(unittest.TestCase):
         self.assertTrue(
             all(value is False for value in receipt["bridge_mutation"].values())
         )
+        self.assertIsNone(receipt["workflow_run_id"])
+        self.assertIsNone(receipt["guided_execute_receipt_sha256"])
 
-    def test_verified_origin_dispatches_existing_guided_route_and_binds_receipts(self) -> None:
-        guided_value = {
-            "result": "DISPATCHED",
-            "error_code": None,
-            "workflow_run_id": 12345,
-            "workflow_run_url": (
-                "https://github.com/Jktomy/atlas-prime/actions/runs/12345"
-            ),
-            "workflow_run_head_sha": MAIN,
-        }
-
-        def fake_execute(_preview, _carrier, receipt_path, **_kwargs):
-            receipt_path.write_text(
-                stable_json(guided_value),
-                encoding="utf-8",
-                newline="\n",
-            )
-            return guided_value
-
-        with patch(
-            "tools.athena_routes.fresh_work_bridge.execute_preview",
-            side_effect=fake_execute,
-        ) as guided:
-            receipt = self.execute(verifier=self.verifier)
-
-        guided.assert_called_once()
-        self.assertEqual(receipt["result"], "DISPATCHED")
-        self.assertEqual(receipt["mission_id"], MISSION_ID)
-        self.assertEqual(receipt["task_identity_sha256"], TASK_SHA)
-        self.assertEqual(receipt["workflow_run_id"], 12345)
-        self.assertEqual(
-            receipt["guided_execute_receipt_sha256"],
-            sha256_bytes(self.guided.read_bytes()),
-        )
-        self.assertNotIn("transcript", json.dumps(receipt))
+    def test_verified_origin_builds_only_read_only_candidate(self) -> None:
+        plan = self.plan(readback=self.readback)
+        self.assertEqual(plan["state"], "READ_ONLY_CANDIDATE_NOT_EXECUTABLE")
+        self.assertEqual(plan["mission_id"], MISSION_ID)
+        self.assertEqual(plan["task_identity_sha256"], TASK_SHA)
+        self.assertFalse(plan["remote_dispatch_authority"])
+        self.assertFalse(plan["guided_execute_invoked"])
         self.assertTrue(
-            all(value is False for value in receipt["forbidden_actions"].values())
+            all(value is False for value in plan["forbidden_actions"].values())
         )
+        self.assertNotIn("workflow_run_id", plan)
+        self.assertNotIn("transcript", json.dumps(plan))
 
-    def test_verifier_mismatch_blocks_without_dispatch(self) -> None:
-        def mismatch(receipt: dict) -> dict:
-            value = self.verifier(receipt)
-            value["task_identity_sha256"] = "f" * 64
+    def test_missing_readback_cannot_even_build_candidate(self) -> None:
+        with self.assertRaises(FreshWorkBridgeError) as raised:
+            self.plan(readback=None)
+        self.assertEqual(
+            raised.exception.code,
+            "TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE",
+        )
+        self.assertFalse(self.journey.exists())
+
+    def test_readback_must_bind_every_origin_and_mission_field(self) -> None:
+        def mismatch(receipt: dict, origin_sha: str) -> dict:
+            value = self.readback(receipt, origin_sha)
+            value["base_sha"] = "f" * 40
             return value
 
-        with patch("tools.athena_routes.fresh_work_bridge.execute_preview") as guided:
-            receipt = self.execute(verifier=mismatch)
-        guided.assert_not_called()
+        with self.assertRaises(FreshWorkBridgeError) as raised:
+            self.plan(readback=mismatch)
         self.assertEqual(
-            receipt["error_code"],
+            raised.exception.code,
             "TRUSTED_ORIGIN_VERIFICATION_MISMATCH",
         )
 
-    def test_expired_origin_blocks_without_dispatch(self) -> None:
+        def incomplete(receipt: dict, origin_sha: str) -> dict:
+            value = self.readback(receipt, origin_sha)
+            value.pop("workflow_blob_sha")
+            return value
+
+        with self.assertRaises(FreshWorkBridgeError) as raised:
+            self.plan(readback=incomplete)
+        self.assertEqual(
+            raised.exception.code,
+            "TRUSTED_ORIGIN_VERIFICATION_FAILED",
+        )
+
+    def test_expired_origin_cannot_build_candidate(self) -> None:
         self.origin_value["issued_at"] = "2026-07-14T21:00:00Z"
         self.origin_value["expires_at"] = "2026-07-14T21:05:00Z"
         self.write_origin()
-        with patch("tools.athena_routes.fresh_work_bridge.execute_preview") as guided:
-            receipt = self.execute(verifier=self.verifier)
-        guided.assert_not_called()
-        self.assertEqual(receipt["error_code"], "FRESH_WORK_RECEIPT_STALE")
+        with self.assertRaises(FreshWorkBridgeError) as raised:
+            self.plan(readback=self.readback)
+        self.assertEqual(raised.exception.code, "FRESH_WORK_RECEIPT_STALE")
 
-    def test_binding_mismatch_blocks_before_verification(self) -> None:
+    def test_binding_mismatch_stops_before_origin_readback(self) -> None:
         self.origin_value["workflow_blob_sha"] = "f" * 40
         self.write_origin()
-        with patch("tools.athena_routes.fresh_work_bridge.execute_preview") as guided:
-            receipt = self.execute(verifier=self.verifier)
-        guided.assert_not_called()
-        self.assertEqual(receipt["error_code"], "FRESH_WORK_BINDING_MISMATCH")
+        called = False
 
-    def test_guided_partial_is_preserved_without_retry(self) -> None:
-        guided_value = {
-            "result": "PARTIAL",
-            "error_code": "DISPATCH_READBACK_FAILED",
-            "workflow_run_id": None,
-            "workflow_run_url": None,
-            "workflow_run_head_sha": None,
-        }
+        def should_not_run(_receipt: dict, _origin_sha: str) -> dict:
+            nonlocal called
+            called = True
+            return {}
 
-        def fake_execute(_preview, _carrier, receipt_path, **_kwargs):
-            receipt_path.write_text(
-                stable_json(guided_value),
-                encoding="utf-8",
-                newline="\n",
-            )
-            return guided_value
-
-        with patch(
-            "tools.athena_routes.fresh_work_bridge.execute_preview",
-            side_effect=fake_execute,
-        ):
-            receipt = self.execute(verifier=self.verifier)
-        self.assertEqual(receipt["result"], "PARTIAL")
-        self.assertEqual(receipt["stop_point"], "PARTIAL_STATE_PRESERVED")
-        self.assertEqual(receipt["rollback"], "PRESERVE_AND_REVIEW_NO_RETRY")
-        self.assertTrue(receipt["remote_dispatch_possible"])
+        with self.assertRaises(FreshWorkBridgeError) as raised:
+            self.plan(readback=should_not_run)
+        self.assertEqual(raised.exception.code, "FRESH_WORK_BINDING_MISMATCH")
+        self.assertFalse(called)
 
     def test_journey_receipt_is_no_clobber(self) -> None:
         self.journey.write_text("{}\n", encoding="utf-8")
         with self.assertRaises(FreshWorkBridgeError) as raised:
-            self.execute(verifier=self.verifier)
+            build_unavailable_receipt(
+                self.origin,
+                self.preview,
+                self.carrier,
+                self.journey,
+                confirmed_preview_sha256=self.preview_sha,
+                now=NOW,
+            )
         self.assertEqual(
             raised.exception.code,
             "FRESH_WORK_JOURNEY_RECEIPT_EXISTS",
@@ -237,7 +225,7 @@ class FreshWorkBridgeTests(unittest.TestCase):
         self.origin_value["raw_task_identifier"] = "must-not-cross"
         self.write_origin()
         with self.assertRaises(FreshWorkBridgeError) as raised:
-            self.execute(verifier=self.verifier)
+            self.plan(readback=self.readback)
         self.assertEqual(raised.exception.code, "FRESH_WORK_RECEIPT_INVALID")
         self.assertFalse(self.journey.exists())
 
