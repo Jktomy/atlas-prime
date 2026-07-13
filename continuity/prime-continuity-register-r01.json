@@ -2,16 +2,16 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 7,
-  "source_base_sha": "2a8736c01cc7be00d307db7c8b4163d685405df6",
-  "quest_board_sha256": "b44d6a76402de07e4130ea508de074912792727ed74561fae53fc17bbf61b0be",
-  "event_ids": ["RP-C05-FOUNDATION-R01", "RP-C05-IMPORT-FS-R01", "RP-C05-IMPORT-NW-R01", "RP-C05-IMPORT-PF-R01", "RP-C05-AJ07-ONE-ENTRY-R01", "RP-C05-AJ08-ADMISSION-R01", "RP-C05-AJ10-SUNSET-R01", "RP-C05-CURRENT-TRUTH-R01", "RP-C06-CONTRACT-IDENTITY-R01", "RP-C06-AJ09-ACCEPTANCE-R01"],
+  "register_revision": 8,
+  "source_base_sha": "f02a1be0d8ed9932609c9a872834f94e095bba55",
+  "quest_board_sha256": "ce470a06e29f85b9998bc91036b79089c1c067e19c1462211cab040ba1825c70",
+  "event_ids": ["RP-C05-FOUNDATION-R01", "RP-C05-IMPORT-FS-R01", "RP-C05-IMPORT-NW-R01", "RP-C05-IMPORT-PF-R01", "RP-C05-AJ07-ONE-ENTRY-R01", "RP-C05-AJ08-ADMISSION-R01", "RP-C05-AJ10-SUNSET-R01", "RP-C05-CURRENT-TRUTH-R01", "RP-C06-CONTRACT-IDENTITY-R01", "RP-C06-AJ09-ACCEPTANCE-R01", "RP-C06-GATE-CLOSE-R01"],
   "entries": [
     {
-      "continuity_id": "CONT-REPAIRING-PRIME-R01", "quest_id": "QUEST-REPAIRING-PRIME-R01", "quest_source": "quests/repairing-prime.md", "quest_source_sha256": "d58164701b7f1bebca012636750be5fcf52e32ef6f8756e7d467dd82bb5f4469", "quest_state": "IN_PROGRESS",
-      "campaign_id": "RP-C06", "mission_id": "RP-C06-M05", "gate_id": "DETERMINISTIC_CONSERVATION_AND_GENERATED_PARITY_PROVEN", "current_position": "RP-C06-M01 through M04, M06, and M07 are PROVEN; AJ-09 and CAP-019/CAP-020 are accepted. RP-C06-M05 is PARTIAL at the exact missing distinct-identity hosted PR-collision rejection. RP-C01 blockers remain unchanged and independent.",
-      "blockers": ["RP-C01-M02 fresh Work/Athena-native Phoenix Blade control is unproven.", "RP-C01-M05 Arrow/Spear byte and receipt parity is not proven end to end.", "RP-C01-M06 protected-path handoff detection is proven, but protected execution was not run.", "RP-C01-M07 the live rejection matrix is partial; the full fail-closed fallback set is unproven.", "RP-C01-M08 routine Jayson carrier dependency retirement is unproven.", "RP-C06-M05 needs one fresh distinct-identity hosted dispatch to reject on an already-open generated-checkpoint PR before mutation."],
-      "next_action": "After this authored acceptance merges, run its generated refresh through a fresh GENERATED_CHECKPOINT_V1 mission; while that draft PR is open, use a second fresh identity to prove PR-collision rejection before mutation.", "next_approval": "Exact-head Ubuntu and Windows CI, detached review, canonical readback, and a separate authored M05 closure are required before RP-C06 can complete.", "revision": 6, "last_event_id": "RP-C06-AJ09-ACCEPTANCE-R01"
+      "continuity_id": "CONT-REPAIRING-PRIME-R01", "quest_id": "QUEST-REPAIRING-PRIME-R01", "quest_source": "quests/repairing-prime.md", "quest_source_sha256": "b2674cb4091a5bf1be1d299c9f1419f04e5c95e9d29527b9a53db24f5e67d390", "quest_state": "IN_PROGRESS",
+      "campaign_id": "RP-C07", "mission_id": null, "gate_id": "AJ_01_THROUGH_AJ_12_RECONCILED", "current_position": "RP-C06 is COMPLETE with all seven missions PROVEN. AJ-09 and CAP-019/CAP-020 are accepted. RP-C07 is IN_PROGRESS and must reconcile every AJ-01 through AJ-12 disposition from exact canonical evidence without inferring availability from code or generated reports.",
+      "blockers": ["RP-C01-M02 fresh Work/Athena-native Phoenix Blade control is unproven.", "RP-C01-M05 Arrow/Spear byte and receipt parity is not proven end to end.", "RP-C01-M06 protected-path handoff detection is proven, but protected execution was not run.", "RP-C01-M07 the live rejection matrix is partial; the full fail-closed fallback set is unproven.", "RP-C01-M08 routine Jayson carrier dependency retirement is unproven."],
+      "next_action": "Build the RP-C07 AJ-01 through AJ-12 disposition matrix from current canonical proof, preserving PROVEN, BLOCKED, and UNPROVEN boundaries and independent RP-C01 blockers.", "next_approval": "A separate authored RP-C07 acceptance transaction requires exact-head Ubuntu and Windows CI, detached review, and canonical readback before any journey or Campaign promotion.", "revision": 7, "last_event_id": "RP-C06-GATE-CLOSE-R01"
     },
     {
       "continuity_id": "CONT-FOUND-SILVERLIGHT-R01", "quest_id": "QUEST-FOUND-SILVERLIGHT-R01", "quest_source": "quests/found-silverlight.md", "quest_source_sha256": "6899a9a62c69771f7797e1d957d51710a442fe861e6f0701e7c54da547fd9867", "quest_state": "READY_FOR_CAMPAIGN_1_PREVIEW",

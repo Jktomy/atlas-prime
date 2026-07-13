@@ -49,10 +49,11 @@ main `2a8736c01cc7be00d307db7c8b4163d685405df6` reproduced the five reports as
 `CURRENT`. The immutable evidence is recorded in
 `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md`.
 
-AJ-09 proves CAP-019 and CAP-020. It does not close RP-C06-M05, advance the
-Campaign gate, activate standing authority, or grant permanence. The remaining
-M05 PR-collision leg requires a later distinct-identity hosted rejection and a
-separate authored acceptance transaction.
+AJ-09 proves CAP-019 and CAP-020. It did not self-close RP-C06-M05, activate
+standing authority, or grant permanence. The later fresh-identity hosted
+PR-collision rejection in run `29226787273`, generated refresh PR `#140`, and
+separate authored acceptance transaction close M05 and RP-C06 without changing
+those boundaries.
 
 ## Legacy Oathbringer capability mapping
 

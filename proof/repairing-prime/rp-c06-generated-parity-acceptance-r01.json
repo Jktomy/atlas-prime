@@ -2,7 +2,7 @@
   "schema_version": "atlas.repairing-prime.rp-c06-generated-parity-acceptance.v1",
   "campaign": "RP-C06",
   "campaign_gate": "DETERMINISTIC_CONSERVATION_AND_GENERATED_PARITY_PROVEN",
-  "campaign_gate_state": "IN_PROGRESS",
+  "campaign_gate_state": "ACCEPTED",
   "acceptance_journey": {"id": "AJ-09", "state": "PROVEN"},
   "source_transactions": {
     "construction": {"pull_request": 136, "base_sha": "2e4f25e6b53f36b03a2424878788738c25f27ab9", "head_sha": "34b9162a7a2a3fda140b840221d3d8768b344a45", "ci_run": 29225459516, "detached_review": "GREEN", "merge_sha": "5f51028b8ec2b68c7b31aca690c8ec53f8087dd6"},
@@ -68,11 +68,16 @@
       "register_sha256": "d4a9686ff74551c1950fac317f0967d31da1dcbf2f7525a1769ec5a5be11629b",
       "mutation_observed": "NO"
     },
-    "pr_collision": {"state": "UNPROVEN_LIVE", "smallest_missing_evidence": "One fresh distinct-identity hosted dispatch while another generated-checkpoint PR is open must reject before mutation."}
+    "pr_collision": {
+      "state": "PROVEN",
+      "carrier": {"mission_id": "RP-C06-M05-PRCOLLISION-CARRIER-20260713-001", "workflow_run": 29226718884, "replay_nonce_sha256": "f54171a60bb3f0ffb5c31daff3e6148c4d6f3a9703bba4b9653015df24d5ef52", "register_sha256": "252b23109a0aa3f3fd2a304b8699457d8507d29ecc93f15b7b008030b42ef7cd", "reconciliation_sha256": "35b824c4e36da4070e93f1cdcb51d79d9090c9d52b8bc8d1854b085b89a7fa01", "thread_engine_receipt_sha256": "533a842d7d36587a564c86f4f33b2de86e0cc2f7b3fc80dd789c056660e6c6b1"},
+      "open_pull_request": {"pull_request": 140, "base_sha": "97382045b0d8904f5d2147b3167c6007929a5591", "head_sha": "38ea046e499521b3bb25c9a21e3c1f4f707037b4", "commit_tree": "4cde41c705b3ebdb9b570aa83b02746b555deb71", "exact_head_ci": {"run": 29226792887, "ubuntu_job": 86742463647, "windows_job": 86742463672, "conclusion": "SUCCESS"}, "detached_review": "GREEN", "merge_sha": "f02a1be0d8ed9932609c9a872834f94e095bba55", "carrier_branch_after_merge": "ABSENT"},
+      "probe": {"mission_id": "RP-C06-M05-PRCOLLISION-PROBE-20260713-001", "workflow_run": 29226787273, "replay_nonce_sha256": "b01de3573224deb2d6a0acf4e10642cbc38ac3819eea5d0967820411b20e2bda", "error_stage": "DUPLICATE_CHECK", "error_code": "GENERATED_CHECKPOINT_PR_COLLISION", "rejection_receipt_sha256": "5ccc088649d438ae553363391a3f6cc210cc314b8a1ac5fc1f61585e95133f14", "mutation_observed": "NO", "remote_state": "NO_MUTATION_OBSERVED", "probe_branch_after_rejection": "ABSENT"}
+    }
   },
   "canonical_readback": {
-    "main_sha": "2a8736c01cc7be00d307db7c8b4163d685405df6",
-    "source_fingerprint": "sha256:a9e108b3f748bf735068fb691bb4575b6f25ef116dd9bd5def5639b9fc57b9d9",
+    "main_sha": "f02a1be0d8ed9932609c9a872834f94e095bba55",
+    "source_fingerprint": "sha256:e440e23633559a0f68130097ae9afdda3a050524c0f6b8621f7d34c19cd22da9",
     "generated_status": "CURRENT",
     "open_pull_requests": 0
   },
@@ -81,11 +86,12 @@
     "RP-C06-M02": "PROVEN",
     "RP-C06-M03": "PROVEN",
     "RP-C06-M04": "PROVEN",
-    "RP-C06-M05": "PARTIAL",
+    "RP-C06-M05": "PROVEN",
     "RP-C06-M06": "PROVEN",
     "RP-C06-M07": "PROVEN"
   },
   "capability_promotions": {"CAP-019": "RESTORED_ACTIVE", "CAP-020": "RESTORED_ACTIVE"},
-  "forbidden_promotions": {"campaign_complete": false, "quest_complete": false, "permanence_granted": false, "standing_authority": false},
+  "campaign_promotion": {"RP-C06": "COMPLETE", "RP-C07": "IN_PROGRESS"},
+  "forbidden_promotions": {"quest_complete": false, "permanence_granted": false, "standing_authority": false},
   "excluded_diagnostic": {"workflow_run": 29225548513, "reason": "Superseded startup failure; no branch or PR; not reused as an acceptance identity, carrier, receipt, or partial result."}
 }

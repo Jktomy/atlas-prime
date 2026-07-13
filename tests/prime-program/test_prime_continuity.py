@@ -49,11 +49,13 @@ class PrimeContinuityTests(unittest.TestCase):
         repairing_board = next(entry for entry in self.board["entries"] if entry["quest_id"] == self.identities["quest_id"])
         repairing_continuity = next(entry for entry in self.register["entries"] if entry["quest_id"] == self.identities["quest_id"])
         rp_c06 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C06")
+        rp_c07 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C07")
         self.assertEqual(repairing_board["state"], "IN_PROGRESS")
-        self.assertEqual(repairing_board["next_gate"], "RP-C06-M05 — Hosted PR-collision rejection")
-        self.assertEqual(repairing_continuity["campaign_id"], "RP-C06")
-        self.assertEqual(repairing_continuity["gate_id"], rp_c06["gate_id"])
-        self.assertEqual(rp_c06["state"], "IN_PROGRESS")
+        self.assertEqual(repairing_board["next_gate"], "RP-C07 Preview — Acceptance Journey Closure")
+        self.assertEqual(repairing_continuity["campaign_id"], "RP-C07")
+        self.assertEqual(repairing_continuity["gate_id"], rp_c07["gate_id"])
+        self.assertEqual(rp_c06["state"], "COMPLETE")
+        self.assertEqual(rp_c07["state"], "IN_PROGRESS")
         self.assertEqual(
             [mission["mission_id"] for mission in rp_c06["missions"]],
             [f"RP-C06-M{index:02d}" for index in range(1, 8)],
@@ -65,12 +67,13 @@ class PrimeContinuityTests(unittest.TestCase):
                 "RP-C06-M02": "PROVEN",
                 "RP-C06-M03": "PROVEN",
                 "RP-C06-M04": "PROVEN",
-                "RP-C06-M05": "PARTIAL",
+                "RP-C06-M05": "PROVEN",
                 "RP-C06-M06": "PROVEN",
                 "RP-C06-M07": "PROVEN",
             },
         )
-        self.assertIn("PR-collision", repairing_continuity["current_position"])
+        self.assertIn("RP-C06 is COMPLETE", repairing_continuity["current_position"])
+        self.assertIn("AJ-01 through AJ-12", repairing_continuity["current_position"])
         self.assertNotIn("await", repairing_continuity["current_position"].lower())
         rp_c01 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C01")
         unfinished_missions = {mission["mission_id"] for mission in rp_c01["missions"] if mission["state"] != "PROVEN"}

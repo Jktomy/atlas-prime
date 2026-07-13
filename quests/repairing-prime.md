@@ -33,14 +33,15 @@ last_verified: 2026-07-12
 **Supporting Projects:** Artemis, Phoenix<br>
 **Current lane:** `PLAN -> VERIFY`<br>
 **Current state:** `IN_PROGRESS`<br>
-**Current Campaign:** `RP-C06`<br>
-**Next gate:** `RP-C06-M05 — Hosted PR-collision rejection`
+**Current Campaign:** `RP-C07`<br>
+**Next gate:** `RP-C07 Preview — Acceptance Journey Closure`
 
 RP-C02 through RP-C05 are complete from accepted canonical evidence. RP-C01
 remains independently in progress with its exact unproven and partial missions;
 advancing the active campaign pointer does not promote or erase those blockers.
-RP-C06 live acceptance proves M01 through M04, M06, and M07. M05 remains
-partial at the exact missing hosted distinct-identity PR-collision rejection.
+RP-C06 is complete from accepted live hosted parity, publication, rejection,
+exact-head CI, detached review, and canonical readback evidence. RP-C07 is now
+active for exact AJ-01 through AJ-12 disposition reconciliation.
 
 ## Purpose
 
@@ -132,9 +133,9 @@ Missions:
 
 Accepted evidence: `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md`.
 AJ-09 and CAP-019/CAP-020 are proven from the owner-triggered hosted run and
-route-created generated-only PR. The Campaign gate remains open until the M05
-PR-collision leg is conserved in a later authored transaction; generated output
-cannot close that gate itself.
+route-created generated-only PR. A separate fresh-identity hosted probe proved
+PR-collision rejection without mutation. All seven missions and the Campaign
+gate are accepted; generated output did not certify or advance the gate.
 
 ## RP-C07 — Acceptance Journey Closure
 

@@ -109,9 +109,11 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertEqual(proof["acceptance_journey"], {"id": "AJ-09", "state": "PROVEN"})
         self.assertEqual(proof["generated_pull_request"]["pull_request"], 138)
         self.assertEqual(proof["generated_pull_request"]["detached_review"], "GREEN")
-        self.assertEqual(proof["mission_states"]["RP-C06-M05"], "PARTIAL")
+        self.assertEqual(proof["mission_states"]["RP-C06-M05"], "PROVEN")
+        self.assertEqual(proof["campaign_gate_state"], "ACCEPTED")
+        self.assertEqual(proof["rejection_proofs"]["pr_collision"]["state"], "PROVEN")
         self.assertIn("AJ-09 is `PROVEN`", acceptance)
-        self.assertIn("does not close RP-C06-M05", acceptance)
+        self.assertIn("did not self-close RP-C06-M05", acceptance)
 
     def test_legacy_oathbringer_capability_is_replaced_by_proven_journeys(self) -> None:
         records = {record["id"]: record for record in self.register["capabilities"]}
