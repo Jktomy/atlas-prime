@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:a9e108b3f748bf735068fb691bb4575b6f25ef116dd9bd5def5639b9fc57b9d9
+Source fingerprint: sha256:e440e23633559a0f68130097ae9afdda3a050524c0f6b8621f7d34c19cd22da9
 Generator format: 2
 Status: Generated support artifact
 
@@ -65,6 +65,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/hosted-bow-proof-r02.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c01-route-evidence-r01.md` | HOSTED_AND_DIRECT_PROVEN_GATE_INCOMPLETE | PROOF | missing | MEDIUM |
 | `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | ACCEPTED | PROOF | missing | HIGH |
+| `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md` | ACCEPTED_PARTIAL_CAMPAIGN | PROOF | missing | HIGH |
 | `quests/found-silverlight.md` | Active | Quest | Parent Quest for establishing Atlas's private cognitive interface through Stormlight BEU accounting, the seven-pillar Glass Codex, and the Seon Apple Reminders integration. | High |
 | `quests/notums-watch.md` | Active | Quest | Parent Quest for bringing Notum's Watch forward as Gatehouse/Citadel observability and rescue infrastructure, including the interim Notum vessel, future Notum Phoenix vessel, Nightwatcher lineage, and backup-capacity boundaries. | High |
 | `quests/prime-continuity-proof.md` | READY_FOR_CAMPAIGN_1_PREVIEW | QUEST | missing | MEDIUM |
