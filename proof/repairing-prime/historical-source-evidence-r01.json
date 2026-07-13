@@ -1,0 +1,10 @@
+{
+  "schema_version": "atlas.historical-source-evidence.v1",
+  "records": [
+    {
+      "source": "quests/repairing-prime.md",
+      "sha256": "318d611ef8979cb6d9f029c57c45fb2ad89eb95de6c25028951ab491e296c42e",
+      "snapshot": "quests-repairing-prime-318d611e.source"
+    }
+  ]
+}

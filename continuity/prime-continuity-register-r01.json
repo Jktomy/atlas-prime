@@ -2,16 +2,16 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 4,
-  "source_base_sha": "0df35252206db32beea0a2bdd5270875c69fa15e",
-  "quest_board_sha256": "b8d6c52a5619b54776bad410f09ab7f0410661837765f4c2a8c503440e55267b",
-  "event_ids": ["RP-C05-FOUNDATION-R01", "RP-C05-IMPORT-FS-R01", "RP-C05-IMPORT-NW-R01", "RP-C05-IMPORT-PF-R01", "RP-C05-AJ07-ONE-ENTRY-R01", "RP-C05-AJ08-ADMISSION-R01", "RP-C05-AJ10-SUNSET-R01"],
+  "register_revision": 5,
+  "source_base_sha": "8f77b7d30785de2ba898be44f232ca2edccc9def",
+  "quest_board_sha256": "06cb3a6c4dec3a227b9eb0c44cfb1d0781052dcf00c341584d22500cde6b93b1",
+  "event_ids": ["RP-C05-FOUNDATION-R01", "RP-C05-IMPORT-FS-R01", "RP-C05-IMPORT-NW-R01", "RP-C05-IMPORT-PF-R01", "RP-C05-AJ07-ONE-ENTRY-R01", "RP-C05-AJ08-ADMISSION-R01", "RP-C05-AJ10-SUNSET-R01", "RP-C05-CURRENT-TRUTH-R01"],
   "entries": [
     {
-      "continuity_id": "CONT-REPAIRING-PRIME-R01", "quest_id": "QUEST-REPAIRING-PRIME-R01", "quest_source": "quests/repairing-prime.md", "quest_source_sha256": "318d611ef8979cb6d9f029c57c45fb2ad89eb95de6c25028951ab491e296c42e", "quest_state": "READY_FOR_CAMPAIGN_1_PREVIEW",
-      "campaign_id": "RP-C06", "mission_id": null, "gate_id": "DETERMINISTIC_CONSERVATION_AND_GENERATED_PARITY_PROVEN", "current_position": "RP-C05 foundation, AJ-07, AJ-08, and command/startup transactions are merged; the canonical Sunset transition awaits fresh-context Sunrise proof.",
-      "blockers": ["RP-C01 fresh Work/Athena origin is unproven.", "RP-C01 end-to-end parity, fallback closure, and routine carrier retirement remain unproven."],
-      "next_action": "Reconstruct this exact RP-C06 gate from a fresh clone, preserve AJ-10 evidence, then begin deterministic conservation.", "next_approval": "Exact-head Sunset review followed by fresh-context Sunrise readback.", "revision": 3, "last_event_id": "RP-C05-AJ10-SUNSET-R01"
+      "continuity_id": "CONT-REPAIRING-PRIME-R01", "quest_id": "QUEST-REPAIRING-PRIME-R01", "quest_source": "quests/repairing-prime.md", "quest_source_sha256": "bab836d1399e8b71142a4e43b733bc2f212787d11a515cf3aa74c59d8a08a0cb", "quest_state": "IN_PROGRESS",
+      "campaign_id": "RP-C06", "mission_id": null, "gate_id": "DETERMINISTIC_CONSERVATION_AND_GENERATED_PARITY_PROVEN", "current_position": "RP-C02 through RP-C05 are accepted. RP-C05 fresh-clone Sunrise reconstructed the RP-C06 gate; unresolved RP-C01 missions remain explicit blockers and are not promoted.",
+      "blockers": ["RP-C01-M02 fresh Work/Athena-native Phoenix Blade control is unproven.", "RP-C01-M05 Arrow/Spear byte and receipt parity is not proven end to end.", "RP-C01-M06 protected-path handoff detection is proven, but protected execution was not run.", "RP-C01-M07 the live rejection matrix is partial; the full fail-closed fallback set is unproven.", "RP-C01-M08 routine Jayson carrier dependency retirement is unproven."],
+      "next_action": "Prepare RP-C06 deterministic conservation from exact current main on a new branch without reusing closed PR #127.", "next_approval": "Apply the existing Preview to Execute rule, exact-head detached review, and canonical readback to the new RP-C06 transaction.", "revision": 4, "last_event_id": "RP-C05-CURRENT-TRUTH-R01"
     },
     {
       "continuity_id": "CONT-FOUND-SILVERLIGHT-R01", "quest_id": "QUEST-FOUND-SILVERLIGHT-R01", "quest_source": "quests/found-silverlight.md", "quest_source_sha256": "6899a9a62c69771f7797e1d957d51710a442fe861e6f0701e7c54da547fd9867", "quest_state": "READY_FOR_CAMPAIGN_1_PREVIEW",

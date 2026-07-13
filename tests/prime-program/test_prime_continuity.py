@@ -46,6 +46,23 @@ class PrimeContinuityTests(unittest.TestCase):
             {entry["quest_id"] for entry in self.register["entries"]},
             {entry["quest_id"] for entry in self.board["entries"] if entry["state"] != "COMPLETE"},
         )
+        repairing_board = next(entry for entry in self.board["entries"] if entry["quest_id"] == self.identities["quest_id"])
+        repairing_continuity = next(entry for entry in self.register["entries"] if entry["quest_id"] == self.identities["quest_id"])
+        rp_c06 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C06")
+        self.assertEqual(repairing_board["state"], "IN_PROGRESS")
+        self.assertEqual(repairing_board["next_gate"], "RP-C06 Preview — Deterministic Conservation and Generated Parity")
+        self.assertEqual(repairing_continuity["campaign_id"], "RP-C06")
+        self.assertEqual(repairing_continuity["gate_id"], rp_c06["gate_id"])
+        self.assertIn("fresh-clone Sunrise", repairing_continuity["current_position"])
+        self.assertNotIn("await", repairing_continuity["current_position"].lower())
+        rp_c01 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C01")
+        unfinished_missions = {mission["mission_id"] for mission in rp_c01["missions"] if mission["state"] != "PROVEN"}
+        represented_blockers = {
+            mission_id
+            for mission_id in unfinished_missions
+            if any(mission_id in blocker for blocker in repairing_continuity["blockers"])
+        }
+        self.assertEqual(represented_blockers, unfinished_missions)
 
     def test_schema_driven_board_accepts_later_quest_without_validator_edit(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
