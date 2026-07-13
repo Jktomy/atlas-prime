@@ -4,7 +4,7 @@ import json
 import unicodedata
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any, Callable, Protocol
 
 from tools.athena_routes.schema import SchemaValidationError, validate_schema
 from tools.agentic_warrants.validator import WarrantValidationError, parse_time, protected_path, safe_path, sha256
@@ -15,8 +15,22 @@ REQUEST_SCHEMA = ROOT / "schemas" / "shardblade-permanence-request-v1.schema.jso
 APPROVAL_SCHEMA = ROOT / "schemas" / "shardblade-permanence-approval-v1.schema.json"
 RECEIPT_SCHEMA = ROOT / "schemas" / "shardblade-permanence-receipt-v1.schema.json"
 MAX_APPROVAL_TTL = timedelta(hours=24)
-ReplayGuard = Callable[[tuple[str, ...]], bool]
 Verifier = Callable[[dict[str, Any]], bool]
+ReplayGuard = Callable[[tuple[str, ...]], bool]
+
+
+class ReservationLedger(Protocol):
+    """Durable adapter-owned reservation state; validation never fabricates it."""
+
+    def reserve(self, identity: tuple[str, ...]) -> str | None: ...
+
+    def bind_receipt(
+        self, identity: tuple[str, ...], reservation_sha256: str, receipt_identity: tuple[str, ...]
+    ) -> bool: ...
+
+    def verify_receipt_binding(
+        self, identity: tuple[str, ...], reservation_sha256: str, receipt_identity: tuple[str, ...]
+    ) -> bool: ...
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -37,7 +51,17 @@ def _pr_readback_body(request: dict[str, Any]) -> dict[str, Any]:
     )}
 
 
-def _validate_approval(approval: dict[str, Any], request: dict[str, Any], *, now: datetime, verifier: Verifier) -> None:
+def _request_identity(request: dict[str, Any], approval: dict[str, Any]) -> tuple[str, ...]:
+    return (sha256(request), request["request_id"], request["nonce"], approval["approval_id"], approval["nonce"])
+
+
+def _receipt_identity(receipt: dict[str, Any]) -> tuple[str, ...]:
+    return (sha256(receipt), receipt["request_sha256"], receipt["receipt_id"], receipt["attempt_id"], receipt["nonce"])
+
+
+def _validate_approval(
+    approval: dict[str, Any], request: dict[str, Any], *, authority_at: datetime, verifier: Verifier
+) -> None:
     _schema(APPROVAL_SCHEMA, approval, "SHARDBLADE_APPROVAL_SCHEMA_INVALID")
     expected = {
         "request_id": request["request_id"],
@@ -49,20 +73,22 @@ def _validate_approval(approval: dict[str, Any], request: dict[str, Any], *, now
         raise WarrantValidationError("SHARDBLADE_APPROVAL_BINDING_MISMATCH")
     issued, expires = parse_time(approval["issued_at"]), parse_time(approval["expires_at"])
     readback = parse_time(request["readback_at"])
-    if issued < readback or issued > now or expires <= now or issued >= expires or expires - issued > MAX_APPROVAL_TTL:
+    if (issued < readback or issued > authority_at or expires <= authority_at
+            or issued >= expires or expires - issued > MAX_APPROVAL_TTL):
         raise WarrantValidationError("SHARDBLADE_APPROVAL_TIME_INVALID")
     if verifier is None or not verifier(approval):
         raise WarrantValidationError("SHARDBLADE_AUTHORIZER_REJECTED")
 
 
 def _validate_request_core(
-    request: dict[str, Any], approval: dict[str, Any], *, now: datetime, verifier: Verifier,
+    request: dict[str, Any], approval: dict[str, Any], *, authority_at: datetime, verifier: Verifier,
+    reservation_ledger: ReservationLedger | None = None,
     ready_request: dict[str, Any] | None = None, ready_approval: dict[str, Any] | None = None,
     ready_receipt: dict[str, Any] | None = None,
 ) -> None:
     _schema(REQUEST_SCHEMA, request, "SHARDBLADE_REQUEST_SCHEMA_INVALID")
     created, readback = parse_time(request["created_at"]), parse_time(request["readback_at"])
-    if created > readback or readback > now:
+    if created > readback or readback > authority_at:
         raise WarrantValidationError("SHARDBLADE_REQUEST_TIME_INVALID")
     paths = request["changed_paths"]
     if (paths != sorted(paths) or len(paths) != len(set(paths)) or [safe_path(path) for path in paths] != paths
@@ -99,10 +125,19 @@ def _validate_request_core(
             raise WarrantValidationError("SHARDBLADE_MERGE_REQUEST_INVALID")
         if ready_request is None or ready_approval is None or ready_receipt is None:
             raise WarrantValidationError("SHARDBLADE_READY_RECEIPT_REQUIRED")
-        _validate_request_core(ready_request, ready_approval, now=now, verifier=verifier)
-        _validate_receipt_core(ready_receipt, ready_request, ready_approval, now=now)
+        _schema(RECEIPT_SCHEMA, ready_receipt, "SHARDBLADE_RECEIPT_SCHEMA_INVALID")
+        ready_executed = parse_time(ready_receipt["executed_at"])
+        _validate_request_core(
+            ready_request, ready_approval, authority_at=ready_executed, verifier=verifier,
+            reservation_ledger=reservation_ledger,
+        )
+        _validate_receipt_core(ready_receipt, ready_request, ready_approval, now=authority_at)
         if ready_receipt["result"] != "SUCCESS" or request["prior_ready_receipt_sha256"] != sha256(ready_receipt):
             raise WarrantValidationError("SHARDBLADE_READY_RECEIPT_MISMATCH")
+        if (reservation_ledger is None or not reservation_ledger.verify_receipt_binding(
+                _request_identity(ready_request, ready_approval), ready_receipt["request_reservation_sha256"],
+                _receipt_identity(ready_receipt))):
+            raise WarrantValidationError("SHARDBLADE_READY_RESERVATION_UNPROVEN")
         for key in (
             "repository", "base_branch", "base_sha", "pull_request", "source_branch", "head_sha", "tree_sha",
             "changed_paths", "changed_paths_sha256", "protected_paths", "protected_paths_sha256",
@@ -116,22 +151,29 @@ def _validate_request_core(
             raise WarrantValidationError("SHARDBLADE_REQUEST_IDENTITY_REUSED")
         if approval["approval_id"] == ready_approval["approval_id"] or approval["nonce"] == ready_approval["nonce"]:
             raise WarrantValidationError("SHARDBLADE_APPROVAL_IDENTITY_REUSED")
-    _validate_approval(approval, request, now=now, verifier=verifier)
+    _validate_approval(approval, request, authority_at=authority_at, verifier=verifier)
 
 
 def validate_action_request(
-    request: dict[str, Any], approval: dict[str, Any], *, verifier: Verifier, reserve_guard: ReplayGuard,
+    request: dict[str, Any], approval: dict[str, Any], *, verifier: Verifier,
+    reservation_ledger: ReservationLedger,
     ready_request: dict[str, Any] | None = None, ready_approval: dict[str, Any] | None = None,
     ready_receipt: dict[str, Any] | None = None, now: datetime | None = None,
-) -> None:
+) -> str:
     observed_now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
     _validate_request_core(
-        request, approval, now=observed_now, verifier=verifier,
+        request, approval, authority_at=observed_now, verifier=verifier, reservation_ledger=reservation_ledger,
         ready_request=ready_request, ready_approval=ready_approval, ready_receipt=ready_receipt,
     )
-    identity = (sha256(request), request["request_id"], request["nonce"], approval["approval_id"], approval["nonce"])
-    if reserve_guard is None or not reserve_guard(identity):
+    if reservation_ledger is None:
+        raise WarrantValidationError("SHARDBLADE_RESERVATION_LEDGER_REQUIRED")
+    reservation_sha256 = reservation_ledger.reserve(_request_identity(request, approval))
+    if reservation_sha256 is None:
         raise WarrantValidationError("SHARDBLADE_REQUEST_REPLAYED")
+    if (not isinstance(reservation_sha256, str) or len(reservation_sha256) != 64
+            or any(char not in "0123456789abcdef" for char in reservation_sha256)):
+        raise WarrantValidationError("SHARDBLADE_RESERVATION_RECORD_INVALID")
+    return reservation_sha256
 
 
 def _validate_receipt_core(receipt: dict[str, Any], request: dict[str, Any], approval: dict[str, Any], *, now: datetime) -> None:
@@ -179,20 +221,59 @@ def _validate_receipt_core(receipt: dict[str, Any], request: dict[str, Any], app
                 or receipt["stop_point"] != "PRE_MUTATION_REJECTION" or receipt["rollback"] != "NO_MUTATION"):
             raise WarrantValidationError("SHARDBLADE_REJECTION_MISMATCH")
     else:
-        if (not receipt["error_code"] or (mutation["ready"] and mutation["merge"])
-                or receipt["stop_point"] != "READBACK_ONLY_RECOVERY" or receipt["rollback"] != "PRESERVE_STATE_AND_RECONCILE"):
+        if (not receipt["error_code"] or receipt["stop_point"] != "READBACK_ONLY_RECOVERY"
+                or receipt["rollback"] != "PRESERVE_STATE_AND_RECONCILE"):
             raise WarrantValidationError("SHARDBLADE_PARTIAL_MISMATCH")
+        action_flag, forbidden_flag = (("ready", "merge") if request["action"] == "READY" else ("merge", "ready"))
+        if mutation[forbidden_flag]:
+            raise WarrantValidationError("SHARDBLADE_PARTIAL_ACTION_SUBSTITUTION")
+        if mutation[action_flag]:
+            if request["action"] == "READY":
+                observed = (
+                    receipt["observed_pr_state"] == "OPEN_READY"
+                    and receipt["observed_head_sha"] == request["head_sha"]
+                    and receipt["observed_tree_sha"] == request["tree_sha"]
+                    and all(receipt[key] is None for key in ("merge_commit_sha", "canonical_main_sha", "canonical_tree_sha"))
+                )
+            else:
+                observed = (
+                    receipt["observed_pr_state"] == "MERGED"
+                    and receipt["observed_head_sha"] == request["head_sha"]
+                    and receipt["observed_tree_sha"] == request["tree_sha"]
+                    and receipt["merge_commit_sha"] is not None
+                    and receipt["canonical_main_sha"] == receipt["merge_commit_sha"]
+                    and receipt["canonical_tree_sha"] == request["tree_sha"]
+                )
+            if not observed:
+                raise WarrantValidationError("SHARDBLADE_PARTIAL_OBSERVED_RESULT_MISMATCH")
+        else:
+            unknown = (
+                receipt["observed_pr_state"] == "UNKNOWN"
+                and all(receipt[key] is None for key in (
+                    "observed_head_sha", "observed_tree_sha", "merge_commit_sha", "canonical_main_sha", "canonical_tree_sha"
+                ))
+            )
+            unchanged_state = (
+                receipt["observed_pr_state"] == request["pr_state"]
+                and receipt["observed_head_sha"] == request["head_sha"]
+                and receipt["observed_tree_sha"] == request["tree_sha"]
+                and all(receipt[key] is None for key in ("merge_commit_sha", "canonical_main_sha", "canonical_tree_sha"))
+            )
+            if not (unknown or unchanged_state):
+                raise WarrantValidationError("SHARDBLADE_PARTIAL_OBSERVED_RESULT_MISMATCH")
 
 
 def validate_action_receipt(
     receipt: dict[str, Any], request: dict[str, Any], approval: dict[str, Any], *, verifier: Verifier,
-    receipt_guard: ReplayGuard, ready_request: dict[str, Any] | None = None,
+    reservation_ledger: ReservationLedger, receipt_guard: ReplayGuard, ready_request: dict[str, Any] | None = None,
     ready_approval: dict[str, Any] | None = None, ready_receipt: dict[str, Any] | None = None,
     now: datetime | None = None,
 ) -> None:
     observed_now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    _schema(RECEIPT_SCHEMA, receipt, "SHARDBLADE_RECEIPT_SCHEMA_INVALID")
+    executed_at = parse_time(receipt["executed_at"])
     _validate_request_core(
-        request, approval, now=observed_now, verifier=verifier,
+        request, approval, authority_at=executed_at, verifier=verifier, reservation_ledger=reservation_ledger,
         ready_request=ready_request, ready_approval=ready_approval, ready_receipt=ready_receipt,
     )
     _validate_receipt_core(receipt, request, approval, now=observed_now)
@@ -203,6 +284,9 @@ def validate_action_receipt(
             raise WarrantValidationError("SHARDBLADE_RECEIPT_IDENTITY_REUSED")
     elif ready_receipt is not None:
         raise WarrantValidationError("SHARDBLADE_READY_CHAIN_INVALID")
-    identity = (receipt["request_sha256"], receipt["receipt_id"], receipt["attempt_id"], receipt["nonce"])
-    if receipt_guard is None or not receipt_guard(identity):
+    receipt_identity = _receipt_identity(receipt)
+    if (reservation_ledger is None or not reservation_ledger.bind_receipt(
+            _request_identity(request, approval), receipt["request_reservation_sha256"], receipt_identity)):
+        raise WarrantValidationError("SHARDBLADE_REQUEST_RESERVATION_UNPROVEN")
+    if receipt_guard is None or not receipt_guard(receipt_identity):
         raise WarrantValidationError("SHARDBLADE_RECEIPT_REPLAYED")

@@ -109,6 +109,7 @@ no capability or journey promotion by itself.
 
 The accepted v1 schemas and fixtures remain structural RP-C02 evidence. The v1
 validator rejects `READY`, `MERGE`, and `SHARDBLADE_PERMANENCE` as current
-authority with `SHARDBLADE_DEDICATED_CONTRACT_REQUIRED`. Present permanence is
-validated only through the dedicated Shardblade contracts; no legacy mode may
-derive current authority from the accepted fixtures.
+authority with `SHARDBLADE_DEDICATED_CONTRACT_REQUIRED`. Present permanence
+structure is validated only through the dedicated Shardblade contracts; the
+machine route is `CONTRACT_ONLY_NOT_ACTIVATED`, and no legacy mode may derive
+current authority from the accepted fixtures.

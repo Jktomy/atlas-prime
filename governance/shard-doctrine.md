@@ -2,6 +2,7 @@
 title: "Prime Shardplate and Shardblade Doctrine"
 atlas_id: "prime.governance.shard-doctrine"
 status: "CANONICAL_ACTIVE"
+activation_state: "CONTRACT_ONLY_NOT_ACTIVATED"
 source_type: "PROTOCOL"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
@@ -81,6 +82,15 @@ The machine contracts are
 `tools/agentic_warrants/permanence.py`. Validation proves only that supplied
 objects satisfy this contract. It does not perform GitHub mutation, prove that
 the supplied readbacks came from GitHub, or grant permanence by itself.
+
+This source layer is `CONTRACT_ONLY_NOT_ACTIVATED`. No production Shardblade
+route is accepted yet. Activation still requires a trusted GitHub adapter that
+proves the construction and protected-path approvals, canonical-base policy,
+PR readback, workflow source and exact run identities, detached-review origin,
+atomic request reservation, mutation compare-and-swap, and final readback, plus
+a live direct-Jayson READY journey and a separately approved MERGE journey.
+Digest-shaped fixture values, passing unit tests, or this contract's presence
+are not that evidence and may not promote the route.
 
 The accepted RP-C02 v1 agentic-warrant evidence remains historical structural
 proof. Its generic validator is not a production permanence executor and now

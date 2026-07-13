@@ -26,6 +26,39 @@ class ReplayLedger:
         return True
 
 
+class DurableReservationLedger:
+    def __init__(self) -> None:
+        self.reservations: dict[tuple[str, ...], str] = {}
+        self.bindings: dict[tuple[str, ...], tuple[str, ...]] = {}
+        self.seen: set[tuple[int, str]] = set()
+
+    @staticmethod
+    def digest(identity: tuple[str, ...]) -> str:
+        return sha256({"kind": "SHARDBLADE_REQUEST_RESERVATION", "identity": list(identity)})
+
+    def reserve(self, identity: tuple[str, ...]) -> str | None:
+        components = {(index, value) for index, value in enumerate(identity)}
+        if components & self.seen:
+            return None
+        self.seen.update(components)
+        reservation = self.digest(identity)
+        self.reservations[identity] = reservation
+        return reservation
+
+    def bind_receipt(
+        self, identity: tuple[str, ...], reservation_sha256: str, receipt_identity: tuple[str, ...]
+    ) -> bool:
+        if self.reservations.get(identity) != reservation_sha256:
+            return False
+        existing = self.bindings.setdefault(identity, receipt_identity)
+        return existing == receipt_identity
+
+    def verify_receipt_binding(
+        self, identity: tuple[str, ...], reservation_sha256: str, receipt_identity: tuple[str, ...]
+    ) -> bool:
+        return self.reservations.get(identity) == reservation_sha256 and self.bindings.get(identity) == receipt_identity
+
+
 class ShardbladePermanenceTests(unittest.TestCase):
     now = datetime(2026, 7, 13, 1, tzinfo=timezone.utc)
 
@@ -98,6 +131,13 @@ class ShardbladePermanenceTests(unittest.TestCase):
             "signature": f"trusted-shardblade-{label}",
         }
 
+    @staticmethod
+    def request_identity(request: dict, approval: dict) -> tuple[str, ...]:
+        return (sha256(request), request["request_id"], request["nonce"], approval["approval_id"], approval["nonce"])
+
+    def reservation(self, request: dict, approval: dict) -> str:
+        return DurableReservationLedger.digest(self.request_identity(request, approval))
+
     def ready_receipt(self, request: dict, approval: dict) -> dict:
         return {
             "schema_version": "atlas.shardblade-permanence-receipt.v1",
@@ -107,6 +147,7 @@ class ShardbladePermanenceTests(unittest.TestCase):
             "request_id": request["request_id"],
             "request_sha256": sha256(request),
             "approval_record_sha256": sha256(approval),
+            "request_reservation_sha256": self.reservation(request, approval),
             "action": "READY",
             "executed_at": "2026-07-13T00:10:00Z",
             "repository": request["repository"],
@@ -154,6 +195,7 @@ class ShardbladePermanenceTests(unittest.TestCase):
             "request_id": merge["request_id"],
             "request_sha256": sha256(merge),
             "approval_record_sha256": sha256(merge_approval),
+            "request_reservation_sha256": self.reservation(merge, merge_approval),
             "action": "MERGE",
             "executed_at": "2026-07-13T00:15:00Z",
             "prior_ready_receipt_sha256": sha256(ready_receipt),
@@ -169,30 +211,43 @@ class ShardbladePermanenceTests(unittest.TestCase):
 
     def test_ready_and_merge_require_distinct_exact_chain(self) -> None:
         ready, ready_approval, ready_receipt, merge, merge_approval, merge_receipt = self.merge_chain()
-        validate_action_request(ready, ready_approval, verifier=self.trusted, reserve_guard=ReplayLedger().consume, now=self.now)
-        validate_action_receipt(ready_receipt, ready, ready_approval, verifier=self.trusted, receipt_guard=ReplayLedger().consume, now=self.now)
+        reservations = DurableReservationLedger()
+        self.assertEqual(validate_action_request(
+            ready, ready_approval, verifier=self.trusted, reservation_ledger=reservations, now=self.now,
+        ), ready_receipt["request_reservation_sha256"])
+        validate_action_receipt(
+            ready_receipt, ready, ready_approval, verifier=self.trusted,
+            reservation_ledger=reservations, receipt_guard=ReplayLedger().consume, now=self.now,
+        )
         validate_action_request(
-            merge, merge_approval, verifier=self.trusted, reserve_guard=ReplayLedger().consume,
+            merge, merge_approval, verifier=self.trusted, reservation_ledger=reservations,
             ready_request=ready, ready_approval=ready_approval, ready_receipt=ready_receipt, now=self.now,
         )
-        validate_action_receipt(merge_receipt, merge, merge_approval, verifier=self.trusted, receipt_guard=ReplayLedger().consume, ready_request=ready, ready_approval=ready_approval, ready_receipt=ready_receipt, now=self.now)
+        validate_action_receipt(
+            merge_receipt, merge, merge_approval, verifier=self.trusted, reservation_ledger=reservations,
+            receipt_guard=ReplayLedger().consume, ready_request=ready, ready_approval=ready_approval,
+            ready_receipt=ready_receipt, now=self.now,
+        )
 
     def test_combined_action_and_merge_without_ready_fail_closed(self) -> None:
         ready = self.ready_request()
         combined = copy.deepcopy(ready)
         combined["action"] = ["READY", "MERGE"]
         with self.assertRaisesRegex(WarrantValidationError, "SHARDBLADE_REQUEST_SCHEMA_INVALID"):
-            validate_action_request(combined, self.approval(ready, label="ready", issued="2026-07-13T00:08:00Z"), verifier=self.trusted, reserve_guard=ReplayLedger().consume, now=self.now)
+            validate_action_request(combined, self.approval(ready, label="ready", issued="2026-07-13T00:08:00Z"), verifier=self.trusted, reservation_ledger=DurableReservationLedger(), now=self.now)
         _, _, _, merge, merge_approval, _ = self.merge_chain()
         with self.assertRaisesRegex(WarrantValidationError, "SHARDBLADE_READY_RECEIPT_REQUIRED"):
-            validate_action_request(merge, merge_approval, verifier=self.trusted, reserve_guard=ReplayLedger().consume, now=self.now)
+            validate_action_request(merge, merge_approval, verifier=self.trusted, reservation_ledger=DurableReservationLedger(), now=self.now)
 
     def test_approval_reuse_and_candidate_drift_fail_closed(self) -> None:
         ready, ready_approval, ready_receipt, merge, merge_approval, _ = self.merge_chain()
+        reservations = DurableReservationLedger()
+        validate_action_request(ready, ready_approval, verifier=self.trusted, reservation_ledger=reservations, now=self.now)
+        validate_action_receipt(ready_receipt, ready, ready_approval, verifier=self.trusted, reservation_ledger=reservations, receipt_guard=ReplayLedger().consume, now=self.now)
         reused = copy.deepcopy(merge_approval)
         reused.update({"approval_id": ready_approval["approval_id"], "nonce": ready_approval["nonce"]})
         with self.assertRaisesRegex(WarrantValidationError, "SHARDBLADE_APPROVAL_IDENTITY_REUSED"):
-            validate_action_request(merge, reused, verifier=self.trusted, reserve_guard=ReplayLedger().consume, ready_request=ready, ready_approval=ready_approval, ready_receipt=ready_receipt, now=self.now)
+            validate_action_request(merge, reused, verifier=self.trusted, reservation_ledger=reservations, ready_request=ready, ready_approval=ready_approval, ready_receipt=ready_receipt, now=self.now)
         drifted = copy.deepcopy(merge)
         drifted["head_sha"] = "9" * 40
         for item in drifted["ci"]:
@@ -201,13 +256,13 @@ class ShardbladePermanenceTests(unittest.TestCase):
         self.bind_readback(drifted)
         drifted_approval = self.approval(drifted, label="drift", issued="2026-07-13T00:13:00Z")
         with self.assertRaisesRegex(WarrantValidationError, "SHARDBLADE_CANDIDATE_DRIFT"):
-            validate_action_request(drifted, drifted_approval, verifier=self.trusted, reserve_guard=ReplayLedger().consume, ready_request=ready, ready_approval=ready_approval, ready_receipt=ready_receipt, now=self.now)
+            validate_action_request(drifted, drifted_approval, verifier=self.trusted, reservation_ledger=reservations, ready_request=ready, ready_approval=ready_approval, ready_receipt=ready_receipt, now=self.now)
         missing_protected = copy.deepcopy(ready)
         missing_protected.update({"protected_paths": [], "protected_construction_approval_sha256": None})
         self.bind_readback(missing_protected)
         missing_approval = self.approval(missing_protected, label="protected", issued="2026-07-13T00:08:00Z")
         with self.assertRaisesRegex(WarrantValidationError, "SHARDBLADE_PROTECTED_BINDING_MISMATCH"):
-            validate_action_request(missing_protected, missing_approval, verifier=self.trusted, reserve_guard=ReplayLedger().consume, now=self.now)
+            validate_action_request(missing_protected, missing_approval, verifier=self.trusted, reservation_ledger=DurableReservationLedger(), now=self.now)
 
     def test_ci_review_and_success_readback_drift_fail_closed(self) -> None:
         ready, ready_approval, ready_receipt, merge, merge_approval, merge_receipt = self.merge_chain()
@@ -215,38 +270,102 @@ class ShardbladePermanenceTests(unittest.TestCase):
         wrong_ci["ci"][0]["head_sha"] = "9" * 40
         wrong_approval = self.approval(wrong_ci, label="wrong-ci", issued="2026-07-13T00:08:00Z")
         with self.assertRaisesRegex(WarrantValidationError, "SHARDBLADE_CI_BINDING_MISMATCH"):
-            validate_action_request(wrong_ci, wrong_approval, verifier=self.trusted, reserve_guard=ReplayLedger().consume, now=self.now)
+            validate_action_request(wrong_ci, wrong_approval, verifier=self.trusted, reservation_ledger=DurableReservationLedger(), now=self.now)
+        reservations = DurableReservationLedger()
+        validate_action_request(ready, ready_approval, verifier=self.trusted, reservation_ledger=reservations, now=self.now)
         modified = copy.deepcopy(ready_receipt)
         modified["mutation"]["candidate_modified"] = True
         with self.assertRaises(WarrantValidationError):
-            validate_action_receipt(modified, ready, ready_approval, verifier=self.trusted, receipt_guard=ReplayLedger().consume, now=self.now)
+            validate_action_receipt(modified, ready, ready_approval, verifier=self.trusted, reservation_ledger=reservations, receipt_guard=ReplayLedger().consume, now=self.now)
+        validate_action_receipt(ready_receipt, ready, ready_approval, verifier=self.trusted, reservation_ledger=reservations, receipt_guard=ReplayLedger().consume, now=self.now)
+        validate_action_request(merge, merge_approval, verifier=self.trusted, reservation_ledger=reservations, ready_request=ready, ready_approval=ready_approval, ready_receipt=ready_receipt, now=self.now)
         missing_main = copy.deepcopy(merge_receipt)
         missing_main["canonical_main_sha"] = None
         with self.assertRaisesRegex(WarrantValidationError, "SHARDBLADE_SUCCESS_READBACK_MISMATCH"):
-            validate_action_receipt(missing_main, merge, merge_approval, verifier=self.trusted, receipt_guard=ReplayLedger().consume, ready_request=ready, ready_approval=ready_approval, ready_receipt=ready_receipt, now=self.now)
+            validate_action_receipt(missing_main, merge, merge_approval, verifier=self.trusted, reservation_ledger=reservations, receipt_guard=ReplayLedger().consume, ready_request=ready, ready_approval=ready_approval, ready_receipt=ready_receipt, now=self.now)
         reused_identity = copy.deepcopy(merge_receipt)
         reused_identity["receipt_id"] = ready_receipt["receipt_id"]
         with self.assertRaisesRegex(WarrantValidationError, "SHARDBLADE_RECEIPT_IDENTITY_REUSED"):
-            validate_action_receipt(reused_identity, merge, merge_approval, verifier=self.trusted, receipt_guard=ReplayLedger().consume, ready_request=ready, ready_approval=ready_approval, ready_receipt=ready_receipt, now=self.now)
+            validate_action_receipt(reused_identity, merge, merge_approval, verifier=self.trusted, reservation_ledger=reservations, receipt_guard=ReplayLedger().consume, ready_request=ready, ready_approval=ready_approval, ready_receipt=ready_receipt, now=self.now)
 
     def test_request_and_receipt_replay_are_rejected(self) -> None:
         ready = self.ready_request()
         approval = self.approval(ready, label="ready", issued="2026-07-13T00:08:00Z")
-        request_ledger = ReplayLedger()
-        validate_action_request(ready, approval, verifier=self.trusted, reserve_guard=request_ledger.consume, now=self.now)
+        request_ledger = DurableReservationLedger()
+        validate_action_request(ready, approval, verifier=self.trusted, reservation_ledger=request_ledger, now=self.now)
         with self.assertRaisesRegex(WarrantValidationError, "SHARDBLADE_REQUEST_REPLAYED"):
-            validate_action_request(ready, approval, verifier=self.trusted, reserve_guard=request_ledger.consume, now=self.now)
+            validate_action_request(ready, approval, verifier=self.trusted, reservation_ledger=request_ledger, now=self.now)
         reused_approval = copy.deepcopy(ready)
         reused_approval.update({"request_id": "SHARDBLADE-READY-REQUEST-R02", "nonce": "shardblade-ready-request-r02"})
         self.bind_readback(reused_approval)
         relabeled = self.approval(reused_approval, label="ready", issued="2026-07-13T00:08:00Z")
         relabeled.update({"approval_id": approval["approval_id"], "nonce": approval["nonce"]})
         with self.assertRaisesRegex(WarrantValidationError, "SHARDBLADE_REQUEST_REPLAYED"):
-            validate_action_request(reused_approval, relabeled, verifier=self.trusted, reserve_guard=request_ledger.consume, now=self.now)
+            validate_action_request(reused_approval, relabeled, verifier=self.trusted, reservation_ledger=request_ledger, now=self.now)
         receipt, receipt_ledger = self.ready_receipt(ready, approval), ReplayLedger()
-        validate_action_receipt(receipt, ready, approval, verifier=self.trusted, receipt_guard=receipt_ledger.consume, now=self.now)
+        validate_action_receipt(receipt, ready, approval, verifier=self.trusted, reservation_ledger=request_ledger, receipt_guard=receipt_ledger.consume, now=self.now)
         with self.assertRaisesRegex(WarrantValidationError, "SHARDBLADE_RECEIPT_REPLAYED"):
-            validate_action_receipt(receipt, ready, approval, verifier=self.trusted, receipt_guard=receipt_ledger.consume, now=self.now)
+            validate_action_receipt(receipt, ready, approval, verifier=self.trusted, reservation_ledger=request_ledger, receipt_guard=receipt_ledger.consume, now=self.now)
+
+    def test_receipt_requires_the_prior_durable_request_reservation(self) -> None:
+        ready = self.ready_request()
+        approval = self.approval(ready, label="ready", issued="2026-07-13T00:08:00Z")
+        receipt = self.ready_receipt(ready, approval)
+        with self.assertRaisesRegex(WarrantValidationError, "SHARDBLADE_REQUEST_RESERVATION_UNPROVEN"):
+            validate_action_receipt(
+                receipt, ready, approval, verifier=self.trusted,
+                reservation_ledger=DurableReservationLedger(), receipt_guard=ReplayLedger().consume, now=self.now,
+            )
+
+    def test_partial_cannot_substitute_action_or_invent_result_readback(self) -> None:
+        ready = self.ready_request()
+        approval = self.approval(ready, label="ready", issued="2026-07-13T00:08:00Z")
+        receipt = self.ready_receipt(ready, approval)
+        receipt.update({
+            "result": "PARTIAL", "error_code": "AMBIGUOUS_REMOTE_RESULT",
+            "observed_pr_state": "MERGED", "merge_commit_sha": "7" * 40,
+            "canonical_main_sha": "7" * 40, "canonical_tree_sha": ready["tree_sha"],
+            "mutation": {"ready": False, "merge": True, "candidate_modified": False, "head_changed": False},
+            "stop_point": "READBACK_ONLY_RECOVERY", "rollback": "PRESERVE_STATE_AND_RECONCILE",
+        })
+        reservations = DurableReservationLedger()
+        validate_action_request(ready, approval, verifier=self.trusted, reservation_ledger=reservations, now=self.now)
+        with self.assertRaisesRegex(WarrantValidationError, "SHARDBLADE_PARTIAL_ACTION_SUBSTITUTION"):
+            validate_action_receipt(
+                receipt, ready, approval, verifier=self.trusted,
+                reservation_ledger=reservations, receipt_guard=ReplayLedger().consume, now=self.now,
+            )
+
+        unknown = self.ready_receipt(ready, approval)
+        unknown.update({
+            "result": "PARTIAL", "error_code": "AMBIGUOUS_REMOTE_RESULT", "observed_pr_state": "UNKNOWN",
+            "observed_head_sha": None, "observed_tree_sha": None, "mutation": {
+                "ready": False, "merge": False, "candidate_modified": False, "head_changed": False,
+            }, "stop_point": "READBACK_ONLY_RECOVERY", "rollback": "PRESERVE_STATE_AND_RECONCILE",
+        })
+        reservations = DurableReservationLedger()
+        validate_action_request(ready, approval, verifier=self.trusted, reservation_ledger=reservations, now=self.now)
+        validate_action_receipt(
+            unknown, ready, approval, verifier=self.trusted,
+            reservation_ledger=reservations, receipt_guard=ReplayLedger().consume, now=self.now,
+        )
+
+    def test_durable_receipt_remains_auditable_after_approval_expiry(self) -> None:
+        ready = self.ready_request()
+        approval = self.approval(ready, label="ready", issued="2026-07-13T00:08:00Z")
+        receipt = self.ready_receipt(ready, approval)
+        reservations = DurableReservationLedger()
+        validate_action_request(ready, approval, verifier=self.trusted, reservation_ledger=reservations, now=self.now)
+        validate_action_receipt(
+            receipt, ready, approval, verifier=self.trusted,
+            reservation_ledger=reservations, receipt_guard=ReplayLedger().consume,
+            now=datetime(2026, 7, 13, 3, tzinfo=timezone.utc),
+        )
+        validate_action_receipt(
+            receipt, ready, approval, verifier=self.trusted,
+            reservation_ledger=reservations, receipt_guard=ReplayLedger().consume,
+            now=datetime(2026, 7, 13, 4, tzinfo=timezone.utc),
+        )
 
     def test_generic_v1_permanence_is_blocked_and_accepted_v1_bytes_are_unchanged(self) -> None:
         fixtures = json.loads((ROOT / "proof/repairing-prime/rp-c02-agentic-warrant-fixtures-r01.json").read_text(encoding="utf-8"))
@@ -272,6 +391,7 @@ class ShardbladePermanenceTests(unittest.TestCase):
             "READY authority never implies MERGE authority",
             "Shardblade may not author, modify, repair, widen, substitute, bypass checks",
             "Recovery is readback-only reconciliation; never a blind retry",
+            "CONTRACT_ONLY_NOT_ACTIVATED",
         ):
             self.assertIn(phrase, doctrine)
 

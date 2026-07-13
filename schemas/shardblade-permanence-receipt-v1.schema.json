@@ -4,7 +4,7 @@
   "title": "Prime Shardblade permanence action receipt v1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "receipt_id", "attempt_id", "nonce", "request_id", "request_sha256", "approval_record_sha256", "action", "executed_at", "repository", "pull_request", "base_sha", "head_sha", "tree_sha", "changed_paths_sha256", "prior_ready_receipt_sha256", "result", "error_code", "observed_pr_state", "observed_head_sha", "observed_tree_sha", "merge_commit_sha", "canonical_main_sha", "canonical_tree_sha", "mutation", "stop_point", "rollback"],
+  "required": ["schema_version", "receipt_id", "attempt_id", "nonce", "request_id", "request_sha256", "approval_record_sha256", "request_reservation_sha256", "action", "executed_at", "repository", "pull_request", "base_sha", "head_sha", "tree_sha", "changed_paths_sha256", "prior_ready_receipt_sha256", "result", "error_code", "observed_pr_state", "observed_head_sha", "observed_tree_sha", "merge_commit_sha", "canonical_main_sha", "canonical_tree_sha", "mutation", "stop_point", "rollback"],
   "properties": {
     "schema_version": {"const": "atlas.shardblade-permanence-receipt.v1"},
     "receipt_id": {"type": "string", "pattern": "^[A-Z0-9][A-Z0-9._-]{2,127}$"},
@@ -13,6 +13,7 @@
     "request_id": {"type": "string", "minLength": 1, "maxLength": 128},
     "request_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "approval_record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "request_reservation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "action": {"enum": ["READY", "MERGE"]},
     "executed_at": {"type": "string", "minLength": 1, "maxLength": 40},
     "repository": {"const": "Jktomy/atlas-prime"},
