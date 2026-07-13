@@ -1,0 +1,269 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/athena-fresh-work-journey-receipt-v1.schema.json",
+  "title": "Athena fresh Work journey receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "result",
+    "repository",
+    "authorizer",
+    "semantic_invoker",
+    "originating_surface",
+    "origin_receipt_sha256",
+    "verification_method",
+    "verification_evidence_sha256",
+    "task_identity_sha256",
+    "origin_nonce_sha256",
+    "preview_sha256",
+    "carrier_sha256",
+    "mission_id",
+    "canonical_main_sha",
+    "workflow_blob_sha",
+    "guided_execute_receipt_sha256",
+    "workflow_run_id",
+    "workflow_run_url",
+    "workflow_run_head_sha",
+    "stage",
+    "error_code",
+    "stop_point",
+    "remote_dispatch_possible",
+    "bridge_mutation",
+    "rollback",
+    "forbidden_actions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "atlas.athena.fresh-work-journey-receipt.v1"
+    },
+    "result": {
+      "enum": [
+        "DISPATCHED",
+        "BLOCKED",
+        "PARTIAL"
+      ]
+    },
+    "repository": {
+      "const": "Jktomy/atlas-prime"
+    },
+    "authorizer": {
+      "const": "Jayson"
+    },
+    "semantic_invoker": {
+      "const": "Athena"
+    },
+    "originating_surface": {
+      "const": "CHATGPT_WORK"
+    },
+    "origin_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "verification_method": {
+      "enum": [
+        "PLATFORM_SIGNED_ATTESTATION",
+        "INDEPENDENT_PLATFORM_READBACK"
+      ]
+    },
+    "verification_evidence_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "task_identity_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "origin_nonce_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "preview_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "carrier_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "mission_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]{1,128}$"
+    },
+    "canonical_main_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "workflow_blob_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "guided_execute_receipt_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "workflow_run_id": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "workflow_run_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^https://github[.]com/Jktomy/atlas-prime/actions/runs/[0-9]+$"
+    },
+    "workflow_run_head_sha": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "stage": {
+      "enum": [
+        "ORIGIN_VERIFICATION",
+        "GUIDED_DISPATCH_READBACK",
+        "PARTIAL_STATE_PRESERVED"
+      ]
+    },
+    "error_code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[A-Z][A-Z0-9_]{0,79}$"
+    },
+    "stop_point": {
+      "enum": [
+        "PRE_DISPATCH_BLOCKED",
+        "HOSTED_WORKFLOW_DISPATCH_READBACK",
+        "PARTIAL_STATE_PRESERVED"
+      ]
+    },
+    "remote_dispatch_possible": {
+      "type": "boolean"
+    },
+    "bridge_mutation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "git_tree",
+        "commit",
+        "branch",
+        "push",
+        "pull_request",
+        "ready",
+        "merge",
+        "cleanup",
+        "settings",
+        "second_writer"
+      ],
+      "properties": {
+        "git_tree": { "const": false },
+        "commit": { "const": false },
+        "branch": { "const": false },
+        "push": { "const": false },
+        "pull_request": { "const": false },
+        "ready": { "const": false },
+        "merge": { "const": false },
+        "cleanup": { "const": false },
+        "settings": { "const": false },
+        "second_writer": { "const": false }
+      }
+    },
+    "rollback": {
+      "enum": [
+        "NO_REMOTE_MUTATION",
+        "HOSTED_ROUTE_RECEIPT_GOVERNS",
+        "PRESERVE_AND_REVIEW_NO_RETRY"
+      ]
+    },
+    "forbidden_actions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "direct_main",
+        "force_push",
+        "ready",
+        "merge",
+        "cleanup",
+        "settings",
+        "standing_authority",
+        "second_writer"
+      ],
+      "properties": {
+        "direct_main": { "const": false },
+        "force_push": { "const": false },
+        "ready": { "const": false },
+        "merge": { "const": false },
+        "cleanup": { "const": false },
+        "settings": { "const": false },
+        "standing_authority": { "const": false },
+        "second_writer": { "const": false }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "result": { "const": "DISPATCHED" } },
+        "required": ["result"]
+      },
+      "then": {
+        "properties": {
+          "guided_execute_receipt_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "workflow_run_id": { "type": "integer", "minimum": 1 },
+          "workflow_run_url": { "type": "string", "pattern": "^https://github[.]com/Jktomy/atlas-prime/actions/runs/[0-9]+$" },
+          "workflow_run_head_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+          "stage": { "const": "GUIDED_DISPATCH_READBACK" },
+          "error_code": { "type": "null" },
+          "stop_point": { "const": "HOSTED_WORKFLOW_DISPATCH_READBACK" },
+          "remote_dispatch_possible": { "const": true },
+          "rollback": { "const": "HOSTED_ROUTE_RECEIPT_GOVERNS" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "result": { "const": "BLOCKED" } },
+        "required": ["result"]
+      },
+      "then": {
+        "properties": {
+          "guided_execute_receipt_sha256": { "type": "null" },
+          "workflow_run_id": { "type": "null" },
+          "workflow_run_url": { "type": "null" },
+          "workflow_run_head_sha": { "type": "null" },
+          "stage": { "const": "ORIGIN_VERIFICATION" },
+          "error_code": { "type": "string", "minLength": 1 },
+          "stop_point": { "const": "PRE_DISPATCH_BLOCKED" },
+          "remote_dispatch_possible": { "const": false },
+          "rollback": { "const": "NO_REMOTE_MUTATION" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "result": { "const": "PARTIAL" } },
+        "required": ["result"]
+      },
+      "then": {
+        "properties": {
+          "guided_execute_receipt_sha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+          "stage": { "const": "PARTIAL_STATE_PRESERVED" },
+          "error_code": { "type": "string", "minLength": 1 },
+          "stop_point": { "const": "PARTIAL_STATE_PRESERVED" },
+          "remote_dispatch_possible": { "const": true },
+          "rollback": { "const": "PRESERVE_AND_REVIEW_NO_RETRY" }
+        }
+      }
+    }
+  ]
+}
