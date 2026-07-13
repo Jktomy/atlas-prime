@@ -1,0 +1,174 @@
+{
+  "schema_version": "atlas.chromelight-evidence-register.v1",
+  "campaign": "RP-C03",
+  "gate": "CHROMELIGHT_EVIDENCE_RECONCILED",
+  "gate_status": "EVIDENCE_RECONCILED",
+  "observed_on": "2026-07-12",
+  "promotion": "NONE",
+  "research_mode": "PUBLIC_READ_ONLY",
+  "provider_activation": false,
+  "repository_access_granted": false,
+  "operator_account_readback": "NOT_PERFORMED",
+  "sources": [
+    {
+      "source_id": "GOOGLE-GEMINI-AGENT-MODE",
+      "publisher": "Google",
+      "title": "Use the Gemini Code Assist agent mode",
+      "url": "https://developers.google.com/gemini-code-assist/docs/use-agentic-chat-pair-programmer?hl=en",
+      "observed_on": "2026-07-12",
+      "supports": ["Gemini Code Assist agent mode is preview", "IDE agent uses files terminal and optional tools", "tool actions require explicit control"]
+    },
+    {
+      "source_id": "GOOGLE-GEMINI-PRIVACY",
+      "publisher": "Google",
+      "title": "Gemini Code Assist Terms of Service and Privacy Policies",
+      "url": "https://developers.google.com/gemini-code-assist/resources/privacy-notices",
+      "observed_on": "2026-07-12",
+      "supports": ["terms and privacy policy depend on product edition", "account edition must be identified before use"]
+    },
+    {
+      "source_id": "GOOGLE-JULES-GETTING-STARTED",
+      "publisher": "Google",
+      "title": "Jules Getting started",
+      "url": "https://jules.google/docs",
+      "observed_on": "2026-07-12",
+      "supports": ["Google sign-in and privacy notice are required", "GitHub connection and repository selection are required", "plans precede code changes"]
+    },
+    {
+      "source_id": "GOOGLE-JULES-LIMITS",
+      "publisher": "Google",
+      "title": "Jules Limits and Plans",
+      "url": "https://jules.google/docs/usage-limits",
+      "observed_on": "2026-07-12",
+      "supports": ["Jules has documented free and paid task tiers", "paid launch serves individual Google accounts", "Jules requires age 18 or older"]
+    },
+    {
+      "source_id": "GOOGLE-JULES-REPOSITORIES",
+      "publisher": "Google",
+      "title": "Jules Managing tasks and repos",
+      "url": "https://jules.google/docs/tasks-repos/",
+      "observed_on": "2026-07-12",
+      "supports": ["Jules accesses only explicitly allowed repositories", "repository grants are managed through the GitHub application"]
+    },
+    {
+      "source_id": "GOOGLE-JULES-PRIVACY",
+      "publisher": "Google",
+      "title": "Jules FAQ",
+      "url": "https://jules.google/docs/faq/",
+      "observed_on": "2026-07-12",
+      "supports": ["Jules documents private repository training posture", "repository access remains adjustable and explicit"]
+    },
+    {
+      "source_id": "GOOGLE-ANTIGRAVITY-INTRODUCTION",
+      "publisher": "Google",
+      "title": "Gemini 3 for developers and Google Antigravity",
+      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-3-developers/",
+      "observed_on": "2026-07-12",
+      "supports": ["Antigravity is an agentic development platform", "agents can operate across editor terminal and browser", "the launch article documented availability on Windows macOS and Linux"]
+    },
+    {
+      "source_id": "GOOGLE-ANTIGRAVITY-GETTING-STARTED",
+      "publisher": "Google",
+      "title": "Getting Started with Antigravity IDE",
+      "url": "https://codelabs.developers.google.com/getting-started-agy-ide",
+      "observed_on": "2026-07-12",
+      "supports": ["Antigravity IDE requires local installation Chrome and a personal Gmail account", "terminal review and JavaScript execution policies are configurable", "agent access includes local files and commands"]
+    },
+    {
+      "source_id": "GOOGLE-ANTIGRAVITY-PLANS",
+      "publisher": "Google",
+      "title": "Google Antigravity Plans",
+      "url": "https://antigravity.google/docs/plans?app=antigravity",
+      "observed_on": "2026-07-12",
+      "supports": ["individual and team terms differ", "quota and model availability depend on plan"]
+    },
+    {
+      "source_id": "GOOGLE-ANTIGRAVITY-BROWSER",
+      "publisher": "Google",
+      "title": "Google Antigravity Browser",
+      "url": "https://antigravity.google/docs/browser?app=antigravity",
+      "observed_on": "2026-07-12",
+      "supports": ["browser tooling can read and actuate local Chrome", "browser uses allowlist and denylist controls", "agent browser profile is isolated from the primary Chrome profile"]
+    }
+  ],
+  "evaluations": [
+    {
+      "evaluation_id": "GOOGLE-ELIGIBILITY",
+      "provider_surface": "Google provider and account boundary",
+      "atlas_role": "eligibility evidence",
+      "surface_class": "ACCOUNT_BOUNDARY",
+      "availability": "DOCUMENTED_AVAILABLE",
+      "operator_eligibility": "UNVERIFIED_REQUIRES_ACCOUNT_READBACK",
+      "activation_state": "NOT_ACTIVATED",
+      "account_action_required": true,
+      "repository_access_required": false,
+      "stormlight": "NONE",
+      "mutation_route": false,
+      "permanence_authority": false,
+      "evidence_source_ids": ["GOOGLE-GEMINI-PRIVACY", "GOOGLE-JULES-LIMITS", "GOOGLE-ANTIGRAVITY-PLANS"],
+      "disposition": "RECONCILED_UNVERIFIED",
+      "blockers": ["account type unverified", "age and region eligibility unverified", "terms acceptance and subscription state unverified"],
+      "smallest_external_action": "Human-controlled readback of the intended Google account, product terms, age and region eligibility, and plan without granting access or activating a provider."
+    },
+    {
+      "evaluation_id": "GEMINI-SCOUT",
+      "provider_surface": "Gemini Code Assist agent mode candidate",
+      "atlas_role": "Gemini Scout",
+      "surface_class": "RESEARCH_ROLE",
+      "availability": "ATLAS_ROLE_ONLY",
+      "operator_eligibility": "NOT_APPLICABLE_ATLAS_ROLE",
+      "activation_state": "NOT_ACTIVATED",
+      "account_action_required": true,
+      "repository_access_required": false,
+      "stormlight": "CLOUD",
+      "mutation_route": false,
+      "permanence_authority": false,
+      "evidence_source_ids": ["GOOGLE-GEMINI-AGENT-MODE", "GOOGLE-GEMINI-PRIVACY"],
+      "disposition": "ROLE_DEFINED_SURFACE_UNSELECTED",
+      "blockers": ["Gemini Scout is an Atlas role rather than a verified provider product", "provider edition and account boundary unselected", "no read-only trial warrant exists"],
+      "smallest_external_action": "Select one named Gemini surface and account edition, then approve a separate read-only research warrant with private data excluded."
+    },
+    {
+      "evaluation_id": "JULES",
+      "provider_surface": "Google Jules",
+      "atlas_role": "hosted coding-agent candidate",
+      "surface_class": "HOSTED_CODING_AGENT",
+      "availability": "DOCUMENTED_AVAILABLE",
+      "operator_eligibility": "UNVERIFIED_REQUIRES_ACCOUNT_READBACK",
+      "activation_state": "NOT_ACTIVATED",
+      "account_action_required": true,
+      "repository_access_required": true,
+      "stormlight": "CLOUD",
+      "mutation_route": false,
+      "permanence_authority": false,
+      "evidence_source_ids": ["GOOGLE-JULES-GETTING-STARTED", "GOOGLE-JULES-LIMITS", "GOOGLE-JULES-REPOSITORIES", "GOOGLE-JULES-PRIVACY"],
+      "disposition": "EVALUATED_NOT_ACTIVATED",
+      "blockers": ["Google account eligibility unverified", "privacy notice not accepted for this mission", "GitHub application and repository access not granted", "no harmless provider trial defined"],
+      "smallest_external_action": "After account eligibility approval, grant Jules least access to a disposable non-production repository and run a separately warranted harmless task."
+    },
+    {
+      "evaluation_id": "ANTIGRAVITY-SHARDPLATE",
+      "provider_surface": "Google Antigravity",
+      "atlas_role": "Shardplate",
+      "surface_class": "AI_ASSISTED_WORK_SURFACE",
+      "availability": "DOCUMENTED_AVAILABLE",
+      "operator_eligibility": "UNVERIFIED_REQUIRES_ACCOUNT_READBACK",
+      "activation_state": "NOT_ACTIVATED",
+      "account_action_required": true,
+      "repository_access_required": false,
+      "stormlight": "CLOUD",
+      "mutation_route": false,
+      "permanence_authority": false,
+      "evidence_source_ids": ["GOOGLE-ANTIGRAVITY-INTRODUCTION", "GOOGLE-ANTIGRAVITY-GETTING-STARTED", "GOOGLE-ANTIGRAVITY-PLANS", "GOOGLE-ANTIGRAVITY-BROWSER"],
+      "disposition": "EVALUATED_NOT_ACTIVATED",
+      "blockers": ["personal Gmail and plan eligibility unverified", "software not installed for this mission", "local file terminal browser and data policies not approved", "no Shardplate trial warrant exists"],
+      "smallest_external_action": "Approve account and local-data boundaries, install in an isolated non-production workspace, select review-driven policies, and run a separately warranted read-only trial."
+    }
+  ],
+  "unresolved_external_actions": [
+    "Human account eligibility and terms readback",
+    "Separate provider-activation approval for any login installation or consent",
+    "Separate repository-access approval before any Jules GitHub grant",
+    "Separate harmless trial warrant before any provider execution"
+  ]
+}
