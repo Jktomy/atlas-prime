@@ -1,0 +1,46 @@
+{
+  "schema_version": "atlas.aberration-register.v1",
+  "register_id": "RP-C04-ABERRATION-R01",
+  "campaign": "RP-C04",
+  "gate": "RESONANCE_EVIDENCE_RECONCILED",
+  "gate_status": "EVIDENCE_RECONCILED",
+  "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "finding_sha256s": [
+    "8519a0838a31ce296d45b1d8f48885b9c6acc972ce34cce565d2a1e4577ea074",
+    "e7f62a535205b93aaa8f10e62791041b0fc02a1175c9db74526513d96c69dad6",
+    "1d9c03a6e1a72cc95a2bb58f9dcdffb3912a5909adff2bf3a35096e6e7d07f20",
+    "2dc0239c065a95aa9208eed37630ccc1e2e6015cc33b44307c9be99ff8bbb453",
+    "f56d5fbe3f8aa1baf4f9560e8407aa88d581d5587deb0665c1a8cffc930485b2"
+  ],
+  "records": [
+    {
+      "claim_key": "provider.neutrality",
+      "classification": "NOVEL",
+      "finding_ids": ["RP-C04-F05"],
+      "statement_sha256s": ["d5c767979a0e6aa784348078b95e49659c60ec16b409510a0f3e70502317c35b"],
+      "athena_refraction": {"operator": "Athena", "recommendation": "SEEK_SECOND_LANE", "reason": "Only one sealed independent lane reported this claim.", "is_final": false},
+      "disposition": "OPEN_HUMAN_REVIEW",
+      "human_decision": null
+    },
+    {
+      "claim_key": "route.boundary",
+      "classification": "CONSENSUS",
+      "finding_ids": ["RP-C04-F01", "RP-C04-F02"],
+      "statement_sha256s": ["c0c9b883994d43fa829439a3a9b279e18f8999bb141da5672e9493a8255d95e4", "c0c9b883994d43fa829439a3a9b279e18f8999bb141da5672e9493a8255d95e4"],
+      "athena_refraction": {"operator": "Athena", "recommendation": "REVIEW_FOR_ACCEPTANCE", "reason": "Independent lanes reported byte-equivalent normalized statements.", "is_final": false},
+      "disposition": "OPEN_HUMAN_REVIEW",
+      "human_decision": null
+    },
+    {
+      "claim_key": "runtime.local",
+      "classification": "CONFLICT",
+      "finding_ids": ["RP-C04-F03", "RP-C04-F04"],
+      "statement_sha256s": ["ec19ba829ba16e754f18d14fa568efdcc530b42444b8a8875b2256b6503875da", "5f2fee38b465153e8bae51cac9121877c84ac5ce267cb034ba17f2d5dc5ff3c9"],
+      "athena_refraction": {"operator": "Athena", "recommendation": "INVESTIGATE_CONFLICT", "reason": "Independent lanes reported different statements for one claim key.", "is_final": false},
+      "disposition": "OPEN_HUMAN_REVIEW",
+      "human_decision": null
+    }
+  ],
+  "local_model": {"status": "BLOCKED_RUNTIME_PROOF_ABSENT", "runtime_proof_sha256": null, "finding_ids": []},
+  "promotion": "NONE"
+}

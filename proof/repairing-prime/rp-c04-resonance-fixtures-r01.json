@@ -1,0 +1,42 @@
+{
+  "schema_version": "atlas.resonance-fixtures.v1",
+  "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "register_id": "RP-C04-ABERRATION-R01",
+  "findings": [
+    {
+      "schema_version": "atlas.resonance-finding.v1", "finding_id": "RP-C04-F01", "lane_id": "RP-C04-LANE-ALPHA", "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "claim_key": "route.boundary", "statement": "Shardplate is not a repository mutation route.",
+      "evidence": [{"evidence_type": "REPOSITORY_FILE", "source": "governance/change-routes.md", "sha256": "196e6b664d1b871f4c6b9146e5347d55eef5768920efd4e1a42013556263812b"}], "confidence": "HIGH",
+      "agent_identity": {"agent_id": "fixture.alpha", "provider": "NONE", "model": "NONE", "stormlight": "NONE"},
+      "independence": {"prior_lane_visibility": false, "sealed_at": "2026-07-13T01:00:00Z", "warrant_id": "RP-C04-FIXTURE-WARRANT-ALPHA"}, "status": "SEALED_CANDIDATE"
+    },
+    {
+      "schema_version": "atlas.resonance-finding.v1", "finding_id": "RP-C04-F02", "lane_id": "RP-C04-LANE-BETA", "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "claim_key": "route.boundary", "statement": "Shardplate is not a repository mutation route.",
+      "evidence": [{"evidence_type": "REPOSITORY_FILE", "source": "operations/protocol-library.md", "sha256": "2caa88be9f314fb9c36973cea789497c7b5cce06ed97b2743e6db589bd5257ac"}], "confidence": "HIGH",
+      "agent_identity": {"agent_id": "fixture.beta", "provider": "NONE", "model": "NONE", "stormlight": "NONE"},
+      "independence": {"prior_lane_visibility": false, "sealed_at": "2026-07-13T01:01:00Z", "warrant_id": "RP-C04-FIXTURE-WARRANT-BETA"}, "status": "SEALED_CANDIDATE"
+    },
+    {
+      "schema_version": "atlas.resonance-finding.v1", "finding_id": "RP-C04-F03", "lane_id": "RP-C04-LANE-GAMMA", "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "claim_key": "runtime.local", "statement": "Local model runtime is available.",
+      "evidence": [{"evidence_type": "SYNTHETIC_FIXTURE", "source": "fixture/claim-a", "sha256": "ec19ba829ba16e754f18d14fa568efdcc530b42444b8a8875b2256b6503875da"}], "confidence": "LOW",
+      "agent_identity": {"agent_id": "fixture.gamma", "provider": "NONE", "model": "NONE", "stormlight": "NONE"},
+      "independence": {"prior_lane_visibility": false, "sealed_at": "2026-07-13T01:02:00Z", "warrant_id": "RP-C04-FIXTURE-WARRANT-GAMMA"}, "status": "SEALED_CANDIDATE"
+    },
+    {
+      "schema_version": "atlas.resonance-finding.v1", "finding_id": "RP-C04-F04", "lane_id": "RP-C04-LANE-DELTA", "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "claim_key": "runtime.local", "statement": "Local model runtime proof is absent.",
+      "evidence": [{"evidence_type": "REPOSITORY_FILE", "source": "quests/repairing-prime.md", "sha256": "318d611ef8979cb6d9f029c57c45fb2ad89eb95de6c25028951ab491e296c42e"}], "confidence": "HIGH",
+      "agent_identity": {"agent_id": "fixture.delta", "provider": "NONE", "model": "NONE", "stormlight": "NONE"},
+      "independence": {"prior_lane_visibility": false, "sealed_at": "2026-07-13T01:03:00Z", "warrant_id": "RP-C04-FIXTURE-WARRANT-DELTA"}, "status": "SEALED_CANDIDATE"
+    },
+    {
+      "schema_version": "atlas.resonance-finding.v1", "finding_id": "RP-C04-F05", "lane_id": "RP-C04-LANE-EPSILON", "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "claim_key": "provider.neutrality", "statement": "Provider identity does not grant authority.",
+      "evidence": [{"evidence_type": "REPOSITORY_FILE", "source": "governance/agentic-warrant-contract.md", "sha256": "2e1dfc7dd3a9983d50bbea27b96bbd8d61a60a9571fec5a847fd272835a9d429"}], "confidence": "HIGH",
+      "agent_identity": {"agent_id": "fixture.epsilon", "provider": "NONE", "model": "NONE", "stormlight": "NONE"},
+      "independence": {"prior_lane_visibility": false, "sealed_at": "2026-07-13T01:04:00Z", "warrant_id": "RP-C04-FIXTURE-WARRANT-EPSILON"}, "status": "SEALED_CANDIDATE"
+    }
+  ]
+}
