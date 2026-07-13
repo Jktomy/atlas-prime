@@ -1,0 +1,40 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c05-continuity-evidence.v1",
+  "campaign": "RP-C05",
+  "campaign_gate": "QUEST_ENGINE_AND_CONTINUITY_PROVEN",
+  "campaign_gate_state": "ACCEPTED",
+  "canonical_sunset_main_sha": "4de60f2a1e9b4069189a80a6bc68bfa2b2b69dd0",
+  "continuity_register": {
+    "register_revision": 4,
+    "canonical_sha256": "bb1df060d5d36868a6479563dc34fdbd9b552378283f40dc4b43508ca7016f39",
+    "raw_sha256": "c58b621b1e7456fa3e570ff4988a17195aab8b9e88daa013bef57a5bdcb193f1"
+  },
+  "transactions": {
+    "foundation": {"pull_request": 117, "head_sha": "1f516c316ab5eefa8385045caef3a115f084423d", "ci_run": 29219405383, "detached_review": "GREEN", "merge_sha": "b39b0f7af1c5b136874739c90690814c4b61f7d4"},
+    "foundation_generated": {"pull_request": 118, "head_sha": "f90dc2ce596d24594fa4877c946531f3648b3244", "ci_run": 29219467586, "merge_sha": "22ee3787578fee73d440d228426f235e04a4316c"},
+    "aj07_one_entry": {"pull_request": 120, "head_sha": "f9dd9577b6dbc1531b93fd4aeeb627f6920b9147", "ci_run": 29219615902, "detached_review": "GREEN", "merge_sha": "7c0ab176aa081a2031d56cfee10a38e873cfd742"},
+    "aj08_admission": {"pull_request": 121, "head_sha": "bf2e80c111b92bfb226fda785f25b99b57f8802f", "ci_run": 29219783414, "detached_review": "GREEN", "merge_sha": "fc549741e41fdb9ae73f1d50dba270a3ae314d04", "validator_sha256_unchanged": "714ca7e283e9995c8426cc2d789b4d3018678c9145ad2a582fbce21398bbf506", "engine_sha256_unchanged": "4bc8b5773b386b030862c44e00a6b7ec837b324c687219b51ad0e0025b71ce05"},
+    "command_startup": {"pull_request": 122, "head_sha": "4f59df54621f0d1e3f6c3fdd24da9a6d09ea78ea", "ci_run": 29219977672, "detached_review": "GREEN", "merge_sha": "de436b2919ae5e191de539c5596ac009a6961340"},
+    "aj10_sunset": {"pull_request": 124, "head_sha": "40ac19e0251487ae578e18d09f4f1b359f490628", "ci_run": 29220154641, "detached_review": "GREEN", "merge_sha": "4de60f2a1e9b4069189a80a6bc68bfa2b2b69dd0"}
+  },
+  "journeys": {
+    "AJ-07": "PROVEN",
+    "AJ-08": "PROVEN",
+    "AJ-10": "PROVEN"
+  },
+  "aj10_fresh_context": {
+    "fresh_clone_sha": "4de60f2a1e9b4069189a80a6bc68bfa2b2b69dd0",
+    "sunset_file_sha256": "64824c8fb02fe2a5f432e0e7cabd802c91c54712d587bebabcd6bc76e781b7ec",
+    "sunset_record_sha256": "2a688946363b5ee253e9fc78ce0b3d6f4c210b18610531670120f316d1b50692",
+    "sunrise_file_sha256": "2e31438c3def02a30eb3d26e3a09e2840fb06ccd3719f8dbf8520965482d0d0c",
+    "reconstructed_next_gate": "DETERMINISTIC_CONSERVATION_AND_GENERATED_PARITY_PROVEN",
+    "reconstructed_source": "quests/repairing-prime.md",
+    "fresh_clone_validation": "PASS"
+  },
+  "deterministic_projections": {
+    "emberline_sha256": "fe9f87fc8cc6a1dae0c370617828a65c56ef0b1b0964e6e689cf0390f149a62c",
+    "argus_sha256": "c24018047aa54a509bcc9177ed91ae279a7b38f5c262d147fa535804c899f950"
+  },
+  "capability_promotion": "DEFERRED_TO_CAPABILITY_RECONCILIATION",
+  "acceptance_journey_promotion": ["AJ-07", "AJ-08", "AJ-10"]
+}
