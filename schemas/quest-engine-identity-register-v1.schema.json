@@ -16,7 +16,7 @@
       }}}
     }}},
     "state_rules": {"type": "object", "additionalProperties": false, "required": ["allowed_campaign_transitions", "gate_requires_all_missions_terminal", "generated_can_advance", "merge_can_self_certify"], "properties": {
-      "allowed_campaign_transitions": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+      "allowed_campaign_transitions": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"enum": ["PENDING->IN_PROGRESS", "IN_PROGRESS->BLOCKED", "BLOCKED->IN_PROGRESS", "IN_PROGRESS->COMPLETE"]}},
       "gate_requires_all_missions_terminal": {"const": true}, "generated_can_advance": {"const": false}, "merge_can_self_certify": {"const": false}
     }}
   }

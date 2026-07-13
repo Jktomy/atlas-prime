@@ -16,6 +16,7 @@ from tools.prime_continuity.engine import (
     sunset,
     validate_board,
     validate_identity_register,
+    validate_quest_admission,
     validate_register,
 )
 
@@ -60,7 +61,15 @@ class PrimeContinuityTests(unittest.TestCase):
                 "source": "quests/later-valid-quest.md",
                 "state": "READY_FOR_CAMPAIGN_1_PREVIEW",
             })
-            validate_board(candidate, root=root)
+            admitted = validate_quest_admission(self.board, candidate, root=root)
+            self.assertEqual(admitted["quest_id"], "QUEST-LATER-VALID-R01")
+
+            self_completed = copy.deepcopy(candidate)
+            self_completed["entries"][-1].update({
+                "state": "COMPLETE", "next_gate": "CLOSED", "completion_basis": "self asserted",
+            })
+            with self.assertRaisesRegex(ContinuityError, "QUEST_ADMISSION_STATE_INVALID"):
+                validate_quest_admission(self.board, self_completed, root=root)
 
     def test_duplicate_or_unsafe_quest_admission_fails_closed(self) -> None:
         duplicate = copy.deepcopy(self.board)
@@ -76,6 +85,8 @@ class PrimeContinuityTests(unittest.TestCase):
         before = copy.deepcopy(self.register)
         candidate = plan_one_entry_update(
             self.register,
+            self.board,
+            self.identities,
             continuity_id="CONT-REPAIRING-PRIME-R01",
             expected_register_sha256=sha256(self.register),
             expected_entry_revision=1,
@@ -93,6 +104,8 @@ class PrimeContinuityTests(unittest.TestCase):
         with self.assertRaisesRegex(ContinuityError, "REGISTER_STALE"):
             plan_one_entry_update(
                 self.register,
+                self.board,
+                self.identities,
                 continuity_id="CONT-REPAIRING-PRIME-R01",
                 expected_register_sha256="0" * 64,
                 expected_entry_revision=1,
@@ -102,23 +115,54 @@ class PrimeContinuityTests(unittest.TestCase):
         with self.assertRaisesRegex(ContinuityError, "UPDATE_SCOPE_INVALID"):
             plan_one_entry_update(
                 self.register,
+                self.board,
+                self.identities,
                 continuity_id="CONT-REPAIRING-PRIME-R01",
                 expected_register_sha256=sha256(self.register),
                 expected_entry_revision=1,
                 event_id="RP-C05-WIDEN-R01",
                 changes={"quest_source": "quests/other.md"},
             )
+        replay = copy.deepcopy(self.register)
+        replay["event_ids"].append("RP-C05-REPLAY-R01")
+        with self.assertRaisesRegex(ContinuityError, "EVENT_REPLAY"):
+            plan_one_entry_update(
+                replay,
+                self.board,
+                self.identities,
+                continuity_id="CONT-REPAIRING-PRIME-R01",
+                expected_register_sha256=sha256(replay),
+                expected_entry_revision=1,
+                event_id="RP-C05-REPLAY-R01",
+                changes={"next_action": "Rejected replay"},
+            )
+        with self.assertRaisesRegex(ContinuityError, "UPDATE_SCOPE_INVALID"):
+            plan_one_entry_update(
+                self.register,
+                self.board,
+                self.identities,
+                continuity_id="CONT-REPAIRING-PRIME-R01",
+                expected_register_sha256=sha256(self.register),
+                expected_entry_revision=1,
+                event_id="RP-C05-PROMOTE-R01",
+                changes={"quest_state": "COMPLETE", "blockers": "not-an-array"},
+            )
 
     def test_emberline_sunset_sunrise_and_argus_are_deterministic(self) -> None:
         self.assertEqual(render_emberline(self.register), render_emberline(copy.deepcopy(self.register)))
         snapshot = sunset(self.register, "CONT-REPAIRING-PRIME-R01")
-        reconstructed = sunrise(snapshot)
+        reconstructed = sunrise(snapshot, self.register)
         self.assertEqual(reconstructed["next_gate"], "QUEST_ENGINE_AND_CONTINUITY_PROVEN")
         self.assertEqual(reconstructed["source"], "quests/repairing-prime.md")
         tampered = copy.deepcopy(snapshot)
         tampered["entry"]["next_action"] = "tampered"
         with self.assertRaisesRegex(ContinuityError, "SUNSET_DIGEST_MISMATCH"):
-            sunrise(tampered)
+            sunrise(tampered, self.register)
+        forged = copy.deepcopy(snapshot)
+        forged["entry"]["gate_id"] = "ATTACKER_GATE"
+        forged["sunset_sha256"] = sha256({key: forged[key] for key in ("schema_version", "register_sha256", "entry")})
+        with self.assertRaisesRegex(ContinuityError, "SUNSET_ENTRY_MISMATCH"):
+            sunrise(forged, self.register)
         self.assertEqual(argus(self.register), argus(copy.deepcopy(self.register)))
         self.assertEqual(
             [item["continuity_id"] for item in argus(self.register)],
@@ -144,6 +188,22 @@ class PrimeContinuityTests(unittest.TestCase):
         drifted["entries"][0]["quest_source_sha256"] = "0" * 64
         with self.assertRaisesRegex(ContinuityError, "CONTINUITY_SOURCE_DIGEST_MISMATCH"):
             validate_register(drifted, self.board)
+
+    def test_identity_state_machine_rejects_self_promotion(self) -> None:
+        invalid = copy.deepcopy(self.identities)
+        invalid["campaigns"][0]["state"] = "COMPLETE"
+        with self.assertRaisesRegex(ContinuityError, "CAMPAIGN_COMPLETION_UNPROVEN"):
+            validate_identity_register(invalid)
+        transition = copy.deepcopy(self.identities)
+        transition["state_rules"]["allowed_campaign_transitions"] = [
+            "PENDING->IN_PROGRESS", "IN_PROGRESS->BLOCKED", "BLOCKED->IN_PROGRESS", "PENDING->COMPLETE",
+        ]
+        with self.assertRaises(ContinuityError):
+            validate_identity_register(transition)
+        mismatched = copy.deepcopy(self.identities)
+        mismatched["campaigns"][0]["missions"][0]["mission_id"] = "RP-C02-M01"
+        with self.assertRaisesRegex(ContinuityError, "MISSION_CAMPAIGN_MISMATCH"):
+            validate_identity_register(mismatched)
 
 
 if __name__ == "__main__":

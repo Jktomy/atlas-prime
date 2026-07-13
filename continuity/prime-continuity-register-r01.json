@@ -5,6 +5,7 @@
   "register_revision": 1,
   "source_base_sha": "0df35252206db32beea0a2bdd5270875c69fa15e",
   "quest_board_sha256": "e47fbf14ee7cd2c1af57f5c8917a69891e44bd4a1a27e263bddf3406ee5b891c",
+  "event_ids": ["RP-C05-FOUNDATION-R01", "RP-C05-IMPORT-FS-R01", "RP-C05-IMPORT-NW-R01", "RP-C05-IMPORT-PF-R01"],
   "entries": [
     {
       "continuity_id": "CONT-REPAIRING-PRIME-R01", "quest_id": "QUEST-REPAIRING-PRIME-R01", "quest_source": "quests/repairing-prime.md", "quest_source_sha256": "318d611ef8979cb6d9f029c57c45fb2ad89eb95de6c25028951ab491e296c42e", "quest_state": "READY_FOR_CAMPAIGN_1_PREVIEW",

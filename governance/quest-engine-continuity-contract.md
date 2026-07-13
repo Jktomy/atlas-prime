@@ -29,19 +29,24 @@ silently advances the Quest Board.
 ## Bounded update
 
 A continuity update binds the complete register digest, one continuity ID, one
-entry revision, and one event ID. Only operational position, blockers, next
-action, next approval, and explicit Quest/Campaign/Mission/Gate fields may
-change. Exactly one entry and the register revision advance. Planning is
-read-only; durable apply still requires an exact branch, draft PR, exact-head
-review, merge, and canonical readback.
+entry revision, and one globally unique event ID retained in the register replay
+ledger. Only operational position, blockers, next action, next approval, and
+explicit Campaign/Mission/Gate routing fields may change; Quest state cannot be
+promoted through this route. The input and candidate both validate against the
+canonical Board and stable identity register. Exactly one entry, the register
+revision, and the replay ledger advance. Planning is read-only; durable apply
+still requires an exact branch, draft PR, exact-head review, merge, and
+canonical readback.
 
 ## Emberline, Sunset, Sunrise, and Argus
 
 The deterministic Emberline is a non-authoritative projection of the exact
-register digest. Sunset seals one entry and its register digest. Sunrise rejects
-tamper and reconstructs only position, blockers, next gate, next action, next
-approval, and source. Argus sorts unfinished work from the register without chat
-memory and cannot mutate or promote it.
+register digest. Sunset seals one entry and its register digest. Sunrise accepts
+the snapshot only when its register digest and entry exactly match the supplied
+canonical register; a self-contained or recomputed digest is not authority. It
+reconstructs only position, blockers, next gate, next action, next approval, and
+source. Argus sorts unfinished work from the register without chat memory and
+cannot mutate or promote it.
 
 Generated projections report and never govern. Private data, provider state,
 runtime placement, deployment, CAP promotion, AJ promotion, ready, and merge
