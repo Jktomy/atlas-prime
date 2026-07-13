@@ -23,6 +23,9 @@ MISSION_ID = "RP-C01-CAP015-FRESH-WORK-R01"
 TASK_SHA = "3" * 64
 ORIGIN_NONCE_SHA = "4" * 64
 EVIDENCE_SHA = "5" * 64
+FROZEN_COMMAND_SURFACE_SHA256 = (
+    "7c37ebb5d88e65285b707a40ea63602fcf35f7f9119b021f8e51919f7ce48b94"
+)
 
 
 class FreshWorkBridgeTests(unittest.TestCase):
@@ -233,7 +236,7 @@ class FreshWorkBridgeTests(unittest.TestCase):
 
 
 class FreshWorkBridgeSourceTests(unittest.TestCase):
-    def test_required_source_surface_exists_and_is_routed(self) -> None:
+    def test_required_source_surface_exists_and_is_routed_without_mutating_frozen_command_surface(self) -> None:
         required = (
             "governance/athena-fresh-work-origin-contract.md",
             "schemas/athena-fresh-work-origin-receipt-v1.schema.json",
@@ -244,18 +247,23 @@ class FreshWorkBridgeSourceTests(unittest.TestCase):
             with self.subTest(path=relative):
                 self.assertTrue((ROOT / relative).is_file())
 
-        command_surface = (ROOT / "routing/command-surfaces.md").read_text(
-            encoding="utf-8"
+        command_surface_path = ROOT / "routing/command-surfaces.md"
+        self.assertEqual(
+            sha256_bytes(command_surface_path.read_bytes()),
+            FROZEN_COMMAND_SURFACE_SHA256,
         )
+
         readme = (ROOT / "tools/athena_routes/README.md").read_text(
             encoding="utf-8"
         )
-        for text in (command_surface, readme):
-            self.assertIn("athena-fresh-work-origin-contract.md", text)
-            self.assertIn("athena-fresh-work-origin-receipt-v1.schema.json", text)
-            self.assertIn("athena-fresh-work-journey-receipt-v1.schema.json", text)
-            self.assertIn("fresh_work_bridge", text)
-            self.assertIn("CAP-015", text)
+        for phrase in (
+            "athena-fresh-work-origin-contract.md",
+            "athena-fresh-work-origin-receipt-v1.schema.json",
+            "athena-fresh-work-journey-receipt-v1.schema.json",
+            "fresh_work_bridge",
+            "CAP-015",
+        ):
+            self.assertIn(phrase, readme)
 
     def test_contract_and_capability_remain_nonpromoting(self) -> None:
         contract = (ROOT / "governance/athena-fresh-work-origin-contract.md").read_text(
