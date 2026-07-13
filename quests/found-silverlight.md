@@ -135,6 +135,11 @@ Build:
 - malformed-event quarantine;
 - immutable-generation recovery and rollback.
 
+**State:** `PROVEN` from authored construction PR `#171`, exact-head Ubuntu
+and Windows validation, detached review, canonical synthetic exercise, and
+accepted record
+`proof/found-silverlight/fs-c01-m02-m03-construction-acceptance-r01.json`.
+
 **Exit gate:** `APPEND_ONLY_INVESTITURE_LEDGER_CONSTRUCTION_PROVEN`.
 
 ### Mission FS-C01-M03 — Bind the Receipts
@@ -150,6 +155,10 @@ Define events for:
 - deterministic zero-model work.
 
 Lifecycle events bind usage receipts without recounting usage.
+
+**State:** `PROVEN` from the same exact construction lineage and canonical
+synthetic lifecycle-binding exercise. Only `USAGE_REPORTED` entries changed
+BEU; the lifecycle event bound prior usage without recounting it.
 
 **Exit gate:** `INVESTITURE_RECEIPT_AND_LIFECYCLE_BINDING_PROVEN`.
 
@@ -311,14 +320,16 @@ Found Silverlight is complete only when:
 ```text
 Quest state: IN_PROGRESS
 Current Campaign: FS-C01 — Infuse the Gemstone
-Accepted Mission: FS-C01-M01 — Define Investiture
-Next Mission: FS-C01-M02 — Forge the Ledger
+Accepted Mission: FS-C01-M03 — Bind the Receipts
+Next Mission: FS-C01-M04 — Prove the Light
 Source-governance substrate: FOUNDRY_OATHBRINGER_R04_ACCEPTED
-Acceptance main: 11d0db1c82c36c2bbdc07b02882da4f156b7b4e8
+Construction merge: f88dd11875b7891212a05dd7b66f3e11f128526f
+Canonical exercise main: df3de8e555c19cab890f3968dca67f770498b153
 Runtime deployment: NOT STARTED
 External-system action: NOT AUTHORIZED
 ```
 
-The next safe action is the bounded FS-C01-M02/M03 construction transaction.
+FS-C01-M02 and FS-C01-M03 are accepted at their construction gates.
 FS-C01-M04 live acceptance remains separately gated by a Jayson-selected
-protected external store and trusted provider/runtime usage evidence.
+protected external store and one bounded trusted provider/runtime usage receipt
+with authoritative category-semantics evidence.

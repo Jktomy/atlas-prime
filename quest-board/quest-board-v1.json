@@ -17,12 +17,12 @@
       "state": "IN_PROGRESS"
     },
     {
-      "next_gate": "FS-C01-M02 \u2014 Forge the Ledger",
+      "next_gate": "FS-C01-M04 \u2014 Prove the Light",
       "owner": "Codex / Source Governance",
       "quest_id": "QUEST-FOUND-SILVERLIGHT-R01",
       "source": "quests/found-silverlight.md",
       "state": "IN_PROGRESS",
-      "readiness_basis": "FS-C01-M01 Investiture Accounting doctrine is accepted from Jayson's controlling decisions, the canonical Prime identity contract, the Found Silverlight-owned accounting contract, exact source tests, and reviewed canonical readback. FS-C01-M02/M03 construction is next; protected storage placement and trusted live usage remain separate."
+      "readiness_basis": "FS-C01-M02 and FS-C01-M03 construction are accepted from exact authored lineage, Ubuntu and Windows validation, detached review, canonical synthetic exercise, immutable recovery, and read-only rollback evidence. FS-C01-M04 still requires a Jayson-selected protected external store and bounded trusted provider/runtime usage evidence."
     },
     {
       "next_gate": "PF-C01 preview and Jayson-side hardware readiness",

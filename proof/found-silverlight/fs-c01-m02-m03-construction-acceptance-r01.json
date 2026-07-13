@@ -1,0 +1,50 @@
+{
+  "schema_version": "atlas.found-silverlight.construction-acceptance.v1",
+  "record_id": "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01",
+  "source_base_sha": "765e1b29bf315bfcc4a4f039caab28bfb43b806d",
+  "construction_head_sha": "aedc1768bcc3ae851d5d75bab4f3c96f6df50a35",
+  "construction_merge_sha": "f88dd11875b7891212a05dd7b66f3e11f128526f",
+  "validation_run_id": 29282806209,
+  "ubuntu_job_id": 86927932618,
+  "windows_job_id": 86927932599,
+  "detached_review": "GREEN",
+  "implementation_hashes": {
+    "routing/command-surfaces.md": "7c37ebb5d88e65285b707a40ea63602fcf35f7f9119b021f8e51919f7ce48b94",
+    "schemas/investiture-construction-acceptance-v1.schema.json": "85d99ca0255fb788cc7a04b8ff3f9502619329a8d888bd643be9605ac42e33ed",
+    "schemas/investiture-event-v1.schema.json": "695dd1d60bd5ac85104b9803b61a6bbb9be61e860f54d22acc0e41009a41ea62",
+    "schemas/investiture-ledger-manifest-v1.schema.json": "bdde906aa21badeddced97ddb22b682465cf96820237b90151edf2221e42e91c",
+    "schemas/investiture-ledger-record-v1.schema.json": "18ddc27777146f49b5a8662df7adc412a994cfcbcbf847045da4eb9dba8fd77d",
+    "schemas/investiture-operation-receipt-v1.schema.json": "5235328b1467567d0a655fb8a060f7921e3390a24a12efba9d1c98a35dbd2053",
+    "schemas/investiture-summary-v1.schema.json": "dd6ed99db436164911056ed2e238475e033209d90478caffdeffdd55896a1bee",
+    "tests/prime-program/fixtures/investiture-events-v1.json": "5ba407d0668a0ae7178c6479b8352c49ba26ffb898eed67b22a1ddece7684be7",
+    "tests/prime-program/test_investiture_accounting.py": "2d6669c6a865f2f9e9e27dd7a4e68830b5dc9ef31e339c7e651bd71f798c1056",
+    "tests/prime-program/test_investiture_storage.py": "83d939df39c2f2a841fbe8a5892b3928668bc5e4ac70bf93a314e76816280d5b",
+    "tools/investiture_accounting/README.md": "f6e0d5726450d90cea3242d05c087921d81352cbe0533e3461114a1ee3e3d539",
+    "tools/investiture_accounting/__init__.py": "df71cb5798d99b9ef5eec8599d961994e99a9c6c4589de4dd52939ef161d28fa",
+    "tools/investiture_accounting/__main__.py": "0f7d54f3fbb1f79a85eb8110f11793db99da6f3c61ee979de5abe9a1b5f3fdb3",
+    "tools/investiture_accounting/cli.py": "9aceb6e5aca205b4663075093d8171fa62c17d63e29705152738f35403f0eebe",
+    "tools/investiture_accounting/core.py": "d3239fb4b5a963605782b2c54385e498ed856d8c8a38363e9a2dd88e5a670883",
+    "tools/investiture_accounting/storage.py": "eb0aac052ecbe36e9f1516e64b97ead13501fd81f5e1a111396716e71b056572",
+    "tools/prime_checks/validate_prime.py": "f7295069cd5bd355f492121df51cca8a1f94f93c77a932d43003f375d3045e41"
+  },
+  "fixture_corpus_sha256": "5ba407d0668a0ae7178c6479b8352c49ba26ffb898eed67b22a1ddece7684be7",
+  "deterministic_results": {
+    "fixture_event_count": 5,
+    "committed_record_count": 5,
+    "known_beu_subtotal": 29,
+    "complete_total_available": false,
+    "repeat_summary_byte_identical": true,
+    "interrupted_recovery_idempotent": true,
+    "generation_recovery_source_unchanged": true,
+    "rollback_plan_read_only": true
+  },
+  "mission_states": {
+    "FS-C01-M02": "PROVEN",
+    "FS-C01-M03": "PROVEN",
+    "FS-C01-M04": "UNPROVEN"
+  },
+  "remaining_blocker": "JAYSON_SELECTED_PROTECTED_EXTERNAL_STORE_AND_TRUSTED_PROVIDER_RUNTIME_USAGE_EVIDENCE_REQUIRED",
+  "external_store_selected": false,
+  "real_provider_usage_accepted": false,
+  "promotion_boundary": "SEPARATE_AUTHORED_ACCEPTANCE_RECONCILIATION_REQUIRED"
+}

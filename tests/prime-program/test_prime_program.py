@@ -87,7 +87,7 @@ class PrimeProgramTests(unittest.TestCase):
                 "QUEST-FOUND-SILVERLIGHT-R01": (
                     "quests/found-silverlight.md",
                     "IN_PROGRESS",
-                    "FS-C01-M02 — Forge the Ledger",
+                    "FS-C01-M04 — Prove the Light",
                 ),
                 "QUEST-PROMETHEUS-FIRE-20260701": (
                     "quests/prometheus-fire.md",
