@@ -39,7 +39,7 @@ class RpC07AcceptanceTests(unittest.TestCase):
 
     def test_partial_rejection_set_cannot_promote_aj03(self) -> None:
         missing = set(self.proof["journeys"]["AJ-03"]["missing"])
-        self.assertEqual(missing, {"NON_OWNER", "EDITED_INPUT", "REPLAY", "DUPLICATE_BRANCH", "DUPLICATE_PR"})
+        self.assertEqual(missing, {"NON_OWNER"})
         self.assertTrue(all(record["mutation"] is False for record in self.proof["partial_rejection_evidence"]))
 
     def test_final_main_journeys_remain_unproven(self) -> None:

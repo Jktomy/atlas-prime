@@ -79,12 +79,27 @@
     "missing": ["ROUTINE_FREE_FORM_INTAKE_TO_CANONICAL_CARRIER_LIVE_ACCEPTANCE"],
     "evidence": "proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.json"
   },
+  "m07_live_rejection_sequence": {
+    "state": "PARTIAL_NON_OWNER_MISSING",
+    "canonical_base": "50e8646e0267e20ec31e2d970216039ffb3844ae",
+    "mission_id": "RP-C01-M07-LIVE-REJECTIONS-R02",
+    "carrier_sha256": "68f89707f31ebd95fd35940b343babb646d430d6522d4582dabee8add89d2674",
+    "fixture_run": 29234164212,
+    "fixture_pull_request": 156,
+    "fixture_final_state": "CLOSED_UNMERGED_BRANCH_DELETED",
+    "accepted": ["EDITED_INPUT", "REPLAY", "DUPLICATE_BRANCH", "DUPLICATE_PR"],
+    "missing": ["NON_OWNER"],
+    "evidence": "proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.json"
+  },
   "live_rejections": [
     {"run": 29215564172, "result": "REJECTED", "code": "CARRIER_BASE64_REJECTED", "mutation": false},
     {"run": 29215594376, "result": "BLOCKED", "code": "PROTECTED_AEGIS_REQUIRED", "route": "AEGIS_BREAK_PROTECTED", "mutation": false},
     {"run": 29215615801, "result": "BLOCKED", "code": "THREAD_ENGINE_SELF_CHANGE", "route": "AEGIS_BREAK_TO_OATHBRINGER", "mutation": false},
     {"run": 29215638810, "result": "REJECTED", "code": "GENERATED_SOURCE_MIXING", "mutation": false},
-    {"run": 29215778360, "result": "REJECTED", "code": "BASE_STALE", "mutation": false}
+    {"run": 29215778360, "result": "REJECTED", "code": "BASE_STALE", "mutation": false},
+    {"run": 29234357420, "result": "REJECTED", "code": "CARRIER_SHA_REJECTED", "acceptance": ["EDITED_INPUT"], "mutation": false},
+    {"run": 29234223758, "result": "REJECTED", "code": "REPLAY_BRANCH_EXISTS", "acceptance": ["REPLAY", "DUPLICATE_BRANCH"], "mutation": false},
+    {"run": 29234280578, "result": "REJECTED", "code": "REPLAY_PULL_REQUEST_EXISTS", "acceptance": ["REPLAY", "DUPLICATE_PR"], "mutation": false}
   ],
   "mission_states": {
     "RP-C01-M01": "PROVEN_MERGED",
@@ -93,7 +108,7 @@
     "RP-C01-M04": "PROVEN_MERGED_AUTHENTICATED_HOSTED_ROUTE",
     "RP-C01-M05": "COMPONENT_PARITY_PRESERVED_END_TO_END_NOT_PROVEN",
     "RP-C01-M06": "HANDOFF_DETECTION_PROVEN_PROTECTED_EXECUTION_NOT_RUN",
-    "RP-C01-M07": "PARTIAL_REJECTION_MATRIX_PROVEN",
+    "RP-C01-M07": "PARTIAL_ONLY_GENUINE_NON_OWNER_LIVE_REJECTION_MISSING",
     "RP-C01-M08": "PARTIAL_JAYSON_CARRIER_CREATION_ATTACHMENT_PLACEMENT_NOT_REQUIRED_FREE_FORM_INTAKE_ACCEPTANCE_MISSING"
   },
   "capability_promotion": "NONE",

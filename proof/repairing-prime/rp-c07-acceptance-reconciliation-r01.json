@@ -6,7 +6,7 @@
   "journeys": {
     "AJ-01": {"state": "UNPROVEN", "boundary": "FRESH_WORK_ATHENA_ORIGIN_RECEIPT_REQUIRED"},
     "AJ-02": {"state": "PROVEN", "evidence": "HOSTED_IDENTITY_RECEIPT_EXACT_READBACK"},
-    "AJ-03": {"state": "UNPROVEN", "missing": ["NON_OWNER", "EDITED_INPUT", "REPLAY", "DUPLICATE_BRANCH", "DUPLICATE_PR"]},
+    "AJ-03": {"state": "UNPROVEN", "missing": ["NON_OWNER"], "evidence": "proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.json"},
     "AJ-04": {"state": "PROVEN", "evidence": "proof/oathbringer-production-acceptance-r01.md"},
     "AJ-05": {"state": "PROVEN", "evidence": "proof/oathbringer-production-acceptance-r01.md"},
     "AJ-06": {"state": "PROVEN", "evidence": "proof/oathbringer-production-acceptance-r01.md"},
@@ -47,7 +47,10 @@
     {"run": 29215594376, "code": "PROTECTED_AEGIS_REQUIRED", "mutation": false},
     {"run": 29215615801, "code": "THREAD_ENGINE_SELF_CHANGE", "mutation": false},
     {"run": 29215638810, "code": "GENERATED_SOURCE_MIXING", "mutation": false},
-    {"run": 29215778360, "code": "BASE_STALE", "mutation": false}
+    {"run": 29215778360, "code": "BASE_STALE", "mutation": false},
+    {"run": 29234357420, "code": "CARRIER_SHA_REJECTED", "acceptance": ["EDITED_INPUT"], "mutation": false},
+    {"run": 29234223758, "code": "REPLAY_BRANCH_EXISTS", "acceptance": ["REPLAY", "DUPLICATE_BRANCH"], "mutation": false},
+    {"run": 29234280578, "code": "REPLAY_PULL_REQUEST_EXISTS", "acceptance": ["REPLAY", "DUPLICATE_PR"], "mutation": false}
   ],
   "historical_clean_clone": {
     "state": "REGRESSION_EVIDENCE_NOT_FINAL_AJ11_ACCEPTANCE",
