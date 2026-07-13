@@ -199,6 +199,17 @@ exact PR and blob readback, exact-head CI, detached review, merge, and canonical
 readback. That usability proof does not establish fresh Work/Athena origin,
 AJ-01, or CAP-015.
 
+For RP-C01-M05, Preview additionally retains the exact compile-receipt digest,
+compiled file inventory, output mission digest, candidate-tree digest, and
+final-pathset digest. The hosted evidence retains the raw adapter receipt
+schema and digest separately from the sanitized evidence digest, plus the
+mission, candidate tree, commit tree, stop point, checkpoints, and forbidden
+action confirmation. `tools.athena_routes.m05_parity` rejects any cross-route
+drift and emits only a closed, non-promoting record validated by
+`schemas/rp-c01-m05-parity-evidence-v1.schema.json`. One shared mission executes
+through the adapter once; parity never authorizes a replay or a second writer.
+The record cannot promote M05 without a separate authored reconciliation.
+
 ## Evidence boundary
 
 GitHub can prove workflow identity, source SHA, actor fields, run/attempt,

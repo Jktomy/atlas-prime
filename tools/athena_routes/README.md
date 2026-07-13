@@ -46,3 +46,20 @@ This guided component does not prove CAP-010 until a fresh live Preview and
 Execute journey, hosted receipt, exact draft-PR readback, exact-head CI,
 detached review, merge, and canonical readback are accepted separately. It does
 not prove fresh Work/Athena origin or CAP-015.
+
+## RP-C01-M05 parity join
+
+Preview retains the exact Spear compile receipt and every compiled file digest,
+including the canonical mission, candidate tree, and final pathset. Hosted
+Thread Engine evidence separately identifies the raw adapter receipt and the
+sanitized evidence wrapper. `build_m05_parity_evidence` in
+`tools.athena_routes.m05_parity` accepts only an exact guided Preview, Execute
+receipt, hosted receipt, sanitized adapter evidence, and the retained direct
+compiled files from one run. It rejects
+carrier, mission, compiler, tree, branch, PR, head, checkpoint, stop-boundary,
+or forbidden-action drift and emits the closed schema
+`schemas/rp-c01-m05-parity-evidence-v1.schema.json`.
+
+The parity record is evidence only. It cannot execute, retry, merge, confer
+permanence, promote a capability or Quest, or mark RP-C01-M05 proven; those
+decisions require their separate authored reconciliation.
