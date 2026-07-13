@@ -44,6 +44,7 @@ class Cap015FreshWorkBridgeSourceTests(unittest.TestCase):
         self.assertIn("TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE", contract)
         self.assertIn("singular existing Thread Engine", contract)
         self.assertIn("separate reviewed authored reconciliation", contract)
+        self.assertIn("no dispatch-capable implementation", contract)
 
         register = json.loads(
             (ROOT / "governance/capability-parity-register.json").read_text(
@@ -54,7 +55,7 @@ class Cap015FreshWorkBridgeSourceTests(unittest.TestCase):
         self.assertEqual(cap015["capability_disposition"], "STILL_MISSING")
         self.assertEqual(cap015["activation_state"], "MISSING")
 
-    def test_bridge_has_no_repository_writer_or_dynamic_verifier_loader(self) -> None:
+    def test_bridge_has_no_dispatch_writer_or_dynamic_trust_loader(self) -> None:
         path = ROOT / "tools/athena_routes/fresh_work_bridge.py"
         source = path.read_text(encoding="utf-8")
         tree = ast.parse(source)
@@ -75,23 +76,28 @@ class Cap015FreshWorkBridgeSourceTests(unittest.TestCase):
                     "urllib",
                     "git",
                     "github",
+                    "importlib",
                 }
             )
         )
         for forbidden in (
+            "execute_preview",
+            "guided_publisher",
+            "gh workflow",
+            "workflow run",
             "create_tree",
             "create_commit",
             "update_ref",
             "create_pull_request",
             "merge_pull_request",
             "mark_pull_request_ready_for_review",
-            "importlib",
             "eval(",
             "exec(",
         ):
             self.assertNotIn(forbidden, source)
-        self.assertIn("from .guided_publisher import GuidedPublisherError, execute_preview", source)
-        self.assertIn("verifier=None", source)
+        self.assertIn("READ_ONLY_CANDIDATE_NOT_EXECUTABLE", source)
+        self.assertIn('"remote_dispatch_authority": False', source)
+        self.assertIn('"guided_execute_invoked": False', source)
         self.assertIn("TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE", source)
 
     def test_origin_and_journey_schemas_are_closed(self) -> None:
