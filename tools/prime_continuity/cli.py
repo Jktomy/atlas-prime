@@ -30,9 +30,14 @@ def load(path: Path) -> dict[str, Any]:
 def emit(value: Any, output: str | None) -> None:
     payload = stable_json(value)
     if output:
-        path = Path(output)
+        path = Path(output).resolve()
+        if path.is_relative_to(ROOT.resolve()):
+            raise ValueError("OUTPUT_INSIDE_CANONICAL_REPOSITORY")
+        if path.exists() or path.is_symlink():
+            raise ValueError("OUTPUT_ALREADY_EXISTS")
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(payload)
+        with path.open("xb") as handle:
+            handle.write(payload)
     else:
         print(payload.decode("utf-8"), end="")
 

@@ -25,4 +25,6 @@ python -B -m tools.prime_continuity.cli plan-update --continuity-id ID --expecte
 ```
 
 `plan-update` emits a candidate and never replaces the canonical register.
-Durable apply still requires the reviewed source transaction in the contract.
+Every `--output` must resolve outside the canonical repository and must not
+already exist; output commands use no-clobber creation. Durable apply still
+requires the reviewed source transaction in the contract.

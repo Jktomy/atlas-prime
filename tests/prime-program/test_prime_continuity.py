@@ -265,6 +265,24 @@ class PrimeContinuityTests(unittest.TestCase):
             planned = json.loads(candidate.read_text(encoding="utf-8"))
             self.assertEqual(planned["register_revision"], self.register["register_revision"] + 1)
 
+    def test_command_output_rejects_canonical_alias_and_clobber_paths(self) -> None:
+        canonical_targets = (
+            ROOT / "continuity" / "prime-continuity-register-r01.json",
+            ROOT / "quest-board" / "quest-board-v1.json",
+            ROOT / "continuity" / "quest-engine-identities-r01.json",
+            ROOT / "generated" / ".." / "continuity" / "prime-continuity-register-r01.json",
+        )
+        for target in canonical_targets:
+            with self.subTest(target=target):
+                with self.assertRaisesRegex(ValueError, "OUTPUT_INSIDE_CANONICAL_REPOSITORY"):
+                    continuity_cli(["emberline", "--output", str(target)])
+        with tempfile.TemporaryDirectory() as temp:
+            existing = Path(temp) / "existing.json"
+            existing.write_text("preserve\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "OUTPUT_ALREADY_EXISTS"):
+                continuity_cli(["argus", "--output", str(existing)])
+            self.assertEqual(existing.read_text(encoding="utf-8"), "preserve\n")
+
 
 if __name__ == "__main__":
     unittest.main()
