@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:562ab1ecf9c51b3f0b42966ca45346d0fe8554cbc0f4d9a86f9075e9d6fc5ad6
+Source fingerprint: sha256:691a09558590bb56040b6e9997baa4a1ee9d24146fe3062c206428e56e47a546
 Generator format: 2
 Status: Generated support artifact
 
@@ -66,6 +66,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c01-route-evidence-r01.md` | no |
 | `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | no |
 | `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md` | yes |
+| `proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md` | no |
 | `quests/found-silverlight.md` | yes |
 | `quests/notums-watch.md` | yes |
 | `quests/prime-continuity-proof.md` | yes |

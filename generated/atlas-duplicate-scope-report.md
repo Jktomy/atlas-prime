@@ -1,6 +1,6 @@
 # Atlas Duplicate Canonical-Scope Report
 
-Source fingerprint: sha256:562ab1ecf9c51b3f0b42966ca45346d0fe8554cbc0f4d9a86f9075e9d6fc5ad6
+Source fingerprint: sha256:691a09558590bb56040b6e9997baa4a1ee9d24146fe3062c206428e56e47a546
 Generator format: 2
 Status: Generated support artifact
 
