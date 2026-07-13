@@ -1,7 +1,7 @@
 ---
 title: "Repairing Prime RP-C06 Generated Parity Acceptance R01"
 atlas_id: "prime.proof.repairing-prime.rp-c06-generated-parity-acceptance-r01"
-status: "ACCEPTED_PARTIAL_CAMPAIGN"
+status: "ACCEPTED"
 source_type: "PROOF"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
@@ -40,11 +40,21 @@ Fresh rejection-only run `29226140111` requested the superseded base
 but the credentialed publisher job was skipped because workflow/main was
 `2a8736c01cc7be00d307db7c8b4163d685405df6`. No branch or PR was created.
 
-RP-C06-M01 through M04, M06, and M07 are proven. RP-C06-M05 is `PARTIAL`: live
-stale-base, replay, and branch-collision refusal are conserved, and the unit
-contract covers PR collision, but a distinct-identity hosted PR-collision
-rejection is still missing. The RP-C06 Campaign and gate remain in progress
-until that smallest missing leg is proven in a later authored transaction.
+RP-C06-M01 through M07 are proven. The final M05 leg used a new generated
+carrier and a different fresh collision-probe identity. Hosted carrier run
+`29226718884` created generated-only draft PR `#140` from exact base
+`97382045b0d8904f5d2147b3167c6007929a5591`. While that PR was open, probe run
+`29226787273` stopped at `DUPLICATE_CHECK` with
+`GENERATED_CHECKPOINT_PR_COLLISION`, `mutation_observed: NO`, and no probe
+branch or second PR. PR `#140` passed exact-head Ubuntu/Windows CI and detached
+review before merging as canonical main
+`f02a1be0d8ed9932609c9a872834f94e095bba55`, where the five reports read
+`CURRENT`.
+
+Stale-base, replay, branch-collision, and distinct-identity PR-collision
+rejection are therefore conserved without mutation. RP-C06 and its gate are
+accepted. The active Campaign advances only to RP-C07 acceptance-journey
+reconciliation; this record does not complete RP-C07, RP-C08, or the Quest.
 
 Run `29225548513` is retained only as a superseded startup diagnostic. It did
 not create a branch or PR and contributes no acceptance identity, carrier,
