@@ -108,7 +108,8 @@ depends on it. The Found Silverlight-owned accounting contract is
 Establish:
 
 - the exact one trusted reported model token equals one BEU convention;
-- `Spirallight`, `Chromelight`, and `Emberlight` provider/runtime identities;
+- `Spirallight`, `Chromelight`, and `Emberlight` accounting Light identities
+  derived only from trusted provider/runtime evidence;
 - independent provider, model, runtime-control, work-surface, route, engine,
   credential, Light, and permanence identities;
 - `MEASURED`, `PARTIAL`, `UNAVAILABLE`, and `ZERO_MODEL` states;

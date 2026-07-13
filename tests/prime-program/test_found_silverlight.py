@@ -36,6 +36,7 @@ class FoundSilverlightDoctrineTests(unittest.TestCase):
         self.assertIn("External-system action: NOT AUTHORIZED", self.quest)
 
     def test_accounting_identity_and_non_overlap_are_exact(self) -> None:
+        identity = (ROOT / "governance/investiture-source-identity-contract.md").read_text(encoding="utf-8")
         self.assertIn("One trusted provider/runtime-reported model token equals one BEU", self.contract)
         for light in ("Spirallight", "Chromelight", "Emberlight"):
             self.assertIn(f"`{light}`", self.contract)
@@ -48,6 +49,12 @@ class FoundSilverlightDoctrineTests(unittest.TestCase):
         self.assertIn("Only an exact `USAGE_REPORTED` event may contribute BEU", self.contract)
         self.assertIn("never\nrecount it", self.contract)
         self.assertIn("consumes exactly zero\nBEU", self.contract)
+        self.assertIn("accounting Light identities\n  derived only from trusted provider/runtime evidence", self.quest)
+        self.assertIn("independent provider, model, runtime-control, work-surface, route, engine", self.quest)
+        self.assertIn("`governance/investiture-accounting-contract.md`", identity)
+        self.assertIn("continuity digest updated atomically", identity)
+        self.assertNotIn("will be modernized", identity)
+        self.assertNotIn("provider/runtime identities", self.quest)
 
     def test_private_storage_and_live_acceptance_remain_external(self) -> None:
         self.assertIn("require an explicit Jayson-selected external\nstore root", self.contract)
