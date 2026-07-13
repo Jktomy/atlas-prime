@@ -112,6 +112,10 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File .\engine\Invoke-AtlasSword.ps1 `
   -Json
 ```
 
+JSON mode writes exactly one JSON document to standard output on success,
+runtime rejection, interruption, or launcher preflight failure. Interactive
+console decoration is suppressed in that mode.
+
 There is no second confirmation. Pressing Enter on the exact command is Jayson's invocation authorization for that sealed mission.
 
 ## Oathbringer audit contract
@@ -193,7 +197,21 @@ When a production strike fails or is interrupted, the deterministic Python adapt
 Atlas-Deflected-Sword-<MISSION-ID>-<REVISION>.zip
 ```
 
-The Deflected Sword may contain the durable receipt and internal receipt hash, terminal transcript, mission, package manifest, forge receipt, independent audit when applicable, failure summary, sanitized remote state, and workflow state. It never intentionally includes GitHub tokens, authorization headers, environment secrets, private runtime data, or arbitrary raw API dumps.
+The Deflected Sword contains only recursively sanitized and bounded evidence.
+Receipt, mission, transcript, package, Forge, and audit inputs are parsed or
+redacted before they can become archive members; raw source files are never
+blind-copied. Every proposed member and member name is scanned before
+publication, then the final archive, manifest, checksum ledger, and sidecar are
+read back together after publication.
+
+Every Deflected Sword is a fixed-metadata stored ZIP with an exact manifest,
+checksum ledger, SHA-256 sidecar, and final readback. Each immutable file uses
+atomic no-clobber publication. A byte-identical interrupted publication may
+finish its missing ZIP or sidecar and a byte-identical completed publication is
+idempotent; any conflicting existing byte fails closed without replacement.
+If receipt persistence itself fails, JSON mode remains a single sanitized
+in-memory failure document with `receipt_written = false` and a stable artifact
+error code.
 
 Normal return behavior is:
 

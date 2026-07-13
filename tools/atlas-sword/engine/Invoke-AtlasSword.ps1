@@ -25,6 +25,14 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+trap {
+    if ($Json) {
+        [Console]::Out.WriteLine('{"error_code":"OATHBRINGER_LAUNCHER_FAILED","exit_code":1,"status":"OATHBRINGER_LAUNCHER_FAILED"}')
+        exit 1
+    }
+    throw
+}
+
 $ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $PackageRoot = Split-Path -Parent $ScriptRoot
 $ModulePath = Join-Path $ScriptRoot 'AtlasSword.Common.psm1'
@@ -132,6 +140,13 @@ finally {
 }
 
 if ($ExitCode -ne 0) {
+    if ($Json) {
+        if ($null -ne $InvocationError) {
+            [Console]::Out.WriteLine('{"error_code":"OATHBRINGER_LAUNCHER_FAILED","exit_code":1,"status":"OATHBRINGER_LAUNCHER_FAILED"}')
+        }
+        exit $ExitCode
+    }
+
     Write-Host ''
     Write-Host 'STRIKE DEFLECTED' -ForegroundColor Red
     Write-Host 'The Python runtime printed the sanitized Deflected Sword path above.' -ForegroundColor Yellow
