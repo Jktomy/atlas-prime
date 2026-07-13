@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:6fce025ba37a89d9c61f1d79cfab44d4a358b430799df19865da5690145ab8ba
+Source fingerprint: sha256:c89f52364a9cf8f3d3edbbd5e883cb33c74737256fce9fc2c037188e8579317f
 Generator format: 2
 Status: Generated support artifact
 
@@ -14,6 +14,7 @@ Status: Generated support artifact
 | `atlas-prime.md` | root | yes | policy-reference |
 | `atlas-start-here.md` | root | yes | none |
 | `bootstrap.md` | root | yes | none |
+| `governance/agentic-warrant-contract.md` | governance | yes | policy-reference |
 | `governance/athena-execution-route-contract.md` | governance | yes | policy-reference |
 | `governance/atlas-aegis.md` | governance | yes | none |
 | `governance/atlas-strikeforce.md` | governance | yes | none |
@@ -69,6 +70,7 @@ Status: Generated support artifact
 | `templates/protocol-template.md` | templates | yes | none |
 | `templates/source-file-template.md` | templates | yes | policy-reference |
 | `templates/support-file-template.md` | templates | yes | none |
+| `tools/agentic_warrants/README.md` | tools | no | none |
 | `tools/athena_routes/README.md` | tools | no | none |
 | `tools/atlas-sword/ARCHITECTURE.md` | tools | no | policy-reference |
 | `tools/atlas-sword/README.md` | tools | no | policy-reference |

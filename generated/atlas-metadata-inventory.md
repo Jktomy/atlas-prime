@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:6fce025ba37a89d9c61f1d79cfab44d4a358b430799df19865da5690145ab8ba
+Source fingerprint: sha256:c89f52364a9cf8f3d3edbbd5e883cb33c74737256fce9fc2c037188e8579317f
 Generator format: 2
 Status: Generated support artifact
 
@@ -14,6 +14,7 @@ Status: Generated support artifact
 | `atlas-prime.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `atlas-start-here.md` | CANONICAL_ACTIVE | BOOT | missing | CRITICAL |
 | `bootstrap.md` | CANONICAL_ACTIVE | BOOT | missing | CRITICAL |
+| `governance/agentic-warrant-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/athena-execution-route-contract.md` | CONTRACT_DEFINED_NOT_ACTIVATED | PROTOCOL | missing | CRITICAL |
 | `governance/atlas-aegis.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `governance/atlas-strikeforce.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
@@ -69,6 +70,7 @@ Status: Generated support artifact
 | `templates/protocol-template.md` | Active | Template | Template for Atlas Protocol files, including purpose, trigger phrases, allowed sources, forbidden actions, outputs, verification, and maintenance fields. | Medium |
 | `templates/source-file-template.md` | Active | Template | General Atlas source-file template defining standard metadata, purpose, scope, source boundaries, routing, evidence limits, and maintenance expectations. | Medium |
 | `templates/support-file-template.md` | Active | Template | Atlas support-file template defining temporary or lower-risk support roles, parent-source routing, private boundaries, evidence boundaries, cleanup path, and maintenance expectations. | Medium |
+| `tools/agentic_warrants/README.md` | missing | missing | missing | missing |
 | `tools/athena_routes/README.md` | missing | missing | missing | missing |
 | `tools/atlas-sword/ARCHITECTURE.md` | missing | missing | missing | missing |
 | `tools/atlas-sword/README.md` | missing | missing | missing | missing |
