@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/agentic-approval-record-v1.schema.json",
+  "title": "Prime trusted agentic approval record v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "approval_id", "nonce", "warrant_id", "warrant_body_sha256", "authorizer", "action", "issued_at", "expires_at", "scope_sha256", "signature_scheme", "signature"],
+  "properties": {
+    "schema_version": {"const": "atlas.agentic-approval-record.v1"},
+    "approval_id": {"type": "string", "pattern": "^[A-Z0-9][A-Z0-9._-]{2,127}$"},
+    "nonce": {"type": "string", "pattern": "^[A-Za-z0-9._-]{16,160}$"},
+    "warrant_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "warrant_body_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "authorizer": {"type": "string", "minLength": 1, "maxLength": 80},
+    "action": {"enum": ["ACTIVATE", "EXECUTE", "READY", "MERGE", "SETTINGS", "PROVIDER_ACTIVATE", "PROTECTED_ACTION", "DESTRUCTIVE_ACTION"]},
+    "issued_at": {"type": "string", "minLength": 1, "maxLength": 40},
+    "expires_at": {"type": "string", "minLength": 1, "maxLength": 40},
+    "scope_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "signature_scheme": {"enum": ["TRUSTED_SESSION_READBACK", "DETACHED_SIGNATURE"]},
+    "signature": {"type": "string", "minLength": 1, "maxLength": 1000}
+  }
+}

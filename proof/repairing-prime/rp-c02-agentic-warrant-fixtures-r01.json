@@ -5,10 +5,10 @@
   "parent": {
     "schema_version": "atlas.agentic-capability-warrant.v1", "warrant_id": "RP-C02-PARENT-R01", "status": "ACTIVE",
     "agent_identity": {"agent_id": "agent.coordinator.r01", "role": "coordinator", "implementation": "provider-neutral-agent", "provider": "NONE", "model": "NONE", "work_surface": "Codex"},
-    "authority": {"authorizer": "Jayson", "credential_principal": "NONE", "token_mode": "NONE"},
-    "scope": {"repository": "Jktomy/atlas-prime", "base_sha": "1111111111111111111111111111111111111111", "actions": ["READ", "ADD"], "paths": ["proof/repairing-prime/a.md", "proof/repairing-prime/b.md"], "route": "PHOENIX_BLADE", "protected_paths_allowed": false, "stop_boundary": "DRAFT_PR_READBACK"},
+    "authority": {"authorizer": "Jayson", "credential_principal": "NONE", "token_mode": "NONE", "activation_record_sha256": "7430fd0c02f8ecf5f74a2f56f6ecbdc2e371fcd674ef9c122114238dc89b1d7f"},
+    "scope": {"repository": "Jktomy/atlas-prime", "base_sha": "1111111111111111111111111111111111111111", "actions": ["READ", "ADD"], "paths": ["proof/repairing-prime/a.md", "proof/repairing-prime/b.md"], "route": "PHOENIX_BLADE", "protected_paths_allowed": false, "private_data_allowed": false, "stop_boundary": "DRAFT_PR_READBACK"},
     "delegation": {"allowed": true, "parent_warrant_id": null, "depth": 0, "subset_verified": true},
-    "lifecycle": {"issued_at": "2026-07-13T00:00:00Z", "expires_at": "2026-07-14T00:00:00Z", "suspended_at": null, "revoked_at": null, "replaced_by": null},
+    "lifecycle": {"issued_at": "2026-07-13T00:00:00Z", "expires_at": "2026-07-14T00:00:00Z", "suspended_at": null, "revoked_at": null, "replaced_at": null, "replaced_by": null, "supersedes": null},
     "human_approval": {"execute": false, "ready": true, "merge": true, "settings": true, "provider_activation": true, "protected_action": true, "destructive_action": true},
     "evidence": {"preview_sha256": "2222222222222222222222222222222222222222222222222222222222222222", "candidate_tree_sha256": null, "required_checks": ["PRIME_VALIDATE"]},
     "rollback": {"pre_merge": "CLOSE_DRAFT_PR", "post_merge": "REVIEWED_REVERT_PR", "history_rewrite": false},
@@ -17,14 +17,18 @@
   "child": {
     "schema_version": "atlas.agentic-capability-warrant.v1", "warrant_id": "RP-C02-CHILD-R01", "status": "ACTIVE",
     "agent_identity": {"agent_id": "agent.verifier.r01", "role": "verifier", "implementation": "provider-neutral-agent", "provider": "NONE", "model": "NONE", "work_surface": "Codex"},
-    "authority": {"authorizer": "Jayson", "credential_principal": "NONE", "token_mode": "NONE"},
-    "scope": {"repository": "Jktomy/atlas-prime", "base_sha": "1111111111111111111111111111111111111111", "actions": ["READ"], "paths": ["proof/repairing-prime/a.md"], "route": "READ_ONLY", "protected_paths_allowed": false, "stop_boundary": "READ_ONLY_RECEIPT"},
+    "authority": {"authorizer": "Jayson", "credential_principal": "NONE", "token_mode": "NONE", "activation_record_sha256": "2c20d21830946e444068b99ec06e68042499ad949697f9c13c2d5acd7bafbbc5"},
+    "scope": {"repository": "Jktomy/atlas-prime", "base_sha": "1111111111111111111111111111111111111111", "actions": ["READ"], "paths": ["proof/repairing-prime/a.md"], "route": "READ_ONLY", "protected_paths_allowed": false, "private_data_allowed": false, "stop_boundary": "READ_ONLY_RECEIPT"},
     "delegation": {"allowed": false, "parent_warrant_id": "RP-C02-PARENT-R01", "depth": 1, "subset_verified": true},
-    "lifecycle": {"issued_at": "2026-07-13T00:05:00Z", "expires_at": "2026-07-13T12:00:00Z", "suspended_at": null, "revoked_at": null, "replaced_by": null},
+    "lifecycle": {"issued_at": "2026-07-13T00:05:00Z", "expires_at": "2026-07-13T12:00:00Z", "suspended_at": null, "revoked_at": null, "replaced_at": null, "replaced_by": null, "supersedes": null},
     "human_approval": {"execute": true, "ready": true, "merge": true, "settings": true, "provider_activation": true, "protected_action": true, "destructive_action": true},
-    "evidence": {"preview_sha256": "3333333333333333333333333333333333333333333333333333333333333333", "candidate_tree_sha256": null, "required_checks": ["READ_ONLY_VERIFY"]},
+    "evidence": {"preview_sha256": "3333333333333333333333333333333333333333333333333333333333333333", "candidate_tree_sha256": null, "required_checks": ["PRIME_VALIDATE", "READ_ONLY_VERIFY"]},
     "rollback": {"pre_merge": "NO_MUTATION", "post_merge": "NO_MUTATION", "history_rewrite": false},
     "forbidden_actions": {"direct_main": false, "force_push": false, "scope_expansion": false, "identity_impersonation": false, "standing_authority": false, "second_writer": false}
+  },
+  "activation_records": {
+    "parent": {"schema_version": "atlas.agentic-approval-record.v1", "approval_id": "RP-C02-PARENT-ACTIVATION-R01", "nonce": "rp-c02-parent-nonce-r01", "warrant_id": "RP-C02-PARENT-R01", "warrant_body_sha256": "b0a6d1c171d96d86321b3595e7073a7de9ed518abdd7dbc94d8e6affc883ee4f", "authorizer": "Jayson", "action": "ACTIVATE", "issued_at": "2026-07-13T00:00:00Z", "expires_at": "2026-07-13T11:00:00Z", "scope_sha256": "7f4851795089a8af23d34d78391ce75011010ede4159cb848240d7dc6e54f81c", "signature_scheme": "TRUSTED_SESSION_READBACK", "signature": "trusted-fixture-parent"},
+    "child": {"schema_version": "atlas.agentic-approval-record.v1", "approval_id": "RP-C02-CHILD-ACTIVATION-R01", "nonce": "rp-c02-child-nonce-r01", "warrant_id": "RP-C02-CHILD-R01", "warrant_body_sha256": "3b9815c94ba78575f079ff0fa840357faee163748c55ea259f04dc73686d8c93", "authorizer": "Jayson", "action": "ACTIVATE", "issued_at": "2026-07-13T00:05:00Z", "expires_at": "2026-07-13T11:00:00Z", "scope_sha256": "14e8693357baa8e90c5cb77eed6d5da1261a044670562a346d04f0c730252a4c", "signature_scheme": "TRUSTED_SESSION_READBACK", "signature": "trusted-fixture-child"}
   },
   "allowed_transitions": ["DRAFT->ACTIVE", "ACTIVE->SUSPENDED", "SUSPENDED->ACTIVE", "ACTIVE->REVOKED", "ACTIVE->EXPIRED", "ACTIVE->REPLACED", "SUSPENDED->REVOKED", "SUSPENDED->EXPIRED", "SUSPENDED->REPLACED"],
   "terminal_states": ["REVOKED", "EXPIRED", "REPLACED"]
