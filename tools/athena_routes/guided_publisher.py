@@ -255,6 +255,8 @@ def execute_preview(
     if actor != OWNER:
         raise GuidedPublisherError("repository owner session required", "OWNER_IDENTITY_REJECTED")
     carrier = carrier_path.read_bytes()
+    if sha256_bytes(carrier) != preview["carrier_sha256"]:
+        raise GuidedPublisherError("guided carrier changed before dispatch", "PREVIEW_DRIFT")
     dispatch = {
         "arrow_b64": base64.b64encode(carrier).decode("ascii"),
         "arrow_sha256": preview["carrier_sha256"],
