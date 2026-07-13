@@ -1,0 +1,91 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c01-m07-live-rejection-reconciliation.v1",
+  "campaign": "RP-C01",
+  "mission": "RP-C01-M07",
+  "mission_state": "PARTIAL",
+  "acceptance_journey": "AJ-03",
+  "acceptance_journey_state": "UNPROVEN",
+  "campaign_gate": "ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN",
+  "campaign_gate_state": "NOT_PROVEN",
+  "transaction_base_sha": "50e8646e0267e20ec31e2d970216039ffb3844ae",
+  "fixture_setup": {
+    "mission_id": "RP-C01-M07-LIVE-REJECTIONS-R02",
+    "canonical_base": "50e8646e0267e20ec31e2d970216039ffb3844ae",
+    "carrier_sha256": "68f89707f31ebd95fd35940b343babb646d430d6522d4582dabee8add89d2674",
+    "mission_lock_sha256": "a7cf70c90d9269cedd18060ba0ea82a1525e3679df85775cb4d234c01204716b",
+    "branch": "source/athena-bow-a7cf70c90d9269cedd18",
+    "workflow_run": 29234164212,
+    "jobs": {"preflight": 86764887097, "invoke": 86764919716, "result": "GREEN"},
+    "artifacts": {
+      "preflight": {"id": 8272708110, "sha256": "8646ddad42c5876a8d59db074cc851ec4ec0f5cd94c7818687287e7c5d1e66cd"},
+      "route": {"id": 8272713930, "sha256": "080cab2d9a16862287069be5808f80ab8d3dd76f5801f3cd25e6ab3b9f8ff88f"}
+    },
+    "route_receipt_sha256": "3d9e589855e656a93f5d92b712c65f5042858d444a3601ee7b5236d902fecc7d",
+    "request_sha256": "435af350760cb91f30e5864f51ee4fb66c32756498ededaffa50634e6ba049a3",
+    "compile_receipt_sha256": "dd84ddfdcd5f7a2e7f0914223d9165b55ed9a78fec540b6f587b4b2a1750db8d",
+    "adapter_receipt_sha256": "de76f84dbcb7d7021dab5f59683dcb430cc2cc8ed99693ab5e4004374cf94ae6",
+    "pull_request": 156,
+    "head_sha": "ede455ca734b1e4fc0f6ff1268a3ebb54f980326",
+    "path": "proof/repairing-prime/m07-live-rejection-fixture-r02.md",
+    "git_blob": "37b69baf991b99ef24b7b470f7847c8bc2f0c4a1",
+    "final_pr_state": "CLOSED_UNMERGED",
+    "branch_deleted": true,
+    "canonical_main_unchanged": true
+  },
+  "accepted_live_rejections": {
+    "EDITED_INPUT": {
+      "run": 29234357420,
+      "preflight_job": 86765500916,
+      "invoke_job": 86765530638,
+      "invoke_state": "SKIPPED",
+      "workflow_conclusion": "EXPECTED_FAILURE",
+      "artifact": {"id": 8272783945, "sha256": "11272da18c16952c601f7b7e650ec597194a4bb741b203b3af754cf8661b606a"},
+      "receipt_sha256": "5ab457745773ba3209a6bafa07d87a26fe870a7eddd8e43dac1c18fd8c98dae8",
+      "claimed_carrier_sha256": "68f89707f31ebd95fd35940b343babb646d430d6522d4582dabee8add89d2674",
+      "observed_carrier_sha256": "ed754ff284dc398e22533371d60b339ea698f19b0b078f318dba7fd6493005e9",
+      "result": "REJECTED",
+      "error_code": "CARRIER_SHA_REJECTED",
+      "stage": "PRE_MUTATION_REJECTION",
+      "mutation": false
+    },
+    "REPLAY_AND_DUPLICATE_BRANCH": {
+      "run": 29234223758,
+      "preflight_job": 86765073724,
+      "invoke_job": 86765105402,
+      "invoke_state": "SKIPPED",
+      "workflow_conclusion": "EXPECTED_FAILURE",
+      "artifact": {"id": 8272730803, "sha256": "7c225a2570ed0ec657fc1ce17a94835a1e25d0a7d34f9064c9cde034416f8a2f"},
+      "receipt_sha256": "5643cec504467bd934abb310274899483980907ce9b0643b8df04ed0ac2336dd",
+      "result": "REJECTED",
+      "error_code": "REPLAY_BRANCH_EXISTS",
+      "stage": "PRE_MUTATION_REJECTION",
+      "mutation": false,
+      "fixture_head_unchanged": true,
+      "second_pull_request_created": false
+    },
+    "REPLAY_AND_DUPLICATE_PR": {
+      "run": 29234280578,
+      "preflight_job": 86765251881,
+      "invoke_job": 86765307833,
+      "invoke_state": "SKIPPED",
+      "workflow_conclusion": "EXPECTED_FAILURE",
+      "artifact": {"id": 8272755309, "sha256": "8c1c8b7dc49e85cf728d2af0e235a8b5eaf9ff7ef52a44ff137eb19a32a0ed02"},
+      "receipt_sha256": "f6801c35b5aab6fcb4143359f385f97f9d8b5caa720cfbb5273e8f08bce345da",
+      "result": "REJECTED",
+      "error_code": "REPLAY_PULL_REQUEST_EXISTS",
+      "stage": "PRE_MUTATION_REJECTION",
+      "mutation": false,
+      "historical_pull_request": 156,
+      "historical_pr_state": "CLOSED_UNMERGED",
+      "branch_remained_absent": true
+    }
+  },
+  "superseded_no_mutation_diagnostics": [
+    {"run": 29233989153, "code": "CARRIER_SHA_REJECTED", "receipt_sha256": "818fdb24c4fccd768e2cf03021011fa34ff4fe700017b14745f3eb9c6c57eef8", "mutation": false, "reason": "SUPERSEDED_BY_R02_EXACT_LOCK_CONTROL"},
+    {"run": 29234050494, "code": "REPLAY_BRANCH_MISMATCH", "receipt_sha256": "2e0e8967cfbabda1c85982212867c00fbdb97893bc1d0361d1640a55c13de5b3", "mutation": false, "reason": "LOCAL_BRANCH_LOCK_NEWLINE_OMISSION_REBUILT_UNDER_FRESH_R02_IDENTITY"}
+  ],
+  "accepted_matrix_delta": {"EDITED_INPUT": "PROVEN_NO_MUTATION", "REPLAY": "PROVEN_NO_MUTATION", "DUPLICATE_BRANCH": "PROVEN_NO_MUTATION", "DUPLICATE_PR": "PROVEN_NO_MUTATION"},
+  "remaining_boundary": {"missing": ["NON_OWNER"], "smallest_action": "A_GENUINE_NON_OWNER_WITH_LEGITIMATE_WORKFLOW_DISPATCH_PERMISSION_MUST_TRIGGER_THE_HOSTED_ROUTE_AND_PRODUCE_OWNER_IDENTITY_REJECTED_WITH_NO_MUTATION"},
+  "capability_promotion": "NONE",
+  "forbidden_promotions": {"M07_PROVEN": false, "AJ_03_PROVEN": false, "RP_C01_COMPLETE": false, "CAP_015": false, "CAP_027": false, "QUEST_COMPLETE": false, "permanence_granted": false, "standing_authority": false}
+}

@@ -86,6 +86,12 @@ Missions:
 **Gate:** `ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN`
 
 Accepted partial evidence:
+`proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.md`. M07
+and AJ-03 remain incomplete, but live edited-input, intentional replay,
+duplicate-branch, and duplicate-PR trials now reject before mutation. Only a
+genuine non-owner live rejection remains missing from that matrix.
+
+Accepted partial evidence:
 `proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.md`. M08 is
 PARTIAL: Jayson carrier creation, attachment, and placement are not required by
 the accepted guided journey, but the ordinary free-form mission-fields intake

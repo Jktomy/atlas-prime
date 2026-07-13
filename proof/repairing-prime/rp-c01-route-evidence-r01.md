@@ -47,9 +47,13 @@ invoked the singular Thread Engine, stopped at draft PR #102 readback, passed
 exact-head CI and detached review, and merged as one harmless proof file.
 
 Live hosted rejections prove malformed Base64, protected-path handoff,
-Thread Engine self-change handoff, generated/source mixing rejection, and stale
-base rejection before mutation. They do not prove the entire AJ-03 rejection
-set or actual protected-route execution.
+Thread Engine self-change handoff, generated/source mixing rejection, stale
+base, edited input, intentional replay, duplicate branch, and duplicate PR
+before mutation. The newer M07 sequence is recorded at
+`proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.md`.
+Its controlled fixture PR was closed unmerged and its branch deleted; canonical
+main did not move. A genuine non-owner live trial remains missing, so M07 and
+AJ-03 remain incomplete. Actual protected-route execution also remains absent.
 
 The later guided journey recorded at
 `proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.md` proves that

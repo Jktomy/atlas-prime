@@ -75,6 +75,12 @@ AJ-11 UNPROVEN
 AJ-12 UNPROVEN
 ```
 
+AJ-03 now has exact live no-mutation evidence for edited input, intentional
+replay, duplicate branch, and duplicate PR at
+`proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.md`.
+It remains UNPROVEN because an owner-authenticated session cannot substitute
+for the still-missing genuine non-owner rejection.
+
 The exact evidence and smallest missing actions are recorded in
 `proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md`. RP-C07
 completion means the matrix is truthfully reconciled; it does not make an
