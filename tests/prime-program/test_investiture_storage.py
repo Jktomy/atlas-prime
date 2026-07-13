@@ -601,7 +601,7 @@ class InvestitureStorageTests(unittest.TestCase):
 
             def swap_before_intent(path: Path, payload: bytes) -> None:
                 nonlocal replacement_created, rename_blocked
-                if path.parent.name == "intents" and not replacement_created and not rename_blocked:
+                if path.name.endswith(".intent.tmp") and not replacement_created and not rename_blocked:
                     try:
                         root.rename(moved)
                         shutil.copytree(moved, root)
