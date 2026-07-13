@@ -86,8 +86,8 @@ class PrimeProgramTests(unittest.TestCase):
                 ),
                 "QUEST-FOUND-SILVERLIGHT-R01": (
                     "quests/found-silverlight.md",
-                    "READY_FOR_CAMPAIGN_1_PREVIEW",
-                    "FS-C01-M01 Preview — Define Investiture",
+                    "IN_PROGRESS",
+                    "FS-C01-M02 — Forge the Ledger",
                 ),
                 "QUEST-PROMETHEUS-FIRE-20260701": (
                     "quests/prometheus-fire.md",
@@ -124,6 +124,7 @@ class PrimeProgramTests(unittest.TestCase):
         required = (
             "safety/atlas-safety-doctrine.md",
             "governance/source-lifecycle.md",
+            "governance/investiture-accounting-contract.md",
             "routing/command-surfaces.md",
             "projects/project-registry.md",
             "operations/operation-registry.md",

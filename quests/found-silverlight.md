@@ -7,7 +7,7 @@ supporting_projects:
   - "Project Odyssey"
   - "Project Phoenix"
 source_type: Quest
-canonical_scope: "Parent Quest for establishing Atlas's private cognitive interface through Stormlight BEU accounting, the seven-pillar Glass Codex, and the Seon Apple Reminders integration."
+canonical_scope: "Parent Quest for establishing Atlas's private cognitive interface through Investiture Accounting, the seven-pillar Glass Codex, and the Seon Apple Reminders integration."
 protected_level: High
 routes_from:
   - atlas-prime.md
@@ -23,9 +23,9 @@ routes_to:
   - governance/atlas-strikeforce.md
   - recovery/phoenix-recovery.md
 private_boundary: "Store only clean doctrine, schemas, sanitized status, non-secret architecture, safe evidence pointers, and completion claims. Do not store raw conversations, reminder contents, personal task history, IP addresses, device registers, private network maps, credentials, tokens, MFA or recovery codes, real environment values, PHI, raw finance evidence, account data, or private runtime values."
-evidence_boundary: "This Quest coordinates canonical source and sanitized proof. Chat BEU remains estimated unless trusted native measurement exists. Codex usage may be observed or measured only from trusted receipts. Apple Reminders remains authoritative for Seon. Planning or package readiness does not prove deployment."
+evidence_boundary: "This Quest coordinates canonical source and sanitized proof. Only trusted provider/runtime-reported model tokens may emit BEU; partial or unavailable telemetry remains explicit and deterministic non-model work is zero BEU. Raw usage, conversations, account data, private locations, credentials, and protected evidence remain outside Prime. Apple Reminders remains authoritative for Seon. Planning or package readiness does not prove deployment."
 cleanup_path: "Keep active until all three Campaigns and Quest-level gates pass. Close through final Noctua, Ares, Athena reconciliation, whole-Quest Strikeforce, Quest Board and generated refresh, Phoenix recovery proof, and restart-safe Sunset."
-last_verified: 2026-07-10
+last_verified: 2026-07-13
 ---
 
 # Quest — Found Silverlight
@@ -36,15 +36,15 @@ last_verified: 2026-07-10
 **Parent Project:** Project Codex  
 **Owning Operation:** Operation Source Governance  
 **Supporting Projects:** Artemis, Odyssey, Phoenix  
-**Current lane:** `PLAN -> VERIFY`  
-**Current route:** `Official Quest source -> accepted Foundry/Oathbringer substrate -> FS-C01-M01 Preview -> staged mission execution`  
-**Current state:** `READY_FOR_CAMPAIGN_1_PREVIEW`
+**Current lane:** `EXECUTE -> VERIFY`
+**Current route:** `Canonical Investiture identity -> Found Silverlight accounting doctrine -> append-only ledger construction`
+**Current state:** `IN_PROGRESS`
 
 ## 2. Purpose
 
 Found Silverlight establishes Atlas's private cognitive interface by:
 
-1. accounting for conversational and execution Investiture through Stormlight;
+1. accounting for trusted model-token Investiture through Found Silverlight's Investiture Accounting system;
 2. rendering canonical Atlas knowledge through Glass Codex;
 3. carrying personal commitments through Seon while Apple Reminders remains authoritative.
 
@@ -52,7 +52,11 @@ Found Silverlight establishes Atlas's private cognitive interface by:
 
 ```text
 Found Silverlight = unified Quest
-Stormlight = BEU accounting system and Glass Codex Pillar VII
+Investiture Accounting = active BEU accounting system and Glass Codex Pillar VII
+Spirallight = trusted reported OpenAI model tokens
+Chromelight = trusted reported Google model tokens
+Emberlight = trusted reported Atlas-controlled local-model tokens
+Stormlight = retired historical accounting name; never emitted by new writers
 Glass Codex = private Atlas website
 Seon = Apple Reminders integration
 Spanreed = printer
@@ -77,11 +81,11 @@ Gates govern entry, exit, promotion, Campaign completion, and Quest completion. 
 
 - Prime remains the sole canonical clean-source repository.
 - Glass Codex is a generated read-only projection of canonical source.
-- Stormlight reports measurement basis, confidence, age, and staleness.
+- Investiture Accounting reports measurement state, evidence basis, category semantics, age, and staleness.
 - Seon is a Live Integration, not Pillar VIII.
 - Apple Reminders remains authoritative for reminder state.
 - Completing a reminder does not complete or advance an Atlas Quest, Campaign, Mission, Gate, PR, purchase, account action, or infrastructure action.
-- Live Stormlight and Seon data remain outside Prime, Git history, static search, and immutable Glass Codex releases.
+- Live Investiture Accounting and Seon data remain outside Prime, Git history, static search, and immutable Glass Codex releases.
 - No public endpoint, Funnel, standing writer, automatic merge, or direct-main write is authorized.
 - Runtime deployment requires separate Preview, Jayson approval, evidence, recovery, and rollback.
 
@@ -91,61 +95,79 @@ Gates govern entry, exit, promotion, Campaign completion, and Quest completion. 
 
 **Owner:** Codex / Source Governance  
 **Support:** Artemis / AI Governance; Phoenix  
-**Status:** `READY_FOR_MISSION_1_PREVIEW`  
+**Status:** `IN_PROGRESS`
 **Depends on:** Found Silverlight source admission
 
-Build and prove Stormlight independently before Glass Codex depends on it.
+Build and prove Investiture Accounting independently before Glass Codex
+depends on it. The Found Silverlight-owned accounting contract is
+`governance/investiture-accounting-contract.md`; Prime-wide Light identity is
+`governance/investiture-source-identity-contract.md`.
 
 ### Mission FS-C01-M01 — Define Investiture
 
 Establish:
 
-- BEU terminology and the Atlas working-envelope convention;
-- separate `CHAT_CLOUD`, `CODEX_CLOUD`, `OPENAI_API`, and `LOCAL_AI` domains;
-- `MEASURED`, `OBSERVED`, `ESTIMATED`, and `UNAVAILABLE`;
-- confidence, staleness, Phoenix Flare, Solar Eclipse, Sunset, and Lunar Reserve rules;
-- Gemstone Infusion doctrine.
+- the exact one trusted reported model token equals one BEU convention;
+- `Spirallight`, `Chromelight`, and `Emberlight` accounting Light identities
+  derived only from trusted provider/runtime evidence;
+- independent provider, model, runtime-control, work-surface, route, engine,
+  credential, Light, and permanence identities;
+- `MEASURED`, `PARTIAL`, `UNAVAILABLE`, and `ZERO_MODEL` states;
+- authoritative-total versus disjoint-leaf counting and exact non-overlap;
+- Stormlight retirement without rewriting historical evidence;
+- Found Silverlight ownership of events, ledgers, summaries, and receipts.
 
-**Exit gate:** honest doctrine is accepted and invented precision is rejected.
+**State:** `PROVEN` from the accepted Prime identity contract, this
+Found Silverlight-owned accounting contract, exact source tests, and canonical
+readback.
+
+**Exit gate:** `INVESTITURE_ACCOUNTING_DOCTRINE_ACCEPTED`.
 
 ### Mission FS-C01-M02 — Forge the Ledger
 
 Build:
 
-- append-only event schema;
+- append-only event, record, and ledger-manifest schemas;
 - deterministic validator;
-- duplicate rejection;
+- duplicate, replay, stale-head, and category-overlap rejection;
 - private storage contract;
 - sanitized summary generator;
 - malformed-event quarantine;
-- recovery and rollback.
+- immutable-generation recovery and rollback.
 
-**Exit gate:** deterministic tests pass and raw conversation content is rejected.
+**Exit gate:** `APPEND_ONLY_INVESTITURE_LEDGER_CONSTRUCTION_PROVEN`.
 
 ### Mission FS-C01-M03 — Bind the Receipts
 
 Define events for:
 
+- exact `USAGE_REPORTED` entries that alone may contribute BEU;
 - Athena checkpoints;
 - Gemstones and Arrows;
 - Spear result readback;
 - Phoenix Flare and Sunset;
 - Codex task start, pause, cooldown, resume, completion, and receipt;
-- deterministic zero-cloud work.
+- deterministic zero-model work.
 
-**Exit gate:** events remain domain-separated and evidence-classified.
+Lifecycle events bind usage receipts without recounting usage.
+
+**Exit gate:** `INVESTITURE_RECEIPT_AND_LIFECYCLE_BINDING_PROVEN`.
 
 ### Mission FS-C01-M04 — Prove the Light
 
 Record real events and prove:
 
 - summary accuracy;
-- honest unknowns;
-- zero-cloud deterministic evidence;
+- honest unavailable and partial telemetry;
+- zero-model deterministic evidence;
 - restoration from private ledger data;
-- safe loss of telemetry without loss of canonical source.
+- safe loss of telemetry without loss of canonical source;
+- one bounded real model task backed by trusted provider/runtime usage and
+  category-semantics evidence in a Jayson-selected protected external store.
 
-**Campaign completion gate:** `STORMLIGHT_INDEPENDENTLY_PROVEN`.
+**Exit gate:** `INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN`.
+
+**Campaign completion gate:** `INVESTITURE_ACCOUNTING_INDEPENDENTLY_PROVEN`.
 
 ## Campaign FS-C02 — Raise the Glass Codex
 
@@ -154,7 +176,8 @@ Record real events and prove:
 **Status:** `BLOCKED_BY_FS-C01`  
 **Depends on:** FS-C01
 
-Build the private Atlas website and consume the proven Stormlight summary as Pillar VII.
+Build the private Atlas website and consume the proven sanitized Investiture
+Accounting summary as Pillar VII.
 
 ### Mission FS-C02-M01 — Define the Reflection
 
@@ -170,7 +193,7 @@ Approve the responsive visual system and exact navigation:
 4. Atlas Registry;
 5. Phoenix Memory;
 6. Decisions, Proof & History;
-7. Stormlight.
+7. Investiture Accounting.
 
 ### Mission FS-C02-M03 — Compile the Codex
 
@@ -188,9 +211,10 @@ Deploy one manual Tailnet-only release after applicable Phoenix restore proof.
 
 Add changed-commit checks, isolated builds, locking, atomic publication, release notification, and stale states.
 
-### Mission FS-C02-M07 — Bind Stormlight to Pillar VII
+### Mission FS-C02-M07 — Bind Investiture Accounting to Pillar VII
 
-Display the sanitized Stormlight summary without giving the browser or website ledger-write authority.
+Display the sanitized Investiture Accounting summary without giving the browser
+or website ledger-write authority.
 
 **Campaign completion gate:** `GLASS_CODEX_SEVEN_PILLARS_OPERATIONAL`.
 
@@ -237,7 +261,19 @@ Prove restart, permission recovery, reinstall, credential revocation, disablemen
 
 **Campaign completion gate:** `SEON_BOUNDED_AND_APPLE_CONFIRMED`.
 
-## 6. Explicit exclusions
+## 6. Stormlight historical migration boundary
+
+`Stormlight` is retired as the active accounting-system name. New doctrine,
+schemas, events, writers, ledgers, summaries, and Glass Codex navigation use
+Investiture Accounting and the exact Lights `Spirallight`, `Chromelight`, and
+`Emberlight`.
+
+Historical Stormlight evidence remains immutable. In particular, accepted
+RP-C03 and RP-C04 v1 schemas and proofs keep their literal `stormlight` fields
+and legacy source classifications. Those values are not token counts, are not
+current Lights, and are never automatically converted or backfilled.
+
+## 7. Explicit exclusions
 
 Found Silverlight admission does not itself authorize:
 
@@ -253,11 +289,11 @@ Found Silverlight admission does not itself authorize:
 - generated-source mixing;
 - automatic ready transition or merge.
 
-## 7. Quest completion gates
+## 8. Quest completion gates
 
 Found Silverlight is complete only when:
 
-1. Stormlight accounting is independently proven.
+1. Investiture Accounting is independently proven.
 2. Glass Codex displays Pillars I–VII privately and deterministically.
 3. Seon operates within its approved data and action boundary.
 4. Prime remains sole canonical clean source.
@@ -270,16 +306,19 @@ Found Silverlight is complete only when:
 11. Quest Board and generated projections are current.
 12. Restart-safe Sunset is complete.
 
-## 8. Current gate
+## 9. Current gate
 
 ```text
-Quest state: READY_FOR_CAMPAIGN_1_PREVIEW
+Quest state: IN_PROGRESS
 Current Campaign: FS-C01 — Infuse the Gemstone
-Next Mission: FS-C01-M01 — Define Investiture
+Accepted Mission: FS-C01-M01 — Define Investiture
+Next Mission: FS-C01-M02 — Forge the Ledger
 Source-governance substrate: FOUNDRY_OATHBRINGER_R04_ACCEPTED
 Acceptance main: 11d0db1c82c36c2bbdc07b02882da4f156b7b4e8
 Runtime deployment: NOT STARTED
 External-system action: NOT AUTHORIZED
 ```
 
-The next safe action after source admission is the exact FS-C01-M01 Preview.
+The next safe action is the bounded FS-C01-M02/M03 construction transaction.
+FS-C01-M04 live acceptance remains separately gated by a Jayson-selected
+protected external store and trusted provider/runtime usage evidence.

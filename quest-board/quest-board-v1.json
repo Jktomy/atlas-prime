@@ -17,12 +17,12 @@
       "state": "IN_PROGRESS"
     },
     {
-      "next_gate": "FS-C01-M01 Preview \u2014 Define Investiture",
+      "next_gate": "FS-C01-M02 \u2014 Forge the Ledger",
       "owner": "Codex / Source Governance",
       "quest_id": "QUEST-FOUND-SILVERLIGHT-R01",
       "source": "quests/found-silverlight.md",
-      "state": "READY_FOR_CAMPAIGN_1_PREVIEW",
-      "readiness_basis": "Prime source-governance execution substrate accepted through Foundry and Oathbringer R04 on PR #66; canonical main 11d0db1c82c36c2bbdc07b02882da4f156b7b4e8. Proceed only through the separate FS-C01-M01 Preview."
+      "state": "IN_PROGRESS",
+      "readiness_basis": "FS-C01-M01 Investiture Accounting doctrine is accepted from Jayson's controlling decisions, the canonical Prime identity contract, the Found Silverlight-owned accounting contract, exact source tests, and reviewed canonical readback. FS-C01-M02/M03 construction is next; protected storage placement and trusted live usage remain separate."
     },
     {
       "next_gate": "PF-C01 preview and Jayson-side hardware readiness",

@@ -85,6 +85,17 @@ class PrimeContinuityTests(unittest.TestCase):
             if any(mission_id in blocker for blocker in repairing_continuity["blockers"])
         }
         self.assertEqual(represented_blockers, unfinished_missions)
+        found_board = next(entry for entry in self.board["entries"] if entry["quest_id"] == "QUEST-FOUND-SILVERLIGHT-R01")
+        found_continuity = next(
+            entry for entry in self.register["entries"] if entry["continuity_id"] == "CONT-FOUND-SILVERLIGHT-R01"
+        )
+        self.assertEqual(found_board["state"], "IN_PROGRESS")
+        self.assertEqual(found_board["next_gate"], "FS-C01-M02 — Forge the Ledger")
+        self.assertEqual(found_continuity["campaign_id"], "FS-C01")
+        self.assertEqual(found_continuity["mission_id"], "FS-C01-M02")
+        self.assertEqual(found_continuity["gate_id"], "APPEND_ONLY_INVESTITURE_LEDGER_CONSTRUCTION_PROVEN")
+        self.assertEqual(found_continuity["revision"], 2)
+        self.assertEqual(found_continuity["last_event_id"], "FS-C01-M01-DOCTRINE-ACCEPTANCE-R01")
 
     def test_schema_driven_board_accepts_later_quest_without_validator_edit(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

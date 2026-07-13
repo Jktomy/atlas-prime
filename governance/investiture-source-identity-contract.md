@@ -90,10 +90,12 @@ The RP-C03 Chromelight campaign remains accepted provider/account evidence.
 Its proper name and gate lineage do not prove Google token use and do not emit
 accounting Chromelight. Only trusted reported Google model tokens do.
 
-The current Found Silverlight Quest's older Stormlight wording is superseded
-for identity and accounting-name decisions by this contract. Its stable Quest
-and FS-C01 lineage will be modernized in a separate Found Silverlight-owned
-transaction with its continuity digest updated atomically.
+The Found Silverlight Quest's older Stormlight wording is superseded for
+identity and accounting-name decisions by this contract. Its stable Quest and
+FS-C01 lineage is modernized through
+`governance/investiture-accounting-contract.md`, with the Quest Board and
+Found Silverlight continuity digest updated atomically in the same authored
+acceptance transaction.
 
 ## Evidence and privacy boundary
 

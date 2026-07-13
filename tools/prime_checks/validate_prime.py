@@ -27,6 +27,7 @@ REQUIRED = (
     "governance/capability-parity-register.json",
     "governance/capability-acceptance-contract.md",
     "governance/investiture-source-identity-contract.md",
+    "governance/investiture-accounting-contract.md",
     "governance/shard-doctrine.md",
     "schemas/shardblade-permanence-request-v1.schema.json",
     "schemas/shardblade-permanence-approval-v1.schema.json",
