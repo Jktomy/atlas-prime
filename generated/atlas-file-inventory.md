@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:2fa1716b80874d89734eb597441d0c64273c46b532b3e91707e9bf8128f6185e
+Source fingerprint: sha256:1944549f81e0b240ac78c2d357ea64cafe5a7f5839b54b61a07fdeabef2e4117
 Generator format: 2
 Status: Generated support artifact
 
@@ -57,6 +57,7 @@ Status: Generated support artifact
 | `operations/operation-registry.md` | operations | yes | none |
 | `operations/protocol-library.md` | operations | yes | policy-reference |
 | `projects/project-registry.md` | projects | yes | policy-reference |
+| `proof/found-silverlight/fs-c01-m02-m03-construction-acceptance-r01.md` | proof | no | none |
 | `proof/lifecycle/g3-d-beu-reduction-pilot-r01.md` | proof | yes | none |
 | `proof/oathbringer-production-acceptance-r01.md` | proof | yes | none |
 | `proof/prime-spear-arrow-bow-parity-r01.md` | proof | yes | none |
