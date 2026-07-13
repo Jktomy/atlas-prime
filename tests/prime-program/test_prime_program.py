@@ -58,11 +58,11 @@ class PrimeProgramTests(unittest.TestCase):
             repairing_prime,
             [
                 {
-                    "next_gate": "RP-C01-M01 Preview — Define Execution-Route Parity",
+                    "next_gate": "RP-C06 Preview — Deterministic Conservation and Generated Parity",
                     "owner": "Codex / Source Governance",
                     "quest_id": "QUEST-REPAIRING-PRIME-R01",
                     "source": "quests/repairing-prime.md",
-                    "state": "READY_FOR_CAMPAIGN_1_PREVIEW",
+                    "state": "IN_PROGRESS",
                 }
             ],
         )

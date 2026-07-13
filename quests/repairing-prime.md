@@ -32,9 +32,15 @@ last_verified: 2026-07-12
 **Owning Operation:** Operation Source Governance<br>
 **Supporting Projects:** Artemis, Phoenix<br>
 **Current lane:** `PLAN -> VERIFY`<br>
-**Current state:** `READY_FOR_CAMPAIGN_1_PREVIEW`<br>
-**Current Campaign:** `RP-C01`<br>
-**Next gate:** `RP-C01-M01 Preview — Define Execution-Route Parity`
+**Current state:** `IN_PROGRESS`<br>
+**Current Campaign:** `RP-C06`<br>
+**Next gate:** `RP-C06 Preview — Deterministic Conservation and Generated Parity`
+
+RP-C02 through RP-C05 are complete from accepted canonical evidence. RP-C01
+remains independently in progress with its exact unproven and partial missions;
+advancing the active campaign pointer does not promote or erase those blockers.
+The accepted RP-C05 evidence includes a fresh-clone Sunrise reconstruction of
+the RP-C06 gate.
 
 ## Purpose
 
