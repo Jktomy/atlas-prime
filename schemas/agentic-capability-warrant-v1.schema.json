@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/agentic-capability-warrant-v1.schema.json",
+  "title": "Prime agentic capability warrant v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "warrant_id", "status", "agent_identity", "authority", "scope", "delegation", "lifecycle", "human_approval", "evidence", "rollback", "forbidden_actions"],
+  "properties": {
+    "schema_version": {"const": "atlas.agentic-capability-warrant.v1"},
+    "warrant_id": {"type": "string", "pattern": "^[A-Z0-9][A-Z0-9._-]{2,127}$"},
+    "status": {"enum": ["DRAFT", "ACTIVE", "SUSPENDED", "REVOKED", "EXPIRED", "REPLACED"]},
+    "agent_identity": {"type": "object", "additionalProperties": false, "required": ["agent_id", "role", "implementation", "provider", "model", "work_surface"], "properties": {
+      "agent_id": {"type": "string", "minLength": 1, "maxLength": 128}, "role": {"type": "string", "minLength": 1, "maxLength": 80},
+      "implementation": {"type": "string", "minLength": 1, "maxLength": 120}, "provider": {"type": "string", "minLength": 1, "maxLength": 80},
+      "model": {"type": "string", "minLength": 1, "maxLength": 120}, "work_surface": {"type": "string", "minLength": 1, "maxLength": 120}
+    }},
+    "authority": {"type": "object", "additionalProperties": false, "required": ["authorizer", "credential_principal", "token_mode"], "properties": {
+      "authorizer": {"type": "string", "minLength": 1, "maxLength": 80}, "credential_principal": {"type": "string", "minLength": 1, "maxLength": 160},
+      "token_mode": {"enum": ["USER_SESSION", "GITHUB_TOKEN", "GITHUB_APP", "NONE"]}
+    }},
+    "scope": {"type": "object", "additionalProperties": false, "required": ["repository", "base_sha", "actions", "paths", "route", "protected_paths_allowed", "stop_boundary"], "properties": {
+      "repository": {"const": "Jktomy/atlas-prime"}, "base_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+      "actions": {"type": "array", "minItems": 1, "items": {"enum": ["READ", "ADD", "REPLACE", "DELETE", "RENAME", "MOVE", "EXECUTE", "READY", "MERGE", "SETTINGS", "PROVIDER_ACTIVATE"]}},
+      "paths": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1, "maxLength": 300}},
+      "route": {"enum": ["READ_ONLY", "SPEAR_THREAD_ENGINE", "ARROW_BOW_THREAD_ENGINE", "PHOENIX_BLADE", "SWORD_OATHBRINGER", "AEGIS_BREAK_PROTECTED"]},
+      "protected_paths_allowed": {"type": "boolean"}, "stop_boundary": {"type": "string", "minLength": 1, "maxLength": 120}
+    }},
+    "delegation": {"type": "object", "additionalProperties": false, "required": ["allowed", "parent_warrant_id", "depth", "subset_verified"], "properties": {
+      "allowed": {"type": "boolean"}, "parent_warrant_id": {"type": ["string", "null"], "maxLength": 128},
+      "depth": {"type": "integer", "minimum": 0, "maximum": 1}, "subset_verified": {"type": "boolean"}
+    }},
+    "lifecycle": {"type": "object", "additionalProperties": false, "required": ["issued_at", "expires_at", "suspended_at", "revoked_at", "replaced_by"], "properties": {
+      "issued_at": {"type": "string", "minLength": 1, "maxLength": 40}, "expires_at": {"type": "string", "minLength": 1, "maxLength": 40},
+      "suspended_at": {"type": ["string", "null"], "maxLength": 40}, "revoked_at": {"type": ["string", "null"], "maxLength": 40},
+      "replaced_by": {"type": ["string", "null"], "maxLength": 128}
+    }},
+    "human_approval": {"type": "object", "additionalProperties": false, "required": ["execute", "ready", "merge", "settings", "provider_activation", "protected_action", "destructive_action"], "properties": {
+      "execute": {"type": "boolean"}, "ready": {"type": "boolean"}, "merge": {"type": "boolean"}, "settings": {"type": "boolean"},
+      "provider_activation": {"type": "boolean"}, "protected_action": {"type": "boolean"}, "destructive_action": {"type": "boolean"}
+    }},
+    "evidence": {"type": "object", "additionalProperties": false, "required": ["preview_sha256", "candidate_tree_sha256", "required_checks"], "properties": {
+      "preview_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "candidate_tree_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+      "required_checks": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1, "maxLength": 120}}
+    }},
+    "rollback": {"type": "object", "additionalProperties": false, "required": ["pre_merge", "post_merge", "history_rewrite"], "properties": {
+      "pre_merge": {"type": "string", "minLength": 1, "maxLength": 120}, "post_merge": {"type": "string", "minLength": 1, "maxLength": 120}, "history_rewrite": {"const": false}
+    }},
+    "forbidden_actions": {"type": "object", "additionalProperties": false, "required": ["direct_main", "force_push", "scope_expansion", "identity_impersonation", "standing_authority", "second_writer"], "properties": {
+      "direct_main": {"const": false}, "force_push": {"const": false}, "scope_expansion": {"const": false}, "identity_impersonation": {"const": false},
+      "standing_authority": {"const": false}, "second_writer": {"const": false}
+    }}
+  }
+}

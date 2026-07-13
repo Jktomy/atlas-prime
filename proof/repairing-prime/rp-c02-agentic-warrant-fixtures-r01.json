@@ -1,0 +1,31 @@
+{
+  "schema_version": "atlas.agentic-warrant-fixtures.v1",
+  "gate": "SHARED_AGENTIC_WARRANTS_ACCEPTED",
+  "promotion": "NONE",
+  "parent": {
+    "schema_version": "atlas.agentic-capability-warrant.v1", "warrant_id": "RP-C02-PARENT-R01", "status": "ACTIVE",
+    "agent_identity": {"agent_id": "agent.coordinator.r01", "role": "coordinator", "implementation": "provider-neutral-agent", "provider": "NONE", "model": "NONE", "work_surface": "Codex"},
+    "authority": {"authorizer": "Jayson", "credential_principal": "NONE", "token_mode": "NONE"},
+    "scope": {"repository": "Jktomy/atlas-prime", "base_sha": "1111111111111111111111111111111111111111", "actions": ["READ", "ADD"], "paths": ["proof/repairing-prime/a.md", "proof/repairing-prime/b.md"], "route": "PHOENIX_BLADE", "protected_paths_allowed": false, "stop_boundary": "DRAFT_PR_READBACK"},
+    "delegation": {"allowed": true, "parent_warrant_id": null, "depth": 0, "subset_verified": true},
+    "lifecycle": {"issued_at": "2026-07-13T00:00:00Z", "expires_at": "2026-07-14T00:00:00Z", "suspended_at": null, "revoked_at": null, "replaced_by": null},
+    "human_approval": {"execute": false, "ready": true, "merge": true, "settings": true, "provider_activation": true, "protected_action": true, "destructive_action": true},
+    "evidence": {"preview_sha256": "2222222222222222222222222222222222222222222222222222222222222222", "candidate_tree_sha256": null, "required_checks": ["PRIME_VALIDATE"]},
+    "rollback": {"pre_merge": "CLOSE_DRAFT_PR", "post_merge": "REVIEWED_REVERT_PR", "history_rewrite": false},
+    "forbidden_actions": {"direct_main": false, "force_push": false, "scope_expansion": false, "identity_impersonation": false, "standing_authority": false, "second_writer": false}
+  },
+  "child": {
+    "schema_version": "atlas.agentic-capability-warrant.v1", "warrant_id": "RP-C02-CHILD-R01", "status": "ACTIVE",
+    "agent_identity": {"agent_id": "agent.verifier.r01", "role": "verifier", "implementation": "provider-neutral-agent", "provider": "NONE", "model": "NONE", "work_surface": "Codex"},
+    "authority": {"authorizer": "Jayson", "credential_principal": "NONE", "token_mode": "NONE"},
+    "scope": {"repository": "Jktomy/atlas-prime", "base_sha": "1111111111111111111111111111111111111111", "actions": ["READ"], "paths": ["proof/repairing-prime/a.md"], "route": "READ_ONLY", "protected_paths_allowed": false, "stop_boundary": "READ_ONLY_RECEIPT"},
+    "delegation": {"allowed": false, "parent_warrant_id": "RP-C02-PARENT-R01", "depth": 1, "subset_verified": true},
+    "lifecycle": {"issued_at": "2026-07-13T00:05:00Z", "expires_at": "2026-07-13T12:00:00Z", "suspended_at": null, "revoked_at": null, "replaced_by": null},
+    "human_approval": {"execute": true, "ready": true, "merge": true, "settings": true, "provider_activation": true, "protected_action": true, "destructive_action": true},
+    "evidence": {"preview_sha256": "3333333333333333333333333333333333333333333333333333333333333333", "candidate_tree_sha256": null, "required_checks": ["READ_ONLY_VERIFY"]},
+    "rollback": {"pre_merge": "NO_MUTATION", "post_merge": "NO_MUTATION", "history_rewrite": false},
+    "forbidden_actions": {"direct_main": false, "force_push": false, "scope_expansion": false, "identity_impersonation": false, "standing_authority": false, "second_writer": false}
+  },
+  "allowed_transitions": ["DRAFT->ACTIVE", "ACTIVE->SUSPENDED", "SUSPENDED->ACTIVE", "ACTIVE->REVOKED", "ACTIVE->EXPIRED", "ACTIVE->REPLACED", "SUSPENDED->REVOKED", "SUSPENDED->EXPIRED", "SUSPENDED->REPLACED"],
+  "terminal_states": ["REVOKED", "EXPIRED", "REPLACED"]
+}
