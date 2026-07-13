@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/athena-fresh-work-origin-receipt-v1.schema.json",
+  "title": "Athena fresh Work origin receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "issuer",
+    "verification_method",
+    "authorizer",
+    "semantic_invoker",
+    "originating_surface",
+    "task_identity_sha256",
+    "issued_at",
+    "expires_at",
+    "origin_nonce_sha256",
+    "mission_id",
+    "base_sha",
+    "carrier_sha256",
+    "preview_sha256",
+    "workflow_blob_sha",
+    "verification_evidence_sha256",
+    "public_clean",
+    "forbidden_fields_absent"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "atlas.athena.fresh-work-origin-receipt.v1"
+    },
+    "issuer": {
+      "const": "OPENAI_CHATGPT_WORK"
+    },
+    "verification_method": {
+      "enum": [
+        "PLATFORM_SIGNED_ATTESTATION",
+        "INDEPENDENT_PLATFORM_READBACK"
+      ]
+    },
+    "authorizer": {
+      "const": "Jayson"
+    },
+    "semantic_invoker": {
+      "const": "Athena"
+    },
+    "originating_surface": {
+      "const": "CHATGPT_WORK"
+    },
+    "task_identity_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "origin_nonce_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "mission_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]{1,128}$"
+    },
+    "base_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "carrier_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "preview_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "workflow_blob_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "verification_evidence_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "public_clean": {
+      "const": true
+    },
+    "forbidden_fields_absent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "raw_task_identifier",
+        "raw_conversation_identifier",
+        "transcript",
+        "prompt",
+        "account_email",
+        "credential",
+        "local_path",
+        "network_value",
+        "private_data"
+      ],
+      "properties": {
+        "raw_task_identifier": {
+          "const": true
+        },
+        "raw_conversation_identifier": {
+          "const": true
+        },
+        "transcript": {
+          "const": true
+        },
+        "prompt": {
+          "const": true
+        },
+        "account_email": {
+          "const": true
+        },
+        "credential": {
+          "const": true
+        },
+        "local_path": {
+          "const": true
+        },
+        "network_value": {
+          "const": true
+        },
+        "private_data": {
+          "const": true
+        }
+      }
+    }
+  }
+}
