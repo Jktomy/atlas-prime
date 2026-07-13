@@ -31,7 +31,7 @@ from .schema import SchemaValidationError, validate_schema
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PREVIEW_SCHEMA = ROOT / "schemas" / "athena-guided-intake-preview-v1.schema.json"
+PREVIEW_SCHEMA = ROOT / "schemas" / "athena-guided-intake-preview-v2.schema.json"
 EXECUTE_SCHEMA = ROOT / "schemas" / "athena-guided-intake-execute-receipt-v1.schema.json"
 WORKFLOW = "athena-bow-hosted.yml"
 WORKFLOW_PATH = ".github/workflows/athena-bow-hosted.yml"
@@ -172,6 +172,45 @@ def _replace_receipt(path: Path, value: dict[str, Any]) -> None:
         ) from exc
 
 
+def _compiled_output_identity(
+    compiled: Path,
+    receipt: dict[str, Any],
+) -> tuple[str, list[dict[str, Any]], dict[str, str]]:
+    receipt_name = receipt.get("compile_receipt_filename")
+    mission_name = receipt.get("output_mission_filename")
+    if not isinstance(receipt_name, str) or not isinstance(mission_name, str):
+        raise GuidedPublisherError("guided compiler receipt identity is incomplete", "GUIDED_COMPILE_RECEIPT_INVALID")
+    inventory: list[dict[str, Any]] = []
+    for path in sorted((item for item in compiled.rglob("*") if item.is_file()), key=lambda item: item.relative_to(compiled).as_posix()):
+        relative = path.relative_to(compiled).as_posix()
+        payload = path.read_bytes()
+        inventory.append({"path": relative, "bytes": len(payload), "sha256": sha256_bytes(payload)})
+    by_path = {item["path"]: item for item in inventory}
+    if len(by_path) != len(inventory) or receipt_name not in by_path or mission_name not in by_path:
+        raise GuidedPublisherError("guided compiled inventory is incomplete", "GUIDED_COMPILED_INVENTORY_INVALID")
+    declared = receipt.get("output_inventory")
+    if not isinstance(declared, list) or sorted(declared) != sorted(by_path):
+        raise GuidedPublisherError("guided compiled inventory does not match compiler receipt", "GUIDED_COMPILED_INVENTORY_INVALID")
+    if by_path[mission_name]["sha256"] != receipt.get("output_mission_sha256"):
+        raise GuidedPublisherError("guided compiled mission hash mismatch", "GUIDED_COMPILED_INVENTORY_INVALID")
+    try:
+        receipt_file = json.loads((compiled / receipt_name).read_text(encoding="utf-8"))
+        mission = json.loads((compiled / mission_name).read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise GuidedPublisherError("guided compiled identity is unreadable", "GUIDED_COMPILED_INVENTORY_INVALID") from exc
+    if receipt_file != receipt or not isinstance(mission, dict):
+        raise GuidedPublisherError("guided compiled identity drifted", "GUIDED_COMPILED_INVENTORY_INVALID")
+    identity: dict[str, str] = {}
+    for field in ("mission_sha256", "candidate_tree_sha256", "final_pathset_sha256"):
+        value = mission.get(field)
+        if not isinstance(value, str) or SHA64.fullmatch(value) is None:
+            raise GuidedPublisherError("guided compiled mission identity is incomplete", "GUIDED_COMPILED_INVENTORY_INVALID")
+        identity[field] = value
+    if identity["mission_sha256"] != receipt.get("mission_sha256"):
+        raise GuidedPublisherError("guided compiled mission identity mismatch", "GUIDED_COMPILED_INVENTORY_INVALID")
+    return by_path[receipt_name]["sha256"], inventory, identity
+
+
 def build_preview(
     carrier_path: Path,
     *,
@@ -213,11 +252,12 @@ def build_preview(
         raise GuidedPublisherError("guided carrier branch is not deterministic", "GUIDED_BRANCH_MISMATCH")
     _assert_no_replay(runner, expected_branch)
     with tempfile.TemporaryDirectory(prefix="atlas-guided-preview-") as temporary:
+        compiled = Path(temporary) / "compiled"
         try:
             compile_receipt = compiler(
                 carrier_path,
                 package_sha256=carrier_sha,
-                output_dir=Path(temporary) / "compiled",
+                output_dir=compiled,
                 disabled_proof=True,
                 compile_only=True,
                 read_only_remote_url=REMOTE_URL,
@@ -225,6 +265,7 @@ def build_preview(
         except Exception as exc:
             code = str(getattr(exc, "code", "GUIDED_COMPILE_REJECTED"))
             raise GuidedPublisherError("guided carrier compile rejected", code) from exc
+        compile_receipt_sha256, compiled_inventory, compiled_identity = _compiled_output_identity(compiled, compile_receipt)
     inventory: list[dict[str, str]] = []
     for thread in threads:
         operation = thread.get("operation")
@@ -241,7 +282,7 @@ def build_preview(
         })
     inventory.sort(key=lambda item: item["path"])
     preview = {
-        "schema_version": "atlas.athena.guided-intake-preview.v1",
+        "schema_version": "atlas.athena.guided-intake-preview.v2",
         "result": "ACCEPTED",
         "repository": REPOSITORY,
         "canonical_main_sha": main_sha,
@@ -253,7 +294,14 @@ def build_preview(
         "mission_id": package.weave["weave_id"],
         "mission_sha256": compile_receipt["mission_sha256"],
         "mission_lock_sha256": mission_lock_sha256(package.weave["weave_id"], main_sha),
+        "compile_receipt_schema_version": compile_receipt["schema_version"],
+        "compile_receipt_filename": compile_receipt["compile_receipt_filename"],
+        "compile_receipt_sha256": compile_receipt_sha256,
+        "output_mission_filename": compile_receipt["output_mission_filename"],
         "output_mission_sha256": compile_receipt["output_mission_sha256"],
+        "candidate_tree_sha256": compiled_identity["candidate_tree_sha256"],
+        "final_pathset_sha256": compiled_identity["final_pathset_sha256"],
+        "compiled_inventory": compiled_inventory,
         "deterministic_branch": package.weave["branch"],
         "path_classification": "ORDINARY",
         "paths": inventory,

@@ -25,7 +25,8 @@ MAIN = "1" * 40
 WORKFLOW_BLOB = "2" * 40
 BRANCH = expected_mission_branch("RP-C01-GUIDED-PROOF-R01", MAIN)
 MISSION_SHA = "4" * 64
-OUTPUT_MISSION_SHA = "5" * 64
+CANDIDATE_TREE_SHA = "8" * 64
+FINAL_PATHSET_SHA = "9" * 64
 
 
 class FakeRunner:
@@ -89,11 +90,32 @@ def fake_package(*, base: str = MAIN, path: str = "proof/repairing-prime/guided-
     )
 
 
-def compiler_receipt(*_args: object, **_kwargs: object) -> dict[str, str]:
-    return {
+def compiler_receipt(*_args: object, **kwargs: object) -> dict[str, object]:
+    output_dir = kwargs["output_dir"]
+    assert isinstance(output_dir, Path)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    mission_name = "rp-c01-guided-proof-r01-mission.json"
+    receipt_name = "rp-c01-guided-proof-r01-compile-receipt.json"
+    payload_name = "PAYLOADS/guided-proof.md"
+    mission = {
         "mission_sha256": MISSION_SHA,
-        "output_mission_sha256": OUTPUT_MISSION_SHA,
+        "candidate_tree_sha256": CANDIDATE_TREE_SHA,
+        "final_pathset_sha256": FINAL_PATHSET_SHA,
     }
+    mission_bytes = stable_json(mission).encode("utf-8")
+    (output_dir / mission_name).write_bytes(mission_bytes)
+    (output_dir / "PAYLOADS").mkdir()
+    (output_dir / payload_name).write_bytes(b"# public clean guided proof\n")
+    receipt: dict[str, object] = {
+        "schema_version": "atlas-thread-engine-spear-compile-receipt-v1",
+        "mission_sha256": MISSION_SHA,
+        "compile_receipt_filename": receipt_name,
+        "output_mission_filename": mission_name,
+        "output_mission_sha256": sha256_bytes(mission_bytes),
+        "output_inventory": [payload_name, receipt_name, mission_name],
+    }
+    (output_dir / receipt_name).write_text(stable_json(receipt), encoding="utf-8", newline="\n")
+    return receipt
 
 
 class GuidedPublisherTests(unittest.TestCase):
@@ -125,6 +147,12 @@ class GuidedPublisherTests(unittest.TestCase):
         validate_schema(schema, receipt)
         self.assertEqual(receipt["canonical_main_sha"], MAIN)
         self.assertEqual(receipt["mission_sha256"], MISSION_SHA)
+        self.assertEqual(receipt["candidate_tree_sha256"], CANDIDATE_TREE_SHA)
+        self.assertEqual(receipt["final_pathset_sha256"], FINAL_PATHSET_SHA)
+        self.assertEqual(len(receipt["compiled_inventory"]), 3)
+        compiled = {item["path"]: item["sha256"] for item in receipt["compiled_inventory"]}
+        self.assertEqual(compiled[receipt["compile_receipt_filename"]], receipt["compile_receipt_sha256"])
+        self.assertEqual(compiled[receipt["output_mission_filename"]], receipt["output_mission_sha256"])
         self.assertEqual(receipt["deterministic_branch"], BRANCH)
         self.assertEqual(receipt["paths"][0]["payload_sha256"], sha256_bytes(b"# public clean guided proof\n"))
         self.assertTrue(all(value is False for value in receipt["forbidden_actions"].values()))

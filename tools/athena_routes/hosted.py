@@ -65,6 +65,11 @@ def write_json(path: Path, value: dict[str, Any]) -> None:
     path.write_text(stable_json(value), encoding="utf-8", newline="\n")
 
 
+def adapter_source_receipt_bytes(value: dict[str, Any]) -> bytes:
+    """Reproduce the production adapter's exact receipt serialization."""
+    return (json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False) + "\n").encode("utf-8")
+
+
 def load_schema(path: Path) -> dict[str, Any]:
     value = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(value, dict):
@@ -287,12 +292,36 @@ def sanitized_adapter_evidence(raw: dict[str, Any], branch: str, remote: dict[st
         status = safe_evidence_code(str(item.get("status", "")).upper(), "UNKNOWN_STATUS")
         checkpoints.append({"checkpoint": checkpoint, "status": status})
     pr = remote.get("pull_request") if isinstance(remote.get("pull_request"), dict) else None
+    confirmation = raw.get("forbidden_action_confirmation")
+    confirmation = confirmation if isinstance(confirmation, dict) else {}
     return {
         "schema_version": "atlas.athena.thread-engine-evidence.v1",
-        "source_receipt_sha256": sha256_bytes(stable_json(raw).encode("utf-8")),
+        "source_receipt_schema_version": (
+            raw.get("schema_version")
+            if raw.get("schema_version") == "atlas-thread-engine-production-adapter-receipt-v2"
+            else None
+        ),
+        "source_receipt_sha256": sha256_bytes(adapter_source_receipt_bytes(raw)),
+        "mission_id": raw.get("mission_id") if isinstance(raw.get("mission_id"), str) else None,
+        "mission_sha256": raw.get("mission_sha256") if isinstance(raw.get("mission_sha256"), str) and SHA64.fullmatch(raw["mission_sha256"]) else None,
+        "candidate_tree_sha256": raw.get("candidate_tree_sha256") if isinstance(raw.get("candidate_tree_sha256"), str) and SHA64.fullmatch(raw["candidate_tree_sha256"]) else None,
+        "commit_tree": raw.get("commit_tree") if isinstance(raw.get("commit_tree"), str) and SHA40.fullmatch(raw["commit_tree"]) else None,
         "result": safe_evidence_code(raw.get("result"), "UNKNOWN_RESULT"),
         "error_code": None if raw.get("error_code") is None else safe_evidence_code(raw.get("error_code"), "THREAD_ENGINE_REJECTED"),
         "error_stage": None if raw.get("error_stage") is None else safe_evidence_code(raw.get("error_stage"), "THREAD_ENGINE_REJECTED"),
+        "stop_point": safe_evidence_code(raw.get("stop_point"), "UNKNOWN_STOP_POINT"),
+        "forbidden_action_confirmation": {
+            "direct_main_write": confirmation.get("direct_main_write"),
+            "force_push": confirmation.get("force_push"),
+            "auto_merge": confirmation.get("auto_merge"),
+            "ready_transition": confirmation.get("ready_transition"),
+            "workflow_dispatch": confirmation.get("workflow_dispatch"),
+            "repository_setting_mutation": confirmation.get("repository_setting_mutation"),
+            "unprofiled_generated_output_mutation": confirmation.get("unprofiled_generated_output_mutation"),
+            "protected_board_mutation": confirmation.get("protected_board_mutation"),
+            "production_authority_activated": confirmation.get("production_authority_activated"),
+            "standing_authority": confirmation.get("standing_authority"),
+        },
         "branch": branch,
         "checkpoint_results": checkpoints,
         "remote_state": {

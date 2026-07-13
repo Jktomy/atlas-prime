@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/rp-c01-m05-parity-evidence-v1.schema.json",
+  "title": "Repairing Prime RP-C01-M05 route parity evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "result", "repository", "mission_id", "base_sha", "carrier_sha256", "preview_sha256", "workflow_run_id", "compiler", "adapter", "invariants", "promotion_boundary"],
+  "properties": {
+    "schema_version": {"const": "atlas.repairing-prime.rp-c01-m05-parity-evidence.v1"},
+    "result": {"const": "PARITY_VERIFIED"},
+    "repository": {"const": "Jktomy/atlas-prime"},
+    "mission_id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)*$"},
+    "base_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "carrier_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "preview_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "workflow_run_id": {"type": "integer", "minimum": 1},
+    "compiler": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "compile_receipt_sha256", "output_mission_sha256", "candidate_tree_sha256", "final_pathset_sha256", "compiled_inventory_sha256"],
+      "properties": {
+        "schema_version": {"const": "atlas-thread-engine-spear-compile-receipt-v1"},
+        "compile_receipt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "output_mission_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "candidate_tree_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "final_pathset_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "compiled_inventory_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      }
+    },
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_receipt_schema_version", "source_receipt_sha256", "sanitized_evidence_sha256", "candidate_tree_sha256", "commit_tree", "branch", "pull_request", "head_sha", "checkpoint_sequence_sha256", "stop_point"],
+      "properties": {
+        "source_receipt_schema_version": {"const": "atlas-thread-engine-production-adapter-receipt-v2"},
+        "source_receipt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "sanitized_evidence_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "candidate_tree_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "commit_tree": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+        "branch": {"type": "string", "pattern": "^source/athena-bow-[a-f0-9]{20}$"},
+        "pull_request": {"type": "integer", "minimum": 1},
+        "head_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+        "checkpoint_sequence_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "stop_point": {"const": "DRAFT_PR_READBACK"}
+      }
+    },
+    "invariants": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["same_carrier", "same_mission", "same_compiler_receipt", "same_candidate_tree", "same_branch", "exact_draft_pr_readback", "singular_adapter_execution", "all_forbidden_actions_false"],
+      "properties": {
+        "same_carrier": {"const": true},
+        "same_mission": {"const": true},
+        "same_compiler_receipt": {"const": true},
+        "same_candidate_tree": {"const": true},
+        "same_branch": {"const": true},
+        "exact_draft_pr_readback": {"const": true},
+        "singular_adapter_execution": {"const": true},
+        "all_forbidden_actions_false": {"const": true}
+      }
+    },
+    "promotion_boundary": {"const": "SEPARATE_AUTHORED_RECONCILIATION_REQUIRED"}
+  }
+}

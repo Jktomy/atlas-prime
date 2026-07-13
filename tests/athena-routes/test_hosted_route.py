@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 from tools.athena_routes.hosted import (  # noqa: E402
     HostedRouteError,
+    adapter_source_receipt_bytes,
     classify_paths,
     decode_carrier,
     expected_mission_branch,
@@ -101,7 +102,29 @@ def success_engine(carrier_sha256: str, *, path: str = "proof/repairing-prime/ho
 
     def execute_mission(_path: Path, **_kwargs: object) -> dict:
         return {
+            "schema_version": "atlas-thread-engine-production-adapter-receipt-v2",
             "result": "SUCCESS",
+            "mission_id": observed.weave["weave_id"],
+            "mission_sha256": "c" * 64,
+            "candidate_tree_sha256": "e" * 64,
+            "commit_tree": "f" * 40,
+            "stop_point": "DRAFT_PR_READBACK",
+            "checkpoint_results": [
+                {"checkpoint": checkpoint, "status": "completed"}
+                for checkpoint in ("PACKAGE_AUDIT", "MISSION_INTEGRITY", "CANDIDATE_STAGE", "TREE_VERIFY", "COMMIT_VERIFY", "DRAFT_PR", "READBACK")
+            ],
+            "forbidden_action_confirmation": {
+                "direct_main_write": False,
+                "force_push": False,
+                "auto_merge": False,
+                "ready_transition": False,
+                "workflow_dispatch": False,
+                "repository_setting_mutation": False,
+                "unprofiled_generated_output_mutation": False,
+                "protected_board_mutation": False,
+                "production_authority_activated": False,
+                "standing_authority": "NO",
+            },
             "head_sha": "d" * 40,
             "pr_readback": {
                 "number": 101,
@@ -248,6 +271,15 @@ class HostedRouteTests(unittest.TestCase):
             self.assertTrue(receipt["mutation"]["draft"])
             self.assertEqual(receipt["identity"]["token_mode"], "GITHUB_TOKEN")
             self.assertNotIn("ATHENA_ARROW_B64", json.dumps(receipt))
+            adapter = json.loads((root / "evidence" / "thread-engine-evidence.json").read_text(encoding="utf-8"))
+            self.assertEqual(adapter["source_receipt_schema_version"], "atlas-thread-engine-production-adapter-receipt-v2")
+            self.assertEqual(adapter["mission_sha256"], "c" * 64)
+            self.assertEqual(adapter["candidate_tree_sha256"], "e" * 64)
+            self.assertEqual(adapter["commit_tree"], "f" * 40)
+            self.assertEqual(adapter["stop_point"], "DRAFT_PR_READBACK")
+            self.assertEqual(adapter["forbidden_action_confirmation"]["standing_authority"], "NO")
+            raw = success_engine(digest)[1](Path("mission.json"))
+            self.assertEqual(adapter["source_receipt_sha256"], hashlib.sha256(adapter_source_receipt_bytes(raw)).hexdigest())
 
     def test_read_only_preflight_accepts_without_compiler_or_adapter(self) -> None:
         carrier = b"fake-arrow-zip"
