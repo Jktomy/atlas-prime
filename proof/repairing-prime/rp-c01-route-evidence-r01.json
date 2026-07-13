@@ -26,6 +26,7 @@
     "deterministic_branch": "source/athena-bow-d6847b1c2ee57defeed7",
     "replay_key": "sha256:8b9282132b4cf620ea75ef8ad97b9949f18c3f5ebe9efaef48b66e652a765ad1",
     "preflight_request_sha256": "2df18900adde8e97e84625790039036749c84093b6c8d6af8678a7377bffe90f",
+    "preflight_result_sha256": "9ae3947301acb9c1ee54cd7e5eb40dfff349f5aa741db0e31194b7d81947df09",
     "invocation_request_sha256": "e81bf82093ace4e55e994019c808f6f4c51fc6e23d5d1d8ea35763c54e2a031c",
     "compile_receipt_sha256": "1b2fd2589ce5d27fa44c7dea2cec5b49e38eb075fa3a64eb20dba5a7c9aa4a68",
     "hosted_receipt_sha256": "110622846e1d42c65801eb7547ea56d783ee275ca48a33f3194b26d6cea1020e",
@@ -39,6 +40,20 @@
     "detached_review": "GREEN",
     "merge_sha": "ef1d137947227fa84e850d5d37275199bbfc5d96",
     "forbidden_actions": "ALL_FALSE",
+    "uploaded_artifacts": {
+      "preflight": {
+        "name": "athena-hosted-bow-preflight-29218494916-1",
+        "artifact_id": 8267405463,
+        "zip_sha256": "0e8eb79e8afe2da9288f3ed896eff25bc9cc2d33d7ee697b3655b224e3c04875",
+        "expires_at": "2026-07-27T01:58:04Z"
+      },
+      "route": {
+        "name": "athena-hosted-bow-29218494916-1",
+        "artifact_id": 8267408007,
+        "zip_sha256": "1dcd960646af96177d412fd5f5d159c193d477ab25074517b38b1750ca34bba3",
+        "expires_at": "2026-07-27T01:58:19Z"
+      }
+    },
     "repository_setting": {
       "default_workflow_permissions": "write",
       "can_approve_pull_request_reviews": true

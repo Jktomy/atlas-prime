@@ -29,6 +29,14 @@ run `29218544058` passed on Ubuntu and Windows, detached review was green, and
 the reviewed head merged as
 `ef1d137947227fa84e850d5d37275199bbfc5d96`.
 
+The expiring hosted containers are durably bound by upload artifact IDs
+`8267405463` and `8267408007` and their respective archive SHA-256 values
+`0e8eb79e8afe2da9288f3ed896eff25bc9cc2d33d7ee697b3655b224e3c04875` and
+`1dcd960646af96177d412fd5f5d159c193d477ab25074517b38b1750ca34bba3`.
+The machine-readable evidence also binds every retained member digest,
+including the preflight result, both route requests, hosted receipt, and
+sanitized Thread Engine evidence.
+
 The earlier run `29215013196`, its carrier, branch, partial receipt, and manual
 recovery remain historical partial evidence only; none was reused for the R02
 success.
