@@ -49,7 +49,7 @@ class ResonanceContractTests(unittest.TestCase):
                 drifted.append(evidence["source"])
                 snapshot = ROOT / "proof/repairing-prime/historical-sources" / records[(evidence["source"], evidence["sha256"])]
                 self.assertEqual(hashlib.sha256(snapshot.read_bytes()).hexdigest(), evidence["sha256"])
-        self.assertEqual(set(drifted), {"quests/repairing-prime.md", "governance/change-routes.md", "operations/protocol-library.md"})
+        self.assertEqual(set(drifted), {"quests/repairing-prime.md", "governance/change-routes.md", "operations/protocol-library.md", "governance/agentic-warrant-contract.md"})
         self.reconcile()
 
     def test_aberration_register_preserves_consensus_conflict_and_novel(self) -> None:

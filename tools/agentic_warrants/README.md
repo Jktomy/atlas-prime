@@ -13,3 +13,12 @@ consume both the request digest and receipt/attempt/nonce tuple. The module is
 read-only and grants no authority. Action approvals bind the same request
 digest; rejection receipts for inactive or invalid warrants are accepted only
 when their recorded error matches the validator's observed reason.
+
+The generic v1 path is structural RP-C02 evidence only for permanence. It
+rejects every v1 READY, MERGE, or `SHARDBLADE_PERMANENCE` warrant with
+`SHARDBLADE_DEDICATED_CONTRACT_REQUIRED`. Current Shardblade validation uses
+`permanence.py` and the dedicated request, direct approval, and receipt schemas.
+That module is also read-only and `CONTRACT_ONLY_NOT_ACTIVATED`: callers must
+supply trusted Jayson verification, fresh GitHub readbacks, and one durable
+reservation ledger that binds each accepted receipt to its prior request and
+approval reservation before any mutation.

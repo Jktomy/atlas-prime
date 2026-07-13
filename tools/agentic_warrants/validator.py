@@ -158,6 +158,8 @@ def validate_warrant(
         raise WarrantValidationError("SCOPE_DUPLICATE")
     if [safe_path(path) for path in scope["paths"]] != scope["paths"]:
         raise WarrantValidationError("PATH_SCOPE_INVALID")
+    if scope["route"] == "SHARDBLADE_PERMANENCE" or set(scope["actions"]) & {"READY", "MERGE"}:
+        raise WarrantValidationError("SHARDBLADE_DEDICATED_CONTRACT_REQUIRED")
     if not set(scope["actions"]).issubset(ROUTE_ACTIONS[scope["route"]]):
         raise WarrantValidationError("ROUTE_ACTION_MISMATCH")
     protected = any(protected_path(path) for path in scope["paths"])
