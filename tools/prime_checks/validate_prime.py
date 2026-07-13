@@ -88,6 +88,7 @@ REQUIRED = (
     "schemas/quest-board-v1.schema.json",
     "schemas/quest-engine-identity-register-v1.schema.json",
     "tools/prime_continuity/engine.py",
+    "tools/prime_continuity/cli.py",
     "migration/source-disposition-ledger.csv",
     "migration/source-disposition-summary.json",
     "schemas/capability-parity-register.schema.json",
