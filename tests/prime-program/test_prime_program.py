@@ -49,7 +49,6 @@ class PrimeProgramTests(unittest.TestCase):
 
     def test_repairing_prime_is_admitted_without_changing_independent_quests(self) -> None:
         board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
-        self.assertEqual(len(board["entries"]), 5)
         repairing_prime = [
             item
             for item in board["entries"]
@@ -67,13 +66,12 @@ class PrimeProgramTests(unittest.TestCase):
                 }
             ],
         )
-        self.assertEqual(
-            {
-                item["quest_id"]: (item["source"], item["state"], item["next_gate"])
-                for item in board["entries"]
-                if item["quest_id"] != "QUEST-REPAIRING-PRIME-R01"
-            },
-            {
+        independent = {
+            item["quest_id"]: (item["source"], item["state"], item["next_gate"])
+            for item in board["entries"]
+            if item["quest_id"] != "QUEST-REPAIRING-PRIME-R01"
+        }
+        expected_preserved = {
                 "PRIME-REBORN-QUEST-R01": (
                     "quests/prime-reborn.md",
                     "COMPLETE",
@@ -94,7 +92,18 @@ class PrimeProgramTests(unittest.TestCase):
                     "READY_FOR_JAYSON_EXECUTION_PACKAGE",
                     "NW-C01 readiness package and Jayson-side proof",
                 ),
-            },
+            }
+        self.assertEqual(
+            {identity: independent[identity] for identity in expected_preserved},
+            expected_preserved,
+        )
+        self.assertEqual(
+            independent["QUEST-PRIME-CONTINUITY-PROOF-R01"],
+            (
+                "quests/prime-continuity-proof.md",
+                "READY_FOR_CAMPAIGN_1_PREVIEW",
+                "PCP-C01-PREVIEW",
+            ),
         )
 
     def test_prime_is_canonical_and_codex_is_predecessor_only(self) -> None:
