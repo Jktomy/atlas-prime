@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:cf4525c73bfe188f5f65cb5f5ca6abdee302a5333f72378d1d1886ea8ee104a4
+Source fingerprint: sha256:c2d5a227cd7e18228be1685c4c72fdc816d842698341c144451abd1d3509066a
 Generator format: 2
 Status: Generated support artifact
 
@@ -69,6 +69,8 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c01-m05-parity-acceptance-r01.md` | no |
 | `proof/repairing-prime/rp-c01-m05-parity-live-r01.md` | no |
 | `proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.md` | no |
+| `proof/repairing-prime/rp-c01-m08-free-form-acceptance-r01.md` | no |
+| `proof/repairing-prime/rp-c01-m08-free-form-live-payload-r01.md` | no |
 | `proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.md` | no |
 | `proof/repairing-prime/rp-c01-route-evidence-r01.md` | no |
 | `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | no |
