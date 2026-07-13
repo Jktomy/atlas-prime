@@ -95,7 +95,8 @@ def protected_path(path: str) -> bool:
 
 
 def validate_approval_record(
-    record: dict[str, Any], warrant: dict[str, Any], *, action: str, now: datetime, verifier: AuthorizerVerifier
+    record: dict[str, Any], warrant: dict[str, Any], *, action: str, request_sha256: str,
+    now: datetime, verifier: AuthorizerVerifier
 ) -> None:
     try:
         validate_schema(load_schema(APPROVAL_SCHEMA), record)
@@ -105,6 +106,8 @@ def validate_approval_record(
         raise WarrantValidationError("APPROVAL_WARRANT_MISMATCH")
     if record["authorizer"] != warrant["authority"]["authorizer"] or record["action"] != action:
         raise WarrantValidationError("APPROVAL_AUTHORITY_MISMATCH")
+    if record["request_sha256"] != request_sha256:
+        raise WarrantValidationError("APPROVAL_REQUEST_MISMATCH")
     if record["scope_sha256"] != sha256(warrant["scope"]):
         raise WarrantValidationError("APPROVAL_SCOPE_MISMATCH")
     issued, expires = parse_time(record["issued_at"]), parse_time(record["expires_at"])
@@ -169,7 +172,7 @@ def validate_warrant(
     if warrant["status"] == "ACTIVE":
         if activation_record is None or warrant["authority"]["activation_record_sha256"] != sha256(activation_record):
             raise WarrantValidationError("ACTIVATION_RECORD_REQUIRED")
-        validate_approval_record(activation_record, warrant, action="ACTIVATE", now=observed_now, verifier=verifier)  # type: ignore[arg-type]
+        validate_approval_record(activation_record, warrant, action="ACTIVATE", request_sha256=warrant_body_sha256(warrant), now=observed_now, verifier=verifier)  # type: ignore[arg-type]
     approvals = warrant["human_approval"]
     for action, approval in APPROVAL_ACTION.items():
         if action in scope["actions"] and not approvals[approval.lower() if approval != "PROVIDER_ACTIVATE" else "provider_activation"]:
@@ -213,7 +216,14 @@ def assert_transition(previous: str, current: str) -> None:
 
 
 def validate_replacement(previous: dict[str, Any], successor: dict[str, Any]) -> None:
-    if previous["status"] != "REPLACED" or previous["lifecycle"]["replaced_by"] != successor["warrant_id"] or successor["lifecycle"]["supersedes"] != previous["warrant_id"]:
+    try:
+        validate_schema(load_schema(WARRANT_SCHEMA), previous)
+        validate_schema(load_schema(WARRANT_SCHEMA), successor)
+    except SchemaValidationError as exc:
+        raise WarrantValidationError("WARRANT_SCHEMA_INVALID") from exc
+    if (previous["warrant_id"] == successor["warrant_id"] or previous["status"] != "REPLACED"
+            or previous["lifecycle"]["replaced_by"] != successor["warrant_id"]
+            or successor["lifecycle"]["supersedes"] != previous["warrant_id"]):
         raise WarrantValidationError("REPLACEMENT_LINK_MISMATCH")
 
 
@@ -225,13 +235,17 @@ def validate_receipt(
     now: datetime | None = None,
 ) -> None:
     observed_now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
-    validate_warrant(warrant, activation_record=activation_record, verifier=verifier, parent=parent, parent_activation_record=parent_activation_record, now=observed_now)
-    if warrant["status"] != "ACTIVE":
-        raise WarrantValidationError("WARRANT_INACTIVE")
     try:
         validate_schema(load_schema(RECEIPT_SCHEMA), receipt)
     except SchemaValidationError as exc:
         raise WarrantValidationError("RECEIPT_SCHEMA_INVALID") from exc
+    warrant_error: str | None = None
+    try:
+        validate_warrant(warrant, activation_record=activation_record, verifier=verifier, parent=parent, parent_activation_record=parent_activation_record, now=observed_now)
+        if warrant["status"] != "ACTIVE":
+            warrant_error = "WARRANT_INACTIVE"
+    except WarrantValidationError as exc:
+        warrant_error = exc.code
     if receipt["request_sha256"] != request_sha256:
         raise WarrantValidationError("RECEIPT_REQUEST_MISMATCH")
     expected = {
@@ -251,6 +265,13 @@ def validate_receipt(
         raise WarrantValidationError("RECEIPT_EVIDENCE_MISMATCH")
     if parse_time(receipt["executed_at"]) > observed_now:
         raise WarrantValidationError("RECEIPT_TIME_INVALID")
+    if warrant_error is not None:
+        if (receipt["result"] not in {"REJECTED", "BLOCKED"} or receipt["error_code"] != warrant_error
+                or receipt["head_sha"] is not None or receipt["approval_record_sha256s"]):
+            raise WarrantValidationError("REJECTION_RECEIPT_MISMATCH")
+        if replay_guard is None or not replay_guard(receipt["request_sha256"], receipt["receipt_id"], receipt["attempt_id"], receipt["nonce"]):
+            raise WarrantValidationError("RECEIPT_REPLAYED")
+        return
     required_approvals = {APPROVAL_ACTION[action] for action in receipt["actions"] if action in APPROVAL_ACTION}
     if any(protected_path(path) for path in receipt["paths"]) and set(receipt["actions"]) - {"READ"}:
         required_approvals.add("PROTECTED_ACTION")
@@ -265,7 +286,7 @@ def validate_receipt(
         if observed_actions != required_approvals:
             raise WarrantValidationError("RECEIPT_APPROVAL_MISSING")
         for record in observed_records:
-            validate_approval_record(record, warrant, action=record["action"], now=observed_now, verifier=verifier)
+            validate_approval_record(record, warrant, action=record["action"], request_sha256=receipt["request_sha256"], now=observed_now, verifier=verifier)
     elif receipt["approval_record_sha256s"]:
         raise WarrantValidationError("RECEIPT_APPROVAL_MISMATCH")
     if receipt["result"] == "SUCCESS" and receipt["error_code"] is not None:

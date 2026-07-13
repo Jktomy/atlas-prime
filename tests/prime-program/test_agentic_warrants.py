@@ -50,6 +50,7 @@ class AgenticWarrantContractTests(unittest.TestCase):
         record = copy.deepcopy(self.child_activation)
         record["warrant_id"] = warrant["warrant_id"]
         record["warrant_body_sha256"] = warrant_body_sha256(warrant)
+        record["request_sha256"] = record["warrant_body_sha256"]
         record["scope_sha256"] = sha256(warrant["scope"])
         record["signature"] = f"trusted-fixture-{label}"
         warrant["authority"]["activation_record_sha256"] = sha256(record)
@@ -137,18 +138,28 @@ class AgenticWarrantContractTests(unittest.TestCase):
         successor["warrant_id"] = "RP-C02-SUCCESSOR-R01"
         successor["lifecycle"]["supersedes"] = previous["warrant_id"]
         validate_replacement(previous, successor)
+        self_replacement = copy.deepcopy(previous)
+        self_replacement["lifecycle"]["replaced_by"] = previous["warrant_id"]
+        with self.assertRaises(WarrantValidationError) as self_link:
+            validate_replacement(self_replacement, self_replacement)
+        self.assertEqual(self_link.exception.code, "REPLACEMENT_LINK_MISMATCH")
 
-    def receipt(self) -> dict:
-        evidence = {"preview_sha256": self.child["evidence"]["preview_sha256"], "candidate_tree_sha256": None, "completed_checks": self.child["evidence"]["required_checks"]}
+    def receipt(self, warrant: dict | None = None, *, request_sha256: str = "4" * 64,
+                actions: list[str] | None = None, paths: list[str] | None = None) -> dict:
+        bound = warrant or self.child
+        attempted_actions = actions or ["READ"]
+        attempted_paths = paths or bound["scope"]["paths"]
+        evidence = {"preview_sha256": bound["evidence"]["preview_sha256"], "candidate_tree_sha256": bound["evidence"]["candidate_tree_sha256"], "completed_checks": bound["evidence"]["required_checks"]}
+        mutating = bool(set(attempted_actions) - {"READ"})
         return {
             "schema_version": "atlas.agentic-warrant-receipt.v1", "receipt_id": "RP-C02-RECEIPT-R01", "attempt_id": "RP-C02-ATTEMPT-R01",
-            "nonce": "rp-c02-receipt-nonce-r01", "request_sha256": "4" * 64, "executed_at": "2026-07-13T01:00:00Z",
-            "warrant_id": self.child["warrant_id"], "warrant_sha256": warrant_sha256(self.child),
-            "observed_agent_id": self.child["agent_identity"]["agent_id"], "observed_credential_principal": self.child["authority"]["credential_principal"],
-            "repository": "Jktomy/atlas-prime", "base_sha": self.child["scope"]["base_sha"], "head_sha": None, "route": "READ_ONLY",
-            "actions": ["READ"], "paths": self.child["scope"]["paths"], "approval_record_sha256s": [], "result": "SUCCESS", "error_code": None,
-            "stop_point": "READ_ONLY_RECEIPT", **evidence, "evidence_sha256": sha256(evidence), "rollback": "NO_MUTATION",
-            "forbidden_action_confirmation": self.child["forbidden_actions"],
+            "nonce": "rp-c02-receipt-nonce-r01", "request_sha256": request_sha256, "executed_at": "2026-07-13T01:00:00Z",
+            "warrant_id": bound["warrant_id"], "warrant_sha256": warrant_sha256(bound),
+            "observed_agent_id": bound["agent_identity"]["agent_id"], "observed_credential_principal": bound["authority"]["credential_principal"],
+            "repository": "Jktomy/atlas-prime", "base_sha": bound["scope"]["base_sha"], "head_sha": "7" * 40 if mutating else None, "route": bound["scope"]["route"],
+            "actions": attempted_actions, "paths": attempted_paths, "approval_record_sha256s": [], "result": "SUCCESS", "error_code": None,
+            "stop_point": bound["scope"]["stop_boundary"], **evidence, "evidence_sha256": sha256(evidence), "rollback": bound["rollback"]["pre_merge"],
+            "forbidden_action_confirmation": bound["forbidden_actions"],
         }
 
     def test_receipt_binds_evidence_stop_rollback_identity_and_replay(self) -> None:
@@ -171,9 +182,28 @@ class AgenticWarrantContractTests(unittest.TestCase):
         inactive = copy.deepcopy(self.child)
         inactive["status"] = "SUSPENDED"
         inactive["lifecycle"]["suspended_at"] = "2026-07-13T00:30:00Z"
-        with self.assertRaises(WarrantValidationError) as inactive_receipt:
-            validate_receipt(self.receipt(), inactive, activation_record=self.child_activation, verifier=self.trusted, replay_guard=ReplayLedger().consume, request_sha256="4" * 64, parent=self.parent, parent_activation_record=self.parent_activation, now=self.now)
-        self.assertEqual(inactive_receipt.exception.code, "WARRANT_INACTIVE")
+        rejection = self.receipt(inactive)
+        rejection.update({"result": "BLOCKED", "error_code": "WARRANT_INACTIVE"})
+        validate_receipt(rejection, inactive, activation_record=self.child_activation, verifier=self.trusted, replay_guard=ReplayLedger().consume, request_sha256="4" * 64, parent=self.parent, parent_activation_record=self.parent_activation, now=self.now)
+
+    def test_action_approval_is_bound_to_one_exact_request(self) -> None:
+        warrant = copy.deepcopy(self.parent)
+        warrant["scope"]["actions"].append("EXECUTE")
+        warrant["scope"]["route"] = "SWORD_OATHBRINGER"
+        warrant["human_approval"]["execute"] = True
+        activation = self.reactivate(warrant, "execute-activation")
+        request = "6" * 64
+        approval = copy.deepcopy(activation)
+        approval.update({"approval_id": "RP-C02-EXECUTE-R01", "nonce": "rp-c02-execute-nonce-r01", "request_sha256": request, "action": "EXECUTE", "signature": "trusted-fixture-execute"})
+        receipt = self.receipt(warrant, request_sha256=request, actions=["EXECUTE"], paths=[warrant["scope"]["paths"][0]])
+        receipt["approval_record_sha256s"] = [sha256(approval)]
+        validate_receipt(receipt, warrant, activation_record=activation, verifier=self.trusted, replay_guard=ReplayLedger().consume, request_sha256=request, approval_records=[approval], now=self.now)
+        different_request = "7" * 64
+        relabeled = self.receipt(warrant, request_sha256=different_request, actions=["EXECUTE"], paths=[warrant["scope"]["paths"][0]])
+        relabeled["approval_record_sha256s"] = [sha256(approval)]
+        with self.assertRaises(WarrantValidationError) as mismatch:
+            validate_receipt(relabeled, warrant, activation_record=activation, verifier=self.trusted, replay_guard=ReplayLedger().consume, request_sha256=different_request, approval_records=[approval], now=self.now)
+        self.assertEqual(mismatch.exception.code, "APPROVAL_REQUEST_MISMATCH")
 
     def test_contract_covers_required_agentic_boundaries(self) -> None:
         contract = (ROOT / "governance/agentic-warrant-contract.md").read_text(encoding="utf-8")

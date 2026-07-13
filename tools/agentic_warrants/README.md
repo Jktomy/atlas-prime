@@ -10,4 +10,6 @@ do not create authority.
 warrant digests, identity, principal, base, route, actions, paths, evidence,
 approvals, and rollback boundary. Its required replay guard must atomically
 consume both the request digest and receipt/attempt/nonce tuple. The module is
-read-only and grants no authority.
+read-only and grants no authority. Action approvals bind the same request
+digest; rejection receipts for inactive or invalid warrants are accepted only
+when their recorded error matches the validator's observed reason.

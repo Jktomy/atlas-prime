@@ -63,10 +63,11 @@ invalidates every child immediately; a child never outlives its active parent.
 Build authority never implies Execute, ready, merge, settings, provider/account
 activation, private-data ingress, or permanence. Ready, merge, settings,
 provider activation, protected execution, and destructive action each require
-an explicit human approval record at the exact action boundary. Prime routes
-remain governed by `governance/change-routes.md`; a warrant cannot invent a
-writer or bypass Aegis. The route/action matrix is closed. Any mutating path
-classified by `policies/protected-paths.json` requires the
+an explicit human approval record at the exact action boundary. That record
+binds the attempted request digest and cannot authorize a different request.
+Prime routes remain governed by `governance/change-routes.md`; a warrant cannot
+invent a writer or bypass Aegis. The route/action matrix is closed. Any mutating
+path classified by `policies/protected-paths.json` requires the
 `AEGIS_BREAK_PROTECTED` route and protected-action approval. Private-data
 ingress is forbidden in v1 (`private_data_allowed` is always `false`).
 
@@ -90,6 +91,10 @@ expired, replaced, mismatched, stale, over-broad, transitive, or unsigned
 authority; principal or agent mismatch; unapproved protected or permanence
 action; route drift; evidence failure; replay; or action outside the warrant.
 Rejection never edits the warrant, retries partial state, or broadens scope.
+A `REJECTED` or `BLOCKED` receipt for an invalid or inactive warrant is valid
+only when its error code matches the validator's fail-closed reason, records no
+head or approval, preserves the exact attempted scope, and passes replay
+consumption.
 
 The machine contracts are
 `schemas/agentic-capability-warrant-v1.schema.json`,
