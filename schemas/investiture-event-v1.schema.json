@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/investiture-event-v1.schema.json",
+  "title": "Found Silverlight Investiture event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "replay_identity", "event_type", "occurred_at", "measurement", "bound_usage_event_ids"],
+  "properties": {
+    "schema_version": {"const": "atlas.investiture-event.v1"},
+    "event_id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+){2,15}$"},
+    "replay_identity": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{23,199}$"},
+    "event_type": {"enum": ["USAGE_REPORTED", "TASK_STARTED", "TASK_PAUSED", "TASK_COOLDOWN", "TASK_RESUMED", "TASK_COMPLETED", "ATHENA_CHECKPOINT", "GEMSTONE", "ARROW", "SPEAR_READBACK", "PHOENIX_FLARE", "SUNSET"]},
+    "occurred_at": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"},
+    "measurement": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["state", "provider_origin", "model_id", "runtime_id", "atlas_runtime_control", "light", "usage_scope_id", "source_receipt_sha256", "category_semantics_sha256", "counting_basis", "categories", "known_beu_subtotal", "total_investiture_beu"],
+      "properties": {
+        "state": {"enum": ["MEASURED", "PARTIAL", "UNAVAILABLE", "ZERO_MODEL"]},
+        "provider_origin": {"type": ["string", "null"], "enum": ["OPENAI", "GOOGLE", "ATLAS_LOCAL", null]},
+        "model_id": {"type": ["string", "null"], "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+        "runtime_id": {"type": ["string", "null"], "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+        "atlas_runtime_control": {"type": ["boolean", "null"]},
+        "light": {"type": ["string", "null"], "enum": ["Spirallight", "Chromelight", "Emberlight", null]},
+        "usage_scope_id": {"type": ["string", "null"], "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{7,199}$"},
+        "source_receipt_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+        "category_semantics_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+        "counting_basis": {"type": ["string", "null"], "enum": ["AUTHORITATIVE_TOTAL", "DISJOINT_LEAVES", null]},
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["category_id", "token_count", "role", "parent_category_id", "explicitly_disjoint"],
+            "properties": {
+              "category_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{0,63}$"},
+              "token_count": {"type": "integer", "minimum": 0},
+              "role": {"enum": ["COUNTED", "INFORMATIONAL"]},
+              "parent_category_id": {"type": ["string", "null"], "pattern": "^[A-Z][A-Z0-9_]{0,63}$"},
+              "explicitly_disjoint": {"type": "boolean"}
+            }
+          }
+        },
+        "known_beu_subtotal": {"type": ["integer", "null"], "minimum": 0},
+        "total_investiture_beu": {"type": ["integer", "null"], "minimum": 0}
+      }
+    },
+    "bound_usage_event_ids": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+){2,15}$"}}
+  }
+}

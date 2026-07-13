@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/investiture-ledger-manifest-v1.schema.json",
+  "title": "Found Silverlight immutable ledger generation manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ledger_id", "generation_id", "created_at", "previous_generation_id", "previous_last_record_sha256", "inherited_record_count", "inherited_measurement_counts", "inherited_light_known_beu", "inherited_known_beu_subtotal", "inherited_total_investiture_beu", "inherited_complete_total_available", "inherited_event_identity_sha256s", "inherited_replay_identity_sha256s", "inherited_usage_event_identity_sha256s", "inherited_usage_scope_identity_sha256s", "inherited_source_receipt_identity_sha256s", "manifest_sha256"],
+  "properties": {
+    "schema_version": {"const": "atlas.investiture-ledger-manifest.v1"},
+    "ledger_id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+){2,15}$"},
+    "generation_id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+){2,15}$"},
+    "created_at": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"},
+    "previous_generation_id": {"type": ["string", "null"], "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+){2,15}$"},
+    "previous_last_record_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "inherited_record_count": {"type": "integer", "minimum": 0},
+    "inherited_measurement_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["MEASURED", "PARTIAL", "UNAVAILABLE", "ZERO_MODEL"],
+      "properties": {
+        "MEASURED": {"type": "integer", "minimum": 0},
+        "PARTIAL": {"type": "integer", "minimum": 0},
+        "UNAVAILABLE": {"type": "integer", "minimum": 0},
+        "ZERO_MODEL": {"type": "integer", "minimum": 0}
+      }
+    },
+    "inherited_light_known_beu": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["Spirallight", "Chromelight", "Emberlight"],
+      "properties": {
+        "Spirallight": {"type": "integer", "minimum": 0},
+        "Chromelight": {"type": "integer", "minimum": 0},
+        "Emberlight": {"type": "integer", "minimum": 0}
+      }
+    },
+    "inherited_known_beu_subtotal": {"type": "integer", "minimum": 0},
+    "inherited_total_investiture_beu": {"type": ["integer", "null"], "minimum": 0},
+    "inherited_complete_total_available": {"type": "boolean"},
+    "inherited_event_identity_sha256s": {"type": "array", "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+    "inherited_replay_identity_sha256s": {"type": "array", "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+    "inherited_usage_event_identity_sha256s": {"type": "array", "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+    "inherited_usage_scope_identity_sha256s": {"type": "array", "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+    "inherited_source_receipt_identity_sha256s": {"type": "array", "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+    "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}
