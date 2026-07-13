@@ -1,0 +1,39 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c08-cap011-reconciliation.v1",
+  "campaign": "RP-C08",
+  "campaign_gate": "REPAIRING_PRIME_COMPLETE",
+  "campaign_gate_state": "IN_PROGRESS",
+  "capability": {"id": "CAP-011", "disposition": "RESTORED", "activation_state": "ACTIVE"},
+  "capability_counts": {"PRESERVED": 4, "IMPROVED": 7, "RESTORED": 12, "REPLACED": 1, "INTENTIONALLY_RETIRED": 1, "BLOCKED": 0, "STILL_MISSING": 3},
+  "still_missing": {
+    "CAP-010": "GUIDED_SPEAR_INTAKE_LIVE_PROOF_MISSING",
+    "CAP-015": "FRESH_WORK_ATHENA_ORIGIN_RECEIPT_MISSING",
+    "CAP-027": "AJ_01_AJ_03_AJ_11_AJ_12_UNPROVEN"
+  },
+  "hosted_multifile_evidence": {
+    "mission_id": "RP-C01-CAP011-HOSTED-MULTIFILE-R01",
+    "canonical_base": "48c850c07c17845fa1ca4f9b6cabb99b122466e6",
+    "carrier_sha256": "58d93cee55579ff81fb16d33cce83e8d817c15721c815a8ea3b4cc3f604f66e7",
+    "workflow_run": 29229482018,
+    "workflow_jobs": {"preflight": 86750409196, "invoke": 86750439318},
+    "route_artifact": {"id": 8270971455, "sha256": "cebb32f1189a879b0304baaa50911dd94468fdeef547105574e37b5aacae264a"},
+    "route_receipt_sha256": "148d52bc4a166c7e2556140706b8ea73839957e1b78131d4bb18498141fda415",
+    "request_sha256": "647dfa45a3dc80623fc68288f60157d68802d584e6f2723ac02f60b80ac2da0a",
+    "compile_receipt_sha256": "f96f9d999a2d1875b601129f66b14d629ea90ec56e66c73277d8b4198f6a7d53",
+    "adapter_receipt_sha256": "44e4831cb6094d468b9bb73cb1bf980fbab692ded41eb72a444ee329226fd936",
+    "replay_key": "sha256:6c466fd0ce0fcd525fea6ae4fd27c4945c27a44c7b15f45a08fadb452ce65ddd",
+    "branch": "source/athena-bow-2fb35c0c8511397beda2",
+    "pull_request": 147,
+    "head_sha": "2766deee39a72db9f942fc6bae6ae87e0ca7a8a9",
+    "authored_paths": [
+      {"path": "proof/repairing-prime/cap011-hosted-multifile-proof-a-r01.md", "sha256": "67f75b8fe21b88a39dce53cc9e797cabde2978d80ab43bb2bbfbac731ada2fa0"},
+      {"path": "proof/repairing-prime/cap011-hosted-multifile-proof-b-r01.md", "sha256": "d83c48bcc7ddf103b6df4e8c724cecd462768e737f25ea0975e173f04c7e08ed"}
+    ],
+    "exact_head_ci": {"run": 29229535410, "windows_job": 86750571867, "ubuntu_job": 86750571911, "result": "GREEN"},
+    "detached_review": "GREEN",
+    "merge_sha": "3fe613c8deb70b1e24be2bab4997aebd76ae2102",
+    "branch_deleted": true,
+    "canonical_readback": "EXACT"
+  },
+  "forbidden_promotions": {"CAP-010": false, "CAP-015": false, "CAP-027": false, "RP-C08_COMPLETE": false, "QUEST_COMPLETE": false, "permanence_granted": false, "standing_authority": false}
+}

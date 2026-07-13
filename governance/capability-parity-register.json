@@ -24,11 +24,11 @@
   "capability_disposition_counts": {
     "PRESERVED": 4,
     "IMPROVED": 7,
-    "RESTORED": 11,
+    "RESTORED": 12,
     "REPLACED": 1,
     "INTENTIONALLY_RETIRED": 1,
     "BLOCKED": 0,
-    "STILL_MISSING": 4
+    "STILL_MISSING": 3
   },
   "capabilities": [
     {
@@ -155,13 +155,13 @@
       "id": "CAP-011",
       "domain": "Hosted execution",
       "capability": "Guarded multi-file source-pack PR workflow",
-      "audit_status": "SINGLE_PATH_LIVE_MULTI_FILE_UNPROVEN",
-      "audit_severity": "HIGH",
+      "audit_status": "RESTORED_HOSTED_MULTI_FILE_LIVE_PROVEN",
+      "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "Hosted R02 proves immutable carrier-to-PR mechanics for one authored path, while multi-file compilation is local-test evidence only; the live multi-file source-pack journey remains unproven.",
-      "required_proof": "One owner-hosted ordinary carrier with at least two authored paths must create one immutable draft PR with exact path/blob/head readback, exact-head CI, detached review, and canonical readback."
+      "capability_disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "current_state": "A fresh owner-hosted ordinary Arrow/Bow carrier invoked the singular Thread Engine to create one immutable draft PR containing exactly two authored proof paths, with exact carrier-to-head blob identity, draft-PR readback, exact-head Linux and Windows CI, detached GREEN review, merge, and canonical-main readback.",
+      "required_proof": "Hosted run 29229482018, route-created PR #147 at head 2766deee39a72db9f942fc6bae6ae87e0ca7a8a9, exact-head CI run 29229535410, detached GREEN review, and canonical readback in proof/repairing-prime/rp-c08-cap011-reconciliation-r01.md."
     },
     {
       "id": "CAP-012",

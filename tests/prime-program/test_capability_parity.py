@@ -77,7 +77,6 @@ class CapabilityParityTests(unittest.TestCase):
         records = {record["id"]: record for record in self.register["capabilities"]}
         for capability_id in (
             "CAP-010",
-            "CAP-011",
             "CAP-015",
             "CAP-027",
         ):
@@ -94,7 +93,21 @@ class CapabilityParityTests(unittest.TestCase):
             self.assertEqual(records[capability_id]["capability_disposition"], "RESTORED")
             self.assertEqual(records[capability_id]["activation_state"], "ACTIVE")
         self.assertIn("fresh Work/Athena origin remains separately missing", records["CAP-009"]["current_state"])
-        self.assertIn("at least two authored paths", records["CAP-011"]["required_proof"])
+
+    def test_guarded_multi_file_source_pack_is_live_restored(self) -> None:
+        records = {record["id"]: record for record in self.register["capabilities"]}
+        cap_011 = records["CAP-011"]
+        proof = json.loads(
+            (ROOT / "proof/repairing-prime/rp-c08-cap011-reconciliation-r01.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(cap_011["capability_disposition"], "RESTORED")
+        self.assertEqual(cap_011["activation_state"], "ACTIVE")
+        self.assertEqual(proof["capability"], {"id": "CAP-011", "disposition": "RESTORED", "activation_state": "ACTIVE"})
+        self.assertEqual(len(proof["hosted_multifile_evidence"]["authored_paths"]), 2)
+        self.assertEqual(proof["hosted_multifile_evidence"]["detached_review"], "GREEN")
+        self.assertEqual(proof["hosted_multifile_evidence"]["canonical_readback"], "EXACT")
 
     def test_generated_parity_and_publisher_are_restored_by_aj09(self) -> None:
         records = {record["id"]: record for record in self.register["capabilities"]}
