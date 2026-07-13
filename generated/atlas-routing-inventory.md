@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:1944549f81e0b240ac78c2d357ea64cafe5a7f5839b54b61a07fdeabef2e4117
+Source fingerprint: sha256:0b5f0d1a986a53cc92b53ab184434535eaa6eb6cfb1bb371985cee82d508e5df
 Generator format: 2
 Status: Generated support artifact
 
