@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:c89f52364a9cf8f3d3edbbd5e883cb33c74737256fce9fc2c037188e8579317f
+Source fingerprint: sha256:d785c8dca2c7ea2ea188755459400ec21a337ae4696b1e678afec55a674f65a8
 Generator format: 2
 Status: Generated support artifact
 
@@ -20,6 +20,7 @@ Status: Generated support artifact
 | `governance/atlas-strikeforce.md` | governance | yes | none |
 | `governance/capability-acceptance-contract.md` | governance | yes | policy-reference |
 | `governance/change-routes.md` | governance | yes | none |
+| `governance/chromelight-provider-boundary.md` | governance | yes | policy-reference |
 | `governance/cutover-boundary.md` | governance | yes | none |
 | `governance/noctua.md` | governance | yes | none |
 | `governance/protected-source-boundary.md` | governance | yes | policy-reference |
