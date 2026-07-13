@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:c2d5a227cd7e18228be1685c4c72fdc816d842698341c144451abd1d3509066a
+Source fingerprint: sha256:48f6f7e5053aad7fddf4cda3f74a24e260870f34c614d6ac85cb3d758689de8d
 Generator format: 2
 Status: Generated support artifact
 
@@ -23,6 +23,7 @@ Status: Generated support artifact
 | `governance/chromelight-provider-boundary.md` | governance | yes | policy-reference |
 | `governance/cutover-boundary.md` | governance | yes | none |
 | `governance/deterministic-conservation-contract.md` | governance | yes | none |
+| `governance/investiture-accounting-contract.md` | governance | yes | policy-reference |
 | `governance/investiture-source-identity-contract.md` | governance | yes | review |
 | `governance/noctua.md` | governance | yes | none |
 | `governance/protected-source-boundary.md` | governance | yes | policy-reference |

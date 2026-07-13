@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:c2d5a227cd7e18228be1685c4c72fdc816d842698341c144451abd1d3509066a
+Source fingerprint: sha256:48f6f7e5053aad7fddf4cda3f74a24e260870f34c614d6ac85cb3d758689de8d
 Generator format: 2
 Status: Generated support artifact
 
@@ -23,6 +23,7 @@ Status: Generated support artifact
 | `governance/chromelight-provider-boundary.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/cutover-boundary.md` | COMPLETE | PROTOCOL | missing | CRITICAL |
 | `governance/deterministic-conservation-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
+| `governance/investiture-accounting-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/investiture-source-identity-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/noctua.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/protected-source-boundary.md` | CANONICAL_ACTIVE | POLICY | missing | CRITICAL |
@@ -79,7 +80,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c08-cap010-reconciliation-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-cap011-reconciliation-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` | ACCEPTED_PARTIAL_CLOSEOUT | PROOF | missing | MEDIUM |
-| `quests/found-silverlight.md` | Active | Quest | Parent Quest for establishing Atlas's private cognitive interface through Stormlight BEU accounting, the seven-pillar Glass Codex, and the Seon Apple Reminders integration. | High |
+| `quests/found-silverlight.md` | Active | Quest | Parent Quest for establishing Atlas's private cognitive interface through Investiture Accounting, the seven-pillar Glass Codex, and the Seon Apple Reminders integration. | High |
 | `quests/notums-watch.md` | Active | Quest | Parent Quest for bringing Notum's Watch forward as Gatehouse/Citadel observability and rescue infrastructure, including the interim Notum vessel, future Notum Phoenix vessel, Nightwatcher lineage, and backup-capacity boundaries. | High |
 | `quests/prime-continuity-proof.md` | READY_FOR_CAMPAIGN_1_PREVIEW | QUEST | missing | MEDIUM |
 | `quests/prime-reborn.md` | COMPLETE | QUEST | missing | CRITICAL |
