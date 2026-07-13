@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:c89f52364a9cf8f3d3edbbd5e883cb33c74737256fce9fc2c037188e8579317f
+Source fingerprint: sha256:d785c8dca2c7ea2ea188755459400ec21a337ae4696b1e678afec55a674f65a8
 Generator format: 2
 Status: Generated support artifact
 
@@ -20,6 +20,7 @@ Status: Generated support artifact
 | `governance/atlas-strikeforce.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/capability-acceptance-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/change-routes.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
+| `governance/chromelight-provider-boundary.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/cutover-boundary.md` | COMPLETE | PROTOCOL | missing | CRITICAL |
 | `governance/noctua.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/protected-source-boundary.md` | CANONICAL_ACTIVE | POLICY | missing | CRITICAL |
