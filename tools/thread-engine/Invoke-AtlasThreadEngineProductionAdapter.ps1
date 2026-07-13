@@ -13,6 +13,8 @@ param(
 
     [string] $AegisBreakAuthorityId,
 
+    [switch] $GeneratedCheckpointRoute,
+
     [string] $WorkRoot,
 
     [switch] $ResolverSelfTest
@@ -87,6 +89,9 @@ if ($AegisBreakProtectedRoute -and [string]::IsNullOrWhiteSpace($AegisBreakAutho
 if (-not $AegisBreakProtectedRoute -and -not ([string]::IsNullOrWhiteSpace($AegisBreakAuthorityId))) {
     throw 'Aegis Break authority id requires protected-route intent.'
 }
+if ($AegisBreakProtectedRoute -and $GeneratedCheckpointRoute) {
+    throw 'Aegis Break and generated checkpoint intents are mutually exclusive.'
+}
 
 $resolvedMission = (Resolve-Path -LiteralPath $MissionPath).Path
 $argumentList = [System.Collections.Generic.List[string]]::new()
@@ -108,6 +113,9 @@ if ($AegisBreakProtectedRoute) {
     $argumentList.Add('--aegis-break-protected-route')
     $argumentList.Add('--aegis-break-authority-id')
     $argumentList.Add($AegisBreakAuthorityId)
+}
+if ($GeneratedCheckpointRoute) {
+    $argumentList.Add('--generated-checkpoint-route')
 }
 
 if ($WorkRoot) {

@@ -18,6 +18,7 @@ from tools.prime_continuity.engine import (
 
 REQUIRED = (
     ".github/workflows/athena-bow-hosted.yml",
+    ".github/workflows/generated-checkpoint-publisher.yml",
     "README.md",
     "atlas-prime.md",
     "bootstrap.md",
@@ -69,6 +70,10 @@ REQUIRED = (
     "lifecycle/schemas/website-index-v2.schema.json",
     "tools/atlas_lifecycle/README.md",
     "tools/thread-engine/production_adapter/lifecycle_profile.py",
+    "tools/thread-engine/production_adapter/generated_checkpoint.py",
+    "tools/generated_checkpoint/README.md",
+    "tools/generated_checkpoint/core.py",
+    "tools/generated_checkpoint/cli.py",
     "tools/atlas_lifecycle/__main__.py",
     "tools/atlas_lifecycle/candidate.py",
     "tools/atlas_lifecycle/evidence.py",

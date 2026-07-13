@@ -48,7 +48,7 @@ def verify_pr_readback(
         raise ReadbackError("PR is not draft")
     if readback.get("baseRefName") != "main":
         raise ReadbackError("PR base branch is not main")
-    if readback.get("baseRefOid") not in (None, base_sha):
+    if readback.get("baseRefOid") != base_sha:
         raise ReadbackError("PR base SHA mismatch")
     if readback.get("headRefName") != mission_branch:
         raise ReadbackError("PR head branch mismatch")

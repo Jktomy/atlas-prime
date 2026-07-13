@@ -26,7 +26,6 @@ from .git_runner import GitRunner, GitRunnerError
 from .path_policy import PolicyError, reject_runtime_byproducts, reject_symlinks, resolve_under, validate_relative_path
 from .readback import REVIEW_THREAD_QUERY, ReadbackError, verify_pr_readback, verify_review_thread_readback
 from .receipt import declared_state_hash, forbidden_confirmation, sha256_bytes, sha256_file, stable_json, tree_hash, write_evidence_json, write_json
-from .recovery import classify_recovery
 
 CHECKPOINTS = [
     "ACTIVATION_GATE",
@@ -35,6 +34,7 @@ CHECKPOINTS = [
     "MISSION_SCHEMA",
     "MISSION_INTEGRITY",
     "LIFECYCLE_PROFILE_VERIFY",
+    "GENERATED_CHECKPOINT_PROFILE_VERIFY",
     "PROTECTED_ROUTE_INTENT",
     "OPERATOR_VERIFY",
     "REMOTE_LOCK",
@@ -42,6 +42,7 @@ CHECKPOINTS = [
     "FRESH_CLONE",
     "CLEAN_START",
     "SOURCE_BLOB_VERIFY",
+    "GENERATED_REPRODUCE",
     "LIFECYCLE_REPLAY_VERIFY",
     "CANDIDATE_STAGE",
     "PATH_POLICY_VERIFY",
@@ -51,6 +52,8 @@ CHECKPOINTS = [
     "STAGE_VERIFY",
     "COMMIT",
     "COMMIT_VERIFY",
+    "PRE_PUSH_REMOTE_LOCK",
+    "PRE_PUSH_COLLISION_LOCK",
     "PUSH",
     "DRAFT_PR",
     "READBACK",
@@ -264,6 +267,7 @@ def execute_mission(
     mission_sha256: str | None = None,
     aegis_break_protected_route: bool = False,
     aegis_break_authority_id: str | None = None,
+    generated_checkpoint_route: bool = False,
     work_root: Path | None = None,
     package_root: Path | None = None,
     runner: GitRunner | None = None,
@@ -281,6 +285,7 @@ def execute_mission(
     candidate_hash = ""
     commit_tree = ""
     lifecycle_evidence: dict[str, Any] | None = None
+    generated_checkpoint_evidence: dict[str, Any] | None = None
     package_root = (package_root or mission_path.resolve().parent).resolve()
     try:
         journal.enter("ACTIVATION_GATE")
@@ -321,6 +326,22 @@ def execute_mission(
                 ) from exc
             journal.complete("LIFECYCLE_PROFILE_VERIFY")
 
+        if mission.generated_checkpoint_profile:
+            journal.enter("GENERATED_CHECKPOINT_PROFILE_VERIFY")
+            try:
+                from .generated_checkpoint import verify_generated_checkpoint_package
+
+                generated_checkpoint_evidence = verify_generated_checkpoint_package(
+                    mission.generated_checkpoint_profile, package_root
+                )
+            except Exception as exc:
+                raise AdapterError(
+                    str(exc),
+                    str(getattr(exc, "code", "GENERATED_CHECKPOINT_REJECTED")),
+                    "GENERATED_CHECKPOINT_PROFILE_VERIFY",
+                ) from exc
+            journal.complete("GENERATED_CHECKPOINT_PROFILE_VERIFY")
+
         journal.enter("PROTECTED_ROUTE_INTENT")
         if mission.aegis_break_authority:
             if not aegis_break_protected_route:
@@ -331,6 +352,11 @@ def execute_mission(
                 raise AdapterError("Aegis Break launch authority id mismatch", "AEGIS_BREAK_AUTHORITY_MISMATCH", "PROTECTED_ROUTE_INTENT")
         elif aegis_break_protected_route or aegis_break_authority_id:
             raise AdapterError("Aegis Break launch intent supplied without mission authority", "AEGIS_BREAK_UNUSED", "PROTECTED_ROUTE_INTENT")
+        if mission.generated_checkpoint_profile:
+            if not generated_checkpoint_route:
+                raise AdapterError("generated checkpoint route requires explicit launch intent", "GENERATED_CHECKPOINT_INTENT_REQUIRED", "PROTECTED_ROUTE_INTENT")
+        elif generated_checkpoint_route:
+            raise AdapterError("generated checkpoint launch intent supplied without mission profile", "GENERATED_CHECKPOINT_UNUSED", "PROTECTED_ROUTE_INTENT")
         journal.complete("PROTECTED_ROUTE_INTENT")
 
         disabled_hooks = root / "disabled-hooks"
@@ -351,6 +377,19 @@ def execute_mission(
             observed_operator_login = runner.run(["gh", "api", "user", "--jq", ".login"]).stdout.strip()
             if observed_operator_login != mission.aegis_break_authority["github_operator_login"]:
                 raise AdapterError("Aegis Break authenticated GitHub operator mismatch", "AEGIS_BREAK_OPERATOR_MISMATCH", "OPERATOR_VERIFY")
+        if mission.generated_checkpoint_profile:
+            try:
+                from .generated_checkpoint import verify_generated_checkpoint_environment
+
+                environment_evidence = verify_generated_checkpoint_environment(mission.generated_checkpoint_profile)
+                assert generated_checkpoint_evidence is not None
+                generated_checkpoint_evidence["hosted_environment"] = environment_evidence
+            except Exception as exc:
+                raise AdapterError(
+                    str(exc),
+                    str(getattr(exc, "code", "GENERATED_CHECKPOINT_ENVIRONMENT_REJECTED")),
+                    "OPERATOR_VERIFY",
+                ) from exc
         journal.complete("OPERATOR_VERIFY")
 
         journal.enter("REMOTE_LOCK")
@@ -362,11 +401,37 @@ def execute_mission(
         journal.enter("DUPLICATE_CHECK")
         branch_remote = runner.run(["git", "ls-remote", mission.remote_url, f"refs/heads/{mission.branch}"]).stdout.strip()
         if branch_remote:
-            decision = classify_recovery("PUSH", branch_exists=True, head_matches=False)
-            raise AdapterError("mission branch already exists", "BRANCH_EXISTS", "DUPLICATE_CHECK", partial=not decision.safe_to_continue)
-        prs = runner.run(["gh", "pr", "list", "--repo", mission.repository, "--state", "all", "--head", mission.branch, "--json", "number,state,isDraft,headRefOid"]).stdout.strip()
-        if prs and prs != "[]":
-            raise AdapterError("matching mission PR already exists", "PR_EXISTS", "DUPLICATE_CHECK", partial=True)
+            raise AdapterError("mission branch already exists", "BRANCH_EXISTS", "DUPLICATE_CHECK")
+        prs_text = runner.run(["gh", "pr", "list", "--repo", mission.repository, "--state", "all", "--head", mission.branch, "--json", "number,state,isDraft,headRefOid"]).stdout.strip()
+        try:
+            prs = json.loads(prs_text)
+        except json.JSONDecodeError as exc:
+            raise AdapterError("matching mission PR readback is invalid", "PR_READBACK_INVALID", "DUPLICATE_CHECK") from exc
+        if not isinstance(prs, list) or any(not isinstance(item, dict) for item in prs):
+            raise AdapterError("matching mission PR readback is malformed", "PR_READBACK_INVALID", "DUPLICATE_CHECK")
+        if prs:
+            raise AdapterError("matching mission PR already exists", "PR_EXISTS", "DUPLICATE_CHECK")
+        if mission.generated_checkpoint_profile:
+            try:
+                from .generated_checkpoint import verify_generated_checkpoint_history
+
+                history_text = runner.run([
+                    "gh", "pr", "list", "--repo", mission.repository, "--state", "all",
+                    "--limit", "1000", "--json",
+                    "number,state,isDraft,headRefName,headRefOid,title,body",
+                ]).stdout.strip()
+                history = json.loads(history_text)
+                history_evidence = verify_generated_checkpoint_history(
+                    mission.generated_checkpoint_profile, history
+                )
+                assert generated_checkpoint_evidence is not None
+                generated_checkpoint_evidence["durable_identity_readback"] = history_evidence
+            except Exception as exc:
+                raise AdapterError(
+                    str(exc),
+                    str(getattr(exc, "code", "GENERATED_CHECKPOINT_HISTORY")),
+                    "DUPLICATE_CHECK",
+                ) from exc
         journal.complete("DUPLICATE_CHECK")
 
         journal.enter("FRESH_CLONE")
@@ -376,6 +441,15 @@ def execute_mission(
         if observed != mission.base_sha:
             raise AdapterError("fresh clone head mismatch", "STALE_BASE", "FRESH_CLONE")
         runner.run(["git", "switch", "-c", mission.branch, mission.base_sha], cwd=checkout)
+        if mission.generated_checkpoint_profile:
+            workflow_blob = runner.run(
+                ["git", "rev-parse", f"{mission.base_sha}:.github/workflows/generated-checkpoint-publisher.yml"],
+                cwd=checkout,
+            ).stdout.strip()
+            if workflow_blob != mission.generated_checkpoint_profile["workflow_blob_sha"]:
+                raise AdapterError("generated checkpoint workflow blob mismatch", "GENERATED_CHECKPOINT_WORKFLOW_BLOB_MISMATCH", "FRESH_CLONE")
+            assert generated_checkpoint_evidence is not None
+            generated_checkpoint_evidence["observed_workflow_blob_sha"] = workflow_blob
         journal.complete("FRESH_CLONE")
 
         journal.enter("CLEAN_START")
@@ -389,6 +463,24 @@ def execute_mission(
             if observed_blob != expected_blob:
                 raise AdapterError(f"source blob mismatch: {path}", "SOURCE_BLOB_MISMATCH", "SOURCE_BLOB_VERIFY")
         journal.complete("SOURCE_BLOB_VERIFY")
+
+        if mission.generated_checkpoint_profile:
+            journal.enter("GENERATED_REPRODUCE")
+            try:
+                from .generated_checkpoint import verify_generated_checkpoint_checkout
+
+                reproduction = verify_generated_checkpoint_checkout(
+                    mission.generated_checkpoint_profile, checkout, package_root
+                )
+                assert generated_checkpoint_evidence is not None
+                generated_checkpoint_evidence["fresh_clone_reproduction"] = reproduction
+            except Exception as exc:
+                raise AdapterError(
+                    str(exc),
+                    str(getattr(exc, "code", "GENERATED_CHECKPOINT_REPRODUCTION")),
+                    "GENERATED_REPRODUCE",
+                ) from exc
+            journal.complete("GENERATED_REPRODUCE")
 
         if mission.lifecycle_profile:
             journal.enter("LIFECYCLE_REPLAY_VERIFY")
@@ -457,6 +549,37 @@ def execute_mission(
             raise AdapterError("commit changed-file set mismatch", "COMMIT_FILE_SET_MISMATCH", "COMMIT_VERIFY")
         commit_tree = runner.run(["git", "show", "--format=%T", "--no-patch", "HEAD"], cwd=checkout).stdout.strip()
         journal.complete("COMMIT_VERIFY")
+
+        journal.enter("PRE_PUSH_REMOTE_LOCK")
+        remote = runner.run(["git", "ls-remote", mission.remote_url, "refs/heads/main"]).stdout.strip().split()
+        if not remote or remote[0] != mission.base_sha:
+            raise AdapterError("canonical main changed before push", "STALE_BASE", "PRE_PUSH_REMOTE_LOCK")
+        journal.complete("PRE_PUSH_REMOTE_LOCK")
+
+        if mission.generated_checkpoint_profile:
+            journal.enter("PRE_PUSH_COLLISION_LOCK")
+            branch_remote = runner.run(
+                ["git", "ls-remote", mission.remote_url, f"refs/heads/{mission.branch}"]
+            ).stdout.strip()
+            if branch_remote:
+                raise AdapterError("mission branch appeared before push", "BRANCH_EXISTS", "PRE_PUSH_COLLISION_LOCK")
+            try:
+                from .generated_checkpoint import verify_generated_checkpoint_history
+
+                history_text = runner.run([
+                    "gh", "pr", "list", "--repo", mission.repository, "--state", "all",
+                    "--limit", "1000", "--json",
+                    "number,state,isDraft,headRefName,headRefOid,title,body",
+                ]).stdout.strip()
+                history = json.loads(history_text)
+                verify_generated_checkpoint_history(mission.generated_checkpoint_profile, history)
+            except Exception as exc:
+                raise AdapterError(
+                    str(exc),
+                    str(getattr(exc, "code", "GENERATED_CHECKPOINT_HISTORY")),
+                    "PRE_PUSH_COLLISION_LOCK",
+                ) from exc
+            journal.complete("PRE_PUSH_COLLISION_LOCK")
 
         journal.enter("PUSH")
         runner.run(["git", "push", "-u", "origin", mission.branch], cwd=checkout)
@@ -547,6 +670,7 @@ def execute_mission(
                 "pr_readback": pr_readback,
                 "review_thread_count": review_thread_count,
                 **({"lifecycle_profile": lifecycle_evidence} if lifecycle_evidence is not None else {}),
+                **({"generated_checkpoint_profile": generated_checkpoint_evidence} if generated_checkpoint_evidence is not None else {}),
             },
             observed_operator_login=observed_operator_login,
             activation_state=activation_state,
@@ -559,7 +683,33 @@ def execute_mission(
         stage = exc.stage if isinstance(exc, AdapterError) else (journal.entered or "PACKAGE_AUDIT")
         code = exc.code if hasattr(exc, "code") else "ADAPTER_REJECTED"
         journal.reject(stage, str(exc))
-        result = "PARTIAL" if isinstance(exc, AdapterError) and exc.partial else "REJECTED"
+        remote_may_have_changed = bool(
+            mission
+            and mission.generated_checkpoint_profile
+            and stage in {"PUSH", "DRAFT_PR", "READBACK", "RECEIPT", "STOP"}
+        )
+        result = "PARTIAL" if (isinstance(exc, AdapterError) and exc.partial) or remote_may_have_changed else "REJECTED"
+        rejection_extra = None
+        if mission and mission.generated_checkpoint_profile:
+            rejection_extra = {
+                "generated_checkpoint_profile": generated_checkpoint_evidence or {
+                    "profile_id": mission.generated_checkpoint_profile["profile_id"],
+                    "mission_id": mission.mission_id,
+                    "base_sha": mission.base_sha,
+                    "branch": mission.branch,
+                    "workflow_run_id": mission.generated_checkpoint_profile["workflow_run_id"],
+                    "workflow_run_attempt": mission.generated_checkpoint_profile["workflow_run_attempt"],
+                    "replay_nonce_sha256": mission.generated_checkpoint_profile["replay_nonce_sha256"],
+                },
+                "remote_state": "MAY_HAVE_CHANGED" if remote_may_have_changed else "NO_MUTATION_OBSERVED",
+                "mutation_observed": "UNKNOWN" if remote_may_have_changed else "NO",
+                "next_safe_action": (
+                    "PRESERVE_REMOTE_STATE_AND_REQUIRE_NEW_REVIEWED_MISSION"
+                    if remote_may_have_changed
+                    else "RECONCILE_AND_USE_A_NEW_IDENTITY"
+                ),
+                "automatic_retry": False,
+            }
         receipt = _write_receipt(
             evidence_root,
             mission,
@@ -568,6 +718,7 @@ def execute_mission(
             stage,
             str(code),
             str(exc),
+            extra=rejection_extra,
             observed_operator_login=observed_operator_login,
             activation_state=activation_state,
         )
