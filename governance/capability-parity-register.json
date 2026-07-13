@@ -24,11 +24,11 @@
   "capability_disposition_counts": {
     "PRESERVED": 4,
     "IMPROVED": 7,
-    "RESTORED": 12,
+    "RESTORED": 13,
     "REPLACED": 1,
     "INTENTIONALLY_RETIRED": 1,
     "BLOCKED": 0,
-    "STILL_MISSING": 3
+    "STILL_MISSING": 2
   },
   "capabilities": [
     {
@@ -143,13 +143,13 @@
       "id": "CAP-010",
       "domain": "Hosted execution",
       "capability": "Human-friendly guided Spear intake",
-      "audit_status": "MISSING",
-      "audit_severity": "HIGH",
+      "audit_status": "RESTORED_GUIDED_INTAKE_LIVE_PROVEN",
+      "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "Prime has no issue form or equivalent guided publisher.",
-      "required_proof": "Guided intake, canonical mission digest, rejection cases, and exact readback."
+      "capability_disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "current_state": "Prime has an owner-guided Preview to Execute publisher over the hosted Bow route. A fresh immutable carrier bound exact canonical main, canonical mission digest, mission/base lock, durable no-retry dispatch receipt, route-created draft PR, exact path/blob readback, exact-head Linux and Windows CI, detached GREEN review, merge, and canonical readback.",
+      "required_proof": "Guided construction PR #150, live mission RP-C01-CAP010-GUIDED-LIVE-R01, hosted run 29231950571, route-created PR #151, exact-head CI run 29232042665, detached GREEN review, and canonical readback in proof/repairing-prime/rp-c08-cap010-reconciliation-r01.md."
     },
     {
       "id": "CAP-011",
