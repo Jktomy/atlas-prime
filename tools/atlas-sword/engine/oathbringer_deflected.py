@@ -420,4 +420,4 @@ def create(
     verification = verify(destination)
     if verification["archive_sha256"] != digest:
         raise DeflectedSwordError("Deflected Sword final readback mismatch")
-    return destination
+    return destination.resolve()
