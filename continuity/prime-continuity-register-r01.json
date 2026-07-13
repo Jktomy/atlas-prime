@@ -2,10 +2,10 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 17,
-  "source_base_sha": "de3652344ec282f0ef64e2f96887a3c24fc4c66a",
-  "quest_board_sha256": "80fafb3ceaf5df4247ab25a71d7604d22472947fbb46bb298dde007c69106b79",
-  "event_ids": ["RP-C05-FOUNDATION-R01", "RP-C05-IMPORT-FS-R01", "RP-C05-IMPORT-NW-R01", "RP-C05-IMPORT-PF-R01", "RP-C05-AJ07-ONE-ENTRY-R01", "RP-C05-AJ08-ADMISSION-R01", "RP-C05-AJ10-SUNSET-R01", "RP-C05-CURRENT-TRUTH-R01", "RP-C06-CONTRACT-IDENTITY-R01", "RP-C06-AJ09-ACCEPTANCE-R01", "RP-C06-GATE-CLOSE-R01", "RP-C07-ACCEPTANCE-RECONCILIATION-R01", "RP-C08-CAPABILITY-RECONCILIATION-R01", "RP-C08-CAP011-RECONCILIATION-R01", "RP-C08-CAP010-RECONCILIATION-R01", "RP-C01-M08-PARTIAL-RECONCILIATION-R01", "RP-C01-M07-LIVE-REJECTION-RECONCILIATION-R01", "RP-C01-M05-PARITY-ACCEPTANCE-R01", "RP-C01-M08-FREE-FORM-ACCEPTANCE-R01", "FS-C01-M01-DOCTRINE-ACCEPTANCE-R01"],
+  "register_revision": 18,
+  "source_base_sha": "df3de8e555c19cab890f3968dca67f770498b153",
+  "quest_board_sha256": "8f3db73dd3d892e129935a9bf3605f0ee0bba948008ee5c5fe90dd5d7c17e30c",
+  "event_ids": ["RP-C05-FOUNDATION-R01", "RP-C05-IMPORT-FS-R01", "RP-C05-IMPORT-NW-R01", "RP-C05-IMPORT-PF-R01", "RP-C05-AJ07-ONE-ENTRY-R01", "RP-C05-AJ08-ADMISSION-R01", "RP-C05-AJ10-SUNSET-R01", "RP-C05-CURRENT-TRUTH-R01", "RP-C06-CONTRACT-IDENTITY-R01", "RP-C06-AJ09-ACCEPTANCE-R01", "RP-C06-GATE-CLOSE-R01", "RP-C07-ACCEPTANCE-RECONCILIATION-R01", "RP-C08-CAPABILITY-RECONCILIATION-R01", "RP-C08-CAP011-RECONCILIATION-R01", "RP-C08-CAP010-RECONCILIATION-R01", "RP-C01-M08-PARTIAL-RECONCILIATION-R01", "RP-C01-M07-LIVE-REJECTION-RECONCILIATION-R01", "RP-C01-M05-PARITY-ACCEPTANCE-R01", "RP-C01-M08-FREE-FORM-ACCEPTANCE-R01", "FS-C01-M01-DOCTRINE-ACCEPTANCE-R01", "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01"],
   "entries": [
     {
       "continuity_id": "CONT-REPAIRING-PRIME-R01", "quest_id": "QUEST-REPAIRING-PRIME-R01", "quest_source": "quests/repairing-prime.md", "quest_source_sha256": "fa1d7291772490d55377cd79bfc31b3cc1464f0eeb906e5940fc4fa564eded5b", "quest_state": "IN_PROGRESS",
@@ -14,9 +14,9 @@
       "next_action": "Preserve the accepted M08 free-form evidence and continue only through the separate remaining fresh-origin, protected-execution, genuine-non-owner, CAP-027, clean-clone, final validation, whole-Quest review, Phoenix recovery, and Sunset gates.", "next_approval": "Fresh Work/Athena origin, protected-route execution, a genuine non-owner rejection, final Quest closure, and permanence retain their existing separate authority and evidence gates.", "revision": 15, "last_event_id": "RP-C01-M08-FREE-FORM-ACCEPTANCE-R01"
     },
     {
-      "continuity_id": "CONT-FOUND-SILVERLIGHT-R01", "quest_id": "QUEST-FOUND-SILVERLIGHT-R01", "quest_source": "quests/found-silverlight.md", "quest_source_sha256": "b502eb8e4ce43d7e505da5cd64caca62491a0c82cbc21d10c3cb921a594b141e", "quest_state": "IN_PROGRESS",
-      "campaign_id": "FS-C01", "mission_id": "FS-C01-M02", "gate_id": "APPEND_ONLY_INVESTITURE_LEDGER_CONSTRUCTION_PROVEN", "current_position": "FS-C01-M01 is PROVEN from the canonical Investiture Accounting identity and Found Silverlight contract; M02 and M03 construction are next, while M04 remains a later live acceptance journey.", "blockers": ["FS-C01-M04 requires a Jayson-selected protected external store and one bounded trusted provider/runtime usage receipt with authoritative category semantics."],
-      "next_action": "Construct and prove FS-C01-M02 and FS-C01-M03 without selecting an external store or asserting live usage.", "next_approval": "Exact-head CI and detached review for construction; external store selection and trusted usage remain separate Jayson-side authority.", "revision": 2, "last_event_id": "FS-C01-M01-DOCTRINE-ACCEPTANCE-R01"
+      "continuity_id": "CONT-FOUND-SILVERLIGHT-R01", "quest_id": "QUEST-FOUND-SILVERLIGHT-R01", "quest_source": "quests/found-silverlight.md", "quest_source_sha256": "fb322dfc3ba4a193afb977cf0a900a0baa188006851543a9e3e7e0c9e0483164", "quest_state": "IN_PROGRESS",
+      "campaign_id": "FS-C01", "mission_id": "FS-C01-M04", "gate_id": "INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN", "current_position": "FS-C01-M01, M02, and M03 are PROVEN. The ledger, receipts, lifecycle binding, recovery, rollback planning, exact-head CI, and canonical synthetic exercise are accepted; M04 live acceptance remains unproven.", "blockers": ["FS-C01-M04 requires a Jayson-selected protected external store and one bounded trusted provider/runtime usage receipt with authoritative category semantics."],
+      "next_action": "Await a separately authorized Jayson-selected protected store and one bounded trusted provider/runtime usage receipt, then execute FS-C01-M04 without widening the accepted construction boundary.", "next_approval": "Jayson must separately select the protected external store and authorize the bounded trusted usage acceptance journey.", "revision": 3, "last_event_id": "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01"
     },
     {
       "continuity_id": "CONT-PROMETHEUS-FIRE-R01", "quest_id": "QUEST-PROMETHEUS-FIRE-20260701", "quest_source": "quests/prometheus-fire.md", "quest_source_sha256": "79e30304809b0db198a8632c8477fc646cad5f8030e8405cb6e06f6f3555cd6b", "quest_state": "READY_FOR_CAMPAIGN_1_PREVIEW",

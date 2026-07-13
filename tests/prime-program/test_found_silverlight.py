@@ -31,7 +31,8 @@ class FoundSilverlightDoctrineTests(unittest.TestCase):
         ):
             self.assertIn(gate, self.quest)
             self.assertIn(gate, self.contract)
-        self.assertIn("Next Mission: FS-C01-M02 — Forge the Ledger", self.quest)
+        self.assertIn("Accepted Mission: FS-C01-M03 — Bind the Receipts", self.quest)
+        self.assertIn("Next Mission: FS-C01-M04 — Prove the Light", self.quest)
         self.assertIn("Runtime deployment: NOT STARTED", self.quest)
         self.assertIn("External-system action: NOT AUTHORIZED", self.quest)
 
@@ -82,17 +83,17 @@ class FoundSilverlightDoctrineTests(unittest.TestCase):
             item for item in self.board["entries"] if item["quest_id"] == "QUEST-FOUND-SILVERLIGHT-R01"
         )
         self.assertEqual(board_entry["state"], "IN_PROGRESS")
-        self.assertEqual(board_entry["next_gate"], "FS-C01-M02 — Forge the Ledger")
+        self.assertEqual(board_entry["next_gate"], "FS-C01-M04 — Prove the Light")
         entry = next(
             item for item in self.continuity["entries"] if item["continuity_id"] == "CONT-FOUND-SILVERLIGHT-R01"
         )
         self.assertEqual(entry["quest_state"], "IN_PROGRESS")
         self.assertEqual(entry["campaign_id"], "FS-C01")
-        self.assertEqual(entry["mission_id"], "FS-C01-M02")
-        self.assertEqual(entry["gate_id"], "APPEND_ONLY_INVESTITURE_LEDGER_CONSTRUCTION_PROVEN")
-        self.assertEqual(entry["last_event_id"], "FS-C01-M01-DOCTRINE-ACCEPTANCE-R01")
-        self.assertEqual(entry["revision"], 2)
-        self.assertEqual(self.continuity["event_ids"][-1], "FS-C01-M01-DOCTRINE-ACCEPTANCE-R01")
+        self.assertEqual(entry["mission_id"], "FS-C01-M04")
+        self.assertEqual(entry["gate_id"], "INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN")
+        self.assertEqual(entry["last_event_id"], "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01")
+        self.assertEqual(entry["revision"], 3)
+        self.assertEqual(self.continuity["event_ids"][-1], "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01")
         self.assertIn("governance/investiture-accounting-contract.md", self.route)
 
     def test_repairing_prime_identity_register_is_not_widened(self) -> None:
