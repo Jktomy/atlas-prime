@@ -73,6 +73,37 @@ Execute journey, hosted receipt, exact draft-PR readback, exact-head CI,
 detached review, merge, and canonical readback are accepted separately. It does
 not prove fresh Work/Athena origin or CAP-015.
 
+## Fresh Work/Athena origin bridge
+
+`tools.athena_routes.fresh_work_bridge` is a fail-closed outer bridge over the
+existing guided publisher. It validates one canonical, short-lived, public-safe
+origin receipt against
+`schemas/athena-fresh-work-origin-receipt-v1.schema.json`, re-hashes the exact
+carrier and Preview, and requires an independently trusted platform verifier to
+affirm the task identity, origin nonce, verification method, and verification
+evidence digest.
+
+A caller-authored JSON claim, prompt, screenshot, transcript, command argument,
+environment string, or repository file is not a trusted origin verifier. The
+command-line entry point intentionally supplies no verifier and therefore stops
+with `TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE`. A future ChatGPT Work runtime must
+inject the verifier through the library API. Until that independently verified
+runtime path exists, the bridge must not dispatch and CAP-015 remains missing.
+
+After successful verification, the bridge exclusively reserves a journey
+receipt, invokes only the existing `guided_publisher.execute_preview`, and binds
+the resulting guided Execute receipt and hosted workflow run into
+`schemas/athena-fresh-work-journey-receipt-v1.schema.json`. It has no Git tree,
+commit, branch, push, PR, ready, merge, cleanup, settings, adapter, credential,
+or second-writer implementation. All origin, Preview, carrier, guided Execute,
+and journey files remain outside canonical Prime source.
+
+Construction, schemas, and tests do not prove CAP-015, AJ-01, RP-C01-M02, or the
+RP-C01 gate. Acceptance still requires a genuinely fresh Jayson-started
+Work/Athena task, one live hosted journey through the singular Thread Engine,
+exact draft-PR and blob readback, exact-head Ubuntu and Windows validation,
+detached review, and separate authored reconciliation.
+
 ## RP-C01-M05 parity join
 
 Preview retains the exact Spear compile receipt and every compiled file digest,
