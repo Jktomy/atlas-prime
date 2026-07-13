@@ -287,6 +287,12 @@ class HostedRouteTests(unittest.TestCase):
         self.assertFalse(mismatch["mutation"]["occurred"])
         self.assertFalse(replay["mutation"]["occurred"])
 
+    def test_hosted_branch_matches_existing_thread_engine_source_namespace(self) -> None:
+        branch = expected_mission_branch("RP-C01-HOSTED-BOW-PILOT-R01", "b" * 40)
+        authority = (ROOT / "tools/thread-engine/production_adapter/authority.py").read_text(encoding="utf-8")
+        self.assertTrue(branch.startswith("source/athena-bow-"))
+        self.assertIn('branch.startswith("source/")', authority)
+
     def test_protected_route_blocks_before_compiler_or_adapter(self) -> None:
         carrier = b"fake-arrow-zip"
         digest = hashlib.sha256(carrier).hexdigest()
