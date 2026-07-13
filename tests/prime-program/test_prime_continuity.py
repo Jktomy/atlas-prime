@@ -171,7 +171,12 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(render_emberline(self.register), render_emberline(copy.deepcopy(self.register)))
         snapshot = sunset(self.register, "CONT-REPAIRING-PRIME-R01")
         reconstructed = sunrise(snapshot, self.register)
-        self.assertEqual(reconstructed["next_gate"], "QUEST_ENGINE_AND_CONTINUITY_PROVEN")
+        expected_gate = next(
+            entry["gate_id"]
+            for entry in self.register["entries"]
+            if entry["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
+        )
+        self.assertEqual(reconstructed["next_gate"], expected_gate)
         self.assertEqual(reconstructed["source"], "quests/repairing-prime.md")
         tampered = copy.deepcopy(snapshot)
         tampered["entry"]["next_action"] = "tampered"
@@ -243,7 +248,12 @@ class PrimeContinuityTests(unittest.TestCase):
                 0,
             )
             reconstructed = json.loads(sunrise_path.read_text(encoding="utf-8"))
-            self.assertEqual(reconstructed["next_gate"], "QUEST_ENGINE_AND_CONTINUITY_PROVEN")
+            expected_gate = next(
+                entry["gate_id"]
+                for entry in self.register["entries"]
+                if entry["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
+            )
+            self.assertEqual(reconstructed["next_gate"], expected_gate)
             candidate = Path(temp) / "candidate.json"
             entry_revision = next(
                 entry["revision"]
