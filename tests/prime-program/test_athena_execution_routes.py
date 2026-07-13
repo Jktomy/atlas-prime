@@ -10,6 +10,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 REQUEST_SCHEMA = ROOT / "schemas/athena-hosted-route-request-v1.schema.json"
 RECEIPT_SCHEMA = ROOT / "schemas/athena-hosted-route-receipt-v1.schema.json"
+GUIDED_PREVIEW_SCHEMA = ROOT / "schemas/athena-guided-intake-preview-v1.schema.json"
+GUIDED_EXECUTE_SCHEMA = ROOT / "schemas/athena-guided-intake-execute-receipt-v1.schema.json"
 CONTRACT = ROOT / "governance/athena-execution-route-contract.md"
 
 
@@ -164,6 +166,21 @@ def valid_success_receipt() -> dict:
 
 
 class AthenaExecutionRouteContractTests(unittest.TestCase):
+    def test_guided_publisher_contract_is_closed_and_does_not_self_promote(self) -> None:
+        contract = CONTRACT.read_text(encoding="utf-8")
+        method = (ROOT / "methods/athenas-spear.md").read_text(encoding="utf-8")
+        routing = (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8")
+        for path in (GUIDED_PREVIEW_SCHEMA, GUIDED_EXECUTE_SCHEMA):
+            schema = json.loads(path.read_text(encoding="utf-8"))
+            self.assertFalse(schema["additionalProperties"])
+            forbidden = schema["properties"]["forbidden_actions"]
+            self.assertFalse(forbidden["additionalProperties"])
+            self.assertTrue(all(value == {"const": False} for value in forbidden["properties"].values()))
+        self.assertIn("JSON on standard input", contract)
+        self.assertIn("do not promote CAP-010", contract)
+        self.assertIn("does not prove CAP-010", routing)
+        self.assertIn("Component construction and tests do not prove", method)
+
     def test_request_schema_is_closed_and_binds_hosted_identity(self) -> None:
         schema = json.loads(REQUEST_SCHEMA.read_text(encoding="utf-8"))
         self.assertFalse(schema["additionalProperties"])

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/athena-guided-intake-preview-v1.schema.json",
+  "title": "Athena guided intake preview",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "result", "repository", "canonical_main_sha", "workflow_ref", "workflow_blob_sha", "carrier_sha256", "manifest_sha256", "weave_sha256", "mission_id", "mission_sha256", "output_mission_sha256", "deterministic_branch", "path_classification", "paths", "public_clean", "stop_point", "rollback", "forbidden_actions"],
+  "properties": {
+    "schema_version": {"const": "atlas.athena.guided-intake-preview.v1"},
+    "result": {"const": "ACCEPTED"},
+    "repository": {"const": "Jktomy/atlas-prime"},
+    "canonical_main_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "workflow_ref": {"const": "Jktomy/atlas-prime/.github/workflows/athena-bow-hosted.yml@refs/heads/main"},
+    "workflow_blob_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "carrier_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "weave_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "mission_id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)*$"},
+    "mission_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "output_mission_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "deterministic_branch": {"type": "string", "pattern": "^source/athena-bow-[a-f0-9]{20}$"},
+    "path_classification": {"const": "ORDINARY"},
+    "paths": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["operation", "path", "payload_sha256"],
+        "properties": {
+          "operation": {"enum": ["ADD", "REPLACE"]},
+          "path": {"type": "string", "minLength": 1, "maxLength": 240},
+          "payload_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        }
+      }
+    },
+    "public_clean": {"const": true},
+    "stop_point": {"const": "PREVIEW_COMPLETE"},
+    "rollback": {"const": "NO_REMOTE_MUTATION"},
+    "forbidden_actions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adapter_invocation", "branch_write", "direct_main", "force_push", "merge", "pr_write", "ready", "repository_settings", "second_writer", "standing_authority"],
+      "properties": {
+        "adapter_invocation": {"const": false},
+        "branch_write": {"const": false},
+        "direct_main": {"const": false},
+        "force_push": {"const": false},
+        "merge": {"const": false},
+        "pr_write": {"const": false},
+        "ready": {"const": false},
+        "repository_settings": {"const": false},
+        "second_writer": {"const": false},
+        "standing_authority": {"const": false}
+      }
+    }
+  }
+}

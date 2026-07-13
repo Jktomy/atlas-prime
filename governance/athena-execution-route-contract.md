@@ -159,6 +159,34 @@ unrestricted command output. They expose only bounded identities, hashes,
 paths already classified as public-clean, stage names, and sanitized error
 codes.
 
+## Guided Preview and Execute publisher
+
+The human-friendly equivalent to an Issue Form is a local owner-guided
+publisher over the existing hosted Arrow/Bow workflow. An Issue Form is not the
+safe surface because it would persist editable plaintext before local privacy
+screening and would require a second issue parser and broader event authority.
+
+Preview re-reads exact canonical `main` and the hosted workflow blob, audits one
+immutable carrier, invokes only the existing compile-only Spear compiler, and
+emits a closed sanitized receipt binding carrier, manifest, Weave, canonical
+mission, deterministic branch, and sorted path/blob identities. Preview has no
+remote mutation or workflow-dispatch authority.
+
+Execute requires the exact Preview receipt SHA-256, revalidates every Preview
+fact against current GitHub state and carrier bytes, requires an owner session
+and a fresh launch nonce, and dispatches only the existing hosted workflow. The
+carrier is passed as JSON on standard input, never as a command-line argument
+or normal log output. Execute may read back the created workflow run but cannot
+call the adapter, create or update a branch or PR, retry partial state, mark a
+PR ready, merge, change settings, or become a second writer. The hosted route
+receipt remains authoritative for mutation and rollback.
+
+Guided component existence and local tests do not promote CAP-010. Acceptance
+requires a fresh live Preview-to-Execute journey through the hosted route,
+exact PR and blob readback, exact-head CI, detached review, merge, and canonical
+readback. That usability proof does not establish fresh Work/Athena origin,
+AJ-01, or CAP-015.
+
 ## Evidence boundary
 
 GitHub can prove workflow identity, source SHA, actor fields, run/attempt,

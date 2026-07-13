@@ -14,3 +14,25 @@ handed to Aegis Break → Oathbringer before mutation.
 The hosted result stops at draft-PR readback. A `PARTIAL` Thread Engine result is
 preserved exactly and blocks retry. Generated projections and protected paths
 are not accepted by this ordinary hosted route.
+
+## Owner-guided publisher
+
+`python -B -m tools.athena_routes.guided_publisher preview` audits one immutable
+carrier against exact canonical `main`, the hosted workflow blob, privacy and
+ordinary-path policy, and the existing compile-only Spear compiler. It writes a
+closed sanitized Preview receipt and performs no adapter, branch, commit, PR,
+workflow, ready, merge, settings, or direct-main action.
+
+`python -B -m tools.athena_routes.guided_publisher execute` requires the exact
+Preview SHA-256, re-runs the full Preview, requires an owner GitHub session and
+a fresh public-clean launch nonce, and dispatches only
+`.github/workflows/athena-bow-hosted.yml`. The carrier and its Base64 encoding
+travel to `gh` only as JSON on standard input; they are never command-line
+arguments or normal output. The publisher then reads back the new hosted run
+identity and stops. The hosted workflow and singular Thread Engine retain all
+write, replay, partial-state, receipt, and draft-PR boundaries.
+
+This guided component does not prove CAP-010 until a fresh live Preview and
+Execute journey, hosted receipt, exact draft-PR readback, exact-head CI,
+detached review, merge, and canonical readback are accepted separately. It does
+not prove fresh Work/Athena origin or CAP-015.
