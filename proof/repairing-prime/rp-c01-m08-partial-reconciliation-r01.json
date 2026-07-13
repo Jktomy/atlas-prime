@@ -1,0 +1,48 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c01-m08-partial-reconciliation.v1",
+  "campaign": "RP-C01",
+  "mission": "RP-C01-M08",
+  "mission_state": "PARTIAL",
+  "campaign_gate": "ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN",
+  "campaign_gate_state": "NOT_PROVEN",
+  "transaction_base_sha": "2937a0d8036d2f7b958003fd2116ff3864734ef6",
+  "accepted_subclaim": {
+    "identity": "JAYSON_CARRIER_CREATION_ATTACHMENT_PLACEMENT_NOT_REQUIRED",
+    "state": "PROVEN",
+    "jayson_role": "CONTROLLING_GOAL_AUTHORITY_AND_OWNER_SESSION_ONLY",
+    "codex_role": "FRESH_MISSION_AND_IMMUTABLE_CARRIER_CONSTRUCTION_PREVIEW_EXECUTE_AND_HOSTED_ROUTE_ORCHESTRATION",
+    "retired_routine_dependencies": ["JAYSON_CARRIER_CREATION", "JAYSON_CARRIER_ATTACHMENT", "JAYSON_CARRIER_PLACEMENT"]
+  },
+  "construction_evidence": {
+    "pull_request": 150,
+    "base_sha": "1d96e153f1941a8ba8092d8975603fd6c6854b40",
+    "head_sha": "b343e92a6919c66bc7a258056037ae0bb1e0ac2b",
+    "merge_sha": "f30c682e711cd3b92ffb5252734a48813fd5b493",
+    "exact_head_ci": {"run": 29231674388, "windows_job": 86757074617, "ubuntu_job": 86757074621, "result": "GREEN"},
+    "detached_review": "GREEN"
+  },
+  "live_evidence": {
+    "mission_id": "RP-C01-CAP010-GUIDED-LIVE-R01",
+    "canonical_base": "f30c682e711cd3b92ffb5252734a48813fd5b493",
+    "carrier_created_outside_repository": true,
+    "carrier_sha256": "86963fc061946a2dc074a765524277ddd25e26cd9da4888c49605fb1d124d350",
+    "preview_receipt_sha256": "d84fcf8c9e3633cceab56503a60f36e228519a4178276504f3526b8d98346084",
+    "execute_receipt_sha256": "943118dccdf005354ed49855fbbff18a42318f9c222fff302a2b2a0f8e9fd97b",
+    "workflow_run": 29231950571,
+    "branch": "source/athena-bow-e7d5254f49cfd5790fc1",
+    "pull_request": 151,
+    "head_sha": "337d86615594b6c8b07cd474b8d23ddc032b2c42",
+    "exact_head_ci": {"run": 29232042665, "windows_job": 86758220673, "ubuntu_job": 86758220665, "result": "GREEN"},
+    "detached_review": "GREEN",
+    "merge_sha": "93f19b44b830c05bf9ec57356da66af4ac4a444c",
+    "canonical_readback": "EXACT"
+  },
+  "remaining_boundary": {
+    "state": "MISSING_ACCEPTANCE",
+    "missing": ["ROUTINE_FREE_FORM_INTAKE_TO_CANONICAL_CARRIER_LIVE_ACCEPTANCE"],
+    "explanation": "The accepted guided route still begins from an already built immutable carrier path; no ordinary free-form mission-fields intake has yet constructed the canonical mission and carrier and completed a fresh live hosted acceptance journey."
+  },
+  "capability_promotion": "NONE",
+  "acceptance_journey_promotion": "NONE",
+  "forbidden_promotions": {"M08_PROVEN": false, "RP_C01_COMPLETE": false, "CAP_015": false, "CAP_027": false, "AJ_01": false, "AJ_03": false, "permanence_granted": false, "standing_authority": false}
+}
