@@ -34,13 +34,13 @@ last_verified: 2026-07-12
 **Current lane:** `PLAN -> VERIFY`<br>
 **Current state:** `IN_PROGRESS`<br>
 **Current Campaign:** `RP-C06`<br>
-**Next gate:** `RP-C06 Preview — Deterministic Conservation and Generated Parity`
+**Next gate:** `RP-C06-M05 — Hosted PR-collision rejection`
 
 RP-C02 through RP-C05 are complete from accepted canonical evidence. RP-C01
 remains independently in progress with its exact unproven and partial missions;
 advancing the active campaign pointer does not promote or erase those blockers.
-The accepted RP-C05 evidence includes a fresh-clone Sunrise reconstruction of
-the RP-C06 gate.
+RP-C06 live acceptance proves M01 through M04, M06, and M07. M05 remains
+partial at the exact missing hosted distinct-identity PR-collision rejection.
 
 ## Purpose
 
@@ -129,6 +129,12 @@ Missions:
 7. `RP-C06-M07` Prove authored/generated separation and reconcile AJ-09 without self-promotion.
 
 **Gate:** `DETERMINISTIC_CONSERVATION_AND_GENERATED_PARITY_PROVEN`
+
+Accepted evidence: `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md`.
+AJ-09 and CAP-019/CAP-020 are proven from the owner-triggered hosted run and
+route-created generated-only PR. The Campaign gate remains open until the M05
+PR-collision leg is conserved in a later authored transaction; generated output
+cannot close that gate itself.
 
 ## RP-C07 — Acceptance Journey Closure
 

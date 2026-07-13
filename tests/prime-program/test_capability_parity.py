@@ -86,14 +86,32 @@ class CapabilityParityTests(unittest.TestCase):
             "CAP-010",
             "CAP-011",
             "CAP-015",
-            "CAP-019",
-            "CAP-020",
             "CAP-022",
             "CAP-023",
             "CAP-027",
         ):
             self.assertEqual(records[capability_id]["capability_disposition"], "STILL_MISSING")
             self.assertEqual(records[capability_id]["activation_state"], "MISSING")
+
+    def test_generated_parity_and_publisher_are_restored_by_aj09(self) -> None:
+        records = {record["id"]: record for record in self.register["capabilities"]}
+        acceptance = (ROOT / "governance/capability-acceptance-contract.md").read_text(
+            encoding="utf-8"
+        )
+        proof = json.loads(
+            (ROOT / "proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        for capability_id in ("CAP-019", "CAP-020"):
+            self.assertEqual(records[capability_id]["capability_disposition"], "RESTORED")
+            self.assertEqual(records[capability_id]["activation_state"], "ACTIVE")
+        self.assertEqual(proof["acceptance_journey"], {"id": "AJ-09", "state": "PROVEN"})
+        self.assertEqual(proof["generated_pull_request"]["pull_request"], 138)
+        self.assertEqual(proof["generated_pull_request"]["detached_review"], "GREEN")
+        self.assertEqual(proof["mission_states"]["RP-C06-M05"], "PARTIAL")
+        self.assertIn("AJ-09 is `PROVEN`", acceptance)
+        self.assertIn("does not close RP-C06-M05", acceptance)
 
     def test_legacy_oathbringer_capability_is_replaced_by_proven_journeys(self) -> None:
         records = {record["id"]: record for record in self.register["capabilities"]}

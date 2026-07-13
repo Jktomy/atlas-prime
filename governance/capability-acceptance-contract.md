@@ -38,6 +38,22 @@ AJ-04, AJ-05, and AJ-06 are `PROVEN`. Their immutable GitHub identities, exact h
 
 The R04 Foundry acceptance repeated the complete BUILD → REPAIR → independently audited EXECUTE chain on PR `#66`. It additionally proved deterministic carrier compilation, bounded read-only convergence when GitHub's pull-request projection lagged the branch update, and automatic local evidence packaging. The exact audited head merged to canonical `main` at `11d0db1c82c36c2bbdc07b02882da4f156b7b4e8`.
 
+## Accepted generated lifecycle journey
+
+AJ-09 is `PROVEN`. Owner-triggered hosted run `29225849474` built byte-identical
+Ubuntu and Windows registers, invoked the singular Thread Engine, and created
+generated-only draft PR `#138` at exact head
+`5ef0bbe61ee575890c8a07ed79fd6ed7533f5298`. Exact-head validation run
+`29226002993` passed on both platforms, detached review was GREEN, and canonical
+main `2a8736c01cc7be00d307db7c8b4163d685405df6` reproduced the five reports as
+`CURRENT`. The immutable evidence is recorded in
+`proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md`.
+
+AJ-09 proves CAP-019 and CAP-020. It does not close RP-C06-M05, advance the
+Campaign gate, activate standing authority, or grant permanence. The remaining
+M05 PR-collision leg requires a later distinct-identity hosted rejection and a
+separate authored acceptance transaction.
+
 ## Legacy Oathbringer capability mapping
 
 `CAP-017` preserves the identity and historical proof language of the predecessor clone-first Sword capability. Prime does not reactivate that exact substrate. The GitHub-native Oathbringer route is the accepted replacement, so `CAP-017` is `REPLACED` and `ACTIVE`.

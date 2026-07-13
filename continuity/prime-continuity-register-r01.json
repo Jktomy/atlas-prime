@@ -2,16 +2,16 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 6,
-  "source_base_sha": "8ffbfc7df2fb3841d2d424fd0ceee43bff5cd9f4",
-  "quest_board_sha256": "06cb3a6c4dec3a227b9eb0c44cfb1d0781052dcf00c341584d22500cde6b93b1",
-  "event_ids": ["RP-C05-FOUNDATION-R01", "RP-C05-IMPORT-FS-R01", "RP-C05-IMPORT-NW-R01", "RP-C05-IMPORT-PF-R01", "RP-C05-AJ07-ONE-ENTRY-R01", "RP-C05-AJ08-ADMISSION-R01", "RP-C05-AJ10-SUNSET-R01", "RP-C05-CURRENT-TRUTH-R01", "RP-C06-CONTRACT-IDENTITY-R01"],
+  "register_revision": 7,
+  "source_base_sha": "2a8736c01cc7be00d307db7c8b4163d685405df6",
+  "quest_board_sha256": "b44d6a76402de07e4130ea508de074912792727ed74561fae53fc17bbf61b0be",
+  "event_ids": ["RP-C05-FOUNDATION-R01", "RP-C05-IMPORT-FS-R01", "RP-C05-IMPORT-NW-R01", "RP-C05-IMPORT-PF-R01", "RP-C05-AJ07-ONE-ENTRY-R01", "RP-C05-AJ08-ADMISSION-R01", "RP-C05-AJ10-SUNSET-R01", "RP-C05-CURRENT-TRUTH-R01", "RP-C06-CONTRACT-IDENTITY-R01", "RP-C06-AJ09-ACCEPTANCE-R01"],
   "entries": [
     {
-      "continuity_id": "CONT-REPAIRING-PRIME-R01", "quest_id": "QUEST-REPAIRING-PRIME-R01", "quest_source": "quests/repairing-prime.md", "quest_source_sha256": "30463b38b8525f7ccedd4d54798c9a46a25639ff1ecd594094e2822e68441593", "quest_state": "IN_PROGRESS",
-      "campaign_id": "RP-C06", "mission_id": null, "gate_id": "DETERMINISTIC_CONSERVATION_AND_GENERATED_PARITY_PROVEN", "current_position": "RP-C06 is IN_PROGRESS with seven explicit UNPROVEN missions. RP-C05 fresh-clone Sunrise reconstructed this gate. Its former G4-E construction and G4-F live-acceptance meanings are bound without activation. RP-C02 through RP-C05 remain accepted; unresolved RP-C01 missions remain explicit blockers and are not promoted.",
-      "blockers": ["RP-C01-M02 fresh Work/Athena-native Phoenix Blade control is unproven.", "RP-C01-M05 Arrow/Spear byte and receipt parity is not proven end to end.", "RP-C01-M06 protected-path handoff detection is proven, but protected execution was not run.", "RP-C01-M07 the live rejection matrix is partial; the full fail-closed fallback set is unproven.", "RP-C01-M08 routine Jayson carrier dependency retirement is unproven."],
-      "next_action": "Add the separate GENERATED_CHECKPOINT_V1 singular-Thread-Engine construction profile and read-only hosted package preparer from exact current main; do not reuse closed PR #127.", "next_approval": "Exact-head Ubuntu and Windows CI, detached review, and canonical readback are required before the later fresh live AJ-09 mission.", "revision": 5, "last_event_id": "RP-C06-CONTRACT-IDENTITY-R01"
+      "continuity_id": "CONT-REPAIRING-PRIME-R01", "quest_id": "QUEST-REPAIRING-PRIME-R01", "quest_source": "quests/repairing-prime.md", "quest_source_sha256": "d58164701b7f1bebca012636750be5fcf52e32ef6f8756e7d467dd82bb5f4469", "quest_state": "IN_PROGRESS",
+      "campaign_id": "RP-C06", "mission_id": "RP-C06-M05", "gate_id": "DETERMINISTIC_CONSERVATION_AND_GENERATED_PARITY_PROVEN", "current_position": "RP-C06-M01 through M04, M06, and M07 are PROVEN; AJ-09 and CAP-019/CAP-020 are accepted. RP-C06-M05 is PARTIAL at the exact missing distinct-identity hosted PR-collision rejection. RP-C01 blockers remain unchanged and independent.",
+      "blockers": ["RP-C01-M02 fresh Work/Athena-native Phoenix Blade control is unproven.", "RP-C01-M05 Arrow/Spear byte and receipt parity is not proven end to end.", "RP-C01-M06 protected-path handoff detection is proven, but protected execution was not run.", "RP-C01-M07 the live rejection matrix is partial; the full fail-closed fallback set is unproven.", "RP-C01-M08 routine Jayson carrier dependency retirement is unproven.", "RP-C06-M05 needs one fresh distinct-identity hosted dispatch to reject on an already-open generated-checkpoint PR before mutation."],
+      "next_action": "After this authored acceptance merges, run its generated refresh through a fresh GENERATED_CHECKPOINT_V1 mission; while that draft PR is open, use a second fresh identity to prove PR-collision rejection before mutation.", "next_approval": "Exact-head Ubuntu and Windows CI, detached review, canonical readback, and a separate authored M05 closure are required before RP-C06 can complete.", "revision": 6, "last_event_id": "RP-C06-AJ09-ACCEPTANCE-R01"
     },
     {
       "continuity_id": "CONT-FOUND-SILVERLIGHT-R01", "quest_id": "QUEST-FOUND-SILVERLIGHT-R01", "quest_source": "quests/found-silverlight.md", "quest_source_sha256": "6899a9a62c69771f7797e1d957d51710a442fe861e6f0701e7c54da547fd9867", "quest_state": "READY_FOR_CAMPAIGN_1_PREVIEW",
