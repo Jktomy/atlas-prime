@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:f7d619a4cbec1317a64f090ae516bd0aedb6128c022249cbbbf4264aff82d8ee
+Source fingerprint: sha256:2c16665b6f0eec4546921c19ef26047d9e876bc7df83e90b2f795f90cbb80b7d
 Generator format: 2
 Status: Generated support artifact
 
@@ -27,6 +27,7 @@ Status: Generated support artifact
 | `governance/protected-source-boundary.md` | governance | yes | policy-reference |
 | `governance/quest-engine-continuity-contract.md` | governance | yes | none |
 | `governance/resonance-reconciliation-contract.md` | governance | yes | none |
+| `governance/shard-doctrine.md` | governance | yes | none |
 | `governance/source-hierarchy.md` | governance | yes | none |
 | `governance/source-lifecycle.md` | governance | yes | none |
 | `infrastructure/atlas-infrastructure-source.md` | infrastructure | yes | policy-reference |

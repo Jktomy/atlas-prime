@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:f7d619a4cbec1317a64f090ae516bd0aedb6128c022249cbbbf4264aff82d8ee
+Source fingerprint: sha256:2c16665b6f0eec4546921c19ef26047d9e876bc7df83e90b2f795f90cbb80b7d
 Generator format: 2
 Status: Generated support artifact
 
@@ -27,6 +27,7 @@ Status: Generated support artifact
 | `governance/protected-source-boundary.md` | CANONICAL_ACTIVE | POLICY | missing | CRITICAL |
 | `governance/quest-engine-continuity-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/resonance-reconciliation-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
+| `governance/shard-doctrine.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/source-hierarchy.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `governance/source-lifecycle.md` | ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `infrastructure/atlas-infrastructure-source.md` | ACTIVE | ARCHITECTURE | missing | HIGH |
