@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import sys
 import unittest
@@ -33,6 +34,18 @@ class ResonanceContractTests(unittest.TestCase):
         extra["provider_vote"] = True
         with self.assertRaises(SchemaValidationError):
             validate_schema(self.register_schema, extra)
+
+    def test_historical_repository_evidence_survives_current_source_advance(self) -> None:
+        evidence = next(
+            item["evidence"][0]
+            for item in self.fixture["findings"]
+            if item["evidence"][0]["source"] == "quests/repairing-prime.md"
+        )
+        current = hashlib.sha256((ROOT / evidence["source"]).read_bytes()).hexdigest()
+        snapshot = ROOT / "proof/repairing-prime/historical-sources/quests-repairing-prime-318d611e.source"
+        self.assertNotEqual(current, evidence["sha256"])
+        self.assertEqual(hashlib.sha256(snapshot.read_bytes()).hexdigest(), evidence["sha256"])
+        self.reconcile()
 
     def test_aberration_register_preserves_consensus_conflict_and_novel(self) -> None:
         records = {record["claim_key"]: record for record in self.reconcile()["records"]}

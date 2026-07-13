@@ -12,6 +12,8 @@ from tools.athena_routes.schema import SchemaValidationError, validate_schema
 ROOT = Path(__file__).resolve().parents[2]
 FINDING_SCHEMA = ROOT / "schemas" / "resonance-finding-v1.schema.json"
 REGISTER_SCHEMA = ROOT / "schemas" / "aberration-register-v1.schema.json"
+HISTORICAL_SOURCE_REGISTRY = ROOT / "proof" / "repairing-prime" / "historical-source-evidence-r01.json"
+HISTORICAL_SOURCE_ROOT = ROOT / "proof" / "repairing-prime" / "historical-sources"
 
 
 class ResonanceValidationError(ValueError):
@@ -36,6 +38,41 @@ def _schema(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def historical_source_matches(source: str, digest: str) -> bool:
+    try:
+        registry = _schema(HISTORICAL_SOURCE_REGISTRY)
+        if set(registry) != {"schema_version", "records"} or registry["schema_version"] != "atlas.historical-source-evidence.v1":
+            raise ValueError
+        records = registry["records"]
+        if not isinstance(records, list):
+            raise ValueError
+        identities: set[tuple[str, str]] = set()
+        matched = False
+        for record in records:
+            if not isinstance(record, dict) or set(record) != {"source", "sha256", "snapshot"}:
+                raise ValueError
+            historical_source = PurePosixPath(record["source"])
+            if historical_source.is_absolute() or any(part in {"", ".", ".."} for part in historical_source.parts):
+                raise ValueError
+            if not isinstance(record["sha256"], str) or len(record["sha256"]) != 64 or any(character not in "0123456789abcdef" for character in record["sha256"]):
+                raise ValueError
+            identity = (record["source"], record["sha256"])
+            if identity in identities:
+                raise ValueError
+            identities.add(identity)
+            snapshot = PurePosixPath(record["snapshot"])
+            if snapshot.is_absolute() or any(part in {"", ".", ".."} for part in snapshot.parts):
+                raise ValueError
+            target = HISTORICAL_SOURCE_ROOT.joinpath(*snapshot.parts)
+            if target.is_symlink() or not target.is_file() or sha256(target.read_bytes()) != record["sha256"]:
+                raise ValueError
+            if identity == (source, digest):
+                matched = True
+        return matched
+    except (KeyError, TypeError, ValueError, OSError, json.JSONDecodeError):
+        raise ResonanceValidationError("HISTORICAL_SOURCE_REGISTRY_INVALID") from None
+
+
 def validate_finding(finding: dict[str, Any], *, input_sha256: str) -> None:
     try:
         validate_schema(_schema(FINDING_SCHEMA), finding)
@@ -55,7 +92,9 @@ def validate_finding(finding: dict[str, Any], *, input_sha256: str) -> None:
             raise ResonanceValidationError("FINDING_EVIDENCE_INVALID")
         if item["evidence_type"] == "REPOSITORY_FILE":
             path = ROOT.joinpath(*source.parts)
-            if not path.is_file() or sha256(path.read_bytes()) != item["sha256"]:
+            if not path.is_file():
+                raise ResonanceValidationError("FINDING_EVIDENCE_MISMATCH")
+            if sha256(path.read_bytes()) != item["sha256"] and not historical_source_matches(item["source"], item["sha256"]):
                 raise ResonanceValidationError("FINDING_EVIDENCE_MISMATCH")
         elif not item["source"].startswith("fixture/") or item["sha256"] != sha256(finding["statement"].strip()):
             raise ResonanceValidationError("FINDING_EVIDENCE_MISMATCH")
