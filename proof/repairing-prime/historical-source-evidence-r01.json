@@ -15,6 +15,11 @@
       "source": "operations/protocol-library.md",
       "sha256": "2caa88be9f314fb9c36973cea789497c7b5cce06ed97b2743e6db589bd5257ac",
       "snapshot": "operations-protocol-library-2caa88be.source"
+    },
+    {
+      "source": "governance/agentic-warrant-contract.md",
+      "sha256": "2e1dfc7dd3a9983d50bbea27b96bbd8d61a60a9571fec5a847fd272835a9d429",
+      "snapshot": "governance-agentic-warrant-contract-2e1dfc7d.source"
     }
   ]
 }

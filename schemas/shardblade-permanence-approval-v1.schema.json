@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/shardblade-permanence-approval-v1.schema.json",
+  "title": "Prime direct Shardblade permanence approval v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "approval_id", "nonce", "request_id", "request_sha256", "action", "authorizer", "issued_at", "expires_at", "signature_scheme", "signature"],
+  "properties": {
+    "schema_version": {"const": "atlas.shardblade-permanence-approval.v1"},
+    "approval_id": {"type": "string", "pattern": "^[A-Z0-9][A-Z0-9._-]{2,127}$"},
+    "nonce": {"type": "string", "pattern": "^[A-Za-z0-9._-]{16,160}$"},
+    "request_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "request_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "action": {"enum": ["READY", "MERGE"]},
+    "authorizer": {"const": "Jayson"},
+    "issued_at": {"type": "string", "minLength": 1, "maxLength": 40},
+    "expires_at": {"type": "string", "minLength": 1, "maxLength": 40},
+    "signature_scheme": {"enum": ["TRUSTED_SESSION_READBACK", "DETACHED_SIGNATURE"]},
+    "signature": {"type": "string", "minLength": 1, "maxLength": 1000}
+  }
+}

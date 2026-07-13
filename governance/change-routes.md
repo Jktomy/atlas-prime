@@ -23,6 +23,7 @@ protected_level: "CRITICAL"
 | Normal repository engine | Prime Thread Engine, singular |
 | Repository substrate | Exact GitHub-native tree transaction or Fresh Clone First |
 | AI-assisted work surface | Shardplate |
+| Exact permanence boundary | Shardblade: distinct direct-Jayson READY or MERGE request under `governance/shard-doctrine.md` |
 | Provider, model, and runtime identity | Bound independently; trusted reported tokens map only to Spirallight, Chromelight, or Emberlight under `governance/investiture-source-identity-contract.md` |
 
 ```text

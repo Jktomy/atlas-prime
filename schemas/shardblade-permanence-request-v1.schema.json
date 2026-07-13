@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/shardblade-permanence-request-v1.schema.json",
+  "title": "Prime Shardblade permanence action request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "request_id", "nonce", "action", "created_at", "readback_at", "authorizer", "operator", "credential_principal", "invoking_mechanism", "repository", "base_branch", "base_sha", "pull_request", "pr_state", "source_branch", "head_sha", "tree_sha", "changed_paths", "changed_paths_sha256", "protected_paths", "protected_paths_sha256", "protected_construction_approval_sha256", "preview_sha256", "construction_receipt_sha256", "pr_readback_sha256", "ci", "detached_review", "prior_ready_receipt_sha256", "merge_method", "forbidden_actions"],
+  "properties": {
+    "schema_version": {"const": "atlas.shardblade-permanence-request.v1"},
+    "request_id": {"type": "string", "pattern": "^[A-Z0-9][A-Z0-9._-]{2,127}$"},
+    "nonce": {"type": "string", "pattern": "^[A-Za-z0-9._-]{16,160}$"},
+    "action": {"enum": ["READY", "MERGE"]},
+    "created_at": {"type": "string", "minLength": 1, "maxLength": 40},
+    "readback_at": {"type": "string", "minLength": 1, "maxLength": 40},
+    "authorizer": {"const": "Jayson"},
+    "operator": {"type": "string", "minLength": 1, "maxLength": 128},
+    "credential_principal": {"type": "string", "minLength": 1, "maxLength": 160},
+    "invoking_mechanism": {"type": "string", "minLength": 1, "maxLength": 160},
+    "repository": {"const": "Jktomy/atlas-prime"},
+    "base_branch": {"const": "main"},
+    "base_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "pull_request": {"type": "integer", "minimum": 1},
+    "pr_state": {"enum": ["DRAFT", "OPEN_READY"]},
+    "source_branch": {"type": "string", "minLength": 1, "maxLength": 240},
+    "head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "tree_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "changed_paths": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1, "maxLength": 300}},
+    "changed_paths_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "protected_paths": {"type": "array", "items": {"type": "string", "minLength": 1, "maxLength": 300}},
+    "protected_paths_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "protected_construction_approval_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "preview_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "construction_receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "pr_readback_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "ci": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "object", "additionalProperties": false, "required": ["platform", "workflow_name", "check_name", "run_id", "run_attempt", "workflow_source_sha", "head_sha", "conclusion"], "properties": {
+      "platform": {"enum": ["UBUNTU", "WINDOWS"]},
+      "workflow_name": {"const": "Prime read-only validation"},
+      "check_name": {"enum": ["validate (ubuntu-latest)", "validate (windows-latest)"]},
+      "run_id": {"type": "integer", "minimum": 1},
+      "run_attempt": {"type": "integer", "minimum": 1},
+      "workflow_source_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+      "head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+      "conclusion": {"const": "SUCCESS"}
+    }}},
+    "detached_review": {"type": "object", "additionalProperties": false, "required": ["review_id", "reviewer_context", "head_sha", "verdict", "receipt_sha256"], "properties": {
+      "review_id": {"type": "string", "minLength": 1, "maxLength": 160},
+      "reviewer_context": {"type": "string", "minLength": 1, "maxLength": 160},
+      "head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+      "verdict": {"const": "GREEN"},
+      "receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    }},
+    "prior_ready_receipt_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "merge_method": {"enum": ["MERGE_COMMIT", null]},
+    "forbidden_actions": {"type": "object", "additionalProperties": false, "required": ["author", "modify", "widen", "substitute", "bypass_checks", "automatic_retry", "standing_authority"], "properties": {
+      "author": {"const": false}, "modify": {"const": false}, "widen": {"const": false}, "substitute": {"const": false}, "bypass_checks": {"const": false}, "automatic_retry": {"const": false}, "standing_authority": {"const": false}
+    }}
+  }
+}

@@ -65,10 +65,6 @@ activation, private-data ingress, or permanence. Ready, merge, settings,
 provider activation, protected execution, and destructive action each require
 an explicit human approval record at the exact action boundary. That record
 binds the attempted request digest and cannot authorize a different request.
-READY and MERGE are distinct Shardblade actions under
-`governance/shard-doctrine.md`; neither may use the generic v1 warrant path.
-Each requires the dedicated request, direct Jayson approval, exact candidate
-readback, and receipt chain. A READY receipt never implies MERGE authority.
 Prime routes remain governed by `governance/change-routes.md`; a warrant cannot
 invent a writer or bypass Aegis. The route/action matrix is closed. Any mutating
 path classified by `policies/protected-paths.json` requires the
@@ -106,9 +102,3 @@ The machine contracts are
 `schemas/agentic-warrant-receipt-v1.schema.json`. Fixtures and whole-program
 tests prove structural closure and lifecycle semantics. This contract grants
 no capability or journey promotion by itself.
-
-The accepted v1 schemas and fixtures remain structural RP-C02 evidence. The v1
-validator rejects `READY`, `MERGE`, and `SHARDBLADE_PERMANENCE` as current
-authority with `SHARDBLADE_DEDICATED_CONTRACT_REQUIRED`. Present permanence is
-validated only through the dedicated Shardblade contracts; no legacy mode may
-derive current authority from the accepted fixtures.
