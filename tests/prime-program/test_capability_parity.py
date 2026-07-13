@@ -76,7 +76,6 @@ class CapabilityParityTests(unittest.TestCase):
     def test_control_plane_does_not_claim_unproven_activation(self) -> None:
         records = {record["id"]: record for record in self.register["capabilities"]}
         for capability_id in (
-            "CAP-010",
             "CAP-015",
             "CAP-027",
         ):

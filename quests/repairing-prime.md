@@ -166,7 +166,9 @@ Capability reconciliation evidence:
 ledger was initially reconciled at 11 RESTORED and 4 STILL_MISSING. A later
 fresh hosted multi-file journey and separate reconciliation at
 `proof/repairing-prime/rp-c08-cap011-reconciliation-r01.md` restore CAP-011.
-The current counts are 12 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED,
-1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 3 STILL_MISSING. This remains a partial
-closeout boundary: CAP-010, CAP-015, and CAP-027 are still missing, and RP-C08
-stays in progress.
+A later owner-guided Preview to Execute journey and separate reconciliation at
+`proof/repairing-prime/rp-c08-cap010-reconciliation-r01.md` restore CAP-010.
+The current counts are 13 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED,
+1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 2 STILL_MISSING. This remains a partial
+closeout boundary: CAP-015 and CAP-027 are still missing, and RP-C08 stays in
+progress.
