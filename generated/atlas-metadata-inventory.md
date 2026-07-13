@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:8c2a387bfef17bfc8dfbea9548aed2da2c9feaff982bcd4bee49ced19ec2b62e
+Source fingerprint: sha256:0ec144f2943afb2b65e34ee5e2fc235888ff9c590104fb429d289bf4daa39ec3
 Generator format: 2
 Status: Generated support artifact
 
@@ -60,6 +60,8 @@ Status: Generated support artifact
 | `proof/oathbringer-production-acceptance-r01.md` | PROOF | PROOF | missing | STANDARD |
 | `proof/prime-spear-arrow-bow-parity-r01.md` | PROOF | PROOF | missing | STANDARD |
 | `proof/prime-thread-engine-bootstrap-proof.md` | PROOF | PROOF | missing | STANDARD |
+| `proof/repairing-prime/cap011-hosted-multifile-proof-a-r01.md` | missing | missing | missing | missing |
+| `proof/repairing-prime/cap011-hosted-multifile-proof-b-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/direct-spear-pilot-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/hosted-bow-pilot-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/hosted-bow-proof-r02.md` | missing | missing | missing | missing |
@@ -67,6 +69,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | ACCEPTED | PROOF | missing | HIGH |
 | `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md` | ACCEPTED | PROOF | missing | HIGH |
 | `proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md` | ACCEPTED_RECONCILIATION | PROOF | missing | MEDIUM |
+| `proof/repairing-prime/rp-c08-cap011-reconciliation-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` | ACCEPTED_PARTIAL_CLOSEOUT | PROOF | missing | MEDIUM |
 | `quests/found-silverlight.md` | Active | Quest | Parent Quest for establishing Atlas's private cognitive interface through Stormlight BEU accounting, the seven-pillar Glass Codex, and the Seon Apple Reminders integration. | High |
 | `quests/notums-watch.md` | Active | Quest | Parent Quest for bringing Notum's Watch forward as Gatehouse/Citadel observability and rescue infrastructure, including the interim Notum vessel, future Notum Phoenix vessel, Nightwatcher lineage, and backup-capacity boundaries. | High |
