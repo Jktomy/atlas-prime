@@ -24,6 +24,17 @@ protected_level: "CRITICAL"
 
 Clone Prime fresh, verify the expected main head, run the complete read-only validation workflow, compare generated projections as CURRENT, verify Thread Engine state, and follow `recovery/phoenix-recovery.md`. Normal bootstrap and recovery do not read from or write to `Jktomy/atlas-codex`.
 
+## Continuity startup
+
+After the canonical source order, validate
+`quest-board/quest-board-v1.json`,
+`continuity/quest-engine-identities-r01.json`, and
+`continuity/prime-continuity-register-r01.json` with
+`python -B -m tools.prime_continuity.cli validate`. Use `argus` for sorted
+unfinished work. A supplied Sunset snapshot is usable only through `sunrise`,
+which anchors it to the canonical register and reconstructs the exact next gate.
+Chat memory and generated projections are never startup authority.
+
 ## Change rule
 
 Every durable mutation uses an exact branch and draft PR. Eligible source construction uses Athena Weave → Spear or Arrow/Bow → Prime Thread Engine. Protected Thread Engine self-change uses Aegis Break → Oathbringer. Merge follows exact-head Noctua, Ares, Athena reconciliation, and Strikeforce GREEN.

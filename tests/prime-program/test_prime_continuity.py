@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import copy
+import contextlib
+import io
 import json
 import tempfile
 import unittest
 from pathlib import Path
 
+from tools.prime_continuity.cli import main as continuity_cli
 from tools.prime_continuity.engine import (
     ContinuityError,
     argus,
@@ -220,6 +223,65 @@ class PrimeContinuityTests(unittest.TestCase):
         mismatched["campaigns"][0]["missions"][0]["mission_id"] = "RP-C02-M01"
         with self.assertRaisesRegex(ContinuityError, "MISSION_CAMPAIGN_MISMATCH"):
             validate_identity_register(mismatched)
+
+    def test_command_surface_validates_and_anchors_restart(self) -> None:
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            self.assertEqual(continuity_cli(["validate"]), 0)
+        self.assertEqual(json.loads(output.getvalue())["result"], "PASS")
+        with tempfile.TemporaryDirectory() as temp:
+            snapshot = Path(temp) / "sunset.json"
+            sunrise_path = Path(temp) / "sunrise.json"
+            self.assertEqual(
+                continuity_cli([
+                    "sunset", "--continuity-id", "CONT-REPAIRING-PRIME-R01", "--output", str(snapshot),
+                ]),
+                0,
+            )
+            self.assertEqual(
+                continuity_cli(["sunrise", "--snapshot", str(snapshot), "--output", str(sunrise_path)]),
+                0,
+            )
+            reconstructed = json.loads(sunrise_path.read_text(encoding="utf-8"))
+            self.assertEqual(reconstructed["next_gate"], "QUEST_ENGINE_AND_CONTINUITY_PROVEN")
+            candidate = Path(temp) / "candidate.json"
+            entry_revision = next(
+                entry["revision"]
+                for entry in self.register["entries"]
+                if entry["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
+            )
+            self.assertEqual(
+                continuity_cli([
+                    "plan-update",
+                    "--continuity-id", "CONT-REPAIRING-PRIME-R01",
+                    "--expected-register-sha256", sha256(self.register),
+                    "--expected-entry-revision", str(entry_revision),
+                    "--event-id", "RP-C05-CLI-PREVIEW-R01",
+                    "--changes-json", '{"next_action":"CLI preview only"}',
+                    "--output", str(candidate),
+                ]),
+                0,
+            )
+            planned = json.loads(candidate.read_text(encoding="utf-8"))
+            self.assertEqual(planned["register_revision"], self.register["register_revision"] + 1)
+
+    def test_command_output_rejects_canonical_alias_and_clobber_paths(self) -> None:
+        canonical_targets = (
+            ROOT / "continuity" / "prime-continuity-register-r01.json",
+            ROOT / "quest-board" / "quest-board-v1.json",
+            ROOT / "continuity" / "quest-engine-identities-r01.json",
+            ROOT / "generated" / ".." / "continuity" / "prime-continuity-register-r01.json",
+        )
+        for target in canonical_targets:
+            with self.subTest(target=target):
+                with self.assertRaisesRegex(ValueError, "OUTPUT_INSIDE_CANONICAL_REPOSITORY"):
+                    continuity_cli(["emberline", "--output", str(target)])
+        with tempfile.TemporaryDirectory() as temp:
+            existing = Path(temp) / "existing.json"
+            existing.write_text("preserve\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "OUTPUT_ALREADY_EXISTS"):
+                continuity_cli(["argus", "--output", str(existing)])
+            self.assertEqual(existing.read_text(encoding="utf-8"), "preserve\n")
 
 
 if __name__ == "__main__":
