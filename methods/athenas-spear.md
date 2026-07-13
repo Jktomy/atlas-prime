@@ -20,3 +20,11 @@ Spear does not merge, widen scope, modify Thread Engine itself, or inherit later
 Prime direct Spear compilation and Thread Engine delivery are proven and merged. That component proof does not establish that Athena can reach Thread Engine from a fresh Work context.
 
 Hosted mission intake, truthful hosted identity, credential-principal proof, rejection cases, and an actual harmless Work/Athena submission remain missing. Hosted execution must stay disabled-first until that complete journey passes.
+
+Prime now also defines an owner-guided local publisher component that separates
+Preview from Execute, screens an immutable carrier before GitHub ingress, binds
+the canonical mission digest, and dispatches only the existing hosted Bow
+workflow through JSON standard input. The publisher never calls the adapter or
+writes a branch, commit, or PR. Component construction and tests do not prove
+CAP-010; a fresh live guided journey and separate evidence reconciliation are
+still required. Fresh Work/Athena origin remains separately unproven.

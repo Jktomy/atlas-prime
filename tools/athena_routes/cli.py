@@ -23,6 +23,7 @@ def event_environment(environment: dict[str, str]) -> tuple[dict[str, str], str]
     mapping = {
         "arrow_b64": "ATHENA_ARROW_B64",
         "arrow_sha256": "ATHENA_ARROW_SHA256",
+        "mission_lock_sha256": "ATHENA_MISSION_LOCK_SHA256",
         "public_clean_confirmation": "ATHENA_PUBLIC_CLEAN_CONFIRMATION",
     }
     values = dict(environment)
