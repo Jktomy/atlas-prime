@@ -67,6 +67,18 @@
       "recovery_merge_sha": "ee87effb88ef8c1f881a5e58259155b36dacf878"
     }
   },
+  "guided_dependency_retirement": {
+    "mission": "RP-C01-M08",
+    "state": "PARTIAL",
+    "accepted_subclaim": "JAYSON_CARRIER_CREATION_ATTACHMENT_PLACEMENT_NOT_REQUIRED",
+    "construction_pull_request": 150,
+    "construction_merge_sha": "f30c682e711cd3b92ffb5252734a48813fd5b493",
+    "live_workflow_run": 29231950571,
+    "live_pull_request": 151,
+    "live_merge_sha": "93f19b44b830c05bf9ec57356da66af4ac4a444c",
+    "missing": ["ROUTINE_FREE_FORM_INTAKE_TO_CANONICAL_CARRIER_LIVE_ACCEPTANCE"],
+    "evidence": "proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.json"
+  },
   "live_rejections": [
     {"run": 29215564172, "result": "REJECTED", "code": "CARRIER_BASE64_REJECTED", "mutation": false},
     {"run": 29215594376, "result": "BLOCKED", "code": "PROTECTED_AEGIS_REQUIRED", "route": "AEGIS_BREAK_PROTECTED", "mutation": false},
@@ -82,7 +94,7 @@
     "RP-C01-M05": "COMPONENT_PARITY_PRESERVED_END_TO_END_NOT_PROVEN",
     "RP-C01-M06": "HANDOFF_DETECTION_PROVEN_PROTECTED_EXECUTION_NOT_RUN",
     "RP-C01-M07": "PARTIAL_REJECTION_MATRIX_PROVEN",
-    "RP-C01-M08": "NOT_PROVEN"
+    "RP-C01-M08": "PARTIAL_JAYSON_CARRIER_CREATION_ATTACHMENT_PLACEMENT_NOT_REQUIRED_FREE_FORM_INTAKE_ACCEPTANCE_MISSING"
   },
   "capability_promotion": "NONE",
   "acceptance_journey_promotion": "NONE"

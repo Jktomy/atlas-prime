@@ -85,6 +85,13 @@ Missions:
 
 **Gate:** `ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN`
 
+Accepted partial evidence:
+`proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.md`. M08 is
+PARTIAL: Jayson carrier creation, attachment, and placement are not required by
+the accepted guided journey, but the ordinary free-form mission-fields intake
+to canonical mission/carrier construction has not completed a fresh live
+acceptance. This does not promote CAP-015, AJ-01, or the RP-C01 gate.
+
 ## RP-C02 — Shared Agentic Doctrine and Capability Warrants
 
 Define agent identity, authority, warrants, delegation, evidence, suspension,

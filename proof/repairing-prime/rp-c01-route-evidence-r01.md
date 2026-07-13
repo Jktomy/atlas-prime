@@ -51,7 +51,19 @@ Thread Engine self-change handoff, generated/source mixing rejection, and stale
 base rejection before mutation. They do not prove the entire AJ-03 rejection
 set or actual protected-route execution.
 
+The later guided journey recorded at
+`proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.md` proves that
+Jayson need not create, attach, or place the routine carrier. Jayson supplied
+the controlling Goal authority and authenticated owner session; Codex built the
+fresh mission and immutable carrier outside the repository and carried Preview,
+Execute, hosted draft-PR creation, exact readback, CI, detached review, merge,
+and canonical readback through completion. M08 remains PARTIAL because the
+accepted publisher still requires an already built immutable carrier path; an
+ordinary free-form mission-fields-to-canonical-carrier live acceptance is still
+missing.
+
 M04 hosted Bow is now proven. The broader
 `ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN` gate remains unproven because fresh
-Work/Athena origin, end-to-end route parity, and the remaining mission-level
-acceptance evidence are still incomplete. No CAP or AJ promotion is authorized.
+Work/Athena origin, end-to-end route parity, complete M08 intake, and the
+remaining mission-level acceptance evidence are still incomplete. No CAP or AJ
+promotion is authorized.
