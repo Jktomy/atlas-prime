@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parents[2]
 THREAD_ENGINE_ROOT = ROOT / "tools" / "thread-engine"
 REQUEST_SCHEMA = ROOT / "schemas" / "athena-hosted-route-request-v1.schema.json"
 RECEIPT_SCHEMA = ROOT / "schemas" / "athena-hosted-route-receipt-v1.schema.json"
+ADAPTER_EVIDENCE_SCHEMA = ROOT / "schemas" / "athena-thread-engine-evidence-v2.schema.json"
 PROTECTED_POLICY = ROOT / "policies" / "protected-paths.json"
 REPOSITORY = "Jktomy/atlas-prime"
 OWNER = "Jktomy"
@@ -294,8 +295,8 @@ def sanitized_adapter_evidence(raw: dict[str, Any], branch: str, remote: dict[st
     pr = remote.get("pull_request") if isinstance(remote.get("pull_request"), dict) else None
     confirmation = raw.get("forbidden_action_confirmation")
     confirmation = confirmation if isinstance(confirmation, dict) else {}
-    return {
-        "schema_version": "atlas.athena.thread-engine-evidence.v1",
+    evidence = {
+        "schema_version": "atlas.athena.thread-engine-evidence.v2",
         "source_receipt_schema_version": (
             raw.get("schema_version")
             if raw.get("schema_version") == "atlas-thread-engine-production-adapter-receipt-v2"
@@ -337,6 +338,8 @@ def sanitized_adapter_evidence(raw: dict[str, Any], branch: str, remote: dict[st
             },
         },
     }
+    validate_schema(load_schema(ADAPTER_EVIDENCE_SCHEMA), evidence)
+    return evidence
 
 
 def completed_remote_checkpoint(raw: dict[str, Any]) -> bool:

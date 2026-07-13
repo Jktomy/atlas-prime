@@ -14,6 +14,7 @@ GUIDED_PREVIEW_V1_SCHEMA = ROOT / "schemas/athena-guided-intake-preview-v1.schem
 GUIDED_PREVIEW_SCHEMA = ROOT / "schemas/athena-guided-intake-preview-v2.schema.json"
 GUIDED_EXECUTE_SCHEMA = ROOT / "schemas/athena-guided-intake-execute-receipt-v1.schema.json"
 M05_PARITY_SCHEMA = ROOT / "schemas/rp-c01-m05-parity-evidence-v1.schema.json"
+ADAPTER_EVIDENCE_SCHEMA = ROOT / "schemas/athena-thread-engine-evidence-v2.schema.json"
 CONTRACT = ROOT / "governance/athena-execution-route-contract.md"
 
 
@@ -192,6 +193,11 @@ class AthenaExecutionRouteContractTests(unittest.TestCase):
             schema["properties"]["promotion_boundary"]["const"],
             "SEPARATE_AUTHORED_RECONCILIATION_REQUIRED",
         )
+        adapter_schema = json.loads(ADAPTER_EVIDENCE_SCHEMA.read_text(encoding="utf-8"))
+        self.assertFalse(adapter_schema["additionalProperties"])
+        confirmation = adapter_schema["properties"]["forbidden_action_confirmation"]
+        self.assertFalse(confirmation["additionalProperties"])
+        self.assertEqual(set(confirmation["required"]), set(confirmation["properties"]))
 
     def test_request_schema_is_closed_and_binds_hosted_identity(self) -> None:
         schema = json.loads(REQUEST_SCHEMA.read_text(encoding="utf-8"))

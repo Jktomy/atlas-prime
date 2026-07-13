@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/athena-thread-engine-evidence-v2.schema.json",
+  "title": "Sanitized Athena Thread Engine evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source_receipt_schema_version", "source_receipt_sha256", "mission_id", "mission_sha256", "candidate_tree_sha256", "commit_tree", "result", "error_code", "error_stage", "stop_point", "forbidden_action_confirmation", "branch", "checkpoint_results", "remote_state"],
+  "properties": {
+    "schema_version": {"const": "atlas.athena.thread-engine-evidence.v2"},
+    "source_receipt_schema_version": {"enum": ["atlas-thread-engine-production-adapter-receipt-v2", null]},
+    "source_receipt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "mission_id": {"type": ["string", "null"], "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)*$"},
+    "mission_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "candidate_tree_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "commit_tree": {"type": ["string", "null"], "pattern": "^[a-f0-9]{40}$"},
+    "result": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{0,79}$"},
+    "error_code": {"type": ["string", "null"], "pattern": "^[A-Z][A-Z0-9_]{0,79}$"},
+    "error_stage": {"type": ["string", "null"], "pattern": "^[A-Z][A-Z0-9_]{0,79}$"},
+    "stop_point": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{0,79}$"},
+    "forbidden_action_confirmation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["direct_main_write", "force_push", "auto_merge", "ready_transition", "workflow_dispatch", "repository_setting_mutation", "unprofiled_generated_output_mutation", "protected_board_mutation", "production_authority_activated", "standing_authority"],
+      "properties": {
+        "direct_main_write": {"type": ["boolean", "null"]},
+        "force_push": {"type": ["boolean", "null"]},
+        "auto_merge": {"type": ["boolean", "null"]},
+        "ready_transition": {"type": ["boolean", "null"]},
+        "workflow_dispatch": {"type": ["boolean", "null"]},
+        "repository_setting_mutation": {"type": ["boolean", "null"]},
+        "unprofiled_generated_output_mutation": {"type": ["boolean", "null"]},
+        "protected_board_mutation": {"type": ["boolean", "null"]},
+        "production_authority_activated": {"type": ["boolean", "null"]},
+        "standing_authority": {"enum": ["NO", null]}
+      }
+    },
+    "branch": {"type": "string", "pattern": "^source/[A-Za-z0-9._/-]+$"},
+    "checkpoint_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["checkpoint", "status"],
+        "properties": {
+          "checkpoint": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{0,79}$"},
+          "status": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{0,79}$"}
+        }
+      }
+    },
+    "remote_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["readback", "branch_exists", "head_sha", "pull_request"],
+      "properties": {
+        "readback": {"enum": ["VERIFIED", "UNAVAILABLE"]},
+        "branch_exists": {"type": ["boolean", "null"]},
+        "head_sha": {"type": ["string", "null"], "pattern": "^[a-f0-9]{40}$"},
+        "pull_request": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["number", "state", "is_draft", "head_ref_name", "head_ref_oid"],
+          "properties": {
+            "number": {"type": ["integer", "null"], "minimum": 1},
+            "state": {"enum": ["OPEN", "CLOSED", "MERGED", null]},
+            "is_draft": {"type": ["boolean", "null"]},
+            "head_ref_name": {"type": ["string", "null"]},
+            "head_ref_oid": {"type": ["string", "null"], "pattern": "^[a-f0-9]{40}$"}
+          }
+        }
+      }
+    }
+  }
+}

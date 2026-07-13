@@ -5,7 +5,13 @@ import json
 import unittest
 
 from tools.athena_routes.hosted import sha256_bytes, stable_json
-from tools.athena_routes.m05_parity import M05ParityError, PARITY_SCHEMA, build_m05_parity_evidence
+from tools.athena_routes.m05_parity import (
+    ADAPTER_FORBIDDEN_CONFIRMATION,
+    M05ParityError,
+    PARITY_SCHEMA,
+    SUCCESS_CHECKPOINT_SEQUENCE,
+    build_m05_parity_evidence,
+)
 from tools.athena_routes.schema import validate_schema
 
 
@@ -94,7 +100,7 @@ def records() -> tuple[dict, dict, dict, dict, dict[str, bytes]]:
         "forbidden_actions": dict(preview["forbidden_actions"]),
     }
     adapter = {
-        "schema_version": "atlas.athena.thread-engine-evidence.v1",
+        "schema_version": "atlas.athena.thread-engine-evidence.v2",
         "source_receipt_schema_version": "atlas-thread-engine-production-adapter-receipt-v2",
         "source_receipt_sha256": "a" * 64,
         "mission_id": "RP-C01-M05-LIVE-R01",
@@ -105,16 +111,11 @@ def records() -> tuple[dict, dict, dict, dict, dict[str, bytes]]:
         "error_code": None,
         "error_stage": None,
         "stop_point": "DRAFT_PR_READBACK",
-        "forbidden_action_confirmation": {
-            "direct_main_write": False, "force_push": False, "auto_merge": False, "ready_transition": False,
-            "workflow_dispatch": False, "repository_setting_mutation": False,
-            "unprofiled_generated_output_mutation": False, "protected_board_mutation": False,
-            "production_authority_activated": False, "standing_authority": "NO",
-        },
+        "forbidden_action_confirmation": dict(ADAPTER_FORBIDDEN_CONFIRMATION),
         "branch": BRANCH,
         "checkpoint_results": [
             {"checkpoint": name, "status": "COMPLETED"}
-            for name in ("PACKAGE_AUDIT", "MISSION_INTEGRITY", "CANDIDATE_STAGE", "TREE_VERIFY", "COMMIT_VERIFY", "DRAFT_PR", "READBACK")
+            for name in SUCCESS_CHECKPOINT_SEQUENCE
         ],
         "remote_state": {
             "readback": "VERIFIED", "branch_exists": True, "head_sha": HEAD,
@@ -167,11 +168,17 @@ class M05ParityTests(unittest.TestCase):
             lambda _p, _e, h, _a, _f: h["mutation"].__setitem__("head_sha", "d" * 40),
             lambda _p, _e, _h, a, _f: a["forbidden_action_confirmation"].__setitem__("force_push", True),
             lambda _p, _e, _h, _a, f: f.__setitem__("PAYLOADS/m05.md", b"edited payload\n"),
+            lambda _p, _e, _h, a, _f: a["forbidden_action_confirmation"].pop("force_push"),
+            lambda _p, _e, _h, a, _f: a["forbidden_action_confirmation"].__setitem__("unexpected", False),
+            lambda _p, _e, _h, a, _f: a["checkpoint_results"].pop(),
+            lambda _p, _e, _h, a, _f: a["checkpoint_results"].append({"checkpoint": "EXTRA", "status": "COMPLETED"}),
+            lambda _p, _e, _h, a, _f: a["checkpoint_results"].reverse(),
         )
         for index, mutate in enumerate(mutations):
             with self.subTest(index=index):
                 values = [copy.deepcopy(item) for item in records()]
                 mutate(*values)
+                values[2]["adapter_receipt_sha256"] = sha256_bytes(stable_json(values[3]).encode("utf-8"))
                 with self.assertRaises(M05ParityError):
                     build_m05_parity_evidence(*values)
 

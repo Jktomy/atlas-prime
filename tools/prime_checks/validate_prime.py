@@ -106,6 +106,7 @@ REQUIRED = (
     "schemas/capability-parity-register.schema.json",
     "schemas/athena-hosted-route-request-v1.schema.json",
     "schemas/athena-hosted-route-receipt-v1.schema.json",
+    "schemas/athena-thread-engine-evidence-v2.schema.json",
     "schemas/athena-guided-intake-preview-v1.schema.json",
     "schemas/athena-guided-intake-preview-v2.schema.json",
     "schemas/athena-guided-intake-execute-receipt-v1.schema.json",

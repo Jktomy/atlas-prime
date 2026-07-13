@@ -111,7 +111,12 @@ def success_engine(carrier_sha256: str, *, path: str = "proof/repairing-prime/ho
             "stop_point": "DRAFT_PR_READBACK",
             "checkpoint_results": [
                 {"checkpoint": checkpoint, "status": "completed"}
-                for checkpoint in ("PACKAGE_AUDIT", "MISSION_INTEGRITY", "CANDIDATE_STAGE", "TREE_VERIFY", "COMMIT_VERIFY", "DRAFT_PR", "READBACK")
+                for checkpoint in (
+                    "ACTIVATION_GATE", "PACKAGE_AUDIT", "MISSION_PARSE", "MISSION_SCHEMA", "MISSION_INTEGRITY",
+                    "PROTECTED_ROUTE_INTENT", "OPERATOR_VERIFY", "REMOTE_LOCK", "DUPLICATE_CHECK", "FRESH_CLONE",
+                    "CLEAN_START", "SOURCE_BLOB_VERIFY", "CANDIDATE_STAGE", "PATH_POLICY_VERIFY", "TREE_VERIFY",
+                    "INSTALL", "DIFF_CHECK", "STAGE_VERIFY", "COMMIT", "COMMIT_VERIFY", "PUSH", "DRAFT_PR", "READBACK",
+                )
             ],
             "forbidden_action_confirmation": {
                 "direct_main_write": False,
@@ -272,6 +277,7 @@ class HostedRouteTests(unittest.TestCase):
             self.assertEqual(receipt["identity"]["token_mode"], "GITHUB_TOKEN")
             self.assertNotIn("ATHENA_ARROW_B64", json.dumps(receipt))
             adapter = json.loads((root / "evidence" / "thread-engine-evidence.json").read_text(encoding="utf-8"))
+            self.assertEqual(adapter["schema_version"], "atlas.athena.thread-engine-evidence.v2")
             self.assertEqual(adapter["source_receipt_schema_version"], "atlas-thread-engine-production-adapter-receipt-v2")
             self.assertEqual(adapter["mission_sha256"], "c" * 64)
             self.assertEqual(adapter["candidate_tree_sha256"], "e" * 64)

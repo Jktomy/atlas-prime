@@ -4,21 +4,49 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .hosted import RECEIPT_SCHEMA, load_schema, sha256_bytes, stable_json
+from .hosted import ADAPTER_EVIDENCE_SCHEMA, RECEIPT_SCHEMA, load_schema, sha256_bytes, stable_json
 from .guided_publisher import EXECUTE_SCHEMA, PREVIEW_SCHEMA
 from .schema import SchemaValidationError, validate_schema
 
 
 ROOT = Path(__file__).resolve().parents[2]
 PARITY_SCHEMA = ROOT / "schemas" / "rp-c01-m05-parity-evidence-v1.schema.json"
-REQUIRED_CHECKPOINTS = {
+SUCCESS_CHECKPOINT_SEQUENCE = (
+    "ACTIVATION_GATE",
     "PACKAGE_AUDIT",
+    "MISSION_PARSE",
+    "MISSION_SCHEMA",
     "MISSION_INTEGRITY",
+    "PROTECTED_ROUTE_INTENT",
+    "OPERATOR_VERIFY",
+    "REMOTE_LOCK",
+    "DUPLICATE_CHECK",
+    "FRESH_CLONE",
+    "CLEAN_START",
+    "SOURCE_BLOB_VERIFY",
     "CANDIDATE_STAGE",
+    "PATH_POLICY_VERIFY",
     "TREE_VERIFY",
+    "INSTALL",
+    "DIFF_CHECK",
+    "STAGE_VERIFY",
+    "COMMIT",
     "COMMIT_VERIFY",
+    "PUSH",
     "DRAFT_PR",
     "READBACK",
+)
+ADAPTER_FORBIDDEN_CONFIRMATION = {
+    "direct_main_write": False,
+    "force_push": False,
+    "auto_merge": False,
+    "ready_transition": False,
+    "workflow_dispatch": False,
+    "repository_setting_mutation": False,
+    "unprofiled_generated_output_mutation": False,
+    "protected_board_mutation": False,
+    "production_authority_activated": False,
+    "standing_authority": "NO",
 }
 
 
@@ -33,11 +61,14 @@ def _reject(condition: bool, message: str, code: str = "M05_PARITY_REJECTED") ->
         raise M05ParityError(message, code)
 
 
-def _validate_inputs(preview: dict[str, Any], execute: dict[str, Any], hosted: dict[str, Any]) -> None:
+def _validate_inputs(
+    preview: dict[str, Any], execute: dict[str, Any], hosted: dict[str, Any], adapter: dict[str, Any]
+) -> None:
     try:
         validate_schema(load_schema(PREVIEW_SCHEMA), preview)
         validate_schema(load_schema(EXECUTE_SCHEMA), execute)
         validate_schema(load_schema(RECEIPT_SCHEMA), hosted)
+        validate_schema(load_schema(ADAPTER_EVIDENCE_SCHEMA), adapter)
     except (SchemaValidationError, RuntimeError) as exc:
         raise M05ParityError("M05 parity input schema rejected", "M05_PARITY_INPUT_INVALID") from exc
 
@@ -47,15 +78,10 @@ def _all_forbidden_actions_false(
 ) -> bool:
     simple = (*preview["forbidden_actions"].values(), *execute["forbidden_actions"].values())
     hosted_values = hosted["forbidden_action_confirmation"].values()
-    confirmation = adapter.get("forbidden_action_confirmation")
-    if not isinstance(confirmation, dict):
-        return False
-    adapter_values = {key: value for key, value in confirmation.items() if key != "standing_authority"}
     return (
         all(value is False for value in simple)
         and all(value is False for value in hosted_values)
-        and all(value is False for value in adapter_values.values())
-        and confirmation.get("standing_authority") == "NO"
+        and adapter.get("forbidden_action_confirmation") == ADAPTER_FORBIDDEN_CONFIRMATION
     )
 
 
@@ -67,7 +93,7 @@ def build_m05_parity_evidence(
     direct_compiled_files: dict[str, bytes],
 ) -> dict[str, Any]:
     """Build a closed, non-promoting parity record from one guided hosted journey."""
-    _validate_inputs(preview, execute, hosted)
+    _validate_inputs(preview, execute, hosted, adapter)
     _reject(execute["result"] == "DISPATCHED", "guided Execute did not reach exact dispatch readback")
     _reject(hosted["result"] == "SUCCESS" and hosted["route"] == "ARROW_BOW_HOSTED", "hosted route did not succeed")
     _reject(adapter.get("result") == "SUCCESS", "Thread Engine evidence did not succeed")
@@ -130,8 +156,7 @@ def build_m05_parity_evidence(
     checkpoints = adapter.get("checkpoint_results")
     _reject(isinstance(checkpoints, list) and all(isinstance(item, dict) for item in checkpoints), "adapter checkpoint sequence missing")
     checkpoint_names = [item.get("checkpoint") for item in checkpoints]
-    _reject(len(checkpoint_names) == len(set(checkpoint_names)), "adapter checkpoint sequence contains duplicates")
-    _reject(REQUIRED_CHECKPOINTS.issubset(set(checkpoint_names)), "adapter checkpoint sequence incomplete")
+    _reject(checkpoint_names == list(SUCCESS_CHECKPOINT_SEQUENCE), "adapter checkpoint sequence drifted")
     _reject(all(item.get("status") == "COMPLETED" for item in checkpoints), "adapter checkpoint did not complete")
     _reject(_all_forbidden_actions_false(preview, execute, hosted, adapter), "forbidden-action confirmation failed")
 
