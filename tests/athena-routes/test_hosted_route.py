@@ -512,6 +512,8 @@ class HostedRouteTests(unittest.TestCase):
         self.assertIn("needs: preflight", workflow)
         self.assertIn("--preflight-only", workflow)
         self.assertIn("persist-credentials: false", workflow)
+        self.assertIn('git config --global user.name "github-actions[bot]"', workflow)
+        self.assertIn('git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"', workflow)
         self.assertIn("python -B -m tools.athena_routes.cli", workflow)
         self.assertNotIn("ATHENA_ARROW_B64:", workflow)
         self.assertNotIn("ATHENA_ARROW_SHA256:", workflow)

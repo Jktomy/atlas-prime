@@ -91,6 +91,10 @@ jobs:
           python-version: "3.12"
       - name: Configure ephemeral GitHub credential helper
         run: gh auth setup-git
+      - name: Configure ephemeral Git commit identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Revalidate and invoke hosted Arrow/Bow route
         run: >-
           python -B -m tools.athena_routes.cli
