@@ -44,6 +44,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Reusable templates | `templates/preview-bundle-template.md`, `templates/project-template.md`, `templates/protocol-template.md`, `templates/source-file-template.md`, `templates/support-file-template.md` |
 | Proven delivery evidence | `proof/prime-thread-engine-bootstrap-proof.md`, `proof/prime-spear-arrow-bow-parity-r01.md` |
 | Generated projections | `tools/build_index.py`, `generated/` |
+| Cross-platform generated parity and immutable checkpoint publishing | `governance/deterministic-conservation-contract.md`, `.github/workflows/generated-checkpoint-publisher.yml`, `tools/generated_checkpoint/` |
 | Migration and cutover evidence | `migration/codex-cutover.md`, `migration/codex-inheritance-manifest.md`, `migration/predecessor-snapshot.md`, `migration/rollback-map.md`, `migration/source-disposition-summary.json` |
 
 ## Automatic method routing

@@ -18,6 +18,7 @@ from tools.prime_continuity.engine import (
 
 REQUIRED = (
     ".github/workflows/athena-bow-hosted.yml",
+    ".github/workflows/generated-checkpoint-publisher.yml",
     "README.md",
     "atlas-prime.md",
     "bootstrap.md",
@@ -83,12 +84,15 @@ REQUIRED = (
     "continuity/prime-continuity-register-r01.json",
     "continuity/quest-engine-identities-r01.json",
     "governance/quest-engine-continuity-contract.md",
+    "governance/deterministic-conservation-contract.md",
     "routing/interaction-contract.md",
     "schemas/prime-continuity-register-v1.schema.json",
     "schemas/quest-board-v1.schema.json",
     "schemas/quest-engine-identity-register-v1.schema.json",
     "tools/prime_continuity/engine.py",
     "tools/prime_continuity/cli.py",
+    "tools/generated_checkpoint/core.py",
+    "tools/generated_checkpoint/cli.py",
     "migration/source-disposition-ledger.csv",
     "migration/source-disposition-summary.json",
     "schemas/capability-parity-register.schema.json",
