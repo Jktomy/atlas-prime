@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:8c2a387bfef17bfc8dfbea9548aed2da2c9feaff982bcd4bee49ced19ec2b62e
+Source fingerprint: sha256:0ec144f2943afb2b65e34ee5e2fc235888ff9c590104fb429d289bf4daa39ec3
 Generator format: 2
 Status: Generated support artifact
 
@@ -60,6 +60,8 @@ Status: Generated support artifact
 | `proof/oathbringer-production-acceptance-r01.md` | proof | yes | none |
 | `proof/prime-spear-arrow-bow-parity-r01.md` | proof | yes | none |
 | `proof/prime-thread-engine-bootstrap-proof.md` | proof | yes | none |
+| `proof/repairing-prime/cap011-hosted-multifile-proof-a-r01.md` | proof | no | none |
+| `proof/repairing-prime/cap011-hosted-multifile-proof-b-r01.md` | proof | no | none |
 | `proof/repairing-prime/direct-spear-pilot-r01.md` | proof | no | none |
 | `proof/repairing-prime/hosted-bow-pilot-r01.md` | proof | no | none |
 | `proof/repairing-prime/hosted-bow-proof-r02.md` | proof | no | none |
@@ -67,6 +69,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | proof | yes | none |
 | `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md` | proof | yes | none |
 | `proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md` | proof | yes | review |
+| `proof/repairing-prime/rp-c08-cap011-reconciliation-r01.md` | proof | no | none |
 | `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` | proof | yes | none |
 | `quests/found-silverlight.md` | quests | yes | policy-reference |
 | `quests/notums-watch.md` | quests | yes | policy-reference |
