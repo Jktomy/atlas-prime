@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:ea851fab592342a0ca2607c881cd46792e49674e85ae13aa5e437eb6464ac3c9
+Source fingerprint: sha256:9c9e1cc70079a5ac8b44e156b2c3a79e8964e1e91ef5267e7a1458736932d954
 Generator format: 2
 Status: Generated support artifact
 
@@ -66,6 +66,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/direct-spear-pilot-r01.md` | no |
 | `proof/repairing-prime/hosted-bow-pilot-r01.md` | no |
 | `proof/repairing-prime/hosted-bow-proof-r02.md` | no |
+| `proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.md` | no |
 | `proof/repairing-prime/rp-c01-route-evidence-r01.md` | no |
 | `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | no |
 | `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md` | yes |
