@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:9fc413c28bbb9c325e7aac51783402c1d3e1046fcc63eff8289ec366b3d2b1b3
+Source fingerprint: sha256:5a3174f916f8ccbd053338a2929e214acac2bcf668143b76a8e41bb94645fc6f
 Generator format: 2
 Status: Generated support artifact
 
@@ -53,6 +53,7 @@ Status: Generated support artifact
 | `proof/oathbringer-production-acceptance-r01.md` | proof | yes | none |
 | `proof/prime-spear-arrow-bow-parity-r01.md` | proof | yes | none |
 | `proof/prime-thread-engine-bootstrap-proof.md` | proof | yes | none |
+| `proof/repairing-prime/direct-spear-pilot-r01.md` | proof | no | none |
 | `proof/repairing-prime/hosted-bow-pilot-r01.md` | proof | no | none |
 | `quests/found-silverlight.md` | quests | yes | policy-reference |
 | `quests/notums-watch.md` | quests | yes | policy-reference |
