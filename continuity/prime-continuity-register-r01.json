@@ -1,0 +1,32 @@
+{
+  "schema_version": "atlas.prime-continuity-register.v1",
+  "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
+  "register_id": "PRIME-CONTINUITY-R01",
+  "register_revision": 1,
+  "source_base_sha": "0df35252206db32beea0a2bdd5270875c69fa15e",
+  "quest_board_sha256": "e47fbf14ee7cd2c1af57f5c8917a69891e44bd4a1a27e263bddf3406ee5b891c",
+  "event_ids": ["RP-C05-FOUNDATION-R01", "RP-C05-IMPORT-FS-R01", "RP-C05-IMPORT-NW-R01", "RP-C05-IMPORT-PF-R01"],
+  "entries": [
+    {
+      "continuity_id": "CONT-REPAIRING-PRIME-R01", "quest_id": "QUEST-REPAIRING-PRIME-R01", "quest_source": "quests/repairing-prime.md", "quest_source_sha256": "318d611ef8979cb6d9f029c57c45fb2ad89eb95de6c25028951ab491e296c42e", "quest_state": "READY_FOR_CAMPAIGN_1_PREVIEW",
+      "campaign_id": "RP-C05", "mission_id": null, "gate_id": "QUEST_ENGINE_AND_CONTINUITY_PROVEN", "current_position": "RP-C02 through RP-C04 are accepted; RP-C01 hosted and direct execution proofs are merged; RP-C05 continuity foundation is in progress.",
+      "blockers": ["RP-C01 fresh Work/Athena origin is unproven.", "RP-C01 end-to-end parity, fallback closure, and routine carrier retirement remain unproven."],
+      "next_action": "Complete RP-C05 continuity foundation and its one-entry bounded update proof.", "next_approval": "Exact-head CI and detached RP-C05 review.", "revision": 1, "last_event_id": "RP-C05-FOUNDATION-R01"
+    },
+    {
+      "continuity_id": "CONT-FOUND-SILVERLIGHT-R01", "quest_id": "QUEST-FOUND-SILVERLIGHT-R01", "quest_source": "quests/found-silverlight.md", "quest_source_sha256": "6899a9a62c69771f7797e1d957d51710a442fe861e6f0701e7c54da547fd9867", "quest_state": "READY_FOR_CAMPAIGN_1_PREVIEW",
+      "campaign_id": null, "mission_id": null, "gate_id": "FS-C01-M01-PREVIEW", "current_position": "Ready for the separately authorized FS-C01-M01 Preview.", "blockers": [],
+      "next_action": "Prepare the FS-C01-M01 Preview without consuming Repairing Prime scope.", "next_approval": "Separate Jayson instruction.", "revision": 1, "last_event_id": "RP-C05-IMPORT-FS-R01"
+    },
+    {
+      "continuity_id": "CONT-PROMETHEUS-FIRE-R01", "quest_id": "QUEST-PROMETHEUS-FIRE-20260701", "quest_source": "quests/prometheus-fire.md", "quest_source_sha256": "79e30304809b0db198a8632c8477fc646cad5f8030e8405cb6e06f6f3555cd6b", "quest_state": "READY_FOR_CAMPAIGN_1_PREVIEW",
+      "campaign_id": null, "mission_id": null, "gate_id": "PF-C01-PREVIEW", "current_position": "Awaiting PF-C01 preview and Jayson-side hardware readiness.", "blockers": ["Jayson-side hardware readiness is external to Prime."],
+      "next_action": "Resume only with protected runtime evidence and separate authority.", "next_approval": "Jayson-side hardware readiness.", "revision": 1, "last_event_id": "RP-C05-IMPORT-PF-R01"
+    },
+    {
+      "continuity_id": "CONT-NOTUMS-WATCH-R01", "quest_id": "QUEST-NOTUMS-WATCH-20260708", "quest_source": "quests/notums-watch.md", "quest_source_sha256": "ac07b89cde437fd774ec3d7cbd8c7fa6b44c551b3910608c8eb1296e3de0326f", "quest_state": "READY_FOR_JAYSON_EXECUTION_PACKAGE",
+      "campaign_id": null, "mission_id": null, "gate_id": "NW-C01-READINESS", "current_position": "Ready for the Jayson execution package and protected proof.", "blockers": ["Protected runtime placement and execution remain Jayson-side."],
+      "next_action": "Use the approved execution package when Jayson provides runtime authority.", "next_approval": "Jayson execution and protected evidence readback.", "revision": 1, "last_event_id": "RP-C05-IMPORT-NW-R01"
+    }
+  ]
+}
