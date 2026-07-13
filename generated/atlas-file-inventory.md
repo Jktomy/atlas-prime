@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:691a09558590bb56040b6e9997baa4a1ee9d24146fe3062c206428e56e47a546
+Source fingerprint: sha256:8c2a387bfef17bfc8dfbea9548aed2da2c9feaff982bcd4bee49ced19ec2b62e
 Generator format: 2
 Status: Generated support artifact
 
@@ -67,6 +67,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | proof | yes | none |
 | `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md` | proof | yes | none |
 | `proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md` | proof | yes | review |
+| `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` | proof | yes | none |
 | `quests/found-silverlight.md` | quests | yes | policy-reference |
 | `quests/notums-watch.md` | quests | yes | policy-reference |
 | `quests/prime-continuity-proof.md` | quests | yes | none |
