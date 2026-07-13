@@ -32,6 +32,18 @@ class PreparationError(Exception):
         self.code = code
 
 
+def load_github_event_inputs(path: Path) -> dict[str, str]:
+    try:
+        event = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise PreparationError("GitHub event input is unavailable", "GENERATED_CHECKPOINT_EVENT") from exc
+    inputs = event.get("inputs") if isinstance(event, dict) else None
+    required = {"base_sha", "mission_id", "replay_nonce", "public_clean_confirmation"}
+    if not isinstance(inputs, dict) or set(inputs) != required or not all(isinstance(inputs[key], str) for key in required):
+        raise PreparationError("GitHub event inputs have an invalid closed shape", "GENERATED_CHECKPOINT_EVENT")
+    return {key: inputs[key] for key in sorted(required)}
+
+
 def git_blob_sha(data: bytes) -> str:
     return hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\0" + data).hexdigest()
 

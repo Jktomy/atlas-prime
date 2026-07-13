@@ -36,7 +36,12 @@ def main(argv: list[str] | None = None) -> int:
         if exc.receipt:
             sys.stderr.write(stable_json(exc.receipt))
         else:
-            sys.stderr.write(str(exc) + "\n")
+            sys.stderr.write(stable_json({
+                "result": "REJECTED",
+                "error_code": exc.code,
+                "error_stage": exc.stage,
+                "message": "Thread Engine adapter rejected before receipt initialization.",
+            }))
         return 2
 
 
