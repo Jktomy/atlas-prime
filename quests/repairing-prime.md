@@ -160,3 +160,10 @@ Linux/Windows validation; clean-clone recovery; independent whole-Quest
 Strikeforce; Quest Board closeout; Phoenix recovery; and restart-safe Sunset.
 
 **Gate:** `REPAIRING_PRIME_COMPLETE`
+
+Capability reconciliation evidence:
+`proof/repairing-prime/rp-c08-capability-reconciliation-r01.md`. The 28-record
+ledger is reconciled at 11 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED,
+1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 4 STILL_MISSING. This is a partial
+closeout boundary only: CAP-010, CAP-011, CAP-015, and CAP-027 remain missing,
+and RP-C08 stays in progress.
