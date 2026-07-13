@@ -37,6 +37,13 @@
       "quest_id": "QUEST-NOTUMS-WATCH-20260708",
       "source": "quests/notums-watch.md",
       "state": "READY_FOR_JAYSON_EXECUTION_PACKAGE"
+    },
+    {
+      "next_gate": "PCP-C01-PREVIEW",
+      "owner": "Codex / Source Governance",
+      "quest_id": "QUEST-PRIME-CONTINUITY-PROOF-R01",
+      "source": "quests/prime-continuity-proof.md",
+      "state": "READY_FOR_CAMPAIGN_1_PREVIEW"
     }
   ],
   "format_version": "1.0",

@@ -2,10 +2,10 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 2,
+  "register_revision": 3,
   "source_base_sha": "0df35252206db32beea0a2bdd5270875c69fa15e",
-  "quest_board_sha256": "e47fbf14ee7cd2c1af57f5c8917a69891e44bd4a1a27e263bddf3406ee5b891c",
-  "event_ids": ["RP-C05-FOUNDATION-R01", "RP-C05-IMPORT-FS-R01", "RP-C05-IMPORT-NW-R01", "RP-C05-IMPORT-PF-R01", "RP-C05-AJ07-ONE-ENTRY-R01"],
+  "quest_board_sha256": "b8d6c52a5619b54776bad410f09ab7f0410661837765f4c2a8c503440e55267b",
+  "event_ids": ["RP-C05-FOUNDATION-R01", "RP-C05-IMPORT-FS-R01", "RP-C05-IMPORT-NW-R01", "RP-C05-IMPORT-PF-R01", "RP-C05-AJ07-ONE-ENTRY-R01", "RP-C05-AJ08-ADMISSION-R01"],
   "entries": [
     {
       "continuity_id": "CONT-REPAIRING-PRIME-R01", "quest_id": "QUEST-REPAIRING-PRIME-R01", "quest_source": "quests/repairing-prime.md", "quest_source_sha256": "318d611ef8979cb6d9f029c57c45fb2ad89eb95de6c25028951ab491e296c42e", "quest_state": "READY_FOR_CAMPAIGN_1_PREVIEW",
@@ -27,6 +27,11 @@
       "continuity_id": "CONT-NOTUMS-WATCH-R01", "quest_id": "QUEST-NOTUMS-WATCH-20260708", "quest_source": "quests/notums-watch.md", "quest_source_sha256": "ac07b89cde437fd774ec3d7cbd8c7fa6b44c551b3910608c8eb1296e3de0326f", "quest_state": "READY_FOR_JAYSON_EXECUTION_PACKAGE",
       "campaign_id": null, "mission_id": null, "gate_id": "NW-C01-READINESS", "current_position": "Ready for the Jayson execution package and protected proof.", "blockers": ["Protected runtime placement and execution remain Jayson-side."],
       "next_action": "Use the approved execution package when Jayson provides runtime authority.", "next_approval": "Jayson execution and protected evidence readback.", "revision": 1, "last_event_id": "RP-C05-IMPORT-NW-R01"
+    },
+    {
+      "continuity_id": "CONT-PRIME-CONTINUITY-PROOF-R01", "quest_id": "QUEST-PRIME-CONTINUITY-PROOF-R01", "quest_source": "quests/prime-continuity-proof.md", "quest_source_sha256": "9ffd89797ff648ea4a1bf56a674ea8abd25db3dca65a2c3597d82fc7c2b826e0", "quest_state": "READY_FOR_CAMPAIGN_1_PREVIEW",
+      "campaign_id": null, "mission_id": null, "gate_id": "PCP-C01-PREVIEW", "current_position": "Admitted through the schema-driven Quest Board and continuity registry with validator code unchanged.", "blockers": [],
+      "next_action": "Preserve AJ-08 canonical admission evidence, then prepare a separately reviewed proof-Quest closeout.", "next_approval": "Exact-head AJ-08 CI, detached review, and canonical readback.", "revision": 1, "last_event_id": "RP-C05-AJ08-ADMISSION-R01"
     }
   ]
 }
