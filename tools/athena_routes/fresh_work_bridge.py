@@ -4,12 +4,10 @@ import argparse
 import json
 import os
 import sys
-import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Callable, Protocol
+from typing import Any, Protocol
 
-from .guided_publisher import GuidedPublisherError, execute_preview
 from .hosted import load_schema, sha256_bytes, stable_json
 from .schema import validate_schema
 
@@ -43,6 +41,18 @@ FORBIDDEN_ACTIONS = {
     "standing_authority": False,
     "second_writer": False,
 }
+VERIFICATION_FIELDS = (
+    "origin_receipt_sha256",
+    "verification_method",
+    "verification_evidence_sha256",
+    "task_identity_sha256",
+    "origin_nonce_sha256",
+    "mission_id",
+    "base_sha",
+    "carrier_sha256",
+    "preview_sha256",
+    "workflow_blob_sha",
+)
 
 
 class FreshWorkBridgeError(RuntimeError):
@@ -51,12 +61,13 @@ class FreshWorkBridgeError(RuntimeError):
         self.code = code
 
 
-class OriginVerifier(Protocol):
-    def __call__(self, receipt: dict[str, Any]) -> dict[str, Any]:
-        """Return a trusted, independently obtained verification result."""
-
-
-Runner = Callable[..., Any]
+class OriginReadback(Protocol):
+    def __call__(
+        self,
+        receipt: dict[str, Any],
+        origin_receipt_sha256: str,
+    ) -> dict[str, Any]:
+        """Return independently obtained, full-binding origin readback."""
 
 
 def _canonical_json(
@@ -112,7 +123,10 @@ def _verify_time_window(receipt: dict[str, Any], now: datetime) -> None:
     issued = _parse_time(receipt["issued_at"])
     expires = _parse_time(receipt["expires_at"])
     observed = now.astimezone(timezone.utc)
-    if expires <= issued or (expires - issued).total_seconds() > MAX_ORIGIN_LIFETIME_SECONDS:
+    if (
+        expires <= issued
+        or (expires - issued).total_seconds() > MAX_ORIGIN_LIFETIME_SECONDS
+    ):
         raise FreshWorkBridgeError(
             "fresh Work receipt lifetime rejected",
             "FRESH_WORK_TIME_INVALID",
@@ -136,49 +150,142 @@ def _assert_external(path: Path, label: str) -> None:
     )
 
 
-def _verify_origin(
-    receipt: dict[str, Any],
+def _read_bound_inputs(
+    origin_receipt_path: Path,
+    preview_path: Path,
+    carrier_path: Path,
     *,
-    verifier: OriginVerifier | None,
-    now: datetime,
-) -> dict[str, Any]:
-    _verify_time_window(receipt, now)
-    if verifier is None:
+    confirmed_preview_sha256: str,
+) -> tuple[dict[str, Any], str]:
+    for path, label in (
+        (origin_receipt_path, "origin receipt"),
+        (preview_path, "Preview receipt"),
+        (carrier_path, "carrier"),
+    ):
+        _assert_external(path, label)
+
+    origin, origin_raw = _canonical_json(origin_receipt_path, ORIGIN_SCHEMA)
+    try:
+        if preview_path.is_symlink() or not preview_path.is_file():
+            raise OSError("Preview is not a regular file")
+        if carrier_path.is_symlink() or not carrier_path.is_file():
+            raise OSError("carrier is not a regular file")
+        preview_raw = preview_path.read_bytes()
+        preview = json.loads(preview_raw.decode("utf-8"))
+        carrier_sha = sha256_bytes(carrier_path.read_bytes())
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise FreshWorkBridgeError(
-            "no independently trusted Work-origin verifier is available",
+            "fresh Work bound input is invalid",
+            "FRESH_WORK_BOUND_INPUT_INVALID",
+        ) from exc
+    if not isinstance(preview, dict):
+        raise FreshWorkBridgeError(
+            "fresh Work Preview is not an object",
+            "FRESH_WORK_BOUND_INPUT_INVALID",
+        )
+
+    observed_preview_sha = sha256_bytes(preview_raw)
+    bindings = {
+        "preview_sha256": observed_preview_sha,
+        "carrier_sha256": carrier_sha,
+        "mission_id": preview.get("mission_id"),
+        "base_sha": preview.get("canonical_main_sha"),
+        "workflow_blob_sha": preview.get("workflow_blob_sha"),
+    }
+    for field, observed in bindings.items():
+        if origin.get(field) != observed:
+            raise FreshWorkBridgeError(
+                "fresh Work origin binding mismatch",
+                "FRESH_WORK_BINDING_MISMATCH",
+            )
+    if confirmed_preview_sha256 != observed_preview_sha:
+        raise FreshWorkBridgeError(
+            "exact Preview confirmation is required",
+            "PREVIEW_CONFIRMATION_MISMATCH",
+        )
+    return origin, sha256_bytes(origin_raw)
+
+
+def _expected_readback(
+    origin: dict[str, Any],
+    origin_receipt_sha256: str,
+) -> dict[str, Any]:
+    return {
+        "verified": True,
+        "origin_receipt_sha256": origin_receipt_sha256,
+        "verification_method": origin["verification_method"],
+        "verification_evidence_sha256": origin["verification_evidence_sha256"],
+        "task_identity_sha256": origin["task_identity_sha256"],
+        "origin_nonce_sha256": origin["origin_nonce_sha256"],
+        "mission_id": origin["mission_id"],
+        "base_sha": origin["base_sha"],
+        "carrier_sha256": origin["carrier_sha256"],
+        "preview_sha256": origin["preview_sha256"],
+        "workflow_blob_sha": origin["workflow_blob_sha"],
+    }
+
+
+def build_verified_dispatch_plan(
+    origin_receipt_path: Path,
+    preview_path: Path,
+    carrier_path: Path,
+    *,
+    confirmed_preview_sha256: str,
+    readback: OriginReadback | None,
+    now: datetime | None = None,
+) -> dict[str, Any]:
+    """Build a read-only, non-executable binding plan.
+
+    This construction contains no workflow-dispatch or repository-mutation path.
+    A later protected integration must supply a platform trust anchor and
+    separately wire an accepted plan to the existing guided Execute route.
+    """
+    origin, origin_sha = _read_bound_inputs(
+        origin_receipt_path,
+        preview_path,
+        carrier_path,
+        confirmed_preview_sha256=confirmed_preview_sha256,
+    )
+    _verify_time_window(origin, now or datetime.now(timezone.utc))
+    if readback is None:
+        raise FreshWorkBridgeError(
+            "no independently trusted Work-origin readback is available",
             "TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE",
         )
     try:
-        result = verifier(receipt)
+        observed = readback(origin, origin_sha)
     except Exception as exc:
         raise FreshWorkBridgeError(
-            "trusted Work-origin verification failed",
+            "trusted Work-origin readback failed",
             "TRUSTED_ORIGIN_VERIFICATION_FAILED",
         ) from exc
-    expected_keys = {
-        "verified",
-        "verification_method",
-        "verification_evidence_sha256",
-        "task_identity_sha256",
-        "origin_nonce_sha256",
-    }
-    if not isinstance(result, dict) or set(result) != expected_keys or result.get("verified") is not True:
+    expected = _expected_readback(origin, origin_sha)
+    if not isinstance(observed, dict) or set(observed) != set(expected):
         raise FreshWorkBridgeError(
-            "trusted Work-origin verification was not affirmative",
+            "trusted Work-origin readback is incomplete",
             "TRUSTED_ORIGIN_VERIFICATION_FAILED",
         )
-    for field in (
-        "verification_method",
-        "verification_evidence_sha256",
-        "task_identity_sha256",
-        "origin_nonce_sha256",
-    ):
-        if result.get(field) != receipt.get(field):
-            raise FreshWorkBridgeError(
-                "trusted Work-origin verification did not match the submitted receipt",
-                "TRUSTED_ORIGIN_VERIFICATION_MISMATCH",
-            )
-    return result
+    if any(observed.get(field) != value for field, value in expected.items()):
+        raise FreshWorkBridgeError(
+            "trusted Work-origin readback does not match the bound receipt",
+            "TRUSTED_ORIGIN_VERIFICATION_MISMATCH",
+        )
+    return {
+        "schema_version": "atlas.athena.fresh-work-dispatch-plan.v1",
+        "state": "READ_ONLY_CANDIDATE_NOT_EXECUTABLE",
+        "repository": REPOSITORY,
+        "authorizer": "Jayson",
+        "semantic_invoker": "Athena",
+        "originating_surface": "CHATGPT_WORK",
+        **{field: expected[field] for field in VERIFICATION_FIELDS},
+        "remote_dispatch_authority": False,
+        "guided_execute_invoked": False,
+        "bridge_mutation": dict(BRIDGE_MUTATION),
+        "forbidden_actions": dict(FORBIDDEN_ACTIONS),
+        "next_gate": (
+            "SEPARATE_PROTECTED_PLATFORM_TRUST_INTEGRATION_AND_LIVE_PREVIEW"
+        ),
+    }
 
 
 def _journey_base(origin: dict[str, Any], origin_sha256: str) -> dict[str, Any]:
@@ -203,19 +310,31 @@ def _journey_base(origin: dict[str, Any], origin_sha256: str) -> dict[str, Any]:
     }
 
 
-def _validated_journey(value: dict[str, Any]) -> dict[str, Any]:
+def _blocked(base: dict[str, Any], *, code: str) -> dict[str, Any]:
+    return base | {
+        "result": "BLOCKED",
+        "guided_execute_receipt_sha256": None,
+        "workflow_run_id": None,
+        "workflow_run_url": None,
+        "workflow_run_head_sha": None,
+        "stage": "ORIGIN_VERIFICATION",
+        "error_code": code,
+        "stop_point": "PRE_DISPATCH_BLOCKED",
+        "remote_dispatch_possible": False,
+        "rollback": "NO_REMOTE_MUTATION",
+    }
+
+
+def _reserve_blocked(path: Path, value: dict[str, Any]) -> None:
+    _assert_external(path, "journey receipt")
     try:
         validate_schema(load_schema(JOURNEY_SCHEMA), value)
+        payload = stable_json(value).encode("utf-8")
     except Exception as exc:
         raise FreshWorkBridgeError(
-            "fresh Work journey receipt construction failed",
+            "fresh Work blocked receipt construction failed",
             "FRESH_WORK_JOURNEY_RECEIPT_INVALID",
         ) from exc
-    return value
-
-
-def _reserve_json(path: Path, value: dict[str, Any]) -> None:
-    payload = stable_json(_validated_journey(value)).encode("utf-8")
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("xb") as stream:
@@ -234,216 +353,58 @@ def _reserve_json(path: Path, value: dict[str, Any]) -> None:
         ) from exc
 
 
-def _replace_json(path: Path, value: dict[str, Any]) -> None:
-    payload = stable_json(_validated_journey(value)).encode("utf-8")
-    temporary: Path | None = None
-    try:
-        with tempfile.NamedTemporaryFile(
-            dir=path.parent,
-            prefix=f".{path.name}.",
-            suffix=".tmp",
-            delete=False,
-        ) as stream:
-            temporary = Path(stream.name)
-            stream.write(payload)
-            stream.flush()
-            os.fsync(stream.fileno())
-        os.replace(temporary, path)
-    except OSError as exc:
-        if temporary is not None:
-            temporary.unlink(missing_ok=True)
-        raise FreshWorkBridgeError(
-            "fresh Work journey finalization failed; preserved intent receipt governs",
-            "FRESH_WORK_JOURNEY_FINALIZE_FAILED",
-        ) from exc
-
-
-def _blocked(base: dict[str, Any], *, code: str) -> dict[str, Any]:
-    return base | {
-        "result": "BLOCKED",
-        "guided_execute_receipt_sha256": None,
-        "workflow_run_id": None,
-        "workflow_run_url": None,
-        "workflow_run_head_sha": None,
-        "stage": "ORIGIN_VERIFICATION",
-        "error_code": code,
-        "stop_point": "PRE_DISPATCH_BLOCKED",
-        "remote_dispatch_possible": False,
-        "rollback": "NO_REMOTE_MUTATION",
-    }
-
-
-def execute_fresh_work(
+def build_unavailable_receipt(
     origin_receipt_path: Path,
     preview_path: Path,
     carrier_path: Path,
     journey_receipt_path: Path,
-    guided_execute_receipt_path: Path,
     *,
     confirmed_preview_sha256: str,
-    launch_nonce: str,
-    public_clean_confirmation: str,
-    verifier: OriginVerifier | None,
     now: datetime | None = None,
-    runner: Runner | None = None,
-    package_reader: Callable[[Path, str], Any] | None = None,
-    compiler: Callable[..., dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
-    for path, label in (
-        (origin_receipt_path, "origin receipt"),
-        (preview_path, "Preview receipt"),
-        (carrier_path, "carrier"),
-        (journey_receipt_path, "journey receipt"),
-        (guided_execute_receipt_path, "guided Execute receipt"),
-    ):
-        _assert_external(path, label)
-
-    origin, origin_raw = _canonical_json(origin_receipt_path, ORIGIN_SCHEMA)
-    origin_sha = sha256_bytes(origin_raw)
+    """Record the current construction's truthful no-verifier boundary."""
+    origin, origin_sha = _read_bound_inputs(
+        origin_receipt_path,
+        preview_path,
+        carrier_path,
+        confirmed_preview_sha256=confirmed_preview_sha256,
+    )
     base = _journey_base(origin, origin_sha)
-
     try:
-        preview_raw = preview_path.read_bytes()
-        preview = json.loads(preview_raw.decode("utf-8"))
-        carrier_sha = sha256_bytes(carrier_path.read_bytes())
-    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
-        blocked = _blocked(base, code="FRESH_WORK_BOUND_INPUT_INVALID")
-        _reserve_json(journey_receipt_path, blocked)
-        return blocked
-
-    observed_preview_sha = sha256_bytes(preview_raw)
-    bindings = {
-        "preview_sha256": observed_preview_sha,
-        "carrier_sha256": carrier_sha,
-        "mission_id": preview.get("mission_id") if isinstance(preview, dict) else None,
-        "base_sha": preview.get("canonical_main_sha") if isinstance(preview, dict) else None,
-        "workflow_blob_sha": preview.get("workflow_blob_sha") if isinstance(preview, dict) else None,
-    }
-    for field, observed in bindings.items():
-        if origin.get(field) != observed:
-            blocked = _blocked(base, code="FRESH_WORK_BINDING_MISMATCH")
-            _reserve_json(journey_receipt_path, blocked)
-            return blocked
-    if confirmed_preview_sha256 != observed_preview_sha:
-        blocked = _blocked(base, code="PREVIEW_CONFIRMATION_MISMATCH")
-        _reserve_json(journey_receipt_path, blocked)
-        return blocked
-
-    try:
-        _verify_origin(
-            origin,
-            verifier=verifier,
-            now=now or datetime.now(timezone.utc),
-        )
+        _verify_time_window(origin, now or datetime.now(timezone.utc))
+        code = "TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE"
     except FreshWorkBridgeError as exc:
-        blocked = _blocked(base, code=exc.code)
-        _reserve_json(journey_receipt_path, blocked)
-        return blocked
-
-    intent = base | {
-        "result": "PARTIAL",
-        "guided_execute_receipt_sha256": None,
-        "workflow_run_id": None,
-        "workflow_run_url": None,
-        "workflow_run_head_sha": None,
-        "stage": "PARTIAL_STATE_PRESERVED",
-        "error_code": "FRESH_WORK_DISPATCH_INTENT_JOURNALED",
-        "stop_point": "PARTIAL_STATE_PRESERVED",
-        "remote_dispatch_possible": True,
-        "rollback": "PRESERVE_AND_REVIEW_NO_RETRY",
-    }
-    _reserve_json(journey_receipt_path, intent)
-
-    kwargs: dict[str, Any] = {
-        "confirmed_preview_sha256": confirmed_preview_sha256,
-        "launch_nonce": launch_nonce,
-        "public_clean_confirmation": public_clean_confirmation,
-        "runner": runner,
-        "package_reader": package_reader,
-        "compiler": compiler,
-    }
-    if runner is None:
-        kwargs.pop("runner")
-    if package_reader is None:
-        kwargs.pop("package_reader")
-    if compiler is None:
-        kwargs.pop("compiler")
-
-    try:
-        guided = execute_preview(
-            preview_path,
-            carrier_path,
-            guided_execute_receipt_path,
-            **kwargs,
-        )
-    except GuidedPublisherError as exc:
-        blocked = _blocked(base, code=exc.code)
-        _replace_json(journey_receipt_path, blocked)
-        return blocked
-
-    guided_digest = sha256_bytes(guided_execute_receipt_path.read_bytes())
-    if guided.get("result") == "DISPATCHED":
-        final = base | {
-            "result": "DISPATCHED",
-            "guided_execute_receipt_sha256": guided_digest,
-            "workflow_run_id": guided.get("workflow_run_id"),
-            "workflow_run_url": guided.get("workflow_run_url"),
-            "workflow_run_head_sha": guided.get("workflow_run_head_sha"),
-            "stage": "GUIDED_DISPATCH_READBACK",
-            "error_code": None,
-            "stop_point": "HOSTED_WORKFLOW_DISPATCH_READBACK",
-            "remote_dispatch_possible": True,
-            "rollback": "HOSTED_ROUTE_RECEIPT_GOVERNS",
-        }
-    else:
-        final = base | {
-            "result": "PARTIAL",
-            "guided_execute_receipt_sha256": guided_digest,
-            "workflow_run_id": guided.get("workflow_run_id"),
-            "workflow_run_url": guided.get("workflow_run_url"),
-            "workflow_run_head_sha": guided.get("workflow_run_head_sha"),
-            "stage": "PARTIAL_STATE_PRESERVED",
-            "error_code": guided.get("error_code") or "GUIDED_DISPATCH_PARTIAL",
-            "stop_point": "PARTIAL_STATE_PRESERVED",
-            "remote_dispatch_possible": True,
-            "rollback": "PRESERVE_AND_REVIEW_NO_RETRY",
-        }
-    _replace_json(journey_receipt_path, final)
-    return _validated_journey(final)
+        code = exc.code
+    receipt = _blocked(base, code=code)
+    _reserve_blocked(journey_receipt_path, receipt)
+    return receipt
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "Fail-closed fresh Work/Athena origin bridge over the existing "
-            "guided publisher"
+            "Read-only fresh Work/Athena origin construction boundary; "
+            "no workflow dispatch is implemented"
         )
     )
     parser.add_argument("--origin-receipt", required=True, type=Path)
     parser.add_argument("--preview", required=True, type=Path)
     parser.add_argument("--carrier", required=True, type=Path)
     parser.add_argument("--journey-receipt", required=True, type=Path)
-    parser.add_argument("--guided-execute-receipt", required=True, type=Path)
     parser.add_argument("--confirm-preview-sha256", required=True)
-    parser.add_argument("--launch-nonce", required=True)
-    parser.add_argument(
-        "--public-clean-confirmation",
-        required=True,
-        choices=["PUBLIC_CLEAN_CONFIRMED"],
-    )
     args = parser.parse_args(argv)
 
-    receipt = execute_fresh_work(
-        args.origin_receipt.resolve(),
-        args.preview.resolve(),
-        args.carrier.resolve(),
-        args.journey_receipt.resolve(),
-        args.guided_execute_receipt.resolve(),
-        confirmed_preview_sha256=args.confirm_preview_sha256,
-        launch_nonce=args.launch_nonce,
-        public_clean_confirmation=args.public_clean_confirmation,
-        verifier=None,
-    )
+    try:
+        receipt = build_unavailable_receipt(
+            args.origin_receipt.resolve(),
+            args.preview.resolve(),
+            args.carrier.resolve(),
+            args.journey_receipt.resolve(),
+            confirmed_preview_sha256=args.confirm_preview_sha256,
+        )
+    except FreshWorkBridgeError as exc:
+        sys.stderr.write(f"Fresh Work bridge stopped safely: {exc.code}\n")
+        return 2
     sys.stdout.write(stable_json({
         "result": receipt["result"],
         "mission_id": receipt["mission_id"],
@@ -451,7 +412,7 @@ def main(argv: list[str] | None = None) -> int:
         "stop_point": receipt["stop_point"],
         "error_code": receipt["error_code"],
     }))
-    return 0 if receipt["result"] == "DISPATCHED" else 2
+    return 2
 
 
 if __name__ == "__main__":
