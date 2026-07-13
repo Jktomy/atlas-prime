@@ -10,7 +10,7 @@
       "state": "COMPLETE"
     },
     {
-      "next_gate": "RP-C07 Preview — Acceptance Journey Closure",
+      "next_gate": "RP-C08 Preview — Final Capability-Parity and Quest Closeout",
       "owner": "Codex / Source Governance",
       "quest_id": "QUEST-REPAIRING-PRIME-R01",
       "source": "quests/repairing-prime.md",

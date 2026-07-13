@@ -33,15 +33,18 @@ last_verified: 2026-07-12
 **Supporting Projects:** Artemis, Phoenix<br>
 **Current lane:** `PLAN -> VERIFY`<br>
 **Current state:** `IN_PROGRESS`<br>
-**Current Campaign:** `RP-C07`<br>
-**Next gate:** `RP-C07 Preview — Acceptance Journey Closure`
+**Current Campaign:** `RP-C08`<br>
+**Next gate:** `RP-C08 Preview — Final Capability-Parity and Quest Closeout`
 
 RP-C02 through RP-C05 are complete from accepted canonical evidence. RP-C01
 remains independently in progress with its exact unproven and partial missions;
 advancing the active campaign pointer does not promote or erase those blockers.
 RP-C06 is complete from accepted live hosted parity, publication, rejection,
-exact-head CI, detached review, and canonical readback evidence. RP-C07 is now
-active for exact AJ-01 through AJ-12 disposition reconciliation.
+exact-head CI, detached review, and canonical readback evidence. RP-C07 is
+complete from an exact AJ-01 through AJ-12 disposition reconciliation. AJ-01,
+AJ-03, AJ-11, and AJ-12 are UNPROVEN, and all other journeys are PROVEN;
+those boundaries remain controlling while RP-C08 performs final capability and
+Quest closeout.
 
 ## Purpose
 
@@ -143,6 +146,12 @@ Reconcile AJ-01 through AJ-12. Preserve accepted AJ-04 through AJ-06. Every
 journey ends as PROVEN, BLOCKED, or UNPROVEN with exact evidence.
 
 **Gate:** `AJ_01_THROUGH_AJ_12_RECONCILED`
+
+Accepted evidence:
+`proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md`. Every journey
+has exactly one controlling `PROVEN`, `BLOCKED`, or `UNPROVEN` disposition with
+exact evidence or the smallest missing action. This gate reconciles the matrix;
+it does not promote incomplete journeys or erase the independent RP-C01 lane.
 
 ## RP-C08 — Final Capability-Parity and Quest Closeout
 
