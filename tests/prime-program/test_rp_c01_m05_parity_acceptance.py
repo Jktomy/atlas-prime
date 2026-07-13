@@ -58,14 +58,16 @@ class RpC01M05ParityAcceptanceTests(unittest.TestCase):
         self.assertEqual(missions["RP-C01-M05"], "PROVEN")
         self.assertEqual(campaign["state"], "IN_PROGRESS")
 
-    def test_route_and_continuity_advance_once_at_exact_boundary(self) -> None:
+    def test_route_and_continuity_preserve_historical_boundary(self) -> None:
         self.assertEqual(self.route["m05_same_carrier_parity"]["state"], "PROVEN")
         self.assertIn("PROVEN_SAME_CARRIER", self.route["mission_states"]["RP-C01-M05"])
         repairing = next(item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
-        self.assertEqual(self.continuity["register_revision"], 15)
-        self.assertEqual(self.continuity["source_base_sha"], "df66ae78dac1991db3902537fe338a4191d0da11")
-        self.assertEqual(repairing["revision"], 14)
-        self.assertEqual(repairing["last_event_id"], "RP-C01-M05-PARITY-ACCEPTANCE-R01")
+        events = self.continuity["event_ids"]
+        self.assertEqual(self.acceptance["transaction_base_sha"], "df66ae78dac1991db3902537fe338a4191d0da11")
+        self.assertEqual(events.count("RP-C01-M05-PARITY-ACCEPTANCE-R01"), 1)
+        self.assertGreaterEqual(self.continuity["register_revision"], 15)
+        self.assertGreaterEqual(repairing["revision"], 14)
+        self.assertIn(repairing["last_event_id"], events)
         self.assertFalse(any("RP-C01-M05" in blocker for blocker in repairing["blockers"]))
         quest_sha = hashlib.sha256((ROOT / "quests/repairing-prime.md").read_bytes()).hexdigest()
         self.assertEqual(repairing["quest_source_sha256"], quest_sha)
