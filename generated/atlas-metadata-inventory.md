@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:79ede66f6e3128db17c65384757ccb7236b383da65ef180ba7e0a04a8b8eee6f
+Source fingerprint: sha256:a9e108b3f748bf735068fb691bb4575b6f25ef116dd9bd5def5639b9fc57b9d9
 Generator format: 2
 Status: Generated support artifact
 
@@ -86,6 +86,7 @@ Status: Generated support artifact
 | `tools/atlas-sword/README.md` | missing | missing | missing | missing |
 | `tools/atlas-sword/tests/test-contract.md` | missing | missing | missing | missing |
 | `tools/atlas_lifecycle/README.md` | missing | missing | missing | missing |
+| `tools/generated_checkpoint/README.md` | missing | missing | missing | missing |
 | `tools/oathbringer-foundry/README.md` | missing | missing | missing | missing |
 | `tools/prime_continuity/README.md` | missing | missing | missing | missing |
 | `tools/resonance/README.md` | missing | missing | missing | missing |
