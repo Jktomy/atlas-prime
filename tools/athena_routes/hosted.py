@@ -320,6 +320,13 @@ def build_request(values: dict[str, str], package: Any, event_bytes: bytes, run:
     if str(run.get("id")) != values["GITHUB_RUN_ID"] or int(run.get("run_attempt", 0)) != int(values["GITHUB_RUN_ATTEMPT"]):
         raise HostedRouteError("run identity readback mismatch", "RUN_IDENTITY_REJECTED")
     weave = package.weave
+    run_head = run.get("head_sha")
+    if run.get("head_branch") != "main" or not isinstance(run_head, str) or not SHA40.fullmatch(run_head):
+        raise HostedRouteError("workflow run base readback mismatch", "RUN_IDENTITY_REJECTED")
+    if run_head != values["GITHUB_WORKFLOW_SHA"]:
+        raise HostedRouteError("workflow source does not match run head", "WORKFLOW_IDENTITY_REJECTED")
+    if weave["base_sha"] != run_head:
+        raise HostedRouteError("carrier base is stale", "BASE_STALE")
     expected_branch = expected_mission_branch(weave["weave_id"], weave["base_sha"])
     if weave["branch"] != expected_branch:
         raise HostedRouteError("mission branch is not deterministic", "REPLAY_BRANCH_MISMATCH")

@@ -48,6 +48,8 @@ def run_metadata() -> dict:
         "run_attempt": 1,
         "created_at": "2026-07-12T00:00:00Z",
         "updated_at": "2026-07-12T00:00:01Z",
+        "head_branch": "main",
+        "head_sha": "a" * 40,
         "actor": {"login": "Jktomy"},
         "triggering_actor": {"login": "Jktomy"},
     }
@@ -55,7 +57,7 @@ def run_metadata() -> dict:
 
 def package(carrier_sha256: str, path: str = "proof/repairing-prime/hosted-bow-pilot-r01.txt") -> SimpleNamespace:
     mission_id = "RP-C01-HOSTED-BOW-PILOT-R01"
-    base_sha = "b" * 40
+    base_sha = "a" * 40
     return SimpleNamespace(
         carrier_sha256=carrier_sha256,
         weave={
@@ -300,6 +302,29 @@ class HostedRouteTests(unittest.TestCase):
         self.assertEqual(replay["error_code"], "REPLAY_PULL_REQUEST_EXISTS")
         self.assertFalse(mismatch["mutation"]["occurred"])
         self.assertFalse(replay["mutation"]["occurred"])
+
+    def test_stale_base_rejects_in_read_only_preflight_before_replay(self) -> None:
+        carrier = b"fake-arrow-zip"
+        digest = hashlib.sha256(carrier).hexdigest()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            event = root / "event.json"
+            event.write_text("{}\n", encoding="utf-8")
+            stale = package(digest)
+            stale.weave["base_sha"] = "b" * 40
+            stale.weave["branch"] = expected_mission_branch(stale.weave["weave_id"], stale.weave["base_sha"])
+            result = preflight_hosted(
+                base64.b64encode(carrier).decode("ascii"),
+                env=base_environment(event, digest),
+                evidence_dir=root / "evidence",
+                work_root=root / "work",
+                run_metadata={**run_metadata(), "head_sha": "a" * 40},
+                package_reader=lambda *_args: stale,
+                replay_probe=lambda _branch: self.fail("stale base must reject before replay readback"),
+            )
+        self.assertEqual(result["result"], "REJECTED")
+        self.assertEqual(result["error_code"], "BASE_STALE")
+        self.assertFalse(result["mutation"]["occurred"])
 
     def test_hosted_branch_matches_existing_thread_engine_source_namespace(self) -> None:
         branch = expected_mission_branch("RP-C01-HOSTED-BOW-PILOT-R01", "b" * 40)
