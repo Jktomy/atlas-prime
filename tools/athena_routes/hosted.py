@@ -85,6 +85,7 @@ def required_environment(env: dict[str, str]) -> dict[str, str]:
         "GITHUB_RUN_ID",
         "GITHUB_RUN_ATTEMPT",
         "ATHENA_ARROW_SHA256",
+        "ATHENA_MISSION_LOCK_SHA256",
         "ATHENA_PUBLIC_CLEAN_CONFIRMATION",
     )
     missing = [key for key in keys if not env.get(key)]
@@ -103,6 +104,8 @@ def required_environment(env: dict[str, str]) -> dict[str, str]:
         raise HostedRouteError("workflow source SHA is invalid", "WORKFLOW_IDENTITY_REJECTED")
     if not SHA64.fullmatch(values["ATHENA_ARROW_SHA256"]):
         raise HostedRouteError("carrier SHA-256 is invalid", "CARRIER_SHA_REJECTED")
+    if not SHA64.fullmatch(values["ATHENA_MISSION_LOCK_SHA256"]):
+        raise HostedRouteError("mission lock SHA-256 is invalid", "MISSION_LOCK_REJECTED")
     if not values["GITHUB_RUN_ID"].isdigit() or not values["GITHUB_RUN_ATTEMPT"].isdigit() or int(values["GITHUB_RUN_ATTEMPT"]) < 1:
         raise HostedRouteError("run identity is invalid", "RUN_IDENTITY_REJECTED")
     return values
@@ -195,6 +198,11 @@ def identity_from(values: dict[str, str], mission_id: str) -> dict[str, Any]:
 def expected_mission_branch(mission_id: str, base_sha: str) -> str:
     material = {"repository": REPOSITORY, "mission_id": mission_id, "base_sha": base_sha}
     return "source/athena-bow-" + sha256_bytes(stable_json(material).encode("utf-8"))[:20]
+
+
+def mission_lock_sha256(mission_id: str, base_sha: str) -> str:
+    material = {"repository": REPOSITORY, "mission_id": mission_id, "base_sha": base_sha}
+    return sha256_bytes(stable_json(material).encode("utf-8"))
 
 
 def assert_no_replay(branch: str) -> None:
@@ -330,11 +338,15 @@ def build_request(values: dict[str, str], package: Any, event_bytes: bytes, run:
     expected_branch = expected_mission_branch(weave["weave_id"], weave["base_sha"])
     if weave["branch"] != expected_branch:
         raise HostedRouteError("mission branch is not deterministic", "REPLAY_BRANCH_MISMATCH")
+    expected_lock = mission_lock_sha256(weave["weave_id"], weave["base_sha"])
+    if values["ATHENA_MISSION_LOCK_SHA256"] != expected_lock:
+        raise HostedRouteError("mission concurrency lock does not match decoded carrier", "MISSION_LOCK_REJECTED")
     event_id = f"workflow_dispatch:{values['GITHUB_RUN_ID']}"
     replay_material = {
         "repository": REPOSITORY,
         "event_identity": event_id,
         "carrier_sha256": package.carrier_sha256,
+        "mission_lock_sha256": expected_lock,
         "mission_id": weave["weave_id"],
         "base_sha": weave["base_sha"],
     }
@@ -348,6 +360,7 @@ def build_request(values: dict[str, str], package: Any, event_bytes: bytes, run:
         "route": "ARROW_BOW_HOSTED",
         "mission_id": weave["weave_id"],
         "carrier_sha256": package.carrier_sha256,
+        "mission_lock_sha256": expected_lock,
         "event_identity": {
             "event_name": "workflow_dispatch",
             "event_action": "requested",

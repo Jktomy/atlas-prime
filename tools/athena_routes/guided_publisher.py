@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import base64
 import json
+import os
 import re
 import subprocess
 import sys
@@ -20,6 +21,7 @@ from .hosted import (
     classify_paths,
     expected_mission_branch,
     load_schema,
+    mission_lock_sha256,
     privacy_scan,
     sha256_bytes,
     stable_json,
@@ -129,6 +131,47 @@ def _load_preview(path: Path) -> tuple[dict[str, Any], str]:
     return value, sha256_bytes(raw)
 
 
+def _validated_execute_receipt(value: dict[str, Any]) -> dict[str, Any]:
+    try:
+        validate_schema(load_schema(EXECUTE_SCHEMA), value)
+    except (HostedRouteError, SchemaValidationError) as exc:
+        raise GuidedPublisherError("guided Execute receipt construction failed", "EXECUTE_RECEIPT_INVALID") from exc
+    return value
+
+
+def _reserve_receipt(path: Path, value: dict[str, Any]) -> None:
+    payload = stable_json(_validated_execute_receipt(value)).encode("utf-8")
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("xb") as stream:
+            stream.write(payload)
+            stream.flush()
+            os.fsync(stream.fileno())
+    except FileExistsError as exc:
+        raise GuidedPublisherError("guided Execute receipt path already exists", "EXECUTE_RECEIPT_EXISTS") from exc
+    except OSError as exc:
+        raise GuidedPublisherError("guided Execute receipt sink is unavailable", "EXECUTE_RECEIPT_UNAVAILABLE") from exc
+
+
+def _replace_receipt(path: Path, value: dict[str, Any]) -> None:
+    payload = stable_json(_validated_execute_receipt(value)).encode("utf-8")
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=path.parent, prefix=f".{path.name}.", suffix=".tmp", delete=False) as stream:
+            temporary = Path(stream.name)
+            stream.write(payload)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+    except OSError as exc:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+        raise GuidedPublisherError(
+            "guided Execute receipt finalization failed; preserved intent receipt governs",
+            "EXECUTE_RECEIPT_FINALIZE_FAILED",
+        ) from exc
+
+
 def build_preview(
     carrier_path: Path,
     *,
@@ -209,6 +252,7 @@ def build_preview(
         "weave_sha256": package.weave_sha256,
         "mission_id": package.weave["weave_id"],
         "mission_sha256": compile_receipt["mission_sha256"],
+        "mission_lock_sha256": mission_lock_sha256(package.weave["weave_id"], main_sha),
         "output_mission_sha256": compile_receipt["output_mission_sha256"],
         "deterministic_branch": package.weave["branch"],
         "path_classification": "ORDINARY",
@@ -228,6 +272,7 @@ def build_preview(
 def execute_preview(
     preview_path: Path,
     carrier_path: Path,
+    receipt_path: Path,
     *,
     confirmed_preview_sha256: str,
     launch_nonce: str,
@@ -260,28 +305,68 @@ def execute_preview(
     dispatch = {
         "arrow_b64": base64.b64encode(carrier).decode("ascii"),
         "arrow_sha256": preview["carrier_sha256"],
+        "mission_lock_sha256": preview["mission_lock_sha256"],
         "public_clean_confirmation": "PUBLIC_CLEAN_CONFIRMED",
     }
-    dispatch_call = runner(
-        ["gh", "workflow", "run", WORKFLOW, "--repo", REPOSITORY, "--ref", "main", "--json"],
-        check=False,
-        capture_output=True,
-        text=True,
-        input=json.dumps(dispatch, sort_keys=True, separators=(",", ":")),
-    )
+    common = {
+        "schema_version": "atlas.athena.guided-intake-execute-receipt.v1",
+        "repository": REPOSITORY,
+        "preview_sha256": observed_preview_sha,
+        "carrier_sha256": preview["carrier_sha256"],
+        "mission_id": preview["mission_id"],
+        "mission_sha256": preview["mission_sha256"],
+        "mission_lock_sha256": preview["mission_lock_sha256"],
+        "canonical_main_sha": preview["canonical_main_sha"],
+        "workflow_ref": preview["workflow_ref"],
+        "workflow_blob_sha": preview["workflow_blob_sha"],
+        "launch_nonce_sha256": sha256_bytes(launch_nonce.encode("utf-8")),
+        "public_clean_confirmation": public_clean_confirmation,
+        "dispatch_transport": "GH_WORKFLOW_JSON_STDIN",
+        "workflow_run_id": None,
+        "workflow_run_url": None,
+        "workflow_run_head_sha": None,
+        "forbidden_actions": dict(FORBIDDEN_ACTIONS),
+    }
+    intent = common | {
+        "result": "PARTIAL",
+        "error_code": "DISPATCH_INTENT_JOURNALED",
+        "stop_point": "PARTIAL_STATE_PRESERVED",
+        "rollback": "PRESERVE_AND_REVIEW_NO_RETRY",
+    }
+    _reserve_receipt(receipt_path, intent)
+    try:
+        dispatch_call = runner(
+            ["gh", "workflow", "run", WORKFLOW, "--repo", REPOSITORY, "--ref", "main", "--json"],
+            check=False,
+            capture_output=True,
+            text=True,
+            input=json.dumps(dispatch, sort_keys=True, separators=(",", ":")),
+        )
+    except Exception:
+        receipt = common | {
+            "result": "PARTIAL",
+            "error_code": "DISPATCH_TRANSPORT_AMBIGUOUS",
+            "stop_point": "PARTIAL_STATE_PRESERVED",
+            "rollback": "PRESERVE_AND_REVIEW_NO_RETRY",
+        }
+        _replace_receipt(receipt_path, receipt)
+        return receipt
     output = dispatch_call.stdout.strip()
     match = RUN_URL.fullmatch(output) if dispatch_call.returncode == 0 else None
     run_id = int(match.group(1)) if match is not None else None
     run: dict[str, Any] | None = None
     if run_id is not None:
-        run_readback = runner(
-            ["gh", "api", f"repos/{REPOSITORY}/actions/runs/{run_id}"],
-            check=False,
-            capture_output=True,
-            text=True,
-            input=None,
-        )
-        if run_readback.returncode == 0:
+        try:
+            run_readback = runner(
+                ["gh", "api", f"repos/{REPOSITORY}/actions/runs/{run_id}"],
+                check=False,
+                capture_output=True,
+                text=True,
+                input=None,
+            )
+        except Exception:
+            run_readback = None
+        if run_readback is not None and run_readback.returncode == 0:
             try:
                 candidate = json.loads(run_readback.stdout)
             except json.JSONDecodeError:
@@ -297,23 +382,10 @@ def execute_preview(
         and (run.get("actor") or {}).get("login") == OWNER
         and (run.get("triggering_actor") or {}).get("login") == OWNER
     )
-    common = {
-        "schema_version": "atlas.athena.guided-intake-execute-receipt.v1",
-        "repository": REPOSITORY,
-        "preview_sha256": observed_preview_sha,
-        "carrier_sha256": preview["carrier_sha256"],
-        "mission_id": preview["mission_id"],
-        "mission_sha256": preview["mission_sha256"],
-        "canonical_main_sha": preview["canonical_main_sha"],
-        "workflow_ref": preview["workflow_ref"],
-        "workflow_blob_sha": preview["workflow_blob_sha"],
-        "launch_nonce_sha256": sha256_bytes(launch_nonce.encode("utf-8")),
-        "public_clean_confirmation": public_clean_confirmation,
-        "dispatch_transport": "GH_WORKFLOW_JSON_STDIN",
+    common = common | {
         "workflow_run_id": run_id,
         "workflow_run_url": output if match is not None else None,
         "workflow_run_head_sha": run.get("head_sha") if isinstance(run, dict) and SHA40.fullmatch(str(run.get("head_sha", ""))) else None,
-        "forbidden_actions": dict(FORBIDDEN_ACTIONS),
     }
     if exact_readback:
         receipt = common | {
@@ -329,10 +401,7 @@ def execute_preview(
             "stop_point": "PARTIAL_STATE_PRESERVED",
             "rollback": "PRESERVE_AND_REVIEW_NO_RETRY",
         }
-    try:
-        validate_schema(load_schema(EXECUTE_SCHEMA), receipt)
-    except (HostedRouteError, SchemaValidationError) as exc:
-        raise GuidedPublisherError("guided Execute receipt construction failed", "EXECUTE_RECEIPT_INVALID") from exc
+    _replace_receipt(receipt_path, receipt)
     return receipt
 
 
@@ -355,15 +424,17 @@ def main(argv: list[str] | None = None) -> int:
             receipt = build_preview(args.carrier.resolve())
             target = args.receipt.resolve()
         else:
+            target = args.receipt.resolve()
             receipt = execute_preview(
                 args.preview.resolve(),
                 args.carrier.resolve(),
+                target,
                 confirmed_preview_sha256=args.confirm_preview_sha256,
                 launch_nonce=args.launch_nonce,
                 public_clean_confirmation=args.public_clean_confirmation,
             )
-            target = args.receipt.resolve()
-        write_json(target, receipt)
+        if args.command == "preview":
+            write_json(target, receipt)
     except GuidedPublisherError as exc:
         sys.stderr.write(f"Guided publisher stopped safely: {exc.code}\n")
         return 2

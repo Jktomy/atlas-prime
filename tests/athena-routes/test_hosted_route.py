@@ -16,6 +16,7 @@ from tools.athena_routes.hosted import (  # noqa: E402
     classify_paths,
     decode_carrier,
     expected_mission_branch,
+    mission_lock_sha256,
     privacy_scan,
     preflight_hosted,
     required_environment,
@@ -38,6 +39,7 @@ def base_environment(event_path: Path, carrier_sha256: str) -> dict[str, str]:
         "GITHUB_RUN_ID": "12345",
         "GITHUB_RUN_ATTEMPT": "1",
         "ATHENA_ARROW_SHA256": carrier_sha256,
+        "ATHENA_MISSION_LOCK_SHA256": mission_lock_sha256("RP-C01-HOSTED-BOW-PILOT-R01", "a" * 40),
         "ATHENA_PUBLIC_CLEAN_CONFIRMATION": "PUBLIC_CLEAN_CONFIRMED",
     }
 
@@ -113,6 +115,32 @@ def success_engine(carrier_sha256: str, *, path: str = "proof/repairing-prime/ho
 
 
 class HostedRouteTests(unittest.TestCase):
+    def test_workflow_serializes_the_decoded_mission_identity_and_rejects_lock_spoofing(self) -> None:
+        workflow = (ROOT / ".github/workflows/athena-bow-hosted.yml").read_text(encoding="utf-8")
+        self.assertIn("group: athena-hosted-bow-${{ inputs.mission_lock_sha256 }}", workflow)
+        mission_id = "RP-C01-HOSTED-BOW-PILOT-R01"
+        base_sha = "a" * 40
+        self.assertEqual(mission_lock_sha256(mission_id, base_sha), mission_lock_sha256(mission_id, base_sha))
+        carrier = b"fake-arrow-zip"
+        digest = hashlib.sha256(carrier).hexdigest()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            event = root / "event.json"
+            event.write_text("{}\n", encoding="utf-8")
+            env = base_environment(event, digest)
+            env["ATHENA_MISSION_LOCK_SHA256"] = "f" * 64
+            receipt = preflight_hosted(
+                base64.b64encode(carrier).decode("ascii"),
+                env=env,
+                evidence_dir=root / "evidence",
+                work_root=root / "work",
+                run_metadata=run_metadata(),
+                package_reader=lambda *_args: package(digest),
+            )
+        self.assertEqual(receipt["result"], "REJECTED")
+        self.assertEqual(receipt["error_code"], "MISSION_LOCK_REJECTED")
+        self.assertFalse(receipt["mutation"]["occurred"])
+
     def test_only_sanitized_error_codes_cross_the_evidence_boundary(self) -> None:
         safe = HostedRouteError("private detail", "MALFORMED_CARRIER")
         unsafe = HostedRouteError("private detail", "unsafe detail: do-not-echo")
@@ -155,12 +183,14 @@ class HostedRouteTests(unittest.TestCase):
             event.write_text(json.dumps({"inputs": {
                 "arrow_b64": "cHVibGljLWNsZWFu",
                 "arrow_sha256": "0" * 64,
+                "mission_lock_sha256": mission_lock_sha256("RP-C01-HOSTED-BOW-PILOT-R01", "a" * 40),
                 "public_clean_confirmation": "PUBLIC_CLEAN_CONFIRMED",
             }}), encoding="utf-8")
             environment, encoded = event_environment({"GITHUB_EVENT_PATH": str(event)})
         self.assertEqual(encoded, "cHVibGljLWNsZWFu")
         self.assertNotIn("ATHENA_ARROW_B64", environment)
         self.assertEqual(environment["ATHENA_ARROW_SHA256"], "0" * 64)
+        self.assertEqual(environment["ATHENA_MISSION_LOCK_SHA256"], mission_lock_sha256("RP-C01-HOSTED-BOW-PILOT-R01", "a" * 40))
 
     def test_hash_mismatch_receipt_records_observed_not_claimed_carrier(self) -> None:
         carrier = b"observed-arrow"

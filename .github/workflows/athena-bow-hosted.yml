@@ -11,6 +11,10 @@ on:
         description: Lowercase SHA-256 of the decoded Arrow carrier.
         required: true
         type: string
+      mission_lock_sha256:
+        description: Deterministic SHA-256 lock for the decoded mission identity and base.
+        required: true
+        type: string
       public_clean_confirmation:
         description: Confirm that protected/private material was excluded before GitHub ingress.
         required: true
@@ -22,7 +26,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: athena-hosted-bow-${{ github.run_id }}
+  group: athena-hosted-bow-${{ inputs.mission_lock_sha256 }}
   cancel-in-progress: false
 
 jobs:

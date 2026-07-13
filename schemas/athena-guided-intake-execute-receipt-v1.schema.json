@@ -4,7 +4,7 @@
   "title": "Athena guided intake execute receipt",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "result", "error_code", "repository", "preview_sha256", "carrier_sha256", "mission_id", "mission_sha256", "canonical_main_sha", "workflow_ref", "workflow_blob_sha", "launch_nonce_sha256", "public_clean_confirmation", "dispatch_transport", "workflow_run_id", "workflow_run_url", "workflow_run_head_sha", "stop_point", "rollback", "forbidden_actions"],
+  "required": ["schema_version", "result", "error_code", "repository", "preview_sha256", "carrier_sha256", "mission_id", "mission_sha256", "mission_lock_sha256", "canonical_main_sha", "workflow_ref", "workflow_blob_sha", "launch_nonce_sha256", "public_clean_confirmation", "dispatch_transport", "workflow_run_id", "workflow_run_url", "workflow_run_head_sha", "stop_point", "rollback", "forbidden_actions"],
   "properties": {
     "schema_version": {"const": "atlas.athena.guided-intake-execute-receipt.v1"},
     "result": {"enum": ["DISPATCHED", "PARTIAL"]},
@@ -14,6 +14,7 @@
     "carrier_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "mission_id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)*$"},
     "mission_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "mission_lock_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "canonical_main_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
     "workflow_ref": {"const": "Jktomy/atlas-prime/.github/workflows/athena-bow-hosted.yml@refs/heads/main"},
     "workflow_blob_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},

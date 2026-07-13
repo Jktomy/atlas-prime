@@ -81,6 +81,7 @@ def valid_request() -> dict:
         "route": "ARROW_BOW_HOSTED",
         "mission_id": "RP-C01-PILOT-R01",
         "carrier_sha256": "2" * 64,
+        "mission_lock_sha256": "6" * 64,
         "event_identity": {
             "event_name": "workflow_dispatch",
             "event_action": "requested",

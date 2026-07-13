@@ -4,7 +4,7 @@
   "title": "Athena guided intake preview",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "result", "repository", "canonical_main_sha", "workflow_ref", "workflow_blob_sha", "carrier_sha256", "manifest_sha256", "weave_sha256", "mission_id", "mission_sha256", "output_mission_sha256", "deterministic_branch", "path_classification", "paths", "public_clean", "stop_point", "rollback", "forbidden_actions"],
+  "required": ["schema_version", "result", "repository", "canonical_main_sha", "workflow_ref", "workflow_blob_sha", "carrier_sha256", "manifest_sha256", "weave_sha256", "mission_id", "mission_sha256", "mission_lock_sha256", "output_mission_sha256", "deterministic_branch", "path_classification", "paths", "public_clean", "stop_point", "rollback", "forbidden_actions"],
   "properties": {
     "schema_version": {"const": "atlas.athena.guided-intake-preview.v1"},
     "result": {"const": "ACCEPTED"},
@@ -17,6 +17,7 @@
     "weave_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "mission_id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)*$"},
     "mission_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "mission_lock_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "output_mission_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "deterministic_branch": {"type": "string", "pattern": "^source/athena-bow-[a-f0-9]{20}$"},
     "path_classification": {"const": "ORDINARY"},

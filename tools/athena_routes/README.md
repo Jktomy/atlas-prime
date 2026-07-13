@@ -35,8 +35,12 @@ write, replay, partial-state, receipt, and draft-PR boundaries.
 
 If dispatch may have occurred but exact run readback fails, Execute writes a
 `PARTIAL_STATE_PRESERVED` receipt and requires preserve-and-review with no
-retry. Preview also rejects a nondeterministic branch or any current or
-historical branch/PR replay identity before Execute is available.
+retry. Before dispatch it exclusively reserves the requested receipt path and
+durably journals that no-retry state; exact readback then atomically replaces
+the journal. The hosted workflow serializes every valid carrier sharing the
+same decoded mission and base, and revalidates that deterministic lock before
+the adapter is reachable. Preview also rejects a nondeterministic branch or any
+current or historical branch/PR replay identity before Execute is available.
 
 This guided component does not prove CAP-010 until a fresh live Preview and
 Execute journey, hosted receipt, exact draft-PR readback, exact-head CI,

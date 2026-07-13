@@ -6,6 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
 from tools.athena_routes.guided_publisher import (
     EXECUTE_SCHEMA,
@@ -167,6 +168,7 @@ class GuidedPublisherTests(unittest.TestCase):
             execute_preview(
                 path,
                 self.carrier,
+                self.root / "execute-invalid-confirmation.json",
                 confirmed_preview_sha256="9" * 64,
                 launch_nonce="guided-launch-nonce-000001",
                 public_clean_confirmation="PUBLIC_CLEAN_CONFIRMED",
@@ -185,6 +187,7 @@ class GuidedPublisherTests(unittest.TestCase):
         receipt = execute_preview(
             path,
             self.carrier,
+            self.root / "execute-dispatched.json",
             confirmed_preview_sha256=digest,
             launch_nonce="guided-launch-nonce-000002",
             public_clean_confirmation="PUBLIC_CLEAN_CONFIRMED",
@@ -200,6 +203,7 @@ class GuidedPublisherTests(unittest.TestCase):
         self.assertNotIn(self.carrier.read_bytes().decode("ascii"), " ".join(args))
         submitted = json.loads(input_text or "null")
         self.assertEqual(submitted["arrow_sha256"], preview["carrier_sha256"])
+        self.assertEqual(submitted["mission_lock_sha256"], preview["mission_lock_sha256"])
         self.assertEqual(receipt["preview_sha256"], digest)
         self.assertEqual(receipt["workflow_run_id"], 123)
         self.assertEqual(receipt["dispatch_transport"], "GH_WORKFLOW_JSON_STDIN")
@@ -213,6 +217,7 @@ class GuidedPublisherTests(unittest.TestCase):
             execute_preview(
                 path,
                 self.carrier,
+                self.root / "execute-nonowner.json",
                 confirmed_preview_sha256=digest,
                 launch_nonce="guided-launch-nonce-000003",
                 public_clean_confirmation="PUBLIC_CLEAN_CONFIRMED",
@@ -224,6 +229,7 @@ class GuidedPublisherTests(unittest.TestCase):
         partial = execute_preview(
             path,
             self.carrier,
+            self.root / "execute-partial.json",
             confirmed_preview_sha256=digest,
             launch_nonce="guided-launch-nonce-000004",
             public_clean_confirmation="PUBLIC_CLEAN_CONFIRMED",
@@ -245,6 +251,7 @@ class GuidedPublisherTests(unittest.TestCase):
             execute_preview(
                 path,
                 self.carrier,
+                self.root / "execute-short-nonce.json",
                 confirmed_preview_sha256=digest,
                 launch_nonce="too-short",
                 public_clean_confirmation="PUBLIC_CLEAN_CONFIRMED",
@@ -258,6 +265,7 @@ class GuidedPublisherTests(unittest.TestCase):
             execute_preview(
                 path,
                 self.carrier,
+                self.root / "execute-drift.json",
                 confirmed_preview_sha256=digest,
                 launch_nonce="guided-launch-nonce-000005",
                 public_clean_confirmation="PUBLIC_CLEAN_CONFIRMED",
@@ -275,6 +283,7 @@ class GuidedPublisherTests(unittest.TestCase):
             execute_preview(
                 path,
                 self.carrier,
+                self.root / "execute-privacy.json",
                 confirmed_preview_sha256=sha256_bytes(path.read_bytes()),
                 launch_nonce="guided-launch-nonce-000006",
                 public_clean_confirmation="MISSING",
@@ -283,6 +292,86 @@ class GuidedPublisherTests(unittest.TestCase):
                 compiler=compiler_receipt,
             )
         self.assertEqual(caught.exception.code, "PRE_INGRESS_PRIVACY_REQUIRED")
+
+    def test_execute_journals_partial_before_dispatch_and_on_post_dispatch_exceptions(self) -> None:
+        preview, _ = self.preview()
+        path = self.root / "preview.json"
+        path.write_text(stable_json(preview), encoding="utf-8", newline="\n")
+        digest = sha256_bytes(path.read_bytes())
+
+        class RaisingRunner(FakeRunner):
+            def __init__(self, stage: str) -> None:
+                super().__init__()
+                self.stage = stage
+
+            def __call__(self, args: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+                joined = " ".join(args)
+                if self.stage == "dispatch" and args[:3] == ["gh", "workflow", "run"]:
+                    raise OSError("ambiguous dispatch transport")
+                if self.stage == "readback" and "actions/runs/123" in joined:
+                    raise OSError("readback unavailable")
+                return super().__call__(args, **kwargs)
+
+        for stage, code in (("dispatch", "DISPATCH_TRANSPORT_AMBIGUOUS"), ("readback", "DISPATCH_READBACK_FAILED")):
+            with self.subTest(stage=stage):
+                receipt_path = self.root / f"execute-{stage}.json"
+                receipt = execute_preview(
+                    path,
+                    self.carrier,
+                    receipt_path,
+                    confirmed_preview_sha256=digest,
+                    launch_nonce=f"guided-launch-exception-{stage}-000001",
+                    public_clean_confirmation="PUBLIC_CLEAN_CONFIRMED",
+                    runner=RaisingRunner(stage),
+                    package_reader=lambda _path, _sha: fake_package(),
+                    compiler=compiler_receipt,
+                )
+                self.assertEqual(receipt["result"], "PARTIAL")
+                self.assertEqual(receipt["error_code"], code)
+                self.assertEqual(json.loads(receipt_path.read_text(encoding="utf-8")), receipt)
+
+    def test_execute_reserves_new_sink_and_retains_intent_if_atomic_finalization_fails(self) -> None:
+        preview, _ = self.preview()
+        path = self.root / "preview.json"
+        path.write_text(stable_json(preview), encoding="utf-8", newline="\n")
+        digest = sha256_bytes(path.read_bytes())
+        existing = self.root / "execute-existing.json"
+        existing.write_text("do-not-overwrite\n", encoding="utf-8")
+        runner = FakeRunner()
+        with self.assertRaises(GuidedPublisherError) as caught:
+            execute_preview(
+                path,
+                self.carrier,
+                existing,
+                confirmed_preview_sha256=digest,
+                launch_nonce="guided-launch-existing-sink-000001",
+                public_clean_confirmation="PUBLIC_CLEAN_CONFIRMED",
+                runner=runner,
+                package_reader=lambda _path, _sha: fake_package(),
+                compiler=compiler_receipt,
+            )
+        self.assertEqual(caught.exception.code, "EXECUTE_RECEIPT_EXISTS")
+        self.assertFalse(any(call[0][:3] == ["gh", "workflow", "run"] for call in runner.calls))
+
+        target = self.root / "execute-finalize-failure.json"
+        with patch("tools.athena_routes.guided_publisher.os.replace", side_effect=OSError("sink failure")):
+            with self.assertRaises(GuidedPublisherError) as finalize:
+                execute_preview(
+                    path,
+                    self.carrier,
+                    target,
+                    confirmed_preview_sha256=digest,
+                    launch_nonce="guided-launch-finalize-failure-000001",
+                    public_clean_confirmation="PUBLIC_CLEAN_CONFIRMED",
+                    runner=FakeRunner(),
+                    package_reader=lambda _path, _sha: fake_package(),
+                    compiler=compiler_receipt,
+                )
+        self.assertEqual(finalize.exception.code, "EXECUTE_RECEIPT_FINALIZE_FAILED")
+        intent = json.loads(target.read_text(encoding="utf-8"))
+        self.assertEqual(intent["result"], "PARTIAL")
+        self.assertEqual(intent["error_code"], "DISPATCH_INTENT_JOURNALED")
+        self.assertEqual(intent["rollback"], "PRESERVE_AND_REVIEW_NO_RETRY")
 
 
 if __name__ == "__main__":
