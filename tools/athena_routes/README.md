@@ -15,6 +15,32 @@ The hosted result stops at draft-PR readback. A `PARTIAL` Thread Engine result i
 preserved exactly and blocks retry. Generated projections and protected paths
 are not accepted by this ordinary hosted route.
 
+## Ordinary free-form intake
+
+`python -B -m tools.athena_routes.free_form_intake --fields <fields.json>
+--output-dir <new-directory>` accepts a closed local public-clean mission-fields
+object and atomically creates one new output directory outside the canonical
+repository. That directory contains `carrier.zip`, `preview.json`,
+`intake-receipt.json`, and retained `compiled/` mission, compiler receipt, and
+payload files.
+
+The constructor binds an exact expected main SHA and fresh mission/carrier
+nonce, normalizes text to UTF-8/LF, sorts ordinary `ADD`/`REPLACE` changes,
+builds fixed-metadata deterministic carrier bytes, performs the existing
+read-only guided Preview, and requires a second retained compiler result to
+match Preview exactly. It screens content locally and prints only bounded
+identity hashes. Existing or in-repository output paths, stale main, replay,
+privacy matches, unsafe or colliding paths, protected/generated/self-change
+paths, compiler rejection, or retained-output drift fail without publishing a
+partial output directory.
+
+The constructor has no workflow dispatch or remote write authority. Its receipt
+explicitly classifies the origin as owner-guided local—not fresh Work/Athena
+origin—and requires exact Preview confirmation through the existing Execute
+command. Construction and tests cannot promote M08, CAP-015, AJ-01, RP-C01,
+permanence, or standing authority; live hosted acceptance and a separate
+authored reconciliation remain mandatory.
+
 ## Owner-guided publisher
 
 `python -B -m tools.athena_routes.guided_publisher preview` audits one immutable

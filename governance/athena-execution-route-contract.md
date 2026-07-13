@@ -159,6 +159,37 @@ unrestricted command output. They expose only bounded identities, hashes,
 paths already classified as public-clean, stage names, and sanitized error
 codes.
 
+## Ordinary free-form mission-fields construction
+
+The routine local entrypoint may begin from a closed public-clean mission-fields
+object rather than a prebuilt carrier. `tools.athena_routes.free_form_intake`
+accepts one expected canonical-main SHA, fresh mission and carrier-nonce
+identity, human objective and pull-request fields, and one to twenty ordinary
+text `ADD` or `REPLACE` changes. It normalizes line endings, sorts the path set,
+rejects duplicate or case-fold-colliding paths, screens all text before
+publication, and rejects generated, protected, Thread Engine self-change,
+stale-base, replay, unsafe-path, and compiler failures without a remote
+mutation.
+
+The constructor derives the deterministic branch and closed Spear Weave, builds
+a fixed-metadata `ZIP_STORED` immutable carrier, invokes the existing read-only
+compile-only Spear compiler, and invokes the existing guided Preview. A second
+retained compilation must match Preview on the exact compiler receipt,
+canonical mission, candidate tree, final pathset, and complete compiled
+inventory. Only then may one previously absent local output directory be
+published atomically with `carrier.zip`, `preview.json`, the retained compiled
+files, and a closed sanitized intake receipt. The output directory must remain
+outside canonical Prime source.
+
+Construction cannot dispatch a workflow, call the adapter, write a branch or
+PR, mark ready, merge, change settings, or confer standing authority. Its
+origin is explicitly `OWNER_GUIDED_LOCAL_NOT_FRESH_WORK_ORIGIN`; it never proves
+fresh Work/Athena origin, AJ-01, or CAP-015. Component presence and local tests
+do not prove RP-C01-M08. M08 requires a fresh constructed carrier to complete
+the existing exact Preview-confirmed Execute and hosted draft-PR journey, then
+exact-head CI, detached review, merge, canonical readback, and separate authored
+reconciliation.
+
 ## Guided Preview and Execute publisher
 
 The human-friendly equivalent to an Issue Form is a local owner-guided

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/athena-free-form-mission-fields-v1.schema.json",
+  "title": "Athena ordinary free-form mission fields",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "repository", "expected_main_sha", "mission_id", "carrier_nonce", "objective", "commit_message", "pr_title", "pr_body", "changes", "authorizer", "semantic_operator", "requesting_surface", "origin_classification", "requested_route", "stop_boundary", "public_clean_confirmation"],
+  "properties": {
+    "schema_version": {"const": "atlas.athena.free-form-mission-fields.v1"},
+    "repository": {"const": "Jktomy/atlas-prime"},
+    "expected_main_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "mission_id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)*$", "maxLength": 120},
+    "carrier_nonce": {"type": "string", "pattern": "^[A-Za-z0-9._:-]{24,200}$"},
+    "objective": {"type": "string", "minLength": 1, "maxLength": 1000},
+    "commit_message": {"type": "string", "minLength": 1, "maxLength": 200},
+    "pr_title": {"type": "string", "minLength": 1, "maxLength": 200},
+    "pr_body": {"type": "string", "minLength": 1, "maxLength": 4000},
+    "changes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["operation", "path", "content"],
+        "properties": {
+          "operation": {"enum": ["ADD", "REPLACE"]},
+          "path": {"type": "string", "minLength": 1, "maxLength": 240},
+          "content": {"type": "string", "minLength": 1, "maxLength": 262144}
+        }
+      }
+    },
+    "authorizer": {"const": "Jayson"},
+    "semantic_operator": {"const": "Codex SOL Goal"},
+    "requesting_surface": {"const": "Codex"},
+    "origin_classification": {"const": "OWNER_GUIDED_LOCAL_NOT_FRESH_WORK_ORIGIN"},
+    "requested_route": {"const": "GUIDED_HOSTED_BOW"},
+    "stop_boundary": {"const": "DRAFT_PR_READBACK"},
+    "public_clean_confirmation": {"const": "PUBLIC_CLEAN_CONFIRMED"}
+  }
+}
