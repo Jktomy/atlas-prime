@@ -73,36 +73,36 @@ Execute journey, hosted receipt, exact draft-PR readback, exact-head CI,
 detached review, merge, and canonical readback are accepted separately. It does
 not prove fresh Work/Athena origin or CAP-015.
 
-## Fresh Work/Athena origin bridge
+## Fresh Work/Athena origin construction
 
-`tools.athena_routes.fresh_work_bridge` is a fail-closed outer bridge over the
-existing guided publisher. It validates one canonical, short-lived, public-safe
-origin receipt against
-`schemas/athena-fresh-work-origin-receipt-v1.schema.json`, re-hashes the exact
-carrier and Preview, and requires an independently trusted platform verifier to
-affirm the task identity, origin nonce, verification method, and verification
-evidence digest.
+`tools.athena_routes.fresh_work_bridge` is currently a read-only construction
+boundary. It validates one canonical, short-lived, public-safe origin receipt,
+re-hashes the exact carrier and Preview, and can compare them with a full-binding
+platform readback supplied through a library seam.
 
-A caller-authored JSON claim, prompt, screenshot, transcript, command argument,
-environment string, or repository file is not a trusted origin verifier. The
-command-line entry point intentionally supplies no verifier and therefore stops
-with `TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE`. A future ChatGPT Work runtime must
-inject the verifier through the library API. Until that independently verified
-runtime path exists, the bridge must not dispatch and CAP-015 remains missing.
+It contains no import or call to the guided publisher, no workflow-dispatch
+implementation, and no Git, branch, pull-request, adapter, ready, merge,
+cleanup, settings, credential, or second-writer path. Even an untrusted test
+callback can produce only `READ_ONLY_CANDIDATE_NOT_EXECUTABLE` with
+`remote_dispatch_authority=false` and `guided_execute_invoked=false`.
 
-After successful verification, the bridge exclusively reserves a journey
-receipt, invokes only the existing `guided_publisher.execute_preview`, and binds
-the resulting guided Execute receipt and hosted workflow run into
-`schemas/athena-fresh-work-journey-receipt-v1.schema.json`. It has no Git tree,
-commit, branch, push, PR, ready, merge, cleanup, settings, adapter, credential,
-or second-writer implementation. All origin, Preview, carrier, guided Execute,
-and journey files remain outside canonical Prime source.
+The command-line entry point never accepts a verifier. It records only the
+truthful `TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE` blocked journey receipt with no
+remote dispatch possibility. Caller-authored JSON, prompt text, screenshots,
+transcripts, command arguments, environment strings, repository files, or
+arbitrary callables cannot activate CAP-015.
 
-Construction, schemas, and tests do not prove CAP-015, AJ-01, RP-C01-M02, or the
-RP-C01 gate. Acceptance still requires a genuinely fresh Jayson-started
-Work/Athena task, one live hosted journey through the singular Thread Engine,
-exact draft-PR and blob readback, exact-head Ubuntu and Windows validation,
-detached review, and separate authored reconciliation.
+A later protected transaction may wire an independently trusted platform
+readback to the existing guided Execute route only after a real ChatGPT Work
+trust anchor exists and Jayson approves that integration. That later transaction
+must add durable no-retry intent and truthful partial-state conservation before
+any dispatch is possible.
+
+Construction, schemas, tests, and read-only plans do not prove CAP-015, AJ-01,
+RP-C01-M02, or the RP-C01 gate. Acceptance still requires a genuinely fresh
+Jayson-started Work/Athena task, one live hosted journey through the singular
+Thread Engine, exact draft-PR and blob readback, exact-head Ubuntu and Windows
+validation, detached review, and separate authored reconciliation.
 
 ## RP-C01-M05 parity join
 
