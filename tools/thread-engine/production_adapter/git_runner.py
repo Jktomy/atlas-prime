@@ -86,6 +86,7 @@ class GitRunner:
             ["git", "clone", "--no-tags", self.allowed_remote, "<path>"],
             ["git", "rev-parse", "HEAD"],
             ["git", "rev-parse", "HEAD^"],
+            ["git", "rev-parse", f"{self.base_sha}:.github/workflows/generated-checkpoint-publisher.yml"],
             ["git", "rev-list", "--parents", "-n", "1", "HEAD"],
             ["git", "log", "-1", "--format=%s"],
             ["git", "show", "--format=%T", "--no-patch", "HEAD"],
@@ -100,8 +101,6 @@ class GitRunner:
             ["git", "push", "-u", "origin", self.mission_branch],
         ]
         if args[:3] == ["git", "hash-object", "--"] and len(args) == 4 and args[3] in self.declared_paths:
-            return
-        if args[:3] == ["git", "hash-object", "--"] and len(args) == 4:
             return
         for template in exact_templates:
             if template == ["git", "clone", "--no-tags", self.allowed_remote, "<path>"]:

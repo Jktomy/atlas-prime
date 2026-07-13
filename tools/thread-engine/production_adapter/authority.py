@@ -45,6 +45,7 @@ TOP_LEVEL_KEYS = {
     "source_blobs",
     "operations",
     "lifecycle_profile",
+    "generated_checkpoint_profile",
     "delete_authority_id",
     "aegis_break_authority",
     "network_allowlist",
@@ -127,6 +128,7 @@ class Mission:
     stop_point: str
     aegis_break_authority: dict[str, Any] | None
     lifecycle_profile: dict[str, Any] | None
+    generated_checkpoint_profile: dict[str, Any] | None
 
 
 def _reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -262,7 +264,7 @@ def validate_mission(data: dict[str, Any]) -> Mission:
     unknown = set(data) - TOP_LEVEL_KEYS
     if unknown:
         raise MissionError(f"unknown mission properties rejected: {', '.join(sorted(unknown))}", "UNKNOWN_PROPERTY")
-    missing = TOP_LEVEL_KEYS - set(data) - {"delete_authority_id", "aegis_break_authority", "lifecycle_profile"}
+    missing = TOP_LEVEL_KEYS - set(data) - {"delete_authority_id", "aegis_break_authority", "lifecycle_profile", "generated_checkpoint_profile"}
     if missing:
         raise MissionError(f"missing mission properties: {', '.join(sorted(missing))}", "MISSION_SCHEMA")
 
@@ -288,7 +290,11 @@ def validate_mission(data: dict[str, Any]) -> Mission:
 
     base_sha = _require_sha(data.get("base_sha"), "base_sha", 40)
     branch = _require_string(data, "branch")
-    if not branch.startswith("source/"):
+    generated_checkpoint_requested = data.get("generated_checkpoint_profile") is not None
+    if generated_checkpoint_requested:
+        if not branch.startswith("generated/checkpoint-"):
+            raise MissionError("generated checkpoint mission branch is not deterministic", "BRANCH_REJECTED")
+    elif not branch.startswith("source/"):
         raise MissionError("mission branch must be a source branch", "BRANCH_REJECTED")
     validate_relative_path(branch)
 
@@ -296,7 +302,9 @@ def validate_mission(data: dict[str, Any]) -> Mission:
     if not isinstance(declared_paths_value, list) or not declared_paths_value or not all(isinstance(item, str) for item in declared_paths_value):
         raise MissionError("declared_paths must be a non-empty string array", "MISSION_SCHEMA")
     aegis_break_requested = data.get("aegis_break_authority") is not None
-    protected_route_requested = aegis_break_requested
+    if aegis_break_requested and generated_checkpoint_requested:
+        raise MissionError("Aegis Break and generated checkpoint profiles are mutually exclusive", "PROTECTED_ROUTE_COLLISION")
+    protected_route_requested = aegis_break_requested or generated_checkpoint_requested
     try:
         declared_paths = tuple(item for item in declared_paths_value)
         validate_declared_path_set(declared_paths, allow_protected=protected_route_requested)
@@ -383,7 +391,7 @@ def validate_mission(data: dict[str, Any]) -> Mission:
     if set(operation_paths) != set(declared_paths):
         raise MissionError("operation paths must match declared_paths exactly", "PATH_SET_MISMATCH")
     aegis_break_authority = _validate_aegis_break_authority(data, protected_paths, source_blobs, operations_value) if aegis_break_requested else None
-    if protected_paths and aegis_break_authority is None:
+    if protected_paths and aegis_break_authority is None and not generated_checkpoint_requested:
         raise MissionError("protected path requires explicit protected route authority", "PROTECTED_PATH")
     delete_authority_id = data.get("delete_authority_id")
     if has_delete and not isinstance(delete_authority_id, str):
@@ -412,6 +420,17 @@ def validate_mission(data: dict[str, Any]) -> Mission:
         except LifecycleProfileError as exc:
             raise MissionError(str(exc), exc.code) from exc
 
+    generated_checkpoint_profile = None
+    if data.get("generated_checkpoint_profile") is not None:
+        if lifecycle_profile is not None:
+            raise MissionError("lifecycle and generated checkpoint profiles are mutually exclusive", "PROFILE_COLLISION")
+        from .generated_checkpoint import GeneratedCheckpointError, validate_generated_checkpoint_profile
+
+        try:
+            generated_checkpoint_profile = validate_generated_checkpoint_profile(data["generated_checkpoint_profile"], data)
+        except GeneratedCheckpointError as exc:
+            raise MissionError(str(exc), exc.code) from exc
+
     return Mission(
         data=data,
         mission_id=_require_string(data, "mission_id"),
@@ -438,4 +457,5 @@ def validate_mission(data: dict[str, Any]) -> Mission:
         stop_point=stop_point,
         aegis_break_authority=aegis_break_authority,
         lifecycle_profile=lifecycle_profile,
+        generated_checkpoint_profile=generated_checkpoint_profile,
     )

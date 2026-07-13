@@ -1,0 +1,215 @@
+name: Generated checkpoint publisher
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_sha:
+        description: Exact current canonical main SHA.
+        required: true
+        type: string
+      mission_id:
+        description: Fresh RP-C06 hosted mission identity.
+        required: true
+        type: string
+      replay_nonce:
+        description: Fresh public-clean replay nonce (24-200 characters).
+        required: true
+        type: string
+      public_clean_confirmation:
+        description: Confirm no protected or private evidence enters GitHub.
+        required: true
+        type: choice
+        options:
+          - PUBLIC_CLEAN_CONFIRMED
+
+permissions:
+  contents: read
+
+concurrency:
+  group: generated-checkpoint-${{ inputs.mission_id }}
+  cancel-in-progress: false
+
+jobs:
+  parity:
+    name: Build register (${{ matrix.platform }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: ubuntu
+            os: ubuntu-latest
+          - platform: windows
+            os: windows-latest
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      INPUT_BASE_SHA: ${{ inputs.base_sha }}
+      INPUT_MISSION_ID: ${{ inputs.mission_id }}
+      INPUT_REPLAY_NONCE: ${{ inputs.replay_nonce }}
+      INPUT_PUBLIC_CLEAN: ${{ inputs.public_clean_confirmation }}
+    steps:
+      - name: Check out exact workflow source
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: ${{ github.workflow_sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Build deterministic register
+        shell: pwsh
+        run: |
+          python -B -m tools.generated_checkpoint.cli build-register `
+            --repo-root . `
+            --output "$env:RUNNER_TEMP/hash-register.json" `
+            --mission-id $env:INPUT_MISSION_ID `
+            --base-sha $env:INPUT_BASE_SHA `
+            --replay-nonce $env:INPUT_REPLAY_NONCE `
+            --workflow-ref $env:GITHUB_WORKFLOW_REF `
+            --workflow-source-sha $env:GITHUB_WORKFLOW_SHA `
+            --workflow-run-id $env:GITHUB_RUN_ID `
+            --workflow-run-attempt $env:GITHUB_RUN_ATTEMPT
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Upload sanitized platform register
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: generated-register-${{ matrix.platform }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hash-register.json
+          if-no-files-found: error
+          retention-days: 14
+
+  reconcile:
+    name: Reconcile exact hosted parity
+    needs: parity
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out exact workflow source
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: ${{ github.workflow_sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Download Ubuntu register
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: generated-register-ubuntu-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/parity/ubuntu
+      - name: Download Windows register
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: generated-register-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/parity/windows
+      - name: Require byte-identical registers
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force "$env:RUNNER_TEMP/reconciled" | Out-Null
+          python -B -m tools.generated_checkpoint.cli reconcile `
+            --ubuntu-register "$env:RUNNER_TEMP/parity/ubuntu/hash-register.json" `
+            --windows-register "$env:RUNNER_TEMP/parity/windows/hash-register.json" `
+            --output "$env:RUNNER_TEMP/reconciled/reconciliation.json"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Copy-Item -LiteralPath "$env:RUNNER_TEMP/parity/ubuntu/hash-register.json" -Destination "$env:RUNNER_TEMP/reconciled/hash-register.json"
+      - name: Upload sanitized reconciliation
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: generated-reconciliation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/reconciled/
+          if-no-files-found: error
+          retention-days: 14
+
+  publish:
+    name: Invoke singular Thread Engine and stop at draft readback
+    needs: reconcile
+    if: >-
+      needs.reconcile.result == 'success' &&
+      github.actor == github.repository_owner &&
+      github.triggering_actor == github.repository_owner &&
+      github.ref == 'refs/heads/main' &&
+      inputs.public_clean_confirmation == 'PUBLIC_CLEAN_CONFIRMED' &&
+      inputs.base_sha == github.workflow_sha
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      actions: read
+      contents: write
+      pull-requests: write
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      GH_TOKEN: ${{ github.token }}
+      INPUT_BASE_SHA: ${{ inputs.base_sha }}
+      INPUT_MISSION_ID: ${{ inputs.mission_id }}
+      INPUT_REPLAY_NONCE: ${{ inputs.replay_nonce }}
+      INPUT_PUBLIC_CLEAN: ${{ inputs.public_clean_confirmation }}
+    steps:
+      - name: Check out exact canonical base
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: ${{ inputs.base_sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Download exact reconciliation
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: generated-reconciliation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/reconciled
+      - name: Reproduce bytes and prepare immutable mission package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force "$env:RUNNER_TEMP/evidence" | Out-Null
+          python -B -m tools.generated_checkpoint.cli prepare `
+            --repo-root . `
+            --register "$env:RUNNER_TEMP/reconciled/hash-register.json" `
+            --reconciliation "$env:RUNNER_TEMP/reconciled/reconciliation.json" `
+            --package-root "$env:RUNNER_TEMP/checkpoint-package" `
+            --replay-nonce $env:INPUT_REPLAY_NONCE `
+            --public-clean-confirmation $env:INPUT_PUBLIC_CLEAN |
+            Tee-Object -FilePath "$env:RUNNER_TEMP/evidence/package-preparation.json"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Configure ephemeral GitHub credential helper
+        run: gh auth setup-git
+      - name: Configure ephemeral Git commit identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Invoke only the singular Thread Engine
+        shell: bash
+        run: |
+          set -o pipefail
+          python -B -m production_adapter.cli \
+            --mission "$RUNNER_TEMP/checkpoint-package/mission.json" \
+            --mission-sha256 "$(python -B -c 'import json,os; print(json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"checkpoint-package","mission.json"), encoding="utf-8"))["mission_sha256"])')" \
+            --mission-scoped-draft-pr \
+            --execute-draft-pr \
+            --generated-checkpoint-route \
+            --work-root "$RUNNER_TEMP/thread-engine-work" \
+            > "$RUNNER_TEMP/evidence/thread-engine-receipt.json" \
+            2> "$RUNNER_TEMP/evidence/thread-engine-rejection.json"
+        working-directory: tools/thread-engine
+      - name: Upload sanitized route evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: generated-checkpoint-route-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/evidence/
+            ${{ runner.temp }}/reconciled/
+            ${{ runner.temp }}/checkpoint-package/mission.json
+          if-no-files-found: error
+          retention-days: 14

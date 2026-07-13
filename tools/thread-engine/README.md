@@ -20,7 +20,7 @@ The engine applies declared ADD and REPLACE fixture Threads inside a unique temp
 
 Every rejection receipt is deterministic and classified with `result = REJECTED`, `error_code`, `error_stage`, `stop_point`, checkpoint results, completed Thread results, and forbidden-action confirmation.
 
-The production adapter under `production_adapter/` is activated only as mission-scoped, draft-PR-only Thread Engine authority through Aegis Break → Oathbringer. PowerShell, CLI, and direct Python execution all read `PRIME-PORT-STATUS.json` and fail closed if the state is disabled, malformed, or violates a permanent invariant. The fixture core remains fixture-only. The active adapter requires an exact mission authority, mission SHA-256 binding, explicit mission-scoped draft-PR intent, Fresh Clone First, declared paths, protected-path enforcement, source locks, payload hashes, candidate-tree verification, final path-set verification, `git diff --check`, staged diff verification, one deterministic branch, one single-parent commit, one draft PR, and independent readback. It never activates persistent writer authority, standing automation, ready transition, merge, workflow dispatch, generated-output disposition, repository-setting authority, cleanup, or production configuration.
+The production adapter under `production_adapter/` is activated only as mission-scoped, draft-PR-only Thread Engine authority through Aegis Break → Oathbringer. PowerShell, CLI, and direct Python execution all read `PRIME-PORT-STATUS.json` and fail closed if the state is disabled, malformed, or violates a permanent invariant. The fixture core remains fixture-only. The active adapter requires an exact mission authority, mission SHA-256 binding, explicit mission-scoped draft-PR intent, Fresh Clone First, declared paths, protected-path enforcement, source locks, payload hashes, candidate-tree verification, final path-set verification, `git diff --check`, staged diff verification, a pre-push canonical-main recheck, one deterministic branch, one single-parent commit, one draft PR, and independent readback. It never activates persistent writer authority, standing automation, ready transition, merge, workflow dispatch, unprofiled generated-output mutation, repository-setting authority, cleanup, or production configuration.
 
 Live protected-path enforcement loads the reviewed Prime source at `policies/protected-paths.json`; there is no second hard-coded path list. The policy covers Prime authority, governance, schema, migration, lifecycle, Quest Board, generated, workflow, and Thread Engine self-change boundaries.
 
@@ -41,6 +41,24 @@ revision, and then uses the existing one-branch, one-commit, draft-PR-only Aegis
 Break route. The physical event path never replaces `record_id` as identity.
 The profile performs no semantic authorship, Quest advancement, acceptance
 decision, automatic ready, automatic merge, or direct-main write.
+
+## Generated Checkpoint Profile
+
+`GENERATED_CHECKPOINT_V1` is a separate closed protected profile for the exact
+five non-governing generated reports. It is mutually exclusive with Aegis
+Break and lifecycle profiles. A read-only preparer builds canonical registers;
+hosted Ubuntu and Windows must produce byte-identical register artifacts; and
+the publish job reproduces those bytes from the exact workflow/base source.
+
+The profile binds fresh mission and replay identities, its deterministic
+branch, source blobs, candidate and final path-set digests, source fingerprint,
+parity and reconciliation digests, workflow ref/source/blob, run and attempt,
+owner actors, repository token principal, and public-clean confirmation. The
+adapter re-reproduces the outputs from its fresh clone, rechecks canonical
+`main` immediately before push, permits only five ordered `REPLACE` operations,
+creates one draft PR, performs exact readback, emits sanitized evidence, and
+stops. It cannot advance a Quest or capability, ready or merge a PR, retry
+automatically, change settings, or become a second writer.
 
 ## Aegis Break Protected Route
 

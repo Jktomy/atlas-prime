@@ -37,7 +37,7 @@ The Gate 7F production adapter is separate from the fixture adapter. Gate 7G act
 
 The adapter can operate only when a mission-specific authority declares the exact repository, remote, base SHA, branch, changed path set, source blobs, payload hashes, candidate tree hash, final path-set hash, network allowlist, receipt name, stop point, and mission SHA-256. It uses Fresh Clone First, prepares candidate files outside the checkout, installs only the complete validated candidate set, verifies exact bytes and `git diff --check`, verifies the staged diff, creates one deterministic branch and one single-parent commit, pushes without force, creates one draft PR, reads the PR back, emits a deterministic receipt, and stops before ready transition or merge.
 
-The production adapter first enforces `PRIME-PORT-STATUS.json` inside Python. It denies direct-main write, force push, automatic merge, ready transition, workflow dispatch, repository-setting mutation, generated-output mutation, Codex Workboard semantics, standing authority, arbitrary command execution, shell evaluation, undeclared paths, symlinks, path traversal, absolute paths, backslashes, duplicate paths, case-fold collisions, stale bases, existing mission branches, duplicate PRs, and mismatched receipts. Prime protected paths are loaded from `policies/protected-paths.json`, including `migration/**`, so live code and reviewed policy cannot drift independently.
+The production adapter first enforces `PRIME-PORT-STATUS.json` inside Python. It denies direct-main write, force push, automatic merge, ready transition, workflow dispatch, repository-setting mutation, unprofiled generated-output mutation, Codex Workboard semantics, standing authority, arbitrary command execution, shell evaluation, undeclared paths, symlinks, path traversal, absolute paths, backslashes, duplicate paths, case-fold collisions, stale bases, existing mission branches, duplicate PRs, and mismatched receipts. Prime protected paths are loaded from `policies/protected-paths.json`, including `migration/**`, so live code and reviewed policy cannot drift independently.
 
 Lifecycle construction is an optional closed mission profile. Before remote
 mutation, the adapter verifies the canonical G4-C event, manifest, and receipt
@@ -48,6 +48,16 @@ record-ID or replay-key reuse, absent expected parents, and a second claim to
 the same target revision. These checks are deterministic mechanics only; Athena
 remains responsible for meaning and acceptance. Successful execution still
 terminates at draft-PR readback.
+
+Generated checkpoint construction is a second optional closed profile, mutually
+exclusive with lifecycle and Aegis Break authority. The preparer has no Git or
+GitHub route. The hosted workflow independently builds Ubuntu and Windows
+registers, requires canonical byte equality, and passes one immutable package
+to the production adapter. The adapter binds hosted owner and workflow
+identity, reproduces the five payloads from Fresh Clone First, checks the
+workflow blob and source locks, rechecks remote `main` before push, and uses
+the normal single-writer draft-PR readback stop. The profile never promotes
+acceptance, a capability, a Quest, or generated reporting into governing truth.
 
 Disablement route: restore the Gate 7F disabled posture through one narrow source PR that changes the mission schema, authority constants, launcher intent, examples, tests, and status text back to disabled-proof mode. Preserve evidence, open draft PRs, and branches; do not delete proof or harmless state as part of disablement.
 

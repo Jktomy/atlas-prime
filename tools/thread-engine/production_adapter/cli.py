@@ -16,6 +16,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--execute-draft-pr", action="store_true")
     parser.add_argument("--aegis-break-protected-route", action="store_true")
     parser.add_argument("--aegis-break-authority-id")
+    parser.add_argument("--generated-checkpoint-route", action="store_true")
     parser.add_argument("--work-root")
     args = parser.parse_args(argv)
     try:
@@ -26,6 +27,7 @@ def main(argv: list[str] | None = None) -> int:
             mission_sha256=args.mission_sha256,
             aegis_break_protected_route=args.aegis_break_protected_route,
             aegis_break_authority_id=args.aegis_break_authority_id,
+            generated_checkpoint_route=args.generated_checkpoint_route,
             work_root=Path(args.work_root) if args.work_root else None,
         )
         sys.stdout.write(stable_json(receipt))

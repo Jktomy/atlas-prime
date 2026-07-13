@@ -65,11 +65,15 @@ class ProductionAdapterStaticTests(unittest.TestCase):
         self.assertIn("--aegis-break-authority-id", cli)
         self.assertIn("aegis_break_protected_route=args.aegis_break_protected_route", cli)
         self.assertIn("aegis_break_authority_id=args.aegis_break_authority_id", cli)
+        self.assertIn("--generated-checkpoint-route", cli)
+        self.assertIn("generated_checkpoint_route=args.generated_checkpoint_route", cli)
         self.assertNotIn("workboard", cli.casefold())
         self.assertIn("[switch] $AegisBreakProtectedRoute", launcher)
         self.assertIn("[string] $AegisBreakAuthorityId", launcher)
         self.assertIn("--aegis-break-protected-route", launcher)
         self.assertIn("--aegis-break-authority-id", launcher)
+        self.assertIn("[switch] $GeneratedCheckpointRoute", launcher)
+        self.assertIn("--generated-checkpoint-route", launcher)
         self.assertIn("production_adapter.cli", launcher)
         self.assertIn("ResolverSelfTest", launcher)
         self.assertNotIn("workboard", launcher.casefold())
@@ -78,6 +82,22 @@ class ProductionAdapterStaticTests(unittest.TestCase):
         schema = json.loads((ADAPTER / "production_mission.schema.json").read_text(encoding="utf-8"))
         self.assertNotIn("workboard_row_update_authority", schema["properties"])
         self.assertFalse(schema.get("additionalProperties", True))
+
+    def test_generated_checkpoint_profile_and_workflow_are_closed(self) -> None:
+        schema = json.loads((ADAPTER / "production_mission.schema.json").read_text(encoding="utf-8"))
+        profile = schema["properties"]["generated_checkpoint_profile"]
+        self.assertFalse(profile["additionalProperties"])
+        self.assertEqual(profile["properties"]["profile_id"]["const"], "GENERATED_CHECKPOINT_V1")
+        source = (ADAPTER / "generated_checkpoint.py").read_text(encoding="utf-8")
+        preparer = (ROOT.parent / "generated_checkpoint" / "core.py").read_text(encoding="utf-8")
+        workflow = (ROOT.parents[1] / ".github" / "workflows" / "generated-checkpoint-publisher.yml").read_text(encoding="utf-8")
+        self.assertNotIn("subprocess", preparer)
+        self.assertIn("ubuntu-latest", workflow)
+        self.assertIn("windows-latest", workflow)
+        self.assertIn("--generated-checkpoint-route", workflow)
+        self.assertIn("github.triggering_actor == github.repository_owner", workflow)
+        self.assertIn("PRE_PUSH_REMOTE_LOCK", (ADAPTER / "adapter.py").read_text(encoding="utf-8"))
+        self.assertIn("fresh_clone_reproduction", source)
 
     def test_lifecycle_profile_is_closed_and_uses_the_protected_draft_route(self) -> None:
         schema = json.loads((ADAPTER / "production_mission.schema.json").read_text(encoding="utf-8"))
