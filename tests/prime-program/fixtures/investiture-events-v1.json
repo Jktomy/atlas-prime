@@ -1,0 +1,113 @@
+{
+  "schema_version": "atlas.investiture-fixtures.v1",
+  "events": [
+    {
+      "schema_version": "atlas.investiture-event.v1",
+      "event_id": "FS-C01-USAGE-OPENAI-001",
+      "replay_identity": "fs-c01-openai-usage-replay-0001",
+      "event_type": "USAGE_REPORTED",
+      "occurred_at": "2026-07-13T19:10:00Z",
+      "measurement": {
+        "state": "MEASURED",
+        "provider_origin": "OPENAI",
+        "model_id": "fixture-openai-model",
+        "runtime_id": "fixture-openai-runtime",
+        "atlas_runtime_control": false,
+        "light": "Spirallight",
+        "usage_scope_id": "fixture-openai-scope-0001",
+        "source_receipt_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "category_semantics_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "counting_basis": "AUTHORITATIVE_TOTAL",
+        "categories": [
+          {"category_id": "TOTAL", "token_count": 21, "role": "COUNTED", "parent_category_id": null, "explicitly_disjoint": false},
+          {"category_id": "INPUT", "token_count": 13, "role": "INFORMATIONAL", "parent_category_id": "TOTAL", "explicitly_disjoint": false},
+          {"category_id": "OUTPUT", "token_count": 8, "role": "INFORMATIONAL", "parent_category_id": "TOTAL", "explicitly_disjoint": false}
+        ],
+        "known_beu_subtotal": null,
+        "total_investiture_beu": 21
+      },
+      "bound_usage_event_ids": []
+    },
+    {
+      "schema_version": "atlas.investiture-event.v1",
+      "event_id": "FS-C01-USAGE-GOOGLE-001",
+      "replay_identity": "fs-c01-google-usage-replay-0001",
+      "event_type": "USAGE_REPORTED",
+      "occurred_at": "2026-07-13T19:11:00Z",
+      "measurement": {
+        "state": "PARTIAL",
+        "provider_origin": "GOOGLE",
+        "model_id": "fixture-google-model",
+        "runtime_id": "fixture-google-runtime",
+        "atlas_runtime_control": false,
+        "light": "Chromelight",
+        "usage_scope_id": "fixture-google-scope-0001",
+        "source_receipt_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "category_semantics_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "counting_basis": "DISJOINT_LEAVES",
+        "categories": [
+          {"category_id": "INPUT", "token_count": 5, "role": "COUNTED", "parent_category_id": null, "explicitly_disjoint": true},
+          {"category_id": "OUTPUT", "token_count": 3, "role": "COUNTED", "parent_category_id": null, "explicitly_disjoint": true}
+        ],
+        "known_beu_subtotal": 8,
+        "total_investiture_beu": null
+      },
+      "bound_usage_event_ids": []
+    },
+    {
+      "schema_version": "atlas.investiture-event.v1",
+      "event_id": "FS-C01-USAGE-UNAVAILABLE-001",
+      "replay_identity": "fs-c01-unavailable-replay-0001",
+      "event_type": "USAGE_REPORTED",
+      "occurred_at": "2026-07-13T19:12:00Z",
+      "measurement": {
+        "state": "UNAVAILABLE",
+        "provider_origin": null,
+        "model_id": null,
+        "runtime_id": null,
+        "atlas_runtime_control": null,
+        "light": null,
+        "usage_scope_id": null,
+        "source_receipt_sha256": null,
+        "category_semantics_sha256": null,
+        "counting_basis": null,
+        "categories": [],
+        "known_beu_subtotal": null,
+        "total_investiture_beu": null
+      },
+      "bound_usage_event_ids": []
+    },
+    {
+      "schema_version": "atlas.investiture-event.v1",
+      "event_id": "FS-C01-USAGE-ZERO-001",
+      "replay_identity": "fs-c01-zero-model-replay-0001",
+      "event_type": "USAGE_REPORTED",
+      "occurred_at": "2026-07-13T19:13:00Z",
+      "measurement": {
+        "state": "ZERO_MODEL",
+        "provider_origin": null,
+        "model_id": null,
+        "runtime_id": null,
+        "atlas_runtime_control": null,
+        "light": null,
+        "usage_scope_id": null,
+        "source_receipt_sha256": null,
+        "category_semantics_sha256": null,
+        "counting_basis": null,
+        "categories": [],
+        "known_beu_subtotal": null,
+        "total_investiture_beu": 0
+      },
+      "bound_usage_event_ids": []
+    },
+    {
+      "schema_version": "atlas.investiture-event.v1",
+      "event_id": "FS-C01-TASK-COMPLETED-001",
+      "replay_identity": "fs-c01-task-complete-replay-0001",
+      "event_type": "TASK_COMPLETED",
+      "occurred_at": "2026-07-13T19:14:00Z",
+      "measurement": null,
+      "bound_usage_event_ids": ["FS-C01-USAGE-OPENAI-001", "FS-C01-USAGE-GOOGLE-001"]
+    }
+  ]
+}

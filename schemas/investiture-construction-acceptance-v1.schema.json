@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/investiture-construction-acceptance-v1.schema.json",
+  "title": "Found Silverlight future construction acceptance record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "record_id", "source_base_sha", "construction_head_sha", "construction_merge_sha", "validation_run_id", "ubuntu_job_id", "windows_job_id", "detached_review", "implementation_hashes", "fixture_corpus_sha256", "deterministic_results", "mission_states", "remaining_blocker", "external_store_selected", "real_provider_usage_accepted", "promotion_boundary"],
+  "properties": {
+    "schema_version": {"const": "atlas.found-silverlight.construction-acceptance.v1"},
+    "record_id": {"const": "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01"},
+    "source_base_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "construction_head_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "construction_merge_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "validation_run_id": {"type": "integer", "minimum": 1},
+    "ubuntu_job_id": {"type": "integer", "minimum": 1},
+    "windows_job_id": {"type": "integer", "minimum": 1},
+    "detached_review": {"const": "GREEN"},
+    "implementation_hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["routing/command-surfaces.md", "schemas/investiture-construction-acceptance-v1.schema.json", "schemas/investiture-event-v1.schema.json", "schemas/investiture-ledger-manifest-v1.schema.json", "schemas/investiture-ledger-record-v1.schema.json", "schemas/investiture-operation-receipt-v1.schema.json", "schemas/investiture-summary-v1.schema.json", "tests/prime-program/fixtures/investiture-events-v1.json", "tests/prime-program/test_investiture_accounting.py", "tests/prime-program/test_investiture_storage.py", "tools/investiture_accounting/README.md", "tools/investiture_accounting/__init__.py", "tools/investiture_accounting/__main__.py", "tools/investiture_accounting/cli.py", "tools/investiture_accounting/core.py", "tools/investiture_accounting/storage.py", "tools/prime_checks/validate_prime.py"],
+      "properties": {
+        "routing/command-surfaces.md": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "schemas/investiture-construction-acceptance-v1.schema.json": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "schemas/investiture-event-v1.schema.json": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "schemas/investiture-ledger-manifest-v1.schema.json": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "schemas/investiture-ledger-record-v1.schema.json": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "schemas/investiture-operation-receipt-v1.schema.json": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "schemas/investiture-summary-v1.schema.json": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "tests/prime-program/fixtures/investiture-events-v1.json": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "tests/prime-program/test_investiture_accounting.py": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "tests/prime-program/test_investiture_storage.py": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "tools/investiture_accounting/README.md": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "tools/investiture_accounting/__init__.py": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "tools/investiture_accounting/__main__.py": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "tools/investiture_accounting/cli.py": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "tools/investiture_accounting/core.py": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "tools/investiture_accounting/storage.py": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "tools/prime_checks/validate_prime.py": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      }
+    },
+    "fixture_corpus_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "deterministic_results": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fixture_event_count", "committed_record_count", "known_beu_subtotal", "complete_total_available", "repeat_summary_byte_identical", "interrupted_recovery_idempotent", "generation_recovery_source_unchanged", "rollback_plan_read_only"],
+      "properties": {
+        "fixture_event_count": {"const": 5},
+        "committed_record_count": {"const": 5},
+        "known_beu_subtotal": {"const": 29},
+        "complete_total_available": {"const": false},
+        "repeat_summary_byte_identical": {"const": true},
+        "interrupted_recovery_idempotent": {"const": true},
+        "generation_recovery_source_unchanged": {"const": true},
+        "rollback_plan_read_only": {"const": true}
+      }
+    },
+    "mission_states": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["FS-C01-M02", "FS-C01-M03", "FS-C01-M04"],
+      "properties": {
+        "FS-C01-M02": {"const": "PROVEN"},
+        "FS-C01-M03": {"const": "PROVEN"},
+        "FS-C01-M04": {"const": "UNPROVEN"}
+      }
+    },
+    "remaining_blocker": {"const": "JAYSON_SELECTED_PROTECTED_EXTERNAL_STORE_AND_TRUSTED_PROVIDER_RUNTIME_USAGE_EVIDENCE_REQUIRED"},
+    "external_store_selected": {"const": false},
+    "real_provider_usage_accepted": {"const": false},
+    "promotion_boundary": {"const": "SEPARATE_AUTHORED_ACCEPTANCE_RECONCILIATION_REQUIRED"}
+  }
+}

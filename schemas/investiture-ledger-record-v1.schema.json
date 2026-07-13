@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/investiture-ledger-record-v1.schema.json",
+  "title": "Found Silverlight immutable ledger record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ledger_id", "generation_id", "sequence", "prior_record_sha256", "event_sha256", "event", "record_sha256"],
+  "properties": {
+    "schema_version": {"const": "atlas.investiture-ledger-record.v1"},
+    "ledger_id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+){2,15}$"},
+    "generation_id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+){2,15}$"},
+    "sequence": {"type": "integer", "minimum": 1},
+    "prior_record_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "event_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "event": {"$ref": "investiture-event-v1.schema.json"},
+    "record_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}
