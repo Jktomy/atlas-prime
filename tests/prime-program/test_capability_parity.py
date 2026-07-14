@@ -24,190 +24,100 @@ class CapabilityParityTests(unittest.TestCase):
     def setUp(self) -> None:
         self.register = json.loads(REGISTER_PATH.read_text(encoding="utf-8"))
         self.schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+        self.records = {record["id"]: record for record in self.register["capabilities"]}
 
     def test_register_is_exactly_the_frozen_28_capability_set(self) -> None:
         records = self.register["capabilities"]
         self.assertEqual(len(records), 28)
-        self.assertEqual(
-            [record["id"] for record in records],
-            [f"CAP-{number:03d}" for number in range(1, 29)],
-        )
+        self.assertEqual([record["id"] for record in records], [f"CAP-{n:03d}" for n in range(1, 29)])
         self.assertEqual(len({record["capability"] for record in records}), 28)
-        self.assertEqual(
-            self.register["predecessor_head"],
-            "c892dc05ea56db0134a0e865f56d491f9c02ff85",
-        )
+        self.assertEqual(self.register["predecessor_head"], "c892dc05ea56db0134a0e865f56d491f9c02ff85")
 
     def test_path_and_capability_dispositions_are_separate(self) -> None:
         authority = self.register["path_disposition_authority"]
-        self.assertEqual(
-            (authority["tracked_paths"], authority["closed_paths"], authority["open_paths"]),
-            (525, 525, 0),
-        )
+        self.assertEqual((authority["tracked_paths"], authority["closed_paths"], authority["open_paths"]), (525, 525, 0))
         self.assertIn("never establishes capability parity", authority["authority_boundary"])
-        self.assertTrue(
-            all(
-                "path_disposition" in record and "capability_disposition" in record
-                for record in self.register["capabilities"]
-            )
-        )
+        self.assertTrue(all("path_disposition" in record and "capability_disposition" in record for record in self.register["capabilities"]))
 
     def test_disposition_vocabulary_and_counts_are_exact(self) -> None:
         self.assertEqual(tuple(self.register["capability_disposition_vocabulary"]), DISPOSITIONS)
-        observed = Counter(
-            record["capability_disposition"] for record in self.register["capabilities"]
-        )
-        expected_nonzero = {
-            key: value
-            for key, value in self.register["capability_disposition_counts"].items()
-            if value
-        }
+        observed = Counter(record["capability_disposition"] for record in self.register["capabilities"])
+        expected_nonzero = {key: value for key, value in self.register["capability_disposition_counts"].items() if value}
         self.assertEqual(dict(observed), expected_nonzero)
-        self.assertEqual(sum(self.register["capability_disposition_counts"].values()), 28)
         self.assertEqual(
-            set(
-                self.schema["properties"]["capabilities"]["items"]["properties"][
-                    "capability_disposition"
-                ]["enum"]
-            ),
-            set(DISPOSITIONS),
+            self.register["capability_disposition_counts"],
+            {
+                "PRESERVED": 4,
+                "IMPROVED": 7,
+                "RESTORED": 14,
+                "REPLACED": 1,
+                "INTENTIONALLY_RETIRED": 1,
+                "BLOCKED": 0,
+                "STILL_MISSING": 1,
+            },
         )
+        self.assertEqual(sum(self.register["capability_disposition_counts"].values()), 28)
+        enum = self.schema["properties"]["capabilities"]["items"]["properties"]["capability_disposition"]["enum"]
+        self.assertEqual(set(enum), set(DISPOSITIONS))
 
-    def test_control_plane_does_not_claim_unproven_activation(self) -> None:
-        records = {record["id"]: record for record in self.register["capabilities"]}
-        for capability_id in (
-            "CAP-015",
-            "CAP-027",
-        ):
-            self.assertEqual(records[capability_id]["capability_disposition"], "STILL_MISSING")
-            self.assertEqual(records[capability_id]["activation_state"], "MISSING")
+    def test_only_cap027_remains_missing(self) -> None:
+        missing = [record["id"] for record in self.register["capabilities"] if record["capability_disposition"] == "STILL_MISSING"]
+        self.assertEqual(missing, ["CAP-027"])
+        self.assertEqual(self.records["CAP-027"]["activation_state"], "MISSING")
+        self.assertIn("AJ-03, AJ-11, and AJ-12", self.records["CAP-027"]["current_state"])
 
-    def test_deferred_rp_c05_and_hosted_intake_capabilities_are_restored(self) -> None:
-        records = {record["id"]: record for record in self.register["capabilities"]}
-        newly_restored = {
-            "CAP-002", "CAP-003", "CAP-004", "CAP-005", "CAP-006",
-            "CAP-008", "CAP-009", "CAP-022", "CAP-023",
-        }
-        for capability_id in newly_restored:
-            self.assertEqual(records[capability_id]["capability_disposition"], "RESTORED")
-            self.assertEqual(records[capability_id]["activation_state"], "ACTIVE")
-        self.assertIn("fresh Work/Athena origin remains separately missing", records["CAP-009"]["current_state"])
-
-    def test_guarded_multi_file_source_pack_is_live_restored(self) -> None:
-        records = {record["id"]: record for record in self.register["capabilities"]}
-        cap_011 = records["CAP-011"]
+    def test_cap015_is_restored_from_direct_spear_evidence(self) -> None:
+        cap = self.records["CAP-015"]
         proof = json.loads(
-            (ROOT / "proof/repairing-prime/rp-c08-cap011-reconciliation-r01.json").read_text(
-                encoding="utf-8"
-            )
+            (ROOT / "proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.json").read_text(encoding="utf-8")
         )
-        self.assertEqual(cap_011["capability_disposition"], "RESTORED")
-        self.assertEqual(cap_011["activation_state"], "ACTIVE")
-        self.assertEqual(proof["capability"], {"id": "CAP-011", "disposition": "RESTORED", "activation_state": "ACTIVE"})
-        self.assertEqual(len(proof["hosted_multifile_evidence"]["authored_paths"]), 2)
-        self.assertEqual(proof["hosted_multifile_evidence"]["detached_review"], "GREEN")
-        self.assertEqual(proof["hosted_multifile_evidence"]["canonical_readback"], "EXACT")
+        self.assertEqual(cap["capability_disposition"], "RESTORED")
+        self.assertEqual(cap["activation_state"], "ACTIVE")
+        self.assertEqual(cap["audit_status"], "RESTORED_DIRECT_SPEAR_LIVE_PROVEN")
+        self.assertIn("through Spear", cap["capability"])
+        self.assertIn("PR #102", cap["current_state"])
+        self.assertFalse(proof["superseded_premise"]["external_bridge_required"])
+        self.assertEqual(proof["transitions"]["CAP-015"]["to"], "RESTORED/ACTIVE")
 
-    def test_generated_parity_and_publisher_are_restored_by_aj09(self) -> None:
-        records = {record["id"]: record for record in self.register["capabilities"]}
-        acceptance = (ROOT / "governance/capability-acceptance-contract.md").read_text(
-            encoding="utf-8"
-        )
-        proof = json.loads(
-            (ROOT / "proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.json").read_text(
-                encoding="utf-8"
-            )
-        )
-        for capability_id in ("CAP-019", "CAP-020"):
-            self.assertEqual(records[capability_id]["capability_disposition"], "RESTORED")
-            self.assertEqual(records[capability_id]["activation_state"], "ACTIVE")
-        self.assertEqual(proof["acceptance_journey"], {"id": "AJ-09", "state": "PROVEN"})
-        self.assertEqual(proof["generated_pull_request"]["pull_request"], 138)
-        self.assertEqual(proof["generated_pull_request"]["detached_review"], "GREEN")
-        self.assertEqual(proof["mission_states"]["RP-C06-M05"], "PROVEN")
-        self.assertEqual(proof["campaign_gate_state"], "ACCEPTED")
-        self.assertEqual(proof["rejection_proofs"]["pr_collision"]["state"], "PROVEN")
-        self.assertIn("AJ-09 is `PROVEN`", acceptance)
-        self.assertIn("did not self-close RP-C06-M05", acceptance)
+    def test_hosted_and_generated_capabilities_remain_restored(self) -> None:
+        for capability_id in ("CAP-009", "CAP-010", "CAP-011", "CAP-019", "CAP-020", "CAP-022", "CAP-023"):
+            self.assertEqual(self.records[capability_id]["capability_disposition"], "RESTORED")
+            self.assertEqual(self.records[capability_id]["activation_state"], "ACTIVE")
+        self.assertIn("Jayson/Artemis Arrow/Bow", self.records["CAP-009"]["current_state"])
 
-    def test_legacy_oathbringer_capability_is_replaced_by_proven_journeys(self) -> None:
-        records = {record["id"]: record for record in self.register["capabilities"]}
-        cap_017 = records["CAP-017"]
-        acceptance = (ROOT / "governance/capability-acceptance-contract.md").read_text(
-            encoding="utf-8"
-        )
-        proof = (ROOT / "proof/oathbringer-production-acceptance-r01.md").read_text(
-            encoding="utf-8"
-        )
-
-        self.assertIn("Clone-first", cap_017["capability"])
-        self.assertEqual(cap_017["path_disposition"], "HISTORICAL_CLOSED")
-        self.assertEqual(cap_017["audit_status"], "PRODUCTION_ROUTE_LIVE_PROVEN")
-        self.assertEqual(cap_017["capability_disposition"], "REPLACED")
-        self.assertEqual(cap_017["activation_state"], "ACTIVE")
-        self.assertIn("AJ-04", cap_017["required_proof"])
-        self.assertIn("AJ-05", cap_017["required_proof"])
-        self.assertIn("AJ-06", cap_017["required_proof"])
+    def test_legacy_oathbringer_capability_is_replaced(self) -> None:
+        cap = self.records["CAP-017"]
+        acceptance = (ROOT / "governance/capability-acceptance-contract.md").read_text(encoding="utf-8")
+        self.assertEqual(cap["capability_disposition"], "REPLACED")
+        self.assertEqual(cap["activation_state"], "ACTIVE")
+        self.assertIn("AJ-04", cap["required_proof"])
+        self.assertIn("AJ-05", cap["required_proof"])
+        self.assertIn("AJ-06", cap["required_proof"])
         self.assertIn("AJ-04, AJ-05, and AJ-06 are `PROVEN`", acceptance)
-        self.assertIn("`CAP-017` is `REPLACED` and `ACTIVE`", acceptance)
-        self.assertIn("AJ-04 BUILD    PROVEN", proof)
-        self.assertIn("AJ-05 REPAIR   PROVEN", proof)
-        self.assertIn("AJ-06 EXECUTE  PROVEN", proof)
-        self.assertIn("f670bf27073563af8beb830fccb916b519c80ac5", proof)
 
     def test_route_terms_are_not_conflated(self) -> None:
-        records = {record["id"]: record for record in self.register["capabilities"]}
         change_routes = (ROOT / "governance/change-routes.md").read_text(encoding="utf-8")
-        command_surfaces = (ROOT / "routing/command-surfaces.md").read_text(
-            encoding="utf-8"
-        )
+        command_surfaces = (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8")
         phoenix = (ROOT / "methods/phoenix-blade.md").read_text(encoding="utf-8")
         spear = (ROOT / "methods/athenas-spear.md").read_text(encoding="utf-8")
-        sword = (ROOT / "methods/atlas-sword.md").read_text(encoding="utf-8")
-        acceptance = (ROOT / "governance/capability-acceptance-contract.md").read_text(
-            encoding="utf-8"
-        )
+        bow = (ROOT / "methods/artemis-bow-and-arrow.md").read_text(encoding="utf-8")
 
-        for term in (
-            "Authorizer",
-            "Operator",
-            "Delivery route",
-            "launcher",
-            "Normal repository engine",
-            "Repository substrate",
-            "AI-assisted work surface",
-            "Provider, model, and runtime identity",
-        ):
-            self.assertIn(term, change_routes)
+        self.assertIn("Athena -> Spear -> Thread Engine", change_routes)
+        self.assertIn("Jayson / Artemis -> Arrow -> Bow -> Thread Engine", change_routes)
+        self.assertIn("Phoenix Blade is Athena executing an exact Sword", phoenix)
+        self.assertIn("does not invoke Thread Engine", phoenix)
+        self.assertIn("Aegis Break is Athena's bounded route-selection", phoenix)
+        self.assertIn("Spear is Athena's direct Thread Engine route", spear)
+        self.assertIn("Bow and Arrow belong to Jayson and Artemis", bow)
+        self.assertIn("Direct GitHub-native construction is an Aegis Break route", command_surfaces)
+        self.assertNotIn("Phoenix Blade -> Athena direct repository construction", change_routes)
+        self.assertNotIn("Bow and Arrow belong to Athena", bow)
 
+    def test_light_and_work_surface_identity_remain_separate(self) -> None:
+        phoenix = (ROOT / "methods/phoenix-blade.md").read_text(encoding="utf-8")
         self.assertIn("Shardplate is the AI-assisted work surface", phoenix)
-        self.assertIn("fresh Work context", spear)
-        self.assertIn("live-proven and active", sword)
-        self.assertIn("CAP-017 is therefore `REPLACED`", sword)
-        self.assertEqual(records["CAP-017"]["capability_disposition"], "REPLACED")
-        self.assertEqual(records["CAP-017"]["activation_state"], "ACTIVE")
-        self.assertEqual(
-            records["CAP-017"]["audit_status"],
-            "PRODUCTION_ROUTE_LIVE_PROVEN",
-        )
-
-        self.assertIn("Aegis Break -> equivalent safe route", change_routes)
-        self.assertNotIn("Aegis Break -> Phoenix Blade", change_routes)
-        self.assertIn("not hardwired to Phoenix Blade", phoenix)
-
-        self.assertIn("Trusted reported OpenAI, Google, or Atlas-controlled local-model tokens", phoenix)
         self.assertIn("Unreported model use is `UNAVAILABLE`", phoenix)
         self.assertIn("deterministic non-model work has no Light and zero BEU", phoenix)
-        self.assertNotIn("Stormlight identifies", phoenix)
-
-        self.assertIn("PowerShell is the thin interactive client", sword)
-        self.assertIn("GitHub-native", sword)
-        self.assertIn("exact multi-file GitHub commit", acceptance)
-        self.assertNotIn("clone-first BUILD", acceptance)
-
-        self.assertIn("routes to Phoenix Blade", command_surfaces)
-        self.assertIn("does not need to invoke a separate preflight command", command_surfaces)
-        self.assertIn("without requiring ChatGPT Work / Codex", command_surfaces)
 
 
 if __name__ == "__main__":

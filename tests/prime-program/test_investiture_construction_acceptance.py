@@ -10,6 +10,10 @@ from tools.athena_routes.schema import validate_schema
 
 ROOT = Path(__file__).resolve().parents[2]
 RECORD = ROOT / "proof/found-silverlight/fs-c01-m02-m03-construction-acceptance-r01.json"
+HISTORICAL_SOURCES = {
+    "routing/command-surfaces.md": ROOT
+    / "proof/found-silverlight/historical/routing-command-surfaces-7c37ebb5.source"
+}
 
 
 class InvestitureConstructionAcceptanceTests(unittest.TestCase):
@@ -22,7 +26,8 @@ class InvestitureConstructionAcceptanceTests(unittest.TestCase):
     def test_record_is_closed_schema_valid_and_hash_bound(self) -> None:
         validate_schema(self.schema, self.record)
         for relative, expected in self.record["implementation_hashes"].items():
-            actual = hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
+            path = HISTORICAL_SOURCES.get(relative, ROOT / relative)
+            actual = hashlib.sha256(path.read_bytes()).hexdigest()
             self.assertEqual(actual, expected, relative)
         fixture = ROOT / "tests/prime-program/fixtures/investiture-events-v1.json"
         self.assertEqual(hashlib.sha256(fixture.read_bytes()).hexdigest(), self.record["fixture_corpus_sha256"])

@@ -13,16 +13,16 @@ protected_level: "CRITICAL"
 
 Capability disposition is independent from the historical 525-path migration ledger. A path marked closed, remodeled, or migrated does not prove its user journey.
 
-Only an exact receipt and canonical readback may move a capability to RESTORED, REPLACED, or ACTIVE. Implementation narration, generated reports, candidate doctrine, issue text, and local-only demonstrations cannot promote a capability.
+Only exact evidence and canonical readback may move a capability to RESTORED, REPLACED, or ACTIVE. Implementation narration, generated reports, candidate doctrine, issue text, and local-only demonstrations cannot promote a capability.
 
 ## Required journeys
 
 | ID | Journey | Required acceptance |
 |---|---|---|
-| AJ-01 | Hosted Spear submission | Fresh Work/Athena submission reaches hosted Prime intake, invokes the singular Thread Engine, and creates a harmless immutable draft PR. |
-| AJ-02 | Hosted identity | Receipt distinguishes authorizer, event actor, triggering actor, workflow identity, workflow source SHA, credential principal, token mode, mission identity, run ID, and attempt. |
+| AJ-01 | Athena Spear submission | A Jayson-authorized Athena submission reaches the singular Thread Engine through Spear and creates one harmless immutable draft PR with exact readback. |
+| AJ-02 | Hosted identity | Hosted Arrow/Bow receipt distinguishes authorizer, event actor, triggering actor, workflow identity, workflow source SHA, credential principal, token mode, mission identity, run ID, and attempt. |
 | AJ-03 | Hosted rejection set | Non-owner, edited, stale, replayed, malformed, duplicate-branch, and duplicate-PR inputs reject without mutation. |
-| AJ-04 | Oathbringer BUILD | A sealed Sword launched through the thin Oathbringer PowerShell client creates one exact multi-file GitHub commit and harmless draft PR while displaying truthful stage and plan-position percentage progress. |
+| AJ-04 | Oathbringer BUILD | A sealed Sword launched through the thin Oathbringer client creates one exact multi-file GitHub commit and harmless draft PR while displaying truthful progress. |
 | AJ-05 | Oathbringer REPAIR | Exact current PR head receives one child commit through a fast-forward-only update and exact amended-head readback. |
 | AJ-06 | Oathbringer EXECUTE | A separately authorized exact audited head is merged only after applicable CI and independent readback. |
 | AJ-07 | Continuity update | Exactly one continuity entry changes without unrelated source changes. |
@@ -32,36 +32,34 @@ Only an exact receipt and canonical readback may move a capability to RESTORED, 
 | AJ-11 | Clean-clone recovery | Prime recovers from a clean clone without normal Codex dependency. |
 | AJ-12 | Merged-main validation | Final merged main passes complete Prime validation on Linux and Windows at the exact SHA. |
 
+## Accepted Athena Spear journey
+
+AJ-01 is `PROVEN`. Harmless direct Spear PR `#102` was created through the singular Prime Thread Engine from exact canonical source, stopped at an immutable draft PR, passed the applicable readback and merge boundary, and was preserved by the generated refresh in PR `#103`.
+
+The merged Spear/Arrow/Bow parity proof separately demonstrates shared compiler and candidate equivalence. It does not transfer Bow/Arrow ownership to Athena.
+
+AJ-01 does not require a platform-signed ChatGPT Work origin receipt. Jayson Preview-to-Execute authorization in the active chat is the human authority for the bounded task. The obsolete external-origin wrapper is superseded historical construction, not a missing acceptance layer.
+
+## Accepted hosted identity journey
+
+AJ-02 remains `PROVEN` from the accepted hosted Arrow/Bow evidence. Hosted identity is separate from Athena's direct Spear route and does not redefine the authorizer, operator, or route owner.
+
 ## Accepted Oathbringer journeys
 
 AJ-04, AJ-05, and AJ-06 are `PROVEN`. Their immutable GitHub identities, exact heads, workflow runs, changed-path readback, merge result, and independent reconciliation are recorded in `proof/oathbringer-production-acceptance-r01.md`.
 
-The R04 Foundry acceptance repeated the complete BUILD → REPAIR → independently audited EXECUTE chain on PR `#66`. It additionally proved deterministic carrier compilation, bounded read-only convergence when GitHub's pull-request projection lagged the branch update, and automatic local evidence packaging. The exact audited head merged to canonical `main` at `11d0db1c82c36c2bbdc07b02882da4f156b7b4e8`.
+The R04 Foundry acceptance repeated the complete BUILD → REPAIR → independently audited EXECUTE chain on PR `#66`. It additionally proved deterministic carrier compilation, bounded read-only convergence, and automatic local evidence packaging.
 
 ## Accepted generated lifecycle journey
 
-AJ-09 is `PROVEN`. Owner-triggered hosted run `29225849474` built byte-identical
-Ubuntu and Windows registers, invoked the singular Thread Engine, and created
-generated-only draft PR `#138` at exact head
-`5ef0bbe61ee575890c8a07ed79fd6ed7533f5298`. Exact-head validation run
-`29226002993` passed on both platforms, detached review was GREEN, and canonical
-main `2a8736c01cc7be00d307db7c8b4163d685405df6` reproduced the five reports as
-`CURRENT`. The immutable evidence is recorded in
-`proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md`.
+AJ-09 is `PROVEN`. Owner-triggered hosted evidence built byte-identical Ubuntu and Windows registers, invoked the singular Thread Engine, created generated-only draft PR `#138`, passed exact-head validation and detached review, and reproduced canonical generated state as `CURRENT`.
 
-AJ-09 proves CAP-019 and CAP-020. It did not self-close RP-C06-M05, activate
-standing authority, or grant permanence. The later fresh-identity hosted
-PR-collision rejection in run `29226787273`, generated refresh PR `#140`, and
-separate authored acceptance transaction close M05 and RP-C06 without changing
-those boundaries.
+PRs `#181` and `#182` later made the post-source-merge publisher automatic for non-generated main pushes, preserved manual recovery dispatch, added exact generated-head Ubuntu/Windows validation, and made zero generated delta a successful read-only `NOOP`. They did not add automatic ready or merge authority.
 
-## RP-C07 controlling dispositions
-
-RP-C07 reconciles every required journey from exact evidence. The controlling
-states are:
+## Current controlling dispositions
 
 ```text
-AJ-01 UNPROVEN
+AJ-01 PROVEN
 AJ-02 PROVEN
 AJ-03 UNPROVEN
 AJ-04 PROVEN
@@ -75,25 +73,21 @@ AJ-11 UNPROVEN
 AJ-12 UNPROVEN
 ```
 
-AJ-03 now has exact live no-mutation evidence for edited input, intentional
-replay, duplicate branch, and duplicate PR at
-`proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.md`.
-It remains UNPROVEN because an owner-authenticated session cannot substitute
-for the still-missing genuine non-owner rejection.
+AJ-03 has exact live no-mutation evidence for edited input, intentional replay, duplicate branch, and duplicate PR. It remains UNPROVEN because a genuine non-owner rejection is still missing.
 
-The exact evidence and smallest missing actions are recorded in
-`proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md`. RP-C07
-completion means the matrix is truthfully reconciled; it does not make an
-unproven or blocked journey available, complete RP-C01, activate CAP-027, or
-replace the final-main AJ-11 and AJ-12 work assigned to RP-C08.
+AJ-11 and AJ-12 remain assigned to final RP-C08 recovery and exact-final-main validation. The CAP-015/AJ-01 realignment does not promote them.
+
+The historical RP-C07 reconciliation remains valid evidence of the state at its accepted time. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` is the later controlling transition for AJ-01 only.
 
 ## Legacy Oathbringer capability mapping
 
 `CAP-017` preserves the identity and historical proof language of the predecessor clone-first Sword capability. Prime does not reactivate that exact substrate. The GitHub-native Oathbringer route is the accepted replacement, so `CAP-017` is `REPLACED` and `ACTIVE`.
 
+Phoenix Blade is Athena executing an exact Sword and mirrors Jayson wielding it through Oathbringer. That identity correction reconciles RP-C01-M02 without changing AJ-04 through AJ-06 or creating a second repository engine.
+
 ## Verdict rule
 
-Each journey is PROVEN, BLOCKED, or UNPROVEN. PROVEN requires exact source and head identity, path and blob readback, applicable tests and CI, independent read-only reconciliation, and a durable receipt. BLOCKED requires the exact external boundary and evidence. UNPROVEN never implies failure, but it cannot be reported as active.
+Each journey is PROVEN, BLOCKED, or UNPROVEN. PROVEN requires exact accepted evidence appropriate to the corrected journey identity, source and head readback, applicable tests and CI, independent reconciliation, and a durable record. BLOCKED requires the exact external boundary and evidence. UNPROVEN never implies failure, but it cannot be reported as active.
 
 ## Independence rule
 

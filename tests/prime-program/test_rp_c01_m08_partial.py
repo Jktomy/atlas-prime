@@ -13,6 +13,7 @@ class RpC01M08PartialTests(unittest.TestCase):
         self.proof = json.loads((ROOT / "proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.json").read_text(encoding="utf-8"))
         self.acceptance = json.loads((ROOT / "proof/repairing-prime/rp-c01-m08-free-form-acceptance-r01.json").read_text(encoding="utf-8"))
         self.route = json.loads((ROOT / "proof/repairing-prime/rp-c01-route-evidence-r01.json").read_text(encoding="utf-8"))
+        self.cap015 = json.loads((ROOT / "proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.json").read_text(encoding="utf-8"))
         self.identities = json.loads((ROOT / "continuity/quest-engine-identities-r01.json").read_text(encoding="utf-8"))
         self.continuity = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
 
@@ -36,22 +37,25 @@ class RpC01M08PartialTests(unittest.TestCase):
         self.assertEqual(self.route["guided_dependency_retirement"]["missing"], [])
         self.assertIn("PROVEN_ROUTINE_FREE_FORM_INTAKE", self.route["mission_states"]["RP-C01-M08"])
 
-    def test_identity_and_campaign_boundaries_remain_truthful(self) -> None:
+    def test_current_identity_preserves_m08_and_accepts_later_m02(self) -> None:
         campaign = next(item for item in self.identities["campaigns"] if item["campaign_id"] == "RP-C01")
         missions = {item["mission_id"]: item["state"] for item in campaign["missions"]}
         self.assertEqual(missions["RP-C01-M08"], "PROVEN")
-        self.assertEqual(missions["RP-C01-M02"], "UNPROVEN")
+        self.assertEqual(missions["RP-C01-M02"], "PROVEN")
+        self.assertEqual(self.cap015["transitions"]["RP-C01-M02"]["to"], "PROVEN")
         self.assertEqual(missions["RP-C01-M05"], "PROVEN")
         self.assertEqual(missions["RP-C01-M06"], "PARTIAL")
         self.assertEqual(missions["RP-C01-M07"], "PARTIAL")
         self.assertEqual(campaign["state"], "IN_PROGRESS")
         self.assertTrue(all(value is False for value in self.acceptance["forbidden_promotions"].values()))
+        self.assertTrue(all(value is False for value in self.cap015["forbidden_promotions"].values()))
 
-    def test_continuity_advances_once_without_self_promotion(self) -> None:
+    def test_continuity_advances_without_self_promotion(self) -> None:
         repairing = next(item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
-        self.assertGreaterEqual(self.continuity["register_revision"], 16)
-        self.assertGreaterEqual(repairing["revision"], 15)
+        self.assertGreaterEqual(self.continuity["register_revision"], 19)
+        self.assertGreaterEqual(repairing["revision"], 16)
         self.assertIn("RP-C01-M08-FREE-FORM-ACCEPTANCE-R01", self.continuity["event_ids"])
+        self.assertIn("RP-C08-CAP015-ARCHITECTURE-REALIGNMENT-R02", self.continuity["event_ids"])
         self.assertEqual(repairing["quest_state"], "IN_PROGRESS")
         self.assertFalse(any("free-form" in blocker.lower() for blocker in repairing["blockers"]))
 
