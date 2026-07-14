@@ -93,7 +93,8 @@ class FoundSilverlightDoctrineTests(unittest.TestCase):
         self.assertEqual(entry["gate_id"], "INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN")
         self.assertEqual(entry["last_event_id"], "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01")
         self.assertEqual(entry["revision"], 3)
-        self.assertEqual(self.continuity["event_ids"][-1], "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01")
+        found_event = "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01"
+        self.assertEqual(self.continuity["event_ids"].count(found_event), 1)
         self.assertIn("governance/investiture-accounting-contract.md", self.route)
 
     def test_repairing_prime_identity_register_is_not_widened(self) -> None:
