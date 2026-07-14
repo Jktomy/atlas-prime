@@ -1,0 +1,138 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c01-m06-protected-dispatch-acceptance.v1",
+  "campaign": "RP-C01",
+  "mission": "RP-C01-M06",
+  "mission_state": "PROVEN",
+  "campaign_gate": "ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN",
+  "campaign_gate_state": "NOT_PROVEN",
+  "transaction_base_sha": "91f4392880b7a76f675c933aa429e9f10d1c740e",
+  "source_reconciliation": {
+    "decision": "CLEAN_REPLACEMENT_FROM_EXACT_CURRENT_MAIN",
+    "authored_scope": "M06_ONLY",
+    "audited_prior_pull_request": 189,
+    "audited_prior_head_sha": "b68e3cf33d5b01a95e126189a6d06358c4ee6676",
+    "audited_prior_disposition": "OPEN_DRAFT_STALE_DIRTY_PRESERVED_UNMERGED",
+    "known_bad_partial_pull_request": 190,
+    "known_bad_partial_head_sha": "4a925ef2dfeb3fa461fd4b64e46b8da2242de032",
+    "known_bad_partial_disposition": "OPEN_DRAFT_FAILED_PRESERVED_NEVER_MERGE"
+  },
+  "live_mission": {
+    "mission_id": "RP-C01-M06-PROTECTED-DISPATCH-LIVE-R01",
+    "mission_sha256": "29a96ea23975f6165961db639f8fb4d31244e02cfc4cebd12c4b7c1f3db11816",
+    "route_identity": "AEGIS_BREAK_PROTECTED_PATH_V1",
+    "authority_id": "RP-C01-M06-AEGIS-BREAK-AUTHORITY-R01",
+    "operator": "Jayson",
+    "expected_operator_login": "Jktomy",
+    "observed_operator_login": "Jktomy",
+    "base_sha": "eef4e211d3e4bf6068f1b27cef0dc884a46e2791",
+    "branch": "source/rp-c01-m06-protected-dispatch-live-r01",
+    "stop_point": "DRAFT_PR_READBACK"
+  },
+  "immutable_bindings": {
+    "adapter_receipt_sha256": "0edaf1e7b7f788ca60ba3cbd6a00228cb7adbf2852a1716107b9fa6e8c7a03aa",
+    "operation_set_sha256": "e0dcb1d29bbef7a765938b04c9974417f71da6d595590682745053272f74e7ba",
+    "candidate_tree_sha256": "e67babe6da7905da0dacef568320234533a9cce6f4fc54541a2222048cfe50e3",
+    "final_pathset_sha256": "7571d338ab6b7a27e1b631e7cb49822f31b3bb3adb8658d5be972b606af2538d",
+    "payload_sha256": "4e61f25575013aefb429d4f50873037eb488ad20ab6a24ba5c9f7670c4e5c0bc",
+    "commit_tree": "745b553e5c738f56575b80417d0f52eb90ec2de3",
+    "declared_protected_paths": [
+      "governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md"
+    ]
+  },
+  "adapter_receipt": {
+    "schema_version": "atlas-thread-engine-production-adapter-receipt-v2",
+    "result": "SUCCESS",
+    "implementation_state": "THREAD_ENGINE_ACTIVE_MISSION_SCOPED",
+    "authority_scope": "MISSION_SCOPED",
+    "draft_pr_only": true,
+    "production_execution_authorized": true,
+    "production_authority_activated": false,
+    "human_merge_required": true,
+    "standing_authority": "NO",
+    "review_thread_count": 0,
+    "last_completed_checkpoint": "READBACK",
+    "checkpoint_count": 24,
+    "forbidden_action_confirmation": "ALL_FALSE_OR_NO"
+  },
+  "live_pull_request": {
+    "number": 187,
+    "base_sha": "eef4e211d3e4bf6068f1b27cef0dc884a46e2791",
+    "head_sha": "fa383b816f26160067372fb107120a8a3c4fb2bd",
+    "commit_tree": "745b553e5c738f56575b80417d0f52eb90ec2de3",
+    "changed_files": [
+      "governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md"
+    ],
+    "commit_count": 1,
+    "route_created_draft": true,
+    "exact_readback": "VERIFIED",
+    "comments": 0,
+    "reviews": 0,
+    "review_threads": 0,
+    "exact_head_ci": {
+      "run": 29333971422,
+      "windows_job": 87088522381,
+      "ubuntu_job": 87088522424,
+      "result": "GREEN"
+    },
+    "detached_review": "GREEN",
+    "merge_sha": "c20644641d947485a5d9fad26b6d07ef064dba9b"
+  },
+  "canonical_readback": {
+    "main_sha_after_live_merge": "c20644641d947485a5d9fad26b6d07ef064dba9b",
+    "payload": {
+      "path": "governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md",
+      "git_blob": "7cad2c8a8bddaa8db171dbf56f6785c8dd98b4e3",
+      "sha256": "4e61f25575013aefb429d4f50873037eb488ad20ab6a24ba5c9f7670c4e5c0bc",
+      "result": "EXACT"
+    },
+    "generated_checkpoint": {
+      "pull_request": 188,
+      "workflow_run": 29334688393,
+      "head_sha": "12c7a2ef78d1842e0ba5fcc7755a2bc782a09fc1",
+      "merge_sha": "aee1f837c18dbabf871396ffedf7d9c53e3d8297",
+      "source_fingerprint": "sha256:b88ddf192094548d522de5c8d92050e24173803861b4c9142670d75253ed3089",
+      "exact_head_ci": {
+        "run": 29334688393,
+        "windows_job": 87091201859,
+        "ubuntu_job": 87091201983,
+        "result": "GREEN"
+      },
+      "result": "GREEN_MERGED"
+    }
+  },
+  "accepted_claims": [
+    "EXACT_PROTECTED_PATH_AUTHORITY_BOUND",
+    "AUTHENTICATED_JKTOMY_OPERATOR_OBSERVED",
+    "FRESH_CLONE_EXECUTION",
+    "ONE_PROTECTED_PATH_ONE_COMMIT_ONE_DRAFT_PR",
+    "IMMUTABLE_DRAFT_PR_READBACK",
+    "EXACT_HEAD_UBUNTU_WINDOWS_GREEN",
+    "DETACHED_STRIKEFORCE_GREEN",
+    "SEPARATELY_AUTHORIZED_MERGE",
+    "CANONICAL_PAYLOAD_READBACK_EXACT",
+    "GENERATED_CHECKPOINT_MERGED"
+  ],
+  "remaining_boundaries": [
+    "RP-C01-M07_GENUINE_NON_OWNER",
+    "AJ-03_GENUINE_NON_OWNER_REJECTION",
+    "CAP-027",
+    "AJ-11_CLEAN_CLONE_RECOVERY",
+    "AJ-12_FINAL_MAIN_UBUNTU_WINDOWS",
+    "RP-C01_COMPLETE",
+    "RP-C08_COMPLETE",
+    "REPAIRING_PRIME_COMPLETE"
+  ],
+  "capability_promotion": "NONE",
+  "acceptance_journey_promotion": "NONE",
+  "forbidden_promotions": {
+    "RP_C01_COMPLETE": false,
+    "RP_C08_COMPLETE": false,
+    "REPAIRING_PRIME_COMPLETE": false,
+    "CAP_027": false,
+    "AJ_03": false,
+    "AJ_11": false,
+    "AJ_12": false,
+    "permanence_granted": false,
+    "standing_authority": false
+  }
+}

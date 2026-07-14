@@ -160,6 +160,7 @@ This realignment uses already merged evidence; it does not manufacture new opera
 - direct Spear PR `#102` proves Athena-to-Thread-Engine mechanics;
 - merged parity proof preserves direct Spear and Arrow/Bow compiler equivalence;
 - Oathbringer production acceptance proves the Sword operation set used by Phoenix Blade's counterpart definition;
-- PRs `#181` and `#182` prove the automatic generated post-merge route and zero-delta behavior.
+- PRs `#181` and `#182` prove the automatic generated post-merge route and zero-delta behavior;
+- protected dispatch PR `#187` and its accepted adapter receipt prove mission-scoped Aegis Break execution against one exact protected path.
 
-Only `CAP-015`, `AJ-01`, and RP-C01-M02 are reconciled by the corrected architecture and accepted evidence. AJ-03, RP-C01-M06, RP-C01-M07, AJ-11, AJ-12, CAP-027, RP-C01, RP-C08, and Repairing Prime remain open.
+Only `CAP-015`, `AJ-01`, RP-C01-M02, and RP-C01-M06 are reconciled by their respective accepted evidence. AJ-03, RP-C01-M07, AJ-11, AJ-12, CAP-027, RP-C01, RP-C08, and Repairing Prime remain open.

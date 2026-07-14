@@ -115,6 +115,53 @@
     "historical_partial_evidence": "proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.json",
     "evidence": "proof/repairing-prime/rp-c01-m08-free-form-acceptance-r01.json"
   },
+  "m06_protected_dispatch": {
+    "state": "PROVEN_MERGED_AUTHENTICATED_PROTECTED_ROUTE",
+    "mission_id": "RP-C01-M06-PROTECTED-DISPATCH-LIVE-R01",
+    "route_identity": "AEGIS_BREAK_PROTECTED_PATH_V1",
+    "authority_id": "RP-C01-M06-AEGIS-BREAK-AUTHORITY-R01",
+    "operator": "Jayson",
+    "expected_operator_login": "Jktomy",
+    "observed_operator_login": "Jktomy",
+    "mission_sha256": "29a96ea23975f6165961db639f8fb4d31244e02cfc4cebd12c4b7c1f3db11816",
+    "adapter_receipt_sha256": "0edaf1e7b7f788ca60ba3cbd6a00228cb7adbf2852a1716107b9fa6e8c7a03aa",
+    "base_sha": "eef4e211d3e4bf6068f1b27cef0dc884a46e2791",
+    "branch": "source/rp-c01-m06-protected-dispatch-live-r01",
+    "protected_paths": [
+      "governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md"
+    ],
+    "operation_set_sha256": "e0dcb1d29bbef7a765938b04c9974417f71da6d595590682745053272f74e7ba",
+    "candidate_tree_sha256": "e67babe6da7905da0dacef568320234533a9cce6f4fc54541a2222048cfe50e3",
+    "final_pathset_sha256": "7571d338ab6b7a27e1b631e7cb49822f31b3bb3adb8658d5be972b606af2538d",
+    "payload_sha256": "4e61f25575013aefb429d4f50873037eb488ad20ab6a24ba5c9f7670c4e5c0bc",
+    "commit_tree": "745b553e5c738f56575b80417d0f52eb90ec2de3",
+    "pull_request": 187,
+    "head_sha": "fa383b816f26160067372fb107120a8a3c4fb2bd",
+    "exact_head_ci": {
+      "run": 29333971422,
+      "windows_job": 87088522381,
+      "ubuntu_job": 87088522424,
+      "result": "GREEN"
+    },
+    "detached_review": "GREEN",
+    "merge_sha": "c20644641d947485a5d9fad26b6d07ef064dba9b",
+    "canonical_readback": {
+      "path": "governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md",
+      "git_blob": "7cad2c8a8bddaa8db171dbf56f6785c8dd98b4e3",
+      "sha256": "4e61f25575013aefb429d4f50873037eb488ad20ab6a24ba5c9f7670c4e5c0bc",
+      "result": "EXACT"
+    },
+    "generated_checkpoint": {
+      "pull_request": 188,
+      "head_sha": "12c7a2ef78d1842e0ba5fcc7755a2bc782a09fc1",
+      "merge_sha": "aee1f837c18dbabf871396ffedf7d9c53e3d8297",
+      "workflow_run": 29334688393,
+      "result": "GREEN_MERGED"
+    },
+    "forbidden_actions": "ALL_FALSE_OR_NO",
+    "standing_authority": "NO",
+    "evidence": "proof/repairing-prime/rp-c01-m06-protected-dispatch-acceptance-r01.json"
+  },
   "m07_live_rejection_sequence": {
     "state": "PARTIAL_NON_OWNER_MISSING",
     "canonical_base": "50e8646e0267e20ec31e2d970216039ffb3844ae",
@@ -143,7 +190,7 @@
     "RP-C01-M03": "PROVEN_MERGED_AUTHENTICATED_LOCAL_ROUTE",
     "RP-C01-M04": "PROVEN_MERGED_AUTHENTICATED_HOSTED_ROUTE",
     "RP-C01-M05": "PROVEN_SAME_CARRIER_DIRECT_AND_GUIDED_HOSTED_PARITY",
-    "RP-C01-M06": "HANDOFF_DETECTION_PROVEN_PROTECTED_EXECUTION_NOT_RUN",
+    "RP-C01-M06": "PROVEN_MERGED_AUTHENTICATED_PROTECTED_ROUTE",
     "RP-C01-M07": "PARTIAL_ONLY_GENUINE_NON_OWNER_LIVE_REJECTION_MISSING",
     "RP-C01-M08": "PROVEN_ROUTINE_FREE_FORM_INTAKE_TO_CANONICAL_CARRIER_LIVE_ACCEPTANCE"
   },
