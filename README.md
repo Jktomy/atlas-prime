@@ -21,6 +21,10 @@ Codex repository: FROZEN PREDECESSOR / ROLLBACK EVIDENCE
 
 Start with `bootstrap.md`, then `routing/command-surfaces.md`.
 
+Fresh Work/Athena origin construction is documented in
+`governance/athena-fresh-work-origin-contract.md`; it remains
+construction-only and is not activated.
+
 Prime contains current authored identity, governance, routing, Projects, Operations, Quests, safety doctrine, recovery, infrastructure source, generators, working command surfaces, and bounded generated projections. Generated projections do not govern. Runtime packages do not prove deployment. Private or regulated evidence remains in its approved system.
 
 All durable source changes use a reviewed branch and draft PR. Eligible construction uses Prime Thread Engine. Thread Engine self-change uses Aegis Break → Oathbringer. Jayson retains permanence and protected external-action authority.

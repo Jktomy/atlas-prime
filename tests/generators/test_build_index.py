@@ -48,6 +48,50 @@ class PrimeGeneratorTests(unittest.TestCase):
             with self.assertRaises(UnicodeDecodeError):
                 GENERATOR.build_outputs(root)
 
+    def test_recognized_readme_route_controls_routing_and_orphan_reports(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="prime-generator-routing-") as raw:
+            root = Path(raw)
+            contract_relative = "governance/athena-fresh-work-origin-contract.md"
+            contract_path = root / contract_relative
+            contract_path.parent.mkdir(parents=True)
+            contract_path.write_text(
+                "---\n"
+                'title: "Athena Fresh Work Origin Bridge Contract"\n'
+                'status: "CONSTRUCTION_ONLY_NOT_ACTIVATED"\n'
+                'source_type: "PROTOCOL"\n'
+                'protected_level: "CRITICAL"\n'
+                "---\n\n"
+                "# Athena Fresh Work Origin Bridge Contract\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            readme_path = root / "README.md"
+            readme_path.write_text("# Prime\n", encoding="utf-8", newline="\n")
+
+            unrouted, _unrouted_fingerprint = GENERATOR.build_outputs(root)
+            unrouted_row = f"| `{contract_relative}` | no |"
+            orphan_row = (
+                f"| `{contract_relative}` | "
+                "active metadata-bearing file not found in routing surfaces |"
+            )
+            self.assertIn(unrouted_row, unrouted["atlas-routing-inventory.md"])
+            self.assertIn(orphan_row, unrouted["atlas-orphan-report.md"])
+
+            readme_path.write_text(
+                "# Prime\n\n"
+                "Fresh Work/Athena origin construction is documented in "
+                f"`{contract_relative}`; it remains construction-only and is "
+                "not activated.\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            routed, _routed_fingerprint = GENERATOR.build_outputs(root)
+            self.assertIn(
+                f"| `{contract_relative}` | yes |",
+                routed["atlas-routing-inventory.md"],
+            )
+            self.assertNotIn(orphan_row, routed["atlas-orphan-report.md"])
+
 
 if __name__ == "__main__":
     unittest.main()
