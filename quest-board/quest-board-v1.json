@@ -10,7 +10,7 @@
       "state": "COMPLETE"
     },
     {
-      "next_gate": "RP-C08 Preview — Final Capability-Parity and Quest Closeout",
+      "next_gate": "RP-C08 \u2014 Remaining Acceptance, Recovery, and Quest Closeout",
       "owner": "Codex / Source Governance",
       "quest_id": "QUEST-REPAIRING-PRIME-R01",
       "source": "quests/repairing-prime.md",
