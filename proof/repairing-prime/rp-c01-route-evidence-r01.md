@@ -95,7 +95,8 @@ the exact marker bytes, and generated checkpoint PR #188 merged as
 `aee1f837c18dbabf871396ffedf7d9c53e3d8297`. M06 is PROVEN. The receipt binds
 every forbidden action false or `NO` and grants no standing authority.
 
-M01 through M06 and M08 are PROVEN. The broader
+M06 is PROVEN by this accepted evidence. This M06-only reconciliation does not
+revise any other mission state. The broader
 `ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN` gate remains unproven because M07 and
 AJ-03 still require a genuine non-owner live rejection. No CAP or AJ promotion
 is authorized.
