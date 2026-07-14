@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:13c1aef5159197fac34cb53276e429f470c0255eab57f9bdfa673db6fffa0df9
+Source fingerprint: sha256:b88ddf192094548d522de5c8d92050e24173803861b4c9142670d75253ed3089
 Generator format: 2
 Status: Generated support artifact
 
@@ -27,6 +27,7 @@ Status: Generated support artifact
 | `governance/investiture-accounting-contract.md` | governance | yes | policy-reference |
 | `governance/investiture-source-identity-contract.md` | governance | yes | review |
 | `governance/noctua.md` | governance | yes | none |
+| `governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md` | governance | yes | none |
 | `governance/protected-source-boundary.md` | governance | yes | policy-reference |
 | `governance/quest-engine-continuity-contract.md` | governance | yes | none |
 | `governance/resonance-reconciliation-contract.md` | governance | yes | none |

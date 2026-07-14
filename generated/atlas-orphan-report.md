@@ -1,6 +1,6 @@
 # Atlas Orphan Candidate Report
 
-Source fingerprint: sha256:13c1aef5159197fac34cb53276e429f470c0255eab57f9bdfa673db6fffa0df9
+Source fingerprint: sha256:b88ddf192094548d522de5c8d92050e24173803861b4c9142670d75253ed3089
 Generator format: 2
 Status: Generated support artifact
 
@@ -12,6 +12,7 @@ An orphan candidate is not deletion approval. Review routing, support-file statu
 
 | Path | Reason |
 |---|---|
+| `governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `lifecycle/architecture-decision-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `lifecycle/architecture-decision-r02.md` | active metadata-bearing file not found in routing surfaces |
 | `lifecycle/lifecycle-construction-contract.md` | active metadata-bearing file not found in routing surfaces |
