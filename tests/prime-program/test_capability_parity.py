@@ -91,9 +91,8 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertEqual(sum(observed.values()), 28)
         self.assertEqual(
             set(
-                self.schema["properties"]["capabilities"]["items"]["properties"][
-                    "capability_disposition"
-                ]["enum"]
+                self.schema["properties"]["capabilities"]["items"]["properties"]
+                ["capability_disposition"]["enum"]
             ),
             set(DISPOSITIONS),
         )
@@ -271,15 +270,19 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertIn("No external platform-origin", normalized_architecture)
 
         self.assertIn(
-            "routes to **Phoenix Blade**",
+            "routes to Phoenix Blade without requiring ChatGPT Work / Codex",
+            normalized_command_surfaces,
+        )
+        self.assertIn(
+            "methods/sword-forge-standard.md",
+            normalized_command_surfaces,
+        )
+        self.assertIn(
+            "methods/sword-lessons.json",
             normalized_command_surfaces,
         )
         self.assertIn(
             "does not need to invoke a separate preflight command",
-            normalized_command_surfaces,
-        )
-        self.assertIn(
-            "Direct Athena work does not require ChatGPT Work / Codex",
             normalized_command_surfaces,
         )
 
