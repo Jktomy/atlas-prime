@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:1c98a15c5d3186aa5feee495cf7d8c27b7894f497e424a14c42bfa2bb0443fff
+Source fingerprint: sha256:13c1aef5159197fac34cb53276e429f470c0255eab57f9bdfa673db6fffa0df9
 Generator format: 2
 Status: Generated support artifact
 
@@ -77,10 +77,11 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.md` | no |
 | `proof/repairing-prime/rp-c01-route-evidence-r01.md` | no |
 | `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | no |
-| `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md` | yes |
+| `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md` | no |
 | `proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md` | no |
 | `proof/repairing-prime/rp-c08-cap010-reconciliation-r01.md` | no |
 | `proof/repairing-prime/rp-c08-cap011-reconciliation-r01.md` | no |
+| `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` | yes |
 | `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` | no |
 | `quests/found-silverlight.md` | yes |
 | `quests/notums-watch.md` | yes |
@@ -104,7 +105,7 @@ Status: Generated support artifact
 | `tools/atlas-sword/tests/test-contract.md` | no |
 | `tools/atlas_lifecycle/README.md` | yes |
 | `tools/generated_checkpoint/README.md` | yes |
-| `tools/investiture_accounting/README.md` | yes |
+| `tools/investiture_accounting/README.md` | no |
 | `tools/oathbringer-foundry/README.md` | yes |
 | `tools/prime_continuity/README.md` | yes |
 | `tools/resonance/README.md` | yes |
