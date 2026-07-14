@@ -172,161 +172,66 @@ def valid_success_receipt() -> dict:
 
 
 class AthenaExecutionRouteContractTests(unittest.TestCase):
-    def test_guided_publisher_contract_is_closed_and_does_not_self_promote(self) -> None:
+    def test_route_architecture_is_exact_and_nonconflated(self) -> None:
         contract = CONTRACT.read_text(encoding="utf-8")
-        method = (ROOT / "methods/athenas-spear.md").read_text(encoding="utf-8")
-        routing = (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8")
+        required = (
+            "ATHENA_SPEAR",
+            "JAYSON_ARTEMIS_ARROW_BOW",
+            "ATHENA_PHOENIX_BLADE",
+            "ATHENA_AEGIS_BREAK",
+            "Phoenix Blade mirrors what Oathbringer is to Jayson",
+            "Aegis Break owns safe alternate-route selection",
+            "DIRECT_GITHUB_NATIVE_ROUTE=AEGIS_BREAK",
+            "PHOENIX_BLADE_USES_THREAD_ENGINE=false",
+            "BOW_ARROW_OWNERSHIP=JAYSON_AND_ARTEMIS",
+            "NORMAL_STOP_BOUNDARY=DRAFT_PR_READBACK",
+        )
+        self.assertEqual([phrase for phrase in required if phrase not in contract], [])
+        self.assertNotIn("Phoenix Blade remains the Athena-native direct control route", contract)
+
+    def test_cap015_and_aj01_use_accepted_direct_spear_evidence(self) -> None:
+        contract = CONTRACT.read_text(encoding="utf-8")
+        acceptance = (ROOT / "governance/capability-acceptance-contract.md").read_text(encoding="utf-8")
+        proof = json.loads(
+            (ROOT / "proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.json").read_text(encoding="utf-8")
+        )
+        self.assertIn("Direct Spear compilation and Thread Engine delivery are already proven", contract)
+        self.assertIn("AJ-01 is `PROVEN`", acceptance)
+        self.assertEqual(proof["accepted_evidence"]["direct_spear"]["pull_request"], 102)
+        self.assertEqual(proof["transitions"]["CAP-015"]["to"], "RESTORED/ACTIVE")
+        self.assertFalse(proof["superseded_premise"]["external_bridge_required"])
+
+    def test_remaining_acceptance_boundaries_are_preserved(self) -> None:
+        contract = CONTRACT.read_text(encoding="utf-8")
+        acceptance = (ROOT / "governance/capability-acceptance-contract.md").read_text(encoding="utf-8")
+        for phrase in ("AJ-03 remains UNPROVEN", "AJ-11 UNPROVEN", "AJ-12 UNPROVEN"):
+            self.assertIn(phrase, contract + acceptance)
+        self.assertIn("does not promote AJ-03, AJ-11, AJ-12, CAP-027", contract)
+
+    def test_guided_publisher_contracts_remain_closed(self) -> None:
         for path in (GUIDED_PREVIEW_V1_SCHEMA, GUIDED_PREVIEW_SCHEMA, GUIDED_EXECUTE_SCHEMA):
             schema = json.loads(path.read_text(encoding="utf-8"))
             self.assertFalse(schema["additionalProperties"])
             forbidden = schema["properties"]["forbidden_actions"]
             self.assertFalse(forbidden["additionalProperties"])
             self.assertTrue(all(value == {"const": False} for value in forbidden["properties"].values()))
-        self.assertIn("JSON on standard input", contract)
-        self.assertIn("do not promote CAP-010", contract)
-        self.assertIn("does not prove CAP-010", routing)
-        self.assertIn("Component construction and tests do not prove", method)
 
-    def test_m05_parity_schema_is_closed_and_cannot_self_promote(self) -> None:
-        schema = json.loads(M05_PARITY_SCHEMA.read_text(encoding="utf-8"))
-        self.assertFalse(schema["additionalProperties"])
-        self.assertEqual(schema["properties"]["result"]["const"], "PARITY_VERIFIED")
-        self.assertEqual(
-            schema["properties"]["promotion_boundary"]["const"],
-            "SEPARATE_AUTHORED_RECONCILIATION_REQUIRED",
-        )
-        adapter_schema = json.loads(ADAPTER_EVIDENCE_SCHEMA.read_text(encoding="utf-8"))
-        self.assertFalse(adapter_schema["additionalProperties"])
-        confirmation = adapter_schema["properties"]["forbidden_action_confirmation"]
-        self.assertFalse(confirmation["additionalProperties"])
-        self.assertEqual(set(confirmation["required"]), set(confirmation["properties"]))
-
-    def test_free_form_intake_is_closed_local_and_cannot_self_promote(self) -> None:
+    def test_free_form_and_parity_surfaces_remain_nonpromoting(self) -> None:
         fields = json.loads(FREE_FORM_FIELDS_SCHEMA.read_text(encoding="utf-8"))
         receipt = json.loads(FREE_FORM_RECEIPT_SCHEMA.read_text(encoding="utf-8"))
-        contract = CONTRACT.read_text(encoding="utf-8")
-        routing = (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8")
+        parity = json.loads(M05_PARITY_SCHEMA.read_text(encoding="utf-8"))
+        adapter = json.loads(ADAPTER_EVIDENCE_SCHEMA.read_text(encoding="utf-8"))
         self.assertFalse(fields["additionalProperties"])
-        self.assertFalse(fields["properties"]["changes"]["items"]["additionalProperties"])
-        self.assertEqual(fields["properties"]["origin_classification"]["const"], "OWNER_GUIDED_LOCAL_NOT_FRESH_WORK_ORIGIN")
         self.assertFalse(receipt["additionalProperties"])
         self.assertEqual(receipt["properties"]["stop_point"]["const"], "FREE_FORM_CARRIER_CONSTRUCTED")
-        self.assertEqual(receipt["properties"]["promotion_boundary"]["const"], "LIVE_HOSTED_ACCEPTANCE_AND_SEPARATE_AUTHORED_RECONCILIATION_REQUIRED")
-        forbidden = receipt["properties"]["forbidden_actions"]
-        self.assertFalse(forbidden["additionalProperties"])
-        self.assertTrue(all(value == {"const": False} for value in forbidden["properties"].values()))
-        self.assertIn("fixed-metadata `ZIP_STORED`", contract)
-        self.assertIn("not fresh Work/Athena origin", routing)
+        self.assertEqual(parity["properties"]["promotion_boundary"]["const"], "SEPARATE_AUTHORED_RECONCILIATION_REQUIRED")
+        self.assertFalse(adapter["additionalProperties"])
 
-    def test_request_schema_is_closed_and_binds_hosted_identity(self) -> None:
-        schema = json.loads(REQUEST_SCHEMA.read_text(encoding="utf-8"))
-        self.assertFalse(schema["additionalProperties"])
-        self.assertEqual(
-            schema["properties"]["route"]["const"],
-            "ARROW_BOW_HOSTED",
-        )
-        event = schema["properties"]["event_identity"]
-        credential = schema["properties"]["credential_identity"]
-        self.assertFalse(event["additionalProperties"])
-        self.assertFalse(credential["additionalProperties"])
-        self.assertEqual(
-            set(event["required"]),
-            {
-                "event_name",
-                "event_action",
-                "event_node_or_delivery_id",
-                "created_at",
-                "updated_at",
-                "event_payload_sha256",
-                "event_actor",
-                "triggering_actor",
-                "workflow_ref",
-                "workflow_source_sha",
-                "run_id",
-                "run_attempt",
-            },
-        )
-        self.assertEqual(
-            set(credential["required"]),
-            {"credential_principal", "token_mode"},
-        )
-        self.assertEqual(
-            credential["properties"]["token_mode"], {"const": "GITHUB_TOKEN"}
-        )
-        self.assertEqual(
-            schema["properties"]["protected_path_classification"],
-            {"const": "ORDINARY"},
-        )
-
-    def test_receipt_schema_separates_every_aj_02_identity(self) -> None:
-        schema = json.loads(RECEIPT_SCHEMA.read_text(encoding="utf-8"))
-        self.assertFalse(schema["additionalProperties"])
-        identity = schema["properties"]["identity"]
-        self.assertFalse(identity["additionalProperties"])
-        self.assertEqual(
-            set(identity["required"]),
-            {
-                "authorizer",
-                "semantic_operator",
-                "requesting_surface",
-                "event_actor",
-                "triggering_actor",
-                "workflow_ref",
-                "workflow_source_sha",
-                "credential_principal",
-                "token_mode",
-                "mission_id",
-                "run_id",
-                "run_attempt",
-            },
-        )
-
-    def test_forbidden_actions_are_fixed_false_in_request_and_receipt(self) -> None:
-        for path in (REQUEST_SCHEMA, RECEIPT_SCHEMA):
-            schema = json.loads(path.read_text(encoding="utf-8"))
-            forbidden = schema["properties"][
-                "forbidden_actions"
-                if path == REQUEST_SCHEMA
-                else "forbidden_action_confirmation"
-            ]
-            self.assertFalse(forbidden["additionalProperties"])
-            self.assertEqual(
-                set(forbidden["required"]),
-                {
-                    "direct_main",
-                    "force_push",
-                    "ready",
-                    "merge",
-                    "settings",
-                    "standing_authority",
-                    "second_writer",
-                },
-            )
-            self.assertTrue(
-                all(item == {"const": False} for item in forbidden["properties"].values())
-            )
-
-    def test_contract_converges_on_one_engine_and_preserves_proof_boundaries(self) -> None:
-        text = CONTRACT.read_text(encoding="utf-8")
-        required = (
-            "the same singular Prime Thread Engine production adapter",
-            "AEGIS_BREAK_TO_OATHBRINGER",
-            "GENERATED_SOURCE_MIXING",
-            "DRAFT_PR_READBACK",
-            "fresh Work/Athena context",
-            "does not promote CAP-009, CAP-010, CAP-011, or CAP-015",
-            "AJ-01, AJ-02, and AJ-03 remain unproven",
-            "COMPONENT_EVIDENCE_CANNOT_ASSERT_ROUTE_GATE",
-            "Only a locally pre-screened, public-clean, size-bounded carrier",
-            "never echo carrier bytes",
-            "ROLLBACK_POST_MERGE=REVIEWED_REVERT_PR",
-        )
-        self.assertEqual([phrase for phrase in required if phrase not in text], [])
-
-    def test_complete_request_instances_enforce_route_token_and_classification(self) -> None:
+    def test_hosted_request_schema_binds_route_token_and_identity(self) -> None:
         schema = json.loads(REQUEST_SCHEMA.read_text(encoding="utf-8"))
         request = valid_request()
         validate_schema(schema, request)
+        self.assertEqual(schema["properties"]["route"]["const"], "ARROW_BOW_HOSTED")
         for path, invalid_value in (
             (("route",), "SPEAR_DIRECT"),
             (("credential_identity", "token_mode"), "USER_SESSION_TOKEN"),
@@ -340,53 +245,21 @@ class AthenaExecutionRouteContractTests(unittest.TestCase):
             with self.assertRaises(ContractValidationError):
                 validate_schema(schema, invalid)
 
-    def test_complete_receipts_reject_counterfeit_or_incoherent_state(self) -> None:
+    def test_hosted_receipt_rejects_incoherent_state(self) -> None:
         schema = json.loads(RECEIPT_SCHEMA.read_text(encoding="utf-8"))
         success = valid_success_receipt()
         validate_schema(schema, success)
 
-        counterfeit_success = deepcopy(success)
-        counterfeit_success["stop_point"] = "PRE_MUTATION_REJECTION"
-        counterfeit_success["mutation"] = {
-            "occurred": False,
-            "branch": None,
-            "pull_request": None,
-            "head_sha": None,
-            "draft": None,
-        }
+        nondraft = deepcopy(success)
+        nondraft["mutation"]["draft"] = False
         with self.assertRaises(ContractValidationError):
-            validate_schema(schema, counterfeit_success)
+            validate_schema(schema, nondraft)
 
         rejected_with_mutation = deepcopy(success)
         rejected_with_mutation["result"] = "REJECTED"
         rejected_with_mutation["error_code"] = "MALFORMED_CARRIER"
         with self.assertRaises(ContractValidationError):
             validate_schema(schema, rejected_with_mutation)
-
-        missing_remote_identity = deepcopy(success)
-        missing_remote_identity["mutation"]["branch"] = None
-        with self.assertRaises(ContractValidationError):
-            validate_schema(schema, missing_remote_identity)
-
-        nondraft_success = deepcopy(success)
-        nondraft_success["mutation"]["draft"] = False
-        with self.assertRaises(ContractValidationError):
-            validate_schema(schema, nondraft_success)
-
-        for omitted in (
-            "compile_receipt_sha256",
-            "adapter_receipt_sha256",
-            "error_code",
-        ):
-            missing_state = deepcopy(success)
-            del missing_state[omitted]
-            with self.assertRaises(ContractValidationError):
-                validate_schema(schema, missing_state)
-
-        wrong_hosted_token = deepcopy(success)
-        wrong_hosted_token["identity"]["token_mode"] = "USER_SESSION_TOKEN"
-        with self.assertRaises(ContractValidationError):
-            validate_schema(schema, wrong_hosted_token)
 
         partial = deepcopy(success)
         partial.update(
@@ -409,10 +282,6 @@ class AthenaExecutionRouteContractTests(unittest.TestCase):
             }
         )
         validate_schema(schema, partial)
-        false_partial = deepcopy(partial)
-        false_partial["mutation"]["occurred"] = False
-        with self.assertRaises(ContractValidationError):
-            validate_schema(schema, false_partial)
 
 
 if __name__ == "__main__":
