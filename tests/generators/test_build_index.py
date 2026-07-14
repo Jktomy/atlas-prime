@@ -48,7 +48,7 @@ class PrimeGeneratorTests(unittest.TestCase):
             with self.assertRaises(UnicodeDecodeError):
                 GENERATOR.build_outputs(root)
 
-    def test_recognized_readme_route_controls_routing_and_orphan_reports(self) -> None:
+    def test_superseded_historical_contract_remains_routed_not_orphaned(self) -> None:
         with tempfile.TemporaryDirectory(prefix="prime-generator-routing-") as raw:
             root = Path(raw)
             contract_relative = "governance/athena-fresh-work-origin-contract.md"
@@ -56,12 +56,13 @@ class PrimeGeneratorTests(unittest.TestCase):
             contract_path.parent.mkdir(parents=True)
             contract_path.write_text(
                 "---\n"
-                'title: "Athena Fresh Work Origin Bridge Contract"\n'
-                'status: "CONSTRUCTION_ONLY_NOT_ACTIVATED"\n'
+                'title: "Athena Fresh Work Origin Bridge Contract — Historical"\n'
+                'status: "SUPERSEDED_HISTORICAL_CONSTRUCTION"\n'
                 'source_type: "PROTOCOL"\n'
+                'authority_class: "HISTORICAL_AUTHORED_SOURCE"\n'
                 'protected_level: "CRITICAL"\n'
                 "---\n\n"
-                "# Athena Fresh Work Origin Bridge Contract\n",
+                "# Athena Fresh Work Origin Bridge Contract — Historical\n",
                 encoding="utf-8",
                 newline="\n",
             )
@@ -70,18 +71,12 @@ class PrimeGeneratorTests(unittest.TestCase):
 
             unrouted, _unrouted_fingerprint = GENERATOR.build_outputs(root)
             unrouted_row = f"| `{contract_relative}` | no |"
-            orphan_row = (
-                f"| `{contract_relative}` | "
-                "active metadata-bearing file not found in routing surfaces |"
-            )
             self.assertIn(unrouted_row, unrouted["atlas-routing-inventory.md"])
-            self.assertIn(orphan_row, unrouted["atlas-orphan-report.md"])
 
             readme_path.write_text(
                 "# Prime\n\n"
-                "Fresh Work/Athena origin construction is documented in "
-                f"`{contract_relative}`; it remains construction-only and is "
-                "not activated.\n",
+                "The former fresh Work/Athena origin bridge is retained only as "
+                f"superseded historical construction at `{contract_relative}`.\n",
                 encoding="utf-8",
                 newline="\n",
             )
@@ -90,7 +85,10 @@ class PrimeGeneratorTests(unittest.TestCase):
                 f"| `{contract_relative}` | yes |",
                 routed["atlas-routing-inventory.md"],
             )
-            self.assertNotIn(orphan_row, routed["atlas-orphan-report.md"])
+            self.assertNotIn(
+                f"| `{contract_relative}` | active metadata-bearing file not found in routing surfaces |",
+                routed["atlas-orphan-report.md"],
+            )
 
 
 if __name__ == "__main__":
