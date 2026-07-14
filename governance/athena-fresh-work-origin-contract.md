@@ -19,7 +19,7 @@ routes_to:
 
 This file preserves the read-only construction created while Prime incorrectly treated an independently attested ChatGPT Work origin as a prerequisite for Athena to reach Thread Engine.
 
-That premise is superseded by `governance/athena-execution-route-contract.md` and `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md`.
+That premise is superseded by `governance/athena-execution-route-contract.md` and `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md`. It is a superseded false blocker, not a missing operating capability.
 
 ## Controlling correction
 
