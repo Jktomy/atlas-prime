@@ -18,16 +18,16 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Atlas identity and canonical authority | `atlas-prime.md`, `governance/source-hierarchy.md` |
 | Safety and execution boundaries | `safety/atlas-safety-doctrine.md`, `governance/noctua.md`, `governance/atlas-aegis.md`, `governance/atlas-strikeforce.md`, `governance/protected-source-boundary.md`, `governance/cutover-boundary.md` |
 | Capability parity and acceptance | `governance/capability-parity-register.json`, `schemas/capability-parity-register.schema.json`, `governance/capability-acceptance-contract.md` |
-| Athena execution-route parity and hosted identity | `governance/athena-execution-route-contract.md`, `schemas/athena-hosted-route-request-v1.schema.json`, `schemas/athena-hosted-route-receipt-v1.schema.json`, `tools/athena_routes/README.md` |
-| Ordinary free-form mission fields to immutable carrier | `python -B -m tools.athena_routes.free_form_intake --fields <fields.json> --output-dir <new-directory>`; closed inputs/receipt use `schemas/athena-free-form-mission-fields-v1.schema.json` and `schemas/athena-free-form-intake-receipt-v1.schema.json`; constructor is local, read-only, non-promoting, and explicitly not fresh Work/Athena origin |
-| Guided Spear Preview and Execute | `python -B -m tools.athena_routes.guided_publisher preview|execute`; Execute requires a new durable receipt path, journals no-retry intent before dispatch, and uses the hosted mission/base lock; current closed receipts are defined by `schemas/athena-guided-intake-preview-v2.schema.json` and `schemas/athena-guided-intake-execute-receipt-v1.schema.json`, while Preview v1 remains immutable historical evidence; component presence does not prove CAP-010 |
-| RP-C01-M05 same-carrier parity evidence | `tools.athena_routes.m05_parity`, `schemas/rp-c01-m05-parity-evidence-v1.schema.json`; verifies exact Preview/Execute/hosted/compiler/adapter joins from one singular execution and cannot self-promote M05 |
+| Athena execution routes and hosted identity | `governance/athena-execution-route-contract.md`, `methods/athenas-spear.md`, `methods/phoenix-blade.md`, `schemas/athena-hosted-route-request-v1.schema.json`, `schemas/athena-hosted-route-receipt-v1.schema.json`, `tools/athena_routes/README.md` |
+| Ordinary free-form mission fields to immutable carrier | `python -B -m tools.athena_routes.free_form_intake --fields <fields.json> --output-dir <new-directory>`; closed inputs/receipt use `schemas/athena-free-form-mission-fields-v1.schema.json` and `schemas/athena-free-form-intake-receipt-v1.schema.json`; constructor is local, read-only, and non-promoting |
+| Guided hosted Preview and Execute | `python -B -m tools.athena_routes.guided_publisher preview|execute`; this is the Jayson/Artemis Arrow/Bow hosted route, not Athena's Spear identity; Execute retains durable no-retry intent and exact hosted mission/base locks |
+| Historical fresh-origin construction | `governance/athena-fresh-work-origin-contract.md`, `tools.athena_routes.fresh_work_bridge`; retained only as inert historical construction evidence and never required for Jayson-authorized Spear, Phoenix Blade, or Aegis Break work |
+| RP-C01-M05 same-carrier parity evidence | `tools.athena_routes.m05_parity`, `schemas/rp-c01-m05-parity-evidence-v1.schema.json`; verifies exact direct-Spear and hosted Arrow/Bow compiler/adapter joins and cannot self-promote M05 |
 | Agent identity and capability warrants | `governance/agentic-warrant-contract.md`, `schemas/agentic-capability-warrant-v1.schema.json`, `schemas/agentic-approval-record-v1.schema.json`, `schemas/agentic-warrant-receipt-v1.schema.json` |
 | Shardplate work-surface and Shardblade permanence contract (`CONTRACT_ONLY_NOT_ACTIVATED`) | `governance/shard-doctrine.md`, `schemas/shardblade-permanence-request-v1.schema.json`, `schemas/shardblade-permanence-approval-v1.schema.json`, `schemas/shardblade-permanence-receipt-v1.schema.json`, `tools/agentic_warrants/permanence.py` |
 | Investiture source identity and Light-name migration | `governance/investiture-source-identity-contract.md` |
-| Found Silverlight Investiture Accounting doctrine, ledger, summaries, and receipts | `governance/investiture-accounting-contract.md`, `quests/found-silverlight.md`; only trusted provider/runtime usage may emit BEU, private ledger placement is never inferred, and runtime activation remains separate |
-| Found Silverlight M02/M03 accounting construction (`CONSTRUCTION_ONLY_NOT_ACCEPTED`) | `tools/investiture_accounting/README.md`, `schemas/investiture-event-v1.schema.json`; requires an explicit new external store, emits only sanitized receipts/summaries, and cannot promote FS-C01 without a separate canonical acceptance transaction |
-| Deterministic conservation and generated-checkpoint route | `governance/deterministic-conservation-contract.md`, `.github/workflows/generated-checkpoint-publisher.yml`, `tools/generated_checkpoint/README.md`; AJ-09 acceptance is recorded in `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md` |
+| Found Silverlight Investiture Accounting doctrine, ledger, summaries, and receipts | `governance/investiture-accounting-contract.md`, `quests/found-silverlight.md` |
+| Deterministic conservation and generated-checkpoint route | `governance/deterministic-conservation-contract.md`, `.github/workflows/generated-checkpoint-publisher.yml`, `tools/generated_checkpoint/README.md`; source merges trigger the post-merge singular Thread Engine generated-draft route while manual dispatch remains recovery |
 | Chromelight provider evidence and account boundary | `governance/chromelight-provider-boundary.md`, `schemas/chromelight-evidence-register-v1.schema.json`, `proof/repairing-prime/rp-c03-chromelight-evidence-r01.json` |
 | Resonance independent finding reconciliation | `governance/resonance-reconciliation-contract.md`, `schemas/resonance-finding-v1.schema.json`, `schemas/aberration-register-v1.schema.json`, `tools/resonance/README.md`, `proof/repairing-prime/rp-c04-aberration-register-r01.json` |
 | Source changes and route selection | `governance/source-lifecycle.md`, `governance/change-routes.md` |
@@ -35,8 +35,10 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Operations | `operations/operation-registry.md` |
 | Artemis, Hermes, Nexus | `operations/artemis-runtime-and-routing.md` |
 | Protocols and delivery methods | `operations/protocol-library.md`, `methods/artemis-bow-and-arrow.md`, `methods/athenas-spear.md`, `methods/atlas-sword.md`, `methods/phoenix-blade.md` |
-| Athena direct construction or repair | `methods/phoenix-blade.md`, then the exact live repository or PR state |
-| Sword or Oathbringer request | `methods/sword-forge-standard.md`, `methods/sword-lessons.json`, `methods/atlas-sword.md`, `tools/atlas-sword/README.md`, then the exact live repository or PR state |
+| Athena through Thread Engine | `methods/athenas-spear.md`, then the exact Weave, base, Thread Engine state, and draft-PR stop boundary |
+| Athena direct safe construction or repair | `methods/phoenix-blade.md` for Aegis Break route selection, then the exact live repository or PR state |
+| Athena executes a Sword | `methods/phoenix-blade.md`, `methods/sword-forge-standard.md`, `methods/sword-lessons.json`, `methods/atlas-sword.md`, then the exact Sword and live target state |
+| Jayson Sword or Oathbringer request | `methods/sword-forge-standard.md`, `methods/sword-lessons.json`, `methods/atlas-sword.md`, `tools/atlas-sword/README.md`, then the exact live repository or PR state |
 | Oathbringer Foundry carrier compile | `methods/oathbringer-foundry.md`, `methods/sword-forge-standard.md`, `methods/sword-lessons.json`, `tools/oathbringer-foundry/README.md`, then exact current source and read-only live-state binding |
 | Active Quests | `quest-board/quest-board-v1.json`, `quests/` |
 | Quest identities and unfinished-work continuity | `governance/quest-engine-continuity-contract.md`, `continuity/quest-engine-identities-r01.json`, `continuity/prime-continuity-register-r01.json`, `tools/prime_continuity/README.md` |
@@ -48,17 +50,22 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Backup, restore, recovery, rollback | `recovery/phoenix-recovery.md`, `migration/rollback-map.md` |
 | Knowledge lifecycle | `knowledge/atlas-source-compendium.md` |
 | Thread Engine | `tools/thread-engine/README.md`, `tools/thread-engine/PRIME-PORT-STATUS.json` |
-| Routing registry | `routing/command-surfaces.md` |
 | Reusable templates | `templates/preview-bundle-template.md`, `templates/project-template.md`, `templates/protocol-template.md`, `templates/source-file-template.md`, `templates/support-file-template.md` |
-| Proven delivery evidence | `proof/prime-thread-engine-bootstrap-proof.md`, `proof/prime-spear-arrow-bow-parity-r01.md` |
+| Proven delivery evidence | `proof/prime-thread-engine-bootstrap-proof.md`, `proof/prime-spear-arrow-bow-parity-r01.md`, `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` |
 | Generated projections | `tools/build_index.py`, `generated/` |
 | Migration and cutover evidence | `migration/codex-cutover.md`, `migration/codex-inheritance-manifest.md`, `migration/predecessor-snapshot.md`, `migration/rollback-map.md`, `migration/source-disposition-summary.json` |
 
 ## Automatic method routing
 
-A request for Athena to construct or repair Atlas directly routes to Phoenix Blade without requiring ChatGPT Work / Codex, Thread Engine, or Oathbringer.
+A request for Athena to deliver through Thread Engine routes to Spear.
 
-A request to build, repair, recover, execute, or otherwise make a Sword automatically routes first through `methods/sword-forge-standard.md` and `methods/sword-lessons.json`, then through current Sword/Oathbringer doctrine and implementation source, and finally through exact live GitHub target state. The user does not need to invoke a separate preflight command or remind Athena to recall earlier lessons.
+A request for Athena to execute an exact Sword herself routes to Phoenix Blade. Phoenix Blade mirrors Jayson wielding the same Sword through Oathbringer and does not use Thread Engine.
+
+A request for Athena to construct, repair, or otherwise accomplish a bounded Atlas task directly routes through Aegis Break, which selects or constructs the safest exact route available. Direct GitHub-native construction is an Aegis Break route, not a synonym for Phoenix Blade.
+
+Bow and Arrow belong to Jayson and Artemis delegated delivery. They are never selected as Athena's direct route.
+
+A request to build, repair, recover, execute, or otherwise make a Sword automatically routes first through `methods/sword-forge-standard.md` and `methods/sword-lessons.json`, then through current Sword doctrine and the exact live GitHub target state. The user does not need to invoke a separate preflight command or remind Athena to recall earlier lessons.
 
 ## Decision box
 
