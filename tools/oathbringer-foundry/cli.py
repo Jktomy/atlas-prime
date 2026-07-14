@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 from foundry import FoundryError, compile_carrier, load_json, read_live_state, verify_carrier
+from handoff import build_operator_handoff
 
 
 REPLAY_LEDGER_NAME = "FOUNDRY-REPLAY-LEDGER.json"
@@ -50,7 +51,7 @@ def _result(value: object, as_json: bool) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Compile or verify deterministic Oathbringer Foundry carriers.")
+    parser = argparse.ArgumentParser(description="Compile, verify, or prepare deterministic Oathbringer Foundry carriers.")
     sub = parser.add_subparsers(dest="command", required=True)
     compile_parser = sub.add_parser("compile")
     compile_parser.add_argument("--input-root", required=True, type=Path)
@@ -60,6 +61,9 @@ def main() -> int:
     verify_parser = sub.add_parser("verify")
     verify_parser.add_argument("--carrier", required=True, type=Path)
     verify_parser.add_argument("--json", action="store_true")
+    handoff_parser = sub.add_parser("handoff")
+    handoff_parser.add_argument("--carrier", required=True, type=Path)
+    handoff_parser.add_argument("--json", action="store_true")
     snapshot_parser = sub.add_parser("snapshot")
     snapshot_parser.add_argument("--input-root", required=True, type=Path)
     snapshot_parser.add_argument("--source-root", required=True, type=Path)
@@ -68,6 +72,13 @@ def main() -> int:
     try:
         if args.command == "verify":
             _result(verify_carrier(args.carrier), args.json)
+            return 0
+        if args.command == "handoff":
+            verification = verify_carrier(args.carrier)
+            handoff = build_operator_handoff(args.carrier)
+            if handoff["carrier_sha256"] != verification["carrier_sha256"]:
+                raise FoundryError("carrier changed during operator handoff preparation")
+            _result(handoff, args.json)
             return 0
         mission = load_json(args.input_root / "foundry-mission.json")
         if args.command == "snapshot":
