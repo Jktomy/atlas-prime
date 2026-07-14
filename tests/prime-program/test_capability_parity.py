@@ -218,6 +218,14 @@ class CapabilityParityTests(unittest.TestCase):
         sword = (ROOT / "methods/atlas-sword.md").read_text(encoding="utf-8")
         architecture = ARCHITECTURE.read_text(encoding="utf-8")
 
+        normalized_change_routes = " ".join(change_routes.split())
+        normalized_command_surfaces = " ".join(command_surfaces.split())
+        normalized_phoenix = " ".join(phoenix.split())
+        normalized_spear = " ".join(spear.split())
+        normalized_bow = " ".join(bow.split())
+        normalized_sword = " ".join(sword.split())
+        normalized_architecture = " ".join(architecture.split())
+
         for term in (
             "Authorizer",
             "Operator",
@@ -228,42 +236,51 @@ class CapabilityParityTests(unittest.TestCase):
             "AI-assisted work surface",
             "Provider, model, and runtime identity",
         ):
-            self.assertIn(term, change_routes)
+            self.assertIn(term, normalized_change_routes)
 
-        self.assertIn("Spear is Athena's direct delivery route", spear)
-        self.assertIn("Prime Thread Engine", spear)
+        self.assertIn("Spear is Athena's direct delivery route", normalized_spear)
+        self.assertIn("Prime Thread Engine", normalized_spear)
         self.assertIn(
             "Phoenix Blade is the method by which Athena wields an exact Sword",
-            phoenix,
+            normalized_phoenix,
         )
         self.assertIn(
             "functional counterpart to Jayson wielding a Sword through Oathbringer",
-            phoenix,
+            normalized_phoenix,
         )
-        self.assertIn("Bow and Arrow belong to Jayson and Artemis", bow)
-        self.assertIn("They are not Athena's route", bow)
-        self.assertIn("PowerShell is the thin\ninteractive client", sword)
+        self.assertIn("Bow and Arrow belong to Jayson and Artemis", normalized_bow)
+        self.assertIn("They are not Athena's route", normalized_bow)
+        self.assertIn("PowerShell is the thin interactive client", normalized_sword)
 
         self.assertIn(
             "Aegis Break -> direct GitHub-native or other bounded safe route",
-            change_routes,
+            normalized_change_routes,
         )
-        self.assertNotIn("Aegis Break -> Phoenix Blade", change_routes)
-        self.assertIn("Aegis Break is Athena's adaptive safe route", change_routes)
-        self.assertIn("not hardwired", change_routes)
+        self.assertNotIn("Aegis Break -> Phoenix Blade", normalized_change_routes)
+        self.assertIn(
+            "Aegis Break is Athena's adaptive safe route",
+            normalized_change_routes,
+        )
+        self.assertIn("not hardwired", normalized_change_routes)
 
-        self.assertIn("Spear is Athena's Thread Engine\nroute", architecture)
-        self.assertIn("JAYSON / ARTEMIS", architecture)
-        self.assertIn("No external platform-origin", architecture)
+        self.assertIn(
+            "Spear is Athena's Thread Engine route",
+            normalized_architecture,
+        )
+        self.assertIn("JAYSON / ARTEMIS", normalized_architecture)
+        self.assertIn("No external platform-origin", normalized_architecture)
 
-        self.assertIn("routes to **Phoenix Blade**", command_surfaces)
+        self.assertIn(
+            "routes to **Phoenix Blade**",
+            normalized_command_surfaces,
+        )
         self.assertIn(
             "does not need to invoke a separate preflight command",
-            command_surfaces,
+            normalized_command_surfaces,
         )
         self.assertIn(
             "Direct Athena work does not require ChatGPT Work / Codex",
-            command_surfaces,
+            normalized_command_surfaces,
         )
 
 

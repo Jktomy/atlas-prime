@@ -225,8 +225,8 @@ class AthenaExecutionRouteContractTests(unittest.TestCase):
         self.assertFalse(adapter["additionalProperties"])
 
     def test_contract_preserves_one_engine_and_route_identity(self) -> None:
-        text = CONTRACT.read_text(encoding="utf-8")
-        architecture = ARCHITECTURE.read_text(encoding="utf-8")
+        text = " ".join(CONTRACT.read_text(encoding="utf-8").split())
+        architecture = " ".join(ARCHITECTURE.read_text(encoding="utf-8").split())
         for phrase in (
             "SPEAR_DIRECT",
             "ARROW_BOW_HOSTED",

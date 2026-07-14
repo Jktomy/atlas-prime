@@ -12,20 +12,21 @@ PROOF = ROOT / "proof/repairing-prime/rp-c08-cap015-architecture-realignment-r01
 class Cap015ArchitectureRealignmentTests(unittest.TestCase):
     def setUp(self) -> None:
         self.text = ARCHITECTURE.read_text(encoding="utf-8")
+        self.normalized = " ".join(self.text.split())
         self.proof = json.loads(PROOF.read_text(encoding="utf-8"))
 
     def test_operator_methods_are_exact(self) -> None:
         for phrase in (
-            "Spear is Athena's Thread Engine\nroute",
+            "Spear is Athena's Thread Engine route",
             "Phoenix Blade is Athena's functional counterpart to Oathbringer",
             "Aegis Break is Athena's direct/adaptive safe method",
             "Arrow/Bow is Jayson and Artemis delegated delivery",
-            "each operator\nwields an exact Sword without Thread Engine",
+            "each operator wields an exact Sword without Thread Engine",
         ):
-            self.assertIn(phrase, self.text)
+            self.assertIn(phrase, self.normalized)
         self.assertNotIn(
             "Phoenix Blade is Athena's direct repository-construction method",
-            self.text,
+            self.normalized,
         )
 
     def test_proof_binds_correct_architecture(self) -> None:
