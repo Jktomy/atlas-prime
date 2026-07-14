@@ -56,17 +56,27 @@ AJ-09 is `PROVEN`. Owner-triggered hosted evidence built byte-identical Ubuntu a
 
 PRs `#181` and `#182` later made the post-source-merge publisher automatic for non-generated main pushes, preserved manual recovery dispatch, added exact generated-head Ubuntu/Windows validation, and made zero generated delta a successful read-only `NOOP`. They did not add automatic ready or merge authority.
 
-## Sunset/Feather truth reconciliation
+## Accepted Sunset and restart journey
 
 The lifecycle source now requires every completed Sunset to create exactly one
 new sealed Feather and one immutable Sunset bound to it. Repository validation
 rejects null, missing, dangling, reused, cross-scope, concurrency-mismatched, and
 Sunrise-mismatched bindings across both canonical and fixture record classes.
 
-This structural correction does not self-prove AJ-10. AJ-10 remains `UNPROVEN`
-until one bounded live journey creates and verifies an exact pair, performs any
-applicable Quest checkpoint, proves non-Quest behavior without an invented
-Quest, and reconstructs the same pair from a fresh context.
+AJ-10 is `PROVEN`. PR `#193` created the bounded admitted-Quest and non-Quest
+live record sets at exact head
+`27717f23258d6a6307fa9099ca701e7b15e02d4b`, passed exact-head Ubuntu and
+Windows validation plus detached review, and merged as
+`8023622a7f3076a1a4a01b487b1693c415d66026`. The admitted arm binds exact
+Feather `FTR-NSTEALUEMBITCO27XTBC2542XN`, Sunset
+`SUN-DENN2FBSZHJDHVX722YYKRJLBZ`, Sunrise
+`SRI-DUBGAIQYLHFMMJBUPTSFBAMO4G`, Quest checkpoint, and Quest Emberline. The
+non-Quest arm creates no Quest identity. After generated state became current,
+a fresh context at canonical main `a7acc5d8be305b111bb0eae935885e235e6f2231`
+reconstructed the same admitted-Quest Feather, exact record readback resolved
+the same Sunset/Sunrise pair, and the canonical next gate matched. The accepted
+evidence is recorded in
+`proof/repairing-prime/rp-c08-aj10-cap022-acceptance-reconciliation-r04.md`.
 
 
 ## Current controlling dispositions
@@ -81,16 +91,16 @@ AJ-06 PROVEN
 AJ-07 PROVEN
 AJ-08 PROVEN
 AJ-09 PROVEN
-AJ-10 UNPROVEN
+AJ-10 PROVEN
 AJ-11 UNPROVEN
 AJ-12 UNPROVEN
 ```
 
 AJ-03 has exact live no-mutation evidence for edited input, intentional replay, duplicate branch, and duplicate PR. It remains UNPROVEN because a genuine non-owner rejection is still missing.
 
-AJ-10 is UNPROVEN until the corrected universal one-Sunset-to-one-Feather journey completes with exact accepted evidence. AJ-11 and AJ-12 remain assigned to final RP-C08 recovery and exact-final-main validation. The CAP-015/AJ-01 realignment does not promote any of them.
+AJ-10 is PROVEN from the corrected universal one-Sunset-to-one-Feather live journey and fresh-context exact-pair reconstruction. AJ-11 and AJ-12 remain assigned to final RP-C08 recovery and exact-final-main validation. AJ-03 remains UNPROVEN pending the genuine non-owner live rejection.
 
-The historical RP-C05 record remains valid evidence of the state at its accepted time. The historical RP-C07 reconciliation remains valid evidence of the state at its accepted time. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` remains the later controlling transition for AJ-01 only. `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` is the current superseding disposition for AJ-10 and does not rewrite historical proof.
+The historical RP-C05 record remains valid evidence of the state at its accepted time. The historical RP-C07 reconciliation remains valid evidence of the state at its accepted time. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` remains the later controlling transition for AJ-01 only. `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` and the R03 live candidate remain immutable historical pre-acceptance evidence. `proof/repairing-prime/rp-c08-aj10-cap022-acceptance-reconciliation-r04.md` is the current controlling transition for AJ-10, CAP-022, and RP-C05 only.
 
 ## Legacy Oathbringer capability mapping
 

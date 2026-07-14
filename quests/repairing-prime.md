@@ -34,13 +34,13 @@ last_verified: 2026-07-14
 **Current lane:** `BUILD -> VERIFY`<br>
 **Current state:** `IN_PROGRESS`<br>
 **Current Campaign:** `RP-C08`<br>
-**Next gate:** `RP-C08 — repair and prove universal Sunset/Feather continuity, then resume the preserved pre-interruption execution and closeout work`
+**Next gate:** `RP-C01-M06 — audit PR #189 against current main and complete the separate authored protected-dispatch acceptance reconciliation`
 
-RP-C02 through RP-C04 are complete from accepted canonical evidence. RP-C05 is PARTIAL: its Quest, startup, continuity, Emberline, and Argus foundations remain accepted, while the corrected universal Sunset/Feather acceptance journey is pending. RP-C01 remains independently in progress with its exact unproven and partial missions; advancing the active campaign pointer does not promote or erase those blockers.
+RP-C02 through RP-C05 are complete from accepted canonical evidence. RP-C05 now includes the corrected universal Sunset/Feather live journey and fresh-context exact-pair acceptance. RP-C01 remains independently in progress with its exact partial missions; advancing the active campaign pointer does not promote or erase those blockers.
 
 RP-C06 is complete from accepted hosted generated parity, publication, rejection, exact-head CI, detached review, and canonical readback evidence. RP-C07 remains complete as the historical exact AJ-01 through AJ-12 disposition reconciliation. The later CAP-015 architecture realignment proves AJ-01 without rewriting that historical evidence.
 
-AJ-01, AJ-02, and AJ-04 through AJ-09 are PROVEN. AJ-03, AJ-10, AJ-11, and AJ-12 are UNPROVEN. AJ-10 was demoted after the universal one-Sunset-to-one-Feather contract gap was discovered. Those boundaries remain controlling while RP-C08 repairs the contract, completes the live journey, and then returns to final capability and Quest closeout.
+AJ-01, AJ-02, and AJ-04 through AJ-10 are PROVEN. AJ-03, AJ-11, and AJ-12 are UNPROVEN. AJ-10 is accepted from the corrected universal one-Sunset-to-one-Feather live journey and fresh-context exact-pair readback. Those boundaries remain controlling while RP-C08 resumes preserved execution and final capability and Quest closeout work.
 
 ## Purpose
 
@@ -97,7 +97,7 @@ Accepted evidence:
 Accepted evidence:
 `proof/repairing-prime/rp-c01-m05-parity-acceptance-r01.md`. M05 is PROVEN from one immutable carrier retained through direct compilation and the guided hosted Arrow/Bow route, with exact compiler-receipt, mission, candidate-tree, final-pathset, singular-adapter, draft-PR readback, exact-head CI, detached review, merge, and canonical-main readback evidence. This mission-only acceptance does not complete RP-C01.
 
-RP-C01 remains `IN_PROGRESS` because M06 protected execution and M07/AJ-03 genuine non-owner rejection remain unproven.
+RP-C01 remains `IN_PROGRESS` because M06 awaits its separate authored acceptance reconciliation and M07/AJ-03 still requires a genuine non-owner rejection.
 
 ## RP-C02 — Shared Agentic Doctrine and Capability Warrants
 
@@ -121,7 +121,10 @@ Establish Refract, independent findings, the Aberration Register, Athena Refract
 
 Build stable Quest/Campaign/Mission/Gate identities and state rules; a Prime-native continuity register and bounded update route; deterministic Emberline; full startup/command surface; schema-driven Quest admission; and Sunset/Sunrise/Argus reconstruction.
 
-**Current disposition:** `PARTIAL` — all previously accepted non-Sunset foundations remain accepted. Universal `one Sunset → exactly one new sealed Feather → exact-pair Sunrise` source enforcement is repaired in RP-C08, but AJ-10 and CAP-022 remain unproven until a separate live journey is accepted.
+**Current disposition:** `COMPLETE` — all previously accepted foundations remain accepted, and the universal `one Sunset → exactly one new sealed Feather → exact-pair Sunrise` contract is now accepted from exact live admitted-Quest and non-Quest evidence, generated-current readback, and fresh-context reconstruction.
+
+Accepted evidence:
+`proof/repairing-prime/rp-c08-aj10-cap022-acceptance-reconciliation-r04.md`. AJ-10 is PROVEN and CAP-022 is RESTORED without rewriting the immutable R03 truth-repair or live-candidate records.
 
 **Gate:** `QUEST_ENGINE_AND_CONTINUITY_PROVEN`
 
@@ -161,12 +164,12 @@ Reconcile all 28 capability records and counts; final generated refresh; exact L
 Capability reconciliation evidence:
 `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` established the initial ledger. Later CAP-011 and CAP-010 reconciliations restored their hosted capabilities. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` restores CAP-015 under the corrected direct Spear architecture and quarantines the obsolete platform-origin construction.
 
-The current counts are 13 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 2 STILL_MISSING. CAP-022 and CAP-027 remain missing while AJ-03, AJ-10, AJ-11, and AJ-12 are unproven. RP-C08 and Repairing Prime stay in progress.
+The current counts are 14 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 1 STILL_MISSING. CAP-027 is the only missing capability while AJ-03, AJ-11, and AJ-12 are unproven. RP-C08 and Repairing Prime stay in progress.
 
 ## Bounded Sunset repair interruption and return gate
 
-The Sunset/Feather correction is a bounded interruption. Its order is:
+The Sunset/Feather correction was a bounded interruption. Its completed order was:
 
-`source truth repair → exact-head validation → independent audit → merge → generated checkpoint → live AJ-10/CAP-022 restoration journey → resume preserved pre-interruption RP-C08 work`
+`source truth repair → exact-head validation → independent audit → merge → generated checkpoint → live AJ-10/CAP-022 restoration journey → fresh-context acceptance reconciliation → resume preserved pre-interruption RP-C08 work`
 
 The preserved return work includes the outstanding protected execution and rejection gates, the Strikeforce audit of the preserved M06 candidate in PR #189, and the remaining clean-clone, final-main, Phoenix recovery, and Quest closeout gates. PR #190 remains blocked. The accepted CAP-015 architecture realignment remains preserved and is not reopened by this repair.

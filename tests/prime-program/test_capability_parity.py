@@ -49,24 +49,27 @@ class CapabilityParityTests(unittest.TestCase):
             {
                 "PRESERVED": 4,
                 "IMPROVED": 7,
-                "RESTORED": 13,
+                "RESTORED": 14,
                 "REPLACED": 1,
                 "INTENTIONALLY_RETIRED": 1,
                 "BLOCKED": 0,
-                "STILL_MISSING": 2,
+                "STILL_MISSING": 1,
             },
         )
         self.assertEqual(sum(self.register["capability_disposition_counts"].values()), 28)
         enum = self.schema["properties"]["capabilities"]["items"]["properties"]["capability_disposition"]["enum"]
         self.assertEqual(set(enum), set(DISPOSITIONS))
 
-    def test_cap022_and_cap027_are_the_exact_missing_set(self) -> None:
+    def test_cap022_is_restored_and_cap027_is_the_exact_missing_set(self) -> None:
         missing = [record["id"] for record in self.register["capabilities"] if record["capability_disposition"] == "STILL_MISSING"]
-        self.assertEqual(missing, ["CAP-022", "CAP-027"])
-        self.assertEqual(self.records["CAP-022"]["activation_state"], "MISSING")
-        self.assertIn("AJ-10", self.records["CAP-022"]["current_state"])
+        self.assertEqual(missing, ["CAP-027"])
+        self.assertEqual(self.records["CAP-022"]["capability_disposition"], "RESTORED")
+        self.assertEqual(self.records["CAP-022"]["activation_state"], "ACTIVE")
+        self.assertEqual(self.records["CAP-022"]["audit_severity"], "GREEN")
+        self.assertIn("PR #193", self.records["CAP-022"]["current_state"])
         self.assertEqual(self.records["CAP-027"]["activation_state"], "MISSING")
-        self.assertIn("AJ-03, AJ-10, AJ-11, and AJ-12", self.records["CAP-027"]["current_state"])
+        self.assertIn("AJ-03, AJ-11, and AJ-12", self.records["CAP-027"]["current_state"])
+        self.assertNotIn("AJ-10", self.records["CAP-027"]["current_state"])
 
     def test_cap015_is_restored_from_direct_spear_evidence(self) -> None:
         cap = self.records["CAP-015"]
