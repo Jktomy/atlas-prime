@@ -24,11 +24,11 @@
   "capability_disposition_counts": {
     "PRESERVED": 4,
     "IMPROVED": 7,
-    "RESTORED": 13,
+    "RESTORED": 14,
     "REPLACED": 1,
     "INTENTIONALLY_RETIRED": 1,
     "BLOCKED": 0,
-    "STILL_MISSING": 2
+    "STILL_MISSING": 1
   },
   "capabilities": [
     {
@@ -52,8 +52,8 @@
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "RESTORED",
       "activation_state": "ACTIVE",
-      "current_state": "Prime startup validates canonical Quest and continuity source and reconstructs the next safe gate from canonical continuity without chat memory. This narrower startup proof does not prove the universal Feather-bound Sunset journey.",
-      "required_proof": "Accepted RP-C05 command/startup transaction and fresh-context canonical continuity readback, excluding the separately unproven AJ-10 Sunset/Feather journey."
+      "current_state": "Prime startup validates canonical Quest and continuity source and reconstructs the next safe gate from canonical continuity without chat memory. The universal Feather-bound Sunset journey is accepted separately under AJ-10.",
+      "required_proof": "Accepted RP-C05 command/startup transaction and fresh-context canonical continuity readback, with the distinct AJ-10 Sunset/Feather acceptance bound separately."
     },
     {
       "id": "CAP-003",
@@ -287,12 +287,12 @@
       "id": "CAP-022",
       "domain": "Closeout / continuity",
       "capability": "Sunset closeout and restart-safe archive handoff",
-      "audit_status": "CONTRACT_REPAIRED_LIVE_JOURNEY_UNPROVEN",
-      "audit_severity": "HIGH",
+      "audit_status": "RESTORED_SUNSET_FEATHER_LIVE_PROVEN",
+      "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "Prime structurally enforces one new sealed Feather for every Sunset and exact-pair Sunrise resolution, but the corrected AJ-10 live acceptance journey has not yet run.",
+      "capability_disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "current_state": "Prime enforces one new sealed Feather for every Sunset and exact-pair Sunrise resolution. PR #193 supplied the exact admitted-Quest and non-Quest live records; generated state was current; and a fresh context at canonical main reconstructed the accepted Feather, Quest bindings, and next gate.",
       "required_proof": "A live exact one-Sunset-to-one-Feather transaction, applicable Quest checkpoint, non-Quest no-fabrication proof, fresh-context exact-pair Sunrise reconstruction, exact-head CI, independent review, merge, and canonical readback."
     },
     {
@@ -304,8 +304,8 @@
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "RESTORED",
       "activation_state": "ACTIVE",
-      "current_state": "Canonical continuity feeds deterministic read-only Sunrise and Argus priority surfacing without chat memory. Exact Feather-bound Sunset/Sunrise acceptance remains separately pending under AJ-10.",
-      "required_proof": "Accepted RP-C05 deterministic Sunrise and Argus technical evidence, with the corrected exact Feather-bound live journey tracked separately by AJ-10 and CAP-022."
+      "current_state": "Canonical continuity feeds deterministic read-only Sunrise and Argus priority surfacing without chat memory. The exact Feather-bound Sunset/Sunrise journey is separately accepted under AJ-10 and CAP-022.",
+      "required_proof": "Accepted RP-C05 deterministic Sunrise and Argus technical evidence plus the separately accepted AJ-10/CAP-022 exact Feather-bound live journey."
     },
     {
       "id": "CAP-024",
@@ -352,7 +352,7 @@
       "path_disposition": "NOT_A_PATH_CLAIM",
       "capability_disposition": "STILL_MISSING",
       "activation_state": "MISSING",
-      "current_state": "Component tests exist but AJ-03, AJ-10, AJ-11, and AJ-12 are not yet proven.",
+      "current_state": "Component tests exist but AJ-03, AJ-11, and AJ-12 are not yet proven.",
       "required_proof": "All acceptance IDs in the canonical contract have exact receipts or explicit blocked evidence."
     },
     {

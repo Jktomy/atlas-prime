@@ -75,7 +75,9 @@ class PrimeContinuityTests(unittest.TestCase):
             },
         )
         self.assertIn("RP-C07 is COMPLETE", repairing_continuity["current_position"])
-        self.assertIn("AJ-03/AJ-10/AJ-11/AJ-12 UNPROVEN", repairing_continuity["current_position"])
+        self.assertIn("AJ-03/AJ-11/AJ-12 remain UNPROVEN", repairing_continuity["current_position"])
+        self.assertIn("CAP-022 is RESTORED", repairing_continuity["current_position"])
+        self.assertIn("CAP-027 is the sole STILL_MISSING", repairing_continuity["current_position"])
         self.assertNotIn("await", repairing_continuity["current_position"].lower())
         rp_c01 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C01")
         unfinished_missions = {mission["mission_id"] for mission in rp_c01["missions"] if mission["state"] != "PROVEN"}

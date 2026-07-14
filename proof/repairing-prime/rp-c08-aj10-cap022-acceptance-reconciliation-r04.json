@@ -1,0 +1,199 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c08-aj10-cap022-acceptance-reconciliation.v1",
+  "mission_id": "RP-C08-AJ10-CAP022-ACCEPTANCE-RECONCILIATION-R04",
+  "authority": "CANONICAL_AUTHORED_ACCEPTANCE_RECONCILIATION",
+  "transaction_base_sha": "a7acc5d8be305b111bb0eae935885e235e6f2231",
+  "result": "EXACT_LIVE_SUNSET_RESTART_EVIDENCE_ACCEPTED",
+  "prerequisite_generated_state": {
+    "publisher_source_pull_request": 196,
+    "publisher_source_head_sha": "fbe27825692e15a9fdcfc525ee4dd767f436b8ff",
+    "publisher_source_merge_sha": "c9df1aca5d633b6b4f58823df29878f951b86a53",
+    "automatic_publisher_run": 29373938273,
+    "generated_pull_request": 197,
+    "generated_base_sha": "c9df1aca5d633b6b4f58823df29878f951b86a53",
+    "generated_head_sha": "85fc5b5c51b0640508c8a4e68a8c36d81645f55c",
+    "generated_exact_head_ci": {
+      "ubuntu_job": 87223491433,
+      "windows_job": 87223491415,
+      "result": "GREEN"
+    },
+    "generated_detached_strikeforce_r04": "GREEN",
+    "generated_merge_sha": "a7acc5d8be305b111bb0eae935885e235e6f2231",
+    "post_merge_noop": {
+      "workflow_run": 29374547844,
+      "workflow_attempt": 1,
+      "workflow_source_sha": "a7acc5d8be305b111bb0eae935885e235e6f2231",
+      "base_sha": "a7acc5d8be305b111bb0eae935885e235e6f2231",
+      "result": "NOOP",
+      "changed_count": 0,
+      "byte_identical": true,
+      "hash_register_sha256": "369bfeaec73816a5e0043244cbea19b8e7f2b05749801d0ef3976f47272a3bd4",
+      "reconciliation_sha256": "e6fa2ea8aacd441b1da081e1c512db2002d071f92d0396dc14047ee1f3cefea8",
+      "receipt_sha256": "e9f5140866323e7e1392bb8c24114f0d64c54313cfccd9d858e117ded25d7f46"
+    }
+  },
+  "accepted_live_transaction": {
+    "source_proof": {
+      "path": "proof/repairing-prime/rp-c08-aj10-cap022-live-acceptance-r03.json",
+      "sha256": "d136fd58028773a064e0561e70ec3e77bfbd1954449405305c4ba7193f0b2f5d"
+    },
+    "pull_request": 193,
+    "base_sha": "71cb7c3e78976bce393bf585303e6c0d2a6f179c",
+    "head_sha": "27717f23258d6a6307fa9099ca701e7b15e02d4b",
+    "merge_sha": "8023622a7f3076a1a4a01b487b1693c415d66026",
+    "changed_path_count": 20,
+    "exact_head_ci": {
+      "run": 29354950823,
+      "ubuntu_job": 87160136206,
+      "windows_job": 87160135561,
+      "result": "GREEN"
+    },
+    "detached_strikeforce_r04": "GREEN",
+    "canonical_readback_sha": "a7acc5d8be305b111bb0eae935885e235e6f2231",
+    "review_state": {
+      "blocking_comments": 0,
+      "blocking_reviews": 0,
+      "unresolved_threads": 0
+    }
+  },
+  "fresh_context_readback": {
+    "repository_sha": "a7acc5d8be305b111bb0eae935885e235e6f2231",
+    "command": "python -B -m tools.atlas_lifecycle --repo-root . context --quest-id repairing-prime",
+    "result": "PASS",
+    "source_fingerprint": "sha256:645ae41a91ea956786428d242b2e4616a16092931fbbeaddc6139795098072d6",
+    "latest_feather_id": "FTR-NSTEALUEMBITCO27XTBC2542XN",
+    "resolved_sunset_id": "SUN-DENN2FBSZHJDHVX722YYKRJLBZ",
+    "resolved_sunrise_id": "SRI-DUBGAIQYLHFMMJBUPTSFBAMO4G",
+    "quest_checkpoint_id": "QCP-VHH3SNDFKXN6NYD6S7IG7HGZAF",
+    "quest_emberline_id": "QEM-R6QKBDHLY7I7PVVEKIGTZFMZZT",
+    "next_gate": "MERGE_THEN_FRESH_CONTEXT_AJ10_CAP022_READBACK",
+    "generated_projection_warning": {
+      "classification": "NONBLOCKING_NONAUTHORITATIVE_PROJECTION_MISSING",
+      "path": "generated/lifecycle/website-index-v2.json",
+      "expected_sha256": "c6175fca11cfe709261a630db3ed4c86cf99c0f74ede39b03b249df650ebe63c"
+    }
+  },
+  "accepted_record_bindings": {
+    "admitted_quest": [
+      {
+        "path": "lifecycle/feathers/FTR-NSTEALUEMBITCO27XTBC2542XN.json",
+        "record_id": "FTR-NSTEALUEMBITCO27XTBC2542XN",
+        "sha256": "b902127030b32bd8ef20736300f4e6e7f509def3b94a23499409eb1f4cc50f5c"
+      },
+      {
+        "path": "lifecycle/sunsets/SUN-DENN2FBSZHJDHVX722YYKRJLBZ.json",
+        "record_id": "SUN-DENN2FBSZHJDHVX722YYKRJLBZ",
+        "sha256": "9feb0ae0d624159689536f8d5f8bf0eb1d49b4d80d6b184c783a668eb7d08ec5"
+      },
+      {
+        "path": "lifecycle/sunrises/SRI-DUBGAIQYLHFMMJBUPTSFBAMO4G.json",
+        "record_id": "SRI-DUBGAIQYLHFMMJBUPTSFBAMO4G",
+        "sha256": "8daf6b81a7ff2796872812a13a830bbb26b2da0f4d31bbf0869ddbb40f9f8381"
+      },
+      {
+        "path": "lifecycle/quest-checkpoints/QCP-VHH3SNDFKXN6NYD6S7IG7HGZAF.json",
+        "record_id": "QCP-VHH3SNDFKXN6NYD6S7IG7HGZAF",
+        "sha256": "5decedfd300e8ded63f6dc45111b53110fbedd253fc0878740a3baa70c968a44"
+      },
+      {
+        "path": "lifecycle/quest-emberlines/QEM-R6QKBDHLY7I7PVVEKIGTZFMZZT.json",
+        "record_id": "QEM-R6QKBDHLY7I7PVVEKIGTZFMZZT",
+        "sha256": "9174ed49302f666b40a60669196ebe2f81a66a942e9cb5b5a141e23ed9a424ed"
+      }
+    ],
+    "nonquest": [
+      {
+        "path": "lifecycle/feathers/FTR-STG4XK7DBGSXCHEADRP74P6AEH.json",
+        "record_id": "FTR-STG4XK7DBGSXCHEADRP74P6AEH",
+        "sha256": "0804beff894ee07151ede5efd5ba6f871b985d20107cdb6ca93d4de2ae3e355a"
+      },
+      {
+        "path": "lifecycle/sunsets/SUN-HYG6I5FEJZXSNJJQDZSLHUZSSK.json",
+        "record_id": "SUN-HYG6I5FEJZXSNJJQDZSLHUZSSK",
+        "sha256": "6eceb478b1de24d184b3f879acb7c20239863ffee3946b2511b89c66823dcfba"
+      },
+      {
+        "path": "lifecycle/sunrises/SRI-SRAE7PBMSMXG7GJU5U7L3XALKQ.json",
+        "record_id": "SRI-SRAE7PBMSMXG7GJU5U7L3XALKQ",
+        "sha256": "47ce04a8219755a34fd72d3cd073a9e0a88111fc09ed0132bada25dd0404bc08"
+      }
+    ]
+  },
+  "transitions": {
+    "AJ-10": {
+      "from": "UNPROVEN",
+      "to": "PROVEN"
+    },
+    "CAP-022": {
+      "from": "STILL_MISSING/MISSING",
+      "to": "RESTORED/ACTIVE"
+    },
+    "RP-C05": {
+      "from": "PARTIAL",
+      "to": "COMPLETE"
+    }
+  },
+  "capability_counts": {
+    "PRESERVED": 4,
+    "IMPROVED": 7,
+    "RESTORED": 14,
+    "REPLACED": 1,
+    "INTENTIONALLY_RETIRED": 1,
+    "BLOCKED": 0,
+    "STILL_MISSING": 1
+  },
+  "historical_evidence": {
+    "live_candidate_record_rewritten": false,
+    "truth_reconciliation_record_rewritten": false,
+    "historical_records_remain_immutable": true,
+    "this_record_supersedes_current_aj10_cap022_rp_c05_dispositions_only": true,
+    "immutable_artifacts": [
+      {
+        "path": "proof/repairing-prime/rp-c08-aj10-cap022-live-acceptance-r03.json",
+        "sha256": "d136fd58028773a064e0561e70ec3e77bfbd1954449405305c4ba7193f0b2f5d"
+      },
+      {
+        "path": "proof/repairing-prime/rp-c08-aj10-cap022-live-acceptance-r03.md",
+        "sha256": "38bf4b62e06be86dfbf81661339efc11cafd8dc0adc44f865694a366ce53cdea"
+      },
+      {
+        "path": "proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.json",
+        "sha256": "17ae65cdd5949e31bc50512f8e9f46c0aefd0a229e10bda1c34729f9bfd48f2c"
+      },
+      {
+        "path": "proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md",
+        "sha256": "86f3a0fe3d45077a98d8f785ce4223f0de264f1d06d037f142195da231fec276"
+      }
+    ]
+  },
+  "preserved_open": [
+    "RP-C01-M06",
+    "RP-C01-M07",
+    "AJ-03",
+    "CAP-027",
+    "AJ-11",
+    "AJ-12",
+    "RP-C01",
+    "RP-C08",
+    "QUEST-REPAIRING-PRIME-R01"
+  ],
+  "forbidden_promotions": {
+    "AJ-03": false,
+    "AJ-11": false,
+    "AJ-12": false,
+    "CAP-027": false,
+    "RP-C01": false,
+    "RP-C08": false,
+    "QUEST-REPAIRING-PRIME-R01": false,
+    "automatic_ready": false,
+    "automatic_merge": false,
+    "direct_main_write": false
+  },
+  "protected_data": {
+    "classification": "PUBLIC_CLEAN",
+    "protected_values": [],
+    "accepted_claim": "THE_EXACT_PR_193_RECORDS_AND_THIS_RECONCILIATION_ARE_PUBLIC_CLEAN",
+    "general_sunset_request_privacy_rejection_proven": false
+  },
+  "next_gate": "AUDIT_PR_189_THEN_SEPARATE_RP_C01_M06_ACCEPTANCE_RECONCILIATION"
+}
