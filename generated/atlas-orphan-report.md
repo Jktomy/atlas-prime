@@ -1,6 +1,6 @@
 # Atlas Orphan Candidate Report
 
-Source fingerprint: sha256:1c98a15c5d3186aa5feee495cf7d8c27b7894f497e424a14c42bfa2bb0443fff
+Source fingerprint: sha256:13c1aef5159197fac34cb53276e429f470c0255eab57f9bdfa673db6fffa0df9
 Generator format: 2
 Status: Generated support artifact
 
@@ -22,6 +22,7 @@ An orphan candidate is not deletion approval. Review routing, support-file statu
 | `proof/repairing-prime/rp-c01-m05-parity-acceptance-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `proof/repairing-prime/rp-c01-route-evidence-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | active metadata-bearing file not found in routing surfaces |
+| `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `routing/interaction-contract.md` | active metadata-bearing file not found in routing surfaces |

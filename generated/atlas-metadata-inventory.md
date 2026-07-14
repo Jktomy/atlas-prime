@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:1c98a15c5d3186aa5feee495cf7d8c27b7894f497e424a14c42bfa2bb0443fff
+Source fingerprint: sha256:13c1aef5159197fac34cb53276e429f470c0255eab57f9bdfa673db6fffa0df9
 Generator format: 2
 Status: Generated support artifact
 
@@ -15,8 +15,8 @@ Status: Generated support artifact
 | `atlas-start-here.md` | CANONICAL_ACTIVE | BOOT | missing | CRITICAL |
 | `bootstrap.md` | CANONICAL_ACTIVE | BOOT | missing | CRITICAL |
 | `governance/agentic-warrant-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
-| `governance/athena-execution-route-contract.md` | CONTRACT_DEFINED_NOT_ACTIVATED | PROTOCOL | missing | CRITICAL |
-| `governance/athena-fresh-work-origin-contract.md` | CONSTRUCTION_ONLY_NOT_ACTIVATED | PROTOCOL | missing | CRITICAL |
+| `governance/athena-execution-route-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
+| `governance/athena-fresh-work-origin-contract.md` | SUPERSEDED_HISTORICAL_CONSTRUCTION | PROTOCOL | missing | CRITICAL |
 | `governance/atlas-aegis.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `governance/atlas-strikeforce.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/capability-acceptance-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
@@ -43,8 +43,8 @@ Status: Generated support artifact
 | `lifecycle/lifecycle-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `lifecycle/lifecycle-event-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `lifecycle/trust-roots/README.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
-| `methods/artemis-bow-and-arrow.md` | COMPONENT_PROVEN_HOSTED_INVOCATION_UNAVAILABLE | METHOD | missing | CRITICAL |
-| `methods/athenas-spear.md` | COMPONENT_PROVEN_HOSTED_INTAKE_MISSING | METHOD | missing | CRITICAL |
+| `methods/artemis-bow-and-arrow.md` | ACTIVE_DELEGATED_DELIVERY | METHOD | missing | CRITICAL |
+| `methods/athenas-spear.md` | ACTIVE_DIRECT_THREAD_ENGINE_ROUTE | METHOD | missing | CRITICAL |
 | `methods/atlas-sword.md` | PRODUCTION_ACTIVE | METHOD | missing | CRITICAL |
 | `methods/consistent-pr-delivery-standard.md` | missing | missing | missing | missing |
 | `methods/oathbringer-foundry.md` | PRODUCTION_ACTIVE | METHOD | missing | CRITICAL |
@@ -81,6 +81,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md` | ACCEPTED_RECONCILIATION | PROOF | missing | MEDIUM |
 | `proof/repairing-prime/rp-c08-cap010-reconciliation-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-cap011-reconciliation-r01.md` | missing | missing | missing | missing |
+| `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` | CANDIDATE_ACCEPTANCE_EVIDENCE | PROOF | missing | HIGH |
 | `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` | ACCEPTED_PARTIAL_CLOSEOUT | PROOF | missing | MEDIUM |
 | `quests/found-silverlight.md` | Active | Quest | Parent Quest for establishing Atlas's private cognitive interface through Investiture Accounting, the seven-pillar Glass Codex, and the Seon Apple Reminders integration. | High |
 | `quests/notums-watch.md` | Active | Quest | Parent Quest for bringing Notum's Watch forward as Gatehouse/Citadel observability and rescue infrastructure, including the interim Notum vessel, future Notum Phoenix vessel, Nightwatcher lineage, and backup-capacity boundaries. | High |
