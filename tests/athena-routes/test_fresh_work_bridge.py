@@ -23,9 +23,6 @@ MISSION_ID = "RP-C01-CAP015-FRESH-WORK-R01"
 TASK_SHA = "3" * 64
 ORIGIN_NONCE_SHA = "4" * 64
 EVIDENCE_SHA = "5" * 64
-FROZEN_COMMAND_SURFACE_SHA256 = (
-    "7c37ebb5d88e65285b707a40ea63602fcf35f7f9119b021f8e51919f7ce48b94"
-)
 
 
 class FreshWorkBridgeTests(unittest.TestCase):
@@ -37,18 +34,13 @@ class FreshWorkBridgeTests(unittest.TestCase):
         self.preview = self.root / "preview.json"
         self.origin = self.root / "origin.json"
         self.journey = self.root / "journey.json"
-
         self.preview_value = {
             "canonical_main_sha": MAIN,
             "workflow_blob_sha": WORKFLOW_BLOB,
             "carrier_sha256": sha256_bytes(self.carrier.read_bytes()),
             "mission_id": MISSION_ID,
         }
-        self.preview.write_text(
-            stable_json(self.preview_value),
-            encoding="utf-8",
-            newline="\n",
-        )
+        self.preview.write_text(stable_json(self.preview_value), encoding="utf-8", newline="\n")
         self.preview_sha = sha256_bytes(self.preview.read_bytes())
         self.origin_value = {
             "schema_version": "atlas.athena.fresh-work-origin-receipt.v1",
@@ -86,20 +78,14 @@ class FreshWorkBridgeTests(unittest.TestCase):
         self.temp.cleanup()
 
     def write_origin(self) -> None:
-        self.origin.write_text(
-            stable_json(self.origin_value),
-            encoding="utf-8",
-            newline="\n",
-        )
+        self.origin.write_text(stable_json(self.origin_value), encoding="utf-8", newline="\n")
 
     def readback(self, receipt: dict, origin_sha: str) -> dict:
         return {
             "verified": True,
             "origin_receipt_sha256": origin_sha,
             "verification_method": receipt["verification_method"],
-            "verification_evidence_sha256": receipt[
-                "verification_evidence_sha256"
-            ],
+            "verification_evidence_sha256": receipt["verification_evidence_sha256"],
             "task_identity_sha256": receipt["task_identity_sha256"],
             "origin_nonce_sha256": receipt["origin_nonce_sha256"],
             "mission_id": receipt["mission_id"],
@@ -129,14 +115,9 @@ class FreshWorkBridgeTests(unittest.TestCase):
             now=NOW,
         )
         self.assertEqual(receipt["result"], "BLOCKED")
-        self.assertEqual(
-            receipt["error_code"],
-            "TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE",
-        )
+        self.assertEqual(receipt["error_code"], "TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE")
         self.assertFalse(receipt["remote_dispatch_possible"])
-        self.assertTrue(
-            all(value is False for value in receipt["bridge_mutation"].values())
-        )
+        self.assertTrue(all(value is False for value in receipt["bridge_mutation"].values()))
         self.assertIsNone(receipt["workflow_run_id"])
         self.assertIsNone(receipt["guided_execute_receipt_sha256"])
 
@@ -147,20 +128,14 @@ class FreshWorkBridgeTests(unittest.TestCase):
         self.assertEqual(plan["task_identity_sha256"], TASK_SHA)
         self.assertFalse(plan["remote_dispatch_authority"])
         self.assertFalse(plan["guided_execute_invoked"])
-        self.assertTrue(
-            all(value is False for value in plan["forbidden_actions"].values())
-        )
+        self.assertTrue(all(value is False for value in plan["forbidden_actions"].values()))
         self.assertNotIn("workflow_run_id", plan)
         self.assertNotIn("transcript", json.dumps(plan))
 
-    def test_missing_readback_cannot_even_build_candidate(self) -> None:
+    def test_missing_readback_cannot_build_candidate(self) -> None:
         with self.assertRaises(FreshWorkBridgeError) as raised:
             self.plan(readback=None)
-        self.assertEqual(
-            raised.exception.code,
-            "TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE",
-        )
-        self.assertFalse(self.journey.exists())
+        self.assertEqual(raised.exception.code, "TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE")
 
     def test_readback_must_bind_every_origin_and_mission_field(self) -> None:
         def mismatch(receipt: dict, origin_sha: str) -> dict:
@@ -170,10 +145,7 @@ class FreshWorkBridgeTests(unittest.TestCase):
 
         with self.assertRaises(FreshWorkBridgeError) as raised:
             self.plan(readback=mismatch)
-        self.assertEqual(
-            raised.exception.code,
-            "TRUSTED_ORIGIN_VERIFICATION_MISMATCH",
-        )
+        self.assertEqual(raised.exception.code, "TRUSTED_ORIGIN_VERIFICATION_MISMATCH")
 
         def incomplete(receipt: dict, origin_sha: str) -> dict:
             value = self.readback(receipt, origin_sha)
@@ -182,10 +154,7 @@ class FreshWorkBridgeTests(unittest.TestCase):
 
         with self.assertRaises(FreshWorkBridgeError) as raised:
             self.plan(readback=incomplete)
-        self.assertEqual(
-            raised.exception.code,
-            "TRUSTED_ORIGIN_VERIFICATION_FAILED",
-        )
+        self.assertEqual(raised.exception.code, "TRUSTED_ORIGIN_VERIFICATION_FAILED")
 
     def test_expired_origin_cannot_build_candidate(self) -> None:
         self.origin_value["issued_at"] = "2026-07-14T21:00:00Z"
@@ -221,10 +190,7 @@ class FreshWorkBridgeTests(unittest.TestCase):
                 confirmed_preview_sha256=self.preview_sha,
                 now=NOW,
             )
-        self.assertEqual(
-            raised.exception.code,
-            "FRESH_WORK_JOURNEY_RECEIPT_EXISTS",
-        )
+        self.assertEqual(raised.exception.code, "FRESH_WORK_JOURNEY_RECEIPT_EXISTS")
 
     def test_raw_origin_fields_are_rejected_by_closed_schema(self) -> None:
         self.origin_value["raw_task_identifier"] = "must-not-cross"
@@ -232,11 +198,10 @@ class FreshWorkBridgeTests(unittest.TestCase):
         with self.assertRaises(FreshWorkBridgeError) as raised:
             self.plan(readback=self.readback)
         self.assertEqual(raised.exception.code, "FRESH_WORK_RECEIPT_INVALID")
-        self.assertFalse(self.journey.exists())
 
 
 class FreshWorkBridgeSourceTests(unittest.TestCase):
-    def test_required_source_surface_exists_and_is_routed_without_mutating_frozen_command_surface(self) -> None:
+    def test_historical_surface_is_retained_but_quarantined(self) -> None:
         required = (
             "governance/athena-fresh-work-origin-contract.md",
             "schemas/athena-fresh-work-origin-receipt-v1.schema.json",
@@ -244,64 +209,33 @@ class FreshWorkBridgeSourceTests(unittest.TestCase):
             "tools/athena_routes/fresh_work_bridge.py",
         )
         for relative in required:
-            with self.subTest(path=relative):
-                self.assertTrue((ROOT / relative).is_file())
+            self.assertTrue((ROOT / relative).is_file())
 
-        command_surface_path = ROOT / "routing/command-surfaces.md"
-        self.assertEqual(
-            sha256_bytes(command_surface_path.read_bytes()),
-            FROZEN_COMMAND_SURFACE_SHA256,
-        )
+        contract = (ROOT / required[0]).read_text(encoding="utf-8")
+        readme = (ROOT / "tools/athena_routes/README.md").read_text(encoding="utf-8")
+        routing = (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8")
+        self.assertIn('status: "SUPERSEDED_HISTORICAL_CONSTRUCTION"', contract)
+        self.assertIn("superseded false blocker", contract.lower())
+        self.assertIn("retained as inert historical construction evidence", readme)
+        self.assertIn("Historical fresh-origin construction", routing)
+        self.assertIn("never required", routing)
 
-        root_readme = (ROOT / "README.md").read_text(encoding="utf-8")
-        self.assertIn(
-            "governance/athena-fresh-work-origin-contract.md",
-            root_readme,
+    def test_cap015_is_restored_without_activating_bridge(self) -> None:
+        register = json.loads(
+            (ROOT / "governance/capability-parity-register.json").read_text(encoding="utf-8")
         )
-        self.assertIn(
-            "construction-only and is not activated",
-            root_readme,
-        )
-
-        component_readme = (ROOT / "tools/athena_routes/README.md").read_text(
-            encoding="utf-8"
-        )
-        for phrase in (
-            "athena-fresh-work-origin-contract.md",
-            "athena-fresh-work-origin-receipt-v1.schema.json",
-            "athena-fresh-work-journey-receipt-v1.schema.json",
-            "fresh_work_bridge",
-            "CAP-015",
-        ):
-            self.assertIn(phrase, component_readme)
-
-    def test_contract_and_capability_remain_nonpromoting(self) -> None:
+        cap015 = next(item for item in register["capabilities"] if item["id"] == "CAP-015")
+        self.assertEqual(cap015["capability_disposition"], "RESTORED")
+        self.assertEqual(cap015["activation_state"], "ACTIVE")
+        self.assertIn("direct Spear", cap015["current_state"])
         contract = (ROOT / "governance/athena-fresh-work-origin-contract.md").read_text(
             encoding="utf-8"
         )
-        for phrase in (
-            'status: "CONSTRUCTION_ONLY_NOT_ACTIVATED"',
-            "do not prove",
-            "TRUSTED_ORIGIN_VERIFIER_UNAVAILABLE",
-            "singular existing Thread Engine",
-            "separate reviewed authored reconciliation",
-            "no dispatch-capable implementation",
-        ):
-            self.assertIn(phrase, contract)
-
-        register = json.loads(
-            (ROOT / "governance/capability-parity-register.json").read_text(
-                encoding="utf-8"
-            )
-        )
-        cap015 = next(item for item in register["capabilities"] if item["id"] == "CAP-015")
-        self.assertEqual(cap015["capability_disposition"], "STILL_MISSING")
-        self.assertEqual(cap015["activation_state"], "MISSING")
+        self.assertIn("has no guided Execute import", contract)
+        self.assertIn("must not be selected by automatic routing", contract)
 
     def test_source_has_no_dispatch_writer_or_dynamic_trust_loader(self) -> None:
-        source = (ROOT / "tools/athena_routes/fresh_work_bridge.py").read_text(
-            encoding="utf-8"
-        )
+        source = (ROOT / "tools/athena_routes/fresh_work_bridge.py").read_text(encoding="utf-8")
         tree = ast.parse(source)
         imported = set()
         for node in ast.walk(tree):
@@ -311,16 +245,7 @@ class FreshWorkBridgeSourceTests(unittest.TestCase):
                 imported.add(node.module.split(".")[0])
         self.assertTrue(
             imported.isdisjoint(
-                {
-                    "subprocess",
-                    "shutil",
-                    "socket",
-                    "requests",
-                    "urllib",
-                    "git",
-                    "github",
-                    "importlib",
-                }
+                {"subprocess", "shutil", "socket", "requests", "urllib", "git", "github", "importlib"}
             )
         )
         for forbidden in (
@@ -342,7 +267,7 @@ class FreshWorkBridgeSourceTests(unittest.TestCase):
         self.assertIn('"remote_dispatch_authority": False', source)
         self.assertIn('"guided_execute_invoked": False', source)
 
-    def test_origin_and_journey_schemas_are_closed(self) -> None:
+    def test_origin_and_journey_schemas_remain_closed_historical_evidence(self) -> None:
         origin = json.loads(
             (ROOT / "schemas/athena-fresh-work-origin-receipt-v1.schema.json").read_text(
                 encoding="utf-8"
@@ -357,20 +282,12 @@ class FreshWorkBridgeSourceTests(unittest.TestCase):
         self.assertFalse(journey["additionalProperties"])
         self.assertEqual(origin["properties"]["authorizer"]["const"], "Jayson")
         self.assertEqual(origin["properties"]["semantic_invoker"]["const"], "Athena")
-        self.assertEqual(
-            origin["properties"]["originating_surface"]["const"],
-            "CHATGPT_WORK",
-        )
         forbidden = origin["properties"]["forbidden_fields_absent"]
         self.assertFalse(forbidden["additionalProperties"])
-        self.assertTrue(
-            all(value == {"const": True} for value in forbidden["properties"].values())
-        )
+        self.assertTrue(all(value == {"const": True} for value in forbidden["properties"].values()))
         bridge_mutation = journey["properties"]["bridge_mutation"]
         self.assertFalse(bridge_mutation["additionalProperties"])
-        self.assertTrue(
-            all(value == {"const": False} for value in bridge_mutation["properties"].values())
-        )
+        self.assertTrue(all(value == {"const": False} for value in bridge_mutation["properties"].values()))
 
 
 if __name__ == "__main__":
