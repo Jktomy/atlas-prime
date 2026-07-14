@@ -14,8 +14,9 @@ protected_level: "STANDARD"
 **Record ID:** `PF-C01-M01-MISSION-SEAL-R01`  
 **Mission state:** `PROVEN_WITH_CARRY_FORWARD`  
 **Human evidence authority:** Jayson  
-**Source transaction:** `PENDING_BUILD_READBACK`  
-**Exact candidate head:** `PENDING_BUILD_READBACK`
+**Source transaction:** `Jktomy/atlas-prime#195`
+**Initial BUILD head:** `93def9d8f9716547de69e101bc44a5f896dad67d`
+**Current candidate-head authority:** Exact GitHub PR-head readback and the Oathbringer receipt; the changing final REPAIR head is intentionally not self-embedded.
 
 This record preserves only the public-clean acceptance summary for the first Mission of Prometheus's Fire. Raw diagnostics, screenshots, private runtime values, device identifiers, addresses, recovery material, and unrestricted terminal output remain outside Prime in their approved evidence systems.
 

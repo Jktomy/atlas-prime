@@ -66,7 +66,7 @@
       "campaign_id": "FS-C01",
       "mission_id": "FS-C01-M04",
       "gate_id": "INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN",
-      "current_position": "FS-C01-M01, M02, and M03 are PROVEN. M04 live acceptance remains unproven. The future FS-C03 Seon macOS bridge vessel is Hermes; Apollo is no longer reserved for that bridge role.",
+      "current_position": "FS-C01-M01, M02, and M03 are PROVEN. The ledger, receipts, lifecycle binding, recovery, rollback planning, exact-head CI, and canonical synthetic exercise are accepted; M04 live acceptance remains unproven. The future FS-C03 Seon macOS bridge vessel is Hermes; Apollo is no longer reserved for that bridge role.",
       "blockers": [
         "FS-C01-M04 requires a Jayson-selected protected external store and one bounded trusted provider/runtime usage receipt with authoritative category semantics."
       ],
