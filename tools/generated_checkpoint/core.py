@@ -26,6 +26,9 @@ from production_adapter.receipt import (
 )
 
 
+NOOP_RECEIPT_SCHEMA = "atlas.generated-checkpoint.noop-receipt"
+
+
 class PreparationError(Exception):
     def __init__(self, message: str, code: str = "GENERATED_CHECKPOINT_PREPARATION_REJECTED") -> None:
         super().__init__(message)
@@ -178,6 +181,62 @@ def prepare_package(
     if register["base_sha"] != register["workflow_source_sha"]:
         raise PreparationError("workflow source must equal the requested base", "GENERATED_CHECKPOINT_WORKFLOW_SOURCE")
 
+    workflow_path = repo_root / ".github" / "workflows" / "generated-checkpoint-publisher.yml"
+    if not workflow_path.is_file() or workflow_path.is_symlink():
+        raise PreparationError("generated checkpoint workflow source is absent", "GENERATED_CHECKPOINT_WORKFLOW_SOURCE")
+
+    observed: list[tuple[int, str, bytes, bytes]] = []
+    for index, path in enumerate(APPROVED_PATHS, start=1):
+        current_path = repo_root.joinpath(*path.split("/"))
+        if not current_path.is_file() or current_path.is_symlink():
+            raise PreparationError(f"committed generated source is missing: {path}", "GENERATED_CHECKPOINT_SOURCE")
+        observed.append((index, path, current_path.read_bytes(), outputs[path]))
+
+    changed = [item for item in observed if item[2] != item[3]]
+    if not changed:
+        package_root.mkdir(parents=True, exist_ok=True)
+        evidence_root = package_root / "evidence"
+        evidence_root.mkdir()
+        (evidence_root / "hash-register.json").write_bytes(register_bytes)
+        (evidence_root / "reconciliation.json").write_bytes(reconciliation_bytes)
+        receipt = {
+            "schema_id": NOOP_RECEIPT_SCHEMA,
+            "schema_version": "1.0.0",
+            "result": "NOOP",
+            "mission_id": register["mission_id"],
+            "repository": register["repository"],
+            "base_sha": register["base_sha"],
+            "workflow_ref": register["workflow_ref"],
+            "workflow_source_sha": register["workflow_source_sha"],
+            "workflow_blob_sha": git_blob_sha(workflow_path.read_bytes()),
+            "workflow_run_id": register["workflow_run_id"],
+            "workflow_run_attempt": register["workflow_run_attempt"],
+            "replay_nonce_sha256": register["replay_nonce_sha256"],
+            "source_fingerprint": register["source_fingerprint"],
+            "hash_register_sha256": register_digest,
+            "reconciliation_sha256": sha256_bytes(reconciliation_bytes),
+            "approved_paths": list(APPROVED_PATHS),
+            "changed_paths": [],
+            "changed_count": 0,
+            "public_clean_confirmation": "PUBLIC_CLEAN_CONFIRMED",
+            "event_name": "workflow_dispatch",
+            "direct_main_write": False,
+            "automatic_ready": False,
+            "automatic_merge": False,
+            "automatic_retry": False,
+            "receipt_sha256": "0" * 64,
+        }
+        receipt["receipt_sha256"] = sha256_bytes(stable_json(receipt).encode("utf-8"))
+        (package_root / "noop-receipt.json").write_text(stable_json(receipt), encoding="utf-8", newline="\n")
+        return receipt
+
+    if len(changed) != len(APPROVED_PATHS):
+        changed_paths = ", ".join(item[1] for item in changed)
+        raise PreparationError(
+            f"partial generated delta is forbidden ({len(changed)}/{len(APPROVED_PATHS)}): {changed_paths}",
+            "GENERATED_CHECKPOINT_PARTIAL_DELTA",
+        )
+
     payload_root = package_root / "payloads"
     evidence_root = package_root / "evidence"
     final_root = package_root / "final"
@@ -189,14 +248,7 @@ def prepare_package(
 
     operations: list[dict[str, Any]] = []
     source_blobs: dict[str, str] = {}
-    for index, path in enumerate(APPROVED_PATHS, start=1):
-        current_path = repo_root.joinpath(*path.split("/"))
-        if not current_path.is_file() or current_path.is_symlink():
-            raise PreparationError(f"committed generated source is missing: {path}", "GENERATED_CHECKPOINT_SOURCE")
-        current = current_path.read_bytes()
-        candidate = outputs[path]
-        if current == candidate:
-            raise PreparationError(f"generated output has no delta: {path}", "NO_GENERATED_DELTA")
+    for index, path, current, candidate in changed:
         payload_path = payload_root.joinpath(*path.split("/"))
         final_path = final_root.joinpath(*path.split("/"))
         payload_path.parent.mkdir(parents=True, exist_ok=True)
@@ -221,9 +273,6 @@ def prepare_package(
     mission_id = register["mission_id"]
     replay_digest = register["replay_nonce_sha256"]
     branch = deterministic_branch(mission_id, replay_digest)
-    workflow_path = repo_root / ".github" / "workflows" / "generated-checkpoint-publisher.yml"
-    if not workflow_path.is_file() or workflow_path.is_symlink():
-        raise PreparationError("generated checkpoint workflow source is absent", "GENERATED_CHECKPOINT_WORKFLOW_SOURCE")
     profile = {
         "schema_id": "atlas.generated-checkpoint.profile",
         "schema_version": "1.0.0",
