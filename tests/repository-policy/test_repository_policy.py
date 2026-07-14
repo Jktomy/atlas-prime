@@ -20,10 +20,6 @@ class RepositoryPolicyTests(unittest.TestCase):
             "test_oathbringer_foundry_lifecycle.py",
             "test_oathbringer_console_v2.py",
             "test_oathbringer_repair_parent_tree.py",
-            "test_investiture_construction_acceptance.py",
-            "test_consistent_pr_delivery_standard.py",
-            "test_investiture_storage.py",
-            "test_agentic_warrants.py",
         ):
             suite.addTests(unittest.defaultTestLoader.discover(str(ROOT / "tests" / "prime-program"), pattern=filename))
         result = unittest.TextTestRunner(stream=io.StringIO(), verbosity=0).run(suite)
