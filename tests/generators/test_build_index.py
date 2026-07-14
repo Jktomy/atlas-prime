@@ -7,7 +7,10 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SPEC = importlib.util.spec_from_file_location("prime_build_index", ROOT / "tools/build_index.py")
+SPEC = importlib.util.spec_from_file_location(
+    "prime_build_index",
+    ROOT / "tools/build_index.py",
+)
 if SPEC is None or SPEC.loader is None:
     raise RuntimeError("cannot load Prime generator")
 GENERATOR = importlib.util.module_from_spec(SPEC)
@@ -19,9 +22,20 @@ class PrimeGeneratorTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="prime-generator-") as raw:
             root = Path(raw) / "repo"
             root.mkdir()
-            (root / "README.md").write_text("# Prime\n", encoding="utf-8", newline="\n")
+            (root / "README.md").write_text(
+                "# Prime\n",
+                encoding="utf-8",
+                newline="\n",
+            )
             (root / "source.md").write_text(
-                "---\ntitle: Source\nstatus: ACTIVE\nsource_type: SUPPORT\ncanonical_scope: Test\nprotected_level: LOW\n---\n\n# Source\n",
+                "---\n"
+                "title: Source\n"
+                "status: ACTIVE\n"
+                "source_type: SUPPORT\n"
+                "canonical_scope: Test\n"
+                "protected_level: LOW\n"
+                "---\n\n"
+                "# Source\n",
                 encoding="utf-8",
                 newline="\n",
             )
@@ -34,10 +48,18 @@ class PrimeGeneratorTests(unittest.TestCase):
     def test_generated_directory_does_not_change_source_identity(self) -> None:
         with tempfile.TemporaryDirectory(prefix="prime-generator-") as raw:
             root = Path(raw)
-            (root / "README.md").write_text("# Prime\n", encoding="utf-8", newline="\n")
+            (root / "README.md").write_text(
+                "# Prime\n",
+                encoding="utf-8",
+                newline="\n",
+            )
             _outputs, before = GENERATOR.build_outputs(root)
             (root / "generated").mkdir()
-            (root / "generated/report.md").write_text("ignored\n", encoding="utf-8", newline="\n")
+            (root / "generated/report.md").write_text(
+                "ignored\n",
+                encoding="utf-8",
+                newline="\n",
+            )
             _outputs, after = GENERATOR.build_outputs(root)
             self.assertEqual(before, after)
 
@@ -48,25 +70,35 @@ class PrimeGeneratorTests(unittest.TestCase):
             with self.assertRaises(UnicodeDecodeError):
                 GENERATOR.build_outputs(root)
 
-    def test_recognized_readme_route_controls_routing_and_orphan_reports(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="prime-generator-routing-") as raw:
+    def test_recognized_readme_route_controls_routing_and_orphan_reports(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="prime-generator-routing-"
+        ) as raw:
             root = Path(raw)
-            contract_relative = "governance/athena-fresh-work-origin-contract.md"
+            contract_relative = (
+                "governance/athena-route-architecture-r01.md"
+            )
             contract_path = root / contract_relative
             contract_path.parent.mkdir(parents=True)
             contract_path.write_text(
                 "---\n"
-                'title: "Athena Fresh Work Origin Bridge Contract"\n'
-                'status: "CONSTRUCTION_ONLY_NOT_ACTIVATED"\n'
+                'title: "Athena Route Architecture R01"\n'
+                'status: "CANONICAL_ACTIVE"\n'
                 'source_type: "PROTOCOL"\n'
                 'protected_level: "CRITICAL"\n'
                 "---\n\n"
-                "# Athena Fresh Work Origin Bridge Contract\n",
+                "# Athena Route Architecture R01\n",
                 encoding="utf-8",
                 newline="\n",
             )
             readme_path = root / "README.md"
-            readme_path.write_text("# Prime\n", encoding="utf-8", newline="\n")
+            readme_path.write_text(
+                "# Prime\n",
+                encoding="utf-8",
+                newline="\n",
+            )
 
             unrouted, _unrouted_fingerprint = GENERATOR.build_outputs(root)
             unrouted_row = f"| `{contract_relative}` | no |"
@@ -74,14 +106,19 @@ class PrimeGeneratorTests(unittest.TestCase):
                 f"| `{contract_relative}` | "
                 "active metadata-bearing file not found in routing surfaces |"
             )
-            self.assertIn(unrouted_row, unrouted["atlas-routing-inventory.md"])
-            self.assertIn(orphan_row, unrouted["atlas-orphan-report.md"])
+            self.assertIn(
+                unrouted_row,
+                unrouted["atlas-routing-inventory.md"],
+            )
+            self.assertIn(
+                orphan_row,
+                unrouted["atlas-orphan-report.md"],
+            )
 
             readme_path.write_text(
                 "# Prime\n\n"
-                "Fresh Work/Athena origin construction is documented in "
-                f"`{contract_relative}`; it remains construction-only and is "
-                "not activated.\n",
+                "Current Athena route architecture is documented in "
+                f"`{contract_relative}`.\n",
                 encoding="utf-8",
                 newline="\n",
             )
@@ -90,7 +127,10 @@ class PrimeGeneratorTests(unittest.TestCase):
                 f"| `{contract_relative}` | yes |",
                 routed["atlas-routing-inventory.md"],
             )
-            self.assertNotIn(orphan_row, routed["atlas-orphan-report.md"])
+            self.assertNotIn(
+                orphan_row,
+                routed["atlas-orphan-report.md"],
+            )
 
 
 if __name__ == "__main__":
