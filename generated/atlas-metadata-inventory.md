@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:b88ddf192094548d522de5c8d92050e24173803861b4c9142670d75253ed3089
+Source fingerprint: sha256:d2bbad93eded0dd0f39833743c624cc5246ced626e139fbd4a5cd19ace9e8d0b
 Generator format: 2
 Status: Generated support artifact
 
@@ -64,6 +64,7 @@ Status: Generated support artifact
 | `proof/oathbringer-production-acceptance-r01.md` | PROOF | PROOF | missing | STANDARD |
 | `proof/prime-spear-arrow-bow-parity-r01.md` | PROOF | PROOF | missing | STANDARD |
 | `proof/prime-thread-engine-bootstrap-proof.md` | PROOF | PROOF | missing | STANDARD |
+| `proof/prometheus-fire/pf-c01-m01-mission-seal-r01.md` | PROOF | PROOF | missing | STANDARD |
 | `proof/repairing-prime/cap010-guided-live-proof-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/cap011-hosted-multifile-proof-a-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/cap011-hosted-multifile-proof-b-r01.md` | missing | missing | missing | missing |
@@ -80,10 +81,12 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | ACCEPTED | PROOF | missing | HIGH |
 | `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md` | ACCEPTED | PROOF | missing | HIGH |
 | `proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md` | ACCEPTED_RECONCILIATION | PROOF | missing | MEDIUM |
+| `proof/repairing-prime/rp-c08-aj10-cap022-live-acceptance-r03.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-cap010-reconciliation-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-cap011-reconciliation-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` | CANDIDATE_ACCEPTANCE_EVIDENCE | PROOF | missing | HIGH |
 | `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` | ACCEPTED_PARTIAL_CLOSEOUT | PROOF | missing | MEDIUM |
+| `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` | CANONICAL_CURRENT_DISPOSITION | PROOF_RECONCILIATION | missing | CRITICAL |
 | `quests/found-silverlight.md` | Active | Quest | Parent Quest for establishing Atlas's private cognitive interface through Investiture Accounting, the seven-pillar Glass Codex, and the Seon Apple Reminders integration. | High |
 | `quests/notums-watch.md` | Active | Quest | Parent Quest for bringing Notum's Watch forward as Gatehouse/Citadel observability and rescue infrastructure, including the interim Notum vessel, future Notum Phoenix vessel, Nightwatcher lineage, and backup-capacity boundaries. | High |
 | `quests/prime-continuity-proof.md` | READY_FOR_CAMPAIGN_1_PREVIEW | QUEST | missing | MEDIUM |
