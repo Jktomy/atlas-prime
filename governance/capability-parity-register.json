@@ -24,11 +24,11 @@
   "capability_disposition_counts": {
     "PRESERVED": 4,
     "IMPROVED": 7,
-    "RESTORED": 13,
+    "RESTORED": 14,
     "REPLACED": 1,
     "INTENTIONALLY_RETIRED": 1,
     "BLOCKED": 0,
-    "STILL_MISSING": 2
+    "STILL_MISSING": 1
   },
   "capabilities": [
     {
@@ -130,25 +130,25 @@
     {
       "id": "CAP-009",
       "domain": "Hosted execution",
-      "capability": "Athena-facing hosted IssueOps",
+      "capability": "Jayson/Artemis hosted Arrow/Bow intake",
       "audit_status": "RESTORED_HOSTED_INTAKE_LIVE_PROVEN",
       "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "RESTORED",
       "activation_state": "ACTIVE",
-      "current_state": "Prime has an owner-authorized hosted Arrow/Bow intake that invokes the singular Thread Engine and stops at exact harmless draft-PR readback; fresh Work/Athena origin remains separately missing under CAP-015.",
+      "current_state": "Prime has an owner-authorized Jayson/Artemis Arrow/Bow intake that invokes the singular Thread Engine and stops at exact harmless draft-PR readback. It is delegated delivery, not Athena's Spear route.",
       "required_proof": "Hosted R02 run 29218494916, PR #114, exact-head CI, detached review, and canonical readback in proof/repairing-prime/rp-c01-route-evidence-r01.md."
     },
     {
       "id": "CAP-010",
       "domain": "Hosted execution",
-      "capability": "Human-friendly guided Spear intake",
+      "capability": "Human-friendly owner-guided Arrow/Bow intake",
       "audit_status": "RESTORED_GUIDED_INTAKE_LIVE_PROVEN",
       "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "RESTORED",
       "activation_state": "ACTIVE",
-      "current_state": "Prime has an owner-guided Preview to Execute publisher over the hosted Bow route. A fresh immutable carrier bound exact canonical main, canonical mission digest, mission/base lock, durable no-retry dispatch receipt, route-created draft PR, exact path/blob readback, exact-head Linux and Windows CI, detached GREEN review, merge, and canonical readback.",
+      "current_state": "Prime has an owner-guided Preview-to-Execute publisher over the Jayson/Artemis Arrow/Bow route. It binds canonical main, mission/base lock, durable no-retry dispatch, draft-PR readback, exact path/blob identity, cross-platform CI, detached review, merge, and canonical readback.",
       "required_proof": "Guided construction PR #150, live mission RP-C01-CAP010-GUIDED-LIVE-R01, hosted run 29231950571, route-created PR #151, exact-head CI run 29232042665, detached GREEN review, and canonical readback in proof/repairing-prime/rp-c08-cap010-reconciliation-r01.md."
     },
     {
@@ -202,14 +202,14 @@
     {
       "id": "CAP-015",
       "domain": "Thread Engine",
-      "capability": "Athena can reach Thread Engine from a fresh chat",
-      "audit_status": "MISSING_INVOCATION_BRIDGE",
-      "audit_severity": "CRITICAL",
+      "capability": "Athena can reach Thread Engine through Spear",
+      "audit_status": "RESTORED_DIRECT_SPEAR_LIVE_PROVEN",
+      "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "Component delivery is proven but fresh Work/Athena reachability is not.",
-      "required_proof": "Actual Work submission, truthful identity receipt, hosted run, draft PR, and exact CI."
+      "capability_disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "current_state": "A Jayson-authorized Athena task may invoke Spear. Spear delivers Athena's exact Weave into the singular Prime Thread Engine, which creates one immutable branch and draft PR and stops at exact readback. Phoenix Blade is Athena's Sword method without Thread Engine; Aegis Break is Athena's direct/adaptive safe route; Arrow/Bow belongs to Jayson and Artemis. No external origin bridge or platform attestation is required.",
+      "required_proof": "Accepted direct Spear PR #39 at head 1f60f0496eca94fe97071217a04b8bdf70004b64, Ubuntu/Windows run 29056870868, merge 7c8a533175da5c4fc9e8e0bb9de8bd37eba33dc5; corroborating PR #102 at head fa20c23c532f3c684862a028720fe9debd7db855, run 29215320609, merge 2ed53467a83569afea1d6c07e06d1d2ab52c75ff; architecture reconciliation proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md."
     },
     {
       "id": "CAP-016",
@@ -352,7 +352,7 @@
       "path_disposition": "NOT_A_PATH_CLAIM",
       "capability_disposition": "STILL_MISSING",
       "activation_state": "MISSING",
-      "current_state": "Component tests exist but the required user journeys are not all proven.",
+      "current_state": "AJ-03, AJ-11, and AJ-12 remain unproven, so the full acceptance layer is not complete.",
       "required_proof": "All acceptance IDs in the canonical contract have exact receipts or explicit blocked evidence."
     },
     {
