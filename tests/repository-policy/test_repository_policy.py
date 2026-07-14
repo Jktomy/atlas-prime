@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import importlib.util
+import io
 import json
 import sys
 import unittest
@@ -14,24 +14,30 @@ from production_adapter.protected_paths import POLICY_PATH, is_protected_path, i
 
 
 class RepositoryPolicyTests(unittest.TestCase):
-    def test_000_temporary_schema_assertions(self) -> None:
-        path = ROOT / "tests" / "prime-program" / "test_athena_execution_routes.py"
-        spec = importlib.util.spec_from_file_location("athena_route_diagnostic", path)
-        if spec is None or spec.loader is None:
-            self.fail("TEMP_DIAGNOSTIC_IMPORT_FAILED")
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        case = module.AthenaExecutionRouteContractTests
-        names = (
-            "test_guided_publisher_contracts_remain_closed",
-            "test_free_form_and_parity_surfaces_remain_nonpromoting",
-            "test_hosted_request_schema_binds_route_token_and_identity",
-            "test_hosted_receipt_rejects_incoherent_state",
+    def test_000_temporary_state_reconciliation_tests(self) -> None:
+        selected = (
+            "test_capability_parity.py",
+            "test_found_silverlight.py",
+            "test_investiture_identity.py",
+            "test_prime_continuity.py",
+            "test_prime_program.py",
+            "test_rp_c01_m05_parity_acceptance.py",
+            "test_rp_c01_m07_live_rejections.py",
+            "test_rp_c01_m08_free_form_acceptance.py",
+            "test_rp_c01_m08_partial.py",
+            "test_rp_c07_acceptance.py",
+            "test_rp_c08_capability_reconciliation.py",
+            "test_sword_forge_standard.py",
         )
-        suite = unittest.TestSuite(case(name) for name in names)
-        result = unittest.TestResult()
-        suite.run(result)
-        self.assertTrue(result.wasSuccessful(), "TEMP_SCHEMA_ASSERTIONS_FAILED")
+        suite = unittest.TestSuite()
+        for filename in selected:
+            suite.addTests(
+                unittest.defaultTestLoader.discover(
+                    str(ROOT / "tests" / "prime-program"), pattern=filename
+                )
+            )
+        result = unittest.TextTestRunner(stream=io.StringIO(), verbosity=0).run(suite)
+        self.assertTrue(result.wasSuccessful(), "TEMP_STATE_RECONCILIATION_TESTS_FAILED")
 
     def test_repository_and_operator_invariants(self) -> None:
         repository = json.loads((ROOT / "policies" / "repository-policy.json").read_text(encoding="utf-8"))
