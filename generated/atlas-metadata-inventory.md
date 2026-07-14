@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:0b5f0d1a986a53cc92b53ab184434535eaa6eb6cfb1bb371985cee82d508e5df
+Source fingerprint: sha256:97a03edfa3dc365e0f02b3b8baa62d83325016006e8f588c64000519bcfe1247
 Generator format: 2
 Status: Generated support artifact
 
@@ -16,6 +16,7 @@ Status: Generated support artifact
 | `bootstrap.md` | CANONICAL_ACTIVE | BOOT | missing | CRITICAL |
 | `governance/agentic-warrant-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/athena-execution-route-contract.md` | CONTRACT_DEFINED_NOT_ACTIVATED | PROTOCOL | missing | CRITICAL |
+| `governance/athena-fresh-work-origin-contract.md` | CONSTRUCTION_ONLY_NOT_ACTIVATED | PROTOCOL | missing | CRITICAL |
 | `governance/atlas-aegis.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `governance/atlas-strikeforce.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/capability-acceptance-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
