@@ -39,9 +39,8 @@ The historical schemas reserve states that were never activated. Their presence 
 
 ## Quarantine rules
 
-The historical bridge must not:
+The historical bridge must not be selected by automatic routing. It must not:
 
-- be selected by automatic routing;
 - be required before Jayson-authorized Athena work;
 - be used to classify CAP-015, AJ-01, or RP-C01-M02 as missing;
 - be integrated into the guided publisher;
