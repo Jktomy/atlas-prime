@@ -14,16 +14,21 @@ protected_level: "CRITICAL"
 **Compiler identity:** `SWORD_FORGE_COMPILER_V1`
 **Controlling construction doctrine:** `SWORD_FORGE_STANDARD_V1`
 
-Oathbringer Foundry is Prime's deterministic carrier compiler and read-only
-live-state binder. Athena supplies complete, exact mission and payload bytes;
-the Foundry validates them, binds the declared current source and GitHub state,
-and emits one immutable carrier ZIP plus its SHA-256 sidecar.
+Oathbringer Foundry is Prime's deterministic carrier compiler, read-only
+live-state binder, and operator-handoff generator. Athena supplies complete,
+exact mission and payload bytes; the Foundry validates them, binds the declared
+current source and GitHub state, and emits one immutable carrier ZIP plus its
+SHA-256 sidecar. After independent carrier verification, Foundry can emit one
+fixed-shape PowerShell 7 paste command for that exact ZIP and digest.
 
 It accepts the modes `BUILD`, `REPAIR`, `RECOVERY`, and `EXECUTE`. For the
 currently supported Oathbringer production lanes, it embeds a fully bound
-GitHub-native production mission and the deterministic transport library. A
-`RECOVERY` carrier packages its recovery contract and exact evidence without
-claiming that it writes, retries, rolls back, readies, or merges anything.
+GitHub-native production mission and the deterministic transport library. That
+transport includes the one canonical Oathbringer Console v2 implementation from
+`tools/atlas-sword/engine/`; Foundry version-binds and packages it but does not
+duplicate or redefine its runtime behavior. A `RECOVERY` carrier packages its
+recovery contract and exact evidence without claiming that it writes, retries,
+rolls back, readies, or merges anything.
 
 ## Boundary
 
@@ -33,6 +38,10 @@ credential holder. It has no route to create a branch, commit, pull request,
 ready transition, merge, workflow dispatch, retry, rollback, cleanup, or
 repository setting. Its live binder invokes only read-only GitHub queries and
 never serializes credentials.
+
+The operator handoff verifies, extracts, and launches an already sealed carrier.
+It cannot edit the mission, reinterpret payload bytes, broaden authority, or
+replace Oathbringer's package-integrity and runtime gates.
 
 ## Required binding
 
@@ -45,8 +54,8 @@ Every carrier binds:
 - source and workflow blob identities;
 - the current `prime-sword-lessons-v1` register and a classification for every
   controlling lesson;
-- the complete current applicable Oathbringer transport source hashes and a
-  carrier manifest;
+- the complete current applicable Oathbringer transport source hashes, including
+  Console v2, and a carrier manifest;
 - a deterministic Forge receipt, Deflected Sword configuration, and test
   contract.
 
@@ -71,12 +80,49 @@ output-directory replay ledger. Payloads and audit evidence are restricted to
 their dedicated namespaces and cannot replace compiler-controlled carrier
 material.
 
+## Operator delivery
+
+The final artifact delivered to Jayson is the Foundry carrier itself. Foundry
+must not wrap it in a second outer ZIP, and a normal handoff must not require a
+separately downloaded mission-specific PowerShell file.
+
+The `handoff` command first verifies the completed carrier, rereads its actual
+SHA-256, and emits a deterministic handoff record. The paste command has one
+canonical template; only the safe carrier filename and lowercase SHA-256 vary.
+The normal human experience is therefore:
+
+1. download one `Oathbringer-Foundry-<mission>-<revision>.zip`;
+2. paste the one PowerShell 7 command supplied from the verified handoff record;
+3. press Enter.
+
+The command verifies the complete ZIP digest before extraction, uses a unique
+temporary workspace, places the receipt and Deflected Sword evidence under
+`Downloads/Atlas-Oathbringer-Evidence`, invokes the carrier's canonical launcher,
+and then yields presentation to Oathbringer Console v2. A successful temporary
+workspace is removed; a failed workspace is retained for bounded review.
+
+The SHA-256 sidecar and delivery evidence may remain in Athena's Forge evidence.
+They are not a second required Jayson download because the independently reported
+expected SHA-256 is embedded in the paste command.
+
 ## Invocation
 
 Use `tools/oathbringer-foundry/Invoke-OathbringerFoundry.ps1` or the Python
 CLI. Production compilation requires an input root and a source root, then
 obtains a fresh `gh` read-only binding itself. A successful compile is carrier
 preparation only; it never grants execution or merge authority.
+
+Verify the carrier before handoff:
+
+```text
+python -B tools/oathbringer-foundry/cli.py verify --carrier <carrier.zip>
+```
+
+Generate the one-download operator handoff only after verification:
+
+```text
+python -B tools/oathbringer-foundry/cli.py handoff --carrier <carrier.zip> --json
+```
 
 ## Live production acceptance
 
@@ -93,5 +139,7 @@ The R04 acceptance transaction established:
 - automatic local evidence ZIP packaging without broadening GitHub authority.
 
 Canonical proof is recorded in `proof/oathbringer-production-acceptance-r01.md`.
+The one-download handoff contract does not self-promote a new acceptance journey;
+its separate live use and reconciliation remain evidence-gated.
 
 This acceptance does not grant standing authority. Every carrier remains mission-specific, exact-state bound, separately authorized, and subject to its declared stop boundary.

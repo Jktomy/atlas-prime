@@ -2,8 +2,8 @@
 
 `SWORD_FORGE_COMPILER_V1` compiles Athena-authored exact payload bytes into a
 deterministic sealed Oathbringer carrier. It is deliberately narrower than
-Oathbringer: Foundry validates, binds, packages, and reports; it never performs
-GitHub mutation or grants authority.
+Oathbringer: Foundry validates, binds, packages, verifies, and prepares the
+operator handoff; it never performs GitHub mutation or grants authority.
 
 Canonical doctrine: `methods/oathbringer-foundry.md`
 Forge Standard: `methods/sword-forge-standard.md`
@@ -13,8 +13,10 @@ Delivery Standard: `methods/consistent-pr-delivery-standard.md`
 For human-operated BUILD, REPAIR, and EXECUTE preparation, use
 `Invoke-AtlasDeliveryStandard.ps1`. It preserves Foundry diagnostics and always
 finishes a sanitized outer evidence ZIP plus SHA-256 sidecar, including safe
-rejections. The carrier still runs through Oathbringer Console v2 and retains
-all existing exact-head, audit, authorization, and stop-boundary gates.
+rejections. The final operator artifact remains the unchanged Foundry carrier;
+the evidence ZIP is not a second Jayson download. The carrier runs through
+Oathbringer Console v2 and retains all existing exact-head, audit,
+authorization, and stop-boundary gates.
 
 Evidence verification requires three independent inputs: the ZIP, its sidecar,
 and the expected SHA-256 copied from the controlling receipt or handoff. The
@@ -46,7 +48,9 @@ One compile writes:
 - an immutable `MANIFEST.json` and `SHA256SUMS.txt` inside the carrier;
 - canonical mission, authority, source/target locks, operation inventory,
   complete payload bytes, source lessons, transport library, launcher,
-  recovery instructions, test contract, and Forge receipt.
+  recovery instructions, test contract, and Forge receipt;
+- the one canonical Oathbringer Console v2 source through the bound
+  `tools/atlas-sword/engine/` transport set.
 
 Run `verify` against a carrier before delivery:
 
@@ -54,9 +58,32 @@ Run `verify` against a carrier before delivery:
 python -B tools/oathbringer-foundry/cli.py verify --carrier <carrier.zip>
 ```
 
+Generate the deterministic one-download handoff only after verification:
+
+```text
+python -B tools/oathbringer-foundry/cli.py handoff \
+  --carrier <carrier.zip> \
+  --json
+```
+
+The handoff output contains:
+
+- `download_count = 1`;
+- `separate_script_download_required = false`;
+- the exact carrier filename and actual lowercase SHA-256;
+- one fixed-shape PowerShell 7 paste command.
+
+Only the carrier filename and SHA-256 vary between commands. The command checks
+the complete ZIP digest before extraction, creates a unique temporary workspace,
+launches `launcher/Invoke-OathbringerCarrier.ps1`, and preserves the receipt or
+Deflected Sword under `Downloads/Atlas-Oathbringer-Evidence`. No second outer ZIP
+or mission-specific `.ps1` download is used.
+
 The extracted carrier launcher remains current-directory-independent. It starts
 the pre-bound Oathbringer mission only; user/operator invocation and every
-existing Oathbringer gate remain required.
+existing Oathbringer gate remain required. Console v2 remains Oathbringer's
+presentation-only runtime component; Foundry packages and version-binds that one
+canonical source without duplicating it.
 
 ## Lifecycle carrier binding
 
