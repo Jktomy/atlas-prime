@@ -14,10 +14,12 @@ from production_adapter.protected_paths import POLICY_PATH, is_protected_path, i
 
 
 class RepositoryPolicyTests(unittest.TestCase):
-    def test_000_temporary_prime_continuity_tests(self) -> None:
-        suite = unittest.defaultTestLoader.discover(str(ROOT / "tests" / "prime-program"), pattern="test_prime_continuity.py")
+    def test_000_temporary_remaining_tests(self) -> None:
+        suite = unittest.TestSuite()
+        for filename in ("test_prime_program.py", "test_rp_c01_m05_parity_acceptance.py"):
+            suite.addTests(unittest.defaultTestLoader.discover(str(ROOT / "tests" / "prime-program"), pattern=filename))
         result = unittest.TextTestRunner(stream=io.StringIO(), verbosity=0).run(suite)
-        self.assertTrue(result.wasSuccessful(), "TEMP_PRIME_CONTINUITY_FAILED")
+        self.assertTrue(result.wasSuccessful(), "TEMP_REMAINING_TESTS_FAILED")
 
     def test_repository_and_operator_invariants(self) -> None:
         repository = json.loads((ROOT / "policies" / "repository-policy.json").read_text(encoding="utf-8"))
