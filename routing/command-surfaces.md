@@ -44,8 +44,7 @@ surface.
 ## Automatic method routing
 
 - A request for Athena to use Thread Engine routes to **Spear**.
-- A request for Athena to wield or execute an exact Sword routes to **Phoenix
-  Blade**.
+- A request for Athena to wield or execute an exact Sword routes to **Phoenix Blade**.
 - A request for Athena to work directly through GitHub-native mechanics, recover
   from an obstructed path, or use any other safe route routes to **Aegis Break**.
 - A delegated Jayson/Artemis delivery routes to **Arrow/Bow**.
