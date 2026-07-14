@@ -28,7 +28,7 @@ Only exact evidence and canonical readback may move a capability to RESTORED, RE
 | AJ-07 | Continuity update | Exactly one continuity entry changes without unrelated source changes. |
 | AJ-08 | Quest admission | A valid Quest is admitted through registry/schema rules without a validator code edit. |
 | AJ-09 | Generated lifecycle | Source merge produces Linux/Windows byte parity and a separate generated-only draft PR. |
-| AJ-10 | Sunset and restart | Sunset writes restart-safe continuity and a fresh context reconstructs the next safe gate from Prime source. |
+| AJ-10 | Sunset and restart | One Sunset invocation creates exactly one new sealed Feather and one Sunset bound to it; admitted-Quest work adds the applicable checkpoint, non-Quest work invents no Quest, and a fresh context reconstructs the exact Sunset/Feather pair and next safe gate from Prime source. |
 | AJ-11 | Clean-clone recovery | Prime recovers from a clean clone without normal Codex dependency. |
 | AJ-12 | Merged-main validation | Final merged main passes complete Prime validation on Linux and Windows at the exact SHA. |
 
@@ -56,6 +56,19 @@ AJ-09 is `PROVEN`. Owner-triggered hosted evidence built byte-identical Ubuntu a
 
 PRs `#181` and `#182` later made the post-source-merge publisher automatic for non-generated main pushes, preserved manual recovery dispatch, added exact generated-head Ubuntu/Windows validation, and made zero generated delta a successful read-only `NOOP`. They did not add automatic ready or merge authority.
 
+## Sunset/Feather truth reconciliation
+
+The lifecycle source now requires every completed Sunset to create exactly one
+new sealed Feather and one immutable Sunset bound to it. Repository validation
+rejects null, missing, dangling, reused, cross-scope, concurrency-mismatched, and
+Sunrise-mismatched bindings across both canonical and fixture record classes.
+
+This structural correction does not self-prove AJ-10. AJ-10 remains `UNPROVEN`
+until one bounded live journey creates and verifies an exact pair, performs any
+applicable Quest checkpoint, proves non-Quest behavior without an invented
+Quest, and reconstructs the same pair from a fresh context.
+
+
 ## Current controlling dispositions
 
 ```text
@@ -68,16 +81,16 @@ AJ-06 PROVEN
 AJ-07 PROVEN
 AJ-08 PROVEN
 AJ-09 PROVEN
-AJ-10 PROVEN
+AJ-10 UNPROVEN
 AJ-11 UNPROVEN
 AJ-12 UNPROVEN
 ```
 
 AJ-03 has exact live no-mutation evidence for edited input, intentional replay, duplicate branch, and duplicate PR. It remains UNPROVEN because a genuine non-owner rejection is still missing.
 
-AJ-11 and AJ-12 remain assigned to final RP-C08 recovery and exact-final-main validation. The CAP-015/AJ-01 realignment does not promote them.
+AJ-10 is UNPROVEN until the corrected universal one-Sunset-to-one-Feather journey completes with exact accepted evidence. AJ-11 and AJ-12 remain assigned to final RP-C08 recovery and exact-final-main validation. The CAP-015/AJ-01 realignment does not promote any of them.
 
-The historical RP-C07 reconciliation remains valid evidence of the state at its accepted time. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` is the later controlling transition for AJ-01 only.
+The historical RP-C05 record remains valid evidence of the state at its accepted time. The historical RP-C07 reconciliation remains valid evidence of the state at its accepted time. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` remains the later controlling transition for AJ-01 only. `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` is the current superseding disposition for AJ-10 and does not rewrite historical proof.
 
 ## Legacy Oathbringer capability mapping
 

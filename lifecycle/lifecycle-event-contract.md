@@ -49,13 +49,20 @@ state, creates no completion receipt, requests no position advance, and cannot
 resolve a blocker. Completed and remaining substeps are concrete lists; minor
 observations are consolidated rather than emitted as event or PR spam.
 
-For a Quest-bound Sunset inside an incomplete Gate, the relationship is:
+For every completed Sunset, the construction relationship is:
 
-`Sunset → Feather → CHECKPOINT event → generated projections`
+`Sunset invocation → one new sealed Feather → one Sunset bound to that Feather`
 
-The Feather retains rich authored meaning. The event retains exact restart
-position and locks. Stable IDs link them without duplicating their full
-contents. Neither replaces the Quest Emberline.
+For an admitted Quest inside an incomplete Gate, the transaction continues:
+
+`bound Sunset/Feather pair → CHECKPOINT event → generated projections`
+
+Candidate-Quest, non-Quest, and protected-domain Sunset transactions still
+create the exact Feather/Sunset pair but do not fabricate an admitted Quest,
+Campaign, Mission, Gate, or checkpoint event. The Feather retains rich authored
+meaning. A Quest checkpoint event retains exact restart position and locks.
+Stable IDs link them without duplicating their full contents. Neither replaces
+the Quest Emberline.
 
 ## Transitions
 

@@ -24,11 +24,11 @@
   "capability_disposition_counts": {
     "PRESERVED": 4,
     "IMPROVED": 7,
-    "RESTORED": 14,
+    "RESTORED": 13,
     "REPLACED": 1,
     "INTENTIONALLY_RETIRED": 1,
     "BLOCKED": 0,
-    "STILL_MISSING": 1
+    "STILL_MISSING": 2
   },
   "capabilities": [
     {
@@ -47,13 +47,13 @@
       "id": "CAP-002",
       "domain": "Startup",
       "capability": "Deterministic startup/read order",
-      "audit_status": "RESTORED_FRESH_CONTEXT_PROVEN",
+      "audit_status": "RESTORED_STARTUP_READ_ORDER_PROVEN",
       "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "RESTORED",
       "activation_state": "ACTIVE",
-      "current_state": "Prime startup validates canonical Quest and continuity source, and accepted AJ-10 reconstructs the exact next gate from a fresh clone without chat memory.",
-      "required_proof": "Accepted RP-C05 command/startup transaction and AJ-10 fresh-context reconstruction in proof/repairing-prime/rp-c05-continuity-evidence-r01.md."
+      "current_state": "Prime startup validates canonical Quest and continuity source and reconstructs the next safe gate from canonical continuity without chat memory. This narrower startup proof does not prove the universal Feather-bound Sunset journey.",
+      "required_proof": "Accepted RP-C05 command/startup transaction and fresh-context canonical continuity readback, excluding the separately unproven AJ-10 Sunset/Feather journey."
     },
     {
       "id": "CAP-003",
@@ -287,25 +287,25 @@
       "id": "CAP-022",
       "domain": "Closeout / continuity",
       "capability": "Sunset closeout and restart-safe archive handoff",
-      "audit_status": "RESTORED_SUNSET_RESTART_PROVEN",
-      "audit_severity": "GREEN",
+      "audit_status": "CONTRACT_REPAIRED_LIVE_JOURNEY_UNPROVEN",
+      "audit_severity": "HIGH",
       "path_disposition": "HISTORICAL_CLOSED",
-      "capability_disposition": "RESTORED",
-      "activation_state": "ACTIVE",
-      "current_state": "Prime seals restart-safe Sunset snapshots against canonical continuity and accepted AJ-10 proves fresh-context reconstruction of the exact next safe gate.",
-      "required_proof": "AJ-10 transaction #124, fresh-clone Sunset/Sunrise digests, and reconstruction in proof/repairing-prime/rp-c05-continuity-evidence-r01.json."
+      "capability_disposition": "STILL_MISSING",
+      "activation_state": "MISSING",
+      "current_state": "Prime structurally enforces one new sealed Feather for every Sunset and exact-pair Sunrise resolution, but the corrected AJ-10 live acceptance journey has not yet run.",
+      "required_proof": "A live exact one-Sunset-to-one-Feather transaction, applicable Quest checkpoint, non-Quest no-fabrication proof, fresh-context exact-pair Sunrise reconstruction, exact-head CI, independent review, merge, and canonical readback."
     },
     {
       "id": "CAP-023",
       "domain": "Closeout / continuity",
       "capability": "Sunrise / Argus surfacing of unfinished work",
-      "audit_status": "RESTORED_SUNRISE_ARGUS_PROVEN",
+      "audit_status": "RESTORED_SUNRISE_ARGUS_TECHNICAL",
       "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "RESTORED",
       "activation_state": "ACTIVE",
-      "current_state": "Canonical continuity feeds digest-bound Sunrise reconstruction and deterministic read-only Argus priority surfacing without chat memory.",
-      "required_proof": "Accepted RP-C05 deterministic Sunrise and Argus evidence in proof/repairing-prime/rp-c05-continuity-evidence-r01.json."
+      "current_state": "Canonical continuity feeds deterministic read-only Sunrise and Argus priority surfacing without chat memory. Exact Feather-bound Sunset/Sunrise acceptance remains separately pending under AJ-10.",
+      "required_proof": "Accepted RP-C05 deterministic Sunrise and Argus technical evidence, with the corrected exact Feather-bound live journey tracked separately by AJ-10 and CAP-022."
     },
     {
       "id": "CAP-024",
@@ -352,7 +352,7 @@
       "path_disposition": "NOT_A_PATH_CLAIM",
       "capability_disposition": "STILL_MISSING",
       "activation_state": "MISSING",
-      "current_state": "Component tests exist but AJ-03, AJ-11, and AJ-12 are not yet proven.",
+      "current_state": "Component tests exist but AJ-03, AJ-10, AJ-11, and AJ-12 are not yet proven.",
       "required_proof": "All acceptance IDs in the canonical contract have exact receipts or explicit blocked evidence."
     },
     {

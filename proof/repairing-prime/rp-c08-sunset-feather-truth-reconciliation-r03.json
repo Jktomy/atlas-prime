@@ -1,0 +1,96 @@
+{
+  "schema_version": "rp-c08-sunset-feather-truth-reconciliation-r03",
+  "mission_id": "RP-C08-SUNSET-FEATHER-TRUTH-RECONCILIATION-R03",
+  "authority": "CANONICAL_AUTHORED_RECONCILIATION",
+  "base_sha": "aee1f837c18dbabf871396ffedf7d9c53e3d8297",
+  "controlling_intent": {
+    "universal_sunset_protocol": true,
+    "exactly_one_new_feather_per_completed_sunset": true,
+    "separate_canonical_and_restart_safe_sunset_types": false,
+    "solar_eclipse_role": "PLANNED_CONTINUITY_TRANSFER",
+    "lunar_eclipse_role": "FORCED_CONTEXT_PACKAGE_NOT_A_COMPLETED_SUNSET"
+  },
+  "defect_classification": {
+    "data_corruption": false,
+    "bad_lifecycle_record_merged_from_discovery_chat": false,
+    "architectural_contract_defect": "HIGH_BOUNDED",
+    "affected_boundary": "SUNSET_FEATHER_SUNRISE_AND_ACCEPTANCE_TRUTH"
+  },
+  "source_repair": {
+    "sunset_latest_feather_non_null": true,
+    "sunrise_exact_pair_non_null": true,
+    "cross_record_validation": [
+      "MISSING_FEATHER",
+      "DANGLING_FEATHER",
+      "REUSED_FEATHER",
+      "PROJECT_OPERATION_OR_SCOPE_MISMATCH",
+      "CONCURRENCY_MISMATCH",
+      "SUNRISE_PAIR_MISMATCH"
+    ],
+    "scope_classes": [
+      "ADMITTED_QUEST",
+      "CANDIDATE_QUEST",
+      "NON_QUEST",
+      "PROTECTED_DOMAIN"
+    ]
+  },
+  "current_dispositions": {
+    "AJ-10": "UNPROVEN",
+    "RP-C05": "PARTIAL",
+    "CAP-022": "STILL_MISSING/MISSING",
+    "CAP-023": "RESTORED/ACTIVE_TECHNICAL_ONLY",
+    "CAP-002": "RESTORED/ACTIVE_NARROW_STARTUP_ONLY",
+    "CAP-027": "STILL_MISSING/MISSING"
+  },
+  "capability_counts": {
+    "PRESERVED": 4,
+    "IMPROVED": 7,
+    "RESTORED": 13,
+    "REPLACED": 1,
+    "INTENTIONALLY_RETIRED": 1,
+    "BLOCKED": 0,
+    "STILL_MISSING": 2
+  },
+  "historical_evidence": {
+    "rp_c05_rewritten": false,
+    "rp_c07_rewritten": false,
+    "historical_records_remain_immutable": true,
+    "this_record_supersedes_current_aj10_disposition_only": true
+  },
+  "preserved_open": [
+    "RP-C01-M06",
+    "RP-C01-M07",
+    "AJ-03",
+    "AJ-10",
+    "CAP-022",
+    "CAP-027",
+    "AJ-11",
+    "AJ-12",
+    "RP-C01",
+    "RP-C05",
+    "RP-C08",
+    "QUEST-REPAIRING-PRIME-R01"
+  ],
+  "return_gate": [
+    "COMPLETE_SOURCE_TRUTH_REPAIR",
+    "VALIDATE_AND_AUDIT_EXACT_HEAD",
+    "MERGE_AND_REFRESH_GENERATED_CHECKPOINT",
+    "PROVE_LIVE_AJ10_AND_CAP022",
+    "RESUME_PRESERVED_PRE_INTERRUPTION_WORK",
+    "STRIKEFORCE_AUDIT_PR_189",
+    "CONTINUE_M06_AND_FINAL_RP_C08_GATES"
+  ],
+  "preserved_pull_requests": {
+    "189": "PRESERVED_PENDING_STRIKEFORCE_AUDIT",
+    "190": "BLOCKED_DO_NOT_MERGE"
+  },
+  "forbidden_promotions": {
+    "AJ-10": false,
+    "CAP-022": false,
+    "AJ-03": false,
+    "AJ-11": false,
+    "AJ-12": false,
+    "CAP-027": false,
+    "repairing_prime_complete": false
+  }
+}

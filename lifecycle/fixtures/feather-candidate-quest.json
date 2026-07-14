@@ -1,7 +1,7 @@
 {
-  "schema_id": "atlas.lifecycle.sunset",
+  "schema_id": "atlas.lifecycle.feather",
   "schema_version": "1.0.0",
-  "record_id": "SUN-ONUT6CYSLK4OEWNJAA6S6E6HX6",
+  "record_id": "FTR-CFAEYD5PCR3RQXXC22F4EAJLSP",
   "authority": "NONCANONICAL_FIXTURE",
   "project_id": "project-atlas",
   "operation_id": "operation-source-governance",
@@ -9,16 +9,11 @@
     "scope_type": "CANDIDATE_QUEST",
     "candidate_quest_ref": "notums-watch-candidate"
   },
-  "completion_assessment": "Candidate work is paused without canonical Quest admission.",
-  "decisions": [
-    "Preserve candidate status until a current valid admission handoff exists."
-  ],
-  "open_items": [
-    "Obtain or author an explicit Quest admission decision."
-  ],
-  "next_safe_action": "Validate the candidate-only lifecycle path.",
-  "next_approval_gate": "Explicit Quest admission decision.",
-  "latest_feather_id": "FTR-CFAEYD5PCR3RQXXC22F4EAJLSP",
+  "campaign": null,
+  "mission": null,
+  "gate": null,
+  "lifecycle_status": "SEALED",
+  "context_summary": "Candidate work is paused without canonical Quest admission.",
   "concurrency": {
     "expected_main_sha": "0000000000000000000000000000000000000000",
     "expected_parent_feather": null,
@@ -37,5 +32,11 @@
     "classification": "INTERNAL_CLEAN",
     "clean_summary": "Fixture contains no protected values.",
     "protected_pointers": []
+  },
+  "next_safe_action": "Validate the candidate-only lifecycle path.",
+  "next_approval_gate": "Explicit Quest admission decision.",
+  "supersession_lineage": {
+    "supersedes": [],
+    "superseded_by": null
   }
 }

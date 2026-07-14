@@ -63,9 +63,18 @@ must bind the current record ID, revision, and canonical `main` SHA. Candidate
 Quests use `candidate_quest_ref`; they do not receive a canonical `quest_id`.
 Non-Quest work leaves both fields absent.
 
-Sunset captures a clean human-authored summary, unresolved items, next safe
-action, next approval gate, source locks, and protected pointers. Sunrise
-resolves a valid Sunset and reconstructs only the bounded compact context.
+Every completed Sunset is one atomic continuity transaction that creates
+exactly one new sealed Feather and exactly one immutable Sunset bound to that
+Feather. This rule applies to admitted-Quest, candidate-Quest, non-Quest, and
+protected-domain work; non-Quest work never receives an invented Quest identity.
+The Feather retains the rich authored restart meaning, while the Sunset retains
+the closeout assessment, unresolved items, next safe action, next approval gate,
+source locks, and protected pointers.
+
+Sunrise resolves one exact Sunset/Feather pair. It must name the same Feather
+recorded by the Sunset and reconstruct only the bounded compact context. A
+missing, null, dangling, reused, cross-scope, or mismatched Feather binding fails
+closed.
 
 ## Plan, route, apply, verify
 
@@ -107,11 +116,14 @@ validates this projection only in memory and reports `CURRENT`, `STALE`,
 
 ## Acceptance
 
-G3 and G4 cannot be GREEN until fixtures prove Quest, non-Quest, protected, and
-candidate-Quest Sunset; stale concurrency; archival readback; supersession;
-Sunrise reconstruction; supported and unsupported multi-Quest Golden Wings;
-deterministic indexes; stale-index, duplicate, replay, and malformed-schema
-rejection; Linux/Windows parity; and clean-context reconstruction.
+G3 and G4 cannot be GREEN until fixtures prove admitted-Quest, candidate-Quest,
+non-Quest, and protected-domain Sunset with exactly one newly sealed Feather;
+one-to-one Sunset/Feather binding; stale concurrency; archival readback;
+supersession; exact-pair Sunrise reconstruction; rejection of null, missing,
+dangling, reused, cross-scope, and mismatched Feather references; supported and
+unsupported multi-Quest Golden Wings; deterministic indexes; stale-index,
+duplicate, replay, and malformed-schema rejection; Linux/Windows parity; and
+clean-context reconstruction.
 
 The BEU pilot compares comparable manual and script-assisted operations. It
 records files and bytes read, steps, retries, elapsed agent work, interventions,

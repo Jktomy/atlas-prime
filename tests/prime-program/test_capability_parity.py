@@ -49,22 +49,24 @@ class CapabilityParityTests(unittest.TestCase):
             {
                 "PRESERVED": 4,
                 "IMPROVED": 7,
-                "RESTORED": 14,
+                "RESTORED": 13,
                 "REPLACED": 1,
                 "INTENTIONALLY_RETIRED": 1,
                 "BLOCKED": 0,
-                "STILL_MISSING": 1,
+                "STILL_MISSING": 2,
             },
         )
         self.assertEqual(sum(self.register["capability_disposition_counts"].values()), 28)
         enum = self.schema["properties"]["capabilities"]["items"]["properties"]["capability_disposition"]["enum"]
         self.assertEqual(set(enum), set(DISPOSITIONS))
 
-    def test_only_cap027_remains_missing(self) -> None:
+    def test_cap022_and_cap027_are_the_exact_missing_set(self) -> None:
         missing = [record["id"] for record in self.register["capabilities"] if record["capability_disposition"] == "STILL_MISSING"]
-        self.assertEqual(missing, ["CAP-027"])
+        self.assertEqual(missing, ["CAP-022", "CAP-027"])
+        self.assertEqual(self.records["CAP-022"]["activation_state"], "MISSING")
+        self.assertIn("AJ-10", self.records["CAP-022"]["current_state"])
         self.assertEqual(self.records["CAP-027"]["activation_state"], "MISSING")
-        self.assertIn("AJ-03, AJ-11, and AJ-12", self.records["CAP-027"]["current_state"])
+        self.assertIn("AJ-03, AJ-10, AJ-11, and AJ-12", self.records["CAP-027"]["current_state"])
 
     def test_cap015_is_restored_from_direct_spear_evidence(self) -> None:
         cap = self.records["CAP-015"]
@@ -80,7 +82,7 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertEqual(proof["transitions"]["CAP-015"]["to"], "RESTORED/ACTIVE")
 
     def test_hosted_and_generated_capabilities_remain_restored(self) -> None:
-        for capability_id in ("CAP-009", "CAP-010", "CAP-011", "CAP-019", "CAP-020", "CAP-022", "CAP-023"):
+        for capability_id in ("CAP-009", "CAP-010", "CAP-011", "CAP-019", "CAP-020", "CAP-023"):
             self.assertEqual(self.records[capability_id]["capability_disposition"], "RESTORED")
             self.assertEqual(self.records[capability_id]["activation_state"], "ACTIVE")
         self.assertIn("Jayson/Artemis Arrow/Bow", self.records["CAP-009"]["current_state"])
