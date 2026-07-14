@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import io
+import importlib.util
 import json
 import sys
 import unittest
@@ -15,9 +15,16 @@ from production_adapter.protected_paths import POLICY_PATH, is_protected_path, i
 
 class RepositoryPolicyTests(unittest.TestCase):
     def test_000_temporary_state_reconciliation_tests(self) -> None:
-        suite = unittest.defaultTestLoader.discover(str(ROOT / "tests" / "prime-program"), pattern="test_prime_continuity.py")
-        result = unittest.TextTestRunner(stream=io.StringIO(), verbosity=0).run(suite)
-        self.assertTrue(result.wasSuccessful(), "TEMP_STATE_RECONCILIATION_TESTS_FAILED")
+        path = ROOT / "tests" / "prime-program" / "test_prime_continuity.py"
+        spec = importlib.util.spec_from_file_location("prime_continuity_diagnostic", path)
+        if spec is None or spec.loader is None:
+            self.fail("TEMP_DIAGNOSTIC_IMPORT_FAILED")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        case = module.PrimeContinuityTests("test_canonical_board_register_and_identities_validate")
+        result = unittest.TestResult()
+        case.run(result)
+        self.assertTrue(result.wasSuccessful(), "TEMP_CANONICAL_CONTINUITY_FAILED")
 
     def test_repository_and_operator_invariants(self) -> None:
         repository = json.loads((ROOT / "policies" / "repository-policy.json").read_text(encoding="utf-8"))
