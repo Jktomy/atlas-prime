@@ -78,9 +78,10 @@ JAYSON
 
 Phoenix Blade is Athena's functional counterpart to Oathbringer: each operator
 wields an exact Sword without Thread Engine.
-Spear is Athena's Thread Engine route. Arrow/Bow is Jayson and Artemis delegated
-delivery and is not an Athena route. Aegis Break is Athena's direct/adaptive safe
-method and is not merely an alias for Phoenix Blade.
+Spear is Athena's Thread Engine
+route. Arrow/Bow is Jayson and Artemis delegated delivery and is not an Athena
+route. Aegis Break is Athena's direct/adaptive safe method and is not merely an
+alias for Phoenix Blade.
 
 ## One normal engine
 
