@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:d2bbad93eded0dd0f39833743c624cc5246ced626e139fbd4a5cd19ace9e8d0b
+Source fingerprint: sha256:ef5dbb21a0bee57365248c63916f8f426a3fcd702773ba81566db2b98e3ce2fe
 Generator format: 2
 Status: Generated support artifact
 
@@ -81,6 +81,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | ACCEPTED | PROOF | missing | HIGH |
 | `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md` | ACCEPTED | PROOF | missing | HIGH |
 | `proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md` | ACCEPTED_RECONCILIATION | PROOF | missing | MEDIUM |
+| `proof/repairing-prime/rp-c08-aj10-cap022-acceptance-reconciliation-r04.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-aj10-cap022-live-acceptance-r03.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-cap010-reconciliation-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-cap011-reconciliation-r01.md` | missing | missing | missing | missing |
