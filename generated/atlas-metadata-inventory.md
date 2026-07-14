@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:13c1aef5159197fac34cb53276e429f470c0255eab57f9bdfa673db6fffa0df9
+Source fingerprint: sha256:b88ddf192094548d522de5c8d92050e24173803861b4c9142670d75253ed3089
 Generator format: 2
 Status: Generated support artifact
 
@@ -27,6 +27,7 @@ Status: Generated support artifact
 | `governance/investiture-accounting-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/investiture-source-identity-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/noctua.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
+| `governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md` | NON_GOVERNING_PROOF_FIXTURE | PROOF_FIXTURE | missing | CRITICAL |
 | `governance/protected-source-boundary.md` | CANONICAL_ACTIVE | POLICY | missing | CRITICAL |
 | `governance/quest-engine-continuity-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/resonance-reconciliation-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
