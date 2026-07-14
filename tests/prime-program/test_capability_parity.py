@@ -256,7 +256,7 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertIn("JAYSON / ARTEMIS", architecture)
         self.assertIn("No external platform-origin", architecture)
 
-        self.assertIn("routes to **Phoenix\n  Blade**", command_surfaces)
+        self.assertIn("routes to **Phoenix Blade**", command_surfaces)
         self.assertIn(
             "does not need to invoke a separate preflight command",
             command_surfaces,

@@ -166,14 +166,14 @@ authored/generated separation.
 
 Missions:
 
-1. Bind former G4-E construction and G4-F live-acceptance meanings.
-2. Prove deterministic five-report projection bytes.
-3. Prove hosted Ubuntu/Windows byte-hash parity.
-4. Prove the owner-triggered generated route invokes singular Thread Engine and
+1. `RP-C06-M01` Bind former G4-E construction and G4-F live-acceptance meanings.
+2. `RP-C06-M02` Prove deterministic five-report projection bytes.
+3. `RP-C06-M03` Prove hosted Ubuntu/Windows byte-hash parity.
+4. `RP-C06-M04` Prove the owner-triggered generated route invokes singular Thread Engine and
    stops at exact draft-PR readback.
-5. Prove stale-base, replay, branch-collision, and PR-collision rejection.
-6. Conserve sanitized workflow, parity, Thread Engine, PR, and readback evidence.
-7. Prove authored/generated separation and reconcile AJ-09.
+5. `RP-C06-M05` Prove stale-base, replay, branch-collision, and PR-collision rejection.
+6. `RP-C06-M06` Conserve sanitized workflow, parity, Thread Engine, PR, and readback evidence.
+7. `RP-C06-M07` Prove authored/generated separation and reconcile AJ-09.
 
 **Gate:** `DETERMINISTIC_CONSERVATION_AND_GENERATED_PARITY_PROVEN`
 
