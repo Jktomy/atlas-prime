@@ -104,7 +104,7 @@ class CapabilityParityTests(unittest.TestCase):
 
         self.assertIn("Athena -> Spear -> Thread Engine", change_routes)
         self.assertIn("Jayson / Artemis -> Arrow -> Bow -> Thread Engine", change_routes)
-        self.assertIn("Phoenix Blade is Athena executing a Sword", phoenix)
+        self.assertIn("Phoenix Blade is Athena executing an exact Sword", phoenix)
         self.assertIn("does not invoke Thread Engine", phoenix)
         self.assertIn("Aegis Break is Athena's bounded route-selection", phoenix)
         self.assertIn("Spear is Athena's direct Thread Engine route", spear)
