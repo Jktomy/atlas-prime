@@ -1,7 +1,7 @@
 {
-  "schema_id": "atlas.lifecycle.sunset",
+  "schema_id": "atlas.lifecycle.feather",
   "schema_version": "1.0.0",
-  "record_id": "SUN-77ZBWPL6ZWLTGJGT2XIGQ2DDYI",
+  "record_id": "FTR-BNUXGP24ZT5TUJAOEJCE2ZRFLZ",
   "authority": "NONCANONICAL_FIXTURE",
   "project_id": "project-atlas",
   "operation_id": null,
@@ -9,16 +9,11 @@
     "scope_type": "NON_QUEST",
     "work_scope": "Harmless one-off documentation cleanup fixture."
   },
-  "completion_assessment": "The bounded non-Quest fixture is paused safely.",
-  "decisions": [
-    "Do not invent a Quest identity."
-  ],
-  "open_items": [
-    "Verify non-Quest Sunrise reconstruction."
-  ],
-  "next_safe_action": "Validate temporary reconstruction.",
-  "next_approval_gate": "Fixture acceptance only.",
-  "latest_feather_id": "FTR-BNUXGP24ZT5TUJAOEJCE2ZRFLZ",
+  "campaign": null,
+  "mission": null,
+  "gate": null,
+  "lifecycle_status": "SEALED",
+  "context_summary": "The bounded non-Quest fixture is paused safely.",
   "concurrency": {
     "expected_main_sha": "0000000000000000000000000000000000000000",
     "expected_parent_feather": null,
@@ -37,5 +32,11 @@
     "classification": "PUBLIC",
     "clean_summary": "Fixture contains public doctrine references only.",
     "protected_pointers": []
+  },
+  "next_safe_action": "Validate temporary reconstruction.",
+  "next_approval_gate": "Fixture acceptance only.",
+  "supersession_lineage": {
+    "supersedes": [],
+    "superseded_by": null
   }
 }

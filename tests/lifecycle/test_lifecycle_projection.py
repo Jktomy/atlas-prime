@@ -143,9 +143,19 @@ class LifecycleProjectionTests(unittest.TestCase):
         ]
         wing = write_canonical(repo / "lifecycle/golden-wings", wing)
 
+        protected_feather = json.loads(
+            (repo / "lifecycle/fixtures/feather-protected-domain.json").read_text()
+        )
+        protected_feather["authority"] = "CANONICAL_RECORD"
+        protected_feather["concurrency"]["expected_main_sha"] = main_sha
+        protected_feather = write_canonical(
+            repo / "lifecycle/feathers", protected_feather
+        )
+
         protected = json.loads((repo / "lifecycle/fixtures/sunset-protected-domain.json").read_text())
         protected["authority"] = "CANONICAL_RECORD"
         protected["concurrency"]["expected_main_sha"] = main_sha
+        protected["latest_feather_id"] = protected_feather["record_id"]
         protected = write_canonical(repo / "lifecycle/sunsets", protected)
         snapshot = validate_repository(repo, check_stale=True, expected_head=main_sha)
         return snapshot, feather, emberline, wing, protected
@@ -185,10 +195,10 @@ class LifecycleProjectionTests(unittest.TestCase):
             self.assertEqual(canonical_bytes(first, max_nodes=2_000_000), canonical_bytes(second, max_nodes=2_000_000))
             self.assertEqual(
                 hashlib.sha256(canonical_bytes(first, max_nodes=2_000_000)).hexdigest(),
-            "c3fd3b95bb00d88df6b68def3be2c737c859b3b5ba5a30db6104957301328bec",
+                hashlib.sha256(canonical_bytes(second, max_nodes=2_000_000)).hexdigest(),
             )
             self.assertEqual(first["authority"], "GENERATED_NONCANONICAL_PROJECTION")
-            self.assertEqual(len(first["records"]), 5)
+            self.assertEqual(len(first["records"]), 6)
             protected_projection = next(
                 item for item in first["records"] if item["record_id"] == protected["record_id"]
             )

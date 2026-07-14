@@ -19,6 +19,11 @@ class RpC08CapabilityReconciliationTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
+        self.truth = json.loads(
+            (ROOT / "proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.json").read_text(
+                encoding="utf-8"
+            )
+        )
         self.cap010 = json.loads(
             (ROOT / "proof/repairing-prime/rp-c08-cap010-reconciliation-r01.json").read_text(
                 encoding="utf-8"
@@ -33,9 +38,9 @@ class RpC08CapabilityReconciliationTests(unittest.TestCase):
 
     def test_exact_28_record_counts_match_controlling_proof(self) -> None:
         observed = Counter(record["capability_disposition"] for record in self.register["capabilities"])
-        expected = {key: value for key, value in self.proof["capability_counts"].items() if value}
+        expected = {key: value for key, value in self.truth["capability_counts"].items() if value}
         self.assertEqual(dict(observed), expected)
-        self.assertEqual(self.register["capability_disposition_counts"], self.proof["capability_counts"])
+        self.assertEqual(self.register["capability_disposition_counts"], self.truth["capability_counts"])
         self.assertEqual(sum(observed.values()), 28)
 
     def test_cap011_remains_restored_by_live_multifile_evidence(self) -> None:
@@ -64,9 +69,12 @@ class RpC08CapabilityReconciliationTests(unittest.TestCase):
         self.assertEqual(self.proof["accepted_evidence"]["direct_spear"]["pull_request"], 102)
         self.assertFalse(self.proof["superseded_premise"]["platform_attestation_required"])
 
-    def test_only_cap027_remains_missing(self) -> None:
+    def test_current_truth_has_exact_missing_set(self) -> None:
         missing = [record["id"] for record in self.register["capabilities"] if record["capability_disposition"] == "STILL_MISSING"]
-        self.assertEqual(missing, ["CAP-027"])
+        self.assertEqual(missing, ["CAP-022", "CAP-027"])
+        self.assertEqual(self.truth["current_dispositions"]["AJ-10"], "UNPROVEN")
+        self.assertEqual(self.truth["current_dispositions"]["RP-C05"], "PARTIAL")
+        self.assertEqual(self.records["CAP-022"]["activation_state"], "MISSING")
         self.assertEqual(self.records["CAP-027"]["activation_state"], "MISSING")
 
     def test_reconciliation_does_not_self_close(self) -> None:

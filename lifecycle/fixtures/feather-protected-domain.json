@@ -1,7 +1,7 @@
 {
-  "schema_id": "atlas.lifecycle.sunset",
+  "schema_id": "atlas.lifecycle.feather",
   "schema_version": "1.0.0",
-  "record_id": "SUN-7UCD7KO4ADV63K7SYDOVSPJEH6",
+  "record_id": "FTR-N4DMRQTQ34TM6HYJWZTVDNXUVO",
   "authority": "NONCANONICAL_FIXTURE",
   "project_id": "project-raphael",
   "operation_id": null,
@@ -9,16 +9,11 @@
     "scope_type": "NON_QUEST",
     "work_scope": "Protected-domain continuity fixture."
   },
-  "completion_assessment": "A clean summary and protected pointer are available.",
-  "decisions": [
-    "Keep all protected evidence outside GitHub."
-  ],
-  "open_items": [
-    "Resolve the pointer only in an approved evidence system."
-  ],
-  "next_safe_action": "Validate the clean summary and pointer boundary.",
-  "next_approval_gate": "Protected-source access remains separate.",
-  "latest_feather_id": "FTR-N4DMRQTQ34TM6HYJWZTVDNXUVO",
+  "campaign": null,
+  "mission": null,
+  "gate": null,
+  "lifecycle_status": "SEALED",
+  "context_summary": "A clean summary and protected pointer are available.",
   "concurrency": {
     "expected_main_sha": "0000000000000000000000000000000000000000",
     "expected_parent_feather": null,
@@ -45,5 +40,11 @@
     "protected_pointers": [
       "protected://fixture/raphael/continuity-evidence"
     ]
+  },
+  "next_safe_action": "Validate the clean summary and pointer boundary.",
+  "next_approval_gate": "Protected-source access remains separate.",
+  "supersession_lineage": {
+    "supersedes": [],
+    "superseded_by": null
   }
 }

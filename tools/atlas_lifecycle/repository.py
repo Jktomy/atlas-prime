@@ -55,6 +55,82 @@ def observed_head(repo_root: Path) -> str:
     return value
 
 
+def _validate_sunset_feather_bindings(
+    records: list[dict[str, Any]],
+    *,
+    record_class: str,
+) -> None:
+    """Enforce the universal one-Sunset-to-one-Feather invariant."""
+
+    records_by_id = {record["record_id"]: record for record in records}
+    claimed_feathers: dict[str, str] = {}
+
+    for sunset in (record for record in records if record.get("schema_id") == "atlas.lifecycle.sunset"):
+        feather_id = sunset.get("latest_feather_id")
+        if not isinstance(feather_id, str):
+            raise LifecycleError(
+                "SUNSET_FEATHER_REQUIRED",
+                f"{record_class} Sunset must reference exactly one Feather",
+            )
+        feather = records_by_id.get(feather_id)
+        if feather is None or feather.get("schema_id") != "atlas.lifecycle.feather":
+            raise LifecycleError(
+                "SUNSET_FEATHER_MISSING",
+                f"{record_class} Sunset Feather reference does not resolve",
+            )
+        prior_sunset = claimed_feathers.get(feather_id)
+        if prior_sunset is not None:
+            raise LifecycleError(
+                "SUNSET_FEATHER_REUSED",
+                f"{record_class} Feather is claimed by more than one Sunset",
+            )
+        claimed_feathers[feather_id] = sunset["record_id"]
+
+        for field in ("project_id", "operation_id", "quest_scope"):
+            if sunset.get(field) != feather.get(field):
+                raise LifecycleError(
+                    "SUNSET_FEATHER_SCOPE_MISMATCH",
+                    f"{record_class} Sunset and Feather disagree on {field}",
+                )
+        sunset_concurrency = sunset.get("concurrency")
+        feather_concurrency = feather.get("concurrency")
+        if not isinstance(sunset_concurrency, dict) or not isinstance(feather_concurrency, dict):
+            raise LifecycleError(
+                "SUNSET_FEATHER_CONCURRENCY_MISMATCH",
+                f"{record_class} Sunset and Feather require concurrency bindings",
+            )
+        for field in (
+            "expected_main_sha",
+            "expected_quest_revision",
+            "declared_source_fingerprint",
+        ):
+            if sunset_concurrency.get(field) != feather_concurrency.get(field):
+                raise LifecycleError(
+                    "SUNSET_FEATHER_CONCURRENCY_MISMATCH",
+                    f"{record_class} Sunset and Feather disagree on {field}",
+                )
+
+    for sunrise in (record for record in records if record.get("schema_id") == "atlas.lifecycle.sunrise"):
+        sunset = records_by_id.get(sunrise.get("sunset_id"))
+        if sunset is None or sunset.get("schema_id") != "atlas.lifecycle.sunset":
+            raise LifecycleError(
+                "SUNRISE_SUNSET_MISSING",
+                f"{record_class} Sunrise does not resolve an exact Sunset",
+            )
+        feather_id = sunset.get("latest_feather_id")
+        if sunrise.get("latest_feather_id") != feather_id:
+            raise LifecycleError(
+                "SUNRISE_FEATHER_MISMATCH",
+                f"{record_class} Sunrise does not resolve the Sunset-bound Feather",
+            )
+        feather = records_by_id.get(feather_id)
+        if feather is None or feather.get("schema_id") != "atlas.lifecycle.feather":
+            raise LifecycleError(
+                "SUNRISE_FEATHER_MISSING",
+                f"{record_class} Sunrise Feather reference does not resolve",
+            )
+
+
 def validate_repository(
     repo_root: Path,
     *,
@@ -202,6 +278,9 @@ def validate_repository(
         loaded.append((record, fixture))
 
     canonical = [record for record, fixture in loaded if not fixture]
+    fixtures = [record for record, fixture in loaded if fixture]
+    _validate_sunset_feather_bindings(canonical, record_class="canonical")
+    _validate_sunset_feather_bindings(fixtures, record_class="fixture")
     records_by_id = {record["record_id"]: record for record in canonical}
     emberlines: dict[str, dict[str, Any]] = {}
     for record in canonical:

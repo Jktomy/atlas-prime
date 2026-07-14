@@ -245,8 +245,20 @@ class LifecycleEngineTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as raw:
             repo = Path(raw)
             shutil.copytree(ROOT / "lifecycle", repo / "lifecycle")
+            feather = json.loads(
+                (repo / "lifecycle/fixtures/feather-non-quest.json").read_text()
+            )
+            feather["authority"] = "CANONICAL_RECORD"
+            feather["record_id"] = stable_record_id(feather)
+            write_json(
+                repo / "lifecycle/feathers" / f'{feather["record_id"]}.json',
+                feather,
+                canonical=True,
+            )
+
             record = json.loads((repo / "lifecycle/fixtures/sunset-non-quest.json").read_text())
             record["authority"] = "CANONICAL_RECORD"
+            record["latest_feather_id"] = feather["record_id"]
             record["record_id"] = stable_record_id(record)
             path = repo / "lifecycle/sunsets" / f'{record["record_id"]}.json'
             write_json(path, record, canonical=True)
