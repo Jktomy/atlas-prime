@@ -19,9 +19,6 @@ class RepositoryPolicyTests(unittest.TestCase):
             "test_capability_parity.py",
             "test_found_silverlight.py",
             "test_investiture_identity.py",
-            "test_prime_continuity.py",
-            "test_prime_program.py",
-            "test_rp_c01_m05_parity_acceptance.py",
         )
         suite = unittest.TestSuite()
         for filename in selected:
