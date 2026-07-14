@@ -24,9 +24,7 @@ class RpC07AcceptanceTests(unittest.TestCase):
         self.historical = json.loads(
             HISTORICAL_PROOF.read_text(encoding="utf-8")
         )
-        self.current = json.loads(
-            CURRENT_PROOF.read_text(encoding="utf-8")
-        )
+        self.current = json.loads(CURRENT_PROOF.read_text(encoding="utf-8"))
 
     def test_historical_rp_c07_reconciliation_remains_immutable_context(self) -> None:
         self.assertEqual(
@@ -86,9 +84,7 @@ class RpC07AcceptanceTests(unittest.TestCase):
         self.assertTrue(
             all(
                 record["mutation"] is False
-                for record in self.historical[
-                    "partial_rejection_evidence"
-                ]
+                for record in self.historical["partial_rejection_evidence"]
             )
         )
         self.assertEqual(
@@ -109,12 +105,8 @@ class RpC07AcceptanceTests(unittest.TestCase):
             self.current["states"]["CAP-027"],
             "STILL_MISSING",
         )
-        self.assertFalse(
-            self.current["forbidden_promotions"]["CAP-027"]
-        )
-        self.assertFalse(
-            self.current["forbidden_promotions"]["QUEST_COMPLETE"]
-        )
+        self.assertFalse(self.current["forbidden_promotions"]["CAP-027"])
+        self.assertFalse(self.current["forbidden_promotions"]["QUEST_COMPLETE"])
 
     def test_contract_repeats_the_current_canonical_matrix(self) -> None:
         contract = CONTRACT.read_text(encoding="utf-8")

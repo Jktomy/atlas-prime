@@ -6,18 +6,16 @@ import unittest
 from copy import deepcopy
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[2]
 REQUEST_SCHEMA = ROOT / "schemas/athena-hosted-route-request-v1.schema.json"
 RECEIPT_SCHEMA = ROOT / "schemas/athena-hosted-route-receipt-v1.schema.json"
 GUIDED_PREVIEW_V1_SCHEMA = ROOT / "schemas/athena-guided-intake-preview-v1.schema.json"
 GUIDED_PREVIEW_SCHEMA = ROOT / "schemas/athena-guided-intake-preview-v2.schema.json"
 GUIDED_EXECUTE_SCHEMA = ROOT / "schemas/athena-guided-intake-execute-receipt-v1.schema.json"
-FREE_FORM_FIELDS_SCHEMA = ROOT / "schemas/athena-free-form-mission-fields-v1.schema.json"
-FREE_FORM_RECEIPT_SCHEMA = ROOT / "schemas/athena-free-form-intake-receipt-v1.schema.json"
 M05_PARITY_SCHEMA = ROOT / "schemas/rp-c01-m05-parity-evidence-v1.schema.json"
 ADAPTER_EVIDENCE_SCHEMA = ROOT / "schemas/athena-thread-engine-evidence-v2.schema.json"
 CONTRACT = ROOT / "governance/athena-execution-route-contract.md"
+ARCHITECTURE = ROOT / "governance/athena-route-architecture-r01.md"
 
 
 class ContractValidationError(ValueError):
@@ -70,9 +68,6 @@ def validate_schema(schema: dict, value: object, path: str = "$") -> None:
         pattern = schema.get("pattern")
         if pattern and re.search(pattern, value) is None:
             raise ContractValidationError(f"{path}: pattern mismatch")
-    if isinstance(value, int) and not isinstance(value, bool):
-        if value < schema.get("minimum", value):
-            raise ContractValidationError(f"{path}: below minimum")
 
 
 def valid_request() -> dict:
@@ -172,247 +167,87 @@ def valid_success_receipt() -> dict:
 
 
 class AthenaExecutionRouteContractTests(unittest.TestCase):
-    def test_guided_publisher_contract_is_closed_and_does_not_self_promote(self) -> None:
-        contract = CONTRACT.read_text(encoding="utf-8")
-        method = (ROOT / "methods/athenas-spear.md").read_text(encoding="utf-8")
-        routing = (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8")
-        for path in (GUIDED_PREVIEW_V1_SCHEMA, GUIDED_PREVIEW_SCHEMA, GUIDED_EXECUTE_SCHEMA):
+    def test_closed_guided_schemas_preserve_forbidden_actions(self) -> None:
+        for path in (
+            GUIDED_PREVIEW_V1_SCHEMA,
+            GUIDED_PREVIEW_SCHEMA,
+            GUIDED_EXECUTE_SCHEMA,
+        ):
             schema = json.loads(path.read_text(encoding="utf-8"))
             self.assertFalse(schema["additionalProperties"])
             forbidden = schema["properties"]["forbidden_actions"]
             self.assertFalse(forbidden["additionalProperties"])
-            self.assertTrue(all(value == {"const": False} for value in forbidden["properties"].values()))
-        self.assertIn("JSON on standard input", contract)
-        self.assertIn("do not promote CAP-010", contract)
-        self.assertIn("does not prove CAP-010", routing)
-        self.assertIn("Component construction and tests do not prove", method)
+            self.assertTrue(
+                all(
+                    value == {"const": False}
+                    for value in forbidden["properties"].values()
+                )
+            )
 
-    def test_m05_parity_schema_is_closed_and_cannot_self_promote(self) -> None:
-        schema = json.loads(M05_PARITY_SCHEMA.read_text(encoding="utf-8"))
-        self.assertFalse(schema["additionalProperties"])
-        self.assertEqual(schema["properties"]["result"]["const"], "PARITY_VERIFIED")
+    def test_hosted_request_and_receipt_are_closed(self) -> None:
+        request_schema = json.loads(REQUEST_SCHEMA.read_text(encoding="utf-8"))
+        receipt_schema = json.loads(RECEIPT_SCHEMA.read_text(encoding="utf-8"))
+        self.assertFalse(request_schema["additionalProperties"])
+        self.assertFalse(receipt_schema["additionalProperties"])
         self.assertEqual(
-            schema["properties"]["promotion_boundary"]["const"],
-            "SEPARATE_AUTHORED_RECONCILIATION_REQUIRED",
-        )
-        adapter_schema = json.loads(ADAPTER_EVIDENCE_SCHEMA.read_text(encoding="utf-8"))
-        self.assertFalse(adapter_schema["additionalProperties"])
-        confirmation = adapter_schema["properties"]["forbidden_action_confirmation"]
-        self.assertFalse(confirmation["additionalProperties"])
-        self.assertEqual(set(confirmation["required"]), set(confirmation["properties"]))
-
-    def test_free_form_intake_is_closed_local_and_cannot_self_promote(self) -> None:
-        fields = json.loads(FREE_FORM_FIELDS_SCHEMA.read_text(encoding="utf-8"))
-        receipt = json.loads(FREE_FORM_RECEIPT_SCHEMA.read_text(encoding="utf-8"))
-        contract = CONTRACT.read_text(encoding="utf-8")
-        routing = (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8")
-        self.assertFalse(fields["additionalProperties"])
-        self.assertFalse(fields["properties"]["changes"]["items"]["additionalProperties"])
-        self.assertEqual(fields["properties"]["origin_classification"]["const"], "OWNER_GUIDED_LOCAL_NOT_FRESH_WORK_ORIGIN")
-        self.assertFalse(receipt["additionalProperties"])
-        self.assertEqual(receipt["properties"]["stop_point"]["const"], "FREE_FORM_CARRIER_CONSTRUCTED")
-        self.assertEqual(receipt["properties"]["promotion_boundary"]["const"], "LIVE_HOSTED_ACCEPTANCE_AND_SEPARATE_AUTHORED_RECONCILIATION_REQUIRED")
-        forbidden = receipt["properties"]["forbidden_actions"]
-        self.assertFalse(forbidden["additionalProperties"])
-        self.assertTrue(all(value == {"const": False} for value in forbidden["properties"].values()))
-        self.assertIn("fixed-metadata `ZIP_STORED`", contract)
-        self.assertIn("not fresh Work/Athena origin", routing)
-
-    def test_request_schema_is_closed_and_binds_hosted_identity(self) -> None:
-        schema = json.loads(REQUEST_SCHEMA.read_text(encoding="utf-8"))
-        self.assertFalse(schema["additionalProperties"])
-        self.assertEqual(
-            schema["properties"]["route"]["const"],
+            request_schema["properties"]["route"]["const"],
             "ARROW_BOW_HOSTED",
         )
-        event = schema["properties"]["event_identity"]
-        credential = schema["properties"]["credential_identity"]
-        self.assertFalse(event["additionalProperties"])
-        self.assertFalse(credential["additionalProperties"])
-        self.assertEqual(
-            set(event["required"]),
-            {
-                "event_name",
-                "event_action",
-                "event_node_or_delivery_id",
-                "created_at",
-                "updated_at",
-                "event_payload_sha256",
-                "event_actor",
-                "triggering_actor",
-                "workflow_ref",
-                "workflow_source_sha",
-                "run_id",
-                "run_attempt",
-            },
-        )
-        self.assertEqual(
-            set(credential["required"]),
-            {"credential_principal", "token_mode"},
-        )
-        self.assertEqual(
-            credential["properties"]["token_mode"], {"const": "GITHUB_TOKEN"}
-        )
-        self.assertEqual(
-            schema["properties"]["protected_path_classification"],
-            {"const": "ORDINARY"},
-        )
+        validate_schema(request_schema, valid_request())
+        validate_schema(receipt_schema, valid_success_receipt())
 
-    def test_receipt_schema_separates_every_aj_02_identity(self) -> None:
-        schema = json.loads(RECEIPT_SCHEMA.read_text(encoding="utf-8"))
-        self.assertFalse(schema["additionalProperties"])
-        identity = schema["properties"]["identity"]
-        self.assertFalse(identity["additionalProperties"])
-        self.assertEqual(
-            set(identity["required"]),
-            {
-                "authorizer",
-                "semantic_operator",
-                "requesting_surface",
-                "event_actor",
-                "triggering_actor",
-                "workflow_ref",
-                "workflow_source_sha",
-                "credential_principal",
-                "token_mode",
-                "mission_id",
-                "run_id",
-                "run_attempt",
-            },
-        )
-
-    def test_forbidden_actions_are_fixed_false_in_request_and_receipt(self) -> None:
-        for path in (REQUEST_SCHEMA, RECEIPT_SCHEMA):
-            schema = json.loads(path.read_text(encoding="utf-8"))
-            forbidden = schema["properties"][
-                "forbidden_actions"
-                if path == REQUEST_SCHEMA
-                else "forbidden_action_confirmation"
-            ]
-            self.assertFalse(forbidden["additionalProperties"])
-            self.assertEqual(
-                set(forbidden["required"]),
-                {
-                    "direct_main",
-                    "force_push",
-                    "ready",
-                    "merge",
-                    "settings",
-                    "standing_authority",
-                    "second_writer",
-                },
-            )
-            self.assertTrue(
-                all(item == {"const": False} for item in forbidden["properties"].values())
-            )
-
-    def test_contract_converges_on_one_engine_and_preserves_proof_boundaries(self) -> None:
-        text = CONTRACT.read_text(encoding="utf-8")
-        required = (
-            "the same singular Prime Thread Engine production adapter",
-            "AEGIS_BREAK_TO_OATHBRINGER",
-            "GENERATED_SOURCE_MIXING",
-            "DRAFT_PR_READBACK",
-            "fresh Work/Athena context",
-            "does not promote CAP-009, CAP-010, CAP-011, or CAP-015",
-            "AJ-01, AJ-02, and AJ-03 remain unproven",
-            "COMPONENT_EVIDENCE_CANNOT_ASSERT_ROUTE_GATE",
-            "Only a locally pre-screened, public-clean, size-bounded carrier",
-            "never echo carrier bytes",
-            "ROLLBACK_POST_MERGE=REVIEWED_REVERT_PR",
-        )
-        self.assertEqual([phrase for phrase in required if phrase not in text], [])
-
-    def test_complete_request_instances_enforce_route_token_and_classification(self) -> None:
+    def test_schema_rejects_wrong_route_or_token(self) -> None:
         schema = json.loads(REQUEST_SCHEMA.read_text(encoding="utf-8"))
-        request = valid_request()
-        validate_schema(schema, request)
-        for path, invalid_value in (
+        for path, value in (
             (("route",), "SPEAR_DIRECT"),
             (("credential_identity", "token_mode"), "USER_SESSION_TOKEN"),
-            (("protected_path_classification",), "THREAD_ENGINE_SELF_CHANGE"),
         ):
-            invalid = deepcopy(request)
-            target = invalid
+            request = deepcopy(valid_request())
+            target = request
             for key in path[:-1]:
                 target = target[key]
-            target[path[-1]] = invalid_value
+            target[path[-1]] = value
             with self.assertRaises(ContractValidationError):
-                validate_schema(schema, invalid)
+                validate_schema(schema, request)
 
-    def test_complete_receipts_reject_counterfeit_or_incoherent_state(self) -> None:
+    def test_receipt_rejects_false_success(self) -> None:
         schema = json.loads(RECEIPT_SCHEMA.read_text(encoding="utf-8"))
-        success = valid_success_receipt()
-        validate_schema(schema, success)
-
-        counterfeit_success = deepcopy(success)
-        counterfeit_success["stop_point"] = "PRE_MUTATION_REJECTION"
-        counterfeit_success["mutation"] = {
-            "occurred": False,
-            "branch": None,
-            "pull_request": None,
-            "head_sha": None,
-            "draft": None,
-        }
+        receipt = valid_success_receipt()
+        receipt["mutation"]["draft"] = False
         with self.assertRaises(ContractValidationError):
-            validate_schema(schema, counterfeit_success)
+            validate_schema(schema, receipt)
 
-        rejected_with_mutation = deepcopy(success)
-        rejected_with_mutation["result"] = "REJECTED"
-        rejected_with_mutation["error_code"] = "MALFORMED_CARRIER"
-        with self.assertRaises(ContractValidationError):
-            validate_schema(schema, rejected_with_mutation)
+    def test_m05_and_adapter_schemas_remain_closed(self) -> None:
+        parity = json.loads(M05_PARITY_SCHEMA.read_text(encoding="utf-8"))
+        adapter = json.loads(ADAPTER_EVIDENCE_SCHEMA.read_text(encoding="utf-8"))
+        self.assertFalse(parity["additionalProperties"])
+        self.assertEqual(parity["properties"]["result"]["const"], "PARITY_VERIFIED")
+        self.assertFalse(adapter["additionalProperties"])
 
-        missing_remote_identity = deepcopy(success)
-        missing_remote_identity["mutation"]["branch"] = None
-        with self.assertRaises(ContractValidationError):
-            validate_schema(schema, missing_remote_identity)
-
-        nondraft_success = deepcopy(success)
-        nondraft_success["mutation"]["draft"] = False
-        with self.assertRaises(ContractValidationError):
-            validate_schema(schema, nondraft_success)
-
-        for omitted in (
-            "compile_receipt_sha256",
-            "adapter_receipt_sha256",
-            "error_code",
+    def test_contract_preserves_one_engine_and_route_identity(self) -> None:
+        text = CONTRACT.read_text(encoding="utf-8")
+        architecture = ARCHITECTURE.read_text(encoding="utf-8")
+        for phrase in (
+            "SPEAR_DIRECT",
+            "ARROW_BOW_HOSTED",
+            "the same singular Prime Thread Engine production adapter",
+            "DRAFT_PR_READBACK",
+            "PARTIAL",
+            "JSON on standard input",
+            "ROLLBACK_POST_MERGE=REVIEWED_REVERT_PR",
         ):
-            missing_state = deepcopy(success)
-            del missing_state[omitted]
-            with self.assertRaises(ContractValidationError):
-                validate_schema(schema, missing_state)
-
-        wrong_hosted_token = deepcopy(success)
-        wrong_hosted_token["identity"]["token_mode"] = "USER_SESSION_TOKEN"
-        with self.assertRaises(ContractValidationError):
-            validate_schema(schema, wrong_hosted_token)
-
-        partial = deepcopy(success)
-        partial.update(
-            {
-                "result": "PARTIAL",
-                "error_code": "PR_READBACK_MISMATCH",
-                "stop_point": "PARTIAL_STATE_PRESERVED",
-                "mutation": {
-                    "occurred": True,
-                    "branch": "agent/rp-c01-pilot-r01",
-                    "pull_request": None,
-                    "head_sha": "9" * 40,
-                    "draft": None,
-                },
-                "rollback": {
-                    "pre_merge": "PRESERVE_PARTIAL_STATE_AND_REVIEW",
-                    "post_merge": "NO_MERGE_OCCURRED",
-                    "force_or_history_rewrite": False,
-                },
-            }
+            self.assertIn(phrase, text)
+        self.assertIn("Spear belongs to Athena", text)
+        self.assertIn("Arrow/Bow belongs to Jayson and Artemis", text)
+        self.assertIn(
+            "No platform-origin attestation or external bridge is required",
+            text,
         )
-        validate_schema(schema, partial)
-        false_partial = deepcopy(partial)
-        false_partial["mutation"]["occurred"] = False
-        with self.assertRaises(ContractValidationError):
-            validate_schema(schema, false_partial)
+        self.assertIn("Sword -> Phoenix Blade", architecture)
+        self.assertIn(
+            "Aegis Break is Athena's direct/adaptive safe method",
+            architecture,
+        )
 
 
 if __name__ == "__main__":

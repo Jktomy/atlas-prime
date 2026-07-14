@@ -77,9 +77,7 @@ class PrimeGeneratorTests(unittest.TestCase):
             prefix="prime-generator-routing-"
         ) as raw:
             root = Path(raw)
-            contract_relative = (
-                "governance/athena-route-architecture-r01.md"
-            )
+            contract_relative = "governance/athena-route-architecture-r01.md"
             contract_path = root / contract_relative
             contract_path.parent.mkdir(parents=True)
             contract_path.write_text(

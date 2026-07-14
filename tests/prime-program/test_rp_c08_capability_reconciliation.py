@@ -17,14 +17,13 @@ CURRENT_PROOF = (
 class RpC08CapabilityReconciliationTests(unittest.TestCase):
     def setUp(self) -> None:
         self.register = json.loads(
-            (
-                ROOT / "governance/capability-parity-register.json"
-            ).read_text(encoding="utf-8")
+            (ROOT / "governance/capability-parity-register.json").read_text(
+                encoding="utf-8"
+            )
         )
         self.proof = json.loads(CURRENT_PROOF.read_text(encoding="utf-8"))
         self.records = {
-            record["id"]: record
-            for record in self.register["capabilities"]
+            record["id"]: record for record in self.register["capabilities"]
         }
 
     def test_exact_28_record_counts_match_current_proof(self) -> None:

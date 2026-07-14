@@ -33,13 +33,18 @@ opened the immutable draft PR and stopped at exact readback, Ubuntu and Windows
 validation run `29056870868` passed, and the proof merged at
 `7c8a533175da5c4fc9e8e0bb9de8bd37eba33dc5`.
 
+PR #102 independently repeated the authenticated direct Spear mechanics at head
+`fa20c23c532f3c684862a028720fe9debd7db855`, passed complete Ubuntu and
+Windows validation run `29215320609`, and merged at
+`2ed53467a83569afea1d6c07e06d1d2ab52c75ff`.
+
 Spear is distinct from:
 
-- Phoenix Blade, Athena's direct GitHub-native construction method that does not
-  depend on Thread Engine;
-- Aegis Break, Athena's bounded alternate-route selector;
+- Phoenix Blade, through which Athena wields an exact Sword without Thread
+  Engine;
+- Aegis Break, Athena's direct/adaptive bounded safe method;
 - Arrow/Bow, Jayson's and Artemis's delegated immutable delivery route;
-- Oathbringer, Jayson's independent GitHub-native execution route.
+- Oathbringer, through which Jayson wields an exact Sword without Thread Engine.
 
 Spear and Arrow/Bow may produce byte-equivalent missions for the same Weave, but
 operator identity and route identity remain separate.

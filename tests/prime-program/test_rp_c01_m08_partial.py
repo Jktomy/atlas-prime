@@ -39,14 +39,14 @@ class RpC01M08PartialTests(unittest.TestCase):
             ).read_text(encoding="utf-8")
         )
         self.identities = json.loads(
-            (
-                ROOT / "continuity/quest-engine-identities-r01.json"
-            ).read_text(encoding="utf-8")
+            (ROOT / "continuity/quest-engine-identities-r01.json").read_text(
+                encoding="utf-8"
+            )
         )
         self.continuity = json.loads(
-            (
-                ROOT / "continuity/prime-continuity-register-r01.json"
-            ).read_text(encoding="utf-8")
+            (ROOT / "continuity/prime-continuity-register-r01.json").read_text(
+                encoding="utf-8"
+            )
         )
 
     def test_historical_partial_record_remains_exact(self) -> None:
@@ -56,9 +56,7 @@ class RpC01M08PartialTests(unittest.TestCase):
             "JAYSON_CARRIER_CREATION_ATTACHMENT_PLACEMENT_NOT_REQUIRED",
         )
         self.assertEqual(
-            self.proof["accepted_subclaim"][
-                "retired_routine_dependencies"
-            ],
+            self.proof["accepted_subclaim"]["retired_routine_dependencies"],
             [
                 "JAYSON_CARRIER_CREATION",
                 "JAYSON_CARRIER_ATTACHMENT",
@@ -67,9 +65,7 @@ class RpC01M08PartialTests(unittest.TestCase):
         )
         self.assertEqual(
             self.proof["remaining_boundary"]["missing"],
-            [
-                "ROUTINE_FREE_FORM_INTAKE_TO_CANONICAL_CARRIER_LIVE_ACCEPTANCE"
-            ],
+            ["ROUTINE_FREE_FORM_INTAKE_TO_CANONICAL_CARRIER_LIVE_ACCEPTANCE"],
         )
 
     def test_later_acceptance_closes_only_the_m08_missing_boundary(self) -> None:
@@ -118,9 +114,7 @@ class RpC01M08PartialTests(unittest.TestCase):
         self.assertTrue(
             all(
                 value is False
-                for value in self.acceptance[
-                    "forbidden_promotions"
-                ].values()
+                for value in self.acceptance["forbidden_promotions"].values()
             )
         )
 

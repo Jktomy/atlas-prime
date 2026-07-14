@@ -292,7 +292,7 @@
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "RESTORED",
       "activation_state": "ACTIVE",
-      "current_state": "Prime seals restart-safe Sunset snapshots against canonical continuity and accepted AJ-10 proves fresh-context reconstruction of the exact next safe gate from a fresh clone without chat memory.",
+      "current_state": "Prime seals restart-safe Sunset snapshots against canonical continuity and accepted AJ-10 proves fresh-context reconstruction of the exact next safe gate.",
       "required_proof": "AJ-10 transaction #124, fresh-clone Sunset/Sunrise digests, and reconstruction in proof/repairing-prime/rp-c05-continuity-evidence-r01.json."
     },
     {

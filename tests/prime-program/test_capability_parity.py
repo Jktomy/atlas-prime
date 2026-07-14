@@ -91,8 +91,9 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertEqual(sum(observed.values()), 28)
         self.assertEqual(
             set(
-                self.schema["properties"]["capabilities"]["items"]["properties"]
-                ["capability_disposition"]["enum"]
+                self.schema["properties"]["capabilities"]["items"]["properties"][
+                    "capability_disposition"
+                ]["enum"]
             ),
             set(DISPOSITIONS),
         )
@@ -214,9 +215,7 @@ class CapabilityParityTests(unittest.TestCase):
         bow = (ROOT / "methods/artemis-bow-and-arrow.md").read_text(
             encoding="utf-8"
         )
-        sword = (ROOT / "methods/atlas-sword.md").read_text(
-            encoding="utf-8"
-        )
+        sword = (ROOT / "methods/atlas-sword.md").read_text(encoding="utf-8")
         architecture = ARCHITECTURE.read_text(encoding="utf-8")
 
         for term in (
@@ -234,11 +233,11 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertIn("Spear is Athena's direct delivery route", spear)
         self.assertIn("Prime Thread Engine", spear)
         self.assertIn(
-            "Phoenix Blade is Athena's direct repository-construction method",
+            "Phoenix Blade is the method by which Athena wields an exact Sword",
             phoenix,
         )
         self.assertIn(
-            "functional counterpart to Jayson's\nOathbringer route",
+            "functional counterpart to Jayson wielding a Sword through Oathbringer",
             phoenix,
         )
         self.assertIn("Bow and Arrow belong to Jayson and Artemis", bow)
@@ -250,10 +249,7 @@ class CapabilityParityTests(unittest.TestCase):
             change_routes,
         )
         self.assertNotIn("Aegis Break -> Phoenix Blade", change_routes)
-        self.assertIn(
-            "Aegis Break selects or constructs a safe equivalent route",
-            change_routes,
-        )
+        self.assertIn("Aegis Break is Athena's adaptive safe route", change_routes)
         self.assertIn("not hardwired", change_routes)
 
         self.assertIn("Spear is Athena's Thread Engine route", architecture)

@@ -17,10 +17,11 @@ routes_from:
 |---|---|
 | Authorizer | Jayson or one exact delegated authority; controls scope and permanence |
 | Operator | Athena, Jayson, Artemis, or another named actor performing the bounded action |
-| Delivery route | Spear for Athena direct delivery; Arrow/Bow for Jayson and Artemis delegated immutable delivery |
-| Independent operator route | Sword sealed package using the Oathbringer method |
-| Direct bounded method | Phoenix Blade |
-| Safe rerouting | Aegis Break |
+| Delivery route | Spear for Athena direct Thread Engine delivery; Arrow/Bow for Jayson and Artemis delegated immutable delivery |
+| Sealed execution package | Sword, containing the exact mission, payload, locks, tests, stop boundary, and receipt contract |
+| Athena Sword method | Phoenix Blade |
+| Jayson Sword method | Oathbringer |
+| Adaptive safe method | Aegis Break |
 | Hosted or local launcher | Thin intake or client that invokes a method or engine without becoming one |
 | Normal repository engine | Prime Thread Engine, singular |
 | Repository substrate | Exact GitHub-native tree transaction or Fresh Clone First |
@@ -30,19 +31,21 @@ routes_from:
 
 ```text
 Athena Spear -> Thread Engine
+Athena Sword -> Phoenix Blade -> GitHub transaction
+Athena Aegis Break -> direct GitHub-native or other bounded safe route
 Jayson Arrow -> Artemis Bow -> Thread Engine
-Athena Phoenix Blade -> direct GitHub-native repository construction
-Jayson Sword -> Oathbringer -> GitHub-native repository construction
-Aegis Break -> equivalent safe route
+Jayson Sword -> Oathbringer -> PowerShell thin client -> GitHub transaction
 ```
 
-Phoenix Blade is Athena's functional counterpart to Oathbringer. Neither depends
-on Thread Engine. Spear is Athena's Thread Engine route. Arrow/Bow belongs to
-Jayson and Artemis and is not an Athena route.
+Spear is Athena's Thread Engine route. Phoenix Blade is how Athena wields an
+exact Sword without Thread Engine, mirroring what Oathbringer is to Jayson.
+Arrow/Bow belongs to Jayson and Artemis and is not an Athena method.
 
-Aegis Break selects or constructs a safe equivalent route when the normal path
-is obstructed. Phoenix Blade may be selected, but Aegis Break is not hardwired
-to any one method. It does not erase Aegis or grant new authority.
+Aegis Break is Athena's adaptive safe route. It may directly perform an exact
+GitHub-native transaction or select or construct another bounded safe route when
+the normal path is obstructed. It is not hardwired to Phoenix Blade,
+Oathbringer, Thread Engine, or any one repository substrate. It never breaks
+Aegis, widens scope, or grants new authority.
 
 Jayson's explicit in-chat authorization of an exact Preview or mission is
 sufficient human authorization. No external origin bridge, platform attestation,
@@ -59,6 +62,5 @@ Every route:
 - requires separate Jayson permanence authority.
 
 Prime has one normal repository engine. Spear and Arrow/Bow may invoke Thread
-Engine. Phoenix Blade and Oathbringer are independent construction and recovery
-methods and do not become standing repository writers. Thread Engine never
-performs its own self-change.
+Engine. Phoenix Blade, Oathbringer, and Aegis Break do not become standing
+repository writers. Thread Engine never performs its own self-change.

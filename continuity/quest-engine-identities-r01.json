@@ -7,39 +7,119 @@
       "gate_id": "ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN",
       "state": "IN_PROGRESS",
       "missions": [
-        {"mission_id": "RP-C01-M01", "state": "PROVEN"},
-        {"mission_id": "RP-C01-M02", "state": "PROVEN"},
-        {"mission_id": "RP-C01-M03", "state": "PROVEN"},
-        {"mission_id": "RP-C01-M04", "state": "PROVEN"},
-        {"mission_id": "RP-C01-M05", "state": "PROVEN"},
-        {"mission_id": "RP-C01-M06", "state": "PARTIAL"},
-        {"mission_id": "RP-C01-M07", "state": "PARTIAL"},
-        {"mission_id": "RP-C01-M08", "state": "PROVEN"}
+        {
+          "mission_id": "RP-C01-M01",
+          "state": "PROVEN"
+        },
+        {
+          "mission_id": "RP-C01-M02",
+          "state": "PROVEN"
+        },
+        {
+          "mission_id": "RP-C01-M03",
+          "state": "PROVEN"
+        },
+        {
+          "mission_id": "RP-C01-M04",
+          "state": "PROVEN"
+        },
+        {
+          "mission_id": "RP-C01-M05",
+          "state": "PROVEN"
+        },
+        {
+          "mission_id": "RP-C01-M06",
+          "state": "PARTIAL"
+        },
+        {
+          "mission_id": "RP-C01-M07",
+          "state": "PARTIAL"
+        },
+        {
+          "mission_id": "RP-C01-M08",
+          "state": "PROVEN"
+        }
       ]
     },
-    {"campaign_id": "RP-C02", "gate_id": "SHARED_AGENTIC_WARRANTS_ACCEPTED", "state": "COMPLETE", "missions": []},
-    {"campaign_id": "RP-C03", "gate_id": "CHROMELIGHT_EVIDENCE_RECONCILED", "state": "COMPLETE", "missions": []},
-    {"campaign_id": "RP-C04", "gate_id": "RESONANCE_EVIDENCE_RECONCILED", "state": "COMPLETE", "missions": []},
-    {"campaign_id": "RP-C05", "gate_id": "QUEST_ENGINE_AND_CONTINUITY_PROVEN", "state": "COMPLETE", "missions": []},
+    {
+      "campaign_id": "RP-C02",
+      "gate_id": "SHARED_AGENTIC_WARRANTS_ACCEPTED",
+      "state": "COMPLETE",
+      "missions": []
+    },
+    {
+      "campaign_id": "RP-C03",
+      "gate_id": "CHROMELIGHT_EVIDENCE_RECONCILED",
+      "state": "COMPLETE",
+      "missions": []
+    },
+    {
+      "campaign_id": "RP-C04",
+      "gate_id": "RESONANCE_EVIDENCE_RECONCILED",
+      "state": "COMPLETE",
+      "missions": []
+    },
+    {
+      "campaign_id": "RP-C05",
+      "gate_id": "QUEST_ENGINE_AND_CONTINUITY_PROVEN",
+      "state": "COMPLETE",
+      "missions": []
+    },
     {
       "campaign_id": "RP-C06",
       "gate_id": "DETERMINISTIC_CONSERVATION_AND_GENERATED_PARITY_PROVEN",
       "state": "COMPLETE",
       "missions": [
-        {"mission_id": "RP-C06-M01", "state": "PROVEN"},
-        {"mission_id": "RP-C06-M02", "state": "PROVEN"},
-        {"mission_id": "RP-C06-M03", "state": "PROVEN"},
-        {"mission_id": "RP-C06-M04", "state": "PROVEN"},
-        {"mission_id": "RP-C06-M05", "state": "PROVEN"},
-        {"mission_id": "RP-C06-M06", "state": "PROVEN"},
-        {"mission_id": "RP-C06-M07", "state": "PROVEN"}
+        {
+          "mission_id": "RP-C06-M01",
+          "state": "PROVEN"
+        },
+        {
+          "mission_id": "RP-C06-M02",
+          "state": "PROVEN"
+        },
+        {
+          "mission_id": "RP-C06-M03",
+          "state": "PROVEN"
+        },
+        {
+          "mission_id": "RP-C06-M04",
+          "state": "PROVEN"
+        },
+        {
+          "mission_id": "RP-C06-M05",
+          "state": "PROVEN"
+        },
+        {
+          "mission_id": "RP-C06-M06",
+          "state": "PROVEN"
+        },
+        {
+          "mission_id": "RP-C06-M07",
+          "state": "PROVEN"
+        }
       ]
     },
-    {"campaign_id": "RP-C07", "gate_id": "AJ_01_THROUGH_AJ_12_RECONCILED", "state": "COMPLETE", "missions": []},
-    {"campaign_id": "RP-C08", "gate_id": "REPAIRING_PRIME_COMPLETE", "state": "IN_PROGRESS", "missions": []}
+    {
+      "campaign_id": "RP-C07",
+      "gate_id": "AJ_01_THROUGH_AJ_12_RECONCILED",
+      "state": "COMPLETE",
+      "missions": []
+    },
+    {
+      "campaign_id": "RP-C08",
+      "gate_id": "REPAIRING_PRIME_COMPLETE",
+      "state": "IN_PROGRESS",
+      "missions": []
+    }
   ],
   "state_rules": {
-    "allowed_campaign_transitions": ["PENDING->IN_PROGRESS", "IN_PROGRESS->BLOCKED", "BLOCKED->IN_PROGRESS", "IN_PROGRESS->COMPLETE"],
+    "allowed_campaign_transitions": [
+      "PENDING->IN_PROGRESS",
+      "IN_PROGRESS->BLOCKED",
+      "BLOCKED->IN_PROGRESS",
+      "IN_PROGRESS->COMPLETE"
+    ],
     "gate_requires_all_missions_terminal": true,
     "generated_can_advance": false,
     "merge_can_self_certify": false

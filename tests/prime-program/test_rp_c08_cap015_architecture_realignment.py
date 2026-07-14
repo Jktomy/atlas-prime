@@ -18,9 +18,9 @@ class Cap015ArchitectureRealignmentTests(unittest.TestCase):
         for phrase in (
             "Spear is Athena's Thread Engine route",
             "Phoenix Blade is Athena's functional counterpart to Oathbringer",
-            "Aegis Break is Athena's third route option",
+            "Aegis Break is Athena's direct/adaptive safe method",
             "Arrow/Bow is Jayson and Artemis delegated delivery",
-            "Both are independent of Thread Engine",
+            "each operator\nwields an exact Sword without Thread Engine",
         ):
             self.assertIn(phrase, self.text)
         self.assertNotIn(

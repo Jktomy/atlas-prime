@@ -19,14 +19,17 @@ Artemis Bow validates the Arrow and delivers the unchanged Weave into the
 singular Prime Thread Engine. The engine may create one immutable branch and one
 draft pull request, perform exact readback, and stop.
 
-Bow and Arrow belong to Jayson and Artemis. They are not Athena's route.
-Athena may author the underlying Weave, but Athena reaches Thread Engine through
-Spear. Operator, authorizer, delivery route, hosted event identity, credential
+Bow and Arrow belong to Jayson and Artemis. They are not Athena's route. Athena
+may author the underlying Weave, but Athena reaches Thread Engine through Spear.
+Operator, authorizer, delivery route, hosted event identity, credential
 principal, and permanence authority remain distinct.
 
 Prime has accepted owner-authorized hosted Arrow/Bow intake, guided
 Preview-to-Execute intake, multi-file hosted delivery, and byte-equivalence with
 direct Spear. Arrow/Bow never becomes a second repository engine and never gains
 automatic ready, merge, cleanup, settings, or standing authority.
+
+The workflow filename `athena-bow-hosted.yml` is a retained compatibility
+identifier. It does not transfer Bow ownership to Athena.
 
 Build authority never implies Execute or merge authority.
