@@ -1,30 +1,50 @@
 ---
 title: "Athena's Spear — Prime"
 atlas_id: "prime.method.spear"
-status: "COMPONENT_PROVEN_HOSTED_INTAKE_MISSING"
+status: "PRODUCTION_ACTIVE"
 source_type: "METHOD"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Artemis"
 owner_operation: "Operation AI Governance"
 protected_level: "CRITICAL"
+routes_from:
+  - "governance/athena-route-architecture-r02.md"
+routes_to:
+  - "tools/thread-engine/README.md"
 ---
 
 # Athena's Spear — Prime
 
 Athena authors an exact multi-file Weave.
 
-Spear delivers that Weave to Prime Thread Engine.
+Spear is Athena's direct delivery route into the singular Prime Thread Engine.
+The engine may create one immutable branch and one draft pull request, perform
+exact readback, and stop. Spear never merges, marks ready, force-pushes, widens
+scope, changes repository settings, or gives Thread Engine standing authority.
 
-Spear does not merge, widen scope, modify Thread Engine itself, or inherit later-stage authority.
+Jayson's explicit in-chat authorization of the exact Preview or mission is
+sufficient human authority for Athena to use Spear. No external platform-origin
+attestation, custom gateway, OAuth service, or user-run Python or PowerShell
+command is required.
 
-Prime direct Spear compilation and Thread Engine delivery are proven and merged. That component proof does not establish that Athena can reach Thread Engine from a fresh Work context.
+Prime accepted the live Spear journey through PR #39. Athena authored one exact
+Weave, direct Spear delivered the mission into Prime Thread Engine, the engine
+opened the immutable draft PR and stopped at exact readback, Ubuntu and Windows
+validation run `29056870868` passed, and the proof merged at
+`7c8a533175da5c4fc9e8e0bb9de8bd37eba33dc5`.
 
-Hosted mission intake, truthful hosted identity, credential-principal proof, rejection cases, and an actual harmless Work/Athena submission remain missing. Hosted execution must stay disabled-first until that complete journey passes.
+PR #102 independently repeated the authenticated direct Spear mechanics at head
+`fa20c23c532f3c684862a028720fe9debd7db855`, passed complete Ubuntu and
+Windows validation run `29215320609`, and merged at
+`2ed53467a83569afea1d6c07e06d1d2ab52c75ff`.
 
-Prime now also defines an owner-guided local publisher component that separates
-Preview from Execute, screens an immutable carrier before GitHub ingress, binds
-the canonical mission digest, and dispatches only the existing hosted Bow
-workflow through JSON standard input. The publisher never calls the adapter or
-writes a branch, commit, or PR. Component construction and tests do not prove
-CAP-010; a fresh live guided journey and separate evidence reconciliation are
-still required. Fresh Work/Athena origin remains separately unproven.
+Spear is distinct from:
+
+- Phoenix Blade, through which Athena wields an exact Sword without Thread
+  Engine;
+- Aegis Break, Athena's direct/adaptive bounded safe method;
+- Arrow/Bow, Jayson's and Artemis's delegated immutable delivery route;
+- Oathbringer, through which Jayson wields an exact Sword without Thread Engine.
+
+Spear and Arrow/Bow may produce byte-equivalent missions for the same Weave, but
+operator identity and route identity remain separate.
