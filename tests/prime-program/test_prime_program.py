@@ -91,8 +91,8 @@ class PrimeProgramTests(unittest.TestCase):
                 ),
                 "QUEST-PROMETHEUS-FIRE-20260701": (
                     "quests/prometheus-fire.md",
-                    "READY_FOR_CAMPAIGN_1_PREVIEW",
-                    "PF-C01 preview and Jayson-side hardware readiness",
+                    "IN_PROGRESS",
+                    "PF-C01-M02 Preview — Preserve the Old Flame",
                 ),
                 "QUEST-NOTUMS-WATCH-20260708": (
                     "quests/notums-watch.md",
@@ -111,6 +111,51 @@ class PrimeProgramTests(unittest.TestCase):
                 "READY_FOR_CAMPAIGN_1_PREVIEW",
                 "PCP-C01-PREVIEW",
             ),
+        )
+
+    def test_kandra_and_operator_endpoint_reconciliation_is_exact(self) -> None:
+        projects = (ROOT / "projects/project-registry.md").read_text(encoding="utf-8")
+        operations = (ROOT / "operations/operation-registry.md").read_text(encoding="utf-8")
+        artemis = (ROOT / "operations/artemis-runtime-and-routing.md").read_text(encoding="utf-8")
+        routes = (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8")
+        infrastructure = (ROOT / "infrastructure/atlas-infrastructure-source.md").read_text(encoding="utf-8")
+        prometheus = (ROOT / "quests/prometheus-fire.md").read_text(encoding="utf-8")
+        found = (ROOT / "quests/found-silverlight.md").read_text(encoding="utf-8")
+        proof = (ROOT / "proof/prometheus-fire/pf-c01-m01-mission-seal-r01.md").read_text(encoding="utf-8")
+        continuity = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
+        found_continuity = next(
+            entry for entry in continuity["entries"] if entry["continuity_id"] == "CONT-FOUND-SILVERLIGHT-R01"
+        )
+
+        self.assertIn("Nexus, Kandra, AI governance", projects)
+        self.assertIn("| Artemis | Nexus; Kandra; AI Governance; future Janus |", operations)
+        self.assertNotIn("| Artemis | Nexus; Hermes;", operations)
+        self.assertIn("## Kandra", artemis)
+        self.assertIn("Hermes is reserved for the portable human-operated Atlas command endpoint", artemis)
+        self.assertIn("Artemis, Kandra, Nexus", routes)
+        self.assertIn("Apollo, Hermes, and Iris operator endpoints", routes)
+        self.assertIn("| **Apollo** | Lenovo M720q |", infrastructure)
+        self.assertIn("| **Hermes** | MacBook Pro |", infrastructure)
+        self.assertIn("| **Iris** | iPad Pro |", infrastructure)
+        self.assertIn("Forge retains the persistent Helios backend", infrastructure)
+        self.assertIn("Apollo may host the on-demand, human-interactive Helios Control Deck", infrastructure)
+        self.assertIn("Iris role: SOURCE_ACCEPTED / NONBLOCKING", prometheus)
+        self.assertIn("Windows wipe: BLOCKED", prometheus)
+        self.assertIn("Proxmox installation: BLOCKED", prometheus)
+        self.assertIn("Mission FS-C03-M01 — Prove Hermes", found)
+        self.assertNotIn("Mission FS-C03-M01 — Prove Apollo", found)
+        self.assertNotIn("PENDING_BUILD_READBACK", proof)
+        self.assertIn("Jktomy/atlas-prime#195", proof)
+        self.assertIn("93def9d8f9716547de69e101bc44a5f896dad67d", proof)
+        self.assertIn("the changing final REPAIR head is intentionally not self-embedded", proof)
+        self.assertIn(
+            "The ledger, receipts, lifecycle binding, recovery, rollback planning, exact-head CI, "
+            "and canonical synthetic exercise are accepted",
+            found_continuity["current_position"],
+        )
+        self.assertIn(
+            "The future FS-C03 Seon macOS bridge vessel is Hermes; Apollo is no longer reserved for that bridge role.",
+            found_continuity["current_position"],
         )
 
     def test_prime_is_canonical_and_codex_is_predecessor_only(self) -> None:

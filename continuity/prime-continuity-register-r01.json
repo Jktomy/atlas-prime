@@ -2,9 +2,9 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 20,
-  "source_base_sha": "f4af6cf91028883be6b842d8849e960c0e4664a0",
-  "quest_board_sha256": "8f3db73dd3d892e129935a9bf3605f0ee0bba948008ee5c5fe90dd5d7c17e30c",
+  "register_revision": 22,
+  "source_base_sha": "85ef3eab6c777de30338320d32c15298bda7bd55",
+  "quest_board_sha256": "25f5bd9c55dfde45ffe4d4b6c59e5b9a34685d4acf7d4dbaa2faa24e40fe1bb5",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -28,7 +28,9 @@
     "FS-C01-M01-DOCTRINE-ACCEPTANCE-R01",
     "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01",
     "RP-C08-CAP015-ARCHITECTURE-REALIGNMENT-R02",
-    "RP-C08-SUNSET-FEATHER-TRUTH-RECONCILIATION-R03"
+    "RP-C08-SUNSET-FEATHER-TRUTH-RECONCILIATION-R03",
+    "FS-C03-HERMES-BRIDGE-NAMING-R01",
+    "PF-C01-M01-KANDRA-ENDPOINT-RECONCILIATION-R01"
   ],
   "entries": [
     {
@@ -59,37 +61,41 @@
       "continuity_id": "CONT-FOUND-SILVERLIGHT-R01",
       "quest_id": "QUEST-FOUND-SILVERLIGHT-R01",
       "quest_source": "quests/found-silverlight.md",
-      "quest_source_sha256": "fb322dfc3ba4a193afb977cf0a900a0baa188006851543a9e3e7e0c9e0483164",
+      "quest_source_sha256": "e99601452be42f111c5dabd0e889acdebea7724ba29f85f51baf5be69e6356bb",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "FS-C01",
       "mission_id": "FS-C01-M04",
       "gate_id": "INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN",
-      "current_position": "FS-C01-M01, M02, and M03 are PROVEN. The ledger, receipts, lifecycle binding, recovery, rollback planning, exact-head CI, and canonical synthetic exercise are accepted; M04 live acceptance remains unproven.",
+      "current_position": "FS-C01-M01, M02, and M03 are PROVEN. The ledger, receipts, lifecycle binding, recovery, rollback planning, exact-head CI, and canonical synthetic exercise are accepted; M04 live acceptance remains unproven. The future FS-C03 Seon macOS bridge vessel is Hermes; Apollo is no longer reserved for that bridge role.",
       "blockers": [
         "FS-C01-M04 requires a Jayson-selected protected external store and one bounded trusted provider/runtime usage receipt with authoritative category semantics."
       ],
       "next_action": "Await a separately authorized Jayson-selected protected store and one bounded trusted provider/runtime usage receipt, then execute FS-C01-M04 without widening the accepted construction boundary.",
       "next_approval": "Jayson must separately select the protected external store and authorize the bounded trusted usage acceptance journey.",
-      "revision": 3,
-      "last_event_id": "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01"
+      "revision": 4,
+      "last_event_id": "FS-C03-HERMES-BRIDGE-NAMING-R01"
     },
     {
       "continuity_id": "CONT-PROMETHEUS-FIRE-R01",
       "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
       "quest_source": "quests/prometheus-fire.md",
-      "quest_source_sha256": "79e30304809b0db198a8632c8477fc646cad5f8030e8405cb6e06f6f3555cd6b",
-      "quest_state": "READY_FOR_CAMPAIGN_1_PREVIEW",
-      "campaign_id": null,
-      "mission_id": null,
-      "gate_id": "PF-C01-PREVIEW",
-      "current_position": "Awaiting PF-C01 preview and Jayson-side hardware readiness.",
+      "quest_source_sha256": "fb853dec7c193a930908bfbee824cac82a5ecccf804d566860ae03af669dd79f",
+      "quest_state": "IN_PROGRESS",
+      "campaign_id": "PF-C01",
+      "mission_id": "PF-C01-M02",
+      "gate_id": "PF-C01-M02-PREVIEW",
+      "current_position": "PF-C01-M01 is PROVEN_WITH_CARRY_FORWARD. Apollo is the fixed Windows evacuation target, Hermes is the portable independent command route, and Iris is a nonblocking companion endpoint. PF-C01-M02 remains READY_FOR_PREVIEW.",
       "blockers": [
-        "Jayson-side hardware readiness is external to Prime."
+        "Apollo is not yet commissioned and proven as the Windows orchestration endpoint.",
+        "Windows-specific Codex continuity has not yet been evacuated from Prometheus to Apollo.",
+        "The independent Hermes portable command and administration route has not yet received mission evidence.",
+        "Windows recovery media, system-image disposition, and manufacturer-driver preservation remain unresolved.",
+        "Extended memory testing and bounded stability follow-up remain pending."
       ],
-      "next_action": "Resume only with protected runtime evidence and separate authority.",
-      "next_approval": "Jayson-side hardware readiness.",
-      "revision": 1,
-      "last_event_id": "RP-C05-IMPORT-PF-R01"
+      "next_action": "Prepare the exact PF-C01-M02 Preserve the Old Flame Preview without performing device renames, migration, Windows removal, or Proxmox installation.",
+      "next_approval": "Jayson must separately authorize endpoint commissioning and migration, then separately authorize any destructive Windows or Proxmox action.",
+      "revision": 2,
+      "last_event_id": "PF-C01-M01-KANDRA-ENDPOINT-RECONCILIATION-R01"
     },
     {
       "continuity_id": "CONT-NOTUMS-WATCH-R01",

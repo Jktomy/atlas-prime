@@ -33,7 +33,8 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Source changes and route selection | `governance/source-lifecycle.md`, `governance/change-routes.md` |
 | Projects | `projects/project-registry.md` |
 | Operations | `operations/operation-registry.md` |
-| Artemis, Hermes, Nexus | `operations/artemis-runtime-and-routing.md` |
+| Artemis, Kandra, Nexus | `operations/artemis-runtime-and-routing.md` |
+| Apollo, Hermes, and Iris operator endpoints | `infrastructure/atlas-infrastructure-source.md` |
 | Protocols and delivery methods | `operations/protocol-library.md`, `methods/artemis-bow-and-arrow.md`, `methods/athenas-spear.md`, `methods/atlas-sword.md`, `methods/phoenix-blade.md` |
 | Athena through Thread Engine | `methods/athenas-spear.md`, then the exact Weave, base, Thread Engine state, and draft-PR stop boundary |
 | Athena direct safe construction or repair | `methods/phoenix-blade.md` for Aegis Break route selection, then the exact live repository or PR state |

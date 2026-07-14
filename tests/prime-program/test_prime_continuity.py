@@ -94,8 +94,30 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(found_continuity["campaign_id"], "FS-C01")
         self.assertEqual(found_continuity["mission_id"], "FS-C01-M04")
         self.assertEqual(found_continuity["gate_id"], "INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN")
-        self.assertEqual(found_continuity["revision"], 3)
-        self.assertEqual(found_continuity["last_event_id"], "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01")
+        self.assertEqual(found_continuity["revision"], 4)
+        self.assertEqual(found_continuity["last_event_id"], "FS-C03-HERMES-BRIDGE-NAMING-R01")
+        old_found_event = "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01"
+        naming_event = "FS-C03-HERMES-BRIDGE-NAMING-R01"
+        prometheus_event = "PF-C01-M01-KANDRA-ENDPOINT-RECONCILIATION-R01"
+        self.assertEqual(self.register["event_ids"].count(old_found_event), 1)
+        self.assertEqual(self.register["event_ids"].count(naming_event), 1)
+        self.assertEqual(self.register["event_ids"].count(prometheus_event), 1)
+        self.assertLess(self.register["event_ids"].index(old_found_event), self.register["event_ids"].index(naming_event))
+        self.assertLess(self.register["event_ids"].index(naming_event), self.register["event_ids"].index(prometheus_event))
+        prometheus_board = next(
+            entry for entry in self.board["entries"] if entry["quest_id"] == "QUEST-PROMETHEUS-FIRE-20260701"
+        )
+        prometheus_continuity = next(
+            entry for entry in self.register["entries"] if entry["continuity_id"] == "CONT-PROMETHEUS-FIRE-R01"
+        )
+        self.assertEqual(prometheus_board["state"], "IN_PROGRESS")
+        self.assertEqual(prometheus_board["next_gate"], "PF-C01-M02 Preview — Preserve the Old Flame")
+        self.assertEqual(prometheus_continuity["quest_state"], "IN_PROGRESS")
+        self.assertEqual(prometheus_continuity["campaign_id"], "PF-C01")
+        self.assertEqual(prometheus_continuity["mission_id"], "PF-C01-M02")
+        self.assertEqual(prometheus_continuity["gate_id"], "PF-C01-M02-PREVIEW")
+        self.assertEqual(prometheus_continuity["revision"], 2)
+        self.assertEqual(prometheus_continuity["last_event_id"], prometheus_event)
 
     def test_schema_driven_board_accepts_later_quest_without_validator_edit(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

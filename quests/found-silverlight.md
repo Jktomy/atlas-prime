@@ -14,6 +14,7 @@ routes_from:
   - routing/command-surfaces.md
   - operations/protocol-library.md
   - operations/artemis-runtime-and-routing.md
+  - infrastructure/atlas-infrastructure-source.md
   - knowledge/context-pack-contract.md
   - safety/atlas-safety-doctrine.md
 routes_to:
@@ -25,7 +26,7 @@ routes_to:
 private_boundary: "Store only clean doctrine, schemas, sanitized status, non-secret architecture, safe evidence pointers, and completion claims. Do not store raw conversations, reminder contents, personal task history, IP addresses, device registers, private network maps, credentials, tokens, MFA or recovery codes, real environment values, PHI, raw finance evidence, account data, or private runtime values."
 evidence_boundary: "This Quest coordinates canonical source and sanitized proof. Only trusted provider/runtime-reported model tokens may emit BEU; partial or unavailable telemetry remains explicit and deterministic non-model work is zero BEU. Raw usage, conversations, account data, private locations, credentials, and protected evidence remain outside Prime. Apple Reminders remains authoritative for Seon. Planning or package readiness does not prove deployment."
 cleanup_path: "Keep active until all three Campaigns and Quest-level gates pass. Close through final Noctua, Ares, Athena reconciliation, whole-Quest Strikeforce, Quest Board and generated refresh, Phoenix recovery proof, and restart-safe Sunset."
-last_verified: 2026-07-13
+last_verified: 2026-07-14
 ---
 
 # Quest — Found Silverlight
@@ -231,14 +232,14 @@ or website ledger-write authority.
 
 **Owner:** Artemis / Nexus  
 **Support:** Codex; Odyssey; Phoenix  
-**Status:** `BLOCKED_BY_FS-C02_AND_APOLLO_EVIDENCE`  
-**Depends on:** FS-C02 and Apollo suitability proof
+**Status:** `BLOCKED_BY_FS-C02_AND_HERMES_EVIDENCE`  
+**Depends on:** FS-C02 and Hermes suitability proof
 
 Add Apple Reminders as a separately bounded live integration.
 
-### Mission FS-C03-M01 — Prove Apollo
+### Mission FS-C03-M01 — Prove Hermes
 
-Verify the proposed macOS bridge vessel's model, supported macOS, boot/login reliability, battery, storage, networking, power, thermals, clamshell behavior, FileVault posture, restart behavior, and recovery.
+Verify Hermes, the MacBook Pro portable Atlas command endpoint and proposed macOS bridge vessel, for supported macOS, boot/login reliability, battery, storage, networking, power, thermals, clamshell behavior, FileVault posture, restart behavior, and recovery. The former planned Apollo bridge name is superseded in active source; historical evidence remains unchanged.
 
 ### Mission FS-C03-M02 — Hear the Seon
 
@@ -246,7 +247,7 @@ Use native Swift and EventKit with an invented `Seon Test` list. Begin read-only
 
 ### Mission FS-C03-M03 — Project Seon
 
-Project minimized reminder state from Apollo to a private Forge gateway and Glass Codex Live Integration with current, stale, offline, revoked, and read-only states.
+Project minimized reminder state from Hermes to a private Forge gateway and Glass Codex Live Integration with current, stale, offline, revoked, and read-only states.
 
 ### Mission FS-C03-M04 — Answer Complete
 
@@ -287,7 +288,7 @@ current Lights, and are never automatically converted or backfilled.
 Found Silverlight admission does not itself authorize:
 
 - Forge deployment;
-- Apollo installation or repurposing;
+- Hermes installation or repurposing;
 - Apple Reminders access;
 - reminder reads or writes;
 - public exposure;

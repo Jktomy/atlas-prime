@@ -15,7 +15,7 @@ protected_level: "HIGH"
 |---|---|
 | Odyssey | Prometheus Foundation; Forge Storage; Shadesmar Access; Citadel/Gatehouse Infrastructure; Aegis; Tempest |
 | Codex | Source Governance; Document Pipeline; Protocol Library; Template Library; Archive/Index |
-| Artemis | Nexus; Hermes; AI Governance; future Janus |
+| Artemis | Nexus; Kandra; AI Governance; future Janus |
 | Phoenix | Backup Matrix; Restore Runbook; Keystone; External Backup Targets; Recovery Drill/Proof |
 | Beacon | Home Assistant Core; Smart Device Integrations; Home Front Ends; Safe Home Control; future Morningstar |
 | Helios | Sun Maker; Sun Eater; Relay; Library Governance; future Steam Engine |

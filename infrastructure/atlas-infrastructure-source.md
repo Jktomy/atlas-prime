@@ -25,6 +25,45 @@ This source records clean architecture and recovery boundaries. It contains no a
 - **Beacon/HAOS** — home automation boundary with safe manual fallback.
 - **Helios/Relay** — media and OTA service boundary; cutover requires restore, playback, recording, acceleration, reboot, and rollback proof.
 
+## Human-operated Atlas endpoints
+
+| Name | Accepted device assignment | Clean role |
+|---|---|---|
+| **Apollo** | Lenovo M720q | Fixed Windows orchestration endpoint, Windows-specific Atlas and Codex work surface, and interactive Helios Control Deck |
+| **Hermes** | MacBook Pro | Portable primary Atlas command endpoint, independent administration surface, and future Seon macOS bridge vessel |
+| **Iris** | iPad Pro | Nonblocking dashboard, communication, viewing, and human-approval companion |
+
+These assignments are clean source decisions, not proof that operating-system names, hostnames, Tailscale records, account records, or private device registers have changed. Apollo, Hermes, and Iris are human-operated endpoints. None is source truth, storage authority, routing authority, identity authority, persistent automation authority, or an indispensable Atlas server.
+
+Loss or shutdown of Apollo, Hermes, or Iris must not stop persistent Forge automation, qBittorrent, Audiobookshelf, current Plex, access to finalized Anvil media, Prime source recovery, or administration through another approved route.
+
+## Helios placement boundary
+
+Forge retains the persistent Helios backend:
+
+- Gluetun;
+- qBittorrent;
+- Prowlarr;
+- Sonarr and Radarr;
+- optional Readarr;
+- automated watchers and import workflows;
+- storage-adjacent processing;
+- Audiobookshelf;
+- current Plex until controlled cutover.
+
+Apollo may host the on-demand, human-interactive Helios Control Deck:
+
+- Libation;
+- FileBot GUI;
+- MediaInfo;
+- MKVToolNix GUI;
+- Subtitle Edit;
+- optional bounded HandBrake or FFmpeg work;
+- dashboards;
+- manual inspection, naming, and approval.
+
+Hermes may access Helios administration and dashboards remotely. Iris may display status and support human review or approval. Neither Hermes nor Iris is a persistent Helios backend.
+
 ## Infrastructure rules
 
 - Foundation and recovery precede broad migration.
@@ -32,6 +71,6 @@ This source records clean architecture and recovery boundaries. It contains no a
 - Public exposure, automatic power action, destructive restore, storage reclassification, and credential changes require separate protected authority.
 - A planned topology is not an active runtime fact.
 - All configuration committed to Prime is sanitized and reproducible; protected values come from external secret/evidence systems at runtime.
-- Failure of observability, Nexus, Hermes, or generated projections must not block Prime source recovery.
+- Failure of observability, Nexus, Kandra, or generated projections must not block Prime source recovery.
 
 Active execution campaigns live in `quests/prometheus-fire.md` and `quests/notums-watch.md`.
