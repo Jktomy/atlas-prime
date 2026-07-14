@@ -40,8 +40,6 @@ class InChatWorkflowBridgeTests(unittest.TestCase):
             "push:",
             "branches:",
             "- main",
-            "paths-ignore:",
-            '- "generated/**"',
             "github.actor == github.repository_owner",
             "github.triggering_actor == github.repository_owner",
             "github.event_name == 'push'",
@@ -55,9 +53,27 @@ class InChatWorkflowBridgeTests(unittest.TestCase):
         ):
             self.assertIn(phrase, workflow)
 
+        self.assertNotIn("paths-ignore:", workflow)
+        self.assertNotIn('"generated/**"', workflow)
         self.assertNotIn("actions: write", workflow)
         self.assertNotIn("automatic merge", workflow.casefold())
         self.assertNotIn("gh workflow run", workflow)
+
+    def test_publisher_defers_cleanly_while_one_generated_draft_is_open(self) -> None:
+        workflow = (
+            ROOT / ".github" / "workflows" / "generated-checkpoint-publisher.yml"
+        ).read_text(encoding="utf-8")
+        queue_block = workflow.split("\n  queue:\n", 1)[1].split("\n  parity:\n", 1)[0]
+        parity_block = workflow.split("\n  parity:\n", 1)[1].split("\n  reconcile:\n", 1)[0]
+        self.assertIn("Inspect generated checkpoint queue", queue_block)
+        self.assertIn("pull-requests: read", queue_block)
+        self.assertIn("tools.generated_checkpoint.queue", queue_block)
+        self.assertIn("DEFERRED_OPEN_CHECKPOINT", queue_block)
+        self.assertIn("No mutation attempted", queue_block)
+        self.assertNotIn("contents: write", queue_block)
+        self.assertNotIn("pull-requests: write", queue_block)
+        self.assertIn("needs: queue", parity_block)
+        self.assertIn("needs.queue.outputs.queue_result == 'CLEAR'", parity_block)
 
     def test_push_identity_is_deterministic_and_public_clean_by_construction(self) -> None:
         workflow = (
