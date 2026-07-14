@@ -253,7 +253,17 @@ class FreshWorkBridgeSourceTests(unittest.TestCase):
             FROZEN_COMMAND_SURFACE_SHA256,
         )
 
-        readme = (ROOT / "tools/athena_routes/README.md").read_text(
+        root_readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn(
+            "governance/athena-fresh-work-origin-contract.md",
+            root_readme,
+        )
+        self.assertIn(
+            "construction-only and is not activated",
+            root_readme,
+        )
+
+        component_readme = (ROOT / "tools/athena_routes/README.md").read_text(
             encoding="utf-8"
         )
         for phrase in (
@@ -263,7 +273,7 @@ class FreshWorkBridgeSourceTests(unittest.TestCase):
             "fresh_work_bridge",
             "CAP-015",
         ):
-            self.assertIn(phrase, readme)
+            self.assertIn(phrase, component_readme)
 
     def test_contract_and_capability_remain_nonpromoting(self) -> None:
         contract = (ROOT / "governance/athena-fresh-work-origin-contract.md").read_text(
