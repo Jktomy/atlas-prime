@@ -1,7 +1,7 @@
 ---
 title: "Athena's Spear — Prime"
 atlas_id: "prime.method.spear"
-status: "COMPONENT_PROVEN_HOSTED_INTAKE_MISSING"
+status: "ACTIVE_DIRECT_THREAD_ENGINE_ROUTE"
 source_type: "METHOD"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Artemis"
@@ -11,20 +11,14 @@ protected_level: "CRITICAL"
 
 # Athena's Spear — Prime
 
-Athena authors an exact multi-file Weave.
+Athena authors one exact multi-file Weave and Spear delivers that Weave to the singular Prime Thread Engine.
 
-Spear delivers that Weave to Prime Thread Engine.
+Spear is Athena's direct Thread Engine route. It is distinct from Phoenix Blade, Aegis Break, Oathbringer, and the Jayson/Artemis Arrow/Bow route.
 
-Spear does not merge, widen scope, modify Thread Engine itself, or inherit later-stage authority.
+Prime direct Spear compilation and Thread Engine delivery are proven and merged through the harmless direct Spear journey in PR `#102`, with the shared compiler and route parity separately preserved by the merged Spear/Arrow/Bow parity proof.
 
-Prime direct Spear compilation and Thread Engine delivery are proven and merged. That component proof does not establish that Athena can reach Thread Engine from a fresh Work context.
+A Jayson-authorized Preview and Execute in the active chat is sufficient human authority for the bounded Spear task. A separate platform-signed ChatGPT Work origin attestation is not part of Spear's route contract and is not required to prove that Athena can reach Thread Engine.
 
-Hosted mission intake, truthful hosted identity, credential-principal proof, rejection cases, and an actual harmless Work/Athena submission remain missing. Hosted execution must stay disabled-first until that complete journey passes.
+Spear does not merge, widen scope, modify Thread Engine itself, inherit later-stage authority, become a standing writer, or bypass the draft-PR stop. Thread Engine self-change must be rerouted through Aegis Break to a non-Thread-Engine method.
 
-Prime now also defines an owner-guided local publisher component that separates
-Preview from Execute, screens an immutable carrier before GitHub ingress, binds
-the canonical mission digest, and dispatches only the existing hosted Bow
-workflow through JSON standard input. The publisher never calls the adapter or
-writes a branch, commit, or PR. Component construction and tests do not prove
-CAP-010; a fresh live guided journey and separate evidence reconciliation are
-still required. Fresh Work/Athena origin remains separately unproven.
+The owner-guided publisher and hosted Arrow/Bow workflow remain separate Jayson/Artemis delivery surfaces. They may use the same Spear compiler and singular Thread Engine, but their hosted identity and rejection evidence do not redefine Spear ownership or create a second engine.
