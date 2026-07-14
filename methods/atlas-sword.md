@@ -37,8 +37,7 @@ method contract is `methods/phoenix-blade.md`.
 
 ## Oathbringer
 
-Oathbringer is Jayson's PowerShell-operated Sword method. PowerShell is the thin
-interactive client: it verifies the Sword, resolves the authenticated GitHub
+Oathbringer is Jayson's PowerShell-operated Sword method. PowerShell is the thin interactive client: it verifies the Sword, resolves the authenticated GitHub
 operator without persisting credentials, displays truthful stages and
 plan-position percentages, invokes the deterministic GitHub-native adapter,
 observes workflows, and writes the receipt. It does not author, reinterpret, or
