@@ -45,13 +45,41 @@ def write_canonical(directory: Path, record: dict) -> dict:
     return record
 
 
+CANONICAL_DIRS = (
+    "feathers",
+    "feather-archives",
+    "golden-wings",
+    "quest-emberlines",
+    "quest-checkpoints",
+    "sunsets",
+    "sunrises",
+    "continuity",
+    "receipts",
+    "events",
+)
+
+
+def copy_lifecycle_source(repo: Path) -> None:
+    shutil.copytree(ROOT / "lifecycle", repo / "lifecycle")
+    for name in CANONICAL_DIRS:
+        shutil.rmtree(repo / "lifecycle" / name, ignore_errors=True)
+
+
 class LifecycleProjectionTests(unittest.TestCase):
     def test_main_context_and_index_commands_are_check_only(self) -> None:
         before = subprocess.run(
             ["git", "status", "--porcelain"], cwd=ROOT, check=True, capture_output=True, text=True
         ).stdout
         context = subprocess.run(
-            [sys.executable, "-B", "-m", "tools.atlas_lifecycle", "context"],
+            [
+                sys.executable,
+                "-B",
+                "-m",
+                "tools.atlas_lifecycle",
+                "context",
+                "--quest-id",
+                "repairing-prime",
+            ],
             cwd=ROOT,
             check=True,
             capture_output=True,
@@ -59,7 +87,22 @@ class LifecycleProjectionTests(unittest.TestCase):
         )
         context_value = json.loads(context.stdout)
         self.assertEqual(set(context_value), EXPECTED_CONTEXT_KEYS)
-        self.assertIsNone(context_value["current_quest_position"])
+        emberlines = []
+        directory = ROOT / "lifecycle/quest-emberlines"
+        if directory.is_dir():
+            for path in sorted(directory.iterdir()):
+                value = json.loads(path.read_text(encoding="utf-8"))
+                if value.get("quest_id") == "repairing-prime":
+                    emberlines.append(value)
+        self.assertEqual(len(emberlines), 1)
+        self.assertEqual(
+            context_value["current_quest_position"],
+            emberlines[0]["current_position"],
+        )
+        self.assertEqual(
+            context_value["latest_valid_feather"],
+            emberlines[0]["latest_feather_id"],
+        )
         self.assertTrue(context_value["stale_projection_warnings"])
 
         index = subprocess.run(
@@ -79,7 +122,7 @@ class LifecycleProjectionTests(unittest.TestCase):
         self.assertEqual(after, before)
 
     def _quest_snapshot(self, repo: Path):
-        shutil.copytree(ROOT / "lifecycle", repo / "lifecycle")
+        copy_lifecycle_source(repo)
         main_sha = "a" * 40
         feather = json.loads((repo / "lifecycle/fixtures/feather-quest-bound.json").read_text())
         feather["authority"] = "CANONICAL_RECORD"
@@ -209,7 +252,7 @@ class LifecycleProjectionTests(unittest.TestCase):
     def test_check_only_index_detects_missing_current_stale_invalid_and_unrelated_commit(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             repo = Path(raw)
-            shutil.copytree(ROOT / "lifecycle", repo / "lifecycle")
+            copy_lifecycle_source(repo)
             subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
             subprocess.run(["git", "config", "core.autocrlf", "false"], cwd=repo, check=True)
             subprocess.run(["git", "add", "lifecycle"], cwd=repo, check=True)

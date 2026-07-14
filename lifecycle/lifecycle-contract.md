@@ -76,6 +76,30 @@ recorded by the Sunset and reconstruct only the bounded compact context. A
 missing, null, dangling, reused, cross-scope, or mismatched Feather binding fails
 closed.
 
+### Bounded Sunset invocation
+
+`python -m tools.atlas_lifecycle sunset candidate` is the canonical Level 1B
+construction command for one bounded Sunset invocation. One invocation emits a
+temporary, exact, read-back-verified candidate set containing exactly one new
+sealed Feather, exactly one Sunset bound to that Feather, and exactly one
+Sunrise bound to the same pair. Admitted-Quest scope additionally emits exactly
+one current Quest Emberline revision and one Quest checkpoint. Non-Quest scope
+emits neither and must not invent a Quest identity.
+
+The request must bind the exact canonical `main` SHA used as the transaction
+input. Candidate construction rejects before output when that SHA does not match
+the checked-out transaction base. Once accepted, `expected_main_sha` remains
+immutable historical transaction-input evidence; it is not compared against
+every later repository HEAD and does not expire when `main` advances. Current
+integrity remains enforced through parent-Feather resolution, Quest revision,
+source fingerprint, replay protection, exact pair relationships, immutable
+receipt/readback, and the separately authorized merge gate.
+
+The command writes only beneath the system temporary directory. It never writes
+canonical source, invokes GitHub, marks a pull request ready, or merges. A
+separately authorized Level 1C route such as Oathbringer may publish the
+verified record bytes into one immutable draft source pull request.
+
 ## Plan, route, apply, verify
 
 All operations follow `Plan → Route → Apply → Verify`.

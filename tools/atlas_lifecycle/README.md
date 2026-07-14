@@ -12,6 +12,8 @@ python -m tools.atlas_lifecycle index build
 python -m tools.atlas_lifecycle pilot [--repetitions N]
 python -m tools.atlas_lifecycle event plan --event EVENT --trust-root TRUST --expected-trust-root-digest SHA256 --state STATE --expected-state-digest SHA256
 python -m tools.atlas_lifecycle event candidate --event EVENT --trust-root TRUST --expected-trust-root-digest SHA256 --state STATE --expected-state-digest SHA256 --output-dir NEW_SYSTEM_TEMP_DIR
+python -m tools.atlas_lifecycle sunset candidate --request REQUEST --output-dir NEW_SYSTEM_TEMP_DIR
+python -m tools.atlas_lifecycle sunset verify --candidate-dir SYSTEM_TEMP_DIR
 ```
 
 `validate` checks the trusted local schema catalog, bounded JSON, closed record
@@ -23,8 +25,11 @@ Canonical lifecycle events use the one exact immutable path declared in their
 authorized route. That event-only path exception is content-addressed, bound to
 the physical file, and case-fold collision checked; every other lifecycle
 record retains the `<record_id>.json` rule. Event identity remains `record_id`.
-`verify` adds exact-HEAD, parent-Feather, and Quest revision checks. Its optional
-archive mode requires a ZIP, independent sidecar, receipt, and a
+`verify` adds parent-Feather and Quest revision checks. A canonical record's
+`expected_main_sha` is immutable historical transaction-input evidence, not a
+lease that expires whenever `main` advances. The `sunset candidate` command
+rejects a stale transaction base before any output is created. Optional archive
+verification requires a ZIP, independent sidecar, receipt, and a
 repository-controlled external trust root.
 
 G4-A adds one trusted `atlas.lifecycle.event` envelope for `CHECKPOINT` and
@@ -39,19 +44,21 @@ promote a Golden Wing, or run as a service. Level 1A executes only the fixed
 `git rev-parse HEAD` readback needed for stale-state verification. The explicit
 Level 1B command has only the temporary write boundary described below.
 
-Level 1B runs only through an explicit `event candidate` invocation. It first
-performs the complete read-only plan, then writes exactly `event.json`,
+Level 1B runs through explicit `event candidate` or `sunset candidate`
+invocation. Event candidate writes exactly `event.json`,
 `candidate-manifest.json`, and `candidate-receipt.json` into one new directory
-beneath the system temporary root. The event bytes remain content-addressed;
-both manifest and receipt bind the permanent event ID and exact immutable
-repository path. They also bind the expected base and entity revision plus the
-independently supplied trust-root and state-snapshot digests. Existing output,
-repository output, path reuse, and case-fold collisions fail closed. Repeated
-generation into two fresh output directories is byte-identical.
+beneath the system temporary root. Sunset candidate writes exactly
+`candidate-bundle.json` and `candidate-receipt.json`; the bundle contains one
+Feather/Sunset/Sunrise pair and, for admitted-Quest scope only, one Emberline
+revision and one Quest checkpoint. Both routes bind exact transaction input and
+read back every temporary byte. Existing output, repository output, path reuse,
+case-fold collisions, stale transaction bases, and malformed bindings fail
+closed. `sunset verify` is read-only and accepts later repository HEADs because
+the bound base is historical transaction evidence.
 
-Level 1B does not write canonical source, invoke GitHub, advance a Quest, or
-activate branch-scoped apply. Level 1C, Thread Engine lifecycle profiles,
-Foundry integration, and GitHub automation remain unactivated during G4-C.
+Level 1B does not write canonical source, invoke GitHub, advance a Quest, mark a
+pull request ready, or merge. Branch-scoped publication remains a separately
+authorized Level 1C route such as Oathbringer.
 
 `event plan` is the G4-B read-only planner. It validates the event, external
 trust root, and closed current-state snapshot; resolves exact prior state;

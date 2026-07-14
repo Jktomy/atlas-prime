@@ -109,6 +109,16 @@ def _write_exact(path: Path, data: bytes) -> None:
         raise LifecycleError("CANDIDATE_READBACK", "temporary candidate readback does not match")
 
 
+def _create_output_directory(destination: Path) -> None:
+    try:
+        destination.mkdir(mode=0o700)
+    except OSError as exc:
+        raise LifecycleError(
+            "CANDIDATE_OUTPUT_CREATE",
+            "temporary candidate directory could not be created",
+        ) from exc
+
+
 def verify_candidate_set(
     output_dir: Path,
     schema_dir: Path,
@@ -280,10 +290,7 @@ def generate_event_candidate(
     ]
     candidate_set_digest = _digest(canonical_bytes({"members": members}))
 
-    try:
-        destination.mkdir(mode=0o700)
-    except OSError as exc:
-        raise LifecycleError("CANDIDATE_OUTPUT_CREATE", "temporary candidate directory could not be created") from exc
+    _create_output_directory(destination)
     _write_exact(destination / ARTIFACT_EVENT, event_bytes)
     _write_exact(destination / ARTIFACT_MANIFEST, manifest_bytes)
     _write_exact(destination / ARTIFACT_RECEIPT, receipt_bytes)

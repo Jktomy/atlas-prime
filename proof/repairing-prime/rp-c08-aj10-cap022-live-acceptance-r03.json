@@ -1,0 +1,269 @@
+{
+  "schema_version": "rp-c08-aj10-cap022-live-acceptance-r03",
+  "mission_id": "RP-C08-AJ10-CAP022-LIVE-ACCEPTANCE-R03",
+  "authority": "CANONICAL_AUTHORED_LIVE_ACCEPTANCE_CANDIDATE",
+  "base_sha": "71cb7c3e78976bce393bf585303e6c0d2a6f179c",
+  "acceptance_state": "LIVE_TRANSACTION_CANDIDATE",
+  "concurrency_semantics": {
+    "expected_main_sha_role": "IMMUTABLE_TRANSACTION_INPUT",
+    "stale_rejection_stage": "BEFORE_CANDIDATE_OUTPUT",
+    "historical_records_expire_on_main_advance": false
+  },
+  "command": "python -m tools.atlas_lifecycle sunset candidate",
+  "invocation_count": 2,
+  "invocations": [
+    {
+      "label": "admitted-quest",
+      "request": {
+        "schema_id": "atlas.lifecycle.sunset-request",
+        "schema_version": "1.0.0",
+        "authority": "PUBLIC_CLEAN_REQUEST",
+        "request_id": "rp-c08-aj10-admitted-quest-r03",
+        "expected_main_sha": "71cb7c3e78976bce393bf585303e6c0d2a6f179c",
+        "project_id": "project-codex",
+        "operation_id": "operation-source-governance",
+        "quest_scope": {
+          "scope_type": "ADMITTED_QUEST",
+          "quest_id": "repairing-prime"
+        },
+        "campaign": "rp-c08",
+        "mission": "aj10-cap022-live-acceptance-r03",
+        "gate": "aj10-cap022-live-acceptance",
+        "context_summary": "The universal Sunset/Feather contract is canonical and the admitted Repairing Prime live acceptance transaction is ready for exact review.",
+        "completion_assessment": "The bounded admitted-Quest invocation produced one exact restart-safe pair and its required Quest state records.",
+        "decisions": [
+          "Keep AJ-10 and CAP-022 unpromoted until merge and fresh-context readback.",
+          "Preserve PR 189 and blocked PR 190 without mutation."
+        ],
+        "open_items": [
+          "Pass exact-head Ubuntu and Windows validation.",
+          "Complete independent Strikeforce audit and separate merge approval.",
+          "Refresh generated reports and reconstruct the exact pair from a fresh context."
+        ],
+        "current_position": "Universal Sunset/Feather source repair is canonical. AJ-10 and CAP-022 live acceptance is executing while the preserved M06 and later RP-C08 gates remain open.",
+        "unresolved_blockers": [
+          "AJ-10 requires merge and fresh-context exact-pair reconstruction.",
+          "CAP-022 remains missing until AJ-10 receives accepted evidence.",
+          "AJ-03, AJ-11, AJ-12, and CAP-027 remain open."
+        ],
+        "next_safe_action": "Validate and audit the immutable live transaction head, merge only with separate authority, then perform fresh-context exact-pair readback.",
+        "next_approval_gate": "Separate exact-head merge approval after Strikeforce GREEN.",
+        "next_gate": "MERGE_THEN_FRESH_CONTEXT_AJ10_CAP022_READBACK",
+        "durable_source_references": [
+          {
+            "ref_id": "repairing-prime-source",
+            "authority": "CANONICAL_SOURCE",
+            "uri": "quests/repairing-prime.md",
+            "digest": "sha256:9c94dff78c0d466528afa9737cee42b5ce4777ee0c7f21785d2d4c1a88aa0939"
+          },
+          {
+            "ref_id": "lifecycle-contract",
+            "authority": "CANONICAL_SOURCE",
+            "uri": "lifecycle/lifecycle-contract.md",
+            "digest": "sha256:8cdc470ddb98b62bd3648d69441b6f8bf0ce000c79ea4e52ff0220ab2ddae737"
+          },
+          {
+            "ref_id": "capability-acceptance-contract",
+            "authority": "CANONICAL_SOURCE",
+            "uri": "governance/capability-acceptance-contract.md",
+            "digest": "sha256:1c2d99a8ac0786c7a1981301f2427dadb24d44081f0c7077fb46a9ac0fcd9f04"
+          }
+        ],
+        "evidence_pointers": [
+          {
+            "ref_id": "sunset-feather-truth-reconciliation",
+            "authority": "EVIDENCE_POINTER",
+            "uri": "proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.json",
+            "digest": "sha256:17ae65cdd5949e31bc50512f8e9f46c0aefd0a229e10bda1c34729f9bfd48f2c"
+          }
+        ],
+        "protected_data": {
+          "classification": "INTERNAL_CLEAN",
+          "clean_summary": "The live candidate contains only public-clean Atlas source and no protected values.",
+          "protected_pointers": []
+        }
+      },
+      "scope_type": "ADMITTED_QUEST",
+      "candidate_set_digest": "sha256:5733feb92bbff18375460a87b13419785254463476ee60664bc5603bd3505e96",
+      "record_count": 5,
+      "record_bindings": [
+        {
+          "path": "lifecycle/feathers/FTR-NSTEALUEMBITCO27XTBC2542XN.json",
+          "payload_digest": "sha256:b902127030b32bd8ef20736300f4e6e7f509def3b94a23499409eb1f4cc50f5c",
+          "record_id": "FTR-NSTEALUEMBITCO27XTBC2542XN",
+          "schema_id": "atlas.lifecycle.feather"
+        },
+        {
+          "path": "lifecycle/quest-checkpoints/QCP-VHH3SNDFKXN6NYD6S7IG7HGZAF.json",
+          "payload_digest": "sha256:5decedfd300e8ded63f6dc45111b53110fbedd253fc0878740a3baa70c968a44",
+          "record_id": "QCP-VHH3SNDFKXN6NYD6S7IG7HGZAF",
+          "schema_id": "atlas.lifecycle.quest-checkpoint"
+        },
+        {
+          "path": "lifecycle/quest-emberlines/QEM-R6QKBDHLY7I7PVVEKIGTZFMZZT.json",
+          "payload_digest": "sha256:9174ed49302f666b40a60669196ebe2f81a66a942e9cb5b5a141e23ed9a424ed",
+          "record_id": "QEM-R6QKBDHLY7I7PVVEKIGTZFMZZT",
+          "schema_id": "atlas.lifecycle.quest-emberline"
+        },
+        {
+          "path": "lifecycle/sunrises/SRI-DUBGAIQYLHFMMJBUPTSFBAMO4G.json",
+          "payload_digest": "sha256:8daf6b81a7ff2796872812a13a830bbb26b2da0f4d31bbf0869ddbb40f9f8381",
+          "record_id": "SRI-DUBGAIQYLHFMMJBUPTSFBAMO4G",
+          "schema_id": "atlas.lifecycle.sunrise"
+        },
+        {
+          "path": "lifecycle/sunsets/SUN-DENN2FBSZHJDHVX722YYKRJLBZ.json",
+          "payload_digest": "sha256:9feb0ae0d624159689536f8d5f8bf0eb1d49b4d80d6b184c783a668eb7d08ec5",
+          "record_id": "SUN-DENN2FBSZHJDHVX722YYKRJLBZ",
+          "schema_id": "atlas.lifecycle.sunset"
+        }
+      ],
+      "assertions": {
+        "feathers": 1,
+        "quest_checkpoints": 1,
+        "quest_emberlines": 1,
+        "quest_identity_fabricated": false,
+        "sunrises": 1,
+        "sunsets": 1
+      },
+      "canonical_writes": false,
+      "github_actions": []
+    },
+    {
+      "label": "nonquest",
+      "request": {
+        "schema_id": "atlas.lifecycle.sunset-request",
+        "schema_version": "1.0.0",
+        "authority": "PUBLIC_CLEAN_REQUEST",
+        "request_id": "rp-c08-aj10-nonquest-r03",
+        "expected_main_sha": "71cb7c3e78976bce393bf585303e6c0d2a6f179c",
+        "project_id": "project-codex",
+        "operation_id": "operation-source-governance",
+        "quest_scope": {
+          "scope_type": "NON_QUEST",
+          "work_scope": "Public-clean non-Quest proof that Sunset invents no Quest, Campaign, Mission, or Gate identity beyond explicitly supplied nullable fields."
+        },
+        "campaign": null,
+        "mission": null,
+        "gate": null,
+        "context_summary": "A harmless non-Quest Sunset invocation proves exact pairing without fabricated Quest state.",
+        "completion_assessment": "The non-Quest invocation produced one exact pair without Quest Emberline or checkpoint records.",
+        "decisions": [
+          "Do not invent a Quest identity for non-Quest work.",
+          "Keep the same merge and fresh-readback authority boundary."
+        ],
+        "open_items": [
+          "Pass exact-head Ubuntu and Windows validation.",
+          "Complete independent Strikeforce audit and separate merge approval.",
+          "Refresh generated reports and reconstruct the exact pair from a fresh context."
+        ],
+        "current_position": "The non-Quest no-fabrication arm of AJ-10 is represented by one exact temporary candidate set.",
+        "unresolved_blockers": [
+          "Canonical acceptance remains pending exact-head audit, merge, and readback."
+        ],
+        "next_safe_action": "Verify no Quest-bearing record or field was emitted.",
+        "next_approval_gate": "No separate non-Quest publication outside the combined Oathbringer mission.",
+        "next_gate": "COMBINED_AJ10_CAP022_EXACT_HEAD_AUDIT",
+        "durable_source_references": [
+          {
+            "ref_id": "lifecycle-contract",
+            "authority": "CANONICAL_SOURCE",
+            "uri": "lifecycle/lifecycle-contract.md",
+            "digest": "sha256:8cdc470ddb98b62bd3648d69441b6f8bf0ce000c79ea4e52ff0220ab2ddae737"
+          },
+          {
+            "ref_id": "capability-acceptance-contract",
+            "authority": "CANONICAL_SOURCE",
+            "uri": "governance/capability-acceptance-contract.md",
+            "digest": "sha256:1c2d99a8ac0786c7a1981301f2427dadb24d44081f0c7077fb46a9ac0fcd9f04"
+          }
+        ],
+        "evidence_pointers": [
+          {
+            "ref_id": "sunset-feather-truth-reconciliation",
+            "authority": "EVIDENCE_POINTER",
+            "uri": "proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.json",
+            "digest": "sha256:17ae65cdd5949e31bc50512f8e9f46c0aefd0a229e10bda1c34729f9bfd48f2c"
+          }
+        ],
+        "protected_data": {
+          "classification": "INTERNAL_CLEAN",
+          "clean_summary": "The live candidate contains only public-clean Atlas source and no protected values.",
+          "protected_pointers": []
+        }
+      },
+      "scope_type": "NON_QUEST",
+      "candidate_set_digest": "sha256:cd565581e9133d1f0a1e6f8e1c59a2ae334273fdba5d65c5a097dc119dd03251",
+      "record_count": 3,
+      "record_bindings": [
+        {
+          "path": "lifecycle/feathers/FTR-STG4XK7DBGSXCHEADRP74P6AEH.json",
+          "payload_digest": "sha256:0804beff894ee07151ede5efd5ba6f871b985d20107cdb6ca93d4de2ae3e355a",
+          "record_id": "FTR-STG4XK7DBGSXCHEADRP74P6AEH",
+          "schema_id": "atlas.lifecycle.feather"
+        },
+        {
+          "path": "lifecycle/sunrises/SRI-SRAE7PBMSMXG7GJU5U7L3XALKQ.json",
+          "payload_digest": "sha256:47ce04a8219755a34fd72d3cd073a9e0a88111fc09ed0132bada25dd0404bc08",
+          "record_id": "SRI-SRAE7PBMSMXG7GJU5U7L3XALKQ",
+          "schema_id": "atlas.lifecycle.sunrise"
+        },
+        {
+          "path": "lifecycle/sunsets/SUN-HYG6I5FEJZXSNJJQDZSLHUZSSK.json",
+          "payload_digest": "sha256:6eceb478b1de24d184b3f879acb7c20239863ffee3946b2511b89c66823dcfba",
+          "record_id": "SUN-HYG6I5FEJZXSNJJQDZSLHUZSSK",
+          "schema_id": "atlas.lifecycle.sunset"
+        }
+      ],
+      "assertions": {
+        "feathers": 1,
+        "quest_checkpoints": 0,
+        "quest_emberlines": 0,
+        "quest_identity_fabricated": false,
+        "sunrises": 1,
+        "sunsets": 1
+      },
+      "canonical_writes": false,
+      "github_actions": []
+    }
+  ],
+  "current_dispositions": {
+    "AJ-10": "UNPROVEN_PENDING_MERGE_AND_FRESH_CONTEXT_READBACK",
+    "CAP-022": "STILL_MISSING_PENDING_ACCEPTED_LIVE_JOURNEY",
+    "CAP-027": "STILL_MISSING",
+    "RP-C05": "PARTIAL"
+  },
+  "promotion_authorized": false,
+  "fresh_context_readback": {
+    "quest_id": "repairing-prime",
+    "expected_latest_feather_id": "FTR-NSTEALUEMBITCO27XTBC2542XN",
+    "expected_sunset_id": "SUN-DENN2FBSZHJDHVX722YYKRJLBZ",
+    "expected_next_gate": "MERGE_THEN_FRESH_CONTEXT_AJ10_CAP022_READBACK",
+    "command": "python -m tools.atlas_lifecycle --repo-root . context --quest-id repairing-prime",
+    "status": "PENDING_POST_MERGE_FRESH_CONTEXT"
+  },
+  "required_post_merge_gates": [
+    "EXACT_HEAD_UBUNTU_WINDOWS_GREEN",
+    "INDEPENDENT_STRIKEFORCE_GREEN",
+    "SEPARATE_MERGE_APPROVAL",
+    "CANONICAL_MAIN_READBACK",
+    "GENERATED_CHECKPOINT_REFRESH_OR_VERIFIED_NOOP",
+    "FRESH_CONTEXT_EXACT_PAIR_RECONSTRUCTION",
+    "SEPARATE_ACCEPTANCE_RECONCILIATION"
+  ],
+  "preserved_boundaries": {
+    "pr_189": "PRESERVED_PENDING_LATER_STRIKEFORCE",
+    "pr_190": "BLOCKED_DO_NOT_MERGE",
+    "automatic_ready": false,
+    "automatic_merge": false,
+    "direct_main": false,
+    "capability_promotion": false,
+    "quest_completion": false
+  },
+  "generated_checkpoint_verification": {
+    "post_pr_191_generated_pr_or_commit_observed": false,
+    "push_run_visible_to_current_connector": false,
+    "classification": "NO_PUBLISHED_DELTA_OBSERVED_RUN_RESULT_UNRESOLVED",
+    "manual_dispatch_authorized": false
+  }
+}
