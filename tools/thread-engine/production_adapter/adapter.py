@@ -425,7 +425,7 @@ def execute_mission(
 
                 history_text = runner.run([
                     "gh", "pr", "list", "--repo", mission.repository, "--state", "all",
-                    "--limit", "1000", "--json",
+                    "--limit", "1001", "--json",
                     "number,state,isDraft,headRefName,headRefOid,title,body",
                 ]).stdout.strip()
                 history = json.loads(history_text)
@@ -576,7 +576,7 @@ def execute_mission(
 
                 history_text = runner.run([
                     "gh", "pr", "list", "--repo", mission.repository, "--state", "all",
-                    "--limit", "1000", "--json",
+                    "--limit", "1001", "--json",
                     "number,state,isDraft,headRefName,headRefOid,title,body",
                 ]).stdout.strip()
                 history = json.loads(history_text)

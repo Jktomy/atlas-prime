@@ -134,7 +134,7 @@ class GitRunner:
         allowed_view_fields = "number,url,state,isDraft,baseRefName,baseRefOid,headRefName,headRefOid,title,body,files,commits,comments,reviews"
         templates = [
             ["gh", "pr", "list", "--repo", "Jktomy/atlas-prime", "--state", "all", "--head", self.mission_branch, "--json", "number,state,isDraft,headRefOid"],
-            ["gh", "pr", "list", "--repo", "Jktomy/atlas-prime", "--state", "all", "--limit", "1000", "--json", "number,state,isDraft,headRefName,headRefOid,title,body"],
+            ["gh", "pr", "list", "--repo", "Jktomy/atlas-prime", "--state", "all", "--limit", "1001", "--json", "number,state,isDraft,headRefName,headRefOid,title,body"],
             ["gh", "pr", "view", self.mission_branch, "--repo", "Jktomy/atlas-prime", "--json", allowed_view_fields],
             ["gh", "pr", "checks", self.mission_branch, "--repo", "Jktomy/atlas-prime"],
         ]

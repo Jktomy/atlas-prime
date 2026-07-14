@@ -40,6 +40,10 @@ class InChatWorkflowBridgeTests(unittest.TestCase):
             "push:",
             "branches:",
             "- main",
+            "Admit exact publisher invocation",
+            'expectedRepository = "Jktomy/atlas-prime"',
+            'expectedOwner = "Jktomy"',
+            "git/ref/heads/main",
             "github.actor == github.repository_owner",
             "github.triggering_actor == github.repository_owner",
             "github.event_name == 'push'",
@@ -70,10 +74,25 @@ class InChatWorkflowBridgeTests(unittest.TestCase):
         self.assertIn("tools.generated_checkpoint.queue", queue_block)
         self.assertIn("DEFERRED_OPEN_CHECKPOINT", queue_block)
         self.assertIn("No mutation attempted", queue_block)
+        self.assertIn("--limit 1001", queue_block)
+        self.assertIn("receipt_sha256", queue_block)
         self.assertNotIn("contents: write", queue_block)
         self.assertNotIn("pull-requests: write", queue_block)
         self.assertIn("needs: queue", parity_block)
         self.assertIn("needs.queue.outputs.queue_result == 'CLEAR'", parity_block)
+
+        reconcile_block = workflow.split("\n  reconcile:\n", 1)[1].split("\n  prepare:\n", 1)[0]
+        prepare_block = workflow.split("\n  prepare:\n", 1)[1].split("\n  publish:\n", 1)[0]
+        publish_block = workflow.split("\n  publish:\n", 1)[1].split("\n  validate_exact_head:\n", 1)[0]
+        validate_block = workflow.split("\n  validate_exact_head:\n", 1)[1]
+        self.assertIn("needs: parity", reconcile_block)
+        self.assertIn("needs: reconcile", prepare_block)
+        self.assertIn("- prepare", publish_block)
+        self.assertIn("needs: publish", validate_block)
+        for block in (parity_block, reconcile_block, prepare_block, publish_block, validate_block):
+            job_preamble = block.split("\n    steps:\n", 1)[0]
+            self.assertNotIn("always()", job_preamble)
+            self.assertNotIn("continue-on-error", block)
 
     def test_push_identity_is_deterministic_and_public_clean_by_construction(self) -> None:
         workflow = (
@@ -106,6 +125,28 @@ class InChatWorkflowBridgeTests(unittest.TestCase):
             '"GITHUB_EVENT_NAME": profile["event_name"]',
             source,
         )
+
+    def test_generated_queue_governance_defines_coalescing_and_manual_recovery(self) -> None:
+        governance = (
+            ROOT / "governance" / "athena-execution-route-contract.md"
+        ).read_text(encoding="utf-8")
+        for phrase in (
+            "1,001-entry sentinel",
+            "DEFERRED_OPEN_CHECKPOINT",
+            "overall GREEN workflow outcome",
+            "older serialized event",
+            "`CLEAR` decision with event-base drift fails closed before parity",
+            "generated-only merge",
+            "recomputes all five projections",
+            "one later full five-file mission",
+            "Closing a generated draft without merge",
+            "explicit owner `workflow_dispatch`",
+            "next authorized source merge",
+            "no pull-request-close trigger",
+            "singular Thread Engine retains",
+            "No generated queue component may become a second repository writer",
+        ):
+            self.assertIn(phrase, governance)
 
 
 if __name__ == "__main__":
