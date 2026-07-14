@@ -17,12 +17,13 @@ class RepositoryPolicyTests(unittest.TestCase):
     def test_000_temporary_remaining_prime_modules(self) -> None:
         suite = unittest.TestSuite()
         for filename in (
-            "test_context_pack.py",
-            "test_chromelight.py",
-            "test_resonance.py",
-            "test_shardblade_permanence.py",
-            "test_oathbringer_foundry.py",
-            "test_investiture_accounting.py",
+            "test_oathbringer_foundry_lifecycle.py",
+            "test_oathbringer_console_v2.py",
+            "test_oathbringer_repair_parent_tree.py",
+            "test_investiture_construction_acceptance.py",
+            "test_consistent_pr_delivery_standard.py",
+            "test_investiture_storage.py",
+            "test_agentic_warrants.py",
         ):
             suite.addTests(unittest.defaultTestLoader.discover(str(ROOT / "tests" / "prime-program"), pattern=filename))
         result = unittest.TextTestRunner(stream=io.StringIO(), verbosity=0).run(suite)
