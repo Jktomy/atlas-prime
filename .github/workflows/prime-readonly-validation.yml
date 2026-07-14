@@ -39,7 +39,19 @@ jobs:
       - name: Prime generator tests
         run: python -B -m unittest discover -s tests/generators -p "test_*.py" -v
       - name: Prime whole-program tests
-        run: python -B -m unittest discover -s tests/prime-program -p "test_*.py" -v
+        id: whole_program
+        shell: pwsh
+        run: |
+          python -B -m unittest discover -s tests/prime-program -p "test_*.py" -v 2>&1 | Tee-Object -FilePath "$env:RUNNER_TEMP/prime-whole-program.log"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Upload bounded whole-program diagnostic
+        if: failure() && steps.whole_program.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: prime-whole-program-${{ matrix.os }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/prime-whole-program.log
+          if-no-files-found: error
+          retention-days: 1
       - name: Athena execution route tests
         run: python -B -m unittest discover -s tests/athena-routes -p "test_*.py" -v
       - name: Prime source validation
