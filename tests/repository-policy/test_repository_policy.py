@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import io
+import importlib.util
 import json
 import sys
 import unittest
@@ -14,10 +14,17 @@ from production_adapter.protected_paths import POLICY_PATH, is_protected_path, i
 
 
 class RepositoryPolicyTests(unittest.TestCase):
-    def test_000_temporary_fresh_work_bridge_tests(self) -> None:
-        suite = unittest.defaultTestLoader.discover(str(ROOT / "tests" / "athena-routes"), pattern="test_fresh_work_bridge.py")
-        result = unittest.TextTestRunner(stream=io.StringIO(), verbosity=0).run(suite)
-        self.assertTrue(result.wasSuccessful(), "TEMP_FRESH_WORK_BRIDGE_TESTS_FAILED")
+    def test_000_temporary_fresh_work_source_tests(self) -> None:
+        path = ROOT / "tests" / "athena-routes" / "test_fresh_work_bridge.py"
+        spec = importlib.util.spec_from_file_location("fresh_work_diagnostic", path)
+        if spec is None or spec.loader is None:
+            self.fail("TEMP_DIAGNOSTIC_IMPORT_FAILED")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        suite = unittest.defaultTestLoader.loadTestsFromTestCase(module.FreshWorkBridgeSourceTests)
+        result = unittest.TestResult()
+        suite.run(result)
+        self.assertTrue(result.wasSuccessful(), "TEMP_FRESH_WORK_SOURCE_TESTS_FAILED")
 
     def test_repository_and_operator_invariants(self) -> None:
         repository = json.loads((ROOT / "policies" / "repository-policy.json").read_text(encoding="utf-8"))
