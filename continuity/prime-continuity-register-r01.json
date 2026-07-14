@@ -25,9 +25,9 @@
     "RP-C01-M07-LIVE-REJECTION-RECONCILIATION-R01",
     "RP-C01-M05-PARITY-ACCEPTANCE-R01",
     "RP-C01-M08-FREE-FORM-ACCEPTANCE-R01",
+    "RP-C08-CAP015-ARCHITECTURE-REALIGNMENT-R01",
     "FS-C01-M01-DOCTRINE-ACCEPTANCE-R01",
-    "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01",
-    "RP-C08-CAP015-ARCHITECTURE-REALIGNMENT-R01"
+    "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01"
   ],
   "entries": [
     {
@@ -37,7 +37,7 @@
       "quest_source_sha256": "b4e293c4db45e3c8c047ceb340ea99f550586cc9e6c71e4afc7006b4095544c5",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "RP-C08",
-      "mission_id": "RP-C08-CAP015-ARCHITECTURE-REALIGNMENT-R01",
+      "mission_id": null,
       "gate_id": "REPAIRING_PRIME_COMPLETE",
       "current_position": "RP-C07 is COMPLETE. Historical matrix: AJ-01/AJ-03/AJ-11/AJ-12 UNPROVEN. AJ-01 is now superseded: CAP-015/AJ-01 PROVEN by Athena Spear PR #39 (corroborated by #102); RP-C01-M02 PROVEN by Phoenix Blade PR #50. Routes: Athena Spear->Thread Engine; Athena Sword->Phoenix Blade, no Thread Engine; Athena Aegis Break->direct/bounded safe route; Jayson/Artemis Arrow/Bow->Thread Engine; Jayson Sword->Oathbringer, no Thread Engine. Counts: 14 RESTORED, 1 STILL_MISSING. RP-C01/RP-C08/Quest IN_PROGRESS.",
       "blockers": [
