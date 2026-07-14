@@ -21,12 +21,13 @@ routes_to:
   - quests/notums-watch.md
   - quest-board/quest-board-v1.json
   - governance/atlas-strikeforce.md
+  - proof/prometheus-fire/pf-c01-m01-mission-seal-r01.md
   - noctua.md
   - sunsetting-protocol.md
 private_boundary: "Store only clean architecture, campaign status, gates, sanitized evidence pointers, and completion claims. Do not store IP addresses, private network maps, device registers, credentials, tokens, MFA or recovery codes, real environment values, PHI, raw finance evidence, account data, or unrestricted terminal output."
 evidence_boundary: "This Quest coordinates verified source and sanitized operating evidence. Original hardware diagnostics, backup artifacts, restore receipts, screenshots, private runtime values, and protected records remain in their approved evidence systems. Planning acceptance does not prove deployment."
-cleanup_path: "Keep active until all required Campaigns and Quest-level gates pass. Close through a final Noctua completion audit, Workboard synchronization, restart-safe Sunset, and verified merged-main readback."
-last_verified: 2026-07-09
+cleanup_path: "Keep active until all required Campaigns and Quest-level gates pass. Close through a final Noctua completion audit, Prime Quest Board and continuity-register synchronization, restart-safe Sunset, and verified merged-main readback."
+last_verified: 2026-07-14
 ---
 
 # Quest — Prometheus's Fire
@@ -37,9 +38,9 @@ last_verified: 2026-07-09
 **Parent Project:** Project Odyssey
 **Owning Operation:** Operation Prometheus Foundation
 **Supporting Projects:** Phoenix, Artemis, Helios, Codex
-**Current lane:** `PLAN -> VERIFY`
-**Current route:** `Official Quest source -> Campaign 1 Preview -> staged evidence-based execution`
-**Current state:** `READY_FOR_CAMPAIGN_1_PREVIEW`
+**Current lane:** `UPDATE -> VERIFY`
+**Current route:** `PF-C01 -> PF-C01-M02 Preserve the Old Flame Preview`
+**Current state:** `IN_PROGRESS`
 
 ## 2. Purpose
 
@@ -106,7 +107,9 @@ Prometheus's Fire is complete only when:
 9. Plex passes metadata restore, acceleration, recording, playback, concurrency, reboot, rollback, and cutover proof before leaving Forge.
 10. Notum's Watch improves observability without becoming a mandatory control dependency or Prometheus prerequisite.
 11. Noctua verifies the final topology and exact evidence.
-12. The Active Workboard and Sunset closeout are synchronized.
+12. The Prime Quest Board, continuity register, and Sunset closeout are synchronized.
+13. Required Windows-specific work and Codex continuity are safely evacuated from the current Prometheus Windows installation before destructive action.
+14. Forge retains the persistent Helios backend while Apollo provides the separately bounded interactive Helios Control Deck.
 
 ## 5. Explicit exclusions
 
@@ -129,10 +132,12 @@ The baseline does not include:
 - public Matrix registration or federation;
 - public model, Nexus, n8n, or Proxmox endpoints;
 - Proxmox Backup Server as an immediate requirement;
-- acting Hermes agents before governance and tool gates pass;
+- acting Kandra workers before governance and tool gates pass;
 - automatic UPS shutdown or ONT / Eero recovery without a separate Phoenix / Beacon Preview and proof.
 
-Forge retains HAOS, Paperless-ngx, Audiobookshelf, the complete Helios stack, Dozzle, Diun, and current Plex until separately proven cutover.
+Forge retains HAOS, Paperless-ngx, Dozzle, Diun, and the persistent Helios backend: Gluetun, qBittorrent, Prowlarr, Sonarr, Radarr, optional Readarr, automated watchers and import workflows, storage-adjacent processing, Audiobookshelf, and current Plex until separately proven cutover.
+
+Apollo may host the on-demand interactive Helios Control Deck: Libation, FileBot GUI, MediaInfo, MKVToolNix GUI, Subtitle Edit, optional bounded HandBrake or FFmpeg work, dashboards, and manual inspection or approval. Hermes and Iris are Helios clients only. Prometheus hosts neither Helios role.
 
 # Campaigns
 
@@ -140,19 +145,63 @@ Forge retains HAOS, Paperless-ngx, Audiobookshelf, the complete Helios stack, Do
 
 **Owner:** Odyssey / Prometheus Foundation
 **Support:** Phoenix / Keystone
-**Status:** `READY_FOR_PREVIEW`
+**Status:** `IN_PROGRESS`
 **Depends on:** none
 
-Prove physical, firmware, memory, storage, power, cooling, cabling, and recovery-console readiness before replacing the current operating system.
+Prove physical, firmware, memory, storage, power, cooling, cabling, recovery-console, and operator-continuity readiness before replacing the current operating system.
 
-Exit only after:
+### Mission PF-C01-M01 — Mission Seal
 
-- matching memory is installed and passes extended testing;
-- NVMe health is recorded;
-- WHEA, PCIe, USB/KVM, thermal, and stability concerns are resolved or bounded;
-- Windows recovery and driver evidence are preserved;
-- virtualization, IOMMU, ReBAR, iGPU, and B50 state are documented;
-- Citadel power, UPS, cooling, cabling, and console access are acceptable.
+**State:** `PROVEN_WITH_CARRY_FORWARD`
+
+**Acceptance record:** `proof/prometheus-fire/pf-c01-m01-mission-seal-r01.md`
+
+Accepted clean evidence:
+
+- expected Prometheus hardware identity matched;
+- 64 GB memory detected;
+- Intel Arc Pro B50 and integrated graphics detected;
+- the 1 TB NVMe reported a healthy operational state;
+- the active wired link negotiated at 10 GbE;
+- Secure Boot is enabled;
+- TPM is present and ready;
+- the Windows system volume is not BitLocker-encrypted;
+- optional Windows hypervisor features are disabled;
+- no important or irreplaceable data was reported as existing only on Prometheus;
+- no open repair, return, warranty, overheating, fan-noise, or freezing concern was reported.
+
+Carry-forwards:
+
+- extended memory testing;
+- bounded follow-up for one corrected PCIe WHEA warning;
+- a stability baseline after a prior unexpected shutdown;
+- Windows recovery-media and complete system-image disposition;
+- manufacturer-driver preservation;
+- operator-workstation and Codex evacuation.
+
+Mission Seal authorizes no runtime action, Windows removal, Proxmox installation, migration, or deployment.
+
+### Mission PF-C01-M02 — Preserve the Old Flame
+
+**State:** `READY_FOR_PREVIEW`
+
+Required proof:
+
+1. Apollo is commissioned as the fixed Windows orchestration endpoint.
+2. Required Windows applications and Windows-specific Codex workflows operate on Apollo.
+3. Hermes can independently access Prime, GitHub, Element, and approved private administration surfaces.
+4. Iris remains a nonblocking companion and is not treated as the sole source, approval, administration, or recovery route.
+5. Every relevant Prometheus repository and working directory is identified.
+6. Dirty worktrees, uncommitted changes, unpushed commits, local branches, and local-only artifacts are reconciled.
+7. Required Prime source and branches are visible in GitHub or preserved through another approved route.
+8. Active Codex work is completed, safely stopped, or transferred.
+9. A representative Windows-specific workflow resumes on Apollo.
+10. A representative portable command and administration workflow succeeds from Hermes.
+11. Windows recovery media, system-image disposition, manufacturer drivers, and rollback expectations are preserved.
+12. No credential, recovery key, token, private key, or secret enters Prime or ordinary migration artifacts.
+13. A later exact Execute gate authorizes Windows removal or Proxmox installation.
+
+**Exit gate:** Apollo and Hermes continuity is proven, Windows recovery posture is preserved, and a separately approved destructive-action Preview may be prepared. Until then, Windows removal and Proxmox installation remain blocked.
 
 ## Campaign PF-C02 — Light the First Flame
 
@@ -195,7 +244,7 @@ Required proof:
 
 ## Campaign PF-C04 — Ignite the Crucible
 
-**Owner:** Artemis / Operation Hermes and AI Governance
+**Owner:** Artemis / Operation Kandra and AI Governance
 **Support:** Odyssey / Prometheus Foundation
 **Status:** `BLOCKED_BY_PF-C03`
 **Depends on:** PF-C03
@@ -232,7 +281,7 @@ Required proof:
 - Python / FastAPI integration surface;
 - Gemstone quarantine, hashing, archive safety, ClamAV, and manifest validation;
 - approval state, retries, timeouts, mission register, and Receipt Gemstone creation;
-- restricted private Hermes call path;
+- restricted private Kandra call path;
 - no broad Proxmox, Forge, GitHub, shell, merge, deletion, or cleanup authority;
 - application-aware backup and restore.
 
@@ -289,13 +338,13 @@ Complete integrated observability, failure testing, source alignment, and Quest 
 
 Required proof:
 
-- Notum's Watch Uptime Kuma, Homepage, watchdog, diagnostics, outage journal, optional proven UPS telemetry, and read-only emergency Codex clone;
+- Notum's Watch Uptime Kuma, Homepage, watchdog, diagnostics, outage journal, optional proven UPS telemetry, and read-only emergency Prime recovery clone;
 - Prometheus, guest, storage, network, thermal, and backup monitoring;
 - alert delivery that does not make recovery depend on Prometheus;
 - integrated reboot, dependency-loss, backup, restore, and rollback tests;
 - no automatic shutdown, plug cycling, or ONT / Eero recovery unless separately approved;
 - exact configuration manifests and sanitized runbooks;
-- Active Workboard reconciliation;
+- Prime Quest Board and continuity-register reconciliation;
 - final Strikeforce and Noctua audit;
 - restart-safe Sunset.
 
@@ -304,9 +353,17 @@ Prometheus's Fire may consume Notum's Watch observability when available. It doe
 ## 6. Current gate
 
 ```text
-Quest state: READY_FOR_CAMPAIGN_1_PREVIEW
+Quest state: IN_PROGRESS
+Campaign PF-C01: IN_PROGRESS
+PF-C01-M01 Mission Seal: PROVEN_WITH_CARRY_FORWARD
+PF-C01-M02 Preserve the Old Flame: READY_FOR_PREVIEW
+Apollo commissioning: NOT PROVEN
+Hermes independent route: NOT PROVEN
+Iris role: SOURCE_ACCEPTED / NONBLOCKING
+Windows wipe: BLOCKED
+Proxmox installation: BLOCKED
 Operational readiness: NOT CLEARED
 Runtime deployment: NOT STARTED
 ```
 
-The next safe action is the exact PF-C01 Preview. This Quest does not authorize physical, firmware, operating-system, network, storage, power, service, or infrastructure execution by itself.
+The next safe action is the exact PF-C01-M02 Preserve the Old Flame Preview. This Quest does not authorize device renames, application migration, Windows removal, Proxmox installation, physical, firmware, network, storage, power, service, or infrastructure execution by itself.

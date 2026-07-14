@@ -17,7 +17,7 @@
       "state": "IN_PROGRESS"
     },
     {
-      "next_gate": "FS-C01-M04 \u2014 Prove the Light",
+      "next_gate": "FS-C01-M04 — Prove the Light",
       "owner": "Codex / Source Governance",
       "quest_id": "QUEST-FOUND-SILVERLIGHT-R01",
       "source": "quests/found-silverlight.md",
@@ -25,11 +25,12 @@
       "readiness_basis": "FS-C01-M02 and FS-C01-M03 construction are accepted from exact authored lineage, Ubuntu and Windows validation, detached review, canonical synthetic exercise, immutable recovery, and read-only rollback evidence. FS-C01-M04 still requires a Jayson-selected protected external store and bounded trusted provider/runtime usage evidence."
     },
     {
-      "next_gate": "PF-C01 preview and Jayson-side hardware readiness",
+      "next_gate": "PF-C01-M02 Preview — Preserve the Old Flame",
       "owner": "Odyssey / Prometheus Foundation",
       "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
       "source": "quests/prometheus-fire.md",
-      "state": "READY_FOR_CAMPAIGN_1_PREVIEW"
+      "state": "IN_PROGRESS",
+      "readiness_basis": "PF-C01-M01 Mission Seal is accepted with carry-forwards. Apollo commissioning, Windows-specific Codex evacuation, Hermes independent portable access, Windows recovery preservation, extended memory testing, and bounded stability follow-up remain incomplete. Iris is a source-accepted nonblocking companion endpoint."
     },
     {
       "next_gate": "NW-C01 readiness package and Jayson-side proof",

@@ -17,9 +17,9 @@ Artemis coordinates bounded intelligence work. It does not grant autonomous dura
 
 Nexus is the deterministic intake, validation, routing, approval, mission-state, quarantine, and receipt layer. It verifies packages, preserves identity, refuses ambiguous destinations, and separates planning from execution. Nexus is not source truth and cannot merge, delete, deploy, or recover systems without a separately authorized route.
 
-## Hermes
+## Kandra
 
-Hermes is the adaptive agent and typed-tool layer. Agent roles include default coordination, librarian, archivist, scribe, verifier, and an executor that remains disabled until an exact mission explicitly supplies bounded authority. Results return through typed packets and receipts.
+Kandra is the adaptive-agent, Skill, and typed-tool layer. Kandra supersedes Hermes as the active Artemis Operation name; Hermes is reserved for the portable human-operated Atlas command endpoint. Worker roles include default coordination, librarian, archivist, scribe, verifier, and an executor that remains disabled until an exact mission explicitly supplies bounded authority. Results return through typed packets and receipts. The rename grants no new authority.
 
 ## Athena
 
@@ -32,4 +32,4 @@ Athena authors the Weave: objective, exact base, paths, operations, bytes, autho
 - Private data is minimized, redacted, or kept in its evidence system.
 - Tool calls are allowlisted and mission-scoped.
 - Every durable mutation requires Prime source, a reviewed route, exact readback, and rollback.
-- Failure or absence of Nexus or Hermes must not destroy Prime source or prevent clean-clone recovery.
+- Failure or absence of Nexus or Kandra must not destroy Prime source or prevent clean-clone recovery.
