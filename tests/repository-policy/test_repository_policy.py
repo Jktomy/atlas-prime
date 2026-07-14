@@ -16,7 +16,7 @@ from production_adapter.protected_paths import POLICY_PATH, is_protected_path, i
 class RepositoryPolicyTests(unittest.TestCase):
     def test_000_temporary_state_reconciliation_tests(self) -> None:
         suite = unittest.TestSuite()
-        for filename in ("test_found_silverlight.py", "test_investiture_identity.py"):
+        for filename in ("test_prime_continuity.py", "test_prime_program.py", "test_rp_c01_m05_parity_acceptance.py"):
             suite.addTests(unittest.defaultTestLoader.discover(str(ROOT / "tests" / "prime-program"), pattern=filename))
         result = unittest.TextTestRunner(stream=io.StringIO(), verbosity=0).run(suite)
         self.assertTrue(result.wasSuccessful(), "TEMP_STATE_RECONCILIATION_TESTS_FAILED")
