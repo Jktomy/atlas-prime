@@ -1,6 +1,6 @@
 # Atlas Orphan Candidate Report
 
-Source fingerprint: sha256:97a03edfa3dc365e0f02b3b8baa62d83325016006e8f588c64000519bcfe1247
+Source fingerprint: sha256:1c98a15c5d3186aa5feee495cf7d8c27b7894f497e424a14c42bfa2bb0443fff
 Generator format: 2
 Status: Generated support artifact
 
@@ -12,7 +12,6 @@ An orphan candidate is not deletion approval. Review routing, support-file statu
 
 | Path | Reason |
 |---|---|
-| `governance/athena-fresh-work-origin-contract.md` | active metadata-bearing file not found in routing surfaces |
 | `lifecycle/architecture-decision-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `lifecycle/architecture-decision-r02.md` | active metadata-bearing file not found in routing surfaces |
 | `lifecycle/lifecycle-construction-contract.md` | active metadata-bearing file not found in routing surfaces |
