@@ -1,0 +1,136 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c08-cap015-architecture-realignment.v1",
+  "mission": "RP-C08-CAP015-ARCHITECTURE-REALIGNMENT-R01",
+  "base_sha": "f4af6cf91028883be6b842d8849e960c0e4664a0",
+  "controlling_architecture": {
+    "athena": {
+      "spear": "THREAD_ENGINE",
+      "phoenix_blade": "WIELD_EXACT_SWORD_NO_THREAD_ENGINE",
+      "aegis_break": "DIRECT_GITHUB_NATIVE_OR_OTHER_BOUNDED_SAFE_ROUTE"
+    },
+    "jayson_artemis": {
+      "arrow_bow": "DELEGATED_THREAD_ENGINE_DELIVERY"
+    },
+    "jayson": {
+      "oathbringer": "WIELD_EXACT_SWORD_NO_THREAD_ENGINE"
+    },
+    "symmetry": "PHOENIX_BLADE_AND_OATHBRINGER_ARE_OPERATOR_SPECIFIC_SWORD_METHODS",
+    "human_authority": "JAYSON_EXPLICIT_IN_CHAT_AUTHORIZATION",
+    "platform_origin_attestation_required": false,
+    "external_bridge_required": false,
+    "user_run_python_required": false,
+    "user_run_powershell_required": false,
+    "generated_checkpoint": "POST_MERGE_INFRASTRUCTURE_NOT_OPERATOR_METHOD"
+  },
+  "accepted_evidence": {
+    "RP-C01-M02": {
+      "state": "PROVEN",
+      "route": "PHOENIX_BLADE",
+      "pull_request": 50,
+      "base_sha": "9d0725fa0bce9461239cab10b4608ff3831d31fa",
+      "head_sha": "d26927cb0663afe71775dbfd35df2b3fc49ad21b",
+      "validation_run": 29070149639,
+      "ubuntu": "GREEN",
+      "windows": "GREEN",
+      "merge_sha": "c919b491d7dcf406fff9f1996ebe210e524cfc71",
+      "thread_engine_dependency": false,
+      "control_envelope": "SWORD_EQUIVALENT_EXACT_MISSION"
+    },
+    "CAP-015": {
+      "disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "route": "SPEAR",
+      "pull_request": 39,
+      "base_sha": "49eaf46bd971b4359e9ef89cb551c97e83dec85e",
+      "head_sha": "1f60f0496eca94fe97071217a04b8bdf70004b64",
+      "validation_run": 29056870868,
+      "ubuntu": "GREEN",
+      "windows": "GREEN",
+      "merge_sha": "7c8a533175da5c4fc9e8e0bb9de8bd37eba33dc5",
+      "thread_engine_dependency": true,
+      "proof_path": "proof/prime-spear-arrow-bow-parity-r01.md",
+      "corroborating_direct_spear": {
+        "pull_request": 102,
+        "head_sha": "fa20c23c532f3c684862a028720fe9debd7db855",
+        "validation_run": 29215320609,
+        "ubuntu": "GREEN",
+        "windows": "GREEN",
+        "merge_sha": "2ed53467a83569afea1d6c07e06d1d2ab52c75ff"
+      }
+    },
+    "AJ-01": {
+      "state": "PROVEN",
+      "journey": "ATHENA_SPEAR_SUBMISSION",
+      "evidence_capability": "CAP-015",
+      "pull_request": 39,
+      "head_sha": "1f60f0496eca94fe97071217a04b8bdf70004b64",
+      "validation_run": 29056870868,
+      "merge_sha": "7c8a533175da5c4fc9e8e0bb9de8bd37eba33dc5"
+    }
+  },
+  "retired_experiment": {
+    "classification": "SUPERSEDED_HISTORICAL_ONLY",
+    "premise": "PLATFORM_ORIGIN_ATTESTATION_REQUIRED",
+    "active_route": false,
+    "capability_gate": false,
+    "blocker": false,
+    "removed_paths": [
+      "governance/athena-fresh-work-origin-contract.md",
+      "schemas/athena-fresh-work-origin-receipt-v1.schema.json",
+      "schemas/athena-fresh-work-journey-receipt-v1.schema.json",
+      "tools/athena_routes/fresh_work_bridge.py",
+      "tests/athena-routes/test_fresh_work_bridge.py"
+    ]
+  },
+  "capability_counts": {
+    "PRESERVED": 4,
+    "IMPROVED": 7,
+    "RESTORED": 14,
+    "REPLACED": 1,
+    "INTENTIONALLY_RETIRED": 1,
+    "BLOCKED": 0,
+    "STILL_MISSING": 1
+  },
+  "current_journeys": {
+    "AJ-01": "PROVEN",
+    "AJ-02": "PROVEN",
+    "AJ-03": "UNPROVEN",
+    "AJ-04": "PROVEN",
+    "AJ-05": "PROVEN",
+    "AJ-06": "PROVEN",
+    "AJ-07": "PROVEN",
+    "AJ-08": "PROVEN",
+    "AJ-09": "PROVEN",
+    "AJ-10": "PROVEN",
+    "AJ-11": "UNPROVEN",
+    "AJ-12": "UNPROVEN"
+  },
+  "remaining_blockers": [
+    "RP-C01-M06_PROTECTED_EXECUTION",
+    "RP-C01-M07_AJ-03_GENUINE_NON_OWNER_REJECTION",
+    "AJ-11_FINAL_CLEAN_CLONE_RECOVERY",
+    "AJ-12_FINAL_MERGED_MAIN_UBUNTU_WINDOWS",
+    "CAP-027_FULL_ACCEPTANCE_LAYER",
+    "WHOLE_QUEST_STRIKEFORCE",
+    "PHOENIX_RECOVERY",
+    "RESTART_SAFE_SUNSET"
+  ],
+  "states": {
+    "RP-C01": "IN_PROGRESS",
+    "RP-C08": "IN_PROGRESS",
+    "QUEST-REPAIRING-PRIME-R01": "IN_PROGRESS",
+    "CAP-027": "STILL_MISSING"
+  },
+  "forbidden_promotions": {
+    "AJ-03": false,
+    "AJ-11": false,
+    "AJ-12": false,
+    "CAP-027": false,
+    "RP-C01_COMPLETE": false,
+    "RP-C08_COMPLETE": false,
+    "QUEST_COMPLETE": false,
+    "automatic_merge": false,
+    "ready_transition": false,
+    "standing_authority": false
+  }
+}
