@@ -14,19 +14,26 @@ from production_adapter.protected_paths import POLICY_PATH, is_protected_path, i
 
 
 class RepositoryPolicyTests(unittest.TestCase):
-    def test_000_temporary_later_reconciliation_tests(self) -> None:
+    def test_000_temporary_remaining_prime_modules(self) -> None:
         suite = unittest.TestSuite()
         for filename in (
-            "test_rp_c01_m07_live_rejections.py",
-            "test_rp_c01_m08_free_form_acceptance.py",
-            "test_rp_c01_m08_partial.py",
-            "test_rp_c07_acceptance.py",
-            "test_rp_c08_capability_reconciliation.py",
-            "test_sword_forge_standard.py",
+            "test_context_pack.py",
+            "test_chromelight.py",
+            "test_resonance.py",
+            "test_shardblade_permanence.py",
+            "test_oathbringer_foundry.py",
+            "test_investiture_accounting.py",
+            "test_oathbringer_foundry_lifecycle.py",
+            "test_oathbringer_console_v2.py",
+            "test_oathbringer_repair_parent_tree.py",
+            "test_investiture_construction_acceptance.py",
+            "test_consistent_pr_delivery_standard.py",
+            "test_investiture_storage.py",
+            "test_agentic_warrants.py",
         ):
             suite.addTests(unittest.defaultTestLoader.discover(str(ROOT / "tests" / "prime-program"), pattern=filename))
         result = unittest.TextTestRunner(stream=io.StringIO(), verbosity=0).run(suite)
-        self.assertTrue(result.wasSuccessful(), "TEMP_LATER_RECONCILIATION_TESTS_FAILED")
+        self.assertTrue(result.wasSuccessful(), "TEMP_REMAINING_PRIME_MODULES_FAILED")
 
     def test_repository_and_operator_invariants(self) -> None:
         repository = json.loads((ROOT / "policies" / "repository-policy.json").read_text(encoding="utf-8"))
