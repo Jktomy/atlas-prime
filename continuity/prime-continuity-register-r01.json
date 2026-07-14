@@ -40,7 +40,7 @@
       "campaign_id": "RP-C08",
       "mission_id": null,
       "gate_id": "REPAIRING_PRIME_COMPLETE",
-      "current_position": "M06 protected dispatch is PROVEN from authenticated Aegis Break execution, exact draft readback, Ubuntu/Windows CI, detached review, merge, canonical payload readback, and generated refresh. RP-C01 now waits only on M07/AJ-03 genuine non-owner rejection. CAP-027, AJ-11, AJ-12, RP-C01, RP-C08, and Repairing Prime remain open.",
+      "current_position": "M06 protected dispatch is PROVEN from authenticated Aegis Break execution, exact draft readback, cross-platform CI, detached review, merge, canonical payload readback, and generated refresh. RP-C07 is COMPLETE as historical reconciliation. The superseded label AJ-01/AJ-03/AJ-11/AJ-12 UNPROVEN no longer controls: AJ-01 is PROVEN; AJ-03, AJ-11, and AJ-12 remain UNPROVEN. RP-C01 now waits only on M07/AJ-03.",
       "blockers": [
         "RP-C01-M07 and AJ-03 require a genuine non-owner with legitimate workflow-dispatch permission to produce OWNER_IDENTITY_REJECTED with exact no-mutation evidence.",
         "CAP-027 remains missing while AJ-03, AJ-11, and AJ-12 are UNPROVEN.",
