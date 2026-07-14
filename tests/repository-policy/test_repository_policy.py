@@ -17,9 +17,8 @@ class RepositoryPolicyTests(unittest.TestCase):
     def test_000_temporary_remaining_prime_modules(self) -> None:
         suite = unittest.TestSuite()
         for filename in (
-            "test_oathbringer_foundry_lifecycle.py",
-            "test_oathbringer_console_v2.py",
-            "test_oathbringer_repair_parent_tree.py",
+            "test_investiture_construction_acceptance.py",
+            "test_consistent_pr_delivery_standard.py",
         ):
             suite.addTests(unittest.defaultTestLoader.discover(str(ROOT / "tests" / "prime-program"), pattern=filename))
         result = unittest.TextTestRunner(stream=io.StringIO(), verbosity=0).run(suite)
