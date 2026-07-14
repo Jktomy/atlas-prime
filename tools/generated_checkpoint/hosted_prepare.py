@@ -11,28 +11,38 @@ if str(THREAD_ENGINE_ROOT) not in sys.path:
 
 from production_adapter.receipt import sha256_bytes, stable_json
 
-from .core import PreparationError, prepare_package
+from .core import NOOP_RECEIPT_SCHEMA, PreparationError, prepare_package
 
 
 ALLOWED_EVENT_NAMES = frozenset({"push", "workflow_dispatch"})
 
 
-def bind_hosted_event(mission: dict[str, Any], event_name: str) -> dict[str, Any]:
+def bind_hosted_event(payload: dict[str, Any], event_name: str) -> dict[str, Any]:
     if event_name not in ALLOWED_EVENT_NAMES:
         raise PreparationError(
             "generated checkpoint hosted event is not allowlisted",
             "GENERATED_CHECKPOINT_EVENT",
         )
-    profile = mission.get("generated_checkpoint_profile")
+    if payload.get("result") == "NOOP":
+        if payload.get("schema_id") != NOOP_RECEIPT_SCHEMA:
+            raise PreparationError(
+                "generated checkpoint no-op receipt is unavailable",
+                "GENERATED_CHECKPOINT_EVENT",
+            )
+        payload["event_name"] = event_name
+        payload["receipt_sha256"] = "0" * 64
+        payload["receipt_sha256"] = sha256_bytes(stable_json(payload).encode("utf-8"))
+        return payload
+    profile = payload.get("generated_checkpoint_profile")
     if not isinstance(profile, dict):
         raise PreparationError(
             "generated checkpoint profile is unavailable",
             "GENERATED_CHECKPOINT_EVENT",
         )
     profile["event_name"] = event_name
-    mission["mission_sha256"] = "0" * 64
-    mission["mission_sha256"] = sha256_bytes(stable_json(mission).encode("utf-8"))
-    return mission
+    payload["mission_sha256"] = "0" * 64
+    payload["mission_sha256"] = sha256_bytes(stable_json(payload).encode("utf-8"))
+    return payload
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -49,7 +59,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     try:
-        mission = prepare_package(
+        prepared = prepare_package(
             args.repo_root,
             args.register,
             args.reconciliation,
@@ -57,17 +67,25 @@ def main(argv: list[str] | None = None) -> int:
             replay_nonce=args.replay_nonce,
             public_clean_confirmation=args.public_clean_confirmation,
         )
-        mission = bind_hosted_event(mission, args.event_name)
-        mission_path = args.package_root.resolve() / "mission.json"
-        mission_path.write_text(stable_json(mission), encoding="utf-8", newline="\n")
+        prepared = bind_hosted_event(prepared, args.event_name)
+        package_root = args.package_root.resolve()
+        if prepared.get("result") == "NOOP":
+            (package_root / "noop-receipt.json").write_text(
+                stable_json(prepared), encoding="utf-8", newline="\n"
+            )
+            sys.stdout.write(stable_json(prepared))
+            return 0
+
+        mission_path = package_root / "mission.json"
+        mission_path.write_text(stable_json(prepared), encoding="utf-8", newline="\n")
         sys.stdout.write(
             stable_json(
                 {
                     "result": "PACKAGE_PREPARED",
-                    "mission_id": mission["mission_id"],
-                    "mission_sha256": mission["mission_sha256"],
-                    "branch": mission["branch"],
-                    "event_name": mission["generated_checkpoint_profile"]["event_name"],
+                    "mission_id": prepared["mission_id"],
+                    "mission_sha256": prepared["mission_sha256"],
+                    "branch": prepared["branch"],
+                    "event_name": prepared["generated_checkpoint_profile"]["event_name"],
                 }
             )
         )
