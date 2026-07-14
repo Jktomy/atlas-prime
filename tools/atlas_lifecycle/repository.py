@@ -229,7 +229,8 @@ def validate_repository(
     stale: list[str] = []
     canonical_count = 0
     fixture_count = 0
-    current_head = expected_head or (observed_head(root) if check_stale else None)
+    if check_stale and expected_head is None:
+        observed_head(root)
 
     for path, fixture in sources:
         if path.suffix != ".json" or not path.is_file() or path.is_symlink():
@@ -270,10 +271,9 @@ def validate_repository(
                 raise LifecycleError("CANONICAL_FILENAME_MISMATCH", "canonical filename must equal the stable record ID")
             if record_data != canonical_bytes(record):
                 raise LifecycleError("NONCANONICAL_SERIALIZATION", "canonical record bytes are not deterministic")
-            concurrency = record.get("concurrency")
-            if check_stale and isinstance(concurrency, dict):
-                if concurrency.get("expected_main_sha") != current_head:
-                    stale.append(identifier)
+            # expected_main_sha is immutable transaction-input evidence.
+            # Stale transaction bases are rejected by candidate construction before output;
+            # accepted historical records do not expire when canonical main advances.
         add_source(path, canonical_bytes(record))
         loaded.append((record, fixture))
 
@@ -308,8 +308,6 @@ def validate_repository(
                 if emberline is None or emberline.get("quest_revision") != expected_revision:
                     raise LifecycleError("STALE_QUEST_REVISION", "expected Quest revision is not current")
 
-    if check_stale and stale:
-        raise LifecycleError("STALE_STATE", f"{len(stale)} lifecycle record(s) are stale")
     return ValidationResult(
         records=canonical_count,
         fixtures=fixture_count,

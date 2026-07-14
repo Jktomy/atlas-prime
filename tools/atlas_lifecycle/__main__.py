@@ -12,6 +12,7 @@ from .pilot import run_context_pilot
 from .planner import plan_event
 from .projection import INDEX_RELATIVE_PATH, check_website_index, compact_context
 from .repository import validate_repository
+from .sunset import generate_sunset_candidate, verify_sunset_candidate
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -50,6 +51,17 @@ def build_parser() -> argparse.ArgumentParser:
     event_candidate.add_argument("--state", type=Path, required=True)
     event_candidate.add_argument("--expected-state-digest", required=True)
     event_candidate.add_argument("--output-dir", type=Path, required=True)
+    sunset = subcommands.add_parser("sunset", help="build or verify one bounded Sunset candidate set")
+    sunset_commands = sunset.add_subparsers(dest="sunset_command", required=True)
+    sunset_candidate = sunset_commands.add_parser(
+        "candidate", help="create exactly one Feather/Sunset/Sunrise candidate set"
+    )
+    sunset_candidate.add_argument("--request", type=Path, required=True)
+    sunset_candidate.add_argument("--output-dir", type=Path, required=True)
+    sunset_verify = sunset_commands.add_parser(
+        "verify", help="verify one temporary Sunset candidate set"
+    )
+    sunset_verify.add_argument("--candidate-dir", type=Path, required=True)
     return parser
 
 
@@ -64,6 +76,21 @@ def main() -> int:
                     separators=(",", ":"),
                 )
             )
+            return 0
+
+        if args.command == "sunset":
+            if args.sunset_command == "candidate":
+                output = generate_sunset_candidate(
+                    args.repo_root,
+                    args.request,
+                    args.output_dir,
+                )
+            else:
+                output = verify_sunset_candidate(
+                    args.repo_root,
+                    args.candidate_dir,
+                )
+            print(json.dumps(output, sort_keys=True, separators=(",", ":")))
             return 0
 
         if args.command == "event":

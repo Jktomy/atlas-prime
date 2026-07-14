@@ -36,6 +36,26 @@ def write_json(path: Path, value: dict, *, canonical: bool = False) -> None:
     path.write_bytes(data)
 
 
+CANONICAL_DIRS = (
+    "feathers",
+    "feather-archives",
+    "golden-wings",
+    "quest-emberlines",
+    "quest-checkpoints",
+    "sunsets",
+    "sunrises",
+    "continuity",
+    "receipts",
+    "events",
+)
+
+
+def copy_lifecycle_source(repo: Path) -> None:
+    shutil.copytree(ROOT / "lifecycle", repo / "lifecycle")
+    for name in CANONICAL_DIRS:
+        shutil.rmtree(repo / "lifecycle" / name, ignore_errors=True)
+
+
 class LifecycleEngineTests(unittest.TestCase):
     def test_engine_sources_parse_and_have_no_network_dynamic_import_or_write_surface(self) -> None:
         source_dir = ROOT / "tools/atlas_lifecycle"
@@ -133,7 +153,7 @@ class LifecycleEngineTests(unittest.TestCase):
     def test_source_fingerprint_binds_contract_schemas_and_trust_roots(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             repo = Path(raw)
-            shutil.copytree(ROOT / "lifecycle", repo / "lifecycle")
+            copy_lifecycle_source(repo)
             baseline = validate_repository(repo)
             self.assertEqual(baseline.trust_roots, 0)
 
@@ -204,7 +224,7 @@ class LifecycleEngineTests(unittest.TestCase):
     def test_repository_accepts_only_route_bound_event_filename_exception(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             repo = Path(raw)
-            shutil.copytree(ROOT / "lifecycle", repo / "lifecycle")
+            copy_lifecycle_source(repo)
             fixture_path = repo / "lifecycle/fixtures/lifecycle-event-checkpoint.json"
             event = json.loads(fixture_path.read_text())
             fixture_path.unlink()
@@ -226,7 +246,7 @@ class LifecycleEngineTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as raw:
             repo = Path(raw)
-            shutil.copytree(ROOT / "lifecycle", repo / "lifecycle")
+            copy_lifecycle_source(repo)
             sunset = json.loads((
                 repo / "lifecycle/fixtures/sunset-non-quest.json"
             ).read_text())
@@ -244,7 +264,7 @@ class LifecycleEngineTests(unittest.TestCase):
     def test_repository_rejects_stale_main_parent_and_replay(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             repo = Path(raw)
-            shutil.copytree(ROOT / "lifecycle", repo / "lifecycle")
+            copy_lifecycle_source(repo)
             feather = json.loads(
                 (repo / "lifecycle/fixtures/feather-non-quest.json").read_text()
             )
@@ -262,9 +282,8 @@ class LifecycleEngineTests(unittest.TestCase):
             record["record_id"] = stable_record_id(record)
             path = repo / "lifecycle/sunsets" / f'{record["record_id"]}.json'
             write_json(path, record, canonical=True)
-            with self.assertRaises(LifecycleError) as raised:
-                validate_repository(repo, check_stale=True, expected_head="f" * 40)
-            self.assertEqual(raised.exception.code, "STALE_STATE")
+            result = validate_repository(repo, check_stale=True, expected_head="f" * 40)
+            self.assertEqual(result.stale_records, ())
 
             shutil.rmtree(repo / "lifecycle/sunsets")
             feather = json.loads((repo / "lifecycle/fixtures/feather-quest-bound.json").read_text())
@@ -429,7 +448,7 @@ class LifecycleEngineTests(unittest.TestCase):
     def test_external_trust_root_accepts_exact_bundle_and_rejects_resigned_forgery(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             repo = Path(raw) / "repo"
-            shutil.copytree(ROOT / "lifecycle", repo / "lifecycle")
+            copy_lifecycle_source(repo)
             bundle = Path(raw) / "bundle"
             bundle.mkdir()
             archive = bundle / "evidence.zip"
