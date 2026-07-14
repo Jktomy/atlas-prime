@@ -34,7 +34,7 @@ last_verified: 2026-07-14
 **Current lane:** `BUILD -> VERIFY`<br>
 **Current state:** `IN_PROGRESS`<br>
 **Current Campaign:** `RP-C08`<br>
-**Next gate:** `RP-C08 — remaining protected execution, rejection, recovery, final-main validation, and closeout`
+**Next gate:** `RP-C08 — remaining rejection, recovery, final-main validation, and closeout`
 
 RP-C02 through RP-C05 are complete from accepted canonical evidence. RP-C01 remains independently in progress with its exact unproven and partial missions; advancing the active campaign pointer does not promote or erase those blockers.
 
@@ -97,7 +97,10 @@ Accepted evidence:
 Accepted evidence:
 `proof/repairing-prime/rp-c01-m05-parity-acceptance-r01.md`. M05 is PROVEN from one immutable carrier retained through direct compilation and the guided hosted Arrow/Bow route, with exact compiler-receipt, mission, candidate-tree, final-pathset, singular-adapter, draft-PR readback, exact-head CI, detached review, merge, and canonical-main readback evidence. This mission-only acceptance does not complete RP-C01.
 
-RP-C01 remains `IN_PROGRESS` because M06 protected execution and M07/AJ-03 genuine non-owner rejection remain unproven.
+Accepted evidence:
+`proof/repairing-prime/rp-c01-m06-protected-dispatch-acceptance-r01.md`. M06 is PROVEN from one mission-scoped Aegis Break protected-path transaction: authenticated `Jktomy` operator readback, exact authority and path hashes, fresh clone, one protected-path draft PR, exact-head Ubuntu/Windows validation, detached Strikeforce, separately authorized merge, canonical payload readback, and merged generated checkpoint. This mission-level acceptance grants no standing authority and does not complete RP-C01.
+
+RP-C01 remains `IN_PROGRESS` because M07/AJ-03 genuine non-owner rejection remains unproven.
 
 ## RP-C02 — Shared Agentic Doctrine and Capability Warrants
 
