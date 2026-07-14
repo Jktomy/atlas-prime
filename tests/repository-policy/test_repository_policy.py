@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 import sys
 import unittest
@@ -13,6 +14,24 @@ from production_adapter.protected_paths import POLICY_PATH, is_protected_path, i
 
 
 class RepositoryPolicyTests(unittest.TestCase):
+    def test_000_temporary_new_route_assertions(self) -> None:
+        path = ROOT / "tests" / "prime-program" / "test_athena_execution_routes.py"
+        spec = importlib.util.spec_from_file_location("athena_route_diagnostic", path)
+        if spec is None or spec.loader is None:
+            self.fail("TEMP_DIAGNOSTIC_IMPORT_FAILED")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        case = module.AthenaExecutionRouteContractTests
+        names = (
+            "test_route_architecture_is_exact_and_nonconflated",
+            "test_cap015_and_aj01_use_accepted_direct_spear_evidence",
+            "test_remaining_acceptance_boundaries_are_preserved",
+        )
+        suite = unittest.TestSuite(case(name) for name in names)
+        result = unittest.TestResult()
+        suite.run(result)
+        self.assertTrue(result.wasSuccessful(), "TEMP_NEW_ROUTE_ASSERTIONS_FAILED")
+
     def test_repository_and_operator_invariants(self) -> None:
         repository = json.loads((ROOT / "policies" / "repository-policy.json").read_text(encoding="utf-8"))
         operator = json.loads((ROOT / "policies" / "operator-policy.json").read_text(encoding="utf-8"))
