@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import importlib.util
 import json
 import sys
 import unittest
@@ -14,18 +13,6 @@ from production_adapter.protected_paths import POLICY_PATH, is_protected_path, i
 
 
 class RepositoryPolicyTests(unittest.TestCase):
-    def test_000_temporary_fresh_work_source_tests(self) -> None:
-        path = ROOT / "tests" / "athena-routes" / "test_fresh_work_bridge.py"
-        spec = importlib.util.spec_from_file_location("fresh_work_diagnostic", path)
-        if spec is None or spec.loader is None:
-            self.fail("TEMP_DIAGNOSTIC_IMPORT_FAILED")
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        suite = unittest.defaultTestLoader.loadTestsFromTestCase(module.FreshWorkBridgeSourceTests)
-        result = unittest.TestResult()
-        suite.run(result)
-        self.assertTrue(result.wasSuccessful(), "TEMP_FRESH_WORK_SOURCE_TESTS_FAILED")
-
     def test_repository_and_operator_invariants(self) -> None:
         repository = json.loads((ROOT / "policies" / "repository-policy.json").read_text(encoding="utf-8"))
         operator = json.loads((ROOT / "policies" / "operator-policy.json").read_text(encoding="utf-8"))
@@ -34,7 +21,15 @@ class RepositoryPolicyTests(unittest.TestCase):
         self.assertEqual(repository["canonical_repository"], "Jktomy/atlas-prime")
         self.assertEqual(repository["predecessor_repository"], "Jktomy/atlas-codex")
         self.assertEqual(repository["predecessor_role"], "FROZEN_PREDECESSOR_ROLLBACK_EVIDENCE")
-        for field in ("direct_main_allowed", "force_push_allowed", "automatic_ready_allowed", "automatic_merge_allowed", "repository_settings_mutation_allowed", "standing_writer_allowed", "generated_output_authoritative"):
+        for field in (
+            "direct_main_allowed",
+            "force_push_allowed",
+            "automatic_ready_allowed",
+            "automatic_merge_allowed",
+            "repository_settings_mutation_allowed",
+            "standing_writer_allowed",
+            "generated_output_authoritative",
+        ):
             self.assertFalse(repository[field], field)
         self.assertTrue(operator["draft_pr_only"])
         self.assertTrue(operator["human_merge_required"])
@@ -42,7 +37,22 @@ class RepositoryPolicyTests(unittest.TestCase):
 
     def test_live_code_loads_the_reviewed_prime_policy(self) -> None:
         self.assertEqual(POLICY_PATH, ROOT / "policies" / "protected-paths.json")
-        required = {"README.md", "bootstrap.md", "atlas-prime.md", "atlas-start-here.md", "quests/prime-reborn.md", "governance/noctua.md", "policies/repository-policy.json", "schemas/thread-engine/mission.json", "migration/codex-inheritance-manifest.md", "lifecycle/events/fixture-event.json", "quest-board/quest-board.md", "generated/atlas-health.md", "tools/thread-engine/production_adapter/adapter.py", ".github/workflows/prime-readonly-validation.yml"}
+        required = {
+            "README.md",
+            "bootstrap.md",
+            "atlas-prime.md",
+            "atlas-start-here.md",
+            "quests/prime-reborn.md",
+            "governance/noctua.md",
+            "policies/repository-policy.json",
+            "schemas/thread-engine/mission.json",
+            "migration/codex-inheritance-manifest.md",
+            "lifecycle/events/fixture-event.json",
+            "quest-board/quest-board.md",
+            "generated/atlas-health.md",
+            "tools/thread-engine/production_adapter/adapter.py",
+            ".github/workflows/prime-readonly-validation.yml",
+        }
         for value in required:
             with self.subTest(value=value):
                 self.assertTrue(is_protected_path(PurePosixPath(value)))
@@ -51,7 +61,12 @@ class RepositoryPolicyTests(unittest.TestCase):
         self.assertFalse(is_thread_engine_self_change_path(PurePosixPath("governance/noctua.md")))
 
     def test_codex_workboard_route_is_absent_from_executable_surface(self) -> None:
-        files = [THREAD_ENGINE / "production_adapter" / "adapter.py", THREAD_ENGINE / "production_adapter" / "authority.py", THREAD_ENGINE / "production_adapter" / "cli.py", THREAD_ENGINE / "production_adapter" / "production_mission.schema.json"]
+        files = [
+            THREAD_ENGINE / "production_adapter" / "adapter.py",
+            THREAD_ENGINE / "production_adapter" / "authority.py",
+            THREAD_ENGINE / "production_adapter" / "cli.py",
+            THREAD_ENGINE / "production_adapter" / "production_mission.schema.json",
+        ]
         for path in files:
             text = path.read_text(encoding="utf-8").casefold()
             with self.subTest(path=path.name):
