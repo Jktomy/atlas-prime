@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import importlib.util
 import json
 import sys
 import unittest
@@ -11,20 +10,17 @@ THREAD_ENGINE = ROOT / "tools" / "thread-engine"
 sys.path.insert(0, str(THREAD_ENGINE))
 
 from production_adapter.protected_paths import POLICY_PATH, is_protected_path, is_thread_engine_self_change_path
+from tools.prime_continuity.engine import validate_board, validate_identity_register, validate_register
 
 
 class RepositoryPolicyTests(unittest.TestCase):
-    def test_000_temporary_state_reconciliation_tests(self) -> None:
-        path = ROOT / "tests" / "prime-program" / "test_prime_continuity.py"
-        spec = importlib.util.spec_from_file_location("prime_continuity_diagnostic", path)
-        if spec is None or spec.loader is None:
-            self.fail("TEMP_DIAGNOSTIC_IMPORT_FAILED")
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        case = module.PrimeContinuityTests("test_canonical_board_register_and_identities_validate")
-        result = unittest.TestResult()
-        case.run(result)
-        self.assertTrue(result.wasSuccessful(), "TEMP_CANONICAL_CONTINUITY_FAILED")
+    def test_000_temporary_continuity_machine_validation(self) -> None:
+        board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
+        register = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
+        identities = json.loads((ROOT / "continuity/quest-engine-identities-r01.json").read_text(encoding="utf-8"))
+        validate_board(board)
+        validate_register(register, board)
+        validate_identity_register(identities)
 
     def test_repository_and_operator_invariants(self) -> None:
         repository = json.loads((ROOT / "policies" / "repository-policy.json").read_text(encoding="utf-8"))
