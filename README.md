@@ -21,10 +21,35 @@ Codex repository: FROZEN PREDECESSOR / ROLLBACK EVIDENCE
 
 Start with `bootstrap.md`, then `routing/command-surfaces.md`.
 
-Fresh Work/Athena origin construction is documented in
-`governance/athena-fresh-work-origin-contract.md`; it remains
-construction-only and is not activated.
+Current operator and route architecture is documented in
+`governance/athena-route-architecture-r01.md`.
 
-Prime contains current authored identity, governance, routing, Projects, Operations, Quests, safety doctrine, recovery, infrastructure source, generators, working command surfaces, and bounded generated projections. Generated projections do not govern. Runtime packages do not prove deployment. Private or regulated evidence remains in its approved system.
+```text
+ATHENA
+  Spear -> Thread Engine
+  Sword -> Phoenix Blade -> GitHub transaction, no Thread Engine
+  Aegis Break -> direct GitHub-native or other bounded safe route
 
-All durable source changes use a reviewed branch and draft PR. Eligible construction uses Prime Thread Engine. Thread Engine self-change uses Aegis Break → Oathbringer. Jayson retains permanence and protected external-action authority.
+JAYSON / ARTEMIS
+  Arrow -> Bow -> Thread Engine
+
+JAYSON
+  Sword -> Oathbringer -> GitHub transaction, no Thread Engine
+```
+
+The generated-checkpoint publisher is post-merge infrastructure, not an operator
+method. A non-generated push to `main` starts deterministic regeneration. Zero
+delta is a successful no-op; a complete five-report delta invokes the singular
+Thread Engine to create a generated-only draft PR and run exact-head Ubuntu and
+Windows validation.
+
+Prime contains current authored identity, governance, routing, Projects,
+Operations, Quests, safety doctrine, recovery, infrastructure source,
+generators, working command surfaces, and bounded generated projections.
+Generated projections do not govern. Runtime packages do not prove deployment.
+Private or regulated evidence remains in its approved system.
+
+All durable source changes use exact source locks, a reviewed branch, and a draft
+PR. Jayson's explicit in-chat authorization controls the exact approved Preview
+or mission; separate permanence authority controls ready and merge. No external
+origin bridge or platform attestation is required.
