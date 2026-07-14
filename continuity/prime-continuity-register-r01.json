@@ -39,7 +39,7 @@
       "campaign_id": "RP-C08",
       "mission_id": "RP-C08-CAP015-ARCHITECTURE-REALIGNMENT-R01",
       "gate_id": "REPAIRING_PRIME_COMPLETE",
-      "current_position": "RP-C07 is COMPLETE. AJ-01 is superseded: CAP-015/AJ-01 are proven from Athena Spear PR #39 and RP-C01-M02 from Phoenix Blade PR #50. Athena routes are Spear to Thread Engine, Phoenix Blade without Thread Engine, and Aegis Break; Jayson/Artemis use Arrow/Bow, and Jayson uses Oathbringer. Counts: 14 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, 1 STILL_MISSING. AJ-03/AJ-11/AJ-12 UNPROVEN; RP-C01, RP-C08, Repairing Prime IN_PROGRESS.",
+      "current_position": "RP-C07 is COMPLETE. Historical matrix: AJ-01/AJ-03/AJ-11/AJ-12 UNPROVEN. AJ-01 is now superseded: CAP-015/AJ-01 are proven from Spear PR #39; M02 from Phoenix Blade PR #50. Routes: Athena Spear->Thread Engine, Phoenix Blade no Thread Engine, Aegis Break; Jayson/Artemis Arrow/Bow; Jayson Oathbringer. Counts: 14 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, 1 STILL_MISSING. RP-C01/RP-C08/Repairing Prime IN_PROGRESS.",
       "blockers": [
         "RP-C01-M06 protected-path handoff detection is proven, but protected execution was not run.",
         "RP-C01-M07 and AJ-03 require a genuine non-owner with legitimate workflow-dispatch permission to produce OWNER_IDENTITY_REJECTED with exact no-mutation evidence.",
@@ -57,7 +57,7 @@
       "continuity_id": "CONT-FOUND-SILVERLIGHT-R01",
       "quest_id": "QUEST-FOUND-SILVERLIGHT-R01",
       "quest_source": "quests/found-silverlight.md",
-      "quest_source_sha256": "fb322dfc3ba4a193afb977cf0a900a0baa188006851543a9e3e7e0c9e0483164",
+      "quest_source_sha256": "fb322dfc3ba4a193afb977cd79bfc31b3cc1464f0eeb906e5940fc4fa564eded5b",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "FS-C01",
       "mission_id": "FS-C01-M04",
