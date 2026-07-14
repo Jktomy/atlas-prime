@@ -109,7 +109,7 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertIn("Aegis Break is Athena's bounded route-selection", phoenix)
         self.assertIn("Spear is Athena's direct Thread Engine route", spear)
         self.assertIn("Bow and Arrow belong to Jayson and Artemis", bow)
-        self.assertIn("direct GitHub-native construction is an Aegis Break route", command_surfaces)
+        self.assertIn("Direct GitHub-native construction is an Aegis Break route", command_surfaces)
         self.assertNotIn("Phoenix Blade -> Athena direct repository construction", change_routes)
         self.assertNotIn("Bow and Arrow belong to Athena", bow)
 
