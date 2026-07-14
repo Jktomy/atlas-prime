@@ -242,7 +242,7 @@ class CapabilityParityTests(unittest.TestCase):
         )
         self.assertIn("Bow and Arrow belong to Jayson and Artemis", bow)
         self.assertIn("They are not Athena's route", bow)
-        self.assertIn("PowerShell is the thin interactive client", sword)
+        self.assertIn("PowerShell is the thin\ninteractive client", sword)
 
         self.assertIn(
             "Aegis Break -> direct GitHub-native or other bounded safe route",
@@ -252,11 +252,11 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertIn("Aegis Break is Athena's adaptive safe route", change_routes)
         self.assertIn("not hardwired", change_routes)
 
-        self.assertIn("Spear is Athena's Thread Engine route", architecture)
+        self.assertIn("Spear is Athena's Thread Engine\nroute", architecture)
         self.assertIn("JAYSON / ARTEMIS", architecture)
         self.assertIn("No external platform-origin", architecture)
 
-        self.assertIn("routes to **Phoenix Blade**", command_surfaces)
+        self.assertIn("routes to **Phoenix\n  Blade**", command_surfaces)
         self.assertIn(
             "does not need to invoke a separate preflight command",
             command_surfaces,

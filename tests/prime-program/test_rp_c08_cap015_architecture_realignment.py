@@ -16,7 +16,7 @@ class Cap015ArchitectureRealignmentTests(unittest.TestCase):
 
     def test_operator_methods_are_exact(self) -> None:
         for phrase in (
-            "Spear is Athena's Thread Engine route",
+            "Spear is Athena's Thread Engine\nroute",
             "Phoenix Blade is Athena's functional counterpart to Oathbringer",
             "Aegis Break is Athena's direct/adaptive safe method",
             "Arrow/Bow is Jayson and Artemis delegated delivery",
