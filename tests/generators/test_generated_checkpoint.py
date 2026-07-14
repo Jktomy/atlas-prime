@@ -45,10 +45,19 @@ HEAD = "b" * 40
 
 
 class GeneratedRouteRunner:
-    def __init__(self, mission: dict, source_root: Path, *, branch_exists: bool = False) -> None:
+    def __init__(
+        self,
+        mission: dict,
+        source_root: Path,
+        *,
+        branch_exists: bool = False,
+        collision_on_pre_push: bool = False,
+    ) -> None:
         self.mission = mission
         self.source_root = source_root
         self.branch_exists = branch_exists
+        self.collision_on_pre_push = collision_on_pre_push
+        self.history_reads = 0
         self.committed = False
         self.calls: list[tuple[str, ...]] = []
 
@@ -60,6 +69,19 @@ class GeneratedRouteRunner:
             output = f"{HEAD}\trefs/heads/{self.mission['branch']}\n" if self.branch_exists else ""
             return Completed(tuple(args), 0, output, "")
         if args[:4] == ["gh", "pr", "list", "--repo"]:
+            if "--limit" in args:
+                self.history_reads += 1
+                if self.collision_on_pre_push and self.history_reads == 2:
+                    collision = [{
+                        "number": 998,
+                        "state": "OPEN",
+                        "isDraft": True,
+                        "headRefName": "generated/checkpoint-race-000000000000",
+                        "headRefOid": "d" * 40,
+                        "title": "generated: deterministic checkpoint RACE",
+                        "body": "Concurrent generated checkpoint.\n",
+                    }]
+                    return Completed(tuple(args), 0, json.dumps(collision), "")
             return Completed(tuple(args), 0, "[]", "")
         if args[:2] == ["git", "clone"]:
             shutil.copytree(self.source_root, Path(args[-1]), dirs_exist_ok=True)
@@ -306,6 +328,23 @@ class GeneratedCheckpointTests(unittest.TestCase):
             self.assertEqual(receipt["pr_readback"]["headRefOid"], HEAD)
             self.assertTrue(receipt["generated_checkpoint_profile"]["fresh_clone_reproduction"]["fresh_clone_reproduction"])
             self.assertEqual(len([call for call in runner.calls if call[:3] == ("gh", "pr", "create")]), 1)
+            history_calls = [
+                call
+                for call in runner.calls
+                if call[:7]
+                == ("gh", "pr", "list", "--repo", "Jktomy/atlas-prime", "--state", "all")
+                and "--limit" in call
+            ]
+            self.assertEqual(len(history_calls), 2)
+            for call in history_calls:
+                self.assertEqual(
+                    call,
+                    (
+                        "gh", "pr", "list", "--repo", "Jktomy/atlas-prime",
+                        "--state", "all", "--limit", "1001", "--json",
+                        "number,state,isDraft,headRefName,headRefOid,title,body",
+                    ),
+                )
 
             replay_runner = GeneratedRouteRunner(mission, root, branch_exists=True)
             with patch.dict(os.environ, environment, clear=False), patch(
@@ -324,6 +363,37 @@ class GeneratedCheckpointTests(unittest.TestCase):
             self.assertEqual(getattr(raised.exception, "code", None), "BRANCH_EXISTS")
             self.assertEqual(raised.exception.receipt["result"], "REJECTED")
             self.assertEqual(len([call for call in replay_runner.calls if call[:2] == ("git", "push")]), 0)
+
+            collision_runner = GeneratedRouteRunner(
+                mission,
+                root,
+                collision_on_pre_push=True,
+            )
+            with patch.dict(os.environ, environment, clear=False), patch(
+                "production_adapter.adapter.load_activation_state", return_value=active
+            ), self.assertRaises(Exception) as raised:
+                execute_mission(
+                    package / "mission.json",
+                    mission_scoped=True,
+                    execute_draft_pr=True,
+                    mission_sha256=mission["mission_sha256"],
+                    generated_checkpoint_route=True,
+                    work_root=Path(raw) / "collision-work",
+                    package_root=package,
+                    runner=collision_runner,
+                )
+            self.assertEqual(
+                getattr(raised.exception, "code", None),
+                "GENERATED_CHECKPOINT_PR_COLLISION",
+            )
+            self.assertEqual(
+                getattr(raised.exception, "stage", None),
+                "PRE_PUSH_COLLISION_LOCK",
+            )
+            self.assertEqual(
+                len([call for call in collision_runner.calls if call[:2] == ("git", "push")]),
+                0,
+            )
 
     def test_history_rejects_open_collision_and_each_replay_axis(self) -> None:
         with tempfile.TemporaryDirectory(prefix="generated-checkpoint-") as raw:
@@ -368,6 +438,25 @@ class GeneratedCheckpointTests(unittest.TestCase):
 
             evidence = verify_generated_checkpoint_history(profile, [base_item])
             self.assertEqual(evidence["checkpoint_entries_checked"], 1)
+
+            bounded_history = [
+                dict(
+                    base_item,
+                    number=index,
+                    headRefName=f"source/ordinary-history-{index}",
+                    title=f"ordinary history {index}",
+                    body="Ordinary authored-source pull request.\n",
+                )
+                for index in range(1, 1001)
+            ]
+            evidence = verify_generated_checkpoint_history(profile, bounded_history)
+            self.assertEqual(evidence["history_entries_checked"], 1000)
+            with self.assertRaises(GeneratedCheckpointError) as raised:
+                verify_generated_checkpoint_history(
+                    profile,
+                    bounded_history + [dict(bounded_history[-1], number=1001)],
+                )
+            self.assertEqual(raised.exception.code, "GENERATED_CHECKPOINT_HISTORY")
 
     def test_preparer_has_no_process_or_github_route(self) -> None:
         source = (ROOT / "tools" / "generated_checkpoint" / "core.py").read_text(encoding="utf-8")

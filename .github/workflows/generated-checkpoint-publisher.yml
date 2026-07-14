@@ -24,8 +24,6 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - "generated/**"
 
 permissions:
   contents: read
@@ -41,8 +39,204 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  queue:
+    name: Inspect generated checkpoint queue
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      queue_result: ${{ steps.classify_queue.outputs.queue_result }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Admit exact publisher invocation
+        id: admit
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $hex40 = '^[0-9a-f]{40}$'
+          $expectedRepository = "Jktomy/atlas-prime"
+          $expectedOwner = "Jktomy"
+          $expectedWorkflowRef = "Jktomy/atlas-prime/.github/workflows/generated-checkpoint-publisher.yml@refs/heads/main"
+
+          if ($env:GITHUB_REPOSITORY -cne $expectedRepository) {
+            throw "Publisher repository identity rejected."
+          }
+          if ($env:GITHUB_REPOSITORY_OWNER -cne $expectedOwner) {
+            throw "Publisher owner identity rejected."
+          }
+          if (
+            $env:GITHUB_ACTOR -cne $expectedOwner -or
+            $env:GITHUB_TRIGGERING_ACTOR -cne $expectedOwner
+          ) {
+            throw "Publisher invoking identity rejected."
+          }
+          if ($env:GITHUB_REF -cne "refs/heads/main") {
+            throw "Publisher ref rejected."
+          }
+          if ($env:GITHUB_WORKFLOW_REF -cne $expectedWorkflowRef) {
+            throw "Publisher workflow ref rejected."
+          }
+          foreach ($value in @(
+            $env:GITHUB_SHA,
+            $env:GITHUB_WORKFLOW_SHA,
+            $env:GENERATED_BASE_SHA
+          )) {
+            if ($value -cnotmatch $hex40) {
+              throw "Publisher SHA identity rejected."
+            }
+          }
+
+          if ($env:GITHUB_EVENT_NAME -ceq "push") {
+            if (
+              $env:GENERATED_BASE_SHA -cne $env:GITHUB_SHA -or
+              $env:GITHUB_SHA -cne $env:GITHUB_WORKFLOW_SHA
+            ) {
+              throw "Publisher push base rejected."
+            }
+          }
+          elseif ($env:GITHUB_EVENT_NAME -ceq "workflow_dispatch") {
+            if ($env:GENERATED_PUBLIC_CLEAN_CONFIRMATION -cne "PUBLIC_CLEAN_CONFIRMED") {
+              throw "Publisher public-clean confirmation rejected."
+            }
+            if (
+              $env:GENERATED_BASE_SHA -cne $env:GITHUB_WORKFLOW_SHA -or
+              $env:GITHUB_SHA -cne $env:GITHUB_WORKFLOW_SHA
+            ) {
+              throw "Publisher dispatch base rejected."
+            }
+          }
+          else {
+            throw "Publisher event rejected."
+          }
+
+          $currentMain = (gh api "repos/$env:GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha').Trim()
+          if ($LASTEXITCODE -ne 0 -or $currentMain -cnotmatch $hex40) {
+            throw "Publisher current-main readback failed."
+          }
+          New-Item -ItemType Directory -Force "$env:RUNNER_TEMP/queue-evidence" | Out-Null
+          $admission = [ordered]@{
+            result = "ADMITTED"
+            repository = $env:GITHUB_REPOSITORY
+            event_name = $env:GITHUB_EVENT_NAME
+            event_base_sha = $env:GENERATED_BASE_SHA
+            current_main_sha = $currentMain
+            workflow_ref = $env:GITHUB_WORKFLOW_REF
+            workflow_source_sha = $env:GITHUB_WORKFLOW_SHA
+            workflow_run_id = $env:GITHUB_RUN_ID
+            workflow_run_attempt = $env:GITHUB_RUN_ATTEMPT
+            actor = $env:GITHUB_ACTOR
+            triggering_actor = $env:GITHUB_TRIGGERING_ACTOR
+            mutation_authorized = $false
+          }
+          $admission | ConvertTo-Json -Compress | Set-Content -LiteralPath "$env:RUNNER_TEMP/queue-evidence/admission.json" -Encoding utf8
+          "GENERATED_CURRENT_MAIN_SHA=$currentMain" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Check out exact workflow source
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: ${{ github.workflow_sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Read bounded open pull-request queue
+        shell: bash
+        run: |
+          gh pr list \
+            --repo "$GITHUB_REPOSITORY" \
+            --state open \
+            --limit 1001 \
+            --json number,state,isDraft,isCrossRepository,author,headRefName,headRefOid,headRepository,headRepositoryOwner,baseRefName,baseRefOid,title,body \
+            --jq 'sort_by(.number) | map({number: .number, state: .state, isDraft: .isDraft, isCrossRepository: .isCrossRepository, authorLogin: .author.login, authorIsBot: .author.is_bot, headRefName: .headRefName, headRefOid: .headRefOid, headRepositoryNameWithOwner: .headRepository.nameWithOwner, headRepositoryOwnerLogin: .headRepositoryOwner.login, baseRefName: .baseRefName, baseRefOid: .baseRefOid, title: .title, body: .body})' \
+            > "$RUNNER_TEMP/open-pull-requests.json"
+      - name: Classify generated checkpoint queue
+        id: classify_queue
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force "$env:RUNNER_TEMP/queue-evidence" | Out-Null
+          python -B -m tools.generated_checkpoint.queue `
+            --pull-requests "$env:RUNNER_TEMP/open-pull-requests.json" `
+            --repository "$env:GITHUB_REPOSITORY" `
+            --event-name "$env:GITHUB_EVENT_NAME" `
+            --event-base-sha "$env:GENERATED_BASE_SHA" `
+            --current-main-sha "$env:GENERATED_CURRENT_MAIN_SHA" `
+            --workflow-ref "$env:GITHUB_WORKFLOW_REF" `
+            --workflow-source-sha "$env:GITHUB_WORKFLOW_SHA" `
+            --workflow-run-id "$env:GITHUB_RUN_ID" `
+            --workflow-run-attempt "$env:GITHUB_RUN_ATTEMPT" `
+            --actor "$env:GITHUB_ACTOR" `
+            --triggering-actor "$env:GITHUB_TRIGGERING_ACTOR" `
+            --repository-owner "$env:GITHUB_REPOSITORY_OWNER" `
+            --credential-principal "github-actions[bot]" `
+            --credential-mode "GITHUB_TOKEN" |
+            Tee-Object -FilePath "$env:RUNNER_TEMP/queue-evidence/queue-receipt.json"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+          $receipt = Get-Content -LiteralPath "$env:RUNNER_TEMP/queue-evidence/queue-receipt.json" -Raw | ConvertFrom-Json
+          $result = [string]$receipt.result
+          if ($receipt.repository -cne $env:GITHUB_REPOSITORY) {
+            throw "Generated checkpoint queue receipt repository is inconsistent."
+          }
+          if (
+            $receipt.event_base_sha -cne $env:GENERATED_BASE_SHA -or
+            $receipt.current_main_sha -cne $env:GENERATED_CURRENT_MAIN_SHA -or
+            $receipt.workflow_source_sha -cne $env:GITHUB_WORKFLOW_SHA
+          ) {
+            throw "Generated checkpoint queue receipt base binding is inconsistent."
+          }
+          if (
+            [int]$receipt.query.limit -ne 1001 -or
+            [int]$receipt.query.max_accepted_entries -ne 1000 -or
+            [int]$receipt.query.returned_count -gt 1000
+          ) {
+            throw "Generated checkpoint queue receipt query boundary is inconsistent."
+          }
+          if ([string]$receipt.receipt_sha256 -notmatch '^[0-9a-f]{64}$') {
+            throw "Generated checkpoint queue receipt hash is invalid."
+          }
+          if ($receipt.mutation_authorized -ne $false -or $null -ne $receipt.error_code) {
+            throw "Generated checkpoint queue receipt authorizes mutation or reports an error."
+          }
+          if ($result -eq "CLEAR") {
+            if ([int]$receipt.open_checkpoint_count -ne 0 -or $null -ne $receipt.checkpoint) {
+              throw "Generated checkpoint CLEAR queue receipt is inconsistent."
+            }
+            "queue_result=CLEAR" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+            "Generated checkpoint queue: CLEAR." | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+          }
+          elseif ($result -eq "DEFERRED_OPEN_CHECKPOINT") {
+            if ([int]$receipt.open_checkpoint_count -ne 1 -or $null -eq $receipt.checkpoint) {
+              throw "Generated checkpoint deferred queue receipt is inconsistent."
+            }
+            if ($receipt.mutation_authorized -ne $false) {
+              throw "Generated checkpoint deferred queue receipt authorizes mutation."
+            }
+            "queue_result=DEFERRED_OPEN_CHECKPOINT" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+            "Generated checkpoint queue: DEFERRED while draft PR #$($receipt.checkpoint.number) remains open. No mutation attempted." | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+          }
+          else {
+            throw "Generated checkpoint queue returned an unknown result."
+          }
+      - name: Upload sanitized queue evidence
+        if: always() && steps.admit.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: generated-checkpoint-queue-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/queue-evidence/
+          if-no-files-found: error
+          retention-days: 14
+
   parity:
     name: Build register (${{ matrix.platform }})
+    needs: queue
+    if: >-
+      needs.queue.result == 'success' &&
+      needs.queue.outputs.queue_result == 'CLEAR'
     strategy:
       fail-fast: false
       matrix:

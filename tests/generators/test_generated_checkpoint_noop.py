@@ -141,6 +141,49 @@ class GeneratedCheckpointNoopTests(unittest.TestCase):
             self.assertTrue((package / "mission.json").is_file())
             self.assertFalse((package / "noop-receipt.json").exists())
 
+    def test_accumulated_source_changes_coalesce_into_one_latest_hosted_push_mission(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="generated-checkpoint-coalesced-") as raw:
+            root = Path(raw) / "repo"
+            self.make_full_delta_repo(root)
+            _, first_fingerprint = build_outputs(root)
+            (root / "SECOND-SOURCE-CHANGE.md").write_text(
+                "# Second source change while an older generated draft is open\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            _, latest_fingerprint = build_outputs(root)
+            self.assertNotEqual(first_fingerprint, latest_fingerprint)
+
+            register_path, reconciliation_path = self.write_evidence(root)
+            package = Path(raw) / "package"
+            stdout = io.StringIO()
+            with redirect_stdout(stdout):
+                result = hosted_prepare_main(
+                    [
+                        "--repo-root", str(root),
+                        "--register", str(register_path),
+                        "--reconciliation", str(reconciliation_path),
+                        "--package-root", str(package),
+                        "--replay-nonce", NONCE,
+                        "--public-clean-confirmation", "PUBLIC_CLEAN_CONFIRMED",
+                        "--event-name", "push",
+                    ]
+                )
+            self.assertEqual(result, 0)
+            preparation = json.loads(stdout.getvalue())
+            self.assertEqual(preparation["result"], "PACKAGE_PREPARED")
+            self.assertEqual(preparation["event_name"], "push")
+            mission = json.loads((package / "mission.json").read_text(encoding="utf-8"))
+            self.assertEqual(
+                mission["generated_checkpoint_profile"]["source_fingerprint"],
+                f"sha256:{latest_fingerprint}",
+            )
+            self.assertEqual(mission["declared_paths"], list(APPROVED_PATHS))
+            self.assertEqual(len(mission["operations"]), 5)
+            self.assertTrue(mission["branch"].startswith("generated/checkpoint-"))
+            self.assertEqual(list(package.glob("mission.json")), [package / "mission.json"])
+            self.assertFalse((package / "noop-receipt.json").exists())
+
     def test_partial_delta_fails_closed_before_mission_or_noop(self) -> None:
         with tempfile.TemporaryDirectory(prefix="generated-checkpoint-partial-") as raw:
             root = Path(raw) / "repo"
@@ -184,6 +227,7 @@ class GeneratedCheckpointNoopTests(unittest.TestCase):
         self.assertIn("contents: write", publish_block)
         self.assertIn("pull-requests: write", publish_block)
         self.assertIn("generated-checkpoint-preparation-", workflow)
+        self.assertNotIn("paths-ignore:", workflow)
         self.assertNotIn("actions: write", workflow)
         self.assertNotIn("automatic merge", workflow.casefold())
         self.assertNotIn("gh workflow run", workflow)
