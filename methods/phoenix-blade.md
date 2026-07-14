@@ -7,22 +7,58 @@ authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
 owner_operation: "Operation Source Governance"
 protected_level: "CRITICAL"
+routes_from:
+  - "governance/athena-route-architecture-r02.md"
+routes_to:
+  - "methods/atlas-sword.md"
 ---
 
 # Phoenix Blade and Aegis Break — Prime
 
-Phoenix Blade is Athena's direct repository-construction method under one exact authority envelope. It is a method, not a package, launcher, normal repository engine, work surface, or standing automation route.
+## Phoenix Blade
 
-Phoenix Blade has the same technical operation set available to a mission-specific Sword. It may perform arbitrary authorized multi-file ADD, REPLACE, DELETE, RENAME, and MOVE operations, including repairs to Oathbringer and Thread Engine, while containing every durable candidate in a branch and draft pull request.
+Phoenix Blade is the method by which Athena wields an exact Sword. It is
+Athena's functional counterpart to Jayson wielding a Sword through Oathbringer.
 
-Phoenix Blade does not depend on ChatGPT Work / Codex, Oathbringer, or Thread Engine. It may use an authenticated fresh-clone workspace or an equivalent GitHub-native blob, tree, commit, ref, and pull-request transaction according to the capabilities available to Athena.
+A Phoenix Blade transaction binds the Sword's exact mission, source locks,
+operations, payload hashes, tests, stop boundary, and receipt contract. Athena
+performs the authorized mechanics through the authenticated capabilities
+available in the current surface. Phoenix Blade does not use the Oathbringer
+PowerShell client and does not depend on Prime Thread Engine.
 
-Aegis Break selects or constructs a safe equivalent route when the normal route is obstructed. Phoenix Blade may be the selected route, but Aegis Break is not hardwired to Phoenix Blade. It never removes Aegis, widens scope, or grants authority.
+A Build Phoenix Blade may construct one exact candidate, create one branch and
+draft PR, read back the remote state, observe applicable CI, and stop. A Repair
+Phoenix Blade may add one fast-forward child commit to an exact current PR head.
+A separately authorized Execute Phoenix Blade may make only the exact audited
+permanence action allowed by the mission. Build or Repair never implies Execute.
 
-Shardplate is the AI-assisted work surface. ChatGPT Work / Codex may be Shardplate, but Shardplate is never the mutation route or source of permanence authority.
+The method supports authorized multi-file `ADD`, `REPLACE`, `DELETE`, `RENAME`,
+and `MOVE` operations, including repairs to Oathbringer and Thread Engine. It
+never becomes a standing repository engine and never grants itself ready, merge,
+direct-main, force-push, cleanup, settings, or standing authority.
 
-Model provider, model, runtime, and Atlas runtime-control status are bound independently. Trusted reported OpenAI, Google, or Atlas-controlled local-model tokens map only to Spirallight, Chromelight, or Emberlight under `governance/investiture-source-identity-contract.md`. Unreported model use is `UNAVAILABLE`; deterministic non-model work has no Light and zero BEU. A Light does not identify an operator, work surface, credential principal, launcher, repository substrate, engine, route, or permanence authority.
+PR #50 is accepted Phoenix Blade evidence. Athena performed the Found Silverlight
+admission under a Sword-equivalent exact control envelope, created a branch and
+draft PR, passed Ubuntu and Windows validation run `29070149639`, and merged only
+after Jayson's separate permanence decision.
 
-Fresh Clone First is one repository substrate available to stateful routes. An exact GitHub-native tree transaction is an equivalent construction substrate when it preserves the same source locks, payload identity, candidate-tree proof, draft-PR containment, and readback.
+## Aegis Break
 
-For every invocation, bind the authorizer, operator, provider, model, runtime control, delivery route, launcher, repository engine, repository substrate, work surface, accounting Light or no-Light status, exact source, allowed operations, stop boundary, proof, and rollback independently.
+Aegis Break is Athena's adaptive safe method. It preserves the approved goal,
+authorizer, operator, targets, risk class, protected-data class, allowed
+operations, stop boundary, proof, and rollback while selecting or constructing a
+safe route that can actually complete the task.
+
+Aegis Break may directly use an exact GitHub-native blob/tree/commit/ref/PR
+transaction, a fresh-clone substrate, Phoenix Blade, Oathbringer, a protected
+Thread Engine route, or another bounded route allowed by current doctrine. It is
+not hardwired to Phoenix Blade and does not become a second repository engine.
+A material change in goal, risk, protected boundary, operation class, or
+permanence requires a new Preview.
+
+Aegis Break never removes Aegis, widens scope, invents authority, or weakens the
+proof standard.
+
+Shardplate is the AI-assisted work surface. ChatGPT Work / Codex may be
+Shardplate, but Shardplate is never the mutation route or source of permanence
+authority.
