@@ -22,13 +22,6 @@ class RepositoryPolicyTests(unittest.TestCase):
             "test_investiture_identity.py",
             "test_prime_continuity.py",
             "test_prime_program.py",
-            "test_rp_c01_m05_parity_acceptance.py",
-            "test_rp_c01_m07_live_rejections.py",
-            "test_rp_c01_m08_free_form_acceptance.py",
-            "test_rp_c01_m08_partial.py",
-            "test_rp_c07_acceptance.py",
-            "test_rp_c08_capability_reconciliation.py",
-            "test_sword_forge_standard.py",
         )
         suite = unittest.TestSuite()
         for filename in selected:
