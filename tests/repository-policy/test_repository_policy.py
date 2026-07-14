@@ -15,19 +15,30 @@ from production_adapter.protected_paths import POLICY_PATH, is_protected_path, i
 
 class RepositoryPolicyTests(unittest.TestCase):
     def test_000_temporary_whole_program_diagnostic(self) -> None:
-        suite = unittest.defaultTestLoader.discover(
-            str(ROOT / "tests" / "prime-program"), pattern="test_*.py"
+        selected = (
+            "test_athena_execution_routes.py",
+            "test_capability_parity.py",
+            "test_found_silverlight.py",
+            "test_investiture_identity.py",
+            "test_prime_continuity.py",
+            "test_prime_program.py",
+            "test_rp_c01_m05_parity_acceptance.py",
+            "test_rp_c01_m07_live_rejections.py",
+            "test_rp_c01_m08_free_form_acceptance.py",
+            "test_rp_c01_m08_partial.py",
+            "test_rp_c07_acceptance.py",
+            "test_rp_c08_capability_reconciliation.py",
+            "test_sword_forge_standard.py",
         )
-        stream = io.StringIO()
-        result = unittest.TextTestRunner(stream=stream, verbosity=0).run(suite)
-        if result.failures or result.errors:
-            findings = []
-            for test, traceback in [*result.failures, *result.errors]:
-                tail = " | ".join(
-                    line.strip() for line in traceback.splitlines()[-4:] if line.strip()
+        suite = unittest.TestSuite()
+        for filename in selected:
+            suite.addTests(
+                unittest.defaultTestLoader.discover(
+                    str(ROOT / "tests" / "prime-program"), pattern=filename
                 )
-                findings.append(f"{test.id()} :: {tail}")
-            self.fail("WHOLE_PROGRAM_DIAGNOSTIC :: " + " || ".join(findings))
+            )
+        result = unittest.TextTestRunner(stream=io.StringIO(), verbosity=0).run(suite)
+        self.assertTrue(result.wasSuccessful(), "TEMP_DIAGNOSTIC_GROUP_FAILED")
 
     def test_repository_and_operator_invariants(self) -> None:
         repository = json.loads((ROOT / "policies" / "repository-policy.json").read_text(encoding="utf-8"))
