@@ -15,18 +15,9 @@ from production_adapter.protected_paths import POLICY_PATH, is_protected_path, i
 
 class RepositoryPolicyTests(unittest.TestCase):
     def test_000_temporary_whole_program_diagnostic(self) -> None:
-        selected = (
-            "test_athena_execution_routes.py",
-            "test_capability_parity.py",
-            "test_found_silverlight.py",
+        suite = unittest.defaultTestLoader.discover(
+            str(ROOT / "tests" / "prime-program"), pattern="test_athena_execution_routes.py"
         )
-        suite = unittest.TestSuite()
-        for filename in selected:
-            suite.addTests(
-                unittest.defaultTestLoader.discover(
-                    str(ROOT / "tests" / "prime-program"), pattern=filename
-                )
-            )
         result = unittest.TextTestRunner(stream=io.StringIO(), verbosity=0).run(suite)
         self.assertTrue(result.wasSuccessful(), "TEMP_DIAGNOSTIC_GROUP_FAILED")
 
