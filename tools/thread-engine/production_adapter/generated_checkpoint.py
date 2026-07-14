@@ -50,6 +50,7 @@ FALSE_FIELDS = {
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 MISSION_ID = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)*$")
+ALLOWED_EVENT_NAMES = frozenset({"push", "workflow_dispatch"})
 
 
 class GeneratedCheckpointError(Exception):
@@ -105,7 +106,6 @@ def validate_generated_checkpoint_profile(profile: Any, mission: dict[str, Any])
         "schema_version": PROFILE_VERSION,
         "profile_id": PROFILE_ID,
         "repository": "Jktomy/atlas-prime",
-        "event_name": "workflow_dispatch",
         "actor": "Jktomy",
         "triggering_actor": "Jktomy",
         "repository_owner": "Jktomy",
@@ -119,6 +119,8 @@ def validate_generated_checkpoint_profile(profile: Any, mission: dict[str, Any])
     for field, expected in constants.items():
         if profile.get(field) != expected:
             raise GeneratedCheckpointError(f"generated checkpoint {field} is invalid", "GENERATED_CHECKPOINT_PROFILE_SCHEMA")
+    if profile.get("event_name") not in ALLOWED_EVENT_NAMES:
+        raise GeneratedCheckpointError("generated checkpoint event_name is invalid", "GENERATED_CHECKPOINT_PROFILE_SCHEMA")
     for field in FALSE_FIELDS:
         if profile.get(field) is not False:
             raise GeneratedCheckpointError(f"generated checkpoint forbidden field must remain false: {field}", "GENERATED_CHECKPOINT_FORBIDDEN_ACTION")

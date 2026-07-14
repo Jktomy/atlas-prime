@@ -1,0 +1,96 @@
+from __future__ import annotations
+
+import unittest
+from copy import deepcopy
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[2]
+
+from tools.generated_checkpoint.core import PreparationError
+from tools.generated_checkpoint.hosted_prepare import bind_hosted_event
+
+
+class InChatWorkflowBridgeTests(unittest.TestCase):
+    def test_hosted_event_binding_is_closed_and_rehashes_mission(self) -> None:
+        original = {
+            "mission_id": "RP-C08-GENERATED-AUTO-1-1",
+            "mission_sha256": "0" * 64,
+            "generated_checkpoint_profile": {"event_name": "workflow_dispatch"},
+        }
+        for event_name in ("push", "workflow_dispatch"):
+            mission = bind_hosted_event(deepcopy(original), event_name)
+            self.assertEqual(
+                mission["generated_checkpoint_profile"]["event_name"],
+                event_name,
+            )
+            self.assertRegex(mission["mission_sha256"], r"^[0-9a-f]{64}$")
+            self.assertNotEqual(mission["mission_sha256"], "0" * 64)
+
+        with self.assertRaises(PreparationError) as raised:
+            bind_hosted_event(deepcopy(original), "schedule")
+        self.assertEqual(raised.exception.code, "GENERATED_CHECKPOINT_EVENT")
+
+    def test_publisher_keeps_manual_fallback_and_adds_owner_push_route(self) -> None:
+        workflow = (
+            ROOT / ".github" / "workflows" / "generated-checkpoint-publisher.yml"
+        ).read_text(encoding="utf-8")
+        for phrase in (
+            "workflow_dispatch:",
+            "push:",
+            "branches:",
+            "- main",
+            "paths-ignore:",
+            '- "generated/**"',
+            "github.actor == github.repository_owner",
+            "github.triggering_actor == github.repository_owner",
+            "github.event_name == 'push'",
+            "github.sha == github.workflow_sha",
+            "tools.generated_checkpoint.hosted_prepare",
+            "Bind exact generated draft readback",
+            "validate_exact_head:",
+            "needs.publish.outputs.head_sha",
+            "ubuntu-latest",
+            "windows-latest",
+        ):
+            self.assertIn(phrase, workflow)
+
+        self.assertNotIn("actions: write", workflow)
+        self.assertNotIn("automatic merge", workflow.casefold())
+        self.assertNotIn("gh workflow run", workflow)
+
+    def test_push_identity_is_deterministic_and_public_clean_by_construction(self) -> None:
+        workflow = (
+            ROOT / ".github" / "workflows" / "generated-checkpoint-publisher.yml"
+        ).read_text(encoding="utf-8")
+        self.assertIn("RP-C08-GENERATED-AUTO-{0}-{1}", workflow)
+        self.assertIn("generated-checkpoint-auto-{0}-{1}", workflow)
+        self.assertIn("'PUBLIC_CLEAN_CONFIRMED'", workflow)
+        self.assertIn("GENERATED_BASE_SHA", workflow)
+        self.assertIn("GENERATED_REPLAY_NONCE", workflow)
+        self.assertNotIn("--github-event", workflow)
+
+    def test_generated_profile_accepts_only_push_or_manual_dispatch(self) -> None:
+        source = (
+            ROOT
+            / "tools"
+            / "thread-engine"
+            / "production_adapter"
+            / "generated_checkpoint.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn(
+            'ALLOWED_EVENT_NAMES = frozenset({"push", "workflow_dispatch"})',
+            source,
+        )
+        self.assertIn(
+            'profile.get("event_name") not in ALLOWED_EVENT_NAMES',
+            source,
+        )
+        self.assertIn(
+            '"GITHUB_EVENT_NAME": profile["event_name"]',
+            source,
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()
