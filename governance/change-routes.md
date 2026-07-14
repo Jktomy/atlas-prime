@@ -7,6 +7,8 @@ authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
 owner_operation: "Operation Source Governance"
 protected_level: "CRITICAL"
+routes_from:
+  - "governance/athena-route-architecture-r02.md"
 ---
 
 # Prime Change Routes
@@ -14,11 +16,12 @@ protected_level: "CRITICAL"
 | Concept | Meaning |
 |---|---|
 | Authorizer | Jayson or one exact delegated authority; controls scope and permanence |
-| Operator | Athena, Jayson, or another named actor performing the bounded action |
-| Delivery route | Spear for direct delivery; Arrow/Bow for delegated immutable delivery |
-| Independent operator route | Sword sealed package using the Oathbringer method |
-| Direct bounded method | Phoenix Blade |
-| Safe rerouting | Aegis Break |
+| Operator | Athena, Jayson, Artemis, or another named actor performing the bounded action |
+| Delivery route | Spear for Athena direct Thread Engine delivery; Arrow/Bow for Jayson and Artemis delegated immutable delivery |
+| Sealed execution package | Sword, containing the exact mission, payload, locks, tests, stop boundary, and receipt contract |
+| Athena Sword method | Phoenix Blade |
+| Jayson Sword method | Oathbringer |
+| Adaptive safe method | Aegis Break |
 | Hosted or local launcher | Thin intake or client that invokes a method or engine without becoming one |
 | Normal repository engine | Prime Thread Engine, singular |
 | Repository substrate | Exact GitHub-native tree transaction or Fresh Clone First |
@@ -27,14 +30,27 @@ protected_level: "CRITICAL"
 | Provider, model, and runtime identity | Bound independently; trusted reported tokens map only to Spirallight, Chromelight, or Emberlight under `governance/investiture-source-identity-contract.md` |
 
 ```text
-Spear -> Thread Engine
-Arrow -> Bow -> Thread Engine
-Sword -> Oathbringer -> PowerShell thin client -> GitHub transaction
-Phoenix Blade -> Athena direct repository construction
-Aegis Break -> equivalent safe route
+Athena Spear -> Thread Engine
+Athena Sword -> Phoenix Blade -> GitHub transaction
+Athena Aegis Break -> direct GitHub-native or other bounded safe route
+Jayson Arrow -> Artemis Bow -> Thread Engine
+Jayson Sword -> Oathbringer -> PowerShell thin client -> GitHub transaction
 ```
 
-Aegis Break selects or constructs a safe equivalent route when the normal path is obstructed. Phoenix Blade may be selected, but Aegis Break is not hardwired to any one method. It does not erase Aegis or grant new authority.
+Spear is Athena's Thread Engine route. Phoenix Blade is how Athena wields an
+exact Sword without Thread Engine, mirroring what Oathbringer is to Jayson.
+Arrow/Bow belongs to Jayson and Artemis and is not an Athena method.
+
+Aegis Break is Athena's adaptive safe route. It may directly perform an exact
+GitHub-native transaction or select or construct another bounded safe route when
+the normal path is obstructed. It is not hardwired to Phoenix Blade,
+Oathbringer, Thread Engine, or any one repository substrate. It never breaks
+Aegis, widens scope, or grants new authority.
+
+Jayson's explicit in-chat authorization of an exact Preview or mission is
+sufficient human authorization. No external origin bridge, platform attestation,
+custom gateway, or user-run Python or PowerShell command is required to prove
+that authorization.
 
 Every route:
 
@@ -45,4 +61,6 @@ Every route:
 - prohibits automatic ready and automatic merge;
 - requires separate Jayson permanence authority.
 
-Prime has one normal repository engine. Spear and Arrow/Bow invoke Thread Engine. Phoenix Blade and Oathbringer are independent construction and recovery methods and do not become standing repository writers. Thread Engine never performs its own self-change.
+Prime has one normal repository engine. Spear and Arrow/Bow may invoke Thread
+Engine. Phoenix Blade, Oathbringer, and Aegis Break do not become standing
+repository writers. Thread Engine never performs its own self-change.
