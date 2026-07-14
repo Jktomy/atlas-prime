@@ -1,0 +1,100 @@
+{
+  "schema_version": "atlas.repairing-prime.cap015-architecture-realignment.v1",
+  "mission_id": "RP-C08-CAP015-ARCHITECTURE-REALIGNMENT-R02",
+  "exact_base": "f4af6cf91028883be6b842d8849e960c0e4664a0",
+  "result": "ARCHITECTURE_REALIGNED_FROM_ACCEPTED_EVIDENCE",
+  "route_architecture": {
+    "spear": "ATHENA_TO_SINGULAR_THREAD_ENGINE",
+    "phoenix_blade": "ATHENA_EXECUTES_EXACT_SWORD_NO_THREAD_ENGINE",
+    "aegis_break": "ATHENA_SELECTS_OR_CONSTRUCTS_ANY_SAFE_BOUNDED_ROUTE",
+    "arrow_bow": "JAYSON_AND_ARTEMIS_DELEGATED_DELIVERY_TO_THREAD_ENGINE",
+    "oathbringer": "JAYSON_WIELDS_EXACT_SWORD_NO_THREAD_ENGINE"
+  },
+  "superseded_premise": {
+    "identity": "FRESH_PLATFORM_ORIGIN_ATTESTATION_REQUIRED_FOR_ATHENA",
+    "disposition": "SUPERSEDED_FALSE_BLOCKER",
+    "replacement": "JAYSON_PREVIEW_EXECUTE_AUTHORIZATION_PLUS_ROUTE_SPECIFIC_EVIDENCE",
+    "external_bridge_required": false,
+    "platform_attestation_required": false,
+    "user_run_python_required": false,
+    "user_run_powershell_required": false
+  },
+  "accepted_evidence": {
+    "direct_spear": {
+      "pull_request": 102,
+      "head_sha": "fa20c23c532f3c684862a028720fe9debd7db855",
+      "canonical_readback_sha": "2ed53467a83569afea1d6c07e06d1d2ab52c75ff",
+      "result": "ATHENA_SPEAR_TO_THREAD_ENGINE_PROVEN"
+    },
+    "spear_arrow_bow_parity": {
+      "proof_path": "proof/prime-spear-arrow-bow-parity-r01.md",
+      "result": "COMPILER_AND_CANDIDATE_EQUIVALENCE_PROVEN"
+    },
+    "sword_operation_set": {
+      "proof_path": "proof/oathbringer-production-acceptance-r01.md",
+      "result": "OATHBRINGER_BUILD_REPAIR_EXECUTE_PROVEN"
+    },
+    "generated_post_merge_route": {
+      "source_pull_requests": [181, 182],
+      "source_heads": [
+        "a813fc10520d6f8af6bb8a5e2f15bdcafd9ad159",
+        "51d4b1628ef13fe2f70efe43da5711642bc984ff"
+      ],
+      "result": "AUTOMATIC_POST_MERGE_THREAD_ENGINE_ROUTE_WITH_ZERO_DELTA_NOOP_PROVEN"
+    }
+  },
+  "transitions": {
+    "CAP-015": {
+      "from": "STILL_MISSING/MISSING",
+      "to": "RESTORED/ACTIVE",
+      "corrected_capability": "Athena can reach the singular Thread Engine through Spear from a Jayson-authorized chat task"
+    },
+    "AJ-01": {
+      "from": "UNPROVEN",
+      "to": "PROVEN",
+      "corrected_journey": "Athena direct Spear submission reaches the singular Thread Engine and creates a harmless immutable draft PR"
+    },
+    "RP-C01-M02": {
+      "from": "UNPROVEN",
+      "to": "PROVEN",
+      "corrected_mission": "Phoenix Blade is Athena executing an exact Sword herself, mirroring Jayson wielding Oathbringer, without Thread Engine"
+    }
+  },
+  "capability_counts": {
+    "PRESERVED": 4,
+    "IMPROVED": 7,
+    "RESTORED": 14,
+    "REPLACED": 1,
+    "INTENTIONALLY_RETIRED": 1,
+    "BLOCKED": 0,
+    "STILL_MISSING": 1
+  },
+  "preserved_open": [
+    "RP-C01-M06",
+    "RP-C01-M07",
+    "AJ-03",
+    "CAP-027",
+    "AJ-11",
+    "AJ-12",
+    "RP-C01",
+    "RP-C08",
+    "QUEST-REPAIRING-PRIME-R01"
+  ],
+  "forbidden_promotions": {
+    "AJ-03": false,
+    "AJ-11": false,
+    "AJ-12": false,
+    "CAP-027": false,
+    "RP-C01": false,
+    "RP-C08": false,
+    "QUEST-REPAIRING-PRIME-R01": false,
+    "automatic_ready": false,
+    "automatic_merge": false
+  },
+  "campaign_state": {
+    "RP-C01": "IN_PROGRESS",
+    "RP-C08": "IN_PROGRESS",
+    "repairing_prime": "IN_PROGRESS"
+  },
+  "stop_boundary": "AUDITED_DRAFT_SOURCE_PR_WITH_EXACT_HEAD_UBUNTU_WINDOWS_GREEN"
+}
