@@ -22,7 +22,7 @@ routes_to:
 private_boundary: "Store only clean doctrine, schemas, code, sanitized evidence, and non-secret status. Keep secrets, credentials, PHI, finance/account evidence, IP addresses, network maps, device registers, and private runtime values outside Prime."
 evidence_boundary: "Capabilities and journeys move only from exact receipts, live proof where required, independent review, and canonical readback. Code existence and generated output do not prove availability."
 cleanup_path: "Close only after RP-C01 through RP-C08, all capability and acceptance reconciliation, generated refresh, clean-clone proof, independent whole-Quest Strikeforce, Quest Board closeout, Phoenix recovery, and restart-safe Sunset."
-last_verified: 2026-07-13
+last_verified: 2026-07-14
 ---
 
 # Quest — Repairing Prime
@@ -31,42 +31,42 @@ last_verified: 2026-07-13
 **Parent Project:** Project Codex<br>
 **Owning Operation:** Operation Source Governance<br>
 **Supporting Projects:** Artemis, Phoenix<br>
-**Current lane:** `PLAN -> VERIFY`<br>
+**Current lane:** `BUILD -> VERIFY`<br>
 **Current state:** `IN_PROGRESS`<br>
 **Current Campaign:** `RP-C08`<br>
-**Next gate:** `RP-C08 Preview — Final Capability-Parity and Quest Closeout`
+**Next gate:** `RP-C08 — remaining protected execution, rejection, recovery, final-main validation, and closeout`
 
-RP-C02 through RP-C05 are complete from accepted canonical evidence. RP-C01
-remains independently in progress with its exact unproven and partial missions;
-advancing the active campaign pointer does not promote or erase those blockers.
-RP-C06 is complete from accepted live hosted parity, publication, rejection,
-exact-head CI, detached review, and canonical readback evidence. RP-C07 is
-complete from an exact AJ-01 through AJ-12 disposition reconciliation. AJ-01,
-AJ-03, AJ-11, and AJ-12 are UNPROVEN, and all other journeys are PROVEN;
-those boundaries remain controlling while RP-C08 performs final capability and
-Quest closeout.
+RP-C02 through RP-C05 are complete from accepted canonical evidence. RP-C01 remains independently in progress with its exact unproven and partial missions; advancing the active campaign pointer does not promote or erase those blockers.
+
+RP-C06 is complete from accepted hosted generated parity, publication, rejection, exact-head CI, detached review, and canonical readback evidence. RP-C07 remains complete as the historical exact AJ-01 through AJ-12 disposition reconciliation. The later CAP-015 architecture realignment proves AJ-01 without rewriting that historical evidence.
+
+AJ-01, AJ-02, and AJ-04 through AJ-10 are PROVEN. AJ-03, AJ-11, and AJ-12 are UNPROVEN. Those boundaries remain controlling while RP-C08 performs final capability and Quest closeout.
 
 ## Purpose
 
-Repairing Prime restores missing user journeys and operating capabilities while
-preserving accepted Prime foundations. It begins with Athena-accessible Spear
-and Bow invocation, then completes agentic doctrine, provider-neutral
-coordination, Quest/continuity mechanics, deterministic conservation, the full
-acceptance matrix, and final parity closeout.
+Repairing Prime restores missing user journeys and operating capabilities while preserving accepted Prime foundations. Athena's direct methods are Spear, Phoenix Blade, and Aegis Break with distinct meanings:
+
+- Spear is Athena's route through the singular Thread Engine;
+- Phoenix Blade is Athena executing an exact Sword herself without Thread Engine;
+- Aegis Break selects or constructs any safe bounded route, including direct GitHub-native work when appropriate.
+
+Bow and Arrow belong to Jayson and Artemis delegated delivery. Oathbringer is Jayson wielding an exact Sword. The Quest then completes agentic doctrine, provider-neutral coordination, Quest/continuity mechanics, deterministic conservation, the acceptance matrix, and final parity closeout.
 
 ## Permanent boundaries
 
 - Prime is the sole clean canonical source.
 - Found Silverlight, Prometheus's Fire, and Notum's Watch remain independent.
 - Jayson controls permanence.
-- Build authority never implies Execute or merge authority.
+- Build authority never implies Execute, ready, or merge authority.
 - Generated projections report; they do not govern.
-- Oathbringer remains manual recovery/compatibility, not the desired routine
-  Athena route.
+- Spear is Athena's Thread Engine route.
+- Phoenix Blade is Athena executing a Sword; it does not use Thread Engine.
+- Aegis Break owns safe route selection and never widens authority.
+- Bow and Arrow belong to Jayson and Artemis delegated delivery.
+- Oathbringer remains Jayson's Sword method and does not become Athena's normal route.
 - Provider/account/runtime activation requires a separate applicable gate.
 - Protected/private evidence remains outside GitHub.
-- A capability is never promoted from narrative, code existence, local tests, or
-  a generated report alone.
+- A capability is never promoted from narrative, code existence, local tests, or a generated report alone.
 
 # Campaigns
 
@@ -75,9 +75,9 @@ acceptance matrix, and final parity closeout.
 Missions:
 
 1. `RP-C01-M01` Define Execution-Route Parity.
-2. `RP-C01-M02` Prove Phoenix Blade as Athena-native control.
+2. `RP-C01-M02` Prove Phoenix Blade as Athena executing an exact Sword without Thread Engine.
 3. `RP-C01-M03` Restore Direct Spear Invocation.
-4. `RP-C01-M04` Restore Hosted Bow Invocation.
+4. `RP-C01-M04` Restore Jayson/Artemis Hosted Bow Invocation.
 5. `RP-C01-M05` Prove Arrow/Spear Byte and Receipt Parity End to End.
 6. `RP-C01-M06` Prove Protected-Path Dispatch.
 7. `RP-C01-M07` Prove Route Detection and Fail-Closed Fallback.
@@ -85,114 +85,78 @@ Missions:
 
 **Gate:** `ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN`
 
+Accepted architecture reconciliation:
+`proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md`. RP-C01-M02 is PROVEN under the corrected identity: Phoenix Blade is Athena executing a Sword herself and mirrors Jayson wielding Oathbringer, without Thread Engine. RP-C01-M03 and AJ-01 are PROVEN from harmless direct Spear PR #102 through the singular Thread Engine. The obsolete external fresh-platform-origin bridge is superseded and no longer blocks CAP-015 or AJ-01.
+
 Accepted partial evidence:
-`proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.md`. M07
-and AJ-03 remain incomplete, but live edited-input, intentional replay,
-duplicate-branch, and duplicate-PR trials now reject before mutation. Only a
-genuine non-owner live rejection remains missing from that matrix.
+`proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.md`. M07 and AJ-03 remain incomplete, but live edited-input, intentional replay, duplicate-branch, and duplicate-PR trials reject before mutation. Only a genuine non-owner live rejection remains missing from that matrix.
 
 Accepted evidence:
-`proof/repairing-prime/rp-c01-m08-free-form-acceptance-r01.md`. M08 is PROVEN
-from the accepted guided dependency-retirement journey plus the ordinary
-free-form mission-fields intake that constructed the canonical mission and
-immutable carrier and completed the fresh hosted journey through exact draft-PR
-readback, exact-head Ubuntu/Windows validation, detached review, merge, and
-canonical readback. The earlier partial reconciliation remains historical
-evidence. This does not promote CAP-015, AJ-01, AJ-03, or the RP-C01 gate.
+`proof/repairing-prime/rp-c01-m08-free-form-acceptance-r01.md`. M08 is PROVEN from the accepted guided dependency-retirement journey plus the ordinary free-form mission-fields intake that constructed the canonical mission and immutable carrier and completed the hosted journey through exact draft-PR readback, exact-head Ubuntu/Windows validation, detached review, merge, and canonical readback. The earlier partial reconciliation remains historical evidence.
 
 Accepted evidence:
-`proof/repairing-prime/rp-c01-m05-parity-acceptance-r01.md`. M05 is PROVEN from
-one fresh immutable carrier retained through direct compilation and the guided
-hosted Bow route, with exact compiler-receipt, mission, candidate-tree,
-final-pathset, singular-adapter, draft-PR readback, exact-head CI, detached
-review, merge, and canonical-main readback evidence. This mission-only
-acceptance does not promote a capability, acceptance journey, or the RP-C01
-gate.
+`proof/repairing-prime/rp-c01-m05-parity-acceptance-r01.md`. M05 is PROVEN from one immutable carrier retained through direct compilation and the guided hosted Arrow/Bow route, with exact compiler-receipt, mission, candidate-tree, final-pathset, singular-adapter, draft-PR readback, exact-head CI, detached review, merge, and canonical-main readback evidence. This mission-only acceptance does not complete RP-C01.
+
+RP-C01 remains `IN_PROGRESS` because M06 protected execution and M07/AJ-03 genuine non-owner rejection remain unproven.
 
 ## RP-C02 — Shared Agentic Doctrine and Capability Warrants
 
-Define agent identity, authority, warrants, delegation, evidence, suspension,
-revocation, replacement, route contracts, and human approval.
+Define agent identity, authority, warrants, delegation, evidence, suspension, revocation, replacement, route contracts, and human approval.
 
 **Gate:** `SHARED_AGENTIC_WARRANTS_ACCEPTED`
 
 ## RP-C03 — Chromelight
 
-Evaluate Google eligibility, Gemini Scout, Jules, and Antigravity Shardplate
-within explicit provider and account boundaries.
+Evaluate Google eligibility, Gemini Scout, Jules, and Antigravity Shardplate within explicit provider and account boundaries.
 
 **Gate:** `CHROMELIGHT_EVIDENCE_RECONCILED`
 
 ## RP-C04 — Resonance
 
-Establish Refract, independent findings, the Aberration Register, Athena
-Refraction, and provider-neutral reconciliation. Local-model work remains
-blocked until runtime proof exists.
+Establish Refract, independent findings, the Aberration Register, Athena Refraction, and provider-neutral reconciliation. Local-model work remains blocked until runtime proof exists.
 
 **Gate:** `RESONANCE_EVIDENCE_RECONCILED`
 
 ## RP-C05 — Quest Engine and Prime Continuity
 
-Build stable Quest/Campaign/Mission/Gate identities and state rules; a
-Prime-native continuity register and bounded update route; deterministic
-Emberline; full startup/command surface; schema-driven Quest admission; and
-Sunset/Sunrise/Argus reconstruction.
+Build stable Quest/Campaign/Mission/Gate identities and state rules; a Prime-native continuity register and bounded update route; deterministic Emberline; full startup/command surface; schema-driven Quest admission; and Sunset/Sunrise/Argus reconstruction.
 
 **Gate:** `QUEST_ENGINE_AND_CONTINUITY_PROVEN`
 
 ## RP-C06 — Deterministic Conservation and Generated Parity
 
-Reconcile former G4-E/G4-F, deterministic projections, cross-platform parity,
-the bounded generated-only publisher, replay protection, evidence conservation,
-and authored/generated separation.
+Reconcile former G4-E/G4-F, deterministic projections, cross-platform parity, the bounded generated-only publisher, replay protection, evidence conservation, and authored/generated separation.
 
 Missions:
 
 1. `RP-C06-M01` Bind the former G4-E construction and G4-F live-acceptance meanings without restoring obsolete phase authority.
 2. `RP-C06-M02` Prove deterministic five-report projection bytes from one exact source.
 3. `RP-C06-M03` Prove hosted Ubuntu/Windows byte-hash parity.
-4. `RP-C06-M04` Prove the owner-triggered generated-only route invokes the singular Thread Engine and stops at exact draft-PR readback.
+4. `RP-C06-M04` Prove the generated-only route invokes the singular Thread Engine and stops at exact draft-PR readback.
 5. `RP-C06-M05` Prove stale-base, replay, branch-collision, and PR-collision rejection without new mutation.
 6. `RP-C06-M06` Conserve sanitized workflow, parity, Thread Engine, PR, and canonical readback evidence.
 7. `RP-C06-M07` Prove authored/generated separation and reconcile AJ-09 without self-promotion.
 
 **Gate:** `DETERMINISTIC_CONSERVATION_AND_GENERATED_PARITY_PROVEN`
 
-Accepted evidence: `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md`.
-AJ-09 and CAP-019/CAP-020 are proven from the owner-triggered hosted run and
-route-created generated-only PR. A separate fresh-identity hosted probe proved
-PR-collision rejection without mutation. All seven missions and the Campaign
-gate are accepted; generated output did not certify or advance the gate.
+Accepted evidence: `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md`. AJ-09 and CAP-019/CAP-020 are proven. PRs #181 and #182 later made the publisher automatic after non-generated main pushes, added exact generated-head Ubuntu/Windows validation, and made zero generated delta a successful read-only NOOP without adding automatic ready or merge.
 
 ## RP-C07 — Acceptance Journey Closure
 
-Reconcile AJ-01 through AJ-12. Preserve accepted AJ-04 through AJ-06. Every
-journey ends as PROVEN, BLOCKED, or UNPROVEN with exact evidence.
+Reconcile AJ-01 through AJ-12. Preserve accepted AJ-04 through AJ-06. Every journey ends as PROVEN, BLOCKED, or UNPROVEN with exact evidence.
 
 **Gate:** `AJ_01_THROUGH_AJ_12_RECONCILED`
 
-Accepted evidence:
-`proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md`. Every journey
-has exactly one controlling `PROVEN`, `BLOCKED`, or `UNPROVEN` disposition with
-exact evidence or the smallest missing action. This gate reconciles the matrix;
-it does not promote incomplete journeys or erase the independent RP-C01 lane.
+Accepted historical evidence:
+`proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md`. Every journey had exactly one controlling disposition at that accepted time. The later CAP-015 architecture realignment advances AJ-01 only. RP-C07 remains complete as a reconciliation Campaign; it does not promote AJ-03, AJ-11, AJ-12, or CAP-027.
 
 ## RP-C08 — Final Capability-Parity and Quest Closeout
 
-Reconcile all 28 capability records and counts; final generated refresh; exact
-Linux/Windows validation; clean-clone recovery; independent whole-Quest
-Strikeforce; Quest Board closeout; Phoenix recovery; and restart-safe Sunset.
+Reconcile all 28 capability records and counts; final generated refresh; exact Linux/Windows validation; clean-clone recovery; independent whole-Quest Strikeforce; Quest Board closeout; Phoenix recovery; and restart-safe Sunset.
 
 **Gate:** `REPAIRING_PRIME_COMPLETE`
 
 Capability reconciliation evidence:
-`proof/repairing-prime/rp-c08-capability-reconciliation-r01.md`. The 28-record
-ledger was initially reconciled at 11 RESTORED and 4 STILL_MISSING. A later
-fresh hosted multi-file journey and separate reconciliation at
-`proof/repairing-prime/rp-c08-cap011-reconciliation-r01.md` restore CAP-011.
-A later owner-guided Preview to Execute journey and separate reconciliation at
-`proof/repairing-prime/rp-c08-cap010-reconciliation-r01.md` restore CAP-010.
-The current counts are 13 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED,
-1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 2 STILL_MISSING. This remains a partial
-closeout boundary: CAP-015 and CAP-027 are still missing, and RP-C08 stays in
-progress.
+`proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` established the initial ledger. Later CAP-011 and CAP-010 reconciliations restored their hosted capabilities. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` restores CAP-015 under the corrected direct Spear architecture and quarantines the obsolete platform-origin construction.
+
+The current counts are 14 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 1 STILL_MISSING. CAP-027 remains missing while AJ-03, AJ-11, and AJ-12 are unproven. RP-C08 and Repairing Prime stay in progress.
