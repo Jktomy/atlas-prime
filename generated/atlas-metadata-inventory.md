@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:35c50dd2983d4be59007042b6248a1c53d3e043296ebbbe47b0fb92a69a982e9
+Source fingerprint: sha256:69d73f22b7205257c545e4472e881aecd83a9031cd6524c4f7c9961740717770
 Generator format: 2
 Status: Generated support artifact
 
@@ -85,6 +85,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md` | ACCEPTED_RECONCILIATION | PROOF | missing | MEDIUM |
 | `proof/repairing-prime/rp-c08-aj10-cap022-acceptance-reconciliation-r04.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-aj10-cap022-live-acceptance-r03.md` | missing | missing | missing | missing |
+| `proof/repairing-prime/rp-c08-aj11-clean-clone-acceptance-r08.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-cap010-reconciliation-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-cap011-reconciliation-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` | CANDIDATE_ACCEPTANCE_EVIDENCE | PROOF | missing | HIGH |
