@@ -163,7 +163,7 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         )
         self.assertEqual(repairing["last_event_id"], current_event)
         self.assertEqual(repairing["revision"], 20)
-        self.assertEqual(repairing["mission_id"], "RP-C01-M07")
+        self.assertIsNone(repairing["mission_id"])
         self.assertEqual(
             repairing["quest_source_sha256"],
             hashlib.sha256((ROOT / "quests/repairing-prime.md").read_bytes()).hexdigest(),

@@ -161,7 +161,7 @@ class RpC01M06ProtectedDispatchAcceptanceTests(unittest.TestCase):
         )
         self.assertEqual(repairing["last_event_id"], current_event)
         self.assertEqual(repairing["revision"], 20)
-        self.assertEqual(repairing["mission_id"], "RP-C01-M07")
+        self.assertIsNone(repairing["mission_id"])
         self.assertFalse(any("RP-C01-M06" in blocker for blocker in repairing["blockers"]))
         self.assertTrue(any("RP-C01-M07" in blocker for blocker in repairing["blockers"]))
         self.assertIn("genuine non-owner", repairing["next_action"])

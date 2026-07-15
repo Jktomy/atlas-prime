@@ -5,6 +5,8 @@ import json
 import unittest
 from pathlib import Path
 
+from tools.prime_continuity.engine import sha256 as continuity_sha256
+
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -26,7 +28,7 @@ class PostM06CurrentTruthTests(unittest.TestCase):
             for item in register["entries"]
             if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01"
         )
-        self.assertEqual(entry["mission_id"], "RP-C01-M07")
+        self.assertIsNone(entry["mission_id"])
         self.assertEqual(
             entry["last_event_id"],
             "RP-C08-POST-M06-CURRENT-TRUTH-R01",
@@ -57,7 +59,7 @@ class PostM06CurrentTruthTests(unittest.TestCase):
         )
         self.assertEqual(
             register["quest_board_sha256"],
-            hashlib.sha256(board_bytes).hexdigest(),
+            continuity_sha256(board),
         )
 
     def test_quest_digest_and_side_quest_independence(self) -> None:
