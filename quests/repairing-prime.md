@@ -31,7 +31,7 @@ last_verified: 2026-07-14
 **Parent Project:** Project Codex<br>
 **Owning Operation:** Operation Source Governance<br>
 **Supporting Projects:** Artemis, Phoenix<br>
-**Current lane:** `BUILD -> VERIFY`<br>
+**Current lane:** `PLAN -> VERIFY`<br>
 **Current state:** `IN_PROGRESS`<br>
 **Current Campaign:** `RP-C08`<br>
 **Next gate:** `RP-C01-M07 / AJ-03 — genuine non-owner rejection evidence; later RP-C08 recovery and final-main closeout remain open`
@@ -40,7 +40,98 @@ RP-C02 through RP-C05 are complete from accepted canonical evidence. RP-C05 now 
 
 RP-C06 is complete from accepted hosted generated parity, publication, rejection, exact-head CI, detached review, and canonical readback evidence. RP-C07 remains complete as the historical exact AJ-01 through AJ-12 disposition reconciliation. The later CAP-015 architecture realignment proves AJ-01 without rewriting that historical evidence.
 
-AJ-01, AJ-02, and AJ-04 through AJ-10 are PROVEN. AJ-03, AJ-11, and AJ-12 are UNPROVEN. AJ-10 is accepted from the corrected universal one-Sunset-to-one-Feather live journey and fresh-context exact-pair readback. Those boundaries remain controlling while RP-C08 resumes preserved execution and final capability and Quest closeout work.
+AJ-01, AJ-02, and AJ-04 through AJ-10 are PROVEN. AJ-03, AJ-11, and AJ-12 are UNPROVEN. AJ-10 is accepted from the corrected universal one-Sunset-to-one-Feather live journey and fresh-context exact-pair readback. RP-C01-M06 is PROVEN from the accepted protected-path journey and its clean authored reconciliation. Those boundaries remain controlling while RP-C08 resumes preserved execution and final capability and Quest closeout work.
+
+## Current accepted completion spine
+
+The current durable spine through canonical main
+`70f8f31c1107e0b59827870cc3803daccf8414c8` is:
+
+1. PR `#181` automated the post-source-merge generated publisher while preserving manual recovery.
+2. PR `#182` made zero generated delta a successful read-only `NOOP`.
+3. PR `#183` corrected CAP-015 and the Spear/Phoenix Blade/Aegis Break/Bow/Oathbringer architecture.
+4. PRs `#187` and `#188` proved the live M06 protected-path transaction and its generated checkpoint.
+5. PRs `#191`, `#193`, `#198`, and `#199` repaired universal Sunset/Feather truth, ran the live lifecycle journey, accepted AJ-10/CAP-022, and refreshed generated state.
+6. PR `#194` completed the one-ZIP Oathbringer Foundry delivery edge.
+7. PR `#195` reconciled Kandra and the Apollo/Hermes/Iris/Forge endpoint assignments without performing runtime migration.
+8. PRs `#196` and `#197` repaired and live-proved generated publisher queue coalescing.
+9. PRs `#200` and `#201` accepted RP-C01-M06 through a clean current-main authored transaction and a separate generated refresh.
+10. Publisher run `29378596081` then completed cross-platform parity and a truthful zero-delta `NOOP`; the singular writer and generated-head validation jobs were correctly skipped.
+
+This chain completes the bounded R04 Goal. It does not carry standing Goddess Mode, Shardblade, account, credential, or external-actor authority into the next mission.
+
+## Current Strikeforce disposition
+
+```text
+RP-C01-M06: PROVEN
+RP-C01: IN_PROGRESS
+RP-C05: COMPLETE
+RP-C06: COMPLETE
+RP-C07: COMPLETE as historical reconciliation
+RP-C08: IN_PROGRESS
+Repairing Prime: IN_PROGRESS
+
+AJ-03: UNPROVEN
+AJ-11: UNPROVEN
+AJ-12: UNPROVEN
+
+CAP-027: STILL_MISSING
+```
+
+Current capability counts remain:
+
+```text
+14 RESTORED
+7 IMPROVED
+4 PRESERVED
+1 REPLACED
+1 INTENTIONALLY_RETIRED
+0 BLOCKED
+1 STILL_MISSING
+```
+
+## Independent side-Quest ledger
+
+These sources remain independent and are not absorbed or completed by Repairing Prime:
+
+- **Found Silverlight:** FS-C01-M01 through M03 are PROVEN; FS-C01-M04 requires a separately selected protected external evidence store and one bounded trusted provider/runtime usage receipt.
+- **Prometheus's Fire:** PF-C01-M01 is `PROVEN_WITH_CARRY_FORWARD`; PF-C01-M02 Preserve the Old Flame remains `READY_FOR_PREVIEW`. Windows removal, Proxmox installation, endpoint migration, and infrastructure action remain separately gated.
+- **Notum's Watch:** remains `READY_FOR_JAYSON_EXECUTION_PACKAGE`; protected runtime placement and execution remain Jayson-side.
+- **Prime Continuity Proof:** remains `READY_FOR_CAMPAIGN_1_PREVIEW`.
+- **Oathbringer Foundry:** its one-ZIP delivery completion is accepted supporting method evidence, not a separate open Repairing Prime Campaign.
+
+Each independent Quest's own canonical source and continuity row govern its state.
+
+## Remaining route to `REPAIRING_PRIME_COMPLETE`
+
+1. **RP-C01-M07 / AJ-03:** obtain one genuine non-owner live `OWNER_IDENTITY_REJECTED` receipt with exact no-mutation evidence.
+2. **RP-C01 closeout:** reconcile M07 only after accepted evidence; do not rewrite the prior edited/replay/duplicate proofs.
+3. **CAP-027:** restore the end-to-end acceptance layer only when AJ-03, AJ-11, and AJ-12 all have exact accepted dispositions.
+4. **AJ-11:** prove clean-clone recovery, deterministic regeneration, and rollback classification without normal Codex dependency.
+5. **AJ-12:** prove the complete Prime validation matrix on Ubuntu and Windows at one exact final merged-main SHA.
+6. **RP-C08 final reconciliation:** recount all 28 capabilities and bind the final acceptance contract without self-promotion.
+7. **Generated current-state proof:** complete the final generated refresh or truthful `NOOP`.
+8. **Whole-Quest Strikeforce:** independently audit source, evidence, privacy, authority, recovery, changed paths, generated separation, and rollback.
+9. **Quest Board and continuity closeout:** synchronize only after all gates are accepted.
+10. **Phoenix recovery:** prove the accepted final recovery route.
+11. **Restart-safe Sunset:** produce the final exact Feather/Sunset/next-gate record before archive.
+
+## Current authority boundary
+
+The next mission may require a separate GitHub identity or another legitimate non-owner actor. An owner-authenticated session cannot honestly manufacture the missing condition.
+
+Before any M07 live execution:
+
+```text
+fresh canonical readback
+→ bounded Preview
+→ identify the legitimate non-owner actor and dispatch permission
+→ define credential and protected-evidence boundaries
+→ separate Jayson Execute authorization
+→ one live no-mutation attempt
+```
+
+No R04 standing authority carries forward. Do not request, copy, store, expose, or commit credentials, tokens, MFA/recovery material, account data, or private runtime values.
 
 ## Purpose
 
@@ -98,7 +189,7 @@ Accepted evidence:
 `proof/repairing-prime/rp-c01-m05-parity-acceptance-r01.md`. M05 is PROVEN from one immutable carrier retained through direct compilation and the guided hosted Arrow/Bow route, with exact compiler-receipt, mission, candidate-tree, final-pathset, singular-adapter, draft-PR readback, exact-head CI, detached review, merge, and canonical-main readback evidence. This mission-only acceptance does not complete RP-C01.
 
 Accepted evidence:
-`proof/repairing-prime/rp-c01-m06-protected-dispatch-acceptance-r01.md`. M06 is PROVEN from one mission-scoped Aegis Break protected-path transaction: authenticated `Jktomy` operator readback, exact authority and path hashes, fresh clone, one protected-path draft PR, exact-head Ubuntu/Windows validation, detached Strikeforce, separately authorized merge, canonical payload readback, and merged generated checkpoint. This mission-level acceptance grants no standing authority and does not complete RP-C01.
+`proof/repairing-prime/rp-c01-m06-protected-dispatch-acceptance-r01.md`. M06 is PROVEN from one mission-scoped Aegis Break protected-path transaction: authenticated `Jktomy` operator readback, exact authority and path hashes, fresh clone, one protected-path draft PR, exact-head Ubuntu/Windows validation, detached Strikeforce, separately authorized merge, canonical payload readback, and merged generated checkpoint. The clean authored reconciliation was PR `#200` at exact head `8f5fb705d67eb7535d3ae3ca15104159d7c20e2e`, merged as `8039c4448cc7c707fb24cf33ebe3e1d3e3a93307`. Generated PR `#201` at exact head `ac677190104849cbac787d73990189f28f493cfa` merged as current main `70f8f31c1107e0b59827870cc3803daccf8414c8`; publisher run `29378596081` then proved current generated state through a zero-delta `NOOP`. This mission-level acceptance grants no standing authority and does not complete RP-C01.
 
 RP-C01 remains `IN_PROGRESS` because M07/AJ-03 genuine non-owner rejection remains unproven.
 
@@ -147,7 +238,7 @@ Missions:
 
 **Gate:** `DETERMINISTIC_CONSERVATION_AND_GENERATED_PARITY_PROVEN`
 
-Accepted evidence: `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md`. AJ-09 and CAP-019/CAP-020 are proven. PRs #181 and #182 later made the publisher automatic after non-generated main pushes, added exact generated-head Ubuntu/Windows validation, and made zero generated delta a successful read-only NOOP without adding automatic ready or merge.
+Accepted evidence: `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md`. AJ-09 and CAP-019/CAP-020 are proven. PRs #181 and #182 later made the publisher automatic after non-generated main pushes, added exact generated-head Ubuntu/Windows validation, and made zero generated delta a successful read-only NOOP without adding automatic ready or merge. PR #196 later added bounded queue coalescing and forged-deferral resistance while preserving the singular writer and final collision protections.
 
 ## RP-C07 — Acceptance Journey Closure
 
@@ -168,11 +259,3 @@ Capability reconciliation evidence:
 `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` established the initial ledger. Later CAP-011 and CAP-010 reconciliations restored their hosted capabilities. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` restores CAP-015 under the corrected direct Spear architecture and quarantines the obsolete platform-origin construction.
 
 The current counts are 14 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 1 STILL_MISSING. CAP-027 is the only missing capability while AJ-03, AJ-11, and AJ-12 are unproven. RP-C08 and Repairing Prime stay in progress.
-
-## Bounded Sunset repair interruption and return gate
-
-The Sunset/Feather correction was a bounded interruption. Its completed order was:
-
-`source truth repair → exact-head validation → independent audit → merge → generated checkpoint → live AJ-10/CAP-022 restoration journey → fresh-context acceptance reconciliation → resume preserved pre-interruption RP-C08 work`
-
-M06 protected execution is now accepted from the clean current-main replacement transaction after PR #189 was audited as stale and noisy; PR #189 remains preserved and unmerged. The remaining return work includes the M07/AJ-03 rejection gate plus clean-clone, final-main, Phoenix recovery, and Quest closeout gates. PR #190 remains blocked and must not merge. The accepted CAP-015 architecture realignment remains preserved and is not reopened by this repair.
