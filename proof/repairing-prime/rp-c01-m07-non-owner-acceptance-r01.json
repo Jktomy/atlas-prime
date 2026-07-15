@@ -1,0 +1,145 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c01-m07-non-owner-acceptance.v1",
+  "record_id": "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05",
+  "campaign": "RP-C01",
+  "mission": "RP-C01-M07",
+  "campaign_gate": "ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN",
+  "mission_state": "PROVEN",
+  "campaign_state": "COMPLETE",
+  "acceptance_journey": "AJ-03",
+  "acceptance_journey_state": "PROVEN",
+  "transaction_base_sha": "bd10062b87e2c2f26f3b99969b0d1bab30e76ac0",
+  "live_non_owner_rejection": {
+    "repository_owner": "Jktomy",
+    "non_owner_actor": "jaysontomyod",
+    "temporary_permission": "WRITE",
+    "permission_after_test": "NONE",
+    "workflow_run": 29421543076,
+    "workflow_attempt": 1,
+    "preflight_job": {
+      "id": 87372991737,
+      "conclusion": "FAILURE_EXPECTED_REJECTION"
+    },
+    "thread_engine_job": {
+      "id": 87373032342,
+      "conclusion": "SKIPPED"
+    },
+    "workflow_source_sha": "bd10062b87e2c2f26f3b99969b0d1bab30e76ac0",
+    "result": "REJECTED",
+    "error_code": "OWNER_IDENTITY_REJECTED",
+    "stage": "PRE_MUTATION_REJECTION",
+    "stop_point": "PRE_MUTATION_REJECTION"
+  },
+  "artifact_binding": {
+    "artifact_id": 8345413762,
+    "artifact_name": "athena-hosted-bow-preflight-29421543076-1",
+    "artifact_zip_sha256": "77795a9da645a6788f369f31ed84a2141445366dff1f81807dec2d6ce47e5699",
+    "receipt_sha256": "2b96117650e426b2fdea9b830b5ef8da1ee69ee74fb6127f90c9de648e13999b"
+  },
+  "sanitized_receipt": {
+    "adapter_receipt_sha256": null,
+    "carrier_sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+    "compile_receipt_sha256": null,
+    "error_code": "OWNER_IDENTITY_REJECTED",
+    "forbidden_action_confirmation": {
+      "direct_main": false,
+      "force_push": false,
+      "merge": false,
+      "ready": false,
+      "second_writer": false,
+      "settings": false,
+      "standing_authority": false
+    },
+    "identity": {
+      "authorizer": "Jayson",
+      "credential_principal": "GITHUB_ACTIONS_REPOSITORY_TOKEN:Jktomy/atlas-prime",
+      "event_actor": "jaysontomyod",
+      "mission_id": "UNKNOWN",
+      "requesting_surface": "Codex",
+      "run_attempt": 1,
+      "run_id": "29421543076",
+      "semantic_operator": "Codex SOL Goal",
+      "token_mode": "GITHUB_TOKEN",
+      "triggering_actor": "jaysontomyod",
+      "workflow_ref": "Jktomy/atlas-prime/.github/workflows/athena-bow-hosted.yml@refs/heads/main",
+      "workflow_source_sha": "bd10062b87e2c2f26f3b99969b0d1bab30e76ac0"
+    },
+    "mutation": {
+      "branch": null,
+      "draft": null,
+      "head_sha": null,
+      "occurred": false,
+      "pull_request": null
+    },
+    "replay_key": "sha256:9d461cea693741ac230c5192e26d6664ea44463513c1f81cc9552ba473e42aa7",
+    "request_sha256": "9d461cea693741ac230c5192e26d6664ea44463513c1f81cc9552ba473e42aa7",
+    "result": "REJECTED",
+    "rollback": {
+      "force_or_history_rewrite": false,
+      "post_merge": "NO_MUTATION_REQUIRED",
+      "pre_merge": "NO_MUTATION_REQUIRED"
+    },
+    "route": "ARROW_BOW_HOSTED",
+    "schema_version": "atlas.athena.hosted-route-receipt.v1",
+    "stage": "PRE_MUTATION_REJECTION",
+    "stop_point": "PRE_MUTATION_REJECTION"
+  },
+  "post_run_readback": {
+    "canonical_main_sha": "bd10062b87e2c2f26f3b99969b0d1bab30e76ac0",
+    "canonical_main_unchanged": true,
+    "new_branch": null,
+    "new_pull_request": null,
+    "thread_engine_invoked": false,
+    "temporary_access_removed": true,
+    "observed_permission_after": "none"
+  },
+  "historical_partial_evidence": {
+    "path": "proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.json",
+    "state": "PRESERVED_IMMUTABLE_PARTIAL_EVIDENCE",
+    "accepted_before_non_owner": [
+      "EDITED_INPUT",
+      "REPLAY",
+      "DUPLICATE_BRANCH",
+      "DUPLICATE_PR"
+    ],
+    "missing_at_that_time": [
+      "NON_OWNER"
+    ]
+  },
+  "transitions": {
+    "RP-C01-M07": {
+      "from": "PARTIAL",
+      "to": "PROVEN"
+    },
+    "AJ-03": {
+      "from": "UNPROVEN",
+      "to": "PROVEN"
+    },
+    "RP-C01": {
+      "from": "IN_PROGRESS",
+      "to": "COMPLETE"
+    },
+    "ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN": {
+      "from": "NOT_PROVEN",
+      "to": "ACCEPTED"
+    }
+  },
+  "remaining_open": [
+    "AJ-11",
+    "AJ-12",
+    "CAP-027",
+    "RP-C08",
+    "QUEST-REPAIRING-PRIME-R01"
+  ],
+  "capability_promotion": "NONE",
+  "capability_counts_changed": false,
+  "forbidden_promotions": {
+    "AJ_11": false,
+    "AJ_12": false,
+    "CAP_027": false,
+    "RP_C08": false,
+    "QUEST_COMPLETE": false,
+    "permanence_granted": false,
+    "standing_authority": false
+  }
+}

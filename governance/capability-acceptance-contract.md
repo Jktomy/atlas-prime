@@ -44,6 +44,16 @@ AJ-01 does not require a platform-signed ChatGPT Work origin receipt. Jayson Pre
 
 AJ-02 remains `PROVEN` from the accepted hosted Arrow/Bow evidence. Hosted identity is separate from Athena's direct Spear route and does not redefine the authorizer, operator, or route owner.
 
+## Accepted hosted rejection journey
+
+AJ-03 is `PROVEN`. Genuine non-owner account `jaysontomyod` temporarily received Write
+permission and dispatched hosted workflow run `29421543076` from exact main `bd10062b87e2c2f26f3b99969b0d1bab30e76ac0`.
+The read-only job returned `OWNER_IDENTITY_REJECTED` at `PRE_MUTATION_REJECTION`; the
+Thread Engine job was skipped; the sanitized receipt records no branch, pull request, head,
+ready, merge, settings, standing-authority, force-push, second-writer, or direct-main action.
+Post-run readback found main unchanged, no new branch or PR, and temporary access removed.
+The exact accepted record is `proof/repairing-prime/rp-c01-m07-non-owner-acceptance-r01.md`.
+
 ## Accepted Oathbringer journeys
 
 AJ-04, AJ-05, and AJ-06 are `PROVEN`. Their immutable GitHub identities, exact heads, workflow runs, changed-path readback, merge result, and independent reconciliation are recorded in `proof/oathbringer-production-acceptance-r01.md`.
@@ -84,7 +94,7 @@ evidence is recorded in
 ```text
 AJ-01 PROVEN
 AJ-02 PROVEN
-AJ-03 UNPROVEN
+AJ-03 PROVEN
 AJ-04 PROVEN
 AJ-05 PROVEN
 AJ-06 PROVEN
@@ -96,11 +106,11 @@ AJ-11 UNPROVEN
 AJ-12 UNPROVEN
 ```
 
-AJ-03 has exact live no-mutation evidence for edited input, intentional replay, duplicate branch, and duplicate PR. It remains UNPROVEN because a genuine non-owner rejection is still missing.
+AJ-03 has exact live no-mutation evidence for edited input, intentional replay, duplicate branch, duplicate PR, and a genuine non-owner request. The non-owner row is bound to run `29421543076`, `OWNER_IDENTITY_REJECTED`, a skipped Thread Engine job, and exact zero-mutation evidence.
 
-AJ-10 is PROVEN from the corrected universal one-Sunset-to-one-Feather live journey and fresh-context exact-pair reconstruction. AJ-11 and AJ-12 remain assigned to final RP-C08 recovery and exact-final-main validation. AJ-03 remains UNPROVEN pending the genuine non-owner live rejection.
+AJ-10 is PROVEN from the corrected universal one-Sunset-to-one-Feather live journey and fresh-context exact-pair reconstruction. AJ-11 and AJ-12 remain assigned to final RP-C08 recovery and exact-final-main validation.
 
-The historical RP-C05 record remains valid evidence of the state at its accepted time. The historical RP-C07 reconciliation remains valid evidence of the state at its accepted time. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` remains the later controlling transition for AJ-01 only. `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` and the R03 live candidate remain immutable historical pre-acceptance evidence. `proof/repairing-prime/rp-c08-aj10-cap022-acceptance-reconciliation-r04.md` is the current controlling transition for AJ-10, CAP-022, and RP-C05 only.
+The historical RP-C05 record remains valid evidence of the state at its accepted time. The historical RP-C07 reconciliation remains valid evidence of the state at its accepted time. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` remains the later controlling transition for AJ-01 only. `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` and the R03 live candidate remain immutable historical pre-acceptance evidence. `proof/repairing-prime/rp-c08-aj10-cap022-acceptance-reconciliation-r04.md` is the current controlling transition for AJ-10, CAP-022, and RP-C05 only. `proof/repairing-prime/rp-c01-m07-non-owner-acceptance-r01.md` is the later controlling transition for AJ-03, RP-C01-M07, and RP-C01 only.
 
 ## Legacy Oathbringer capability mapping
 

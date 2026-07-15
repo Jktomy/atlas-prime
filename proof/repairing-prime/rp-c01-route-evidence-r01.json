@@ -2,7 +2,7 @@
   "schema_version": "atlas.repairing-prime.rp-c01-route-evidence.v1",
   "campaign": "RP-C01",
   "campaign_gate": "ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN",
-  "campaign_gate_state": "NOT_PROVEN",
+  "campaign_gate_state": "ACCEPTED",
   "direct_spear": {
     "state": "PROVEN_MERGED_AUTHENTICATED_LOCAL_ROUTE",
     "carrier_sha256": "5ff52ffd5bb320e91b85d68cc3c476b38a33862ab5d1ef9211d902febb6f646f",
@@ -87,7 +87,12 @@
     "parity_result": "PARITY_VERIFIED",
     "pull_request": 161,
     "head_sha": "e48cc2ca6d0e0b9226265a3e7bfd3b8df7df46c2",
-    "exact_head_ci": {"run": 29237591203, "windows_job": 86775798001, "ubuntu_job": 86775798063, "result": "GREEN"},
+    "exact_head_ci": {
+      "run": 29237591203,
+      "windows_job": 86775798001,
+      "ubuntu_job": 86775798063,
+      "result": "GREEN"
+    },
     "detached_review": "GREEN",
     "merge_sha": "df66ae78dac1991db3902537fe338a4191d0da11",
     "canonical_readback": "EXACT",
@@ -109,7 +114,12 @@
     "free_form_live_pull_request": 166,
     "free_form_live_head_sha": "4bc22f8203ab0603025fc63fe0862eaddf58f3ef",
     "free_form_live_merge_sha": "429ae7d068f9dde943a47b7cf3795073b9d1fc93",
-    "free_form_live_exact_head_ci": {"run": 29261247288, "ubuntu_job": 86854800780, "windows_job": 86854800816, "result": "GREEN"},
+    "free_form_live_exact_head_ci": {
+      "run": 29261247288,
+      "ubuntu_job": 86854800780,
+      "windows_job": 86854800816,
+      "result": "GREEN"
+    },
     "free_form_live_detached_review": "GREEN",
     "missing": [],
     "historical_partial_evidence": "proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.json",
@@ -163,26 +173,103 @@
     "evidence": "proof/repairing-prime/rp-c01-m06-protected-dispatch-acceptance-r01.json"
   },
   "m07_live_rejection_sequence": {
-    "state": "PARTIAL_NON_OWNER_MISSING",
+    "state": "PROVEN_COMPLETE_REJECTION_SET",
     "canonical_base": "50e8646e0267e20ec31e2d970216039ffb3844ae",
     "mission_id": "RP-C01-M07-LIVE-REJECTIONS-R02",
     "carrier_sha256": "68f89707f31ebd95fd35940b343babb646d430d6522d4582dabee8add89d2674",
     "fixture_run": 29234164212,
     "fixture_pull_request": 156,
     "fixture_final_state": "CLOSED_UNMERGED_BRANCH_DELETED",
-    "accepted": ["EDITED_INPUT", "REPLAY", "DUPLICATE_BRANCH", "DUPLICATE_PR"],
-    "missing": ["NON_OWNER"],
-    "evidence": "proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.json"
+    "accepted": [
+      "EDITED_INPUT",
+      "REPLAY",
+      "DUPLICATE_BRANCH",
+      "DUPLICATE_PR",
+      "NON_OWNER"
+    ],
+    "missing": [],
+    "evidence": "proof/repairing-prime/rp-c01-m07-non-owner-acceptance-r01.json",
+    "historical_partial_evidence": "proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.json",
+    "non_owner_run": 29421543076,
+    "non_owner_receipt_sha256": "2b96117650e426b2fdea9b830b5ef8da1ee69ee74fb6127f90c9de648e13999b",
+    "non_owner_artifact_id": 8345413762,
+    "non_owner_artifact_zip_sha256": "77795a9da645a6788f369f31ed84a2141445366dff1f81807dec2d6ce47e5699",
+    "non_owner_actor": "jaysontomyod",
+    "non_owner_result": "OWNER_IDENTITY_REJECTED_NO_MUTATION"
   },
   "live_rejections": [
-    {"run": 29215564172, "result": "REJECTED", "code": "CARRIER_BASE64_REJECTED", "mutation": false},
-    {"run": 29215594376, "result": "BLOCKED", "code": "PROTECTED_AEGIS_REQUIRED", "route": "AEGIS_BREAK_PROTECTED", "mutation": false},
-    {"run": 29215615801, "result": "BLOCKED", "code": "THREAD_ENGINE_SELF_CHANGE", "route": "AEGIS_BREAK_TO_OATHBRINGER", "mutation": false},
-    {"run": 29215638810, "result": "REJECTED", "code": "GENERATED_SOURCE_MIXING", "mutation": false},
-    {"run": 29215778360, "result": "REJECTED", "code": "BASE_STALE", "mutation": false},
-    {"run": 29234357420, "result": "REJECTED", "code": "CARRIER_SHA_REJECTED", "acceptance": ["EDITED_INPUT"], "mutation": false},
-    {"run": 29234223758, "result": "REJECTED", "code": "REPLAY_BRANCH_EXISTS", "acceptance": ["REPLAY", "DUPLICATE_BRANCH"], "mutation": false},
-    {"run": 29234280578, "result": "REJECTED", "code": "REPLAY_PULL_REQUEST_EXISTS", "acceptance": ["REPLAY", "DUPLICATE_PR"], "mutation": false}
+    {
+      "run": 29215564172,
+      "result": "REJECTED",
+      "code": "CARRIER_BASE64_REJECTED",
+      "mutation": false
+    },
+    {
+      "run": 29215594376,
+      "result": "BLOCKED",
+      "code": "PROTECTED_AEGIS_REQUIRED",
+      "route": "AEGIS_BREAK_PROTECTED",
+      "mutation": false
+    },
+    {
+      "run": 29215615801,
+      "result": "BLOCKED",
+      "code": "THREAD_ENGINE_SELF_CHANGE",
+      "route": "AEGIS_BREAK_TO_OATHBRINGER",
+      "mutation": false
+    },
+    {
+      "run": 29215638810,
+      "result": "REJECTED",
+      "code": "GENERATED_SOURCE_MIXING",
+      "mutation": false
+    },
+    {
+      "run": 29215778360,
+      "result": "REJECTED",
+      "code": "BASE_STALE",
+      "mutation": false
+    },
+    {
+      "run": 29234357420,
+      "result": "REJECTED",
+      "code": "CARRIER_SHA_REJECTED",
+      "acceptance": [
+        "EDITED_INPUT"
+      ],
+      "mutation": false
+    },
+    {
+      "run": 29234223758,
+      "result": "REJECTED",
+      "code": "REPLAY_BRANCH_EXISTS",
+      "acceptance": [
+        "REPLAY",
+        "DUPLICATE_BRANCH"
+      ],
+      "mutation": false
+    },
+    {
+      "run": 29234280578,
+      "result": "REJECTED",
+      "code": "REPLAY_PULL_REQUEST_EXISTS",
+      "acceptance": [
+        "REPLAY",
+        "DUPLICATE_PR"
+      ],
+      "mutation": false
+    },
+    {
+      "run": 29421543076,
+      "result": "REJECTED",
+      "code": "OWNER_IDENTITY_REJECTED",
+      "acceptance": [
+        "NON_OWNER"
+      ],
+      "actor": "jaysontomyod",
+      "mutation": false,
+      "invoke": "SKIPPED"
+    }
   ],
   "mission_states": {
     "RP-C01-M01": "PROVEN_MERGED",
@@ -191,9 +278,11 @@
     "RP-C01-M04": "PROVEN_MERGED_AUTHENTICATED_HOSTED_ROUTE",
     "RP-C01-M05": "PROVEN_SAME_CARRIER_DIRECT_AND_GUIDED_HOSTED_PARITY",
     "RP-C01-M06": "PROVEN_MERGED_AUTHENTICATED_PROTECTED_ROUTE",
-    "RP-C01-M07": "PARTIAL_ONLY_GENUINE_NON_OWNER_LIVE_REJECTION_MISSING",
+    "RP-C01-M07": "PROVEN_FAIL_CLOSED_ROUTE_DETECTION_AND_NON_OWNER_REJECTION",
     "RP-C01-M08": "PROVEN_ROUTINE_FREE_FORM_INTAKE_TO_CANONICAL_CARRIER_LIVE_ACCEPTANCE"
   },
   "capability_promotion": "NONE",
-  "acceptance_journey_promotion": "NONE"
+  "acceptance_journey_promotion": "AJ-03_ONLY",
+  "campaign_state": "COMPLETE",
+  "campaign_promotion": "RP-C01_COMPLETE_ONLY"
 }

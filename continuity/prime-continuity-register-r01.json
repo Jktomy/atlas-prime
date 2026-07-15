@@ -2,9 +2,9 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 25,
-  "source_base_sha": "70f8f31c1107e0b59827870cc3803daccf8414c8",
-  "quest_board_sha256": "51a3b52b9f9db780bd91a38034b442e4a72aa9552aed11b4056e95ac16ac3a85",
+  "register_revision": 26,
+  "source_base_sha": "bd10062b87e2c2f26f3b99969b0d1bab30e76ac0",
+  "quest_board_sha256": "4b9c719d559d6ff0a6d2a6e225eca8f32888b558970870538664a5a1d7f5a0b9",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -33,30 +33,29 @@
     "PF-C01-M01-KANDRA-ENDPOINT-RECONCILIATION-R01",
     "RP-C08-AJ10-CAP022-ACCEPTANCE-RECONCILIATION-R04",
     "RP-C01-M06-PROTECTED-DISPATCH-ACCEPTANCE-R04",
-    "RP-C08-POST-M06-CURRENT-TRUTH-R01"
+    "RP-C08-POST-M06-CURRENT-TRUTH-R01",
+    "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"
   ],
   "entries": [
     {
       "continuity_id": "CONT-REPAIRING-PRIME-R01",
       "quest_id": "QUEST-REPAIRING-PRIME-R01",
       "quest_source": "quests/repairing-prime.md",
-      "quest_source_sha256": "e123c4e0c75e349011bd51678fcf65a57fd2b8231d01f9c15d5e2dfb1750b3d8",
+      "quest_source_sha256": "fdc40a82b0bdb7d71ab0aa57b7f5f22be5e893820477376f8f20eb810759dad6",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "RP-C08",
       "mission_id": null,
       "gate_id": "REPAIRING_PRIME_COMPLETE",
-      "current_position": "M06 is PROVEN from protected dispatch, authored PR #200, generated PR #201, and the post-merge NOOP at main 70f8f31c1107e0b59827870cc3803daccf8414c8. RP-C01 remains IN_PROGRESS on M07 genuine non-owner rejection. RP-C05/RP-C06 are COMPLETE; RP-C07 is COMPLETE. AJ-10 is PROVEN; AJ-03/AJ-11/AJ-12 remain UNPROVEN. CAP-022 is RESTORED; CAP-027 is the sole STILL_MISSING capability. RP-C08 and Repairing Prime remain IN_PROGRESS.",
+      "current_position": "RP-C01 is COMPLETE and AJ-03 is PROVEN from live non-owner run 29421543076 with OWNER_IDENTITY_REJECTED, skipped Thread Engine invocation, zero mutation, and access removal. RP-C05 is COMPLETE. RP-C06 is COMPLETE. RP-C07 is COMPLETE. CAP-022 is RESTORED. AJ-11 and AJ-12 remain UNPROVEN. CAP-027 is the sole STILL_MISSING capability and now depends only on AJ-11/AJ-12. RP-C08 and Repairing Prime remain IN_PROGRESS.",
       "blockers": [
-        "RP-C01-M07 and AJ-03 require a genuine non-owner rejection with exact no-mutation evidence.",
-        "The non-owner actor, legitimate dispatch permission, credential mode, and evidence boundary require a new Preview and separate Jayson Execute authorization.",
-        "CAP-027 remains missing while AJ-03, AJ-11, and AJ-12 are UNPROVEN.",
-        "AJ-11 requires clean-clone recovery and rollback classification at final RP-C08 main.",
-        "AJ-12 requires complete Ubuntu and Windows validation at final merged RP-C08 main."
+        "AJ-11 requires clean-clone recovery, deterministic regeneration, rollback classification, and no normal Codex dependency at accepted RP-C08 main.",
+        "AJ-12 requires complete Ubuntu and Windows validation at one exact final merged RP-C08 main SHA.",
+        "CAP-027 remains missing until AJ-11 and AJ-12 are PROVEN."
       ],
-      "next_action": "Prepare the bounded RP-C01-M07 / AJ-03 genuine non-owner rejection Preview from current canonical main. Define the legitimate non-owner actor, dispatch permission, credential mode, protected-evidence handling, exact expected rejection, and zero-mutation proof. Do not execute the live attempt until Jayson separately authorizes that identity/account boundary.",
-      "next_approval": "Jayson must separately authorize the genuine non-owner actor, account/credential boundary, dispatch permission, evidence handling, and one bounded live rejection attempt. R04 Goddess Mode and Shardblade authority expired at the Gate 4 generated NOOP and do not carry forward.",
-      "revision": 20,
-      "last_event_id": "RP-C08-POST-M06-CURRENT-TRUTH-R01"
+      "next_action": "Prepare the bounded AJ-11 final-main clean-clone recovery Preview from current canonical main. Define the exact clone SHA, deterministic regeneration commands, rollback classification, no-Codex-dependency readback, evidence boundary, and stop conditions before execution.",
+      "next_approval": "Jayson must separately authorize the exact AJ-11 clean-clone recovery transaction and its isolated evidence boundary. M07 account permission and execution authority expired after the accepted rejection and access removal.",
+      "revision": 21,
+      "last_event_id": "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"
     },
     {
       "continuity_id": "CONT-FOUND-SILVERLIGHT-R01",

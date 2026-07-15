@@ -43,13 +43,15 @@ class RpC01M08FreeFormAcceptanceTests(unittest.TestCase):
             "677878da7774b43c76dd32ab6150c96bad7dcc82a316ae2fe28a74c4b43bfab0",
         )
 
-    def test_no_capability_journey_campaign_or_quest_is_promoted(self) -> None:
+    def test_m08_does_not_self_promote_and_later_m07_transition_is_separate(self) -> None:
         self.assertEqual(self.acceptance["campaign_gate_state"], "NOT_PROVEN")
         self.assertEqual(self.acceptance["capability_promotion"], "NONE")
         self.assertEqual(self.acceptance["acceptance_journey_promotion"], "NONE")
         self.assertTrue(all(value is False for value in self.acceptance["forbidden_promotions"].values()))
         self.assertEqual(self.route["capability_promotion"], "NONE")
-        self.assertEqual(self.route["acceptance_journey_promotion"], "NONE")
+        self.assertEqual(self.route["acceptance_journey_promotion"], "AJ-03_ONLY")
+        self.assertEqual(self.route["m07_live_rejection_sequence"]["state"], "PROVEN_COMPLETE_REJECTION_SET")
+        self.assertEqual(self.route["m07_live_rejection_sequence"]["missing"], [])
 
 
 if __name__ == "__main__":

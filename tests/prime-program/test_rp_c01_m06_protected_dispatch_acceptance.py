@@ -127,7 +127,7 @@ class RpC01M06ProtectedDispatchAcceptanceTests(unittest.TestCase):
         )
         self.assertEqual(generated["result"], "GREEN_MERGED")
 
-    def test_reconciliation_promotes_only_m06(self) -> None:
+    def test_historical_m06_acceptance_did_not_self_promote_but_later_m07_closes_campaign(self) -> None:
         self.assertEqual(self.acceptance["mission_state"], "PROVEN")
         self.assertEqual(self.acceptance["campaign_gate_state"], "NOT_PROVEN")
         self.assertEqual(self.acceptance["capability_promotion"], "NONE")
@@ -136,43 +136,36 @@ class RpC01M06ProtectedDispatchAcceptanceTests(unittest.TestCase):
         campaign = next(item for item in self.identities["campaigns"] if item["campaign_id"] == "RP-C01")
         missions = {item["mission_id"]: item["state"] for item in campaign["missions"]}
         self.assertEqual(missions["RP-C01-M06"], "PROVEN")
-        self.assertEqual(missions["RP-C01-M07"], "PARTIAL")
-        self.assertEqual(campaign["state"], "IN_PROGRESS")
+        self.assertEqual(missions["RP-C01-M07"], "PROVEN")
+        self.assertEqual(campaign["state"], "COMPLETE")
         self.assertEqual(self.route["m06_protected_dispatch"]["state"], "PROVEN_MERGED_AUTHENTICATED_PROTECTED_ROUTE")
-        self.assertIn("PROVEN_MERGED_AUTHENTICATED_PROTECTED_ROUTE", self.route["mission_states"]["RP-C01-M06"])
-        self.assertEqual(self.route["m07_live_rejection_sequence"]["state"], "PARTIAL_NON_OWNER_MISSING")
+        self.assertEqual(self.route["m07_live_rejection_sequence"]["state"], "PROVEN_COMPLETE_REJECTION_SET")
+        self.assertEqual(self.route["campaign_gate_state"], "ACCEPTED")
 
-    def test_continuity_and_quest_preserve_remaining_boundaries(self) -> None:
+    def test_continuity_and_quest_advance_to_aj11_without_cap027_promotion(self) -> None:
         repairing = next(
             item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01"
         )
         m06_event = "RP-C01-M06-PROTECTED-DISPATCH-ACCEPTANCE-R04"
-        current_event = "RP-C08-POST-M06-CURRENT-TRUTH-R01"
-        self.assertEqual(self.continuity["register_revision"], 25)
-        self.assertEqual(
-            self.continuity["source_base_sha"],
-            "70f8f31c1107e0b59827870cc3803daccf8414c8",
-        )
+        current_event = "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"
+        self.assertEqual(self.continuity["register_revision"], 26)
+        self.assertEqual(self.continuity["source_base_sha"], "bd10062b87e2c2f26f3b99969b0d1bab30e76ac0")
         self.assertEqual(self.continuity["event_ids"].count(m06_event), 1)
         self.assertEqual(self.continuity["event_ids"].count(current_event), 1)
-        self.assertLess(
-            self.continuity["event_ids"].index(m06_event),
-            self.continuity["event_ids"].index(current_event),
-        )
+        self.assertLess(self.continuity["event_ids"].index(m06_event), self.continuity["event_ids"].index(current_event))
         self.assertEqual(repairing["last_event_id"], current_event)
-        self.assertEqual(repairing["revision"], 20)
+        self.assertEqual(repairing["revision"], 21)
         self.assertIsNone(repairing["mission_id"])
         self.assertFalse(any("RP-C01-M06" in blocker for blocker in repairing["blockers"]))
-        self.assertTrue(any("RP-C01-M07" in blocker for blocker in repairing["blockers"]))
-        self.assertIn("genuine non-owner", repairing["next_action"])
-        self.assertIn("separately authorize", repairing["next_approval"])
+        self.assertFalse(any("genuine non-owner" in blocker for blocker in repairing["blockers"]))
+        self.assertTrue(any("AJ-11" in blocker for blocker in repairing["blockers"]))
+        self.assertIn("AJ-11", repairing["next_action"])
         quest_path = ROOT / "quests/repairing-prime.md"
         self.assertEqual(repairing["quest_source_sha256"], hashlib.sha256(quest_path.read_bytes()).hexdigest())
         quest = quest_path.read_text(encoding="utf-8")
-        self.assertIn("M06 is PROVEN", quest)
-        self.assertIn("M07/AJ-03 genuine non-owner rejection remains unproven", quest)
+        self.assertIn("RP-C01 is `COMPLETE`", quest)
+        self.assertIn("AJ-03 is PROVEN", quest)
         self.assertIn("CAP-027 is the only missing capability", quest)
-
 
 if __name__ == "__main__":
     unittest.main()

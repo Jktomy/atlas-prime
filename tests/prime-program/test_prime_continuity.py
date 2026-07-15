@@ -54,9 +54,9 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(repairing_board["state"], "IN_PROGRESS")
         self.assertEqual(
             repairing_board["next_gate"],
-            "RP-C01-M07 / AJ-03 Preview — Genuine non-owner rejection",
+            "AJ-11 — Final-main clean-clone recovery",
         )
-        self.assertIn("M06 is PROVEN", repairing_board["readiness_basis"])
+        self.assertIn("AJ-03 are PROVEN", repairing_board["readiness_basis"])
         self.assertEqual(repairing_continuity["campaign_id"], "RP-C08")
         self.assertEqual(repairing_continuity["gate_id"], rp_c08["gate_id"])
         self.assertEqual(rp_c06["state"], "COMPLETE")
@@ -79,7 +79,8 @@ class PrimeContinuityTests(unittest.TestCase):
             },
         )
         self.assertIn("RP-C07 is COMPLETE", repairing_continuity["current_position"])
-        self.assertIn("AJ-03/AJ-11/AJ-12 remain UNPROVEN", repairing_continuity["current_position"])
+        self.assertIn("AJ-11 and AJ-12 remain UNPROVEN", repairing_continuity["current_position"])
+        self.assertIn("AJ-03 is PROVEN", repairing_continuity["current_position"])
         self.assertIn("CAP-022 is RESTORED", repairing_continuity["current_position"])
         self.assertIn("CAP-027 is the sole STILL_MISSING", repairing_continuity["current_position"])
         self.assertNotIn("await", repairing_continuity["current_position"].lower())
@@ -293,6 +294,7 @@ class PrimeContinuityTests(unittest.TestCase):
 
     def test_identity_state_machine_rejects_self_promotion(self) -> None:
         invalid = copy.deepcopy(self.identities)
+        invalid["campaigns"][0]["missions"][0]["state"] = "UNPROVEN"
         invalid["campaigns"][0]["state"] = "COMPLETE"
         with self.assertRaisesRegex(ContinuityError, "CAMPAIGN_COMPLETION_UNPROVEN"):
             validate_identity_register(invalid)

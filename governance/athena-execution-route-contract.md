@@ -119,7 +119,7 @@ It must not use `pull_request_target`, unpinned reusable workflows, arbitrary UR
 
 Reject without mutation on non-owner or unauthorized delegation; edited input; stale base; replay; malformed or oversized carrier; duplicate JSON keys; unsafe archive members; hash mismatch; unsafe or duplicate paths; branch or PR collision; ambiguous credential principal; workflow-source drift; protected-path mismatch; generated mixing; private material; or any request for direct main, force push, ready, merge, cleanup, settings, standing authority, or a second writer.
 
-`AJ-03` remains UNPROVEN because a genuine non-owner live rejection is still missing. This CAP-015/AJ-01 realignment does not promote AJ-03, AJ-11, AJ-12, CAP-027, RP-C01, RP-C08, or the Repairing Prime Quest.
+`AJ-03` is PROVEN by genuine non-owner workflow run `29421543076`. Both actors were `jaysontomyod`; the route returned `OWNER_IDENTITY_REJECTED` at pre-mutation rejection, the Thread Engine job was skipped, and exact sanitized evidence records zero mutation. This acceptance does not promote AJ-11, AJ-12, CAP-027, RP-C08, or the Repairing Prime Quest.
 
 ## Pre-ingress privacy boundary
 
@@ -163,4 +163,4 @@ This realignment uses already merged evidence; it does not manufacture new opera
 - PRs `#181` and `#182` prove the automatic generated post-merge route and zero-delta behavior;
 - protected dispatch PR `#187` and its accepted adapter receipt prove mission-scoped Aegis Break execution against one exact protected path.
 
-Only `CAP-015`, `AJ-01`, RP-C01-M02, and RP-C01-M06 are reconciled by their respective accepted evidence. AJ-03, RP-C01-M07, AJ-11, AJ-12, CAP-027, RP-C01, RP-C08, and Repairing Prime remain open.
+CAP-015, AJ-01, RP-C01-M02, and RP-C01-M06 remain reconciled by their respective accepted evidence. The later non-owner acceptance separately proves AJ-03 and RP-C01-M07 and completes RP-C01. AJ-11, AJ-12, CAP-027, RP-C08, and Repairing Prime remain open.

@@ -204,9 +204,11 @@ class AthenaExecutionRouteContractTests(unittest.TestCase):
     def test_remaining_acceptance_boundaries_are_preserved(self) -> None:
         contract = CONTRACT.read_text(encoding="utf-8")
         acceptance = (ROOT / "governance/capability-acceptance-contract.md").read_text(encoding="utf-8")
-        for phrase in ("`AJ-03` remains UNPROVEN", "AJ-11 UNPROVEN", "AJ-12 UNPROVEN"):
-            self.assertIn(phrase, contract + acceptance)
-        self.assertIn("does not promote AJ-03, AJ-11, AJ-12, CAP-027", contract)
+        self.assertIn("`AJ-03` is PROVEN", contract)
+        self.assertIn("AJ-03 PROVEN", acceptance)
+        for phrase in ("AJ-11 UNPROVEN", "AJ-12 UNPROVEN"):
+            self.assertIn(phrase, acceptance)
+        self.assertIn("does not promote AJ-11, AJ-12, CAP-027", contract)
 
     def test_guided_publisher_contracts_remain_closed(self) -> None:
         for path in (GUIDED_PREVIEW_V1_SCHEMA, GUIDED_PREVIEW_SCHEMA, GUIDED_EXECUTE_SCHEMA):

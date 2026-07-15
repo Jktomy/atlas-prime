@@ -68,7 +68,8 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertEqual(self.records["CAP-022"]["audit_severity"], "GREEN")
         self.assertIn("PR #193", self.records["CAP-022"]["current_state"])
         self.assertEqual(self.records["CAP-027"]["activation_state"], "MISSING")
-        self.assertIn("AJ-03, AJ-11, and AJ-12", self.records["CAP-027"]["current_state"])
+        self.assertIn("AJ-11 and AJ-12", self.records["CAP-027"]["current_state"])
+        self.assertNotIn("AJ-03,", self.records["CAP-027"]["current_state"])
         self.assertNotIn("AJ-10", self.records["CAP-027"]["current_state"])
 
     def test_cap015_is_restored_from_direct_spear_evidence(self) -> None:
