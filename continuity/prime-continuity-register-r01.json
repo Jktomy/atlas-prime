@@ -2,8 +2,8 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 23,
-  "source_base_sha": "a7acc5d8be305b111bb0eae935885e235e6f2231",
+  "register_revision": 24,
+  "source_base_sha": "91f4392880b7a76f675c933aa429e9f10d1c740e",
   "quest_board_sha256": "25f5bd9c55dfde45ffe4d4b6c59e5b9a34685d4acf7d4dbaa2faa24e40fe1bb5",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
@@ -31,30 +31,30 @@
     "RP-C08-SUNSET-FEATHER-TRUTH-RECONCILIATION-R03",
     "FS-C03-HERMES-BRIDGE-NAMING-R01",
     "PF-C01-M01-KANDRA-ENDPOINT-RECONCILIATION-R01",
-    "RP-C08-AJ10-CAP022-ACCEPTANCE-RECONCILIATION-R04"
+    "RP-C08-AJ10-CAP022-ACCEPTANCE-RECONCILIATION-R04",
+    "RP-C01-M06-PROTECTED-DISPATCH-ACCEPTANCE-R04"
   ],
   "entries": [
     {
       "continuity_id": "CONT-REPAIRING-PRIME-R01",
       "quest_id": "QUEST-REPAIRING-PRIME-R01",
       "quest_source": "quests/repairing-prime.md",
-      "quest_source_sha256": "04b379e78b17b6ac68e135068b516bc886518d3f8bea1eabc54f9047e278cfdd",
+      "quest_source_sha256": "d27097a9d3ad5fb9942bfb89362c4a5f99ef99408e478ef23195af0ec5834ebc",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "RP-C08",
       "mission_id": null,
       "gate_id": "REPAIRING_PRIME_COMPLETE",
-      "current_position": "RP-C05 and RP-C06 are COMPLETE; historical RP-C07 is COMPLETE. AJ-10 is PROVEN from the corrected live Sunset/Feather journey and fresh-context readback; AJ-03/AJ-11/AJ-12 remain UNPROVEN. CAP-022 is RESTORED, CAP-027 is the sole STILL_MISSING capability, and counts are 14 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 1 STILL_MISSING. RP-C01, RP-C08, and Repairing Prime remain IN_PROGRESS.",
+      "current_position": "M06 is PROVEN from accepted protected dispatch; RP-C01 remains IN_PROGRESS on M07 genuine non-owner rejection. RP-C05/RP-C06 are COMPLETE; historical RP-C07 is COMPLETE. AJ-10 is PROVEN; AJ-03/AJ-11/AJ-12 remain UNPROVEN. CAP-022 is RESTORED, CAP-027 is the sole STILL_MISSING capability. Counts: 14 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, 1 STILL_MISSING. RP-C08 and Repairing Prime remain IN_PROGRESS.",
       "blockers": [
-        "RP-C01-M06 live protected-dispatch evidence is canonical, but its separate authored acceptance reconciliation remains pending.",
         "RP-C01-M07 and AJ-03 require a genuine non-owner rejection with exact no-mutation evidence.",
         "CAP-027 remains missing while AJ-03, AJ-11, and AJ-12 are UNPROVEN.",
         "AJ-11 requires clean-clone recovery and rollback classification at final RP-C08 main.",
         "AJ-12 requires complete Ubuntu and Windows validation at final merged RP-C08 main."
       ],
-      "next_action": "Audit PR #189 against current main and repair-forward or replace it through one separate RP-C01-M06 authored acceptance transaction; preserve PR #190 as blocked and never merge it as-is.",
-      "next_approval": "RP-C01-M06 permanence requires exact-head local and hosted validation, detached review, clean review state, and expected-head merge protection.",
-      "revision": 18,
-      "last_event_id": "RP-C08-AJ10-CAP022-ACCEPTANCE-RECONCILIATION-R04"
+      "next_action": "Complete the separate Gate 4 generated refresh and NOOP proof, then honor the R04 mandatory stop; do not start M07/AJ-03, CAP-027, AJ-11, AJ-12, Phoenix recovery, Quest Board closeout, or final Repairing Prime closeout.",
+      "next_approval": "Only the bounded Gate 4 generated checkpoint READY/merge remains authorized after its exact gates; no further mission or permanence action is authorized after the resulting NOOP.",
+      "revision": 19,
+      "last_event_id": "RP-C01-M06-PROTECTED-DISPATCH-ACCEPTANCE-R04"
     },
     {
       "continuity_id": "CONT-FOUND-SILVERLIGHT-R01",

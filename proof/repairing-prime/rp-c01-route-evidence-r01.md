@@ -1,7 +1,7 @@
 ---
 title: "Repairing Prime RP-C01 Execution Route Evidence R01"
 atlas_id: "prime.proof.repairing-prime.rp-c01-route-evidence-r01"
-status: "HOSTED_AND_DIRECT_PROVEN_GATE_INCOMPLETE"
+status: "HOSTED_DIRECT_AND_PROTECTED_PROVEN_GATE_INCOMPLETE"
 source_type: "PROOF"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
@@ -11,10 +11,10 @@ protected_level: "MEDIUM"
 
 # RP-C01 execution-route evidence
 
-RP-C01 has merged authenticated direct-Spear and hosted Arrow/Bow successes,
-plus five live no-mutation route or carrier rejection proofs. The
-machine-readable sibling binds every exact run, receipt, PR, head, merge, and
-disposition.
+RP-C01 has merged authenticated direct-Spear, hosted Arrow/Bow, and protected
+Aegis Break successes, plus live no-mutation route or carrier rejection proofs.
+The machine-readable sibling binds every exact run, receipt, PR, head, merge,
+and disposition.
 
 After the repository Actions create/approve pull-request setting was enabled,
 fresh mission `RP-C01-HOSTED-BOW-PROOF-R02` compiled from canonical main
@@ -53,7 +53,7 @@ before mutation. The newer M07 sequence is recorded at
 `proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.md`.
 Its controlled fixture PR was closed unmerged and its branch deleted; canonical
 main did not move. A genuine non-owner live trial remains missing, so M07 and
-AJ-03 remain incomplete. Actual protected-route execution also remains absent.
+AJ-03 remain incomplete.
 
 The guided journey recorded at
 `proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.md` first proved
@@ -82,8 +82,21 @@ review independently rebuilt the closed parity record byte for byte; the proof
 merged as `df66ae78dac1991db3902537fe338a4191d0da11`; and canonical main reproduced
 the payload hash. M05 is PROVEN, with no CAP or AJ promotion.
 
-M04 hosted Bow and M08 routine free-form intake are now proven. The broader
-`ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN` gate remains unproven because fresh
-Work/Athena origin, protected execution, genuine non-owner rejection, and the
-remaining mission-level acceptance evidence are still incomplete. No CAP or AJ
-promotion is authorized.
+The M06 acceptance at
+`proof/repairing-prime/rp-c01-m06-protected-dispatch-acceptance-r01.md` proves
+one live protected-path transaction through `AEGIS_BREAK_PROTECTED_PATH_V1`.
+The production adapter independently observed authenticated GitHub operator
+`Jktomy`, bound mission-scoped authority, fresh-cloned the exact base, created
+draft PR #187 with one protected path and one commit, and stopped at exact
+draft-PR readback. Exact-head run `29333971422` passed Windows and Ubuntu,
+detached Strikeforce was GREEN, the reviewed head merged as
+`c20644641d947485a5d9fad26b6d07ef064dba9b`, canonical readback reproduced
+the exact marker bytes, and generated checkpoint PR #188 merged as
+`aee1f837c18dbabf871396ffedf7d9c53e3d8297`. M06 is PROVEN. The receipt binds
+every forbidden action false or `NO` and grants no standing authority.
+
+M06 is PROVEN by this accepted evidence. This M06-only reconciliation does not
+revise any other mission state. The broader
+`ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN` gate remains unproven because M07 and
+AJ-03 still require a genuine non-owner live rejection. No CAP or AJ promotion
+is authorized.

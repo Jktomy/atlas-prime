@@ -37,14 +37,14 @@ class RpC01M08PartialTests(unittest.TestCase):
         self.assertEqual(self.route["guided_dependency_retirement"]["missing"], [])
         self.assertIn("PROVEN_ROUTINE_FREE_FORM_INTAKE", self.route["mission_states"]["RP-C01-M08"])
 
-    def test_current_identity_preserves_m08_and_accepts_later_m02(self) -> None:
+    def test_current_identity_preserves_m08_and_accepts_later_m02_and_m06(self) -> None:
         campaign = next(item for item in self.identities["campaigns"] if item["campaign_id"] == "RP-C01")
         missions = {item["mission_id"]: item["state"] for item in campaign["missions"]}
         self.assertEqual(missions["RP-C01-M08"], "PROVEN")
         self.assertEqual(missions["RP-C01-M02"], "PROVEN")
         self.assertEqual(self.cap015["transitions"]["RP-C01-M02"]["to"], "PROVEN")
         self.assertEqual(missions["RP-C01-M05"], "PROVEN")
-        self.assertEqual(missions["RP-C01-M06"], "PARTIAL")
+        self.assertEqual(missions["RP-C01-M06"], "PROVEN")
         self.assertEqual(missions["RP-C01-M07"], "PARTIAL")
         self.assertEqual(campaign["state"], "IN_PROGRESS")
         self.assertTrue(all(value is False for value in self.acceptance["forbidden_promotions"].values()))

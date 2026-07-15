@@ -34,7 +34,7 @@ last_verified: 2026-07-14
 **Current lane:** `BUILD -> VERIFY`<br>
 **Current state:** `IN_PROGRESS`<br>
 **Current Campaign:** `RP-C08`<br>
-**Next gate:** `RP-C01-M06 — audit PR #189 against current main and complete the separate authored protected-dispatch acceptance reconciliation`
+**Next gate:** `RP-C01-M07 / AJ-03 — genuine non-owner rejection evidence; later RP-C08 recovery and final-main closeout remain open`
 
 RP-C02 through RP-C05 are complete from accepted canonical evidence. RP-C05 now includes the corrected universal Sunset/Feather live journey and fresh-context exact-pair acceptance. RP-C01 remains independently in progress with its exact partial missions; advancing the active campaign pointer does not promote or erase those blockers.
 
@@ -97,7 +97,10 @@ Accepted evidence:
 Accepted evidence:
 `proof/repairing-prime/rp-c01-m05-parity-acceptance-r01.md`. M05 is PROVEN from one immutable carrier retained through direct compilation and the guided hosted Arrow/Bow route, with exact compiler-receipt, mission, candidate-tree, final-pathset, singular-adapter, draft-PR readback, exact-head CI, detached review, merge, and canonical-main readback evidence. This mission-only acceptance does not complete RP-C01.
 
-RP-C01 remains `IN_PROGRESS` because M06 awaits its separate authored acceptance reconciliation and M07/AJ-03 still requires a genuine non-owner rejection.
+Accepted evidence:
+`proof/repairing-prime/rp-c01-m06-protected-dispatch-acceptance-r01.md`. M06 is PROVEN from one mission-scoped Aegis Break protected-path transaction: authenticated `Jktomy` operator readback, exact authority and path hashes, fresh clone, one protected-path draft PR, exact-head Ubuntu/Windows validation, detached Strikeforce, separately authorized merge, canonical payload readback, and merged generated checkpoint. This mission-level acceptance grants no standing authority and does not complete RP-C01.
+
+RP-C01 remains `IN_PROGRESS` because M07/AJ-03 genuine non-owner rejection remains unproven.
 
 ## RP-C02 — Shared Agentic Doctrine and Capability Warrants
 
@@ -172,4 +175,4 @@ The Sunset/Feather correction was a bounded interruption. Its completed order wa
 
 `source truth repair → exact-head validation → independent audit → merge → generated checkpoint → live AJ-10/CAP-022 restoration journey → fresh-context acceptance reconciliation → resume preserved pre-interruption RP-C08 work`
 
-The preserved return work includes the outstanding protected execution and rejection gates, the Strikeforce audit of the preserved M06 candidate in PR #189, and the remaining clean-clone, final-main, Phoenix recovery, and Quest closeout gates. PR #190 remains blocked. The accepted CAP-015 architecture realignment remains preserved and is not reopened by this repair.
+M06 protected execution is now accepted from the clean current-main replacement transaction after PR #189 was audited as stale and noisy; PR #189 remains preserved and unmerged. The remaining return work includes the M07/AJ-03 rejection gate plus clean-clone, final-main, Phoenix recovery, and Quest closeout gates. PR #190 remains blocked and must not merge. The accepted CAP-015 architecture realignment remains preserved and is not reopened by this repair.
