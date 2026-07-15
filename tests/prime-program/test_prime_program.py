@@ -58,14 +58,16 @@ class PrimeProgramTests(unittest.TestCase):
             repairing_prime,
             [
                 {
-                    "next_gate": "AJ-11 — Final-main clean-clone recovery",
+                    "next_gate": "Generated-current readback, then AJ-12 — exact merged-main Ubuntu/Windows validation",
                     "owner": "Codex / Source Governance",
                     "quest_id": "QUEST-REPAIRING-PRIME-R01",
                     "readiness_basis": (
-                        "RP-C01 and AJ-03 are PROVEN from genuine non-owner run 29421543076 with "
-                        "OWNER_IDENTITY_REJECTED, skipped Thread Engine invocation, exact zero-mutation evidence, "
-                        "unchanged canonical main, and temporary access removal. AJ-11 clean-clone recovery is next. "
-                        "AJ-12, CAP-027, RP-C08, Phoenix recovery, and final Quest closeout remain open."
+                        "AJ-11 is PROVEN from exact-main read-only clean-clone proof "
+                        "RP-C08-AJ11-FINAL-MAIN-CLEAN-CLONE-PROOF-R02: 13/13 validation commands "
+                        "GREEN, five generated projections CURRENT/NONE and byte-identical, no normal "
+                        "atlas-codex dependency, reviewed-PR rollback, and zero mutation. Generated-current "
+                        "readback precedes AJ-12 exact merged-main Ubuntu/Windows validation. CAP-027, RP-C08, "
+                        "Phoenix recovery, and Quest closeout remain open."
                     ),
                     "source": "quests/repairing-prime.md",
                     "state": "IN_PROGRESS",

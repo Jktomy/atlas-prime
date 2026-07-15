@@ -78,16 +78,24 @@ class RpC01M07NonOwnerAcceptanceTests(unittest.TestCase):
         self.assertTrue(all(item["state"] == "PROVEN" for item in campaign["missions"]))
         self.assertEqual(self.route["campaign_gate_state"], "ACCEPTED")
 
-    def test_next_gate_is_aj11_and_cap027_remains_missing(self) -> None:
+    def test_later_aj11_acceptance_preserves_non_owner_and_cap027_missing(self) -> None:
         board = next(item for item in self.board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         continuity = next(item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         cap027 = next(item for item in self.capabilities["capabilities"] if item["id"] == "CAP-027")
-        self.assertEqual(board["next_gate"], "AJ-11 — Final-main clean-clone recovery")
-        self.assertEqual(continuity["last_event_id"], "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05")
-        self.assertIn("AJ-11", continuity["next_action"])
+        self.assertEqual(
+            board["next_gate"],
+            "Generated-current readback, then AJ-12 — exact merged-main Ubuntu/Windows validation",
+        )
+        self.assertEqual(
+            continuity["last_event_id"],
+            "RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08",
+        )
+        self.assertIn("AJ-12", continuity["next_action"])
         self.assertEqual(cap027["capability_disposition"], "STILL_MISSING")
         self.assertEqual(cap027["activation_state"], "MISSING")
-        self.assertIn("AJ-11 and AJ-12", cap027["current_state"])
+        self.assertIn("AJ-11 is PROVEN", cap027["current_state"])
+        self.assertIn("AJ-12", cap027["current_state"])
+        self.assertNotIn("AJ-11 and AJ-12", cap027["current_state"])
         self.assertNotIn("AJ-03,", cap027["current_state"])
 
 

@@ -34,18 +34,18 @@ last_verified: 2026-07-15
 **Current lane:** `PLAN -> VERIFY`<br>
 **Current state:** `IN_PROGRESS`<br>
 **Current Campaign:** `RP-C08`<br>
-**Next gate:** `AJ-11 — final-main clean-clone recovery; AJ-12, CAP-027, RP-C08 recovery, and final Quest closeout remain open`
+**Next gate:** `Generated-current readback, then AJ-12 — exact merged-main Ubuntu/Windows validation; CAP-027, RP-C08 recovery, and final Quest closeout remain open`
 
 RP-C01 through RP-C05 are complete from accepted canonical evidence. RP-C05 includes the corrected universal Sunset/Feather live journey and fresh-context exact-pair acceptance. RP-C01 is complete only after the genuine non-owner rejection closed M07 and AJ-03; the active RP-C08 pointer remains independent and does not promote later blockers.
 
 RP-C06 is complete from accepted hosted generated parity, publication, rejection, exact-head CI, detached review, and canonical readback evidence. RP-C07 remains complete as the historical exact AJ-01 through AJ-12 disposition reconciliation. The later CAP-015 architecture realignment proves AJ-01 without rewriting that historical evidence.
 
-AJ-01 through AJ-10 are PROVEN. AJ-11 and AJ-12 are UNPROVEN. AJ-03 is accepted from genuine non-owner run `29421543076`, which returned `OWNER_IDENTITY_REJECTED` before mutation and skipped Thread Engine invocation. RP-C01 is COMPLETE; those boundaries remain controlling while RP-C08 resumes clean-clone recovery, exact-final-main validation, and final capability and Quest closeout work.
+AJ-01 through AJ-11 are PROVEN. AJ-12 is UNPROVEN. AJ-03 is PROVEN from genuine non-owner run `29421543076`, which returned `OWNER_IDENTITY_REJECTED` before mutation and skipped Thread Engine invocation. AJ-11 is accepted from exact-main read-only clean-clone proof `RP-C08-AJ11-FINAL-MAIN-CLEAN-CLONE-PROOF-R02`. RP-C01 is COMPLETE; those boundaries remain controlling while RP-C08 advances through generated-current readback, exact-final-main validation, and final capability and Quest closeout work.
 
 ## Current accepted completion spine
 
 The current durable spine through canonical main
-`bd10062b87e2c2f26f3b99969b0d1bab30e76ac0` is:
+`af97c00df41be8943ba5d4c942a8ecc2c5aff822` is:
 
 1. PR `#181` automated the post-source-merge generated publisher while preserving manual recovery.
 2. PR `#182` made zero generated delta a successful read-only `NOOP`.
@@ -59,6 +59,8 @@ The current durable spine through canonical main
 10. Publisher run `29378596081` then completed cross-platform parity and a truthful zero-delta `NOOP`; the singular writer and generated-head validation jobs were correctly skipped.
 11. PR `#202` reconciled post-M06 current truth and PR `#203` refreshed the five generated projections.
 12. Genuine non-owner run `29421543076` returned `OWNER_IDENTITY_REJECTED` before mutation, skipped Thread Engine invocation, preserved main `bd10062b87e2c2f26f3b99969b0d1bab30e76ac0`, and ended with temporary access removed.
+13. PRs `#204` and `#205` accepted the genuine non-owner evidence and refreshed generated state; PR `#206` then repaired deterministic repository-output classification across Windows clone locations.
+14. Oathbringer proof `RP-C08-AJ11-FINAL-MAIN-CLEAN-CLONE-PROOF-R02` recovered exact main `af97c00df41be8943ba5d4c942a8ecc2c5aff822` from a fresh isolated clone, passed all 13 validation commands, regenerated five byte-identical projections, proved no normal Codex dependency, and attempted no mutation.
 
 This chain completes the bounded R04 Goal. It does not carry standing Goddess Mode, Shardblade, account, credential, or external-actor authority into the next mission.
 
@@ -74,10 +76,10 @@ RP-C08: IN_PROGRESS
 Repairing Prime: IN_PROGRESS
 
 AJ-03: PROVEN
-AJ-11: UNPROVEN
+AJ-11: PROVEN
 AJ-12: UNPROVEN
 
-CAP-027: STILL_MISSING — depends only on AJ-11 and AJ-12
+CAP-027: STILL_MISSING — depends only on AJ-12
 ```
 
 Current capability counts remain:
@@ -106,11 +108,11 @@ Each independent Quest's own canonical source and continuity row govern its stat
 
 ## Remaining route to `REPAIRING_PRIME_COMPLETE`
 
-1. **AJ-11:** prove clean-clone recovery, deterministic regeneration, and rollback classification without normal Codex dependency at the current accepted RP-C08 main.
+1. **Generated current-state readback:** after this authored AJ-11 reconciliation is merged, accept the normal generated-only checkpoint or a truthful zero-delta result.
 2. **AJ-12:** prove the complete Prime validation matrix on Ubuntu and Windows at one exact final merged-main SHA.
-3. **CAP-027:** restore the end-to-end acceptance layer only when AJ-11 and AJ-12 both have exact accepted dispositions; AJ-03 is already PROVEN.
+3. **CAP-027:** restore the end-to-end acceptance layer only when AJ-12 is PROVEN; AJ-03 and AJ-11 are already PROVEN.
 4. **RP-C08 final reconciliation:** recount all 28 capabilities and bind the final acceptance contract without self-promotion.
-5. **Generated current-state proof:** complete the final generated refresh or truthful `NOOP`.
+5. **Final generated current-state proof:** complete the final generated refresh or truthful `NOOP`.
 6. **Whole-Quest Strikeforce:** independently audit source, evidence, privacy, authority, recovery, changed paths, generated separation, and rollback.
 7. **Quest Board and continuity closeout:** synchronize only after all gates are accepted.
 8. **Phoenix recovery:** prove the accepted final recovery route.
@@ -120,14 +122,17 @@ Each independent Quest's own canonical source and continuity row govern its stat
 
 The M07 account boundary is closed. Genuine non-owner actor `jaysontomyod` performed one separately authorized bounded dispatch and received `OWNER_IDENTITY_REJECTED` before mutation; its temporary permission was removed. That proof grants no reusable account authority.
 
-Before AJ-11 recovery execution:
+AJ-11 recovery execution is accepted from one separately authorized local read-only Oathbringer attempt at exact main `af97c00df41be8943ba5d4c942a8ecc2c5aff822`. It grants no reusable execution or permanence authority.
+
+Before AJ-12 execution:
 
 ```text
-fresh canonical readback
-→ bounded clean-clone Preview
-→ define exact source SHA, regeneration commands, rollback classification, and no-Codex-dependency proof
+merge this separately reviewed AJ-11 reconciliation
+→ accept generated-current checkpoint or truthful zero-delta readback
+→ fresh canonical main readback
+→ bind one exact final merged-main SHA
 → separate Jayson Execute authorization
-→ one isolated recovery attempt
+→ complete Ubuntu and Windows validation at that exact SHA
 ```
 
 No R04 or M07 standing authority carries forward. Do not request, copy, store, expose, or commit credentials, tokens, MFA/recovery material, account data, or private runtime values.
@@ -260,4 +265,4 @@ Reconcile all 28 capability records and counts; final generated refresh; exact L
 Capability reconciliation evidence:
 `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` established the initial ledger. Later CAP-011 and CAP-010 reconciliations restored their hosted capabilities. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` restores CAP-015 under the corrected direct Spear architecture and quarantines the obsolete platform-origin construction.
 
-The current counts are 14 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 1 STILL_MISSING. CAP-027 is the only missing capability and now depends only on AJ-11 and AJ-12; AJ-03 is PROVEN. RP-C08 and Repairing Prime stay in progress.
+The current counts are 14 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 1 STILL_MISSING. `proof/repairing-prime/rp-c08-aj11-clean-clone-acceptance-r08.md` proves AJ-11 from exact-main read-only recovery without normal Codex dependency. CAP-027 is the only missing capability and now depends only on AJ-12; AJ-03 and AJ-11 are PROVEN. RP-C08 and Repairing Prime stay in progress.

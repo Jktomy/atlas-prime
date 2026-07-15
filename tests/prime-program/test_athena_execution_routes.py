@@ -206,8 +206,8 @@ class AthenaExecutionRouteContractTests(unittest.TestCase):
         acceptance = (ROOT / "governance/capability-acceptance-contract.md").read_text(encoding="utf-8")
         self.assertIn("`AJ-03` is PROVEN", contract)
         self.assertIn("AJ-03 PROVEN", acceptance)
-        for phrase in ("AJ-11 UNPROVEN", "AJ-12 UNPROVEN"):
-            self.assertIn(phrase, acceptance)
+        self.assertIn("AJ-11 PROVEN", acceptance)
+        self.assertIn("AJ-12 UNPROVEN", acceptance)
         self.assertIn("does not promote AJ-11, AJ-12, CAP-027", contract)
 
     def test_guided_publisher_contracts_remain_closed(self) -> None:

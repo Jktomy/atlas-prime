@@ -163,4 +163,4 @@ This realignment uses already merged evidence; it does not manufacture new opera
 - PRs `#181` and `#182` prove the automatic generated post-merge route and zero-delta behavior;
 - protected dispatch PR `#187` and its accepted adapter receipt prove mission-scoped Aegis Break execution against one exact protected path.
 
-CAP-015, AJ-01, RP-C01-M02, and RP-C01-M06 remain reconciled by their respective accepted evidence. The later non-owner acceptance separately proves AJ-03 and RP-C01-M07 and completes RP-C01. AJ-11, AJ-12, CAP-027, RP-C08, and Repairing Prime remain open.
+CAP-015, AJ-01, RP-C01-M02, and RP-C01-M06 remain reconciled by their respective accepted evidence. The later non-owner acceptance separately proves AJ-03 and RP-C01-M07 and completes RP-C01. AJ-11 is PROVEN; AJ-12, CAP-027, RP-C08, and Repairing Prime remain open.

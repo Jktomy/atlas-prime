@@ -89,6 +89,25 @@ evidence is recorded in
 `proof/repairing-prime/rp-c08-aj10-cap022-acceptance-reconciliation-r04.md`.
 
 
+## Accepted clean-clone recovery journey
+
+AJ-11 is `PROVEN`. Oathbringer mission
+`RP-C08-AJ11-FINAL-MAIN-CLEAN-CLONE-PROOF-R02` recovered Prime from a fresh
+isolated clone of exact canonical main
+`af97c00df41be8943ba5d4c942a8ecc2c5aff822`, passed all 13 local validation
+commands, regenerated all five projections byte-identically outside the clone,
+proved generated state `CURRENT/NONE`, found no normal `atlas-codex`
+dependency, classified rollback as a new reviewed PR, and ended with unchanged
+remote main and clean local state. The receipt self-hash is
+`5907e446bee11a013e8fa5202e1f712af8e922ea5b72621ae129b936d5ec9b45`.
+Detached audit verified the external receipt sidecar, mission binding, stage
+sequence, exact generated hashes, zero mutation, and absence of a proof-created
+branch or pull request. The accepted evidence is recorded in
+`proof/repairing-prime/rp-c08-aj11-clean-clone-acceptance-r08.md`.
+
+AJ-11 acceptance grants no standing authority and does not prove AJ-12,
+CAP-027, RP-C08, or Quest completion.
+
 ## Current controlling dispositions
 
 ```text
@@ -102,15 +121,15 @@ AJ-07 PROVEN
 AJ-08 PROVEN
 AJ-09 PROVEN
 AJ-10 PROVEN
-AJ-11 UNPROVEN
+AJ-11 PROVEN
 AJ-12 UNPROVEN
 ```
 
 AJ-03 has exact live no-mutation evidence for edited input, intentional replay, duplicate branch, duplicate PR, and a genuine non-owner request. The non-owner row is bound to run `29421543076`, `OWNER_IDENTITY_REJECTED`, a skipped Thread Engine job, and exact zero-mutation evidence.
 
-AJ-10 is PROVEN from the corrected universal one-Sunset-to-one-Feather live journey and fresh-context exact-pair reconstruction. AJ-11 and AJ-12 remain assigned to final RP-C08 recovery and exact-final-main validation.
+AJ-10 is PROVEN from the corrected universal one-Sunset-to-one-Feather live journey and fresh-context exact-pair reconstruction. AJ-11 is PROVEN from the accepted exact-main clean-clone recovery proof. AJ-12 remains assigned to exact-final-main Ubuntu and Windows validation.
 
-The historical RP-C05 record remains valid evidence of the state at its accepted time. The historical RP-C07 reconciliation remains valid evidence of the state at its accepted time. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` remains the later controlling transition for AJ-01 only. `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` and the R03 live candidate remain immutable historical pre-acceptance evidence. `proof/repairing-prime/rp-c08-aj10-cap022-acceptance-reconciliation-r04.md` is the current controlling transition for AJ-10, CAP-022, and RP-C05 only. `proof/repairing-prime/rp-c01-m07-non-owner-acceptance-r01.md` is the later controlling transition for AJ-03, RP-C01-M07, and RP-C01 only.
+The historical RP-C05 record remains valid evidence of the state at its accepted time. The historical RP-C07 reconciliation remains valid evidence of the state at its accepted time. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` remains the later controlling transition for AJ-01 only. `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` and the R03 live candidate remain immutable historical pre-acceptance evidence. `proof/repairing-prime/rp-c08-aj10-cap022-acceptance-reconciliation-r04.md` is the current controlling transition for AJ-10, CAP-022, and RP-C05 only. `proof/repairing-prime/rp-c01-m07-non-owner-acceptance-r01.md` is the later controlling transition for AJ-03, RP-C01-M07, and RP-C01 only. `proof/repairing-prime/rp-c08-aj11-clean-clone-acceptance-r08.md` is the controlling transition for AJ-11 only.
 
 ## Legacy Oathbringer capability mapping
 

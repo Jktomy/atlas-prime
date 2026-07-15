@@ -1,0 +1,215 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c08-aj11-clean-clone-acceptance.v1",
+  "mission_id": "RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08",
+  "authority": "CANONICAL_AUTHORED_ACCEPTANCE_RECONCILIATION",
+  "transaction_base_sha": "af97c00df41be8943ba5d4c942a8ecc2c5aff822",
+  "result": "AJ11_CLEAN_CLONE_RECOVERY_ACCEPTED",
+  "accepted_local_proof": {
+    "proof_mission": "RP-C08-AJ11-FINAL-MAIN-CLEAN-CLONE-PROOF-R02",
+    "proof_revision": "R02",
+    "operator": "JAYSON",
+    "runtime_mode": "READ_ONLY_CLEAN_CLONE_RECOVERY_PROOF",
+    "receipt_self_sha256": "5907e446bee11a013e8fa5202e1f712af8e922ea5b72621ae129b936d5ec9b45",
+    "receipt_file_sha256": "1976b29f9a05a93d86a887e63edd960b19f91967ee916e719aff44728f82240c",
+    "receipt_sidecar_sha256": "67801b50f912460f2b249c988efcfcf92b3d5a8df109934a4594980df782af42",
+    "summary_sha256": "c7d83b5b5aa9b78e9ea7cc255c838e8c847b2b6aa0a43dfb6903d34b4c392e00",
+    "transcript_sha256": "c2f595f73c89ef2af2050b53ffbf14aba8d59f5b18d32ce1e6e3063576eba93f",
+    "mission_sha256": "a6b8aa742339c82a68189128e197d4ca7b410ffed330a2a438b8af274ca7f313",
+    "receipt_hash_contract": "SHA256_OF_COMPACT_JSON_WITH_receipt_sha256_NULL",
+    "started_utc": "2026-07-15T19:36:16.0265195Z",
+    "completed_utc": "2026-07-15T19:36:44.0769509Z",
+    "repository": "Jktomy/atlas-prime",
+    "origin": "https://github.com/Jktomy/atlas-prime.git",
+    "default_branch": "main",
+    "expected_sha": "af97c00df41be8943ba5d4c942a8ecc2c5aff822",
+    "observed_sha": "af97c00df41be8943ba5d4c942a8ecc2c5aff822",
+    "remote_main_before": "af97c00df41be8943ba5d4c942a8ecc2c5aff822",
+    "remote_main_after": "af97c00df41be8943ba5d4c942a8ecc2c5aff822",
+    "clone_isolated": true,
+    "inherited_hooks": [],
+    "inherited_worktrees": [],
+    "working_tree_clean_before": true,
+    "working_tree_clean_after": true,
+    "environment": {
+      "git": "git version 2.54.0.windows.1",
+      "python": "3.12.10",
+      "powershell": "7.6.3",
+      "operating_system": "Microsoft Windows 10.0.26200",
+      "architecture": "X64"
+    },
+    "validation": {
+      "result": "GREEN",
+      "command_count": 13,
+      "pass_count": 13,
+      "commands": [
+        {
+          "command": "python -B tests/bootstrap/test_prime_kernel.py",
+          "result": "PASS"
+        },
+        {
+          "command": "python -B -m unittest discover -s tests/repository-policy -p \"test_*.py\" -v",
+          "result": "PASS"
+        },
+        {
+          "command": "python -B -m unittest discover -s tests/privacy -p \"test_*.py\" -v",
+          "result": "PASS"
+        },
+        {
+          "command": "python -B -m unittest discover -s tests/lifecycle -p \"test_*.py\" -v",
+          "result": "PASS"
+        },
+        {
+          "command": "python -B -m unittest discover -s tools/thread-engine/tests -p \"test_*.py\" -v",
+          "result": "PASS"
+        },
+        {
+          "command": "python -B tools/thread-engine/tests/static_checks.py",
+          "result": "PASS"
+        },
+        {
+          "command": "python -B tools/atlas-sword/tests/static_checks.py",
+          "result": "PASS"
+        },
+        {
+          "command": "python -B -m unittest discover -s tests/generators -p \"test_*.py\" -v",
+          "result": "PASS"
+        },
+        {
+          "command": "python -B -m unittest discover -s tests/prime-program -p \"test_*.py\" -v",
+          "result": "PASS"
+        },
+        {
+          "command": "python -B -m unittest discover -s tests/athena-routes -p \"test_*.py\" -v",
+          "result": "PASS"
+        },
+        {
+          "command": "python -B tools/prime_checks/validate_prime.py",
+          "result": "PASS"
+        },
+        {
+          "command": "python -B -m tools.prime_continuity.cli validate",
+          "result": "PASS"
+        },
+        {
+          "command": ".\\tools\\thread-engine\\Invoke-AtlasThreadEngineProductionAdapter.ps1 -ResolverSelfTest",
+          "result": "PASS"
+        }
+      ]
+    },
+    "generated_state": {
+      "status": "CURRENT",
+      "changed_paths": [],
+      "hashes": {
+        "atlas-duplicate-scope-report.md": {
+          "committed_sha256": "ef1abd0156ec9d8c77ee58c59526e15b5ef989bba3831481ccac5c1e546e5bed",
+          "regenerated_sha256": "ef1abd0156ec9d8c77ee58c59526e15b5ef989bba3831481ccac5c1e546e5bed",
+          "byte_equal": true
+        },
+        "atlas-file-inventory.md": {
+          "committed_sha256": "211f5955cd9ab7caf3e2e3823b11524d0bd5a3c4ee244140036d79ffe183b553",
+          "regenerated_sha256": "211f5955cd9ab7caf3e2e3823b11524d0bd5a3c4ee244140036d79ffe183b553",
+          "byte_equal": true
+        },
+        "atlas-metadata-inventory.md": {
+          "committed_sha256": "1e449db41f60cc82be8a29cb3e7682f9366f883eed367c1cc577652494fea2fe",
+          "regenerated_sha256": "1e449db41f60cc82be8a29cb3e7682f9366f883eed367c1cc577652494fea2fe",
+          "byte_equal": true
+        },
+        "atlas-orphan-report.md": {
+          "committed_sha256": "90423d376973aecd0beb46dd5c75f456ff1b21ae455ef34bd5f803b91bfd2778",
+          "regenerated_sha256": "90423d376973aecd0beb46dd5c75f456ff1b21ae455ef34bd5f803b91bfd2778",
+          "byte_equal": true
+        },
+        "atlas-routing-inventory.md": {
+          "committed_sha256": "7a86b3b7aca0dacc89e6a540d8106731e4852caddae29e29416d9f2fface9be5",
+          "regenerated_sha256": "7a86b3b7aca0dacc89e6a540d8106731e4852caddae29e29416d9f2fface9be5",
+          "byte_equal": true
+        }
+      }
+    },
+    "thread_engine_state": {
+      "activation_route": "AEGIS_BREAK_TO_OATHBRINGER",
+      "implementation_state": "THREAD_ENGINE_ACTIVE_MISSION_SCOPED",
+      "canonical_repository": "Jktomy/atlas-prime",
+      "standing_authority": false,
+      "automatic_merge": false,
+      "direct_main": false,
+      "codex_workboard_route": "ABSENT"
+    },
+    "normal_atlas_codex_dependency": false,
+    "atlas_codex_reference_classification": {
+      "HISTORICAL_OR_DOCTRINAL": 549,
+      "TEST_OR_FIXTURE": 4,
+      "PREDECESSOR_PROVENANCE_ONLY": 1
+    },
+    "rollback_classification": {
+      "source_rollback": "NEW_REVIEWED_PR",
+      "force_push": "FORBIDDEN",
+      "history_rewrite": "FORBIDDEN",
+      "atlas_codex": "PREDECESSOR_AUDIT_EVIDENCE_ONLY",
+      "normal_recovery_target": "Jktomy/atlas-prime"
+    },
+    "mutation": {
+      "attempted": false,
+      "branch_created": false,
+      "commit_created": false,
+      "pr_created": false,
+      "workflow_dispatched": false,
+      "ready_transition_attempted": false,
+      "merge_attempted": false,
+      "force_push_attempted": false
+    }
+  },
+  "detached_audit": {
+    "receipt_self_hash_valid": true,
+    "receipt_file_sidecar_valid": true,
+    "mission_binding_valid": true,
+    "transcript_stage_sequence_valid": true,
+    "all_validation_results_pass": true,
+    "all_five_generated_outputs_byte_equal": true,
+    "credential_material_observed": false,
+    "canonical_main_readback": "af97c00df41be8943ba5d4c942a8ecc2c5aff822",
+    "mission_branch_found": false,
+    "mission_pull_request_found": false,
+    "result": "GREEN"
+  },
+  "transitions": {
+    "AJ-11": {
+      "from": "UNPROVEN",
+      "to": "PROVEN"
+    }
+  },
+  "capability_counts": {
+    "PRESERVED": 4,
+    "IMPROVED": 7,
+    "RESTORED": 14,
+    "REPLACED": 1,
+    "INTENTIONALLY_RETIRED": 1,
+    "BLOCKED": 0,
+    "STILL_MISSING": 1
+  },
+  "preserved_open": [
+    "AJ-12",
+    "CAP-027",
+    "RP-C08",
+    "QUEST-REPAIRING-PRIME-R01"
+  ],
+  "forbidden_promotions": {
+    "AJ-12": false,
+    "CAP-027": false,
+    "RP-C08": false,
+    "QUEST-REPAIRING-PRIME-R01": false,
+    "automatic_ready": false,
+    "automatic_merge": false,
+    "direct_main_write": false,
+    "force_push": false,
+    "cleanup": false
+  },
+  "protected_data": {
+    "classification": "PUBLIC_CLEAN",
+    "protected_values": [],
+    "raw_credentials_committed": false,
+    "raw_private_runtime_paths_committed": false
+  },
+  "next_gate": "MERGE_THEN_GENERATED_CURRENT_STATE_THEN_AJ12_EXACT_MERGED_MAIN_VALIDATION"
+}

@@ -352,8 +352,8 @@
       "path_disposition": "NOT_A_PATH_CLAIM",
       "capability_disposition": "STILL_MISSING",
       "activation_state": "MISSING",
-      "current_state": "Component tests exist and AJ-03 is PROVEN, but AJ-11 and AJ-12 are not yet proven.",
-      "required_proof": "AJ-11 clean-clone recovery and AJ-12 exact-final-main Ubuntu/Windows validation must both have accepted evidence."
+      "current_state": "Component tests exist; AJ-03 is PROVEN and AJ-11 is PROVEN, but AJ-12 exact-final-main validation remains unproven.",
+      "required_proof": "AJ-12 exact-final-main Ubuntu/Windows validation must have accepted evidence; AJ-11 clean-clone recovery is accepted."
     },
     {
       "id": "CAP-028",
