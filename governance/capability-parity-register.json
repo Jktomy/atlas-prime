@@ -352,8 +352,8 @@
       "path_disposition": "NOT_A_PATH_CLAIM",
       "capability_disposition": "STILL_MISSING",
       "activation_state": "MISSING",
-      "current_state": "Component tests exist; AJ-03 is PROVEN and AJ-11 is PROVEN, but AJ-12 exact-final-main validation remains unproven.",
-      "required_proof": "AJ-12 exact-final-main Ubuntu/Windows validation must have accepted evidence; AJ-11 clean-clone recovery is accepted."
+      "current_state": "AJ-03, AJ-11, and AJ-12 are PROVEN from accepted exact evidence. CAP-027 remains STILL_MISSING until a separately authorized final capability reconciliation binds the complete end-to-end acceptance layer without self-promotion.",
+      "required_proof": "A separately authorized CAP-027 final capability reconciliation using the accepted AJ-03, AJ-11, and AJ-12 evidence, followed by exact-head validation, detached review, merge, and canonical readback."
     },
     {
       "id": "CAP-028",

@@ -58,16 +58,16 @@ class PrimeProgramTests(unittest.TestCase):
             repairing_prime,
             [
                 {
-                    "next_gate": "Generated-current readback, then AJ-12 — exact merged-main Ubuntu/Windows validation",
+                    "next_gate": "Generated-current readback after AJ-12 acceptance, then CAP-027 and RP-C08 final capability reconciliation",
                     "owner": "Codex / Source Governance",
                     "quest_id": "QUEST-REPAIRING-PRIME-R01",
                     "readiness_basis": (
-                        "AJ-11 is PROVEN from exact-main read-only clean-clone proof "
-                        "RP-C08-AJ11-FINAL-MAIN-CLEAN-CLONE-PROOF-R02: 13/13 validation commands "
-                        "GREEN, five generated projections CURRENT/NONE and byte-identical, no normal "
-                        "atlas-codex dependency, reviewed-PR rollback, and zero mutation. Generated-current "
-                        "readback precedes AJ-12 exact merged-main Ubuntu/Windows validation. CAP-027, RP-C08, "
-                        "Phoenix recovery, and Quest closeout remain open."
+                        "AJ-01 through AJ-12 are PROVEN. AJ-12 is accepted from owner-authorized read-only "
+                        "workflow run 29455372822 at exact merged main "
+                        "043648a85cf581d7805355a71cc819fdb83e738b: Ubuntu job 87487269033 and Windows "
+                        "job 87487269036 completed successfully with the complete Prime matrix and no repository "
+                        "mutation. CAP-027 remains the sole STILL_MISSING capability pending separate final "
+                        "capability reconciliation; RP-C08, Phoenix recovery, and Quest closeout remain open."
                     ),
                     "source": "quests/repairing-prime.md",
                     "state": "IN_PROGRESS",

@@ -81,7 +81,7 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
         self.assertEqual(rollback["force_push"], "FORBIDDEN")
         self.assertEqual(rollback["history_rewrite"], "FORBIDDEN")
 
-    def test_only_aj11_transitions_and_mutation_remains_absent(self) -> None:
+    def test_only_aj11_transitioned_in_its_historical_record(self) -> None:
         self.assertEqual(
             self.proof["transitions"],
             {"AJ-11": {"from": "UNPROVEN", "to": "PROVEN"}},
@@ -108,7 +108,7 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
             all(value is False for value in self.proof["forbidden_promotions"].values())
         )
 
-    def test_canonical_surfaces_advance_only_to_aj12(self) -> None:
+    def test_canonical_surfaces_preserve_aj11_and_advance_through_aj12(self) -> None:
         acceptance = ACCEPTANCE_PATH.read_text(encoding="utf-8")
         route = ROUTE_PATH.read_text(encoding="utf-8")
         quest = QUEST_PATH.read_text(encoding="utf-8")
@@ -116,12 +116,12 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
         continuity = load_json(CONTINUITY_PATH)
 
         self.assertIn("AJ-11 PROVEN", acceptance)
-        self.assertIn("AJ-12 UNPROVEN", acceptance)
-        self.assertIn("AJ-01 through AJ-11 are PROVEN", quest)
-        self.assertIn("AJ-12: UNPROVEN", quest)
-        self.assertIn("CAP-027: STILL_MISSING — depends only on AJ-12", quest)
+        self.assertIn("AJ-12 PROVEN", acceptance)
+        self.assertIn("AJ-01 through AJ-12 are PROVEN", quest)
+        self.assertIn("AJ-12: PROVEN", quest)
+        self.assertIn("CAP-027: STILL_MISSING", quest)
         self.assertIn(
-            "AJ-11 is PROVEN; AJ-12, CAP-027, RP-C08, and Repairing Prime remain open.",
+            "AJ-11 and AJ-12 are now PROVEN; CAP-027, RP-C08, and Repairing Prime remain open.",
             route,
         )
 
@@ -131,25 +131,26 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
             if entry["quest_id"] == "QUEST-REPAIRING-PRIME-R01"
         )
         self.assertEqual(repairing["state"], "IN_PROGRESS")
-        self.assertIn("AJ-12", repairing["next_gate"])
+        self.assertIn("CAP-027", repairing["next_gate"])
 
         entry = next(
             item
             for item in continuity["entries"]
             if item["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
         )
-        self.assertEqual(continuity["source_base_sha"], "af97c00df41be8943ba5d4c942a8ecc2c5aff822")
-        self.assertEqual(continuity["register_revision"], 27)
-        self.assertEqual(entry["revision"], 22)
+        self.assertEqual(continuity["source_base_sha"], "043648a85cf581d7805355a71cc819fdb83e738b")
+        self.assertEqual(continuity["register_revision"], 28)
+        self.assertEqual(entry["revision"], 23)
         self.assertEqual(
             entry["last_event_id"],
-            "RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08",
+            "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01",
         )
         self.assertEqual(entry["quest_source_sha256"], sha256(QUEST_PATH))
         self.assertEqual(continuity["quest_board_sha256"], continuity_sha256(board))
-        self.assertIn("AJ-12", entry["next_action"])
+        self.assertIn("CAP-027", entry["next_action"])
         self.assertNotIn("AJ-11 requires", entry["blockers"])
         self.assertIn("RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08", continuity["event_ids"])
+        self.assertIn("RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01", continuity["event_ids"])
 
 
 if __name__ == "__main__":

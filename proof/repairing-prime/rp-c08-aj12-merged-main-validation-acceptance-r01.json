@@ -1,0 +1,112 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c08-aj12-merged-main-validation-acceptance.v1",
+  "mission_id": "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01",
+  "authority": "CANONICAL_AUTHORED_ACCEPTANCE_RECONCILIATION",
+  "transaction_base_sha": "043648a85cf581d7805355a71cc819fdb83e738b",
+  "result": "AJ12_MERGED_MAIN_VALIDATION_ACCEPTED",
+  "accepted_workflow_evidence": {
+    "repository": "Jktomy/atlas-prime",
+    "workflow": ".github/workflows/prime-readonly-validation.yml",
+    "event_name": "workflow_dispatch",
+    "authorizer": "JAYSON",
+    "ref": "main",
+    "exact_merged_main_sha": "043648a85cf581d7805355a71cc819fdb83e738b",
+    "run_id": 29455372822,
+    "run_url": "https://github.com/Jktomy/atlas-prime/actions/runs/29455372822",
+    "permissions": {
+      "contents": "read"
+    },
+    "jobs": {
+      "ubuntu": {
+        "job_id": 87487269033,
+        "name": "validate (ubuntu-latest)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      "windows": {
+        "job_id": 87487269036,
+        "name": "validate (windows-latest)",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    },
+    "substantive_stages": [
+      "Prime kernel checks",
+      "Prime repository policy tests",
+      "Prime privacy boundary tests",
+      "Prime lifecycle contract tests",
+      "Full Prime Thread Engine tests",
+      "Thread Engine static checks",
+      "Atlas Sword static checks",
+      "Prime generator tests",
+      "Prime whole-program tests",
+      "Athena execution route tests",
+      "Prime source validation",
+      "Prove active PowerShell launcher resolution"
+    ],
+    "all_substantive_stages_passed_on_both_platforms": true,
+    "canonical_main_before": "043648a85cf581d7805355a71cc819fdb83e738b",
+    "canonical_main_after": "043648a85cf581d7805355a71cc819fdb83e738b",
+    "mutation": {
+      "branch_created": false,
+      "commit_created": false,
+      "pull_request_created": false,
+      "ready_transition_attempted": false,
+      "merge_attempted": false,
+      "settings_changed": false,
+      "force_push_attempted": false,
+      "cleanup_attempted": false
+    }
+  },
+  "detached_readback": {
+    "ubuntu_completed_success": true,
+    "windows_completed_success": true,
+    "all_reported_steps_success": true,
+    "exact_main_unchanged": true,
+    "protected_data_observed": false,
+    "result": "GREEN"
+  },
+  "transitions": {
+    "AJ-12": {
+      "from": "UNPROVEN",
+      "to": "PROVEN"
+    }
+  },
+  "capability_counts": {
+    "PRESERVED": 4,
+    "IMPROVED": 7,
+    "RESTORED": 14,
+    "REPLACED": 1,
+    "INTENTIONALLY_RETIRED": 1,
+    "BLOCKED": 0,
+    "STILL_MISSING": 1
+  },
+  "preserved_open": [
+    "CAP-027",
+    "RP-C08",
+    "QUEST-REPAIRING-PRIME-R01"
+  ],
+  "forbidden_promotions": {
+    "CAP-027": false,
+    "RP-C08": false,
+    "QUEST-REPAIRING-PRIME-R01": false,
+    "automatic_ready": false,
+    "automatic_merge": false,
+    "direct_main_write": false,
+    "force_push": false,
+    "cleanup": false
+  },
+  "protected_data": {
+    "classification": "PUBLIC_CLEAN",
+    "protected_values": [],
+    "raw_credentials_committed": false,
+    "raw_private_runtime_paths_committed": false
+  },
+  "review_boundary": {
+    "exact_head_ci_required": true,
+    "fresh_detached_review_required": true,
+    "separate_ready_authorization_required": true,
+    "separate_merge_authorization_required": true
+  },
+  "next_gate": "MERGE_THEN_GENERATED_CURRENT_STATE_THEN_CAP027_AND_RP_C08_FINAL_CAPABILITY_RECONCILIATION"
+}
