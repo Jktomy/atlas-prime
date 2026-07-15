@@ -54,9 +54,9 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(repairing_board["state"], "IN_PROGRESS")
         self.assertEqual(
             repairing_board["next_gate"],
-            "Generated-current readback, then AJ-12 — exact merged-main Ubuntu/Windows validation",
+            "Generated-current readback after AJ-12 acceptance, then CAP-027 and RP-C08 final capability reconciliation",
         )
-        self.assertIn("AJ-11 is PROVEN", repairing_board["readiness_basis"])
+        self.assertIn("AJ-12 is accepted", repairing_board["readiness_basis"])
         self.assertEqual(repairing_continuity["campaign_id"], "RP-C08")
         self.assertEqual(repairing_continuity["gate_id"], rp_c08["gate_id"])
         self.assertEqual(rp_c06["state"], "COMPLETE")
@@ -78,11 +78,10 @@ class PrimeContinuityTests(unittest.TestCase):
                 "RP-C06-M07": "PROVEN",
             },
         )
-        self.assertIn("RP-C07 is COMPLETE", repairing_continuity["current_position"])
-        self.assertIn("AJ-11 is PROVEN", repairing_continuity["current_position"])
-        self.assertIn("AJ-12 remains UNPROVEN", repairing_continuity["current_position"])
-        self.assertIn("AJ-03 is PROVEN", repairing_continuity["current_position"])
-        self.assertIn("CAP-022 is RESTORED", repairing_continuity["current_position"])
+        self.assertIn("RP-C07 are COMPLETE", repairing_continuity["current_position"])
+        self.assertIn("AJ-11", repairing_continuity["current_position"])
+        self.assertIn("AJ-12 are PROVEN", repairing_continuity["current_position"])
+        self.assertIn("AJ-03", repairing_continuity["current_position"])
         self.assertIn("CAP-027 is the sole STILL_MISSING", repairing_continuity["current_position"])
         self.assertNotIn("await", repairing_continuity["current_position"].lower())
         rp_c01 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C01")
