@@ -70,12 +70,6 @@ def _validated_output_path(repo_root: Path, output_dir: Path) -> Path:
     parent = output_dir.parent
     if not parent.is_dir() or parent.is_symlink():
         raise LifecycleError("CANDIDATE_OUTPUT_PARENT", "candidate output parent must be a regular directory")
-    temporary_root = Path(tempfile.gettempdir()).resolve()
-    if not _path_is_at_or_below(parent, temporary_root, reject_symlinks=True):
-        raise LifecycleError(
-            "CANDIDATE_OUTPUT_BOUNDARY",
-            "candidate output must remain beneath the system temporary directory",
-        )
     resolved_parent = parent.resolve()
     resolved_output = resolved_parent / output_dir.name
     folded_name = output_dir.name.casefold()
@@ -83,6 +77,12 @@ def _validated_output_path(repo_root: Path, output_dir: Path) -> Path:
         raise LifecycleError("CANDIDATE_OUTPUT_COLLISION", "candidate output name case-fold collides")
     if _path_is_at_or_below(resolved_parent, repo_root.resolve(), reject_symlinks=False):
         raise LifecycleError("CANDIDATE_REPOSITORY_WRITE", "candidate output cannot be inside the repository")
+    temporary_root = Path(tempfile.gettempdir()).resolve()
+    if not _path_is_at_or_below(parent, temporary_root, reject_symlinks=True):
+        raise LifecycleError(
+            "CANDIDATE_OUTPUT_BOUNDARY",
+            "candidate output must remain beneath the system temporary directory",
+        )
     return resolved_output
 
 

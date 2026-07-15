@@ -171,7 +171,7 @@ class SunsetCandidateTests(unittest.TestCase):
         try:
             with self.assertRaises(LifecycleError) as raised:
                 generate_sunset_candidate(ROOT, request_path, ROOT / "sunset-test-output")
-            self.assertEqual(raised.exception.code, "CANDIDATE_OUTPUT_BOUNDARY")
+            self.assertEqual(raised.exception.code, "CANDIDATE_REPOSITORY_WRITE")
         finally:
             request_path.unlink(missing_ok=True)
 

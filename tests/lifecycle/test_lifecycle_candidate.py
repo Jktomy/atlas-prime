@@ -10,12 +10,17 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from tools.atlas_lifecycle.candidate import generate_event_candidate, verify_candidate_set
+from tools.atlas_lifecycle.candidate import (
+    _validated_output_path,
+    generate_event_candidate,
+    verify_candidate_set,
+)
 from tools.atlas_lifecycle.errors import LifecycleError
 from tools.atlas_lifecycle.jsonio import canonical_bytes, load_bounded, stable_record_id
 from tools.atlas_lifecycle.schema import SchemaValidator
@@ -266,6 +271,29 @@ class LifecycleCandidateTests(unittest.TestCase):
                 )
             self.assertEqual(raised.exception.code, "EVENT_PATH_ALREADY_EXISTS")
 
+    def test_repository_output_classification_is_temp_root_independent(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            directory = Path(raw)
+            repo = directory / "repo"
+            repo.mkdir()
+            output = repo / "candidate-output"
+            inside_temp = directory
+            outside_temp = directory / "different-temp"
+            outside_temp.mkdir()
+            for label, temp_root in (
+                ("inside", inside_temp),
+                ("outside", outside_temp),
+            ):
+                with self.subTest(location=label), patch(
+                    "tools.atlas_lifecycle.candidate.tempfile.gettempdir",
+                    return_value=str(temp_root),
+                ):
+                    with self.assertRaises(LifecycleError) as raised:
+                        _validated_output_path(repo, output)
+                    self.assertEqual(
+                        raised.exception.code,
+                        "CANDIDATE_REPOSITORY_WRITE",
+                    )
     def test_candidate_readback_rejects_tamper_and_extra_members(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             directory = Path(raw)
