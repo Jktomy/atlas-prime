@@ -10,15 +10,15 @@
       "state": "COMPLETE"
     },
     {
-      "next_gate": "Generated-current readback, then AJ-12 \u2014 exact merged-main Ubuntu/Windows validation",
+      "next_gate": "Generated-current readback after AJ-12 acceptance, then CAP-027 and RP-C08 final capability reconciliation",
       "owner": "Codex / Source Governance",
       "quest_id": "QUEST-REPAIRING-PRIME-R01",
       "source": "quests/repairing-prime.md",
       "state": "IN_PROGRESS",
-      "readiness_basis": "AJ-11 is PROVEN from exact-main read-only clean-clone proof RP-C08-AJ11-FINAL-MAIN-CLEAN-CLONE-PROOF-R02: 13/13 validation commands GREEN, five generated projections CURRENT/NONE and byte-identical, no normal atlas-codex dependency, reviewed-PR rollback, and zero mutation. Generated-current readback precedes AJ-12 exact merged-main Ubuntu/Windows validation. CAP-027, RP-C08, Phoenix recovery, and Quest closeout remain open."
+      "readiness_basis": "AJ-01 through AJ-12 are PROVEN. AJ-12 is accepted from owner-authorized read-only workflow run 29455372822 at exact merged main 043648a85cf581d7805355a71cc819fdb83e738b: Ubuntu job 87487269033 and Windows job 87487269036 completed successfully with the complete Prime matrix and no repository mutation. CAP-027 remains the sole STILL_MISSING capability pending separate final capability reconciliation; RP-C08, Phoenix recovery, and Quest closeout remain open."
     },
     {
-      "next_gate": "FS-C01-M04 \u2014 Prove the Light",
+      "next_gate": "FS-C01-M04 — Prove the Light",
       "owner": "Codex / Source Governance",
       "quest_id": "QUEST-FOUND-SILVERLIGHT-R01",
       "source": "quests/found-silverlight.md",
@@ -26,7 +26,7 @@
       "readiness_basis": "FS-C01-M02 and FS-C01-M03 construction are accepted from exact authored lineage, Ubuntu and Windows validation, detached review, canonical synthetic exercise, immutable recovery, and read-only rollback evidence. FS-C01-M04 still requires a Jayson-selected protected external store and bounded trusted provider/runtime usage evidence."
     },
     {
-      "next_gate": "PF-C01-M02 Preview \u2014 Preserve the Old Flame",
+      "next_gate": "PF-C01-M02 Preview — Preserve the Old Flame",
       "owner": "Odyssey / Prometheus Foundation",
       "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
       "source": "quests/prometheus-fire.md",
