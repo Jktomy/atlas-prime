@@ -145,13 +145,14 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         )
         gate_three_event = "RP-C08-AJ10-CAP022-ACCEPTANCE-RECONCILIATION-R04"
         gate_four_event = "RP-C01-M06-PROTECTED-DISPATCH-ACCEPTANCE-R04"
-        current_event = "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"
-        self.assertEqual(self.continuity["register_revision"], 26)
+        m07_event = "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"
+        aj11_event = "RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08"
+        self.assertEqual(self.continuity["register_revision"], 27)
         self.assertEqual(
             self.continuity["source_base_sha"],
-            "bd10062b87e2c2f26f3b99969b0d1bab30e76ac0",
+            "af97c00df41be8943ba5d4c942a8ecc2c5aff822",
         )
-        for event in (gate_three_event, gate_four_event, current_event):
+        for event in (gate_three_event, gate_four_event, m07_event, aj11_event):
             self.assertEqual(self.continuity["event_ids"].count(event), 1)
         self.assertLess(
             self.continuity["event_ids"].index(gate_three_event),
@@ -159,23 +160,28 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         )
         self.assertLess(
             self.continuity["event_ids"].index(gate_four_event),
-            self.continuity["event_ids"].index(current_event),
+            self.continuity["event_ids"].index(m07_event),
         )
-        self.assertEqual(repairing["last_event_id"], current_event)
-        self.assertEqual(repairing["revision"], 21)
+        self.assertLess(
+            self.continuity["event_ids"].index(m07_event),
+            self.continuity["event_ids"].index(aj11_event),
+        )
+        self.assertEqual(repairing["last_event_id"], aj11_event)
+        self.assertEqual(repairing["revision"], 22)
         self.assertIsNone(repairing["mission_id"])
         self.assertEqual(
             repairing["quest_source_sha256"],
             hashlib.sha256((ROOT / "quests/repairing-prime.md").read_bytes()).hexdigest(),
         )
         self.assertEqual(repairing["quest_state"], "IN_PROGRESS")
-        self.assertIn("AJ-11", repairing["next_action"])
+        self.assertIn("AJ-12", repairing["next_action"])
         self.assertNotIn("R04 mandatory stop", repairing["next_action"])
         self.assertFalse(any("AJ-10 requires" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("CAP-022 remains" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("RP-C01-M06" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("genuine non-owner" in blocker for blocker in repairing["blockers"]))
-        self.assertTrue(any("AJ-11" in blocker for blocker in repairing["blockers"]))
+        self.assertFalse(any("AJ-11 requires" in blocker for blocker in repairing["blockers"]))
+        self.assertTrue(any("AJ-12" in blocker for blocker in repairing["blockers"]))
 
 
 if __name__ == "__main__":

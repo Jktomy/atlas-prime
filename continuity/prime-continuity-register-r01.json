@@ -2,9 +2,9 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 26,
-  "source_base_sha": "bd10062b87e2c2f26f3b99969b0d1bab30e76ac0",
-  "quest_board_sha256": "4b9c719d559d6ff0a6d2a6e225eca8f32888b558970870538664a5a1d7f5a0b9",
+  "register_revision": 27,
+  "source_base_sha": "af97c00df41be8943ba5d4c942a8ecc2c5aff822",
+  "quest_board_sha256": "e27cdcd87dec989f8447b995f563739c93bfdfe7ba71978ca6394e4d82f0bb00",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -34,28 +34,29 @@
     "RP-C08-AJ10-CAP022-ACCEPTANCE-RECONCILIATION-R04",
     "RP-C01-M06-PROTECTED-DISPATCH-ACCEPTANCE-R04",
     "RP-C08-POST-M06-CURRENT-TRUTH-R01",
-    "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"
+    "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05",
+    "RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08"
   ],
   "entries": [
     {
       "continuity_id": "CONT-REPAIRING-PRIME-R01",
       "quest_id": "QUEST-REPAIRING-PRIME-R01",
       "quest_source": "quests/repairing-prime.md",
-      "quest_source_sha256": "fdc40a82b0bdb7d71ab0aa57b7f5f22be5e893820477376f8f20eb810759dad6",
+      "quest_source_sha256": "dd6ad3d55773fdd96f4d69d1e390eff71ba712984399405b82c991505f59277f",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "RP-C08",
       "mission_id": null,
       "gate_id": "REPAIRING_PRIME_COMPLETE",
-      "current_position": "RP-C01 is COMPLETE and AJ-03 is PROVEN from live non-owner run 29421543076 with OWNER_IDENTITY_REJECTED, skipped Thread Engine invocation, zero mutation, and access removal. RP-C05 is COMPLETE. RP-C06 is COMPLETE. RP-C07 is COMPLETE. CAP-022 is RESTORED. AJ-11 and AJ-12 remain UNPROVEN. CAP-027 is the sole STILL_MISSING capability and now depends only on AJ-11/AJ-12. RP-C08 and Repairing Prime remain IN_PROGRESS.",
+      "current_position": "RP-C07 is COMPLETE. AJ-03 is PROVEN. CAP-022 is RESTORED. AJ-11 is PROVEN from read-only clean-clone recovery at af97c00df41be8943ba5d4c942a8ecc2c5aff822: 13 validations passed; five generated projections were byte-identical and CURRENT/NONE; no normal atlas-codex dependency or mutation; rollback requires a reviewed PR. AJ-12 remains UNPROVEN. CAP-027 is the sole STILL_MISSING capability and depends only on AJ-12. RP-C08 and Repairing Prime remain IN_PROGRESS.",
       "blockers": [
-        "AJ-11 requires clean-clone recovery, deterministic regeneration, rollback classification, and no normal Codex dependency at accepted RP-C08 main.",
+        "This authored AJ-11 reconciliation must be separately reviewed and merged; its generated delta must then become current through the normal generated-only route or a truthful zero-delta result.",
         "AJ-12 requires complete Ubuntu and Windows validation at one exact final merged RP-C08 main SHA.",
-        "CAP-027 remains missing until AJ-11 and AJ-12 are PROVEN."
+        "CAP-027 remains missing until AJ-12 is PROVEN."
       ],
-      "next_action": "Prepare the bounded AJ-11 final-main clean-clone recovery Preview from current canonical main. Define the exact clone SHA, deterministic regeneration commands, rollback classification, no-Codex-dependency readback, evidence boundary, and stop conditions before execution.",
-      "next_approval": "Jayson must separately authorize the exact AJ-11 clean-clone recovery transaction and its isolated evidence boundary. M07 account permission and execution authority expired after the accepted rejection and access removal.",
-      "revision": 21,
-      "last_event_id": "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"
+      "next_action": "After separate permanence for this AJ-11 reconciliation and generated-current readback, prepare one bounded AJ-12 exact merged-main Ubuntu and Windows validation proof without promoting CAP-027, RP-C08, or the Quest.",
+      "next_approval": "Jayson must separately authorize AJ-11 reconciliation permanence, any generated checkpoint permanence, and the later exact-sha AJ-12 execution.",
+      "revision": 22,
+      "last_event_id": "RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08"
     },
     {
       "continuity_id": "CONT-FOUND-SILVERLIGHT-R01",
