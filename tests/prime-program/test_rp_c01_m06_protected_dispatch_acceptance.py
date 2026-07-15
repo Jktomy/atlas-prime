@@ -146,11 +146,26 @@ class RpC01M06ProtectedDispatchAcceptanceTests(unittest.TestCase):
         repairing = next(
             item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01"
         )
-        event = "RP-C01-M06-PROTECTED-DISPATCH-ACCEPTANCE-R04"
-        self.assertEqual(self.continuity["event_ids"].count(event), 1)
-        self.assertEqual(repairing["last_event_id"], event)
+        m06_event = "RP-C01-M06-PROTECTED-DISPATCH-ACCEPTANCE-R04"
+        current_event = "RP-C08-POST-M06-CURRENT-TRUTH-R01"
+        self.assertEqual(self.continuity["register_revision"], 25)
+        self.assertEqual(
+            self.continuity["source_base_sha"],
+            "70f8f31c1107e0b59827870cc3803daccf8414c8",
+        )
+        self.assertEqual(self.continuity["event_ids"].count(m06_event), 1)
+        self.assertEqual(self.continuity["event_ids"].count(current_event), 1)
+        self.assertLess(
+            self.continuity["event_ids"].index(m06_event),
+            self.continuity["event_ids"].index(current_event),
+        )
+        self.assertEqual(repairing["last_event_id"], current_event)
+        self.assertEqual(repairing["revision"], 20)
+        self.assertIsNone(repairing["mission_id"])
         self.assertFalse(any("RP-C01-M06" in blocker for blocker in repairing["blockers"]))
         self.assertTrue(any("RP-C01-M07" in blocker for blocker in repairing["blockers"]))
+        self.assertIn("genuine non-owner", repairing["next_action"])
+        self.assertIn("separately authorize", repairing["next_approval"])
         quest_path = ROOT / "quests/repairing-prime.md"
         self.assertEqual(repairing["quest_source_sha256"], hashlib.sha256(quest_path.read_bytes()).hexdigest())
         quest = quest_path.read_text(encoding="utf-8")

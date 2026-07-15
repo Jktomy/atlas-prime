@@ -137,7 +137,7 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         self.assertEqual(self.truth["current_dispositions"]["RP-C05"], "PARTIAL")
         self.assertTrue(self.proof["historical_evidence"]["historical_records_remain_immutable"])
 
-    def test_continuity_preserves_gate_three_and_advances_through_gate_four(self) -> None:
+    def test_continuity_preserves_prior_gates_and_advances_current_truth(self) -> None:
         repairing = next(
             entry
             for entry in self.continuity["entries"]
@@ -145,26 +145,32 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         )
         gate_three_event = "RP-C08-AJ10-CAP022-ACCEPTANCE-RECONCILIATION-R04"
         gate_four_event = "RP-C01-M06-PROTECTED-DISPATCH-ACCEPTANCE-R04"
-        self.assertEqual(self.continuity["register_revision"], 24)
+        current_event = "RP-C08-POST-M06-CURRENT-TRUTH-R01"
+        self.assertEqual(self.continuity["register_revision"], 25)
         self.assertEqual(
             self.continuity["source_base_sha"],
-            "91f4392880b7a76f675c933aa429e9f10d1c740e",
+            "70f8f31c1107e0b59827870cc3803daccf8414c8",
         )
-        self.assertEqual(self.continuity["event_ids"].count(gate_three_event), 1)
-        self.assertEqual(self.continuity["event_ids"].count(gate_four_event), 1)
+        for event in (gate_three_event, gate_four_event, current_event):
+            self.assertEqual(self.continuity["event_ids"].count(event), 1)
         self.assertLess(
             self.continuity["event_ids"].index(gate_three_event),
             self.continuity["event_ids"].index(gate_four_event),
         )
-        self.assertEqual(repairing["last_event_id"], gate_four_event)
-        self.assertEqual(repairing["revision"], 19)
+        self.assertLess(
+            self.continuity["event_ids"].index(gate_four_event),
+            self.continuity["event_ids"].index(current_event),
+        )
+        self.assertEqual(repairing["last_event_id"], current_event)
+        self.assertEqual(repairing["revision"], 20)
+        self.assertIsNone(repairing["mission_id"])
         self.assertEqual(
             repairing["quest_source_sha256"],
             hashlib.sha256((ROOT / "quests/repairing-prime.md").read_bytes()).hexdigest(),
         )
         self.assertEqual(repairing["quest_state"], "IN_PROGRESS")
-        self.assertIn("R04 mandatory stop", repairing["next_action"])
-        self.assertIn("M07/AJ-03", repairing["next_action"])
+        self.assertIn("genuine non-owner", repairing["next_action"])
+        self.assertNotIn("R04 mandatory stop", repairing["next_action"])
         self.assertFalse(any("AJ-10 requires" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("CAP-022 remains" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("RP-C01-M06" in blocker for blocker in repairing["blockers"]))
