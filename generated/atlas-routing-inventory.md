@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:3c58bf20f4cb5dcb073d8218ff2c5b2f7e3a137cf836f5efab638459e74d4321
+Source fingerprint: sha256:e04d576f786872d7c186a6bfe8e8eef5c145075087013d8dae9ab51ad302ba6e
 Generator format: 2
 Status: Generated support artifact
 
@@ -88,6 +88,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c08-cap011-reconciliation-r01.md` | no |
 | `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` | yes |
 | `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` | no |
+| `proof/repairing-prime/rp-c08-post-m06-current-state-strikeforce-r01.md` | no |
 | `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` | no |
 | `quests/found-silverlight.md` | yes |
 | `quests/notums-watch.md` | yes |
