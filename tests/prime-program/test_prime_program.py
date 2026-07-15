@@ -58,9 +58,16 @@ class PrimeProgramTests(unittest.TestCase):
             repairing_prime,
             [
                 {
-                    "next_gate": "RP-C08 Preview — Final Capability-Parity and Quest Closeout",
+                    "next_gate": "RP-C01-M07 / AJ-03 Preview — Genuine non-owner rejection",
                     "owner": "Codex / Source Governance",
                     "quest_id": "QUEST-REPAIRING-PRIME-R01",
+                    "readiness_basis": (
+                        "RP-C01-M06 is PROVEN from accepted live protected dispatch, clean authored PR #200, "
+                        "generated PR #201, and post-merge zero-delta NOOP. M07/AJ-03 remains the smallest "
+                        "missing execution journey and requires a separately authorized genuine non-owner "
+                        "identity with exact no-mutation evidence. CAP-027, AJ-11, AJ-12, RP-C08, Phoenix "
+                        "recovery, and final Quest closeout remain open."
+                    ),
                     "source": "quests/repairing-prime.md",
                     "state": "IN_PROGRESS",
                 }

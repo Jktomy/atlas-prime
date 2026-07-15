@@ -52,7 +52,11 @@ class PrimeContinuityTests(unittest.TestCase):
         rp_c07 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C07")
         rp_c08 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C08")
         self.assertEqual(repairing_board["state"], "IN_PROGRESS")
-        self.assertEqual(repairing_board["next_gate"], "RP-C08 Preview — Final Capability-Parity and Quest Closeout")
+        self.assertEqual(
+            repairing_board["next_gate"],
+            "RP-C01-M07 / AJ-03 Preview — Genuine non-owner rejection",
+        )
+        self.assertIn("M06 is PROVEN", repairing_board["readiness_basis"])
         self.assertEqual(repairing_continuity["campaign_id"], "RP-C08")
         self.assertEqual(repairing_continuity["gate_id"], rp_c08["gate_id"])
         self.assertEqual(rp_c06["state"], "COMPLETE")
