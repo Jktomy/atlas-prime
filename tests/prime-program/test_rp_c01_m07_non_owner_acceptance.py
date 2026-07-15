@@ -93,10 +93,9 @@ class RpC01M07NonOwnerAcceptanceTests(unittest.TestCase):
         self.assertIn("CAP-027", continuity["next_action"])
         self.assertEqual(cap027["capability_disposition"], "STILL_MISSING")
         self.assertEqual(cap027["activation_state"], "MISSING")
-        self.assertIn("AJ-11 is PROVEN", cap027["current_state"])
-        self.assertIn("AJ-12", cap027["current_state"])
-        self.assertNotIn("AJ-11 and AJ-12", cap027["current_state"])
-        self.assertNotIn("AJ-03,", cap027["current_state"])
+        self.assertIn("AJ-03, AJ-11, and AJ-12 are PROVEN", cap027["current_state"])
+        self.assertIn("separately authorized final capability reconciliation", cap027["current_state"])
+        self.assertIn("separately authorized CAP-027 final capability reconciliation", cap027["required_proof"])
 
 
 if __name__ == "__main__":
