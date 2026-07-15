@@ -1,6 +1,6 @@
 # Atlas Orphan Candidate Report
 
-Source fingerprint: sha256:ef5dbb21a0bee57365248c63916f8f426a3fcd702773ba81566db2b98e3ce2fe
+Source fingerprint: sha256:3c58bf20f4cb5dcb073d8218ff2c5b2f7e3a137cf836f5efab638459e74d4321
 Generator format: 2
 Status: Generated support artifact
 
@@ -22,6 +22,7 @@ An orphan candidate is not deletion approval. Review routing, support-file statu
 | `proof/oathbringer-production-acceptance-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `proof/prometheus-fire/pf-c01-m01-mission-seal-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `proof/repairing-prime/rp-c01-m05-parity-acceptance-r01.md` | active metadata-bearing file not found in routing surfaces |
+| `proof/repairing-prime/rp-c01-m06-protected-dispatch-acceptance-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `proof/repairing-prime/rp-c01-route-evidence-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md` | active metadata-bearing file not found in routing surfaces |
