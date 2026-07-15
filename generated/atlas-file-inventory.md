@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:e04d576f786872d7c186a6bfe8e8eef5c145075087013d8dae9ab51ad302ba6e
+Source fingerprint: sha256:35c50dd2983d4be59007042b6248a1c53d3e043296ebbbe47b0fb92a69a982e9
 Generator format: 2
 Status: Generated support artifact
 
@@ -75,6 +75,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c01-m05-parity-live-r01.md` | proof | no | none |
 | `proof/repairing-prime/rp-c01-m06-protected-dispatch-acceptance-r01.md` | proof | yes | none |
 | `proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.md` | proof | no | none |
+| `proof/repairing-prime/rp-c01-m07-non-owner-acceptance-r01.md` | proof | yes | none |
 | `proof/repairing-prime/rp-c01-m08-free-form-acceptance-r01.md` | proof | no | none |
 | `proof/repairing-prime/rp-c01-m08-free-form-live-payload-r01.md` | proof | no | none |
 | `proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.md` | proof | no | none |
