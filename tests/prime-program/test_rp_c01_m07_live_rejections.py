@@ -12,6 +12,7 @@ class RpC01M07LiveRejectionTests(unittest.TestCase):
     def setUp(self) -> None:
         self.proof = json.loads((ROOT / "proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.json").read_text(encoding="utf-8"))
         self.route = json.loads((ROOT / "proof/repairing-prime/rp-c01-route-evidence-r01.json").read_text(encoding="utf-8"))
+        self.non_owner = json.loads((ROOT / "proof/repairing-prime/rp-c01-m07-non-owner-acceptance-r01.json").read_text(encoding="utf-8"))
         self.acceptance = json.loads((ROOT / "proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.json").read_text(encoding="utf-8"))
         self.identities = json.loads((ROOT / "continuity/quest-engine-identities-r01.json").read_text(encoding="utf-8"))
         self.continuity = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
@@ -39,37 +40,39 @@ class RpC01M07LiveRejectionTests(unittest.TestCase):
             self.assertEqual(record["invoke_state"], "SKIPPED")
             self.assertFalse(record["mutation"])
 
-    def test_non_owner_is_the_only_remaining_m07_and_aj03_boundary(self) -> None:
+    def test_historical_partial_and_later_non_owner_acceptance_are_both_exact(self) -> None:
         self.assertEqual(self.proof["remaining_boundary"]["missing"], ["NON_OWNER"])
         self.assertEqual(self.acceptance["journeys"]["AJ-03"]["missing"], ["NON_OWNER"])
-        self.assertEqual(self.route["m07_live_rejection_sequence"]["missing"], ["NON_OWNER"])
-        campaign = next(item for item in self.identities["campaigns"] if item["campaign_id"] == "RP-C01")
-        missions = {item["mission_id"]: item["state"] for item in campaign["missions"]}
-        self.assertEqual(missions["RP-C01-M07"], "PARTIAL")
         self.assertEqual(self.proof["acceptance_journey_state"], "UNPROVEN")
         self.assertTrue(all(value is False for value in self.proof["forbidden_promotions"].values()))
+        self.assertEqual(self.non_owner["acceptance_journey_state"], "PROVEN")
+        self.assertEqual(self.non_owner["mission_state"], "PROVEN")
+        self.assertEqual(self.route["m07_live_rejection_sequence"]["missing"], [])
+        self.assertIn("NON_OWNER", self.route["m07_live_rejection_sequence"]["accepted"])
+        campaign = next(item for item in self.identities["campaigns"] if item["campaign_id"] == "RP-C01")
+        missions = {item["mission_id"]: item["state"] for item in campaign["missions"]}
+        self.assertEqual(missions["RP-C01-M07"], "PROVEN")
+        self.assertEqual(campaign["state"], "COMPLETE")
 
     def test_superseded_diagnostics_are_conserved_without_promotion(self) -> None:
         self.assertEqual({item["run"] for item in self.proof["superseded_no_mutation_diagnostics"]}, {29233989153, 29234050494})
         self.assertTrue(all(item["mutation"] is False for item in self.proof["superseded_no_mutation_diagnostics"]))
 
-    def test_continuity_preserves_m07_and_prior_boundaries(self) -> None:
+    def test_continuity_preserves_history_and_advances_to_aj11(self) -> None:
         repairing = next(item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         events = self.continuity["event_ids"]
-        m07_event = "RP-C01-M07-LIVE-REJECTION-RECONCILIATION-R01"
-        m05_event = "RP-C01-M05-PARITY-ACCEPTANCE-R01"
-        m08_event = "RP-C01-M08-FREE-FORM-ACCEPTANCE-R01"
-        self.assertEqual(events.count(m07_event), 1)
-        self.assertLess(events.index(m07_event), events.index(m05_event))
-        self.assertLess(events.index(m07_event), events.index(m08_event))
-        self.assertGreaterEqual(self.continuity["register_revision"], 15)
-        self.assertGreaterEqual(repairing["revision"], 14)
-        self.assertIn(repairing["last_event_id"], events)
+        historical_event = "RP-C01-M07-LIVE-REJECTION-RECONCILIATION-R01"
+        current_event = "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"
+        self.assertEqual(events.count(historical_event), 1)
+        self.assertEqual(events.count(current_event), 1)
+        self.assertLess(events.index(historical_event), events.index(current_event))
+        self.assertEqual(self.continuity["register_revision"], 26)
+        self.assertEqual(repairing["revision"], 21)
+        self.assertEqual(repairing["last_event_id"], current_event)
         self.assertEqual(repairing["quest_state"], "IN_PROGRESS")
-        self.assertTrue(any("genuine non-owner" in blocker for blocker in repairing["blockers"]))
-        self.assertFalse(any("RP-C01-M05" in blocker for blocker in repairing["blockers"]))
-        self.assertFalse(any("RP-C01-M08" in blocker for blocker in repairing["blockers"]))
-
+        self.assertFalse(any("genuine non-owner" in blocker for blocker in repairing["blockers"]))
+        self.assertTrue(any("AJ-11" in blocker for blocker in repairing["blockers"]))
+        self.assertIn("AJ-11", repairing["next_action"])
 
 if __name__ == "__main__":
     unittest.main()

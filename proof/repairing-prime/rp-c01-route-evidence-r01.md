@@ -1,7 +1,7 @@
 ---
 title: "Repairing Prime RP-C01 Execution Route Evidence R01"
 atlas_id: "prime.proof.repairing-prime.rp-c01-route-evidence-r01"
-status: "HOSTED_DIRECT_AND_PROTECTED_PROVEN_GATE_INCOMPLETE"
+status: "ALL_EXECUTION_ROUTES_PROVEN"
 source_type: "PROOF"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
@@ -12,7 +12,8 @@ protected_level: "MEDIUM"
 # RP-C01 execution-route evidence
 
 RP-C01 has merged authenticated direct-Spear, hosted Arrow/Bow, and protected
-Aegis Break successes, plus live no-mutation route or carrier rejection proofs.
+Aegis Break successes plus the complete live no-mutation rejection set, including
+one genuine non-owner rejection.
 The machine-readable sibling binds every exact run, receipt, PR, head, merge,
 and disposition.
 
@@ -48,12 +49,14 @@ exact-head CI and detached review, and merged as one harmless proof file.
 
 Live hosted rejections prove malformed Base64, protected-path handoff,
 Thread Engine self-change handoff, generated/source mixing rejection, stale
-base, edited input, intentional replay, duplicate branch, and duplicate PR
-before mutation. The newer M07 sequence is recorded at
-`proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.md`.
-Its controlled fixture PR was closed unmerged and its branch deleted; canonical
-main did not move. A genuine non-owner live trial remains missing, so M07 and
-AJ-03 remain incomplete.
+base, edited input, intentional replay, duplicate branch, duplicate PR, and a
+genuine non-owner request before mutation. The earlier partial sequence remains
+immutable at `proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.md`.
+The later non-owner run `29421543076` is accepted at
+`proof/repairing-prime/rp-c01-m07-non-owner-acceptance-r01.md`: actor and
+triggering actor `jaysontomyod` received `OWNER_IDENTITY_REJECTED`, the Thread
+Engine job was skipped, no mutation occurred, canonical main did not move, and
+temporary Write permission was removed. M07 and AJ-03 are PROVEN.
 
 The guided journey recorded at
 `proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.md` first proved
@@ -95,8 +98,8 @@ the exact marker bytes, and generated checkpoint PR #188 merged as
 `aee1f837c18dbabf871396ffedf7d9c53e3d8297`. M06 is PROVEN. The receipt binds
 every forbidden action false or `NO` and grants no standing authority.
 
-M06 is PROVEN by this accepted evidence. This M06-only reconciliation does not
-revise any other mission state. The broader
-`ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN` gate remains unproven because M07 and
-AJ-03 still require a genuine non-owner live rejection. No CAP or AJ promotion
-is authorized.
+M06 remains PROVEN by its accepted evidence. The later non-owner acceptance closes
+M07 and AJ-03 without rewriting any earlier partial record. All RP-C01 missions
+are now PROVEN, RP-C01 is COMPLETE, and `ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN`
+is ACCEPTED. AJ-11, AJ-12, CAP-027, RP-C08, and Repairing Prime remain open; no
+capability or standing authority is promoted.

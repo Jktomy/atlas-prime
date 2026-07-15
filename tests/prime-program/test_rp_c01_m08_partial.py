@@ -45,8 +45,8 @@ class RpC01M08PartialTests(unittest.TestCase):
         self.assertEqual(self.cap015["transitions"]["RP-C01-M02"]["to"], "PROVEN")
         self.assertEqual(missions["RP-C01-M05"], "PROVEN")
         self.assertEqual(missions["RP-C01-M06"], "PROVEN")
-        self.assertEqual(missions["RP-C01-M07"], "PARTIAL")
-        self.assertEqual(campaign["state"], "IN_PROGRESS")
+        self.assertEqual(missions["RP-C01-M07"], "PROVEN")
+        self.assertEqual(campaign["state"], "COMPLETE")
         self.assertTrue(all(value is False for value in self.acceptance["forbidden_promotions"].values()))
         self.assertTrue(all(value is False for value in self.cap015["forbidden_promotions"].values()))
 

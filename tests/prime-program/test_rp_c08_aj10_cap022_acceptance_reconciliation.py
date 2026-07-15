@@ -145,11 +145,11 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         )
         gate_three_event = "RP-C08-AJ10-CAP022-ACCEPTANCE-RECONCILIATION-R04"
         gate_four_event = "RP-C01-M06-PROTECTED-DISPATCH-ACCEPTANCE-R04"
-        current_event = "RP-C08-POST-M06-CURRENT-TRUTH-R01"
-        self.assertEqual(self.continuity["register_revision"], 25)
+        current_event = "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"
+        self.assertEqual(self.continuity["register_revision"], 26)
         self.assertEqual(
             self.continuity["source_base_sha"],
-            "70f8f31c1107e0b59827870cc3803daccf8414c8",
+            "bd10062b87e2c2f26f3b99969b0d1bab30e76ac0",
         )
         for event in (gate_three_event, gate_four_event, current_event):
             self.assertEqual(self.continuity["event_ids"].count(event), 1)
@@ -162,19 +162,20 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
             self.continuity["event_ids"].index(current_event),
         )
         self.assertEqual(repairing["last_event_id"], current_event)
-        self.assertEqual(repairing["revision"], 20)
+        self.assertEqual(repairing["revision"], 21)
         self.assertIsNone(repairing["mission_id"])
         self.assertEqual(
             repairing["quest_source_sha256"],
             hashlib.sha256((ROOT / "quests/repairing-prime.md").read_bytes()).hexdigest(),
         )
         self.assertEqual(repairing["quest_state"], "IN_PROGRESS")
-        self.assertIn("genuine non-owner", repairing["next_action"])
+        self.assertIn("AJ-11", repairing["next_action"])
         self.assertNotIn("R04 mandatory stop", repairing["next_action"])
         self.assertFalse(any("AJ-10 requires" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("CAP-022 remains" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("RP-C01-M06" in blocker for blocker in repairing["blockers"]))
-        self.assertTrue(any("genuine non-owner" in blocker for blocker in repairing["blockers"]))
+        self.assertFalse(any("genuine non-owner" in blocker for blocker in repairing["blockers"]))
+        self.assertTrue(any("AJ-11" in blocker for blocker in repairing["blockers"]))
 
 
 if __name__ == "__main__":

@@ -56,7 +56,8 @@ class RpC01M05ParityAcceptanceTests(unittest.TestCase):
         campaign = next(item for item in self.identities["campaigns"] if item["campaign_id"] == "RP-C01")
         missions = {item["mission_id"]: item["state"] for item in campaign["missions"]}
         self.assertEqual(missions["RP-C01-M05"], "PROVEN")
-        self.assertEqual(campaign["state"], "IN_PROGRESS")
+        self.assertEqual(campaign["state"], "COMPLETE")
+        self.assertEqual(missions["RP-C01-M07"], "PROVEN")
 
     def test_route_and_continuity_preserve_historical_boundary(self) -> None:
         self.assertEqual(self.route["m05_same_carrier_parity"]["state"], "PROVEN")
