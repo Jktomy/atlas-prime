@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:e04d576f786872d7c186a6bfe8e8eef5c145075087013d8dae9ab51ad302ba6e
+Source fingerprint: sha256:35c50dd2983d4be59007042b6248a1c53d3e043296ebbbe47b0fb92a69a982e9
 Generator format: 2
 Status: Generated support artifact
 
@@ -75,10 +75,11 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c01-m05-parity-live-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c01-m06-protected-dispatch-acceptance-r01.md` | ACCEPTED_MISSION_PROOF | PROOF | missing | CRITICAL |
 | `proof/repairing-prime/rp-c01-m07-live-rejection-reconciliation-r01.md` | missing | missing | missing | missing |
+| `proof/repairing-prime/rp-c01-m07-non-owner-acceptance-r01.md` | ACCEPTED_NON_OWNER_REJECTION | PROOF | missing | MEDIUM |
 | `proof/repairing-prime/rp-c01-m08-free-form-acceptance-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c01-m08-free-form-live-payload-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c01-m08-partial-reconciliation-r01.md` | missing | missing | missing | missing |
-| `proof/repairing-prime/rp-c01-route-evidence-r01.md` | HOSTED_DIRECT_AND_PROTECTED_PROVEN_GATE_INCOMPLETE | PROOF | missing | MEDIUM |
+| `proof/repairing-prime/rp-c01-route-evidence-r01.md` | ALL_EXECUTION_ROUTES_PROVEN | PROOF | missing | MEDIUM |
 | `proof/repairing-prime/rp-c05-continuity-evidence-r01.md` | ACCEPTED | PROOF | missing | HIGH |
 | `proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md` | ACCEPTED | PROOF | missing | HIGH |
 | `proof/repairing-prime/rp-c07-acceptance-reconciliation-r01.md` | ACCEPTED_RECONCILIATION | PROOF | missing | MEDIUM |
