@@ -49,31 +49,31 @@ class CapabilityParityTests(unittest.TestCase):
             {
                 "PRESERVED": 4,
                 "IMPROVED": 7,
-                "RESTORED": 14,
+                "RESTORED": 15,
                 "REPLACED": 1,
                 "INTENTIONALLY_RETIRED": 1,
                 "BLOCKED": 0,
-                "STILL_MISSING": 1,
+                "STILL_MISSING": 0,
             },
         )
         self.assertEqual(sum(self.register["capability_disposition_counts"].values()), 28)
         enum = self.schema["properties"]["capabilities"]["items"]["properties"]["capability_disposition"]["enum"]
         self.assertEqual(set(enum), set(DISPOSITIONS))
 
-    def test_cap022_is_restored_and_cap027_is_the_exact_missing_set(self) -> None:
+    def test_cap022_and_cap027_are_restored_and_no_capability_is_missing(self) -> None:
         missing = [record["id"] for record in self.register["capabilities"] if record["capability_disposition"] == "STILL_MISSING"]
-        self.assertEqual(missing, ["CAP-027"])
+        self.assertEqual(missing, [])
         self.assertEqual(self.records["CAP-022"]["capability_disposition"], "RESTORED")
         self.assertEqual(self.records["CAP-022"]["activation_state"], "ACTIVE")
         self.assertEqual(self.records["CAP-022"]["audit_severity"], "GREEN")
         self.assertIn("PR #193", self.records["CAP-022"]["current_state"])
         cap027 = self.records["CAP-027"]
-        self.assertEqual(cap027["activation_state"], "MISSING")
-        self.assertEqual(cap027["capability_disposition"], "STILL_MISSING")
-        self.assertIn("AJ-03, AJ-11, and AJ-12 are PROVEN", cap027["current_state"])
-        self.assertIn("separately authorized final capability reconciliation", cap027["current_state"])
-        self.assertIn("separately authorized CAP-027 final capability reconciliation", cap027["required_proof"])
-        self.assertNotIn("AJ-10", cap027["current_state"])
+        self.assertEqual(cap027["activation_state"], "ACTIVE")
+        self.assertEqual(cap027["capability_disposition"], "RESTORED")
+        self.assertEqual(cap027["audit_status"], "RESTORED_COMPLETE_ACCEPTANCE_LAYER")
+        self.assertEqual(cap027["audit_severity"], "GREEN")
+        self.assertIn("AJ-01 through AJ-12 are PROVEN", cap027["current_state"])
+        self.assertIn("rp-c08-cap027-final-capability-reconciliation-r01.md", cap027["required_proof"])
 
     def test_cap015_is_restored_from_direct_spear_evidence(self) -> None:
         cap = self.records["CAP-015"]
