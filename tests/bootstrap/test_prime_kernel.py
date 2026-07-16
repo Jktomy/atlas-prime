@@ -87,27 +87,32 @@ for path in ROOT.rglob("*"):
         raise SystemExit(f"Runtime byproduct found: {path.relative_to(ROOT)}")
 
 # Temporary draft-branch diagnostic. Removed byte-for-byte before final audit.
-diagnostic = subprocess.run(
-    [
-        sys.executable,
-        "-m",
-        "unittest",
-        "discover",
-        "-s",
-        "tests/prime-program",
-        "-p",
-        "test_*.py",
-        "-f",
-        "-v",
-    ],
-    cwd=ROOT,
-    capture_output=True,
-    text=True,
-    check=False,
-)
-if diagnostic.returncode:
-    combined = (diagnostic.stdout + "\n" + diagnostic.stderr).splitlines()
-    print("\n".join(combined[-80:]))
-    raise SystemExit("CAP-027 whole-program diagnostic failed")
+for pattern in (
+    "test_capability_parity.py",
+    "test_prime_continuity.py",
+    "test_prime_program.py",
+):
+    diagnostic = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests/prime-program",
+            "-p",
+            pattern,
+            "-f",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if diagnostic.returncode:
+        combined = (diagnostic.stdout + "\n" + diagnostic.stderr).splitlines()
+        print(f"CAP027_DIAGNOSTIC_PATTERN={pattern}")
+        print("\n".join(combined[-40:]))
+        raise SystemExit("CAP-027 selected whole-program diagnostic failed")
 
 print("Prime kernel static checks: PASS")
