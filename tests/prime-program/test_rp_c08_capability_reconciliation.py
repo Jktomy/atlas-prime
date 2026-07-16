@@ -14,7 +14,7 @@ class RpC08CapabilityReconciliationTests(unittest.TestCase):
         self.register = json.loads(
             (ROOT / "governance/capability-parity-register.json").read_text(encoding="utf-8")
         )
-        self.proof = json.loads(
+        self.cap015 = json.loads(
             (ROOT / "proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.json").read_text(
                 encoding="utf-8"
             )
@@ -24,7 +24,7 @@ class RpC08CapabilityReconciliationTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
-        self.acceptance = json.loads(
+        self.aj10 = json.loads(
             (ROOT / "proof/repairing-prime/rp-c08-aj10-cap022-acceptance-reconciliation-r04.json").read_text(
                 encoding="utf-8"
             )
@@ -39,13 +39,18 @@ class RpC08CapabilityReconciliationTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
+        self.final = json.loads(
+            (ROOT / "proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.json").read_text(
+                encoding="utf-8"
+            )
+        )
         self.records = {record["id"]: record for record in self.register["capabilities"]}
 
-    def test_exact_28_record_counts_match_controlling_proof(self) -> None:
+    def test_exact_28_record_counts_match_controlling_final_proof(self) -> None:
         observed = Counter(record["capability_disposition"] for record in self.register["capabilities"])
-        expected = {key: value for key, value in self.acceptance["capability_counts"].items() if value}
+        expected = {key: value for key, value in self.final["capability_counts"].items() if value}
         self.assertEqual(dict(observed), expected)
-        self.assertEqual(self.register["capability_disposition_counts"], self.acceptance["capability_counts"])
+        self.assertEqual(self.register["capability_disposition_counts"], self.final["capability_counts"])
         self.assertEqual(sum(observed.values()), 28)
 
     def test_cap011_remains_restored_by_live_multifile_evidence(self) -> None:
@@ -66,45 +71,36 @@ class RpC08CapabilityReconciliationTests(unittest.TestCase):
         self.assertEqual(evidence["head_sha"], "337d86615594b6c8b07cd474b8d23ddc032b2c42")
         self.assertEqual(evidence["detached_review"], "GREEN")
 
-    def test_cap015_aj01_and_m02_are_reconciled_only(self) -> None:
+    def test_cap015_aj01_and_m02_remain_reconciled(self) -> None:
         self.assertEqual(self.records["CAP-015"]["capability_disposition"], "RESTORED")
         self.assertEqual(self.records["CAP-015"]["activation_state"], "ACTIVE")
-        self.assertEqual(self.proof["transitions"]["AJ-01"]["to"], "PROVEN")
-        self.assertEqual(self.proof["transitions"]["RP-C01-M02"]["to"], "PROVEN")
-        self.assertEqual(self.proof["accepted_evidence"]["direct_spear"]["pull_request"], 102)
-        self.assertFalse(self.proof["superseded_premise"]["platform_attestation_required"])
+        self.assertEqual(self.cap015["transitions"]["AJ-01"]["to"], "PROVEN")
+        self.assertEqual(self.cap015["transitions"]["RP-C01-M02"]["to"], "PROVEN")
+        self.assertEqual(self.cap015["accepted_evidence"]["direct_spear"]["pull_request"], 102)
+        self.assertFalse(self.cap015["superseded_premise"]["platform_attestation_required"])
 
-    def test_current_acceptance_has_exact_missing_set(self) -> None:
+    def test_final_acceptance_has_no_missing_set(self) -> None:
         missing = [record["id"] for record in self.register["capabilities"] if record["capability_disposition"] == "STILL_MISSING"]
-        self.assertEqual(missing, ["CAP-027"])
-        self.assertEqual(self.acceptance["transitions"]["AJ-10"]["to"], "PROVEN")
-        self.assertEqual(self.acceptance["transitions"]["RP-C05"]["to"], "COMPLETE")
+        self.assertEqual(missing, [])
+        self.assertEqual(self.aj10["transitions"]["AJ-10"]["to"], "PROVEN")
+        self.assertEqual(self.aj10["transitions"]["RP-C05"]["to"], "COMPLETE")
         self.assertEqual(self.records["CAP-022"]["activation_state"], "ACTIVE")
-        self.assertEqual(self.records["CAP-027"]["activation_state"], "MISSING")
+        self.assertEqual(self.final["transitions"]["CAP-027"]["to"], "RESTORED/ACTIVE")
+        self.assertEqual(self.records["CAP-027"]["activation_state"], "ACTIVE")
+        self.assertEqual(self.records["CAP-027"]["capability_disposition"], "RESTORED")
 
     def test_historical_truth_record_remains_immutable_pre_acceptance_evidence(self) -> None:
         self.assertEqual(self.truth["current_dispositions"]["AJ-10"], "UNPROVEN")
         self.assertEqual(self.truth["current_dispositions"]["RP-C05"], "PARTIAL")
 
-    def test_reconciliation_does_not_self_close(self) -> None:
-        self.assertEqual(self.proof["campaign_state"]["RP-C01"], "IN_PROGRESS")
-        self.assertEqual(self.proof["campaign_state"]["RP-C08"], "IN_PROGRESS")
-        self.assertEqual(self.proof["campaign_state"]["repairing_prime"], "IN_PROGRESS")
-        self.assertTrue(all(value is False for value in self.proof["forbidden_promotions"].values()))
-        self.assertEqual(
-            set(self.proof["preserved_open"]),
-            {
-                "RP-C01-M06",
-                "RP-C01-M07",
-                "AJ-03",
-                "CAP-027",
-                "AJ-11",
-                "AJ-12",
-                "RP-C01",
-                "RP-C08",
-                "QUEST-REPAIRING-PRIME-R01",
-            },
-        )
+    def test_final_reconciliation_does_not_self_close(self) -> None:
+        self.assertEqual(self.final["campaign_state"]["RP-C08"], "IN_PROGRESS")
+        self.assertEqual(self.final["campaign_state"]["repairing_prime"], "IN_PROGRESS")
+        self.assertTrue(all(value is False for value in self.final["forbidden_promotions"].values()))
+        self.assertIn("WHOLE_QUEST_STRIKEFORCE", self.final["remaining_open"])
+        self.assertIn("PHOENIX_RECOVERY", self.final["remaining_open"])
+        self.assertIn("RESTART_SAFE_SUNSET", self.final["remaining_open"])
+        self.assertIn("QUEST-REPAIRING-PRIME-R01", self.final["remaining_open"])
 
 
 if __name__ == "__main__":
