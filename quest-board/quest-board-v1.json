@@ -15,7 +15,7 @@
       "quest_id": "QUEST-REPAIRING-PRIME-R01",
       "source": "quests/repairing-prime.md",
       "state": "COMPLETE",
-      "completion_basis": "RP-C01 through RP-C08 are complete. AJ-01 through AJ-12 remain PROVEN; CAP-027 remains RESTORED/ACTIVE; all 28 capability dispositions remain reconciled at 15 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 0 STILL_MISSING. Final Phoenix recovery remains accepted. Restart-safe Sunset PR #224 merged as 40e58dcf33bae68f8c819c2f65c6474f52381718 with lifecycle candidate-set digest sha256:5bcdba556f9c40090176ab712cc868bc05cc1c47832261d10b9a54ac2da7384a. Generated publisher run 29536662886 proved exact Ubuntu/Windows parity and truthful zero-delta NOOP receipt sha256:2722defc94f60dddaa35cae3faf66796cdf01c1ed1e100ffe10fece6c83b2565. The living Quest Emberline is COMPLETE/CLOSED and the completed Quest is removed from active continuity. Independent Quest states remain unchanged."
+      "completion_basis": "RP-C01-RP-C08 are complete; AJ-01-AJ-12 are PROVEN; CAP-027 is RESTORED/ACTIVE; all 28 capability dispositions are reconciled with 0 BLOCKED and 0 STILL_MISSING. Phoenix recovery is accepted. Sunset PR #224 merged at 40e58dcf33bae68f8c819c2f65c6474f52381718. The generated publisher run 29536662886 proved Ubuntu/Windows parity and a truthful zero-delta NOOP. Living Emberline is COMPLETE/CLOSED; Repairing Prime is removed from active continuity; independent Quest states are unchanged."
     },
     {
       "next_gate": "FS-C01-M04 — Prove the Light",
