@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -83,5 +85,29 @@ if generated_root.exists():
 for path in ROOT.rglob("*"):
     if path.is_file() and (path.suffix in {".pyc", ".pyo"} or "__pycache__" in path.parts):
         raise SystemExit(f"Runtime byproduct found: {path.relative_to(ROOT)}")
+
+# Temporary draft-branch diagnostic. Removed byte-for-byte before final audit.
+diagnostic = subprocess.run(
+    [
+        sys.executable,
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/prime-program",
+        "-p",
+        "test_*.py",
+        "-f",
+        "-v",
+    ],
+    cwd=ROOT,
+    capture_output=True,
+    text=True,
+    check=False,
+)
+if diagnostic.returncode:
+    combined = (diagnostic.stdout + "\n" + diagnostic.stderr).splitlines()
+    print("\n".join(combined[-80:]))
+    raise SystemExit("CAP-027 whole-program diagnostic failed")
 
 print("Prime kernel static checks: PASS")
