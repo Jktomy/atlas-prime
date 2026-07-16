@@ -39,14 +39,27 @@ class RpC08CapabilityReconciliationTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
+        self.final = json.loads(
+            (ROOT / "proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.json").read_text(
+                encoding="utf-8"
+            )
+        )
         self.records = {record["id"]: record for record in self.register["capabilities"]}
 
-    def test_exact_28_record_counts_match_controlling_proof(self) -> None:
+    def test_exact_28_record_counts_match_final_reconciliation(self) -> None:
         observed = Counter(record["capability_disposition"] for record in self.register["capabilities"])
-        expected = {key: value for key, value in self.acceptance["capability_counts"].items() if value}
+        expected = {
+            key: value
+            for key, value in self.final["final_capability_recount"]["capability_counts"].items()
+            if value
+        }
         self.assertEqual(dict(observed), expected)
-        self.assertEqual(self.register["capability_disposition_counts"], self.acceptance["capability_counts"])
+        self.assertEqual(
+            self.register["capability_disposition_counts"],
+            self.final["final_capability_recount"]["capability_counts"],
+        )
         self.assertEqual(sum(observed.values()), 28)
+        self.assertEqual(self.final["final_capability_recount"]["missing_capability_ids"], [])
 
     def test_cap011_remains_restored_by_live_multifile_evidence(self) -> None:
         self.assertEqual(self.records["CAP-011"]["capability_disposition"], "RESTORED")
@@ -74,19 +87,37 @@ class RpC08CapabilityReconciliationTests(unittest.TestCase):
         self.assertEqual(self.proof["accepted_evidence"]["direct_spear"]["pull_request"], 102)
         self.assertFalse(self.proof["superseded_premise"]["platform_attestation_required"])
 
-    def test_current_acceptance_has_exact_missing_set(self) -> None:
-        missing = [record["id"] for record in self.register["capabilities"] if record["capability_disposition"] == "STILL_MISSING"]
-        self.assertEqual(missing, ["CAP-027"])
+    def test_final_acceptance_has_no_missing_capability(self) -> None:
+        missing = [
+            record["id"]
+            for record in self.register["capabilities"]
+            if record["capability_disposition"] == "STILL_MISSING"
+        ]
+        self.assertEqual(missing, [])
         self.assertEqual(self.acceptance["transitions"]["AJ-10"]["to"], "PROVEN")
         self.assertEqual(self.acceptance["transitions"]["RP-C05"]["to"], "COMPLETE")
         self.assertEqual(self.records["CAP-022"]["activation_state"], "ACTIVE")
-        self.assertEqual(self.records["CAP-027"]["activation_state"], "MISSING")
+        self.assertEqual(self.records["CAP-027"]["activation_state"], "ACTIVE")
+        self.assertEqual(self.records["CAP-027"]["capability_disposition"], "RESTORED")
+        self.assertEqual(self.final["transitions"]["CAP-027"]["to"], "RESTORED/ACTIVE")
 
     def test_historical_truth_record_remains_immutable_pre_acceptance_evidence(self) -> None:
         self.assertEqual(self.truth["current_dispositions"]["AJ-10"], "UNPROVEN")
         self.assertEqual(self.truth["current_dispositions"]["RP-C05"], "PARTIAL")
 
-    def test_reconciliation_does_not_self_close(self) -> None:
+    def test_historical_reconciliation_does_not_self_close(self) -> None:
+        self.assertEqual(
+            self.acceptance["capability_counts"],
+            {
+                "PRESERVED": 4,
+                "IMPROVED": 7,
+                "RESTORED": 14,
+                "REPLACED": 1,
+                "INTENTIONALLY_RETIRED": 1,
+                "BLOCKED": 0,
+                "STILL_MISSING": 1,
+            },
+        )
         self.assertEqual(self.proof["campaign_state"]["RP-C01"], "IN_PROGRESS")
         self.assertEqual(self.proof["campaign_state"]["RP-C08"], "IN_PROGRESS")
         self.assertEqual(self.proof["campaign_state"]["repairing_prime"], "IN_PROGRESS")
@@ -105,6 +136,15 @@ class RpC08CapabilityReconciliationTests(unittest.TestCase):
                 "QUEST-REPAIRING-PRIME-R01",
             },
         )
+
+    def test_final_reconciliation_does_not_self_close(self) -> None:
+        self.assertEqual(self.final["campaign_state"]["RP-C08"], "IN_PROGRESS")
+        self.assertEqual(self.final["campaign_state"]["QUEST-REPAIRING-PRIME-R01"], "IN_PROGRESS")
+        self.assertEqual(self.final["campaign_state"]["capability_parity_layer"], "COMPLETE")
+        self.assertTrue(all(value is False for value in self.final["forbidden_promotions"].values()))
+        self.assertIn("WHOLE_QUEST_STRIKEFORCE", self.final["preserved_open"])
+        self.assertIn("PHOENIX_RECOVERY", self.final["preserved_open"])
+        self.assertIn("RESTART_SAFE_SUNSET", self.final["preserved_open"])
 
 
 if __name__ == "__main__":

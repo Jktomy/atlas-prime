@@ -142,7 +142,7 @@ class RpC01M06ProtectedDispatchAcceptanceTests(unittest.TestCase):
         self.assertEqual(self.route["m07_live_rejection_sequence"]["state"], "PROVEN_COMPLETE_REJECTION_SET")
         self.assertEqual(self.route["campaign_gate_state"], "ACCEPTED")
 
-    def test_continuity_preserves_m06_and_advances_through_aj12(self) -> None:
+    def test_continuity_preserves_m06_and_advances_through_cap027(self) -> None:
         repairing = next(
             item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01"
         )
@@ -150,29 +150,32 @@ class RpC01M06ProtectedDispatchAcceptanceTests(unittest.TestCase):
         m07_event = "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"
         aj11_event = "RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08"
         aj12_event = "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01"
-        self.assertEqual(self.continuity["register_revision"], 28)
-        self.assertEqual(self.continuity["source_base_sha"], "043648a85cf581d7805355a71cc819fdb83e738b")
-        for event in (m06_event, m07_event, aj11_event, aj12_event):
+        cap027_event = "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01"
+        self.assertEqual(self.continuity["register_revision"], 29)
+        self.assertEqual(self.continuity["source_base_sha"], "887c562f40c1ae6756054b322a08b113f6ce60ca")
+        for event in (m06_event, m07_event, aj11_event, aj12_event, cap027_event):
             self.assertEqual(self.continuity["event_ids"].count(event), 1)
-        self.assertLess(self.continuity["event_ids"].index(m06_event), self.continuity["event_ids"].index(m07_event))
-        self.assertLess(self.continuity["event_ids"].index(m07_event), self.continuity["event_ids"].index(aj11_event))
-        self.assertLess(self.continuity["event_ids"].index(aj11_event), self.continuity["event_ids"].index(aj12_event))
-        self.assertEqual(repairing["last_event_id"], aj12_event)
-        self.assertEqual(repairing["revision"], 23)
+        events = self.continuity["event_ids"]
+        self.assertLess(events.index(m06_event), events.index(m07_event))
+        self.assertLess(events.index(m07_event), events.index(aj11_event))
+        self.assertLess(events.index(aj11_event), events.index(aj12_event))
+        self.assertLess(events.index(aj12_event), events.index(cap027_event))
+        self.assertEqual(repairing["last_event_id"], cap027_event)
+        self.assertEqual(repairing["revision"], 24)
         self.assertIsNone(repairing["mission_id"])
         self.assertFalse(any("RP-C01-M06" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("genuine non-owner" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("AJ-11 requires" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("AJ-12 requires complete" in blocker for blocker in repairing["blockers"]))
-        self.assertTrue(any("CAP-027" in blocker for blocker in repairing["blockers"]))
-        self.assertIn("CAP-027", repairing["next_action"])
+        self.assertFalse(any("CAP-027 remains missing" in blocker for blocker in repairing["blockers"]))
+        self.assertIn("whole-Quest Strikeforce", repairing["next_action"])
         quest_path = ROOT / "quests/repairing-prime.md"
         self.assertEqual(repairing["quest_source_sha256"], hashlib.sha256(quest_path.read_bytes()).hexdigest())
         quest = quest_path.read_text(encoding="utf-8")
         self.assertIn("RP-C01 is `COMPLETE`", quest)
         self.assertIn("AJ-03 is PROVEN", quest)
         self.assertIn("AJ-01 through AJ-12 are PROVEN", quest)
-        self.assertIn("CAP-027 is the only missing capability", quest)
+        self.assertIn("CAP-027 is RESTORED and ACTIVE", quest)
 
 
 if __name__ == "__main__":

@@ -9,12 +9,8 @@ from tools.prime_continuity.engine import sha256 as continuity_sha256
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PROOF_PATH = (
-    ROOT
-    / "proof"
-    / "repairing-prime"
-    / "rp-c08-aj11-clean-clone-acceptance-r08.json"
-)
+PROOF_PATH = ROOT / "proof" / "repairing-prime" / "rp-c08-aj11-clean-clone-acceptance-r08.json"
+FINAL_PATH = ROOT / "proof" / "repairing-prime" / "rp-c08-cap027-final-capability-reconciliation-r01.json"
 QUEST_PATH = ROOT / "quests" / "repairing-prime.md"
 BOARD_PATH = ROOT / "quest-board" / "quest-board-v1.json"
 CONTINUITY_PATH = ROOT / "continuity" / "prime-continuity-register-r01.json"
@@ -33,6 +29,7 @@ def sha256(path: Path) -> str:
 class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
     def setUp(self) -> None:
         self.proof = load_json(PROOF_PATH)
+        self.final = load_json(FINAL_PATH)
 
     def test_receipt_and_exact_main_bindings_are_exact(self) -> None:
         accepted = self.proof["accepted_local_proof"]
@@ -71,10 +68,7 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
         self.assertEqual(len(generated["hashes"]), 5)
         for binding in generated["hashes"].values():
             self.assertTrue(binding["byte_equal"])
-            self.assertEqual(
-                binding["committed_sha256"],
-                binding["regenerated_sha256"],
-            )
+            self.assertEqual(binding["committed_sha256"], binding["regenerated_sha256"])
         self.assertFalse(accepted["normal_atlas_codex_dependency"])
         rollback = accepted["rollback_classification"]
         self.assertEqual(rollback["source_rollback"], "NEW_REVIEWED_PR")
@@ -82,10 +76,7 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
         self.assertEqual(rollback["history_rewrite"], "FORBIDDEN")
 
     def test_only_aj11_transitioned_in_its_historical_record(self) -> None:
-        self.assertEqual(
-            self.proof["transitions"],
-            {"AJ-11": {"from": "UNPROVEN", "to": "PROVEN"}},
-        )
+        self.assertEqual(self.proof["transitions"], {"AJ-11": {"from": "UNPROVEN", "to": "PROVEN"}})
         mutation = self.proof["accepted_local_proof"]["mutation"]
         self.assertTrue(all(value is False for value in mutation.values()))
         self.assertEqual(
@@ -104,11 +95,10 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
             self.proof["preserved_open"],
             ["AJ-12", "CAP-027", "RP-C08", "QUEST-REPAIRING-PRIME-R01"],
         )
-        self.assertTrue(
-            all(value is False for value in self.proof["forbidden_promotions"].values())
-        )
+        self.assertTrue(all(value is False for value in self.proof["forbidden_promotions"].values()))
+        self.assertEqual(self.final["transitions"]["CAP-027"]["to"], "RESTORED/ACTIVE")
 
-    def test_canonical_surfaces_preserve_aj11_and_advance_through_aj12(self) -> None:
+    def test_canonical_surfaces_preserve_aj11_and_advance_through_cap027(self) -> None:
         acceptance = ACCEPTANCE_PATH.read_text(encoding="utf-8")
         route = ROUTE_PATH.read_text(encoding="utf-8")
         quest = QUEST_PATH.read_text(encoding="utf-8")
@@ -117,40 +107,37 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
 
         self.assertIn("AJ-11 PROVEN", acceptance)
         self.assertIn("AJ-12 PROVEN", acceptance)
+        self.assertIn("CAP-027 RESTORED / ACTIVE", acceptance)
         self.assertIn("AJ-01 through AJ-12 are PROVEN", quest)
-        self.assertIn("AJ-12: PROVEN", quest)
-        self.assertIn("CAP-027: STILL_MISSING", quest)
+        self.assertIn("CAP-027: RESTORED / ACTIVE", quest)
         self.assertIn(
-            "AJ-11 and AJ-12 are now PROVEN; CAP-027, RP-C08, and Repairing Prime remain open.",
+            "AJ-11 and AJ-12 are now PROVEN; CAP-027 is RESTORED/ACTIVE by the separate final capability reconciliation; RP-C08 and Repairing Prime remain open.",
             route,
         )
 
         repairing = next(
-            entry
-            for entry in board["entries"]
+            entry for entry in board["entries"]
             if entry["quest_id"] == "QUEST-REPAIRING-PRIME-R01"
         )
         self.assertEqual(repairing["state"], "IN_PROGRESS")
-        self.assertIn("CAP-027", repairing["next_gate"])
+        self.assertIn("whole-Quest Strikeforce", repairing["next_gate"])
 
         entry = next(
-            item
-            for item in continuity["entries"]
+            item for item in continuity["entries"]
             if item["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
         )
-        self.assertEqual(continuity["source_base_sha"], "043648a85cf581d7805355a71cc819fdb83e738b")
-        self.assertEqual(continuity["register_revision"], 28)
-        self.assertEqual(entry["revision"], 23)
-        self.assertEqual(
-            entry["last_event_id"],
-            "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01",
-        )
+        self.assertEqual(continuity["source_base_sha"], "887c562f40c1ae6756054b322a08b113f6ce60ca")
+        self.assertEqual(continuity["register_revision"], 29)
+        self.assertEqual(entry["revision"], 24)
+        self.assertEqual(entry["last_event_id"], "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01")
         self.assertEqual(entry["quest_source_sha256"], sha256(QUEST_PATH))
         self.assertEqual(continuity["quest_board_sha256"], continuity_sha256(board))
-        self.assertIn("CAP-027", entry["next_action"])
-        self.assertNotIn("AJ-11 requires", entry["blockers"])
+        self.assertIn("whole-Quest Strikeforce", entry["next_action"])
+        self.assertFalse(any("AJ-11 requires" in blocker for blocker in entry["blockers"]))
+        self.assertFalse(any("CAP-027 remains missing" in blocker for blocker in entry["blockers"]))
         self.assertIn("RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08", continuity["event_ids"])
         self.assertIn("RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01", continuity["event_ids"])
+        self.assertIn("RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01", continuity["event_ids"])
 
 
 if __name__ == "__main__":
