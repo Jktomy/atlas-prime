@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:114a972399cfd4ea631a81fd709937b33edf1acd0f3bca07cb4c1b8b8bde38f1
+Source fingerprint: sha256:5f7bfe7e19919e79ff59a7d964e4b36719484409b19fa96757be0a6d16282644
 Generator format: 2
 Status: Generated support artifact
 
@@ -93,6 +93,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.md` | proof | yes | none |
 | `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` | proof | yes | none |
 | `proof/repairing-prime/rp-c08-final-whole-quest-strikeforce-reconciliation-r01.md` | proof | yes | none |
+| `proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.md` | proof | yes | none |
 | `proof/repairing-prime/rp-c08-post-m06-current-state-strikeforce-r01.md` | proof | yes | none |
 | `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` | proof | yes | none |
 | `quests/found-silverlight.md` | quests | yes | policy-reference |
