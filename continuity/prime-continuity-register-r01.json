@@ -4,7 +4,7 @@
   "register_id": "PRIME-CONTINUITY-R01",
   "register_revision": 30,
   "source_base_sha": "3fbcc5fdb95c40665cbd6ee3fff752b149a81cb9",
-  "quest_board_sha256": "56a3de86b127881fa818e4bc72aad72e2603540ebfe69d7911c03b3b74721a10",
+  "quest_board_sha256": "b325fa9514aa0c9269fc94154f4b92f2af629029efc58130ec29e35dbfb98249",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
