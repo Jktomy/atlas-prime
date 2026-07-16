@@ -20,12 +20,16 @@ Foundry construction binding without changing semantic authority.
 Authority is deliberately narrow:
 
 - after the lifecycle authority cutover is proven, `quest-emberlines/` is the
-  sole authority for current admitted-Quest state; the existing Quest Board
-  retains its current role until that atomic cutover.
+  sole authority for current admitted-Quest state; each admitted Quest has one
+  stable living Emberline file containing Main, Side, Branched, and Final
+  journey entries. The existing Quest Board retains its current role until
+  that atomic cutover.
 - Feathers and Quest checkpoints are immutable evidence of a position; they do
   not advance or replace Quest state.
-- archive and supersession records change lifecycle interpretation without
-  deleting an identity or breaking a reference.
+- a living Emberline revision keeps its stable identity, increments its revision,
+  binds the prior file digest, and preserves its complete readable journey;
+- archive and supersession records change other lifecycle interpretation
+  without deleting an identity or breaking a reference.
 - Golden Wings are reusable-lesson candidates, never doctrine.
 - `fixtures/` is harmless test material and has no Atlas authority.
 - `generated/lifecycle/` is a deterministic, noncanonical projection.

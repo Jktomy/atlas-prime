@@ -3,6 +3,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import json
+import re
 import unicodedata
 from pathlib import Path
 from typing import Any
@@ -140,11 +141,28 @@ def canonical_bytes(
     ).encode("utf-8")
 
 
+def living_emberline_id(quest_id: str, project_id: str) -> str:
+    seed = canonical_bytes(
+        {
+            "identity_class": "ATLAS_LIVING_QUEST_EMBERLINE_V1",
+            "project_id": project_id,
+            "quest_id": quest_id,
+        }
+    )
+    token = base64.b32encode(hashlib.sha256(seed).digest()).decode("ascii").rstrip("=")[:26]
+    return f"QEM-{token}"
+
+
 def stable_record_id(record: dict[str, Any]) -> str:
     schema_id = record.get("schema_id")
     prefix = PREFIX_BY_SCHEMA.get(schema_id)
     if prefix is None:
         raise LifecycleError("UNTRUSTED_SCHEMA_ID", "record declares an untrusted schema identity")
+    if schema_id == "atlas.lifecycle.quest-emberline" and record.get("schema_version") == "2.0.0":
+        lineage_root = record.get("lineage_root_id")
+        if not isinstance(lineage_root, str) or re.fullmatch(r"QEM-[A-Z2-7]{26}", lineage_root) is None:
+            raise LifecycleError("LIVING_EMBERLINE_ID", "living Emberline lineage root is invalid")
+        return lineage_root
     digest = hashlib.sha256(canonical_bytes(record, omit_record_id=True)).digest()
     token = base64.b32encode(digest).decode("ascii").rstrip("=")[:26]
     return f"{prefix}-{token}"

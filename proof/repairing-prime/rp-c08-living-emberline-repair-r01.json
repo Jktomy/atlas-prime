@@ -1,0 +1,48 @@
+{
+  "authority": "CANDIDATE_SOURCE_REPAIR",
+  "decision": {
+    "branched_scopes": [
+      "EMBERLINE",
+      "CAMPAIGN",
+      "MISSION",
+      "GATE"
+    ],
+    "immutable_record_classes_preserved": [
+      "FEATHER",
+      "QUEST_CHECKPOINT",
+      "SUNSET",
+      "SUNRISE",
+      "RECEIPT",
+      "EVENT"
+    ],
+    "journey_vocabulary": [
+      "MAIN",
+      "SIDE",
+      "BRANCHED",
+      "FINAL"
+    ],
+    "one_living_emberline_per_admitted_quest": true,
+    "side_scopes": [
+      "CAMPAIGN",
+      "MISSION",
+      "GATE"
+    ]
+  },
+  "exact_base": "4e297f7cb1206f16230d282c9da9ecbb986c1a8a",
+  "mission": "RP-C08-LIVING-EMBERLINE-ARCHITECTURE-REPAIR-R01",
+  "pre_repair_source_fingerprint": "sha256:645ae41a91ea956786428d242b2e4616a16092931fbbeaddc6139795098072d6",
+  "preserved_boundaries": {
+    "deflected_pr_221_preserved": true,
+    "generated_files_changed": false,
+    "merge_authorized": false,
+    "quest_completed": false,
+    "ready_authorized": false,
+    "repairing_prime": "IN_PROGRESS",
+    "rp_c08": "IN_PROGRESS",
+    "sunset_created": false
+  },
+  "prior_file_digest": "sha256:9174ed49302f666b40a60669196ebe2f81a66a942e9cb5b5a141e23ed9a424ed",
+  "quest": "repairing-prime",
+  "schema_version": "rp-c08-living-emberline-repair-r01",
+  "stable_emberline_id": "QEM-R6QKBDHLY7I7PVVEKIGTZFMZZT"
+}

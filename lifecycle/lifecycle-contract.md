@@ -18,7 +18,7 @@ protected_level: "CRITICAL"
 | Feather | `lifecycle/feathers/` | `FTR` | sealed records immutable |
 | Feather Archive | `lifecycle/feather-archives/` | `FAR` | immutable event |
 | Golden Wing | `lifecycle/golden-wings/` | `GWN` | revision or supersession |
-| Quest Emberline | `lifecycle/quest-emberlines/` | `QEM` | revisioned current state |
+| Quest Emberline | `lifecycle/quest-emberlines/` | `QEM` | one stable living map per admitted Quest |
 | Quest checkpoint | `lifecycle/quest-checkpoints/` | `QCP` | immutable checkpoint |
 | Sunset | `lifecycle/sunsets/` | `SUN` | immutable plan/checkpoint |
 | Sunrise | `lifecycle/sunrises/` | `SRI` | immutable reconstruction |
@@ -58,9 +58,14 @@ position. `TRANSITION` events describe an Athena-authored requested state
 change and require independently trusted acceptance evidence. An ordinary
 merge or generated projection cannot create an authoritative transition.
 
-Quest Emberlines use monotonically increasing integer revisions. A mutation
-must bind the current record ID, revision, and canonical `main` SHA. Candidate
-Quests use `candidate_quest_ref`; they do not receive a canonical `quest_id`.
+Quest Emberlines use monotonically increasing integer revisions while preserving
+one stable record ID and one canonical file per admitted Quest. Each revision
+binds the SHA-256 digest of the previous canonical Emberline file. The living
+map contains ordered `Main-*`, `Side-*`, `Branched-*`, and `Final-*` entries.
+Side entries must resolve a departure and return; Branched entries must record
+the superseded and newly accepted direction. A completed Quest requires a
+Final entry, no unresolved blockers, and `next_gate: CLOSED`. Candidate Quests
+use `candidate_quest_ref`; they do not receive a canonical `quest_id`.
 Non-Quest work leaves both fields absent.
 
 Every completed Sunset is one atomic continuity transaction that creates
@@ -83,8 +88,10 @@ construction command for one bounded Sunset invocation. One invocation emits a
 temporary, exact, read-back-verified candidate set containing exactly one new
 sealed Feather, exactly one Sunset bound to that Feather, and exactly one
 Sunrise bound to the same pair. Admitted-Quest scope additionally emits exactly
-one current Quest Emberline revision and one Quest checkpoint. Non-Quest scope
-emits neither and must not invent a Quest identity.
+one replacement payload for the existing living Quest Emberline and one new
+Quest checkpoint. The Emberline replacement keeps the same stable ID, appends
+one Main-Gate journey entry, increments the Quest revision, and binds the prior
+file digest. Non-Quest scope emits neither and must not invent a Quest identity.
 
 The request must bind the exact canonical `main` SHA used as the transaction
 input. Candidate construction rejects before output when that SHA does not match

@@ -10,16 +10,17 @@ from .jsonio import canonical_bytes, load_bounded
 
 
 TRUSTED_SCHEMAS = {
-    "atlas.lifecycle.feather": "feather-v1.schema.json",
-    "atlas.lifecycle.feather-archive": "feather-archive-v1.schema.json",
-    "atlas.lifecycle.golden-wing": "golden-wing-v1.schema.json",
-    "atlas.lifecycle.quest-emberline": "quest-emberline-v1.schema.json",
-    "atlas.lifecycle.quest-checkpoint": "quest-checkpoint-v1.schema.json",
-    "atlas.lifecycle.sunset": "sunset-v1.schema.json",
-    "atlas.lifecycle.sunrise": "sunrise-v1.schema.json",
-    "atlas.lifecycle.continuity": "continuity-v1.schema.json",
-    "atlas.lifecycle.receipt": "lifecycle-receipt-v1.schema.json",
-    "atlas.lifecycle.event": "lifecycle-event-v1.schema.json",
+    ("atlas.lifecycle.feather", "1.0.0"): "feather-v1.schema.json",
+    ("atlas.lifecycle.feather-archive", "1.0.0"): "feather-archive-v1.schema.json",
+    ("atlas.lifecycle.golden-wing", "1.0.0"): "golden-wing-v1.schema.json",
+    ("atlas.lifecycle.quest-emberline", "1.0.0"): "quest-emberline-v1.schema.json",
+    ("atlas.lifecycle.quest-emberline", "2.0.0"): "quest-emberline-v2.schema.json",
+    ("atlas.lifecycle.quest-checkpoint", "1.0.0"): "quest-checkpoint-v1.schema.json",
+    ("atlas.lifecycle.sunset", "1.0.0"): "sunset-v1.schema.json",
+    ("atlas.lifecycle.sunrise", "1.0.0"): "sunrise-v1.schema.json",
+    ("atlas.lifecycle.continuity", "1.0.0"): "continuity-v1.schema.json",
+    ("atlas.lifecycle.receipt", "1.0.0"): "lifecycle-receipt-v1.schema.json",
+    ("atlas.lifecycle.event", "1.0.0"): "lifecycle-event-v1.schema.json",
 }
 TRUSTED_PROJECTIONS = {
     ("atlas.lifecycle.website-index", "2.0.0"): "website-index-v2.schema.json",
@@ -72,16 +73,21 @@ class SchemaValidator:
                 raise LifecycleError("UNTRUSTED_SCHEMA_ID", "trusted schema URI identity mismatch")
             self.schemas[name] = schema
 
-        for schema_id, name in TRUSTED_SCHEMAS.items():
-            declared = self.schemas[name].get("properties", {}).get("schema_id", {}).get("const")
-            if declared != schema_id:
+        for (schema_id, schema_version), name in TRUSTED_SCHEMAS.items():
+            properties = self.schemas[name].get("properties", {})
+            declared = properties.get("schema_id", {}).get("const")
+            declared_version = properties.get("schema_version", {}).get("const")
+            if declared != schema_id or declared_version != schema_version:
                 raise LifecycleError("SCHEMA_CATALOG_MISMATCH", "schema catalog identity mismatch")
 
     def validate_record(self, record: dict[str, Any]) -> None:
-        schema_id = record.get("schema_id")
-        name = TRUSTED_SCHEMAS.get(schema_id)
+        key = (record.get("schema_id"), record.get("schema_version"))
+        name = TRUSTED_SCHEMAS.get(key)
         if name is None:
-            raise LifecycleError("UNTRUSTED_SCHEMA_ID", "record declares an untrusted schema identity")
+            raise LifecycleError(
+                "UNTRUSTED_SCHEMA_ID",
+                "record declares an untrusted schema identity or version",
+            )
         self._validate(record, self.schemas[name], name, "$")
 
     def validate_projection(self, projection: dict[str, Any]) -> None:
