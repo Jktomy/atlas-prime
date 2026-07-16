@@ -48,7 +48,8 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Emberline, Sunset, or Sunrise | `python -B -m tools.prime_continuity.cli emberline|sunset|sunrise ...`; projections/evidence never govern |
 | Lifecycle records and read-only mechanics | `lifecycle/README.md`, `lifecycle/lifecycle-contract.md`, `lifecycle/schemas/`, `tools/atlas_lifecycle/README.md` |
 | Infrastructure source | `infrastructure/atlas-infrastructure-source.md` |
-| Backup, restore, recovery, rollback | `recovery/phoenix-recovery.md`, `migration/rollback-map.md` |
+| Clean-clone recovery, protected runtime restoration, and recovery proof | `recovery/phoenix-recovery.md` |
+| Prime-native source rollback and reviewed revert | `migration/rollback-map.md` |
 | Knowledge lifecycle | `knowledge/atlas-source-compendium.md` |
 | Thread Engine | `tools/thread-engine/README.md`, `tools/thread-engine/PRIME-PORT-STATUS.json` |
 | Reusable templates | `templates/preview-bundle-template.md`, `templates/project-template.md`, `templates/protocol-template.md`, `templates/source-file-template.md`, `templates/support-file-template.md` |
