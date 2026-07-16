@@ -66,6 +66,45 @@ protected = json.loads((ROOT / "policies/protected-paths.json").read_text(encodi
 for required_path in ("migration/**", "quest-board/**", "generated/**", "tools/thread-engine/**"):
     assert required_path in protected["critical_paths"]
 
+rollback = (ROOT / "migration/rollback-map.md").read_text(encoding="utf-8")
+command_surfaces = (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8")
+
+for required_fragment in (
+    'status: "CANONICAL_ACTIVE"',
+    "Prime remains the sole active canonical source after cutover.",
+    "`Jktomy/atlas-codex` is frozen predecessor and rollback evidence only.",
+    "It is never the normal rollback target and never regains active source authority.",
+    "Restore the last independently verified Prime state through a new exact",
+    "reviewed revert or restoration PR.",
+    "Do not force-reset `main`. Do not restore Codex canonical authority.",
+    "Keep Prime canonical.",
+    "Thread Engine self-change or emergency",
+    "disablement uses Aegis Break → Oathbringer",
+    "Rollback is proven only after exact restoration and independent readback.",
+):
+    assert required_fragment in rollback
+
+for forbidden_fragment in (
+    'status: "SHADOW_CONSTRUCTION"',
+    "Restore the exact predecessor tree",
+    "Keep Codex canonical",
+    "Return source authority",
+):
+    assert forbidden_fragment not in rollback
+
+assert (
+    "| Clean-clone recovery, protected runtime restoration, and recovery proof | `recovery/phoenix-recovery.md` |"
+    in command_surfaces
+)
+assert (
+    "| Prime-native source rollback and reviewed revert | `migration/rollback-map.md` |"
+    in command_surfaces
+)
+assert (
+    "| Backup, restore, recovery, rollback | `recovery/phoenix-recovery.md`, `migration/rollback-map.md` |"
+    not in command_surfaces
+)
+
 generated_root = ROOT / "generated"
 if generated_root.exists():
     generated_files = {
