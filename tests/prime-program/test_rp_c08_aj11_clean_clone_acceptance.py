@@ -20,6 +20,8 @@ BOARD_PATH = ROOT / "quest-board" / "quest-board-v1.json"
 CONTINUITY_PATH = ROOT / "continuity" / "prime-continuity-register-r01.json"
 ACCEPTANCE_PATH = ROOT / "governance" / "capability-acceptance-contract.md"
 ROUTE_PATH = ROOT / "governance" / "athena-execution-route-contract.md"
+REGISTER_PATH = ROOT / "governance" / "capability-parity-register.json"
+FINAL_PATH = ROOT / "proof" / "repairing-prime" / "rp-c08-cap027-final-capability-reconciliation-r01.json"
 
 
 def load_json(path: Path) -> dict:
@@ -108,22 +110,29 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
             all(value is False for value in self.proof["forbidden_promotions"].values())
         )
 
-    def test_canonical_surfaces_preserve_aj11_and_advance_through_aj12(self) -> None:
+    def test_canonical_surfaces_preserve_aj11_and_advance_cap027(self) -> None:
         acceptance = ACCEPTANCE_PATH.read_text(encoding="utf-8")
         route = ROUTE_PATH.read_text(encoding="utf-8")
         quest = QUEST_PATH.read_text(encoding="utf-8")
         board = load_json(BOARD_PATH)
         continuity = load_json(CONTINUITY_PATH)
+        register = load_json(REGISTER_PATH)
+        final = load_json(FINAL_PATH)
 
         self.assertIn("AJ-11 PROVEN", acceptance)
         self.assertIn("AJ-12 PROVEN", acceptance)
         self.assertIn("AJ-01 through AJ-12 are PROVEN", quest)
         self.assertIn("AJ-12: PROVEN", quest)
-        self.assertIn("CAP-027: STILL_MISSING", quest)
+        self.assertIn("CAP-027: RESTORED / ACTIVE", quest)
         self.assertIn(
             "AJ-11 and AJ-12 are now PROVEN; CAP-027, RP-C08, and Repairing Prime remain open.",
             route,
         )
+
+        cap027 = next(item for item in register["capabilities"] if item["id"] == "CAP-027")
+        self.assertEqual(cap027["capability_disposition"], "RESTORED")
+        self.assertEqual(cap027["activation_state"], "ACTIVE")
+        self.assertEqual(final["accepted_journey_bindings"]["AJ-11"]["state"], "PROVEN")
 
         repairing = next(
             entry
@@ -131,26 +140,26 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
             if entry["quest_id"] == "QUEST-REPAIRING-PRIME-R01"
         )
         self.assertEqual(repairing["state"], "IN_PROGRESS")
-        self.assertIn("CAP-027", repairing["next_gate"])
+        self.assertIn("whole-Quest Strikeforce", repairing["next_gate"])
 
         entry = next(
             item
             for item in continuity["entries"]
             if item["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
         )
-        self.assertEqual(continuity["source_base_sha"], "043648a85cf581d7805355a71cc819fdb83e738b")
-        self.assertEqual(continuity["register_revision"], 28)
-        self.assertEqual(entry["revision"], 23)
+        self.assertEqual(continuity["source_base_sha"], "887c562f40c1ae6756054b322a08b113f6ce60ca")
+        self.assertEqual(continuity["register_revision"], 29)
+        self.assertEqual(entry["revision"], 24)
         self.assertEqual(
             entry["last_event_id"],
-            "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01",
+            "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01",
         )
         self.assertEqual(entry["quest_source_sha256"], sha256(QUEST_PATH))
         self.assertEqual(continuity["quest_board_sha256"], continuity_sha256(board))
-        self.assertIn("CAP-027", entry["next_action"])
-        self.assertNotIn("AJ-11 requires", entry["blockers"])
+        self.assertIn("whole-Quest Strikeforce", entry["next_action"])
         self.assertIn("RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08", continuity["event_ids"])
         self.assertIn("RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01", continuity["event_ids"])
+        self.assertIn("RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01", continuity["event_ids"])
 
 
 if __name__ == "__main__":
