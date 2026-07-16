@@ -142,7 +142,7 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         self.assertEqual(self.truth["current_dispositions"]["RP-C05"], "PARTIAL")
         self.assertTrue(self.proof["historical_evidence"]["historical_records_remain_immutable"])
 
-    def test_continuity_preserves_prior_gates_and_advances_through_cap027(self) -> None:
+    def test_continuity_preserves_prior_gates_and_advances_to_phoenix(self) -> None:
         repairing = next(
             entry
             for entry in self.continuity["entries"]
@@ -154,12 +154,13 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         aj11_event = "RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08"
         aj12_event = "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01"
         cap027_event = "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01"
-        self.assertEqual(self.continuity["register_revision"], 29)
+        strikeforce_event = "RP-C08-FINAL-WHOLE-QUEST-STRIKEFORCE-RECONCILIATION-R01"
+        self.assertEqual(self.continuity["register_revision"], 30)
         self.assertEqual(
             self.continuity["source_base_sha"],
-            "887c562f40c1ae6756054b322a08b113f6ce60ca",
+            "3fbcc5fdb95c40665cbd6ee3fff752b149a81cb9",
         )
-        for event in (gate_three_event, gate_four_event, m07_event, aj11_event, aj12_event, cap027_event):
+        for event in (gate_three_event, gate_four_event, m07_event, aj11_event, aj12_event, cap027_event, strikeforce_event):
             self.assertEqual(self.continuity["event_ids"].count(event), 1)
         ordered = self.continuity["event_ids"]
         self.assertLess(ordered.index(gate_three_event), ordered.index(gate_four_event))
@@ -167,15 +168,17 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         self.assertLess(ordered.index(m07_event), ordered.index(aj11_event))
         self.assertLess(ordered.index(aj11_event), ordered.index(aj12_event))
         self.assertLess(ordered.index(aj12_event), ordered.index(cap027_event))
-        self.assertEqual(repairing["last_event_id"], cap027_event)
-        self.assertEqual(repairing["revision"], 24)
+        self.assertLess(ordered.index(cap027_event), ordered.index(strikeforce_event))
+        self.assertEqual(repairing["last_event_id"], strikeforce_event)
+        self.assertEqual(repairing["revision"], 25)
         self.assertIsNone(repairing["mission_id"])
         self.assertEqual(
             repairing["quest_source_sha256"],
             hashlib.sha256((ROOT / "quests/repairing-prime.md").read_bytes()).hexdigest(),
         )
         self.assertEqual(repairing["quest_state"], "IN_PROGRESS")
-        self.assertIn("whole-Quest Strikeforce", repairing["next_action"])
+        self.assertIn("Phoenix recovery", repairing["next_action"])
+        self.assertNotIn("whole-Quest Strikeforce", repairing["next_action"])
         self.assertNotIn("R04 mandatory stop", repairing["next_action"])
         self.assertFalse(any("AJ-10 requires" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("CAP-022 remains" in blocker for blocker in repairing["blockers"]))
