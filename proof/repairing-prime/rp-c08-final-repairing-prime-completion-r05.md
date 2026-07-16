@@ -44,10 +44,10 @@ Canonical `main` was read back as identical to this SHA before branch creation.
 ## Source digest bindings
 
 - `quests/repairing-prime.md`: `sha256:5965d7b6ad600e5378e98b32383d7eccdb6c0bbc198dcd3814577276c85f2c7c`
-- `quest-board/quest-board-v1.json`: `sha256:5186aedafa98b5d123c73e8add8d7792adf7ea8f8eebe5223820563d20555d8f`
-- Quest Board stable-object digest in active continuity: `409343d130a4eef1cfc5176db7104d791ed7b22a9031bb80bd69ded4b4d2730d`
-- `continuity/prime-continuity-register-r01.json`: `sha256:d43267d54a487bc24991bf7cdaa2d928b2166eb4116314a90604470066557b65`
-- Living QEM candidate: `sha256:712fcb192f90001070001e1e0d60a375914a96e82745e16fd2ead6ce780b7bca`
+- `quest-board/quest-board-v1.json`: `sha256:3c5d14da67a55ba76aaaba7eb7b19b9ca67115cfccfe938c7a4c67d37cf7fd4b`
+- Quest Board stable-object digest in active continuity: `6db081288442109a045039fd51bee51e3196b0421f64b33d5ae6a65eae241324`
+- `continuity/prime-continuity-register-r01.json`: `sha256:6e9c46ba4dd82caf977be2a355d0a59650b018cd82ae1ce627df2c86b7268381`
+- Living QEM candidate: `sha256:3e6b61e3429103723d7ec96f91808976c039e490dff3fa6f28af3944c27b3162`
 - Prior living QEM revision parent: `sha256:628548a1ea044a5e18c0adef496f7bd2eba7cb243b3112efe9ec4923b0c2b7ff`
 
 ## Historical and independent-state preservation
