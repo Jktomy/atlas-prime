@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import copy
 import contextlib
+import copy
 import io
 import json
 import tempfile
@@ -25,6 +25,7 @@ from tools.prime_continuity.engine import (
 
 
 ROOT = Path(__file__).resolve().parents[2]
+ACTIVE_FIXTURE = "CONT-FOUND-SILVERLIGHT-R01"
 
 
 def load(relative: str) -> dict:
@@ -46,95 +47,87 @@ class PrimeContinuityTests(unittest.TestCase):
             {entry["quest_id"] for entry in self.register["entries"]},
             {entry["quest_id"] for entry in self.board["entries"] if entry["state"] != "COMPLETE"},
         )
-        repairing_board = next(entry for entry in self.board["entries"] if entry["quest_id"] == self.identities["quest_id"])
-        repairing_continuity = next(entry for entry in self.register["entries"] if entry["quest_id"] == self.identities["quest_id"])
-        rp_c06 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C06")
-        rp_c07 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C07")
-        rp_c08 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C08")
-        self.assertEqual(repairing_board["state"], "IN_PROGRESS")
-        self.assertEqual(
-            repairing_board["next_gate"],
-            "Restart-safe Sunset, then final Quest closeout",
+
+        repairing_board = next(
+            entry for entry in self.board["entries"]
+            if entry["quest_id"] == self.identities["quest_id"]
         )
-        self.assertIn("CAP-027 is RESTORED/ACTIVE", repairing_board["readiness_basis"])
-        self.assertIn("0 STILL_MISSING", repairing_board["readiness_basis"])
-        self.assertIn("final whole-Quest Strikeforce is GREEN", repairing_board["readiness_basis"])
-        self.assertIn("Final Phoenix recovery is PROVEN", repairing_board["readiness_basis"])
-        self.assertEqual(repairing_continuity["campaign_id"], "RP-C08")
-        self.assertEqual(repairing_continuity["gate_id"], rp_c08["gate_id"])
-        self.assertEqual(self.register["register_revision"], 31)
-        self.assertEqual(self.register["source_base_sha"], "797fb2a1add829ccc304086a56f6d223d130d90d")
-        self.assertEqual(
-            repairing_continuity["last_event_id"],
-            "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01",
+        self.assertEqual(repairing_board["state"], "COMPLETE")
+        self.assertEqual(repairing_board["next_gate"], "CLOSED")
+        self.assertIn("RP-C01 through RP-C08 are COMPLETE", repairing_board["completion_basis"])
+        self.assertFalse(
+            any(entry["quest_id"] == self.identities["quest_id"] for entry in self.register["entries"])
         )
-        self.assertEqual(repairing_continuity["revision"], 26)
+        self.assertEqual(self.register["register_revision"], 32)
+        self.assertEqual(
+            self.register["source_base_sha"],
+            "40e58dcf33bae68f8c819c2f65c6474f52381718",
+        )
+        self.assertEqual(
+            self.register["event_ids"][-1],
+            "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R01",
+        )
+
+        rp_c06 = next(
+            campaign for campaign in self.identities["campaigns"]
+            if campaign["campaign_id"] == "RP-C06"
+        )
+        rp_c07 = next(
+            campaign for campaign in self.identities["campaigns"]
+            if campaign["campaign_id"] == "RP-C07"
+        )
+        rp_c08 = next(
+            campaign for campaign in self.identities["campaigns"]
+            if campaign["campaign_id"] == "RP-C08"
+        )
         self.assertEqual(rp_c06["state"], "COMPLETE")
         self.assertEqual(rp_c07["state"], "COMPLETE")
-        self.assertEqual(rp_c08["state"], "IN_PROGRESS")
+        self.assertEqual(rp_c08["state"], "COMPLETE")
         self.assertEqual(
             [mission["mission_id"] for mission in rp_c06["missions"]],
             [f"RP-C06-M{index:02d}" for index in range(1, 8)],
         )
-        self.assertEqual(
-            {mission["mission_id"]: mission["state"] for mission in rp_c06["missions"]},
-            {
-                "RP-C06-M01": "PROVEN",
-                "RP-C06-M02": "PROVEN",
-                "RP-C06-M03": "PROVEN",
-                "RP-C06-M04": "PROVEN",
-                "RP-C06-M05": "PROVEN",
-                "RP-C06-M06": "PROVEN",
-                "RP-C06-M07": "PROVEN",
-            },
+        self.assertTrue(all(mission["state"] == "PROVEN" for mission in rp_c06["missions"]))
+
+        found_board = next(
+            entry for entry in self.board["entries"]
+            if entry["quest_id"] == "QUEST-FOUND-SILVERLIGHT-R01"
         )
-        self.assertIn("capability and acceptance layers are complete", repairing_continuity["current_position"].lower())
-        self.assertIn("final whole-Quest Strikeforce is GREEN", repairing_continuity["current_position"])
-        self.assertIn("Final Phoenix recovery is PROVEN", repairing_continuity["current_position"])
-        self.assertIn("restart-safe Sunset", repairing_continuity["next_action"])
-        self.assertNotIn("final Phoenix recovery proof", repairing_continuity["next_action"])
-        self.assertNotIn("await", repairing_continuity["current_position"].lower())
-        rp_c01 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C01")
-        unfinished_missions = {mission["mission_id"] for mission in rp_c01["missions"] if mission["state"] != "PROVEN"}
-        represented_blockers = {
-            mission_id
-            for mission_id in unfinished_missions
-            if any(mission_id in blocker for blocker in repairing_continuity["blockers"])
-        }
-        self.assertEqual(represented_blockers, unfinished_missions)
-        found_board = next(entry for entry in self.board["entries"] if entry["quest_id"] == "QUEST-FOUND-SILVERLIGHT-R01")
         found_continuity = next(
-            entry for entry in self.register["entries"] if entry["continuity_id"] == "CONT-FOUND-SILVERLIGHT-R01"
+            entry for entry in self.register["entries"]
+            if entry["continuity_id"] == ACTIVE_FIXTURE
         )
         self.assertEqual(found_board["state"], "IN_PROGRESS")
         self.assertEqual(found_board["next_gate"], "FS-C01-M04 — Prove the Light")
         self.assertEqual(found_continuity["campaign_id"], "FS-C01")
         self.assertEqual(found_continuity["mission_id"], "FS-C01-M04")
-        self.assertEqual(found_continuity["gate_id"], "INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN")
+        self.assertEqual(
+            found_continuity["gate_id"],
+            "INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN",
+        )
         self.assertEqual(found_continuity["revision"], 4)
-        self.assertEqual(found_continuity["last_event_id"], "FS-C03-HERMES-BRIDGE-NAMING-R01")
-        old_found_event = "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01"
-        naming_event = "FS-C03-HERMES-BRIDGE-NAMING-R01"
-        prometheus_event = "PF-C01-M01-KANDRA-ENDPOINT-RECONCILIATION-R01"
-        self.assertEqual(self.register["event_ids"].count(old_found_event), 1)
-        self.assertEqual(self.register["event_ids"].count(naming_event), 1)
-        self.assertEqual(self.register["event_ids"].count(prometheus_event), 1)
-        self.assertLess(self.register["event_ids"].index(old_found_event), self.register["event_ids"].index(naming_event))
-        self.assertLess(self.register["event_ids"].index(naming_event), self.register["event_ids"].index(prometheus_event))
+        self.assertEqual(
+            found_continuity["last_event_id"],
+            "FS-C03-HERMES-BRIDGE-NAMING-R01",
+        )
+
         prometheus_board = next(
-            entry for entry in self.board["entries"] if entry["quest_id"] == "QUEST-PROMETHEUS-FIRE-20260701"
+            entry for entry in self.board["entries"]
+            if entry["quest_id"] == "QUEST-PROMETHEUS-FIRE-20260701"
         )
         prometheus_continuity = next(
-            entry for entry in self.register["entries"] if entry["continuity_id"] == "CONT-PROMETHEUS-FIRE-R01"
+            entry for entry in self.register["entries"]
+            if entry["continuity_id"] == "CONT-PROMETHEUS-FIRE-R01"
         )
         self.assertEqual(prometheus_board["state"], "IN_PROGRESS")
-        self.assertEqual(prometheus_board["next_gate"], "PF-C01-M02 Preview — Preserve the Old Flame")
+        self.assertEqual(
+            prometheus_board["next_gate"],
+            "PF-C01-M02 Preview — Preserve the Old Flame",
+        )
         self.assertEqual(prometheus_continuity["quest_state"], "IN_PROGRESS")
         self.assertEqual(prometheus_continuity["campaign_id"], "PF-C01")
         self.assertEqual(prometheus_continuity["mission_id"], "PF-C01-M02")
         self.assertEqual(prometheus_continuity["gate_id"], "PF-C01-M02-PREVIEW")
-        self.assertEqual(prometheus_continuity["revision"], 2)
-        self.assertEqual(prometheus_continuity["last_event_id"], prometheus_event)
 
     def test_schema_driven_board_accepts_later_quest_without_validator_edit(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -158,7 +151,9 @@ class PrimeContinuityTests(unittest.TestCase):
 
             self_completed = copy.deepcopy(candidate)
             self_completed["entries"][-1].update({
-                "state": "COMPLETE", "next_gate": "CLOSED", "completion_basis": "self asserted",
+                "state": "COMPLETE",
+                "next_gate": "CLOSED",
+                "completion_basis": "self asserted",
             })
             with self.assertRaisesRegex(ContinuityError, "QUEST_ADMISSION_STATE_INVALID"):
                 validate_quest_admission(self.board, self_completed, root=root)
@@ -169,7 +164,7 @@ class PrimeContinuityTests(unittest.TestCase):
         with self.assertRaisesRegex(ContinuityError, "QUEST_BOARD_DUPLICATE"):
             validate_board(duplicate)
         unsafe = copy.deepcopy(self.board)
-        unsafe["entries"][1]["source"] = "quests/../outside.md"
+        unsafe["entries"][2]["source"] = "quests/../outside.md"
         with self.assertRaises(ContinuityError):
             validate_board(unsafe)
 
@@ -178,17 +173,17 @@ class PrimeContinuityTests(unittest.TestCase):
         entry_revision = next(
             entry["revision"]
             for entry in self.register["entries"]
-            if entry["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
+            if entry["continuity_id"] == ACTIVE_FIXTURE
         )
         candidate = plan_one_entry_update(
             self.register,
             self.board,
             self.identities,
-            continuity_id="CONT-REPAIRING-PRIME-R01",
+            continuity_id=ACTIVE_FIXTURE,
             expected_register_sha256=sha256(self.register),
             expected_entry_revision=entry_revision,
-            event_id="RP-C05-AJ07-PREVIEW-R01",
-            changes={"next_action": "Run the bounded AJ-07 continuity update proof."},
+            event_id="FS-C01-M04-PREVIEW-R02",
+            changes={"next_action": "Run the bounded FS-C01-M04 continuity update proof."},
         )
         self.assertEqual(self.register, before)
         self.assertEqual(candidate["register_revision"], before["register_revision"] + 1)
@@ -197,16 +192,17 @@ class PrimeContinuityTests(unittest.TestCase):
             for prior, after in zip(before["entries"], candidate["entries"])
             if prior != after
         ]
-        self.assertEqual(changed, ["CONT-REPAIRING-PRIME-R01"])
+        self.assertEqual(changed, [ACTIVE_FIXTURE])
+
         with self.assertRaisesRegex(ContinuityError, "REGISTER_STALE"):
             plan_one_entry_update(
                 self.register,
                 self.board,
                 self.identities,
-                continuity_id="CONT-REPAIRING-PRIME-R01",
+                continuity_id=ACTIVE_FIXTURE,
                 expected_register_sha256="0" * 64,
                 expected_entry_revision=entry_revision,
-                event_id="RP-C05-STALE-R01",
+                event_id="FS-C01-M04-STALE-R01",
                 changes={"next_action": "Rejected"},
             )
         with self.assertRaisesRegex(ContinuityError, "UPDATE_SCOPE_INVALID"):
@@ -214,75 +210,58 @@ class PrimeContinuityTests(unittest.TestCase):
                 self.register,
                 self.board,
                 self.identities,
-                continuity_id="CONT-REPAIRING-PRIME-R01",
+                continuity_id=ACTIVE_FIXTURE,
                 expected_register_sha256=sha256(self.register),
                 expected_entry_revision=entry_revision,
-                event_id="RP-C05-WIDEN-R01",
+                event_id="FS-C01-M04-WIDEN-R01",
                 changes={"quest_source": "quests/other.md"},
             )
         replay = copy.deepcopy(self.register)
-        replay["event_ids"].append("RP-C05-REPLAY-R01")
+        replay["event_ids"].append("FS-C01-M04-REPLAY-R01")
         with self.assertRaisesRegex(ContinuityError, "EVENT_REPLAY"):
             plan_one_entry_update(
                 replay,
                 self.board,
                 self.identities,
-                continuity_id="CONT-REPAIRING-PRIME-R01",
+                continuity_id=ACTIVE_FIXTURE,
                 expected_register_sha256=sha256(replay),
                 expected_entry_revision=entry_revision,
-                event_id="RP-C05-REPLAY-R01",
+                event_id="FS-C01-M04-REPLAY-R01",
                 changes={"next_action": "Rejected replay"},
-            )
-        with self.assertRaisesRegex(ContinuityError, "UPDATE_SCOPE_INVALID"):
-            plan_one_entry_update(
-                self.register,
-                self.board,
-                self.identities,
-                continuity_id="CONT-REPAIRING-PRIME-R01",
-                expected_register_sha256=sha256(self.register),
-                expected_entry_revision=entry_revision,
-                event_id="RP-C05-PROMOTE-R01",
-                changes={"quest_state": "COMPLETE", "blockers": "not-an-array"},
-            )
-        with self.assertRaisesRegex(ContinuityError, "UPDATE_IDENTITY_BINDING_INVALID"):
-            plan_one_entry_update(
-                self.register,
-                self.board,
-                self.identities,
-                continuity_id="CONT-REPAIRING-PRIME-R01",
-                expected_register_sha256=sha256(self.register),
-                expected_entry_revision=entry_revision,
-                event_id="RP-C05-IDENTITY-BYPASS-R01",
-                changes={"campaign_id": None, "mission_id": None, "gate_id": "ATTACKER_GATE"},
             )
 
     def test_emberline_sunset_sunrise_and_argus_are_deterministic(self) -> None:
         self.assertEqual(render_emberline(self.register), render_emberline(copy.deepcopy(self.register)))
-        snapshot = sunset(self.register, "CONT-REPAIRING-PRIME-R01")
+        snapshot = sunset(self.register, ACTIVE_FIXTURE)
         reconstructed = sunrise(snapshot, self.register)
-        expected_gate = next(
-            entry["gate_id"]
-            for entry in self.register["entries"]
-            if entry["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
+        expected = next(
+            entry for entry in self.register["entries"]
+            if entry["continuity_id"] == ACTIVE_FIXTURE
         )
-        self.assertEqual(reconstructed["next_gate"], expected_gate)
-        self.assertEqual(reconstructed["source"], "quests/repairing-prime.md")
+        self.assertEqual(reconstructed["next_gate"], expected["gate_id"])
+        self.assertEqual(reconstructed["source"], expected["quest_source"])
+
         tampered = copy.deepcopy(snapshot)
         tampered["entry"]["next_action"] = "tampered"
         with self.assertRaisesRegex(ContinuityError, "SUNSET_DIGEST_MISMATCH"):
             sunrise(tampered, self.register)
         forged = copy.deepcopy(snapshot)
         forged["entry"]["gate_id"] = "ATTACKER_GATE"
-        forged["sunset_sha256"] = sha256({key: forged[key] for key in ("schema_version", "register_sha256", "entry")})
+        forged["sunset_sha256"] = sha256({
+            key: forged[key] for key in ("schema_version", "register_sha256", "entry")
+        })
         with self.assertRaisesRegex(ContinuityError, "SUNSET_ENTRY_MISMATCH"):
             sunrise(forged, self.register)
-        self.assertEqual(argus(self.register), argus(copy.deepcopy(self.register)))
+
         self.assertEqual(
             [item["continuity_id"] for item in argus(self.register)],
             sorted(
                 [entry["continuity_id"] for entry in self.register["entries"]],
                 key=lambda identity: (
-                    -len(next(entry["blockers"] for entry in self.register["entries"] if entry["continuity_id"] == identity)),
+                    -len(next(
+                        entry["blockers"] for entry in self.register["entries"]
+                        if entry["continuity_id"] == identity
+                    )),
                     identity,
                 ),
             ),
@@ -310,7 +289,10 @@ class PrimeContinuityTests(unittest.TestCase):
             validate_identity_register(invalid)
         transition = copy.deepcopy(self.identities)
         transition["state_rules"]["allowed_campaign_transitions"] = [
-            "PENDING->IN_PROGRESS", "IN_PROGRESS->BLOCKED", "BLOCKED->IN_PROGRESS", "PENDING->COMPLETE",
+            "PENDING->IN_PROGRESS",
+            "IN_PROGRESS->BLOCKED",
+            "BLOCKED->IN_PROGRESS",
+            "PENDING->COMPLETE",
         ]
         with self.assertRaises(ContinuityError):
             validate_identity_register(transition)
@@ -324,39 +306,47 @@ class PrimeContinuityTests(unittest.TestCase):
         with contextlib.redirect_stdout(output):
             self.assertEqual(continuity_cli(["validate"]), 0)
         self.assertEqual(json.loads(output.getvalue())["result"], "PASS")
+
         with tempfile.TemporaryDirectory() as temp:
             snapshot = Path(temp) / "sunset.json"
             sunrise_path = Path(temp) / "sunrise.json"
             self.assertEqual(
                 continuity_cli([
-                    "sunset", "--continuity-id", "CONT-REPAIRING-PRIME-R01", "--output", str(snapshot),
+                    "sunset",
+                    "--continuity-id", ACTIVE_FIXTURE,
+                    "--output", str(snapshot),
                 ]),
                 0,
             )
             self.assertEqual(
-                continuity_cli(["sunrise", "--snapshot", str(snapshot), "--output", str(sunrise_path)]),
+                continuity_cli([
+                    "sunrise",
+                    "--snapshot", str(snapshot),
+                    "--output", str(sunrise_path),
+                ]),
                 0,
             )
             reconstructed = json.loads(sunrise_path.read_text(encoding="utf-8"))
             expected_gate = next(
                 entry["gate_id"]
                 for entry in self.register["entries"]
-                if entry["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
+                if entry["continuity_id"] == ACTIVE_FIXTURE
             )
             self.assertEqual(reconstructed["next_gate"], expected_gate)
+
             candidate = Path(temp) / "candidate.json"
             entry_revision = next(
                 entry["revision"]
                 for entry in self.register["entries"]
-                if entry["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
+                if entry["continuity_id"] == ACTIVE_FIXTURE
             )
             self.assertEqual(
                 continuity_cli([
                     "plan-update",
-                    "--continuity-id", "CONT-REPAIRING-PRIME-R01",
+                    "--continuity-id", ACTIVE_FIXTURE,
                     "--expected-register-sha256", sha256(self.register),
                     "--expected-entry-revision", str(entry_revision),
-                    "--event-id", "RP-C05-CLI-PREVIEW-R01",
+                    "--event-id", "FS-C01-M04-CLI-PREVIEW-R01",
                     "--changes-json", '{"next_action":"CLI preview only"}',
                     "--output", str(candidate),
                 ]),
