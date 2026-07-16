@@ -9,11 +9,12 @@ from tools.prime_continuity.engine import sha256 as continuity_sha256
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PROOF = ROOT / "proof" / "repairing-prime" / "rp-c08-final-whole-quest-strikeforce-reconciliation-r01.md"
+STRIKEFORCE_PROOF = ROOT / "proof" / "repairing-prime" / "rp-c08-final-whole-quest-strikeforce-reconciliation-r01.md"
+RECOVERY_PROOF = ROOT / "proof" / "repairing-prime" / "rp-c08-phoenix-recovery-acceptance-r01.md"
 
 
 class PostM06CurrentTruthTests(unittest.TestCase):
-    def test_repairing_prime_preserves_post_m06_history_and_accepts_final_strikeforce(self) -> None:
+    def test_repairing_prime_preserves_history_and_accepts_recovery(self) -> None:
         quest = (ROOT / "quests" / "repairing-prime.md").read_text(encoding="utf-8")
         self.assertIn("PR `#202`", quest)
         self.assertIn("PR `#203`", quest)
@@ -22,9 +23,11 @@ class PostM06CurrentTruthTests(unittest.TestCase):
         self.assertIn("AJ-01 through AJ-12 are PROVEN", quest)
         self.assertIn("CAP-027: RESTORED / ACTIVE", quest)
         self.assertIn("FINAL WHOLE-QUEST STRIKEFORCE: GREEN", quest)
-        self.assertIn("NEXT GATE: PHOENIX RECOVERY", quest)
-        self.assertIn("No R04, M07, AJ-11, AJ-12, CAP-027, generated-current, or Strikeforce standing authority carries forward", quest)
-        self.assertTrue(PROOF.is_file())
+        self.assertIn("PHOENIX RECOVERY: PROVEN / ACCEPTED", quest)
+        self.assertIn("NEXT GATE: RESTART-SAFE SUNSET", quest)
+        self.assertIn("No R04, M07, AJ-11, AJ-12, CAP-027, generated-current, Strikeforce, or Phoenix-recovery standing authority carries forward", quest)
+        self.assertTrue(STRIKEFORCE_PROOF.is_file())
+        self.assertTrue(RECOVERY_PROOF.is_file())
 
     def test_continuity_register_matches_current_gate(self) -> None:
         register = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
@@ -32,24 +35,29 @@ class PostM06CurrentTruthTests(unittest.TestCase):
         self.assertIsNone(entry["mission_id"])
         self.assertEqual(
             entry["last_event_id"],
-            "RP-C08-FINAL-WHOLE-QUEST-STRIKEFORCE-RECONCILIATION-R01",
+            "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01",
         )
-        self.assertIn("Phoenix recovery", entry["next_action"])
-        self.assertNotIn("whole-Quest Strikeforce", entry["next_action"])
+        self.assertEqual(register["register_revision"], 31)
+        self.assertEqual(register["source_base_sha"], "797fb2a1add829ccc304086a56f6d223d130d90d")
+        self.assertEqual(entry["revision"], 26)
+        self.assertIn("restart-safe Sunset", entry["next_action"])
+        self.assertNotIn("final Phoenix recovery proof", entry["next_action"])
         self.assertIn("separately authorize", entry["next_approval"])
         self.assertNotIn("genuine non-owner", entry["next_action"])
         self.assertFalse(any("CAP-027 remains missing" in blocker for blocker in entry["blockers"]))
         self.assertFalse(any("AJ-12 requires complete" in blocker for blocker in entry["blockers"]))
+        self.assertFalse(any("Final Phoenix recovery has not yet" in blocker for blocker in entry["blockers"]))
 
-    def test_quest_board_routes_to_phoenix_recovery(self) -> None:
+    def test_quest_board_routes_to_restart_safe_sunset(self) -> None:
         board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
         repairing = next(item for item in board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         self.assertEqual(
             repairing["next_gate"],
-            "Phoenix recovery, then restart-safe Sunset and final Quest closeout",
+            "Restart-safe Sunset, then final Quest closeout",
         )
         self.assertIn("CAP-027 is RESTORED/ACTIVE", repairing["readiness_basis"])
         self.assertIn("final whole-Quest Strikeforce is GREEN", repairing["readiness_basis"])
+        self.assertIn("Final Phoenix recovery is PROVEN", repairing["readiness_basis"])
         register = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
         self.assertEqual(register["quest_board_sha256"], continuity_sha256(board))
 

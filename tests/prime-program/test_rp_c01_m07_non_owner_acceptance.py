@@ -78,20 +78,22 @@ class RpC01M07NonOwnerAcceptanceTests(unittest.TestCase):
         self.assertTrue(all(item["state"] == "PROVEN" for item in campaign["missions"]))
         self.assertEqual(self.route["campaign_gate_state"], "ACCEPTED")
 
-    def test_later_closeout_reconciliation_preserves_non_owner_evidence(self) -> None:
+    def test_later_recovery_reconciliation_preserves_non_owner_evidence(self) -> None:
         board = next(item for item in self.board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         continuity = next(item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         cap027 = next(item for item in self.capabilities["capabilities"] if item["id"] == "CAP-027")
         self.assertEqual(
             board["next_gate"],
-            "Phoenix recovery, then restart-safe Sunset and final Quest closeout",
+            "Restart-safe Sunset, then final Quest closeout",
         )
+        self.assertIn("Final Phoenix recovery is PROVEN", board["readiness_basis"])
         self.assertEqual(
             continuity["last_event_id"],
-            "RP-C08-FINAL-WHOLE-QUEST-STRIKEFORCE-RECONCILIATION-R01",
+            "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01",
         )
-        self.assertIn("Phoenix recovery", continuity["next_action"])
-        self.assertNotIn("whole-Quest Strikeforce", continuity["next_action"])
+        self.assertEqual(continuity["revision"], 26)
+        self.assertIn("restart-safe Sunset", continuity["next_action"])
+        self.assertNotIn("final Phoenix recovery proof", continuity["next_action"])
         self.assertEqual(cap027["capability_disposition"], "RESTORED")
         self.assertEqual(cap027["activation_state"], "ACTIVE")
         self.assertIn("AJ-01 through AJ-12 are PROVEN", cap027["current_state"])
