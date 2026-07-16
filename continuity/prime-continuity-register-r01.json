@@ -2,9 +2,9 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 28,
-  "source_base_sha": "043648a85cf581d7805355a71cc819fdb83e738b",
-  "quest_board_sha256": "d59ee1ba5ffb627c4411837893c89c1dc1ded1abff6a52e396071f5deec3e9dc",
+  "register_revision": 29,
+  "source_base_sha": "887c562f40c1ae6756054b322a08b113f6ce60ca",
+  "quest_board_sha256": "ad6a73178691391641cde49a5551d0835c155e1fb7d23aba76f8414af5418786",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -36,28 +36,29 @@
     "RP-C08-POST-M06-CURRENT-TRUTH-R01",
     "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05",
     "RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08",
-    "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01"
+    "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01",
+    "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01"
   ],
   "entries": [
     {
       "continuity_id": "CONT-REPAIRING-PRIME-R01",
       "quest_id": "QUEST-REPAIRING-PRIME-R01",
       "quest_source": "quests/repairing-prime.md",
-      "quest_source_sha256": "8b8bb2526d30515cdca87712e7df2b991e3ffa6081e530fa152ff4d916953038",
+      "quest_source_sha256": "bd38ad1afcf7b13dec4f849e11cbb31c322325d900834ae2886a118a2df36abd",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "RP-C08",
       "mission_id": null,
       "gate_id": "REPAIRING_PRIME_COMPLETE",
-      "current_position": "RP-C01, RP-C05, RP-C06, and RP-C07 are COMPLETE. AJ-03, AJ-11, and AJ-12 are PROVEN. AJ-12 is accepted from read-only workflow run 29455372822 at exact merged main 043648a85cf581d7805355a71cc819fdb83e738b: Ubuntu job 87487269033 and Windows job 87487269036 passed the complete Prime matrix with no repository mutation. CAP-027 is the sole STILL_MISSING capability pending separate final capability reconciliation. RP-C08 and Repairing Prime remain IN_PROGRESS.",
+      "current_position": "RP-C01, RP-C05, RP-C06, and RP-C07 are COMPLETE. AJ-01 through AJ-12 are PROVEN. CAP-027 is proposed RESTORED and ACTIVE by the separately authorized final capability reconciliation at exact base 887c562f40c1ae6756054b322a08b113f6ce60ca. All 28 frozen capabilities now have non-missing dispositions: 15 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 0 STILL_MISSING. RP-C08 and Repairing Prime remain IN_PROGRESS pending exact-head validation, detached review, permanence, generated-current follow-on, whole-Quest Strikeforce, closeout, Phoenix recovery, and restart-safe Sunset.",
       "blockers": [
-        "This authored AJ-12 acceptance reconciliation must receive exact-head Ubuntu and Windows validation, detached review, separate ready authorization, and separate merge authorization; generated state must then become current through the normal generated-only route or a truthful zero-delta result.",
-        "CAP-027 remains missing until a separately authorized final capability reconciliation accepts the now-proven AJ-03, AJ-11, and AJ-12 evidence.",
-        "RP-C08 still requires final capability recount, generated-current proof, whole-Quest Strikeforce, Quest Board and continuity closeout, Phoenix recovery, and restart-safe Sunset."
+        "The CAP-027 final capability reconciliation candidate must pass exact-head Ubuntu and Windows validation, fresh detached review, separate ready authorization, and separate merge authorization.",
+        "After source permanence, generated state must become current through the normal generated-only checkpoint or a truthful zero-delta result.",
+        "RP-C08 still requires whole-Quest Strikeforce, Quest Board and continuity closeout, Phoenix recovery, and restart-safe Sunset before Repairing Prime can complete."
       ],
-      "next_action": "After separate permanence for this AJ-12 reconciliation and generated-current readback, prepare one bounded CAP-027 and RP-C08 final capability reconciliation without promoting the Quest to COMPLETE.",
-      "next_approval": "Jayson must separately authorize AJ-12 reconciliation ready and merge, any generated checkpoint permanence, and the later CAP-027/RP-C08 final capability reconciliation.",
-      "revision": 23,
-      "last_event_id": "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01"
+      "next_action": "Validate and independently audit the exact CAP-027 reconciliation head, then request separate ready and merge authorization; after source permanence, complete generated-current readback and prepare the whole-Quest Strikeforce.",
+      "next_approval": "Jayson must separately authorize the candidate ready transition, exact-head merge, any generated checkpoint permanence, whole-Quest Strikeforce, closeout, Phoenix recovery, and restart-safe Sunset.",
+      "revision": 24,
+      "last_event_id": "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01"
     },
     {
       "continuity_id": "CONT-FOUND-SILVERLIGHT-R01",
