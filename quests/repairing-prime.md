@@ -1,6 +1,6 @@
 ---
 title: "Quest — Repairing Prime"
-status: Active
+status: Complete
 owner: "Project Codex / Operation Source Governance"
 supporting_projects:
   - "Project Artemis"
@@ -31,21 +31,21 @@ last_verified: 2026-07-16
 **Parent Project:** Project Codex<br>
 **Owning Operation:** Operation Source Governance<br>
 **Supporting Projects:** Artemis, Phoenix<br>
-**Current lane:** `PLAN -> VERIFY`<br>
-**Current state:** `IN_PROGRESS`<br>
-**Current Campaign:** `RP-C08`<br>
-**Next gate:** `Restart-safe Sunset, then final Quest closeout`
+**Current lane:** `UPDATE -> CLOSED`<br>
+**Current state:** `COMPLETE`<br>
+**Current Campaign:** `RP-C08 — COMPLETE`<br>
+**Next gate:** `CLOSED`
 
 RP-C01 through RP-C05 are complete from accepted canonical evidence. RP-C05 includes the corrected universal Sunset/Feather live journey and fresh-context exact-pair acceptance. RP-C01 is complete only after the genuine non-owner rejection closed M07 and AJ-03; the active RP-C08 pointer remains independent and does not promote later blockers.
 
 RP-C06 is complete from accepted hosted generated parity, publication, rejection, exact-head CI, detached review, and canonical readback evidence. RP-C07 remains complete as the historical exact AJ-01 through AJ-12 disposition reconciliation. The later CAP-015 architecture realignment proves AJ-01 without rewriting that historical evidence.
 
-AJ-01 through AJ-12 are PROVEN. AJ-03 is PROVEN from genuine non-owner run `29421543076`, which returned `OWNER_IDENTITY_REJECTED` before mutation and skipped Thread Engine invocation. AJ-11 is accepted from exact-main read-only clean-clone proof `RP-C08-AJ11-FINAL-MAIN-CLEAN-CLONE-PROOF-R02`. AJ-12 is accepted from owner-authorized read-only workflow run `29455372822`, where Ubuntu job `87487269033` and Windows job `87487269036` passed the complete Prime matrix at exact merged main `043648a85cf581d7805355a71cc819fdb83e738b`. CAP-027 is RESTORED and ACTIVE. Final generated-current state is accepted through generated-only PR `#218` at exact canonical main `797fb2a1add829ccc304086a56f6d223d130d90d`. The final whole-Quest Strikeforce is GREEN. Final Phoenix recovery is PROVEN and ACCEPTED from exact-main mission `RP-C08-PHOENIX-RECOVERY-FINAL-MAIN-CLEAN-CLONE-PROOF-R01` and GREEN sanitized detached audit envelope `sha256:a920e86fa22a548521e619bd1d77d267b39b617b221ee36c63d53b4dcc832617`. The capability-parity, audit, and recovery gates are complete; RP-C08 and final Quest closeout remain open for restart-safe Sunset and the separately authorized completion transaction.
+AJ-01 through AJ-12 are PROVEN. AJ-03 remains bound to genuine non-owner run `29421543076`; AJ-11 remains accepted from exact-main clean-clone proof `RP-C08-AJ11-FINAL-MAIN-CLEAN-CLONE-PROOF-R02`; and AJ-12 remains accepted from owner-authorized read-only workflow run `29455372822`. CAP-027 remains RESTORED and ACTIVE. Final generated-current state, the whole-Quest Strikeforce, and Phoenix recovery remain accepted. Restart-safe Sunset PR `#224` merged as exact canonical main `40e58dcf33bae68f8c819c2f65c6474f52381718` with lifecycle candidate-set digest `sha256:5bcdba556f9c40090176ab712cc868bc05cc1c47832261d10b9a54ac2da7384a`. Post-merge publisher run `29536662886` proved exact Ubuntu/Windows parity and truthful zero-delta NOOP receipt `sha256:2722defc94f60dddaa35cae3faf66796cdf01c1ed1e100ffe10fece6c83b2565`. RP-C08 and Repairing Prime are COMPLETE; the living Quest Emberline is COMPLETE/CLOSED; and the completed Quest is absent from active continuity.
 
-## Current accepted completion spine
+## Completed Repairing Prime spine
 
-The current durable spine through canonical main
-`797fb2a1add829ccc304086a56f6d223d130d90d` is:
+The completed durable spine through canonical main
+`40e58dcf33bae68f8c819c2f65c6474f52381718` is:
 
 1. PR `#181` automated the post-source-merge generated publisher while preserving manual recovery.
 2. PR `#182` made zero generated delta a successful read-only `NOOP`.
@@ -75,10 +75,13 @@ The current durable spine through canonical main
 26. Generated-only PR `#218` refreshed the five canonical projections and merged as exact canonical main `797fb2a1add829ccc304086a56f6d223d130d90d`, leaving no successor generated candidate or canonical delta.
 27. Oathbringer mission `RP-C08-PHOENIX-RECOVERY-FINAL-MAIN-CLEAN-CLONE-PROOF-R01` recovered that exact main from an isolated clean clone, passed all 13 validations, regenerated all five projections byte-identically, proved no normal Codex dependency, and performed zero GitHub mutation.
 28. Detached sanitization and re-audit preserved the original private evidence at `sha256:b4049ff69a9347ad7ca7ee2fd0712966c8a45888faba86df1d656127fc156103`, produced public-clean envelope `sha256:a920e86fa22a548521e619bd1d77d267b39b617b221ee36c63d53b4dcc832617`, passed 22 independent checks, and preserved the original pre-seal stage-ledger limitation without inventing history.
+29. Restart-safe Sunset PR `#224` merged as `40e58dcf33bae68f8c819c2f65c6474f52381718`, preserving the accepted lifecycle candidate-set digest `sha256:5bcdba556f9c40090176ab712cc868bc05cc1c47832261d10b9a54ac2da7384a` and routing only to the separately authorized final completion transaction.
+30. Generated publisher run `29536662886` completed successfully at `40e58dcf33bae68f8c819c2f65c6474f52381718` with exact Ubuntu/Windows parity, zero changed generated paths, correctly skipped writer/validation jobs, and truthful NOOP receipt `sha256:2722defc94f60dddaa35cae3faf66796cdf01c1ed1e100ffe10fece6c83b2565`.
+31. The final Phoenix Blade completion transaction closes RP-C08 and Repairing Prime, advances the stable living Quest Emberline to `COMPLETE / CLOSED`, removes the completed Quest from active continuity, and preserves all historical proofs and independent Quest states.
 
-This chain completes the bounded capability, acceptance, generated-current, whole-Quest audit, and final source-only Phoenix recovery prerequisites. It does not carry standing Goddess Mode, Shardblade, account, credential, settings, external-actor, recovery-execution, ready, merge, cleanup, Sunset, or Quest-completion authority into the next gate.
+This chain completes the bounded capability, acceptance, generated-current, whole-Quest audit, final source-only Phoenix recovery, restart-safe Sunset, generated-NOOP, and final closeout requirements. It grants no standing Goddess Mode, Shardblade, account, credential, settings, external-actor, recovery-execution, ready, merge, cleanup, deletion, or reusable execution authority.
 
-## Current Strikeforce disposition
+## Final Strikeforce disposition
 
 ```text
 RP-C01-M07: PROVEN
@@ -86,8 +89,8 @@ RP-C01: COMPLETE
 RP-C05: COMPLETE
 RP-C06: COMPLETE
 RP-C07: COMPLETE as historical reconciliation
-RP-C08: IN_PROGRESS
-Repairing Prime: IN_PROGRESS
+RP-C08: COMPLETE
+Repairing Prime: COMPLETE
 
 AJ-03: PROVEN
 AJ-11: PROVEN
@@ -98,7 +101,7 @@ CAPABILITY-PARITY LAYER: COMPLETE
 GENERATED-CURRENT STATE: ACCEPTED
 FINAL WHOLE-QUEST STRIKEFORCE: GREEN
 PHOENIX RECOVERY: PROVEN / ACCEPTED
-NEXT GATE: RESTART-SAFE SUNSET
+NEXT GATE: CLOSED
 ```
 
 Current capability counts are:
@@ -125,11 +128,12 @@ These sources remain independent and are not absorbed or completed by Repairing 
 
 Each independent Quest's own canonical source and continuity row govern its state.
 
-## Remaining route to `REPAIRING_PRIME_COMPLETE`
+## Completion of `REPAIRING_PRIME_COMPLETE`
 
-1. **Phoenix recovery — ACCEPTED:** the final exact-main source-only recovery route is proven and accepted by `proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.md`.
-2. **Restart-safe Sunset:** produce the final exact Feather/Sunset/next-gate record after accepted Phoenix recovery.
-3. **Final Quest completion transaction:** synchronize Quest, Quest Board, and continuity to `COMPLETE` only after Sunset is accepted and separately authorized.
+1. **Phoenix recovery — ACCEPTED:** the final exact-main source-only recovery route remains proven and accepted.
+2. **Restart-safe Sunset — ACCEPTED:** PR `#224` merged as `40e58dcf33bae68f8c819c2f65c6474f52381718` with lifecycle candidate-set digest `sha256:5bcdba556f9c40090176ab712cc868bc05cc1c47832261d10b9a54ac2da7384a`.
+3. **Generated-current — ACCEPTED:** publisher run `29536662886` proved exact cross-platform parity and truthful zero-delta NOOP receipt `sha256:2722defc94f60dddaa35cae3faf66796cdf01c1ed1e100ffe10fece6c83b2565`.
+4. **Final Quest completion — COMPLETE:** Quest, Quest Board, RP-C08 identity, living Emberline, active continuity, proof, and current-state regressions are synchronized. Historical proof records and independent Quest states remain unchanged.
 
 ## Current authority boundary
 
@@ -141,11 +145,15 @@ AJ-12 execution is accepted from separately authorized read-only workflow run `2
 
 Final Phoenix recovery is accepted from separately authorized read-only Oathbringer mission `RP-C08-PHOENIX-RECOVERY-FINAL-MAIN-CLEAN-CLONE-PROOF-R01` at exact main `797fb2a1add829ccc304086a56f6d223d130d90d`. The original evidence remains private; Prime binds only public-clean hashes and findings. This acceptance grants no reusable recovery, private-runtime restoration, destructive canary, Sunset, ready, merge, cleanup, or Quest-completion authority.
 
-After final Phoenix recovery acceptance:
+Final closeout binding:
 
 ```text
-separately authorize and accept restart-safe Sunset
-→ separately authorize the final Quest completion transaction
+restart-safe Sunset PR #224 at 40e58dcf33bae68f8c819c2f65c6474f52381718
+→ generated NOOP run 29536662886
+→ RP-C08 COMPLETE
+→ Repairing Prime COMPLETE
+→ living Quest Emberline COMPLETE / CLOSED
+→ completed Quest removed from active continuity
 ```
 
 No R04, M07, AJ-11, AJ-12, CAP-027, generated-current, Strikeforce, or Phoenix-recovery standing authority carries forward. Do not request, copy, store, expose, or commit credentials, tokens, MFA/recovery material, account data, or private runtime values.
@@ -165,9 +173,7 @@ Bow and Arrow belong to Jayson and Artemis delegated delivery. Oathbringer is Ja
 - Prime is the sole clean canonical source.
 - Found Silverlight, Prometheus's Fire, and Notum's Watch remain independent.
 - Jayson controls permanence.
-- Build authority never implies Execute, ready, or merge authority.
-- Generated projections report; they do not govern.
-- Spear is Athena's Thread Engine route.
+- Build authority never implies Execute, ready, or merge.
 - Phoenix Blade is Athena executing a Sword; it does not use Thread Engine.
 - Aegis Break owns safe route selection and never widens authority.
 - Bow and Arrow belong to Jayson and Artemis delegated delivery.
@@ -281,4 +287,4 @@ Reconcile all 28 capability records and counts; final generated refresh; exact L
 Capability reconciliation evidence:
 `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` established the initial ledger. Later CAP-011 and CAP-010 reconciliations restored their hosted capabilities. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` restores CAP-015 under the corrected direct Spear architecture and quarantines the obsolete platform-origin construction.
 
-The final capability recount is 15 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 0 STILL_MISSING. `proof/repairing-prime/rp-c08-aj11-clean-clone-acceptance-r08.md` proves AJ-11 from exact-main read-only recovery without normal Codex dependency. `proof/repairing-prime/rp-c08-aj12-merged-main-validation-acceptance-r01.md` proves AJ-12 from complete Ubuntu/Windows validation at exact merged main. `proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.md` restores CAP-027 from the complete AJ-01 through AJ-12 acceptance layer. `proof/repairing-prime/rp-c08-final-whole-quest-strikeforce-reconciliation-r01.md` binds final generated-current state and the GREEN whole-Quest Strikeforce. `proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.md` accepts final Phoenix recovery at exact main `797fb2a1add829ccc304086a56f6d223d130d90d` while preserving the original private evidence externally and the sanitized detached audit limitation. RP-C08 and Repairing Prime stay in progress only for restart-safe Sunset and the separately authorized completion transaction.
+The final capability recount remains 15 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 0 STILL_MISSING. AJ-11, AJ-12, CAP-027, final generated-current state, the whole-Quest Strikeforce, and Phoenix recovery retain their accepted evidence without rewriting historical records. Restart-safe Sunset PR `#224` merged as `40e58dcf33bae68f8c819c2f65c6474f52381718` with lifecycle candidate-set digest `sha256:5bcdba556f9c40090176ab712cc868bc05cc1c47832261d10b9a54ac2da7384a`; generated publisher run `29536662886` proved truthful zero-delta NOOP receipt `sha256:2722defc94f60dddaa35cae3faf66796cdf01c1ed1e100ffe10fece6c83b2565`. RP-C08 is `COMPLETE`, Repairing Prime is `COMPLETE`, the living Emberline is `COMPLETE / CLOSED`, and the Quest is removed from active continuity.
