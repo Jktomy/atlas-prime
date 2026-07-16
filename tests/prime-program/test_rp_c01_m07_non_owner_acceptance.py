@@ -20,6 +20,7 @@ class RpC01M07NonOwnerAcceptanceTests(unittest.TestCase):
         cls.continuity = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
         cls.board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
         cls.capabilities = json.loads((ROOT / "governance/capability-parity-register.json").read_text(encoding="utf-8"))
+        cls.final = json.loads((ROOT / "proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.json").read_text(encoding="utf-8"))
 
     def test_exact_live_identity_and_rejection_are_bound(self) -> None:
         live = self.proof["live_non_owner_rejection"]
@@ -78,24 +79,24 @@ class RpC01M07NonOwnerAcceptanceTests(unittest.TestCase):
         self.assertTrue(all(item["state"] == "PROVEN" for item in campaign["missions"]))
         self.assertEqual(self.route["campaign_gate_state"], "ACCEPTED")
 
-    def test_later_aj12_acceptance_preserves_non_owner_and_cap027_missing(self) -> None:
+    def test_later_cap027_restoration_preserves_non_owner_evidence(self) -> None:
         board = next(item for item in self.board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         continuity = next(item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         cap027 = next(item for item in self.capabilities["capabilities"] if item["id"] == "CAP-027")
         self.assertEqual(
             board["next_gate"],
-            "Generated-current readback after AJ-12 acceptance, then CAP-027 and RP-C08 final capability reconciliation",
+            "CAP-027 final reconciliation permanence and generated-current readback, then whole-Quest Strikeforce",
         )
         self.assertEqual(
             continuity["last_event_id"],
-            "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01",
+            "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01",
         )
-        self.assertIn("CAP-027", continuity["next_action"])
-        self.assertEqual(cap027["capability_disposition"], "STILL_MISSING")
-        self.assertEqual(cap027["activation_state"], "MISSING")
-        self.assertIn("AJ-03, AJ-11, and AJ-12 are PROVEN", cap027["current_state"])
-        self.assertIn("separately authorized final capability reconciliation", cap027["current_state"])
-        self.assertIn("separately authorized CAP-027 final capability reconciliation", cap027["required_proof"])
+        self.assertIn("whole-Quest Strikeforce", continuity["next_action"])
+        self.assertEqual(cap027["capability_disposition"], "RESTORED")
+        self.assertEqual(cap027["activation_state"], "ACTIVE")
+        self.assertEqual(self.final["accepted_journey_bindings"]["AJ-03"]["workflow_run"], 29421543076)
+        self.assertEqual(self.final["accepted_journey_bindings"]["AJ-03"]["error_code"], "OWNER_IDENTITY_REJECTED")
+        self.assertFalse(self.final["accepted_journey_bindings"]["AJ-03"]["mutation_occurred"])
 
 
 if __name__ == "__main__":
