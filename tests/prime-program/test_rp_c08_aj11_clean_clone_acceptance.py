@@ -110,7 +110,10 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
         self.assertIn("CAP-027 RESTORED / ACTIVE", acceptance)
         self.assertIn("AJ-01 through AJ-12 are PROVEN", quest)
         self.assertIn("CAP-027: RESTORED / ACTIVE", quest)
-        self.assertIn("AJ-11 and AJ-12 are now PROVEN", route)
+        self.assertIn(
+            "AJ-11 and AJ-12 are now PROVEN; CAP-027 is RESTORED/ACTIVE by the separate final capability reconciliation; RP-C08 and Repairing Prime remain open.",
+            route,
+        )
 
         repairing = next(
             entry for entry in board["entries"]
