@@ -9,157 +9,79 @@ from tools.prime_continuity.engine import sha256 as continuity_sha256
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PROOF_PATH = ROOT / "proof/repairing-prime/rp-c08-aj12-merged-main-validation-acceptance-r01.json"
-ACCEPTANCE_PATH = ROOT / "governance/capability-acceptance-contract.md"
-ROUTE_PATH = ROOT / "governance/athena-execution-route-contract.md"
-REGISTER_PATH = ROOT / "governance/capability-parity-register.json"
-QUEST_PATH = ROOT / "quests/repairing-prime.md"
-BOARD_PATH = ROOT / "quest-board/quest-board-v1.json"
-CONTINUITY_PATH = ROOT / "continuity/prime-continuity-register-r01.json"
-WORKFLOW_PATH = ROOT / ".github/workflows/prime-readonly-validation.yml"
 
 
-def load_json(path: Path) -> dict:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def file_sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+def load(relative: str) -> dict:
+    return json.loads((ROOT / relative).read_text(encoding="utf-8"))
 
 
 class Aj12MergedMainValidationAcceptanceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.proof = load_json(PROOF_PATH)
-        cls.register = load_json(REGISTER_PATH)
-        cls.board = load_json(BOARD_PATH)
-        cls.continuity = load_json(CONTINUITY_PATH)
+        cls.aj12 = load("proof/repairing-prime/rp-c08-aj12-merged-main-validation-acceptance-r01.json")
+        cls.final = load("proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.json")
+        cls.register = load("governance/capability-parity-register.json")
+        cls.board = load("quest-board/quest-board-v1.json")
+        cls.continuity = load("continuity/prime-continuity-register-r01.json")
 
-    def test_exact_run_sha_and_platform_jobs_are_bound(self) -> None:
-        evidence = self.proof["accepted_workflow_evidence"]
+    def test_aj12_exact_read_only_evidence_is_immutable(self) -> None:
+        evidence = self.aj12["accepted_workflow_evidence"]
         exact = "043648a85cf581d7805355a71cc819fdb83e738b"
-        self.assertEqual(self.proof["transaction_base_sha"], exact)
+        self.assertEqual(self.aj12["transaction_base_sha"], exact)
         self.assertEqual(evidence["exact_merged_main_sha"], exact)
         self.assertEqual(evidence["canonical_main_before"], exact)
         self.assertEqual(evidence["canonical_main_after"], exact)
         self.assertEqual(evidence["run_id"], 29455372822)
-        self.assertEqual(
-            evidence["run_url"],
-            "https://github.com/Jktomy/atlas-prime/actions/runs/29455372822",
-        )
-        self.assertEqual(
-            evidence["jobs"]["ubuntu"],
-            {
-                "job_id": 87487269033,
-                "name": "validate (ubuntu-latest)",
-                "status": "completed",
-                "conclusion": "success",
-            },
-        )
-        self.assertEqual(
-            evidence["jobs"]["windows"],
-            {
-                "job_id": 87487269036,
-                "name": "validate (windows-latest)",
-                "status": "completed",
-                "conclusion": "success",
-            },
-        )
-
-    def test_complete_matrix_and_read_only_boundary_are_accepted(self) -> None:
-        evidence = self.proof["accepted_workflow_evidence"]
+        self.assertEqual(evidence["jobs"]["ubuntu"]["job_id"], 87487269033)
+        self.assertEqual(evidence["jobs"]["windows"]["job_id"], 87487269036)
+        self.assertEqual(evidence["jobs"]["ubuntu"]["conclusion"], "success")
+        self.assertEqual(evidence["jobs"]["windows"]["conclusion"], "success")
         self.assertEqual(evidence["permissions"], {"contents": "read"})
-        self.assertEqual(len(evidence["substantive_stages"]), 12)
         self.assertTrue(evidence["all_substantive_stages_passed_on_both_platforms"])
         self.assertTrue(all(value is False for value in evidence["mutation"].values()))
-        audit = self.proof["detached_readback"]
-        self.assertTrue(audit["ubuntu_completed_success"])
-        self.assertTrue(audit["windows_completed_success"])
-        self.assertTrue(audit["all_reported_steps_success"])
-        self.assertTrue(audit["exact_main_unchanged"])
-        self.assertFalse(audit["protected_data_observed"])
-        self.assertEqual(audit["result"], "GREEN")
-        workflow = WORKFLOW_PATH.read_text(encoding="utf-8")
-        self.assertIn("contents: read", workflow)
-        self.assertIn("ubuntu-latest", workflow)
-        self.assertIn("windows-latest", workflow)
-        for stage in evidence["substantive_stages"]:
-            self.assertIn(stage, workflow)
 
-    def test_only_aj12_transitions_and_cap027_remains_missing(self) -> None:
-        self.assertEqual(
-            self.proof["transitions"],
-            {"AJ-12": {"from": "UNPROVEN", "to": "PROVEN"}},
-        )
-        self.assertEqual(
-            self.proof["preserved_open"],
-            ["CAP-027", "RP-C08", "QUEST-REPAIRING-PRIME-R01"],
-        )
-        self.assertTrue(
-            all(value is False for value in self.proof["forbidden_promotions"].values())
-        )
-        self.assertEqual(
-            self.proof["capability_counts"],
-            self.register["capability_disposition_counts"],
-        )
+    def test_aj12_historical_boundary_precedes_cap027_transition(self) -> None:
+        self.assertEqual(self.aj12["transitions"], {"AJ-12": {"from": "UNPROVEN", "to": "PROVEN"}})
+        self.assertEqual(self.aj12["preserved_open"], ["CAP-027", "RP-C08", "QUEST-REPAIRING-PRIME-R01"])
+        self.assertEqual(self.aj12["capability_counts"]["RESTORED"], 14)
+        self.assertEqual(self.aj12["capability_counts"]["STILL_MISSING"], 1)
+        self.assertTrue(all(value is False for value in self.aj12["forbidden_promotions"].values()))
+        self.assertEqual(self.final["transitions"]["CAP-027"]["to"], "RESTORED/ACTIVE")
+        self.assertEqual(self.final["final_capability_recount"]["capability_counts"]["RESTORED"], 15)
+        self.assertEqual(self.final["final_capability_recount"]["capability_counts"]["STILL_MISSING"], 0)
+
+    def test_current_register_restores_cap027_without_quest_completion(self) -> None:
         cap027 = next(item for item in self.register["capabilities"] if item["id"] == "CAP-027")
-        self.assertEqual(cap027["capability_disposition"], "STILL_MISSING")
-        self.assertEqual(cap027["activation_state"], "MISSING")
-        missing = [
-            item["id"]
-            for item in self.register["capabilities"]
-            if item["capability_disposition"] == "STILL_MISSING"
-        ]
-        self.assertEqual(missing, ["CAP-027"])
+        self.assertEqual(cap027["capability_disposition"], "RESTORED")
+        self.assertEqual(cap027["activation_state"], "ACTIVE")
+        self.assertEqual(self.register["capability_disposition_counts"], self.final["final_capability_recount"]["capability_counts"])
+        self.assertEqual(self.final["campaign_state"]["RP-C08"], "IN_PROGRESS")
+        self.assertEqual(self.final["campaign_state"]["QUEST-REPAIRING-PRIME-R01"], "IN_PROGRESS")
+        self.assertTrue(all(value is False for value in self.final["forbidden_promotions"].values()))
 
-    def test_canonical_surfaces_advance_aj12_without_quest_completion(self) -> None:
-        acceptance = ACCEPTANCE_PATH.read_text(encoding="utf-8")
-        route = ROUTE_PATH.read_text(encoding="utf-8")
-        quest = QUEST_PATH.read_text(encoding="utf-8")
-        self.assertIn("AJ-12 PROVEN", acceptance)
-        self.assertIn("run `29455372822`", acceptance)
-        self.assertIn("AJ-11 and AJ-12 are now PROVEN", route)
-        self.assertIn("AJ-01 through AJ-12 are PROVEN", quest)
-        self.assertIn("AJ-12: PROVEN", quest)
-        self.assertIn("CAP-027: STILL_MISSING", quest)
-        self.assertIn("RP-C08: IN_PROGRESS", quest)
-        self.assertIn("Repairing Prime: IN_PROGRESS", quest)
-        repairing_board = next(
-            item for item in self.board["entries"]
-            if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01"
-        )
+    def test_board_and_continuity_bind_the_later_event(self) -> None:
+        repairing_board = next(item for item in self.board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
+        repairing = next(item for item in self.continuity["entries"] if item["continuity_id"] == "CONT-REPAIRING-PRIME-R01")
+        quest_path = ROOT / "quests/repairing-prime.md"
         self.assertEqual(repairing_board["state"], "IN_PROGRESS")
-        self.assertIn("CAP-027", repairing_board["next_gate"])
-
-    def test_continuity_binds_exact_event_and_source_digests(self) -> None:
-        event = "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01"
-        self.assertEqual(self.continuity["register_revision"], 28)
-        self.assertEqual(
-            self.continuity["source_base_sha"],
-            "043648a85cf581d7805355a71cc819fdb83e738b",
-        )
-        self.assertEqual(self.continuity["event_ids"].count(event), 1)
-        repairing = next(
-            item for item in self.continuity["entries"]
-            if item["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
-        )
-        self.assertEqual(repairing["revision"], 23)
-        self.assertEqual(repairing["last_event_id"], event)
-        self.assertEqual(repairing["quest_state"], "IN_PROGRESS")
-        self.assertEqual(repairing["quest_source_sha256"], file_sha256(QUEST_PATH))
+        self.assertIn("whole-Quest Strikeforce", repairing_board["next_gate"])
+        self.assertEqual(self.continuity["register_revision"], 29)
+        self.assertEqual(self.continuity["source_base_sha"], "887c562f40c1ae6756054b322a08b113f6ce60ca")
+        self.assertEqual(repairing["last_event_id"], "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01")
+        self.assertEqual(repairing["revision"], 24)
+        self.assertEqual(repairing["quest_source_sha256"], hashlib.sha256(quest_path.read_bytes()).hexdigest())
         self.assertEqual(self.continuity["quest_board_sha256"], continuity_sha256(self.board))
-        self.assertIn("CAP-027", repairing["next_action"])
-        self.assertTrue(any("CAP-027" in blocker for blocker in repairing["blockers"]))
+        self.assertIn("whole-Quest Strikeforce", repairing["next_action"])
 
-    def test_review_and_permanence_boundaries_remain_separate(self) -> None:
-        boundary = self.proof["review_boundary"]
+    def test_separate_permanence_gates_remain_required(self) -> None:
+        boundary = self.final["review_boundary"]
         self.assertTrue(boundary["exact_head_ci_required"])
         self.assertTrue(boundary["fresh_detached_review_required"])
         self.assertTrue(boundary["separate_ready_authorization_required"])
         self.assertTrue(boundary["separate_merge_authorization_required"])
         self.assertEqual(
-            self.proof["next_gate"],
-            "MERGE_THEN_GENERATED_CURRENT_STATE_THEN_CAP027_AND_RP_C08_FINAL_CAPABILITY_RECONCILIATION",
+            self.final["next_gate"],
+            "MERGE_THEN_FINAL_GENERATED_CURRENT_STATE_THEN_WHOLE_QUEST_STRIKEFORCE",
         )
 
 

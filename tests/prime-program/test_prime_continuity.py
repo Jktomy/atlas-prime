@@ -54,9 +54,10 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(repairing_board["state"], "IN_PROGRESS")
         self.assertEqual(
             repairing_board["next_gate"],
-            "Generated-current readback after AJ-12 acceptance, then CAP-027 and RP-C08 final capability reconciliation",
+            "Final generated-current proof, then whole-Quest Strikeforce and closeout",
         )
-        self.assertIn("AJ-12 is accepted", repairing_board["readiness_basis"])
+        self.assertIn("CAP-027 is RESTORED/ACTIVE", repairing_board["readiness_basis"])
+        self.assertIn("0 STILL_MISSING", repairing_board["readiness_basis"])
         self.assertEqual(repairing_continuity["campaign_id"], "RP-C08")
         self.assertEqual(repairing_continuity["gate_id"], rp_c08["gate_id"])
         self.assertEqual(rp_c06["state"], "COMPLETE")
@@ -79,10 +80,9 @@ class PrimeContinuityTests(unittest.TestCase):
             },
         )
         self.assertIn("RP-C07 are COMPLETE", repairing_continuity["current_position"])
-        self.assertIn("AJ-11", repairing_continuity["current_position"])
-        self.assertIn("AJ-12 are PROVEN", repairing_continuity["current_position"])
-        self.assertIn("AJ-03", repairing_continuity["current_position"])
-        self.assertIn("CAP-027 is the sole STILL_MISSING", repairing_continuity["current_position"])
+        self.assertIn("AJ-01 through AJ-12 are PROVEN", repairing_continuity["current_position"])
+        self.assertIn("CAP-027 is RESTORED/ACTIVE", repairing_continuity["current_position"])
+        self.assertIn("0 STILL_MISSING", repairing_continuity["current_position"])
         self.assertNotIn("await", repairing_continuity["current_position"].lower())
         rp_c01 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C01")
         unfinished_missions = {mission["mission_id"] for mission in rp_c01["missions"] if mission["state"] != "PROVEN"}
