@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:5f7bfe7e19919e79ff59a7d964e4b36719484409b19fa96757be0a6d16282644
+Source fingerprint: sha256:8a466ed15f362668c55ff037768f2fe9f4f793772fc108f467f35404c59ad5f3
 Generator format: 2
 Status: Generated support artifact
 
@@ -40,6 +40,7 @@ Status: Generated support artifact
 | `lifecycle/README.md` | yes |
 | `lifecycle/architecture-decision-r01.md` | no |
 | `lifecycle/architecture-decision-r02.md` | no |
+| `lifecycle/architecture-decision-r03.md` | no |
 | `lifecycle/lifecycle-construction-contract.md` | no |
 | `lifecycle/lifecycle-contract.md` | yes |
 | `lifecycle/lifecycle-event-contract.md` | no |
@@ -93,6 +94,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.md` | no |
 | `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` | no |
 | `proof/repairing-prime/rp-c08-final-whole-quest-strikeforce-reconciliation-r01.md` | no |
+| `proof/repairing-prime/rp-c08-living-emberline-repair-r01.md` | no |
 | `proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.md` | no |
 | `proof/repairing-prime/rp-c08-post-m06-current-state-strikeforce-r01.md` | no |
 | `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` | no |
