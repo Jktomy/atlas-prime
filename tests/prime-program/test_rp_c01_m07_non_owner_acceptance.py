@@ -78,24 +78,23 @@ class RpC01M07NonOwnerAcceptanceTests(unittest.TestCase):
         self.assertTrue(all(item["state"] == "PROVEN" for item in campaign["missions"]))
         self.assertEqual(self.route["campaign_gate_state"], "ACCEPTED")
 
-    def test_later_aj12_acceptance_preserves_non_owner_and_cap027_missing(self) -> None:
+    def test_later_cap027_reconciliation_preserves_non_owner_evidence(self) -> None:
         board = next(item for item in self.board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         continuity = next(item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         cap027 = next(item for item in self.capabilities["capabilities"] if item["id"] == "CAP-027")
         self.assertEqual(
             board["next_gate"],
-            "Generated-current readback after AJ-12 acceptance, then CAP-027 and RP-C08 final capability reconciliation",
+            "Final generated-current proof, then whole-Quest Strikeforce and closeout",
         )
         self.assertEqual(
             continuity["last_event_id"],
-            "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01",
+            "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01",
         )
-        self.assertIn("CAP-027", continuity["next_action"])
-        self.assertEqual(cap027["capability_disposition"], "STILL_MISSING")
-        self.assertEqual(cap027["activation_state"], "MISSING")
-        self.assertIn("AJ-03, AJ-11, and AJ-12 are PROVEN", cap027["current_state"])
-        self.assertIn("separately authorized final capability reconciliation", cap027["current_state"])
-        self.assertIn("separately authorized CAP-027 final capability reconciliation", cap027["required_proof"])
+        self.assertIn("whole-Quest Strikeforce", continuity["next_action"])
+        self.assertEqual(cap027["capability_disposition"], "RESTORED")
+        self.assertEqual(cap027["activation_state"], "ACTIVE")
+        self.assertIn("AJ-01 through AJ-12 are PROVEN", cap027["current_state"])
+        self.assertIn("rp-c08-cap027-final-capability-reconciliation-r01.md", cap027["required_proof"])
 
 
 if __name__ == "__main__":
