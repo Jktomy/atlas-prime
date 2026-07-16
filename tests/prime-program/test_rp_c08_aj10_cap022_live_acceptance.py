@@ -62,7 +62,7 @@ class Aj10Cap022LiveAcceptanceCandidateTests(unittest.TestCase):
             self.assertEqual(sunrise["sunset_id"], sunset["record_id"])
             self.assertEqual(sunrise["latest_feather_id"], feather["record_id"])
 
-    def test_admitted_quest_adds_checkpoint_and_emberline(self) -> None:
+    def test_admitted_quest_preserves_historical_checkpoint_and_current_emberline(self) -> None:
         invocation = next(
             item for item in self.proof["invocations"] if item["scope_type"] == "ADMITTED_QUEST"
         )
@@ -70,13 +70,17 @@ class Aj10Cap022LiveAcceptanceCandidateTests(unittest.TestCase):
         schemas = [record["schema_id"] for record in records]
         self.assertEqual(schemas.count("atlas.lifecycle.quest-emberline"), 1)
         self.assertEqual(schemas.count("atlas.lifecycle.quest-checkpoint"), 1)
-        feather = next(record for record in records if record["schema_id"] == "atlas.lifecycle.feather")
+        historical_feather = next(
+            record for record in records if record["schema_id"] == "atlas.lifecycle.feather"
+        )
+        historical_checkpoint = next(
+            record for record in records if record["schema_id"] == "atlas.lifecycle.quest-checkpoint"
+        )
         context = compact_context(
             self.snapshot,
             quest_id="repairing-prime",
             projection_warning="Generated lifecycle projection awaits post-merge checkpoint.",
         )
-        self.assertEqual(context["latest_valid_feather"], feather["record_id"])
         historical_gate = self.proof["fresh_context_readback"]["expected_next_gate"]
         self.assertEqual(
             historical_gate,
@@ -88,6 +92,9 @@ class Aj10Cap022LiveAcceptanceCandidateTests(unittest.TestCase):
             if record.get("schema_id") == "atlas.lifecycle.quest-emberline"
             and record.get("quest_id") == "repairing-prime"
         )
+        self.assertEqual(historical_checkpoint["feather_id"], historical_feather["record_id"])
+        self.assertEqual(historical_checkpoint["emberline_id"], emberline["record_id"])
+        self.assertEqual(context["latest_valid_feather"], emberline["latest_feather_id"])
         self.assertEqual(context["next_gate"], emberline["next_gate"])
         self.assertNotEqual(context["next_gate"], historical_gate)
         qem_binding = next(
