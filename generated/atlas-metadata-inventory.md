@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:5f7bfe7e19919e79ff59a7d964e4b36719484409b19fa96757be0a6d16282644
+Source fingerprint: sha256:8a466ed15f362668c55ff037768f2fe9f4f793772fc108f467f35404c59ad5f3
 Generator format: 2
 Status: Generated support artifact
 
@@ -39,7 +39,8 @@ Status: Generated support artifact
 | `knowledge/context-pack-contract.md` | ACTIVE | PROTOCOL | missing | MEDIUM |
 | `lifecycle/README.md` | CANONICAL_ACTIVE | REGISTER | missing | HIGH |
 | `lifecycle/architecture-decision-r01.md` | SUPERSEDED | ARCHITECTURE_DECISION | missing | CRITICAL |
-| `lifecycle/architecture-decision-r02.md` | CANONICAL_ACTIVE | ARCHITECTURE_DECISION | missing | CRITICAL |
+| `lifecycle/architecture-decision-r02.md` | SUPERSEDED | ARCHITECTURE_DECISION | missing | CRITICAL |
+| `lifecycle/architecture-decision-r03.md` | CANONICAL_ACTIVE | ARCHITECTURE_DECISION | missing | CRITICAL |
 | `lifecycle/lifecycle-construction-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `lifecycle/lifecycle-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `lifecycle/lifecycle-event-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
@@ -93,6 +94,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.md` | CANDIDATE_ACCEPTANCE_RECONCILIATION | PROOF | missing | MEDIUM |
 | `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` | ACCEPTED_PARTIAL_CLOSEOUT | PROOF | missing | MEDIUM |
 | `proof/repairing-prime/rp-c08-final-whole-quest-strikeforce-reconciliation-r01.md` | ACCEPTED_READ_ONLY_STRIKEFORCE | PROOF | missing | CRITICAL |
+| `proof/repairing-prime/rp-c08-living-emberline-repair-r01.md` | CANDIDATE_SOURCE_REPAIR | PROOF | missing | CRITICAL |
 | `proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.md` | ACCEPTED_RECOVERY_GATE | PROOF | missing | CRITICAL |
 | `proof/repairing-prime/rp-c08-post-m06-current-state-strikeforce-r01.md` | PROPOSED_CURRENT_STATE_RECONCILIATION | PROOF | missing | CRITICAL |
 | `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` | CANONICAL_CURRENT_DISPOSITION | PROOF_RECONCILIATION | missing | CRITICAL |
