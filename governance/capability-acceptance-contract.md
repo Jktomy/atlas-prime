@@ -125,9 +125,28 @@ push, cleanup, capability promotion, or Quest completion occurred during the
 validation run. The exact accepted record is
 `proof/repairing-prime/rp-c08-aj12-merged-main-validation-acceptance-r01.md`.
 
-AJ-12 acceptance changes only the journey disposition. CAP-027 remains the
-sole `STILL_MISSING` capability pending a separately authorized final
-capability reconciliation. RP-C08 and Repairing Prime remain `IN_PROGRESS`.
+AJ-12 acceptance changed only the journey disposition at that time. Its
+historical record correctly preserved CAP-027 as the sole `STILL_MISSING`
+capability pending a separate reconciliation.
+
+## Accepted end-to-end acceptance layer
+
+CAP-027 is `RESTORED` and `ACTIVE` by
+`proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.md`.
+The separately authorized reconciliation binds all twelve PROVEN journeys into
+one complete acceptance layer. Its final open prerequisites were the accepted
+AJ-03 genuine non-owner fail-closed transaction, AJ-11 exact-main clean-clone
+recovery, AJ-12 exact merged-main Ubuntu/Windows matrix, and the generated-current
+checkpoint through PR `#210` at canonical main
+`887c562f40c1ae6756054b322a08b113f6ce60ca`.
+
+This transition does not rewrite the historical RP-C05, RP-C07, AJ-03, AJ-10,
+AJ-11, or AJ-12 records. It changes only CAP-027 from
+`STILL_MISSING/MISSING` to `RESTORED/ACTIVE`. The controlling capability count
+is now 15 RESTORED and 0 STILL_MISSING out of the frozen 28 identities.
+RP-C08 and Repairing Prime remain `IN_PROGRESS` pending the post-merge
+generated-current readback, whole-Quest Strikeforce, closeout, Phoenix recovery,
+and restart-safe Sunset.
 
 ## Current controlling dispositions
 
@@ -144,13 +163,14 @@ AJ-09 PROVEN
 AJ-10 PROVEN
 AJ-11 PROVEN
 AJ-12 PROVEN
+CAP-027 RESTORED / ACTIVE
 ```
 
 AJ-03 has exact live no-mutation evidence for edited input, intentional replay, duplicate branch, duplicate PR, and a genuine non-owner request. The non-owner row is bound to run `29421543076`, `OWNER_IDENTITY_REJECTED`, a skipped Thread Engine job, and exact zero-mutation evidence.
 
 AJ-10 is PROVEN from the corrected universal one-Sunset-to-one-Feather live journey and fresh-context exact-pair reconstruction. AJ-11 is PROVEN from the accepted exact-main clean-clone recovery proof. AJ-12 is PROVEN from exact merged-main run `29455372822` with complete Ubuntu and Windows validation at `043648a85cf581d7805355a71cc819fdb83e738b`.
 
-The historical RP-C05 record remains valid evidence of the state at its accepted time. The historical RP-C07 reconciliation remains valid evidence of the state at its accepted time. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` remains the later controlling transition for AJ-01 only. `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` and the R03 live candidate remain immutable historical pre-acceptance evidence. `proof/repairing-prime/rp-c08-aj10-cap022-acceptance-reconciliation-r04.md` is the current controlling transition for AJ-10, CAP-022, and RP-C05 only. `proof/repairing-prime/rp-c01-m07-non-owner-acceptance-r01.md` is the later controlling transition for AJ-03, RP-C01-M07, and RP-C01 only. `proof/repairing-prime/rp-c08-aj11-clean-clone-acceptance-r08.md` is the controlling transition for AJ-11 only. `proof/repairing-prime/rp-c08-aj12-merged-main-validation-acceptance-r01.md` is the controlling transition for AJ-12 only.
+The historical RP-C05 record remains valid evidence of the state at its accepted time. The historical RP-C07 reconciliation remains valid evidence of the state at its accepted time. `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` remains the later controlling transition for AJ-01 only. `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` and the R03 live candidate remain immutable historical pre-acceptance evidence. `proof/repairing-prime/rp-c08-aj10-cap022-acceptance-reconciliation-r04.md` is the current controlling transition for AJ-10, CAP-022, and RP-C05 only. `proof/repairing-prime/rp-c01-m07-non-owner-acceptance-r01.md` is the later controlling transition for AJ-03, RP-C01-M07, and RP-C01 only. `proof/repairing-prime/rp-c08-aj11-clean-clone-acceptance-r08.md` is the controlling transition for AJ-11 only. `proof/repairing-prime/rp-c08-aj12-merged-main-validation-acceptance-r01.md` is the controlling transition for AJ-12 only. `proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.md` is the controlling transition for CAP-027 only.
 
 ## Legacy Oathbringer capability mapping
 
