@@ -105,6 +105,38 @@ class RpC08CapabilityReconciliationTests(unittest.TestCase):
         self.assertEqual(self.truth["current_dispositions"]["AJ-10"], "UNPROVEN")
         self.assertEqual(self.truth["current_dispositions"]["RP-C05"], "PARTIAL")
 
+    def test_historical_reconciliation_does_not_self_close(self) -> None:
+        self.assertEqual(
+            self.acceptance["capability_counts"],
+            {
+                "PRESERVED": 4,
+                "IMPROVED": 7,
+                "RESTORED": 14,
+                "REPLACED": 1,
+                "INTENTIONALLY_RETIRED": 1,
+                "BLOCKED": 0,
+                "STILL_MISSING": 1,
+            },
+        )
+        self.assertEqual(self.proof["campaign_state"]["RP-C01"], "IN_PROGRESS")
+        self.assertEqual(self.proof["campaign_state"]["RP-C08"], "IN_PROGRESS")
+        self.assertEqual(self.proof["campaign_state"]["repairing_prime"], "IN_PROGRESS")
+        self.assertTrue(all(value is False for value in self.proof["forbidden_promotions"].values()))
+        self.assertEqual(
+            set(self.proof["preserved_open"]),
+            {
+                "RP-C01-M06",
+                "RP-C01-M07",
+                "AJ-03",
+                "CAP-027",
+                "AJ-11",
+                "AJ-12",
+                "RP-C01",
+                "RP-C08",
+                "QUEST-REPAIRING-PRIME-R01",
+            },
+        )
+
     def test_final_reconciliation_does_not_self_close(self) -> None:
         self.assertEqual(self.final["campaign_state"]["RP-C08"], "IN_PROGRESS")
         self.assertEqual(self.final["campaign_state"]["QUEST-REPAIRING-PRIME-R01"], "IN_PROGRESS")
