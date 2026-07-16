@@ -135,7 +135,7 @@ That constructor is not an external origin bridge and no longer carries a CAP-01
 
 ## Guided hosted publisher
 
-The owner-guided publisher is a Jayson/Artemis Arrow/Bow launcher over the existing hosted workflow. Preview audits canonical main, workflow identity, carrier, privacy, ordinary paths, and compiler output without mutation. Execute requires exact Preview identity, revalidates drift, reserves durable no-retry intent, dispatches only the existing hosted workflow, and reads back the run.
+The owner-guided publisher is a Jayson/Artemis Arrow/Bow launcher over the existing hosted workflow. Preview audits canonical main, workflow identity, carrier, privacy, ordinary paths, and compiler output without mutation. Execute requires exact Preview identity, revalidates drift, reserves durable no-retry dispatch receipt, dispatches only the existing hosted workflow, and reads back the run.
 
 The guided publisher may not call the adapter directly, create or update a branch or PR, retry partial state, mark ready, merge, change settings, or become a second writer. CAP-010 is already accepted from its separate live journey and does not establish or limit Athena's Spear identity.
 
@@ -163,4 +163,4 @@ This realignment uses already merged evidence; it does not manufacture new opera
 - PRs `#181` and `#182` prove the automatic generated post-merge route and zero-delta behavior;
 - protected dispatch PR `#187` and its accepted adapter receipt prove mission-scoped Aegis Break execution against one exact protected path.
 
-CAP-015, AJ-01, RP-C01-M02, and RP-C01-M06 remain reconciled by their respective accepted evidence. The later non-owner acceptance separately proves AJ-03 and RP-C01-M07 and completes RP-C01. Before the later exact-main validation, the accepted boundary was: AJ-11 is PROVEN; AJ-12, CAP-027, RP-C08, and Repairing Prime remain open. AJ-11 and AJ-12 are now PROVEN; CAP-027, RP-C08, and Repairing Prime remain open.
+CAP-015, AJ-01, RP-C01-M02, and RP-C01-M06 remain reconciled by their respective accepted evidence. The later non-owner acceptance separately proves AJ-03 and RP-C01-M07 and completes RP-C01. Before the later exact-main validation, the accepted boundary was: AJ-11 is PROVEN; AJ-12, CAP-027, RP-C08, and Repairing Prime remain open. AJ-11 and AJ-12 are now PROVEN; CAP-027 is RESTORED/ACTIVE by the separate final capability reconciliation; RP-C08 and Repairing Prime remain open.
