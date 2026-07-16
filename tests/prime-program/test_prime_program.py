@@ -66,7 +66,7 @@ class PrimeProgramTests(unittest.TestCase):
                         "dispositions are reconciled with 15 RESTORED and 0 STILL_MISSING. Generated-only PR #216 "
                         "passed exact-head Ubuntu/Windows validation, merged as canonical main "
                         "3fbcc5fdb95c40665cbd6ee3fff752b149a81cb9, and left all five projections current with no "
-                        "successor candidate. Final whole-Quest Strikeforce is GREEN. RP-C08 remains IN_PROGRESS for "
+                        "successor candidate. final whole-Quest Strikeforce is GREEN. RP-C08 remains IN_PROGRESS for "
                         "Phoenix recovery, restart-safe Sunset, and separately authorized completion."
                     ),
                     "source": "quests/repairing-prime.md",
