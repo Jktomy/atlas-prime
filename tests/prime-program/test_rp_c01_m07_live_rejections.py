@@ -58,27 +58,28 @@ class RpC01M07LiveRejectionTests(unittest.TestCase):
         self.assertEqual({item["run"] for item in self.proof["superseded_no_mutation_diagnostics"]}, {29233989153, 29234050494})
         self.assertTrue(all(item["mutation"] is False for item in self.proof["superseded_no_mutation_diagnostics"]))
 
-    def test_continuity_preserves_history_and_advances_through_aj12(self) -> None:
+    def test_continuity_preserves_history_and_advances_through_cap027(self) -> None:
         repairing = next(item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         events = self.continuity["event_ids"]
         historical_event = "RP-C01-M07-LIVE-REJECTION-RECONCILIATION-R01"
         m07_event = "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"
         aj11_event = "RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08"
         aj12_event = "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01"
-        for event in (historical_event, m07_event, aj11_event, aj12_event):
+        cap027_event = "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01"
+        ordered = [historical_event, m07_event, aj11_event, aj12_event, cap027_event]
+        for event in ordered:
             self.assertEqual(events.count(event), 1)
-        self.assertLess(events.index(historical_event), events.index(m07_event))
-        self.assertLess(events.index(m07_event), events.index(aj11_event))
-        self.assertLess(events.index(aj11_event), events.index(aj12_event))
-        self.assertEqual(self.continuity["register_revision"], 28)
-        self.assertEqual(repairing["revision"], 23)
-        self.assertEqual(repairing["last_event_id"], aj12_event)
+        self.assertEqual([events.index(event) for event in ordered], sorted(events.index(event) for event in ordered))
+        self.assertEqual(self.continuity["register_revision"], 29)
+        self.assertEqual(self.continuity["source_base_sha"], "887c562f40c1ae6756054b322a08b113f6ce60ca")
+        self.assertEqual(repairing["revision"], 24)
+        self.assertEqual(repairing["last_event_id"], cap027_event)
         self.assertEqual(repairing["quest_state"], "IN_PROGRESS")
         self.assertFalse(any("genuine non-owner" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("AJ-11 requires" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("AJ-12 requires complete" in blocker for blocker in repairing["blockers"]))
-        self.assertTrue(any("CAP-027" in blocker for blocker in repairing["blockers"]))
-        self.assertIn("CAP-027", repairing["next_action"])
+        self.assertTrue(any("CAP-027 final capability reconciliation" in blocker for blocker in repairing["blockers"]))
+        self.assertIn("whole-Quest Strikeforce", repairing["next_action"])
 
 
 if __name__ == "__main__":
