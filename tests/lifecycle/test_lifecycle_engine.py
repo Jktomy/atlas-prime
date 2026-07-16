@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import ast
+import copy
 import json
 import shutil
 import stat
@@ -22,7 +23,7 @@ from tools.atlas_lifecycle.errors import LifecycleError
 from tools.atlas_lifecycle.evidence import verify_archive, verify_bound_evidence
 from tools.atlas_lifecycle.jsonio import canonical_bytes, loads_bounded, stable_record_id
 from tools.atlas_lifecycle.protection import enforce_clean_values
-from tools.atlas_lifecycle.repository import validate_repository
+from tools.atlas_lifecycle.repository import _validate_living_emberline, validate_repository
 from tools.atlas_lifecycle.schema import SchemaValidator
 
 
@@ -338,6 +339,37 @@ class LifecycleEngineTests(unittest.TestCase):
             with self.assertRaises(LifecycleError) as raised:
                 validate_repository(repo)
             self.assertEqual(raised.exception.code, "REPLAY_IDENTIFIER")
+
+
+    def test_living_emberline_preserves_stable_identity_and_validates_journey(self) -> None:
+        path = ROOT / "lifecycle/quest-emberlines/QEM-R6QKBDHLY7I7PVVEKIGTZFMZZT.json"
+        record = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(record["schema_version"], "2.0.0")
+        self.assertEqual(stable_record_id(record), record["record_id"])
+        _validate_living_emberline(record)
+        snapshot = validate_repository(ROOT, check_stale=True)
+        self.assertGreater(snapshot.records, 0)
+
+        tampered = copy.deepcopy(record)
+        tampered["current_entry_id"] = tampered["journey_entries"][0]["entry_id"]
+        with self.assertRaises(LifecycleError) as raised:
+            _validate_living_emberline(tampered)
+        self.assertEqual(raised.exception.code, "LIVING_EMBERLINE_CURRENT_ENTRY")
+
+        complete = copy.deepcopy(record)
+        sequence = len(complete["journey_entries"]) + 1
+        final_id = f"Final-Gate-{sequence:03d}"
+        complete["journey_entries"].append({
+            "entry_id": final_id, "sequence": sequence, "entry_type": "FINAL", "scope": "GATE",
+            "summary": "Harmless completion fixture.", "reason": None, "branched_from": None,
+            "returns_to": None, "superseded_direction": None, "active_direction": None,
+            "outcome": "Fixture Quest completed.",
+        })
+        complete["current_entry_id"] = final_id
+        complete["quest_state"] = "COMPLETE"
+        complete["unresolved_blockers"] = []
+        complete["next_gate"] = "CLOSED"
+        _validate_living_emberline(complete)
 
     def test_archive_bounds_paths_collisions_special_files_and_ratio(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

@@ -85,7 +85,7 @@ class LifecycleContractTests(unittest.TestCase):
     def test_exact_schema_catalog_is_strict_and_locally_resolvable(self) -> None:
         expected = {"common-v1.schema.json"} | {
             filename for filename, _ in ENTITY_SCHEMAS.values()
-        } | {"website-index-v2.schema.json"}
+        } | {"quest-emberline-v2.schema.json", "website-index-v2.schema.json"}
         self.assertEqual({path.name for path in SCHEMAS.glob("*.json")}, expected)
 
         schema_ids: set[str] = set()

@@ -131,6 +131,61 @@ def _validate_sunset_feather_bindings(
             )
 
 
+
+def _validate_living_emberline(record: dict[str, Any]) -> None:
+    if record.get("schema_id") != "atlas.lifecycle.quest-emberline" or record.get("schema_version") != "2.0.0":
+        return
+    if record.get("record_id") != record.get("lineage_root_id"):
+        raise LifecycleError("LIVING_EMBERLINE_ID", "living Emberline record ID must equal its lineage root")
+    revision = record.get("quest_revision")
+    parent_digest = record.get("revision_parent_digest")
+    if revision == 1 and parent_digest is not None:
+        raise LifecycleError("LIVING_EMBERLINE_PARENT", "first living Emberline revision cannot bind a parent digest")
+    if revision > 1 and not isinstance(parent_digest, str):
+        raise LifecycleError("LIVING_EMBERLINE_PARENT", "later living Emberline revisions require a parent digest")
+    entries = record.get("journey_entries")
+    if not isinstance(entries, list) or not entries:
+        raise LifecycleError("LIVING_EMBERLINE_ENTRIES", "living Emberline requires journey entries")
+    ids = [entry.get("entry_id") for entry in entries if isinstance(entry, dict)]
+    if len(ids) != len(entries) or len(ids) != len(set(ids)):
+        raise LifecycleError("LIVING_EMBERLINE_ENTRIES", "journey entry IDs must be unique")
+    by_id = {entry["entry_id"]: entry for entry in entries}
+    type_label = {"MAIN": "Main", "SIDE": "Side", "BRANCHED": "Branched", "FINAL": "Final"}
+    scope_label = {"EMBERLINE": "Emberline", "CAMPAIGN": "Campaign", "MISSION": "Mission", "GATE": "Gate"}
+    for expected_sequence, entry in enumerate(entries, start=1):
+        if entry.get("sequence") != expected_sequence:
+            raise LifecycleError("LIVING_EMBERLINE_SEQUENCE", "journey entries must use contiguous sequence numbers")
+        expected_id = f"{type_label[entry['entry_type']]}-{scope_label[entry['scope']]}-{expected_sequence:03d}"
+        if entry["entry_id"] != expected_id:
+            raise LifecycleError("LIVING_EMBERLINE_ENTRY_ID", "journey entry ID disagrees with type, scope, or sequence")
+        branched_from = entry.get("branched_from")
+        returns_to = entry.get("returns_to")
+        if branched_from is not None and (branched_from not in by_id or by_id[branched_from]["sequence"] >= expected_sequence):
+            raise LifecycleError("LIVING_EMBERLINE_BRANCH", "journey branch source must resolve to an earlier entry")
+        if returns_to is not None and (returns_to not in by_id or by_id[returns_to]["sequence"] <= expected_sequence):
+            raise LifecycleError("LIVING_EMBERLINE_RETURN", "Side journey return must resolve to a later entry")
+        entry_type = entry["entry_type"]
+        if entry_type == "MAIN":
+            if any(entry.get(field) is not None for field in ("reason", "branched_from", "returns_to", "superseded_direction", "active_direction", "outcome")):
+                raise LifecycleError("LIVING_EMBERLINE_MAIN", "Main journey entries cannot declare branch-only fields")
+        elif entry_type == "SIDE":
+            if not all(isinstance(entry.get(field), str) for field in ("reason", "branched_from", "returns_to", "outcome")) or any(entry.get(field) is not None for field in ("superseded_direction", "active_direction")):
+                raise LifecycleError("LIVING_EMBERLINE_SIDE", "Side entry must bind departure, reason, outcome, and return")
+        elif entry_type == "BRANCHED":
+            if not all(isinstance(entry.get(field), str) for field in ("reason", "branched_from", "superseded_direction", "active_direction")) or entry.get("returns_to") is not None or entry.get("outcome") is not None:
+                raise LifecycleError("LIVING_EMBERLINE_BRANCHED", "Branched entry must bind the superseded and active direction")
+        elif entry_type == "FINAL":
+            if not isinstance(entry.get("outcome"), str) or any(entry.get(field) is not None for field in ("reason", "branched_from", "returns_to", "superseded_direction", "active_direction")):
+                raise LifecycleError("LIVING_EMBERLINE_FINAL", "Final entry must record only its accepted outcome")
+    if record.get("current_entry_id") != entries[-1]["entry_id"]:
+        raise LifecycleError("LIVING_EMBERLINE_CURRENT_ENTRY", "current journey entry must be the final ordered entry")
+    complete = record.get("quest_state") == "COMPLETE"
+    if complete:
+        if entries[-1]["entry_type"] != "FINAL" or record.get("next_gate") != "CLOSED" or record.get("unresolved_blockers"):
+            raise LifecycleError("LIVING_EMBERLINE_COMPLETION", "completed Quest requires Final entry, CLOSED gate, and no blockers")
+    elif entries[-1]["entry_type"] == "FINAL" or record.get("next_gate") == "CLOSED":
+        raise LifecycleError("LIVING_EMBERLINE_COMPLETION", "in-progress Quest cannot claim a Final entry or CLOSED gate")
+
 def validate_repository(
     repo_root: Path,
     *,
@@ -243,6 +298,7 @@ def validate_repository(
         identifier = record.get("record_id", "")
         if stable_record_id(record) != identifier:
             raise LifecycleError("STABLE_ID_MISMATCH", "record ID does not match its canonical payload")
+        _validate_living_emberline(record)
         folded = identifier.casefold()
         if folded in seen_ids:
             raise LifecycleError("DUPLICATE_RECORD_ID", "duplicate or case-fold-colliding record ID")
@@ -305,8 +361,17 @@ def validate_repository(
             expected_revision = concurrency.get("expected_quest_revision")
             if quest_id is not None and record.get("schema_id") != "atlas.lifecycle.quest-emberline":
                 emberline = emberlines.get(quest_id)
-                if emberline is None or emberline.get("quest_revision") != expected_revision:
-                    raise LifecycleError("STALE_QUEST_REVISION", "expected Quest revision is not current")
+                current_revision = emberline.get("quest_revision") if emberline is not None else None
+                if (
+                    emberline is None
+                    or not isinstance(expected_revision, int)
+                    or not isinstance(current_revision, int)
+                    or expected_revision > current_revision
+                ):
+                    raise LifecycleError(
+                        "STALE_QUEST_REVISION",
+                        "expected Quest revision exceeds the current living Emberline revision",
+                    )
 
     return ValidationResult(
         records=canonical_count,

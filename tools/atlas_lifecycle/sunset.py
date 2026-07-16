@@ -7,8 +7,8 @@ from typing import Any
 
 from .candidate import _create_output_directory, _validated_output_path, _write_exact
 from .errors import LifecycleError
-from .jsonio import canonical_bytes, load_bounded, read_bounded, stable_record_id
-from .repository import _validate_sunset_feather_bindings, observed_head, validate_repository
+from .jsonio import canonical_bytes, living_emberline_id, load_bounded, read_bounded, stable_record_id
+from .repository import _validate_living_emberline, _validate_sunset_feather_bindings, observed_head, validate_repository
 from .schema import SchemaValidator
 
 ARTIFACT_BUNDLE = "candidate-bundle.json"
@@ -181,8 +181,8 @@ def _build_records(root: Path, request: dict[str, Any]) -> tuple[list[dict[str, 
     scope = request["quest_scope"]
     scope_type = scope["scope_type"]
     current_emberline = None
+    current_emberline_digest = None
     parent_feather = None
-    prior_emberline = None
     quest_revision = None
     if scope_type == "ADMITTED_QUEST":
         matches = [
@@ -197,8 +197,10 @@ def _build_records(root: Path, request: dict[str, Any]) -> tuple[list[dict[str, 
         if current_emberline is None:
             quest_revision = 1
         else:
+            if current_emberline.get("schema_version") != "2.0.0":
+                _fail("SUNSET_QUEST_MIGRATION_REQUIRED", "admitted Quest must migrate to the living Emberline before Sunset")
             quest_revision = current_emberline["quest_revision"] + 1
-            prior_emberline = current_emberline["record_id"]
+            current_emberline_digest = _digest(canonical_bytes(current_emberline))
             parent_feather = current_emberline.get("latest_feather_id")
             if parent_feather is not None and not any(
                 record.get("schema_id") == "atlas.lifecycle.feather"
@@ -244,26 +246,52 @@ def _build_records(root: Path, request: dict[str, Any]) -> tuple[list[dict[str, 
     emberline = None
     checkpoint = None
     if scope_type == "ADMITTED_QUEST":
-        emberline = _canonical_record(
-            {
-                "schema_id": "atlas.lifecycle.quest-emberline",
-                "schema_version": "1.0.0",
-                "record_id": "QEM-AAAAAAAAAAAAAAAAAAAAAAAAAA",
-                "authority": "CANONICAL_RECORD",
-                "quest_id": scope["quest_id"],
-                "project_id": request["project_id"],
-                "operation_ids": [request["operation_id"]],
-                "quest_revision": quest_revision,
-                "prior_emberline_id": prior_emberline,
-                "current_position": request["current_position"],
-                "unresolved_blockers": request["unresolved_blockers"],
-                "next_gate": request["next_gate"],
-                "latest_feather_id": feather["record_id"],
-                "concurrency": concurrency,
-                "durable_source_references": request["durable_source_references"],
-                "protected_data": request["protected_data"],
-            }
-        )
+        if current_emberline is None:
+            lineage_root = living_emberline_id(scope["quest_id"], request["project_id"])
+            journey_entries: list[dict[str, Any]] = []
+            operation_ids = [request["operation_id"]]
+        else:
+            lineage_root = current_emberline["record_id"]
+            journey_entries = [dict(item) for item in current_emberline["journey_entries"]]
+            operation_ids = sorted(set([*current_emberline["operation_ids"], request["operation_id"]]))
+        sequence = len(journey_entries) + 1
+        entry = {
+            "entry_id": f"Main-Gate-{sequence:03d}",
+            "sequence": sequence,
+            "entry_type": "MAIN",
+            "scope": "GATE",
+            "summary": request["context_summary"],
+            "reason": None,
+            "branched_from": None,
+            "returns_to": None,
+            "superseded_direction": None,
+            "active_direction": None,
+            "outcome": None,
+        }
+        journey_entries.append(entry)
+        emberline = {
+            "schema_id": "atlas.lifecycle.quest-emberline",
+            "schema_version": "2.0.0",
+            "record_id": lineage_root,
+            "lineage_root_id": lineage_root,
+            "authority": "CANONICAL_RECORD",
+            "quest_id": scope["quest_id"],
+            "project_id": request["project_id"],
+            "operation_ids": operation_ids,
+            "quest_revision": quest_revision,
+            "revision_parent_digest": current_emberline_digest,
+            "quest_state": "IN_PROGRESS",
+            "current_entry_id": entry["entry_id"],
+            "journey_entries": journey_entries,
+            "current_position": request["current_position"],
+            "unresolved_blockers": request["unresolved_blockers"],
+            "next_gate": request["next_gate"],
+            "latest_feather_id": feather["record_id"],
+            "concurrency": concurrency,
+            "durable_source_references": request["durable_source_references"],
+            "protected_data": request["protected_data"],
+        }
+        _validate_living_emberline(emberline)
         checkpoint = _canonical_record(
             {
                 "schema_id": "atlas.lifecycle.quest-checkpoint",
@@ -329,6 +357,7 @@ def _build_records(root: Path, request: dict[str, Any]) -> tuple[list[dict[str, 
     validator = SchemaValidator(root / "lifecycle" / "schemas")
     for record in records:
         validator.validate_record(record)
+        _validate_living_emberline(record)
         if stable_record_id(record) != record["record_id"]:
             _fail("SUNSET_RECORD_ID", "Sunset candidate record ID is unstable")
     _validate_sunset_feather_bindings(records, record_class="candidate")
@@ -564,6 +593,7 @@ def verify_sunset_candidate(repo_root: Path, candidate_dir: Path) -> dict[str, A
             _fail("SUNSET_CANDIDATE_RECORDS", "Sunset candidate record entry is invalid")
         seen_paths.add(path)
         validator.validate_record(record)
+        _validate_living_emberline(record)
         if record.get("authority") != "CANONICAL_RECORD" or stable_record_id(record) != record.get(
             "record_id"
         ):

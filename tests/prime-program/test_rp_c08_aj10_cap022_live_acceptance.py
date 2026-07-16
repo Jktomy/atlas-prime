@@ -77,7 +77,25 @@ class Aj10Cap022LiveAcceptanceCandidateTests(unittest.TestCase):
             projection_warning="Generated lifecycle projection awaits post-merge checkpoint.",
         )
         self.assertEqual(context["latest_valid_feather"], feather["record_id"])
-        self.assertEqual(context["next_gate"], self.proof["fresh_context_readback"]["expected_next_gate"])
+        historical_gate = self.proof["fresh_context_readback"]["expected_next_gate"]
+        self.assertEqual(
+            historical_gate,
+            "MERGE_THEN_FRESH_CONTEXT_AJ10_CAP022_READBACK",
+        )
+        emberline = next(
+            record
+            for record in self.snapshot.canonical_records
+            if record.get("schema_id") == "atlas.lifecycle.quest-emberline"
+            and record.get("quest_id") == "repairing-prime"
+        )
+        self.assertEqual(context["next_gate"], emberline["next_gate"])
+        self.assertNotEqual(context["next_gate"], historical_gate)
+        qem_binding = next(
+            binding
+            for binding in invocation["record_bindings"]
+            if binding["schema_id"] == "atlas.lifecycle.quest-emberline"
+        )
+        self.assertEqual(emberline["record_id"], qem_binding["record_id"])
 
     def test_nonquest_adds_no_quest_identity(self) -> None:
         invocation = next(

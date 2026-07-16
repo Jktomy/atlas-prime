@@ -49,8 +49,10 @@ invocation. Event candidate writes exactly `event.json`,
 `candidate-manifest.json`, and `candidate-receipt.json` into one new directory
 beneath the system temporary root. Sunset candidate writes exactly
 `candidate-bundle.json` and `candidate-receipt.json`; the bundle contains one
-Feather/Sunset/Sunrise pair and, for admitted-Quest scope only, one Emberline
-revision and one Quest checkpoint. Both routes bind exact transaction input and
+Feather/Sunset/Sunrise pair and, for admitted-Quest scope only, one replacement
+payload for the stable living Emberline plus one new Quest checkpoint. The
+replacement increments the Quest revision, binds the prior file digest, and
+appends one Main-Gate journey entry without creating a second Emberline ID. Both routes bind exact transaction input and
 read back every temporary byte. Existing output, repository output, path reuse,
 case-fold collisions, stale transaction bases, and malformed bindings fail
 closed. `sunset verify` is read-only and accepts later repository HEADs because
@@ -103,3 +105,11 @@ The trust root must be a regular file below canonical
 `lifecycle/trust-roots/`, and it independently binds the subject digest, local
 receipt schema digest, and lifecycle contract digest. Diagnostics expose a
 specific failure code without echoing submitted values or private paths.
+
+## Living Quest Emberline
+
+Quest Emberline schema v2 preserves one stable identity and canonical path per
+admitted Quest. Its ordered journey uses Main, Side, Branched, and Final entry
+types. `validate` enforces entry ordering, branch and return relationships,
+revision-parent binding, and terminal completion rules. Other lifecycle records
+remain immutable and continue to reference the stable Emberline ID.

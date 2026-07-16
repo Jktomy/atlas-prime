@@ -62,12 +62,38 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         self.assertEqual(generated["post_merge_noop"]["changed_count"], 0)
         self.assertTrue(generated["post_merge_noop"]["byte_identical"])
 
-    def test_all_eight_immutable_record_hashes_and_ids_match(self) -> None:
+    def test_seven_immutable_records_and_living_emberline_lineage_match(self) -> None:
+        historical_qem = None
+        immutable_count = 0
         for scope in ("admitted_quest", "nonquest"):
             for binding in self.proof["accepted_record_bindings"][scope]:
                 path = ROOT / binding["path"]
-                self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), binding["sha256"])
-                self.assertEqual(json.loads(path.read_text(encoding="utf-8"))["record_id"], binding["record_id"])
+                record = json.loads(path.read_text(encoding="utf-8"))
+                self.assertEqual(record["record_id"], binding["record_id"])
+                if record["schema_id"] == "atlas.lifecycle.quest-emberline":
+                    historical_qem = binding
+                    self.assertEqual(
+                        self.proof["fresh_context_readback"]["quest_emberline_id"],
+                        binding["record_id"],
+                    )
+                    self.assertEqual(
+                        record["revision_parent_digest"],
+                        f'sha256:{binding["sha256"]}',
+                    )
+                    self.assertEqual(record["schema_version"], "2.0.0")
+                    self.assertGreater(record["quest_revision"], 1)
+                else:
+                    immutable_count += 1
+                    self.assertEqual(
+                        hashlib.sha256(path.read_bytes()).hexdigest(),
+                        binding["sha256"],
+                    )
+        self.assertEqual(immutable_count, 7)
+        self.assertIsNotNone(historical_qem)
+        self.assertEqual(
+            historical_qem["sha256"],
+            "9174ed49302f666b40a60669196ebe2f81a66a942e9cb5b5a141e23ed9a424ed",
+        )
 
     def test_admitted_quest_resolves_one_exact_pair_and_quest_state(self) -> None:
         records = self.load_bindings("admitted_quest")
@@ -92,7 +118,21 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         self.assertEqual(checkpoint["feather_id"], feather["record_id"])
         self.assertEqual(checkpoint["emberline_id"], emberline["record_id"])
         self.assertEqual(emberline["latest_feather_id"], feather["record_id"])
-        self.assertEqual(emberline["next_gate"], self.proof["fresh_context_readback"]["next_gate"])
+        historical = self.proof["fresh_context_readback"]
+        self.assertEqual(
+            historical["next_gate"],
+            "MERGE_THEN_FRESH_CONTEXT_AJ10_CAP022_READBACK",
+        )
+        self.assertEqual(emberline["record_id"], historical["quest_emberline_id"])
+        qem_binding = next(
+            binding
+            for binding in self.proof["accepted_record_bindings"]["admitted_quest"]
+            if binding["record_id"] == emberline["record_id"]
+        )
+        self.assertEqual(
+            emberline["revision_parent_digest"],
+            f'sha256:{qem_binding["sha256"]}',
+        )
         context = compact_context(
             self.snapshot,
             quest_id="repairing-prime",
@@ -100,6 +140,7 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         )
         self.assertEqual(context["latest_valid_feather"], feather["record_id"])
         self.assertEqual(context["next_gate"], emberline["next_gate"])
+        self.assertNotEqual(context["next_gate"], historical["next_gate"])
 
     def test_nonquest_arm_invents_no_quest_identity(self) -> None:
         records = self.load_bindings("nonquest")

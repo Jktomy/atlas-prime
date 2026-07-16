@@ -115,6 +115,28 @@ class SunsetCandidateTests(unittest.TestCase):
             self.assertEqual(result["assertions"]["quest_checkpoints"], 1)
             verified = verify_sunset_candidate(ROOT, parent / "candidate")
             self.assertEqual(verified["candidate_set_digest"], result["candidate_set_digest"])
+            bundle = json.loads((parent / "candidate" / "candidate-bundle.json").read_text())
+            emberline_entries = [
+                item for item in bundle["records"]
+                if item["record"]["schema_id"] == "atlas.lifecycle.quest-emberline"
+            ]
+            self.assertEqual(len(emberline_entries), 1)
+            living = emberline_entries[0]["record"]
+            current_path = ROOT / "lifecycle/quest-emberlines/QEM-R6QKBDHLY7I7PVVEKIGTZFMZZT.json"
+            current = json.loads(current_path.read_text(encoding="utf-8"))
+            self.assertEqual(living["record_id"], current["record_id"])
+            self.assertEqual(living["schema_version"], "2.0.0")
+            self.assertEqual(living["quest_revision"], current["quest_revision"] + 1)
+            self.assertEqual(
+                living["revision_parent_digest"],
+                "sha256:" + hashlib.sha256(current_path.read_bytes()).hexdigest(),
+            )
+            self.assertEqual(
+                emberline_entries[0]["path"],
+                f'lifecycle/quest-emberlines/{current["record_id"]}.json',
+            )
+            self.assertEqual(living["journey_entries"][-1]["entry_type"], "MAIN")
+            self.assertEqual(living["journey_entries"][-1]["scope"], "GATE")
         self.assertEqual(canonical_tree(), before)
 
     def test_nonquest_invocation_fabricates_no_quest_identity(self) -> None:

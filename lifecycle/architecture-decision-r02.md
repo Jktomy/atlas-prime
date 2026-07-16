@@ -1,7 +1,8 @@
 ---
 title: "Lifecycle Architecture Decision R02"
 atlas_id: "prime.lifecycle.architecture.r02"
-status: "CANONICAL_ACTIVE"
+status: "SUPERSEDED"
+superseded_by: "prime.lifecycle.architecture.r03"
 source_type: "ARCHITECTURE_DECISION"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Atlas"
@@ -11,6 +12,8 @@ supersedes: "prime.lifecycle.architecture.r01"
 ---
 
 # Lifecycle Architecture Decision R02
+
+This decision remains preserved as the receipt-driven event foundation. Lifecycle Architecture Decision R03 supersedes only the Quest Emberline current-state shape; R02 remains authoritative for lifecycle events, receipts, and transition evidence.
 
 ## Decision
 
