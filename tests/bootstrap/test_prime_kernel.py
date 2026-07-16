@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import json
-import subprocess
-import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -85,28 +83,5 @@ if generated_root.exists():
 for path in ROOT.rglob("*"):
     if path.is_file() and (path.suffix in {".pyc", ".pyo"} or "__pycache__" in path.parts):
         raise SystemExit(f"Runtime byproduct found: {path.relative_to(ROOT)}")
-
-# Temporary draft-branch diagnostic. Removed byte-for-byte before final audit.
-code = """
-import json
-from pathlib import Path
-from tools.prime_continuity.engine import validate_board, validate_register
-root = Path.cwd()
-board = json.loads((root / 'quest-board/quest-board-v1.json').read_text(encoding='utf-8'))
-register = json.loads((root / 'continuity/prime-continuity-register-r01.json').read_text(encoding='utf-8'))
-validate_board(board)
-validate_register(register, board)
-"""
-diagnostic = subprocess.run(
-    [sys.executable, "-c", code],
-    cwd=ROOT,
-    capture_output=True,
-    text=True,
-    check=False,
-)
-if diagnostic.returncode:
-    print(diagnostic.stdout)
-    print(diagnostic.stderr)
-    raise SystemExit("CAP-027 continuity binding diagnostic failed")
 
 print("Prime kernel static checks: PASS")
