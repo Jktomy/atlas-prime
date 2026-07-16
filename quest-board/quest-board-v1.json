@@ -10,12 +10,12 @@
       "state": "COMPLETE"
     },
     {
-      "next_gate": "Generated-current readback after AJ-12 acceptance, then CAP-027 and RP-C08 final capability reconciliation",
+      "next_gate": "CAP-027 final reconciliation permanence and generated-current readback, then whole-Quest Strikeforce",
       "owner": "Codex / Source Governance",
       "quest_id": "QUEST-REPAIRING-PRIME-R01",
       "source": "quests/repairing-prime.md",
       "state": "IN_PROGRESS",
-      "readiness_basis": "AJ-01 through AJ-12 are PROVEN. AJ-12 is accepted from owner-authorized read-only workflow run 29455372822 at exact merged main 043648a85cf581d7805355a71cc819fdb83e738b: Ubuntu job 87487269033 and Windows job 87487269036 completed successfully with the complete Prime matrix and no repository mutation. CAP-027 remains the sole STILL_MISSING capability pending separate final capability reconciliation; RP-C08, Phoenix recovery, and Quest closeout remain open."
+      "readiness_basis": "AJ-01 through AJ-12 are PROVEN. CAP-027 is proposed RESTORED and ACTIVE by the separately authorized final capability reconciliation at base 887c562f40c1ae6756054b322a08b113f6ce60ca, bringing the frozen 28-capability register to 15 RESTORED and 0 STILL_MISSING. Exact-head Ubuntu and Windows validation, detached review, separate ready and merge authorization, post-merge generated-current readback, whole-Quest Strikeforce, closeout, Phoenix recovery, and restart-safe Sunset remain open."
     },
     {
       "next_gate": "FS-C01-M04 — Prove the Light",
