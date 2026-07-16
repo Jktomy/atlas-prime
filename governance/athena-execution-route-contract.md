@@ -135,7 +135,7 @@ That constructor is not an external origin bridge and no longer carries a CAP-01
 
 ## Guided hosted publisher
 
-The owner-guided publisher is a Jayson/Artemis Arrow/Bow launcher over the existing hosted workflow. Preview audits canonical main, workflow identity, carrier, privacy, ordinary paths, and compiler output without mutation. Execute requires exact Preview identity, revalidates drift, reserves durable no-retry dispatch receipt, dispatches only the existing hosted workflow, and reads back the run.
+The owner-guided publisher is a Jayson/Artemis Arrow/Bow launcher over the existing hosted workflow. Preview audits canonical main, workflow identity, carrier, privacy, ordinary paths, and compiler output without mutation. Execute requires exact Preview identity, revalidates drift, reserves durable no-retry intent, dispatches only the existing hosted workflow, and reads back the run.
 
 The guided publisher may not call the adapter directly, create or update a branch or PR, retry partial state, mark ready, merge, change settings, or become a second writer. CAP-010 is already accepted from its separate live journey and does not establish or limit Athena's Spear identity.
 
