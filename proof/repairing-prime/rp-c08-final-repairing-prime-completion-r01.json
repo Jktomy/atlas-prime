@@ -1,0 +1,67 @@
+{
+  "schema_id": "atlas.rp-c08.final-repairing-prime-completion",
+  "schema_version": "1.0.0",
+  "mission": "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R01",
+  "transaction_base_sha": "40e58dcf33bae68f8c819c2f65c6474f52381718",
+  "sunset": {
+    "source_pr": 224,
+    "source_head_sha": "3bf43bc209c740e7ef1207025202df9b01c6c7b5",
+    "merge_commit_sha": "40e58dcf33bae68f8c819c2f65c6474f52381718",
+    "candidate_set_digest": "sha256:5bcdba556f9c40090176ab712cc868bc05cc1c47832261d10b9a54ac2da7384a",
+    "living_emberline_next_gate": "FINAL_REPAIRING_PRIME_COMPLETION_TRANSACTION"
+  },
+  "generated_noop": {
+    "classification": "DETERMINISTIC_NOOP",
+    "generator_input_scope": "NON_GENERATED_MARKDOWN_ONLY",
+    "source_fingerprint": "sha256:8a466ed15f362668c55ff037768f2fe9f4f793772fc108f467f35404c59ad5f3",
+    "source_pr_changed_paths": [
+      "lifecycle/feathers/FTR-FYRBRXR57VWRYOZFORNP67R3H4.json",
+      "lifecycle/quest-checkpoints/QCP-RINRZYYQXWS6FZQ7PH6YPIGQDF.json",
+      "lifecycle/quest-emberlines/QEM-R6QKBDHLY7I7PVVEKIGTZFMZZT.json",
+      "lifecycle/sunrises/SRI-A5U4QQHMN4IG64TC34DRV4A4QK.json",
+      "lifecycle/sunsets/SUN-EQA3Q3YZ4VDDMPJWHLTFRRDN6Q.json",
+      "tests/prime-program/test_rp_c08_aj10_cap022_acceptance_reconciliation.py",
+      "tests/prime-program/test_rp_c08_aj10_cap022_live_acceptance.py"
+    ],
+    "markdown_changed_count": 0,
+    "hosted_receipt_available": false,
+    "invented_receipt": false
+  },
+  "transitions": {
+    "RP-C08": {"from": "IN_PROGRESS", "to": "COMPLETE"},
+    "QUEST-REPAIRING-PRIME-R01": {"from": "IN_PROGRESS", "to": "COMPLETE"},
+    "CONT-REPAIRING-PRIME-R01": {"from": "ACTIVE_ROW", "to": "RETIRED_FROM_UNFINISHED_REGISTER"},
+    "QEM-R6QKBDHLY7I7PVVEKIGTZFMZZT": {
+      "from_revision": 3,
+      "to_revision": 4,
+      "from_state": "IN_PROGRESS",
+      "to_state": "COMPLETE"
+    }
+  },
+  "capability_counts": {
+    "RESTORED": 15,
+    "IMPROVED": 7,
+    "PRESERVED": 4,
+    "REPLACED": 1,
+    "INTENTIONALLY_RETIRED": 1,
+    "BLOCKED": 0,
+    "STILL_MISSING": 0
+  },
+  "independent_quests_preserved": {
+    "QUEST-FOUND-SILVERLIGHT-R01": "IN_PROGRESS",
+    "QUEST-PROMETHEUS-FIRE-20260701": "IN_PROGRESS",
+    "QUEST-NOTUMS-WATCH-20260708": "READY_FOR_JAYSON_EXECUTION_PACKAGE",
+    "QUEST-PRIME-CONTINUITY-PROOF-R01": "READY_FOR_CAMPAIGN_1_PREVIEW"
+  },
+  "forbidden_actions": {
+    "ready": false,
+    "merge": false,
+    "generated_files": false,
+    "cleanup": false,
+    "branch_deletion": false,
+    "infrastructure": false,
+    "automation": false,
+    "account_action": false,
+    "protected_evidence_embedding": false
+  }
+}
