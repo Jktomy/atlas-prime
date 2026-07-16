@@ -1,0 +1,141 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c08-cap027-final-capability-reconciliation.v1",
+  "mission_id": "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01",
+  "authority": "CANONICAL_AUTHORED_CAPABILITY_RECONCILIATION",
+  "transaction_base_sha": "887c562f40c1ae6756054b322a08b113f6ce60ca",
+  "result": "CAP027_END_TO_END_ACCEPTANCE_LAYER_RECONCILED",
+  "prerequisite_generated_current_state": {
+    "aj12_source_pull_request": 209,
+    "aj12_source_head_sha": "d6c25a015672e877e7c378197fa2f2d792caed12",
+    "aj12_source_merge_sha": "52bd5fb2d1c452d5da93dcc52efd3d1a110de5fb",
+    "publisher_run": 29457577094,
+    "generated_pull_request": 210,
+    "generated_head_sha": "cd4b2710071f4cd650e94282f2e0501c57bfdff7",
+    "required_validation_run": 29457663498,
+    "required_validation_jobs": {
+      "ubuntu": {
+        "job_id": 87500973978,
+        "name": "validate (ubuntu-latest)",
+        "conclusion": "success"
+      },
+      "windows": {
+        "job_id": 87500974005,
+        "name": "validate (windows-latest)",
+        "conclusion": "success"
+      }
+    },
+    "generated_merge_sha": "887c562f40c1ae6756054b322a08b113f6ce60ca",
+    "source_fingerprint": "sha256:e2715ef39fad7cd8e879a2d7a5211540a4bf1e8ae77d4881a7cc5c9a5fa2f452",
+    "result": "CURRENT"
+  },
+  "accepted_journey_bindings": {
+    "AJ-03": {
+      "source": "proof/repairing-prime/rp-c01-m07-non-owner-acceptance-r01.json",
+      "record_id": "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05",
+      "workflow_run": 29421543076,
+      "error_code": "OWNER_IDENTITY_REJECTED",
+      "stage": "PRE_MUTATION_REJECTION",
+      "thread_engine_invoked": false,
+      "mutation_occurred": false,
+      "temporary_access_removed": true,
+      "state": "PROVEN"
+    },
+    "AJ-11": {
+      "source": "proof/repairing-prime/rp-c08-aj11-clean-clone-acceptance-r08.json",
+      "proof_mission": "RP-C08-AJ11-FINAL-MAIN-CLEAN-CLONE-PROOF-R02",
+      "exact_main_sha": "af97c00df41be8943ba5d4c942a8ecc2c5aff822",
+      "receipt_self_sha256": "5907e446bee11a013e8fa5202e1f712af8e922ea5b72621ae129b936d5ec9b45",
+      "validation_commands_passed": 13,
+      "generated_state": "CURRENT",
+      "normal_atlas_codex_dependency": false,
+      "detached_audit": "GREEN",
+      "state": "PROVEN"
+    },
+    "AJ-12": {
+      "source": "proof/repairing-prime/rp-c08-aj12-merged-main-validation-acceptance-r01.json",
+      "exact_merged_main_sha": "043648a85cf581d7805355a71cc819fdb83e738b",
+      "workflow_run": 29455372822,
+      "ubuntu_job": 87487269033,
+      "windows_job": 87487269036,
+      "all_substantive_stages_passed_on_both_platforms": true,
+      "permissions": {
+        "contents": "read"
+      },
+      "repository_mutation": false,
+      "detached_readback": "GREEN",
+      "state": "PROVEN"
+    }
+  },
+  "complete_acceptance_layer": {
+    "journey_ids": [
+      "AJ-01",
+      "AJ-02",
+      "AJ-03",
+      "AJ-04",
+      "AJ-05",
+      "AJ-06",
+      "AJ-07",
+      "AJ-08",
+      "AJ-09",
+      "AJ-10",
+      "AJ-11",
+      "AJ-12"
+    ],
+    "all_journeys_proven": true,
+    "historical_records_rewritten": false,
+    "generated_reports_used_as_authority": false,
+    "local_only_evidence_used_as_promotion": false
+  },
+  "transitions": {
+    "CAP-027": {
+      "from": "STILL_MISSING/MISSING",
+      "to": "RESTORED/ACTIVE"
+    }
+  },
+  "capability_counts": {
+    "PRESERVED": 4,
+    "IMPROVED": 7,
+    "RESTORED": 15,
+    "REPLACED": 1,
+    "INTENTIONALLY_RETIRED": 1,
+    "BLOCKED": 0,
+    "STILL_MISSING": 0
+  },
+  "campaign_state": {
+    "RP-C08": "IN_PROGRESS",
+    "repairing_prime": "IN_PROGRESS"
+  },
+  "remaining_open": [
+    "FINAL_GENERATED_CURRENT_STATE",
+    "WHOLE_QUEST_STRIKEFORCE",
+    "QUEST_BOARD_CONTINUITY_CLOSEOUT",
+    "PHOENIX_RECOVERY",
+    "RESTART_SAFE_SUNSET",
+    "RP-C08",
+    "QUEST-REPAIRING-PRIME-R01"
+  ],
+  "forbidden_promotions": {
+    "RP-C08_COMPLETE": false,
+    "QUEST_REPAIRING_PRIME_COMPLETE": false,
+    "automatic_ready": false,
+    "automatic_merge": false,
+    "direct_main_write": false,
+    "force_push": false,
+    "cleanup": false,
+    "standing_authority": false
+  },
+  "protected_data": {
+    "classification": "PUBLIC_CLEAN",
+    "protected_values": [],
+    "raw_credentials_committed": false,
+    "raw_private_runtime_values_committed": false
+  },
+  "review_boundary": {
+    "exact_head_ubuntu_windows_validation_required": true,
+    "fresh_detached_review_required": true,
+    "separate_ready_authorization_required": true,
+    "separate_merge_authorization_required": true,
+    "generated_current_readback_required_after_merge": true
+  },
+  "next_gate": "MERGE_THEN_GENERATED_CURRENT_STATE_THEN_WHOLE_QUEST_STRIKEFORCE"
+}
