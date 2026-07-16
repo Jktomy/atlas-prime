@@ -47,33 +47,22 @@ class PrimeProgramTests(unittest.TestCase):
         self.assertEqual(board["state"], "CANONICAL_ACTIVE")
         self.assertEqual(next(item for item in board["entries"] if item["quest_id"] == "PRIME-REBORN-QUEST-R01")["state"], "COMPLETE")
 
-    def test_repairing_prime_is_admitted_without_changing_independent_quests(self) -> None:
+    def test_repairing_prime_is_complete_without_changing_independent_quests(self) -> None:
         board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
         repairing_prime = [
             item
             for item in board["entries"]
             if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01"
         ]
-        self.assertEqual(
-            repairing_prime,
-            [
-                {
-                    "next_gate": "Restart-safe Sunset, then final Quest closeout",
-                    "owner": "Codex / Source Governance",
-                    "quest_id": "QUEST-REPAIRING-PRIME-R01",
-                    "readiness_basis": (
-                        "AJ-01 through AJ-12 are PROVEN; CAP-027 is RESTORED/ACTIVE; all 28 capability "
-                        "dispositions are reconciled with 15 RESTORED and 0 STILL_MISSING. Final generated-current "
-                        "state is accepted through PR #218 at canonical main "
-                        "797fb2a1add829ccc304086a56f6d223d130d90d. The final whole-Quest Strikeforce is GREEN. "
-                        "Final Phoenix recovery is PROVEN from the exact-main Oathbringer mission and GREEN sanitized "
-                        "audit envelope. RP-C08 remains IN_PROGRESS for restart-safe Sunset and final completion."
-                    ),
-                    "source": "quests/repairing-prime.md",
-                    "state": "IN_PROGRESS",
-                }
-            ],
-        )
+        self.assertEqual(len(repairing_prime), 1)
+        repairing = repairing_prime[0]
+        self.assertEqual(repairing["state"], "COMPLETE")
+        self.assertEqual(repairing["next_gate"], "CLOSED")
+        self.assertEqual(repairing["owner"], "Codex / Source Governance")
+        self.assertEqual(repairing["source"], "quests/repairing-prime.md")
+        self.assertIn("RP-C01 through RP-C08 are COMPLETE", repairing["completion_basis"])
+        self.assertIn("PR #224", repairing["completion_basis"])
+
         repairing_source = (ROOT / "quests/repairing-prime.md").read_text(encoding="utf-8")
         conservation = (ROOT / "governance/deterministic-conservation-contract.md").read_text(encoding="utf-8")
         for mission in (f"RP-C06-M{index:02d}" for index in range(1, 8)):
@@ -82,37 +71,40 @@ class PrimeProgramTests(unittest.TestCase):
         self.assertIn("0 STILL_MISSING", repairing_source)
         self.assertIn("FINAL WHOLE-QUEST STRIKEFORCE: GREEN", repairing_source)
         self.assertIn("PHOENIX RECOVERY: PROVEN / ACCEPTED", repairing_source)
-        self.assertIn("NEXT GATE: RESTART-SAFE SUNSET", repairing_source)
+        self.assertIn("RP-C08: COMPLETE", repairing_source)
+        self.assertIn("Repairing Prime: COMPLETE", repairing_source)
+        self.assertIn("NEXT GATE: CLOSED", repairing_source)
         self.assertIn("Former G4-E means only the construction layer", conservation)
         self.assertIn("Former G4-F means only the later live", conservation)
         self.assertIn("invokes only the singular Thread Engine", conservation)
+
         independent = {
             item["quest_id"]: (item["source"], item["state"], item["next_gate"])
             for item in board["entries"]
             if item["quest_id"] != "QUEST-REPAIRING-PRIME-R01"
         }
         expected_preserved = {
-                "PRIME-REBORN-QUEST-R01": (
-                    "quests/prime-reborn.md",
-                    "COMPLETE",
-                    "CLOSED",
-                ),
-                "QUEST-FOUND-SILVERLIGHT-R01": (
-                    "quests/found-silverlight.md",
-                    "IN_PROGRESS",
-                    "FS-C01-M04 — Prove the Light",
-                ),
-                "QUEST-PROMETHEUS-FIRE-20260701": (
-                    "quests/prometheus-fire.md",
-                    "IN_PROGRESS",
-                    "PF-C01-M02 Preview — Preserve the Old Flame",
-                ),
-                "QUEST-NOTUMS-WATCH-20260708": (
-                    "quests/notums-watch.md",
-                    "READY_FOR_JAYSON_EXECUTION_PACKAGE",
-                    "NW-C01 readiness package and Jayson-side proof",
-                ),
-            }
+            "PRIME-REBORN-QUEST-R01": (
+                "quests/prime-reborn.md",
+                "COMPLETE",
+                "CLOSED",
+            ),
+            "QUEST-FOUND-SILVERLIGHT-R01": (
+                "quests/found-silverlight.md",
+                "IN_PROGRESS",
+                "FS-C01-M04 — Prove the Light",
+            ),
+            "QUEST-PROMETHEUS-FIRE-20260701": (
+                "quests/prometheus-fire.md",
+                "IN_PROGRESS",
+                "PF-C01-M02 Preview — Preserve the Old Flame",
+            ),
+            "QUEST-NOTUMS-WATCH-20260708": (
+                "quests/notums-watch.md",
+                "READY_FOR_JAYSON_EXECUTION_PACKAGE",
+                "NW-C01 readiness package and Jayson-side proof",
+            ),
+        }
         self.assertEqual(
             {identity: independent[identity] for identity in expected_preserved},
             expected_preserved,
@@ -192,6 +184,8 @@ class PrimeProgramTests(unittest.TestCase):
             "proof/repairing-prime/rp-c08-final-whole-quest-strikeforce-reconciliation-r01.md",
             "proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.md",
             "proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.json",
+            "proof/repairing-prime/rp-c08-final-repairing-prime-completion-r01.md",
+            "proof/repairing-prime/rp-c08-final-repairing-prime-completion-r01.json",
             "tools/atlas-sword/engine/oathbringer_contract.py",
             "tools/build_index.py",
         )
