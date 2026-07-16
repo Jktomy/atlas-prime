@@ -58,16 +58,15 @@ class PrimeProgramTests(unittest.TestCase):
             repairing_prime,
             [
                 {
-                    "next_gate": "Generated-current readback after AJ-12 acceptance, then CAP-027 and RP-C08 final capability reconciliation",
+                    "next_gate": "Final generated-current proof, then whole-Quest Strikeforce and closeout",
                     "owner": "Codex / Source Governance",
                     "quest_id": "QUEST-REPAIRING-PRIME-R01",
                     "readiness_basis": (
-                        "AJ-01 through AJ-12 are PROVEN. AJ-12 is accepted from owner-authorized read-only "
-                        "workflow run 29455372822 at exact merged main "
-                        "043648a85cf581d7805355a71cc819fdb83e738b: Ubuntu job 87487269033 and Windows "
-                        "job 87487269036 completed successfully with the complete Prime matrix and no repository "
-                        "mutation. CAP-027 remains the sole STILL_MISSING capability pending separate final "
-                        "capability reconciliation; RP-C08, Phoenix recovery, and Quest closeout remain open."
+                        "AJ-01 through AJ-12 are PROVEN and CAP-027 is RESTORED/ACTIVE by the separately "
+                        "authorized final capability reconciliation after generated-current PR #210. All 28 "
+                        "capability dispositions are reconciled with 15 RESTORED and 0 STILL_MISSING. RP-C08 "
+                        "remains open for final generated-current proof, whole-Quest Strikeforce, Quest Board and "
+                        "continuity closeout, Phoenix recovery, and restart-safe Sunset."
                     ),
                     "source": "quests/repairing-prime.md",
                     "state": "IN_PROGRESS",
@@ -78,6 +77,8 @@ class PrimeProgramTests(unittest.TestCase):
         conservation = (ROOT / "governance/deterministic-conservation-contract.md").read_text(encoding="utf-8")
         for mission in (f"RP-C06-M{index:02d}" for index in range(1, 8)):
             self.assertIn(mission, repairing_source)
+        self.assertIn("CAP-027: RESTORED / ACTIVE", repairing_source)
+        self.assertIn("0 STILL_MISSING", repairing_source)
         self.assertIn("Former G4-E means only the construction layer", conservation)
         self.assertIn("Former G4-F means only the later live", conservation)
         self.assertIn("invokes only the singular Thread Engine", conservation)
