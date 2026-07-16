@@ -24,11 +24,11 @@
   "capability_disposition_counts": {
     "PRESERVED": 4,
     "IMPROVED": 7,
-    "RESTORED": 14,
+    "RESTORED": 15,
     "REPLACED": 1,
     "INTENTIONALLY_RETIRED": 1,
     "BLOCKED": 0,
-    "STILL_MISSING": 1
+    "STILL_MISSING": 0
   },
   "capabilities": [
     {
@@ -347,13 +347,13 @@
       "id": "CAP-027",
       "domain": "Migration assurance",
       "capability": "End-to-end user-journey acceptance tests",
-      "audit_status": "MISSING_ACCEPTANCE_LAYER",
-      "audit_severity": "CRITICAL",
+      "audit_status": "RESTORED_COMPLETE_ACCEPTANCE_LAYER",
+      "audit_severity": "GREEN",
       "path_disposition": "NOT_A_PATH_CLAIM",
-      "capability_disposition": "STILL_MISSING",
-      "activation_state": "MISSING",
-      "current_state": "AJ-03, AJ-11, and AJ-12 are PROVEN from accepted exact evidence. CAP-027 remains STILL_MISSING until a separately authorized final capability reconciliation binds the complete end-to-end acceptance layer without self-promotion.",
-      "required_proof": "A separately authorized CAP-027 final capability reconciliation using the accepted AJ-03, AJ-11, and AJ-12 evidence, followed by exact-head validation, detached review, merge, and canonical readback."
+      "capability_disposition": "RESTORED",
+      "activation_state": "ACTIVE",
+      "current_state": "AJ-01 through AJ-12 are PROVEN from accepted exact evidence, and the separately authorized CAP-027 final reconciliation binds the complete end-to-end acceptance layer without self-promoting RP-C08 or Repairing Prime.",
+      "required_proof": "Accepted AJ-01 through AJ-12 evidence plus proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.md, exact-head validation, detached review, merge, and canonical readback."
     },
     {
       "id": "CAP-028",
