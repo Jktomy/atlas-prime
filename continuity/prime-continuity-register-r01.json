@@ -2,9 +2,9 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 31,
-  "source_base_sha": "797fb2a1add829ccc304086a56f6d223d130d90d",
-  "quest_board_sha256": "db0d3a2d9c3587a1cc411148e0fb356b0235340d086765f30ad74b401dad48d0",
+  "register_revision": 32,
+  "source_base_sha": "40e58dcf33bae68f8c819c2f65c6474f52381718",
+  "quest_board_sha256": "84a1a16e73c528e04ebecae05812d3ff9172901289227bbe82d12bddda9c1d2f",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -39,27 +39,10 @@
     "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01",
     "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01",
     "RP-C08-FINAL-WHOLE-QUEST-STRIKEFORCE-RECONCILIATION-R01",
-    "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01"
+    "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01",
+    "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R01"
   ],
   "entries": [
-    {
-      "continuity_id": "CONT-REPAIRING-PRIME-R01",
-      "quest_id": "QUEST-REPAIRING-PRIME-R01",
-      "quest_source": "quests/repairing-prime.md",
-      "quest_source_sha256": "c2b21ec91a467cf1ef326089269ccfc809d9c5da7aa023e787590748541f6e34",
-      "quest_state": "IN_PROGRESS",
-      "campaign_id": "RP-C08",
-      "mission_id": null,
-      "gate_id": "REPAIRING_PRIME_COMPLETE",
-      "current_position": "The capability and acceptance layers are complete. Final generated-current state is accepted through PR #218 at exact canonical main 797fb2a1add829ccc304086a56f6d223d130d90d. The final whole-Quest Strikeforce is GREEN. Final Phoenix recovery is PROVEN from the exact-main Oathbringer mission and GREEN sanitized audit envelope. RP-C08 and Repairing Prime remain IN_PROGRESS for restart-safe Sunset and a separately authorized completion transaction.",
-      "blockers": [
-        "Restart-safe Sunset and final Quest completion remain pending after accepted Phoenix recovery."
-      ],
-      "next_action": "Prepare the separately authorized restart-safe Sunset without promoting RP-C08 or Repairing Prime to COMPLETE.",
-      "next_approval": "Jayson must separately authorize restart-safe Sunset and the later Quest completion transaction.",
-      "revision": 26,
-      "last_event_id": "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01"
-    },
     {
       "continuity_id": "CONT-FOUND-SILVERLIGHT-R01",
       "quest_id": "QUEST-FOUND-SILVERLIGHT-R01",
