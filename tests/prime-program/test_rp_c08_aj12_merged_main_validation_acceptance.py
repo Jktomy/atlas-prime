@@ -17,6 +17,7 @@ QUEST_PATH = ROOT / "quests/repairing-prime.md"
 BOARD_PATH = ROOT / "quest-board/quest-board-v1.json"
 CONTINUITY_PATH = ROOT / "continuity/prime-continuity-register-r01.json"
 WORKFLOW_PATH = ROOT / ".github/workflows/prime-readonly-validation.yml"
+FINAL_PATH = ROOT / "proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.json"
 
 
 def load_json(path: Path) -> dict:
@@ -31,6 +32,7 @@ class Aj12MergedMainValidationAcceptanceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.proof = load_json(PROOF_PATH)
+        cls.final = load_json(FINAL_PATH)
         cls.register = load_json(REGISTER_PATH)
         cls.board = load_json(BOARD_PATH)
         cls.continuity = load_json(CONTINUITY_PATH)
@@ -86,7 +88,7 @@ class Aj12MergedMainValidationAcceptanceTests(unittest.TestCase):
         for stage in evidence["substantive_stages"]:
             self.assertIn(stage, workflow)
 
-    def test_only_aj12_transitions_and_cap027_remains_missing(self) -> None:
+    def test_only_aj12_transitioned_in_its_historical_record(self) -> None:
         self.assertEqual(
             self.proof["transitions"],
             {"AJ-12": {"from": "UNPROVEN", "to": "PROVEN"}},
@@ -100,19 +102,30 @@ class Aj12MergedMainValidationAcceptanceTests(unittest.TestCase):
         )
         self.assertEqual(
             self.proof["capability_counts"],
-            self.register["capability_disposition_counts"],
+            {
+                "PRESERVED": 4,
+                "IMPROVED": 7,
+                "RESTORED": 14,
+                "REPLACED": 1,
+                "INTENTIONALLY_RETIRED": 1,
+                "BLOCKED": 0,
+                "STILL_MISSING": 1,
+            },
         )
+        self.assertEqual(self.final["transitions"]["CAP-027"]["to"], "RESTORED/ACTIVE")
         cap027 = next(item for item in self.register["capabilities"] if item["id"] == "CAP-027")
-        self.assertEqual(cap027["capability_disposition"], "STILL_MISSING")
-        self.assertEqual(cap027["activation_state"], "MISSING")
-        missing = [
-            item["id"]
-            for item in self.register["capabilities"]
-            if item["capability_disposition"] == "STILL_MISSING"
-        ]
-        self.assertEqual(missing, ["CAP-027"])
+        self.assertEqual(cap027["capability_disposition"], "RESTORED")
+        self.assertEqual(cap027["activation_state"], "ACTIVE")
+        self.assertEqual(
+            [
+                item["id"]
+                for item in self.register["capabilities"]
+                if item["capability_disposition"] == "STILL_MISSING"
+            ],
+            [],
+        )
 
-    def test_canonical_surfaces_advance_aj12_without_quest_completion(self) -> None:
+    def test_canonical_surfaces_preserve_aj12_and_advance_cap027_without_quest_completion(self) -> None:
         acceptance = ACCEPTANCE_PATH.read_text(encoding="utf-8")
         route = ROUTE_PATH.read_text(encoding="utf-8")
         quest = QUEST_PATH.read_text(encoding="utf-8")
@@ -121,7 +134,7 @@ class Aj12MergedMainValidationAcceptanceTests(unittest.TestCase):
         self.assertIn("AJ-11 and AJ-12 are now PROVEN", route)
         self.assertIn("AJ-01 through AJ-12 are PROVEN", quest)
         self.assertIn("AJ-12: PROVEN", quest)
-        self.assertIn("CAP-027: STILL_MISSING", quest)
+        self.assertIn("CAP-027: RESTORED / ACTIVE", quest)
         self.assertIn("RP-C08: IN_PROGRESS", quest)
         self.assertIn("Repairing Prime: IN_PROGRESS", quest)
         repairing_board = next(
@@ -129,29 +142,30 @@ class Aj12MergedMainValidationAcceptanceTests(unittest.TestCase):
             if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01"
         )
         self.assertEqual(repairing_board["state"], "IN_PROGRESS")
-        self.assertIn("CAP-027", repairing_board["next_gate"])
+        self.assertIn("whole-Quest Strikeforce", repairing_board["next_gate"])
 
-    def test_continuity_binds_exact_event_and_source_digests(self) -> None:
-        event = "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01"
-        self.assertEqual(self.continuity["register_revision"], 28)
+    def test_continuity_preserves_aj12_event_and_binds_later_cap027_event(self) -> None:
+        aj12_event = "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01"
+        final_event = "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01"
+        self.assertEqual(self.continuity["register_revision"], 29)
         self.assertEqual(
             self.continuity["source_base_sha"],
-            "043648a85cf581d7805355a71cc819fdb83e738b",
+            "887c562f40c1ae6756054b322a08b113f6ce60ca",
         )
-        self.assertEqual(self.continuity["event_ids"].count(event), 1)
+        self.assertEqual(self.continuity["event_ids"].count(aj12_event), 1)
+        self.assertEqual(self.continuity["event_ids"].count(final_event), 1)
         repairing = next(
             item for item in self.continuity["entries"]
             if item["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
         )
-        self.assertEqual(repairing["revision"], 23)
-        self.assertEqual(repairing["last_event_id"], event)
+        self.assertEqual(repairing["revision"], 24)
+        self.assertEqual(repairing["last_event_id"], final_event)
         self.assertEqual(repairing["quest_state"], "IN_PROGRESS")
         self.assertEqual(repairing["quest_source_sha256"], file_sha256(QUEST_PATH))
         self.assertEqual(self.continuity["quest_board_sha256"], continuity_sha256(self.board))
-        self.assertIn("CAP-027", repairing["next_action"])
-        self.assertTrue(any("CAP-027" in blocker for blocker in repairing["blockers"]))
+        self.assertIn("whole-Quest Strikeforce", repairing["next_action"])
 
-    def test_review_and_permanence_boundaries_remain_separate(self) -> None:
+    def test_historical_review_and_permanence_boundaries_remain_exact(self) -> None:
         boundary = self.proof["review_boundary"]
         self.assertTrue(boundary["exact_head_ci_required"])
         self.assertTrue(boundary["fresh_detached_review_required"])
