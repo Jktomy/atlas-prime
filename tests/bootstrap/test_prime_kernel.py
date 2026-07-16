@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import json
-import subprocess
-import sys
 from pathlib import Path
+
+from tools.prime_continuity.engine import validate_board, validate_register
 
 ROOT = Path(__file__).resolve().parents[2]
 APPROVED_GENERATED = {
@@ -87,27 +87,9 @@ for path in ROOT.rglob("*"):
         raise SystemExit(f"Runtime byproduct found: {path.relative_to(ROOT)}")
 
 # Temporary draft-branch diagnostic. Removed byte-for-byte before final audit.
-diagnostic = subprocess.run(
-    [
-        sys.executable,
-        "-m",
-        "unittest",
-        "discover",
-        "-s",
-        "tests/prime-program",
-        "-p",
-        "test_prime_continuity.py",
-        "-f",
-    ],
-    cwd=ROOT,
-    capture_output=True,
-    text=True,
-    check=False,
-)
-if diagnostic.returncode:
-    combined = (diagnostic.stdout + "\n" + diagnostic.stderr).splitlines()
-    print("CAP027_DIAGNOSTIC_PATTERN=test_prime_continuity.py")
-    print("\n".join(combined[-40:]))
-    raise SystemExit("CAP-027 continuity diagnostic failed")
+board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
+register = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
+validate_board(board)
+validate_register(register, board)
 
 print("Prime kernel static checks: PASS")
