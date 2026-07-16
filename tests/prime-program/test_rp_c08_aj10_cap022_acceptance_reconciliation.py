@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 PROOF_PATH = ROOT / "proof/repairing-prime/rp-c08-aj10-cap022-acceptance-reconciliation-r04.json"
 LIVE_PATH = ROOT / "proof/repairing-prime/rp-c08-aj10-cap022-live-acceptance-r03.json"
 TRUTH_PATH = ROOT / "proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.json"
+FINAL_PATH = ROOT / "proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.json"
 
 
 def contains_key(value, key: str) -> bool:
@@ -29,6 +30,7 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         cls.proof = json.loads(PROOF_PATH.read_text(encoding="utf-8"))
         cls.live = json.loads(LIVE_PATH.read_text(encoding="utf-8"))
         cls.truth = json.loads(TRUTH_PATH.read_text(encoding="utf-8"))
+        cls.final = json.loads(FINAL_PATH.read_text(encoding="utf-8"))
         cls.register = json.loads(
             (ROOT / "governance/capability-parity-register.json").read_text(encoding="utf-8")
         )
@@ -109,7 +111,7 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         self.assertNotIn("atlas.lifecycle.quest-emberline", schemas)
         self.assertFalse(contains_key(records, "quest_id"))
 
-    def test_only_authorized_dispositions_transition(self) -> None:
+    def test_only_authorized_dispositions_transition_in_historical_record(self) -> None:
         self.assertEqual(set(self.proof["transitions"]), {"AJ-10", "CAP-022", "RP-C05"})
         self.assertEqual(self.proof["transitions"]["AJ-10"], {"from": "UNPROVEN", "to": "PROVEN"})
         self.assertEqual(
@@ -123,7 +125,8 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
             for record in self.register["capabilities"]
             if record["capability_disposition"] == "STILL_MISSING"
         ]
-        self.assertEqual(missing, ["CAP-027"])
+        self.assertEqual(missing, [])
+        self.assertEqual(self.final["transitions"]["CAP-027"]["to"], "RESTORED/ACTIVE")
 
     def test_historical_pre_acceptance_records_remain_truthful(self) -> None:
         for artifact in self.proof["historical_evidence"]["immutable_artifacts"]:
@@ -137,7 +140,7 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         self.assertEqual(self.truth["current_dispositions"]["RP-C05"], "PARTIAL")
         self.assertTrue(self.proof["historical_evidence"]["historical_records_remain_immutable"])
 
-    def test_continuity_preserves_prior_gates_and_advances_through_aj12(self) -> None:
+    def test_continuity_preserves_prior_gates_and_advances_through_cap027(self) -> None:
         repairing = next(
             entry
             for entry in self.continuity["entries"]
@@ -148,38 +151,28 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         m07_event = "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"
         aj11_event = "RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08"
         aj12_event = "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01"
-        self.assertEqual(self.continuity["register_revision"], 28)
+        cap027_event = "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01"
+        self.assertEqual(self.continuity["register_revision"], 29)
         self.assertEqual(
             self.continuity["source_base_sha"],
-            "043648a85cf581d7805355a71cc819fdb83e738b",
+            "887c562f40c1ae6756054b322a08b113f6ce60ca",
         )
-        for event in (gate_three_event, gate_four_event, m07_event, aj11_event, aj12_event):
+        for event in (gate_three_event, gate_four_event, m07_event, aj11_event, aj12_event, cap027_event):
             self.assertEqual(self.continuity["event_ids"].count(event), 1)
-        self.assertLess(
-            self.continuity["event_ids"].index(gate_three_event),
-            self.continuity["event_ids"].index(gate_four_event),
+        ordered = [gate_three_event, gate_four_event, m07_event, aj11_event, aj12_event, cap027_event]
+        self.assertEqual(
+            [self.continuity["event_ids"].index(event) for event in ordered],
+            sorted(self.continuity["event_ids"].index(event) for event in ordered),
         )
-        self.assertLess(
-            self.continuity["event_ids"].index(gate_four_event),
-            self.continuity["event_ids"].index(m07_event),
-        )
-        self.assertLess(
-            self.continuity["event_ids"].index(m07_event),
-            self.continuity["event_ids"].index(aj11_event),
-        )
-        self.assertLess(
-            self.continuity["event_ids"].index(aj11_event),
-            self.continuity["event_ids"].index(aj12_event),
-        )
-        self.assertEqual(repairing["last_event_id"], aj12_event)
-        self.assertEqual(repairing["revision"], 23)
+        self.assertEqual(repairing["last_event_id"], cap027_event)
+        self.assertEqual(repairing["revision"], 24)
         self.assertIsNone(repairing["mission_id"])
         self.assertEqual(
             repairing["quest_source_sha256"],
             hashlib.sha256((ROOT / "quests/repairing-prime.md").read_bytes()).hexdigest(),
         )
         self.assertEqual(repairing["quest_state"], "IN_PROGRESS")
-        self.assertIn("CAP-027", repairing["next_action"])
+        self.assertIn("whole-Quest Strikeforce", repairing["next_action"])
         self.assertNotIn("R04 mandatory stop", repairing["next_action"])
         self.assertFalse(any("AJ-10 requires" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("CAP-022 remains" in blocker for blocker in repairing["blockers"]))
@@ -187,7 +180,7 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         self.assertFalse(any("genuine non-owner" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("AJ-11 requires" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("AJ-12 requires complete" in blocker for blocker in repairing["blockers"]))
-        self.assertTrue(any("CAP-027" in blocker for blocker in repairing["blockers"]))
+        self.assertTrue(any("CAP-027 final capability reconciliation" in blocker for blocker in repairing["blockers"]))
 
 
 if __name__ == "__main__":
