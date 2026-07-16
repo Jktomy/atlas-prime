@@ -96,7 +96,7 @@ diagnostic = subprocess.run(
         "-s",
         "tests/prime-program",
         "-p",
-        "test_capability_parity.py",
+        "test_prime_continuity.py",
         "-f",
     ],
     cwd=ROOT,
@@ -106,8 +106,8 @@ diagnostic = subprocess.run(
 )
 if diagnostic.returncode:
     combined = (diagnostic.stdout + "\n" + diagnostic.stderr).splitlines()
-    print("CAP027_DIAGNOSTIC_PATTERN=test_capability_parity.py")
+    print("CAP027_DIAGNOSTIC_PATTERN=test_prime_continuity.py")
     print("\n".join(combined[-40:]))
-    raise SystemExit("CAP-027 capability parity diagnostic failed")
+    raise SystemExit("CAP-027 continuity diagnostic failed")
 
 print("Prime kernel static checks: PASS")
