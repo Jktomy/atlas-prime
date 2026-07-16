@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 from pathlib import Path
-
-from tools.prime_continuity.engine import validate_board
 
 ROOT = Path(__file__).resolve().parents[2]
 APPROVED_GENERATED = {
@@ -87,7 +87,24 @@ for path in ROOT.rglob("*"):
         raise SystemExit(f"Runtime byproduct found: {path.relative_to(ROOT)}")
 
 # Temporary draft-branch diagnostic. Removed byte-for-byte before final audit.
-board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
+code = """
+import json
+from pathlib import Path
+from tools.prime_continuity.engine import validate_board
+root = Path.cwd()
+board = json.loads((root / 'quest-board/quest-board-v1.json').read_text(encoding='utf-8'))
 validate_board(board)
+"""
+diagnostic = subprocess.run(
+    [sys.executable, "-c", code],
+    cwd=ROOT,
+    capture_output=True,
+    text=True,
+    check=False,
+)
+if diagnostic.returncode:
+    print(diagnostic.stdout)
+    print(diagnostic.stderr)
+    raise SystemExit("CAP-027 Quest Board diagnostic failed")
 
 print("Prime kernel static checks: PASS")
