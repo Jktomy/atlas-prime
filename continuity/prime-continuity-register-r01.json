@@ -2,9 +2,9 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 29,
-  "source_base_sha": "887c562f40c1ae6756054b322a08b113f6ce60ca",
-  "quest_board_sha256": "17731cdc2855dbab83ebb7f2958da6c17ddc94158523359371f30e32f929f1c3",
+  "register_revision": 30,
+  "source_base_sha": "3fbcc5fdb95c40665cbd6ee3fff752b149a81cb9",
+  "quest_board_sha256": "3ab253c61fb486647c8f308275e3b704366bb7c5ec127f7e0d05e7f37edc9521",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -37,27 +37,28 @@
     "RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05",
     "RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08",
     "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01",
-    "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01"
+    "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01",
+    "RP-C08-FINAL-WHOLE-QUEST-STRIKEFORCE-RECONCILIATION-R01"
   ],
   "entries": [
     {
       "continuity_id": "CONT-REPAIRING-PRIME-R01",
       "quest_id": "QUEST-REPAIRING-PRIME-R01",
       "quest_source": "quests/repairing-prime.md",
-      "quest_source_sha256": "b845f38dd4f8ba70ccafa6787a0edfc415a7b7ec20f25565798ca6d076112f71",
+      "quest_source_sha256": "5d7bfc6cb141131892bb6e98580b689b1e7c54e7023c22adcf3b9b4f421c59cd",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "RP-C08",
       "mission_id": null,
       "gate_id": "REPAIRING_PRIME_COMPLETE",
-      "current_position": "RP-C01, RP-C05, RP-C06, and RP-C07 are COMPLETE. AJ-01 through AJ-12 are PROVEN. CAP-027 is RESTORED/ACTIVE and all 28 capability dispositions are reconciled with 15 RESTORED and 0 STILL_MISSING. RP-C08 and Repairing Prime remain IN_PROGRESS for final generated-current proof, whole-Quest Strikeforce, Quest Board and continuity closeout, Phoenix recovery, and restart-safe Sunset.",
+      "current_position": "The capability and acceptance layers are complete. Final generated-current state is accepted through generated-only PR #216 and exact canonical readback at main 3fbcc5fdb95c40665cbd6ee3fff752b149a81cb9. The final whole-Quest Strikeforce is GREEN at that exact main. RP-C08 and Repairing Prime remain IN_PROGRESS for final Phoenix recovery, restart-safe Sunset, and the separately authorized completion transaction.",
       "blockers": [
-        "CAP-027 reconciliation requires exact-head Ubuntu/Windows validation, detached review, separate ready and merge authorization, then generated-current proof through the normal generated-only route or a truthful zero-delta result.",
-        "RP-C08 still requires final generated-current proof, whole-Quest Strikeforce, Quest Board and continuity closeout, Phoenix recovery, and restart-safe Sunset."
+        "Final Phoenix recovery has not yet been proven against the accepted final source state.",
+        "Restart-safe Sunset and final Quest completion remain pending after Phoenix recovery."
       ],
-      "next_action": "After separate permanence for this CAP-027 reconciliation and generated-current readback, prepare the independent whole-Quest Strikeforce without promoting the Quest to COMPLETE.",
-      "next_approval": "Jayson must separately authorize this reconciliation's ready and merge transactions, any generated checkpoint permanence, and the later whole-Quest Strikeforce and closeout gates.",
-      "revision": 24,
-      "last_event_id": "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01"
+      "next_action": "Prepare the separately authorized final Phoenix recovery proof at exact canonical main without promoting RP-C08 or Repairing Prime to COMPLETE.",
+      "next_approval": "Jayson must separately authorize final Phoenix recovery, restart-safe Sunset, and the later Quest completion transaction.",
+      "revision": 25,
+      "last_event_id": "RP-C08-FINAL-WHOLE-QUEST-STRIKEFORCE-RECONCILIATION-R01"
     },
     {
       "continuity_id": "CONT-FOUND-SILVERLIGHT-R01",
