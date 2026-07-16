@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:1f14aa6784fe75a22e30c4804c926e6abfe0155be7a8589d5d72aa7bdc99e028
+Source fingerprint: sha256:bec1e11e85091017abda4a2943cb2cc9805dcd9b8ce7897342f40ae08ece3a95
 Generator format: 2
 Status: Generated support artifact
 
@@ -54,7 +54,7 @@ Status: Generated support artifact
 | `migration/codex-cutover.md` | COMPLETE | REGISTER | missing | CRITICAL |
 | `migration/codex-inheritance-manifest.md` | SHADOW_CONSTRUCTION | REGISTER | missing | CRITICAL |
 | `migration/predecessor-snapshot.md` | PRESERVED | RECEIPT_POINTER | missing | CRITICAL |
-| `migration/rollback-map.md` | SHADOW_CONSTRUCTION | PROTOCOL | missing | CRITICAL |
+| `migration/rollback-map.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `operations/artemis-runtime-and-routing.md` | ACTIVE | RUNBOOK | missing | HIGH |
 | `operations/operation-registry.md` | ACTIVE | REGISTER | missing | HIGH |
 | `operations/protocol-library.md` | ACTIVE | PROTOCOL | missing | HIGH |
