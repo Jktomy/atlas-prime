@@ -125,9 +125,10 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
         self.assertIn("AJ-12: PROVEN", quest)
         self.assertIn("CAP-027: RESTORED / ACTIVE", quest)
         self.assertIn(
-            "AJ-11 and AJ-12 are now PROVEN; CAP-027, RP-C08, and Repairing Prime remain open.",
+            "CAP-027 is proposed RESTORED and ACTIVE by the separately authorized final capability reconciliation",
             route,
         )
+        self.assertIn("RP-C08 and Repairing Prime remain open", route)
 
         cap027 = next(item for item in register["capabilities"] if item["id"] == "CAP-027")
         self.assertEqual(cap027["capability_disposition"], "RESTORED")
