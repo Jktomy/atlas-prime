@@ -49,7 +49,7 @@
       "campaign_id": "RP-C08",
       "mission_id": null,
       "gate_id": "REPAIRING_PRIME_COMPLETE",
-      "current_position": "RP-C01, RP-C05, RP-C06, and RP-C07 are COMPLETE. AJ-01 through AJ-12 are PROVEN. CAP-027 is proposed RESTORED and ACTIVE by the separately authorized final capability reconciliation at exact base 887c562f40c1ae6756054b322a08b113f6ce60ca. All 28 frozen capabilities now have non-missing dispositions: 15 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, and 0 STILL_MISSING. RP-C08 and Repairing Prime remain IN_PROGRESS pending exact-head validation, detached review, permanence, generated-current follow-on, whole-Quest Strikeforce, closeout, Phoenix recovery, and restart-safe Sunset.",
+      "current_position": "RP-C01, RP-C05, RP-C06, and RP-C07 are COMPLETE. AJ-01 through AJ-12 are PROVEN. CAP-027 is proposed RESTORED and ACTIVE. Final counts: 15 RESTORED, 7 IMPROVED, 4 PRESERVED, 1 REPLACED, 1 INTENTIONALLY_RETIRED, 0 BLOCKED, 0 STILL_MISSING. RP-C08 and Repairing Prime remain IN_PROGRESS pending exact-head validation, detached review, permanence, generated-current follow-on, whole-Quest Strikeforce, closeout, Phoenix recovery, and restart-safe Sunset.",
       "blockers": [
         "The CAP-027 final capability reconciliation candidate must pass exact-head Ubuntu and Windows validation, fresh detached review, separate ready authorization, and separate merge authorization.",
         "After source permanence, generated state must become current through the normal generated-only checkpoint or a truthful zero-delta result.",
