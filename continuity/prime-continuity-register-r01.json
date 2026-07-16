@@ -4,7 +4,7 @@
   "register_id": "PRIME-CONTINUITY-R01",
   "register_revision": 29,
   "source_base_sha": "887c562f40c1ae6756054b322a08b113f6ce60ca",
-  "quest_board_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "quest_board_sha256": "17731cdc2855dbab83ebb7f2958da6c17ddc94158523359371f30e32f929f1c3",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -44,7 +44,7 @@
       "continuity_id": "CONT-REPAIRING-PRIME-R01",
       "quest_id": "QUEST-REPAIRING-PRIME-R01",
       "quest_source": "quests/repairing-prime.md",
-      "quest_source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "quest_source_sha256": "b845f38dd4f8ba70ccafa6787a0edfc415a7b7ec20f25565798ca6d076112f71",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "RP-C08",
       "mission_id": null,
