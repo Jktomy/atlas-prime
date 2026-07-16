@@ -90,10 +90,12 @@ for path in ROOT.rglob("*"):
 code = """
 import json
 from pathlib import Path
-from tools.prime_continuity.engine import validate_board
+from tools.prime_continuity.engine import validate_board, validate_register
 root = Path.cwd()
 board = json.loads((root / 'quest-board/quest-board-v1.json').read_text(encoding='utf-8'))
+register = json.loads((root / 'continuity/prime-continuity-register-r01.json').read_text(encoding='utf-8'))
 validate_board(board)
+validate_register(register, board)
 """
 diagnostic = subprocess.run(
     [sys.executable, "-c", code],
@@ -105,6 +107,6 @@ diagnostic = subprocess.run(
 if diagnostic.returncode:
     print(diagnostic.stdout)
     print(diagnostic.stderr)
-    raise SystemExit("CAP-027 Quest Board diagnostic failed")
+    raise SystemExit("CAP-027 continuity binding diagnostic failed")
 
 print("Prime kernel static checks: PASS")
