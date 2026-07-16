@@ -7,7 +7,6 @@ from pathlib import Path
 
 from tools.prime_continuity.engine import sha256 as continuity_sha256
 
-
 ROOT = Path(__file__).resolve().parents[2]
 PROOF_MD = ROOT / "proof" / "repairing-prime" / "rp-c08-phoenix-recovery-acceptance-r01.md"
 PROOF_JSON = ROOT / "proof" / "repairing-prime" / "rp-c08-phoenix-recovery-acceptance-r01.json"
@@ -16,14 +15,11 @@ BOARD = ROOT / "quest-board" / "quest-board-v1.json"
 CONTINUITY = ROOT / "continuity" / "prime-continuity-register-r01.json"
 ACCEPTANCE = ROOT / "governance" / "capability-acceptance-contract.md"
 
-
 def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
-
 def file_sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
-
 
 class PhoenixRecoveryAcceptanceTests(unittest.TestCase):
     @classmethod
@@ -59,18 +55,8 @@ class PhoenixRecoveryAcceptanceTests(unittest.TestCase):
         self.assertEqual(accepted["inherited_worktrees"], [])
         self.assertTrue(accepted["working_tree_clean_before"])
         self.assertTrue(accepted["working_tree_clean_after"])
-        self.assertEqual(accepted["validation"], {
-            "result": "GREEN",
-            "command_count": 13,
-            "pass_count": 13,
-            "all_commands_passed": True,
-        })
-        self.assertEqual(accepted["generated_state"], {
-            "status": "CURRENT",
-            "changed_paths": [],
-            "projection_count": 5,
-            "all_outputs_byte_equal": True,
-        })
+        self.assertEqual(accepted["validation"], {"result": "GREEN", "command_count": 13, "pass_count": 13, "all_commands_passed": True})
+        self.assertEqual(accepted["generated_state"], {"status": "CURRENT", "changed_paths": [], "projection_count": 5, "all_outputs_byte_equal": True})
         self.assertFalse(accepted["normal_atlas_codex_dependency"])
         self.assertEqual(accepted["rollback_classification"]["source_rollback"], "NEW_REVIEWED_PR")
         self.assertEqual(accepted["rollback_classification"]["force_push"], "FORBIDDEN")
@@ -94,74 +80,31 @@ class PhoenixRecoveryAcceptanceTests(unittest.TestCase):
         self.assertFalse(limitation["original_zip_self_contains_stop_boundary_completion"])
         self.assertTrue(limitation["limitation_disclosed_not_rewritten"])
 
-    def test_only_recovery_gate_transitions_and_quest_remains_open(self) -> None:
-        self.assertEqual(
-            self.proof["transitions"],
-            {"PHOENIX_RECOVERY": {"from": "PENDING", "to": "PROVEN/ACCEPTED"}},
-        )
-        self.assertEqual(
-            self.proof["preserved_open"],
-            ["RESTART_SAFE_SUNSET", "RP-C08", "QUEST-REPAIRING-PRIME-R01"],
-        )
+    def test_historical_recovery_transition_remains_exact(self) -> None:
+        self.assertEqual(self.proof["transitions"], {"PHOENIX_RECOVERY": {"from": "PENDING", "to": "PROVEN/ACCEPTED"}})
+        self.assertEqual(self.proof["preserved_open"], ["RESTART_SAFE_SUNSET", "RP-C08", "QUEST-REPAIRING-PRIME-R01"])
         self.assertTrue(all(value is False for value in self.proof["forbidden_promotions"].values()))
-        self.assertEqual(self.proof["capability_counts"], {
-            "PRESERVED": 4,
-            "IMPROVED": 7,
-            "RESTORED": 15,
-            "REPLACED": 1,
-            "INTENTIONALLY_RETIRED": 1,
-            "BLOCKED": 0,
-            "STILL_MISSING": 0,
-        })
+        self.assertEqual(self.proof["capability_counts"], {"PRESERVED": 4, "IMPROVED": 7, "RESTORED": 15, "REPLACED": 1, "INTENTIONALLY_RETIRED": 1, "BLOCKED": 0, "STILL_MISSING": 0})
         self.assertFalse(self.proof["protected_data"]["original_private_evidence_embedded"])
         self.assertFalse(self.proof["protected_data"]["sanitized_envelope_embedded"])
         self.assertEqual(self.proof["next_gate"], "RESTART_SAFE_SUNSET")
 
-    def test_canonical_surfaces_advance_only_to_restart_safe_sunset(self) -> None:
+    def test_current_surfaces_close_after_later_sunset_and_completion(self) -> None:
         quest = QUEST.read_text(encoding="utf-8")
         acceptance = ACCEPTANCE.read_text(encoding="utf-8")
-        repairing_board = next(
-            item for item in self.board["entries"]
-            if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01"
-        )
-        repairing = next(
-            item for item in self.continuity["entries"]
-            if item["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
-        )
+        repairing_board = next(item for item in self.board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         self.assertIn("PHOENIX RECOVERY: PROVEN / ACCEPTED", quest)
-        self.assertIn("NEXT GATE: RESTART-SAFE SUNSET", quest)
+        self.assertIn("NEXT GATE: CLOSED", quest)
         self.assertIn("Final Phoenix recovery is `PROVEN` and `ACCEPTED`", acceptance)
-        self.assertEqual(repairing_board["state"], "IN_PROGRESS")
-        self.assertEqual(
-            repairing_board["next_gate"],
-            "Restart-safe Sunset, then final Quest closeout",
-        )
-        self.assertIn("Final Phoenix recovery is PROVEN", repairing_board["readiness_basis"])
-        self.assertEqual(self.continuity["register_revision"], 31)
-        self.assertEqual(self.continuity["source_base_sha"], "797fb2a1add829ccc304086a56f6d223d130d90d")
-        self.assertEqual(
-            self.continuity["event_ids"][-1],
-            "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01",
-        )
-        self.assertEqual(repairing["revision"], 26)
-        self.assertEqual(
-            repairing["last_event_id"],
-            "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01",
-        )
-        self.assertEqual(repairing["quest_state"], "IN_PROGRESS")
-        self.assertEqual(repairing["campaign_id"], "RP-C08")
-        self.assertEqual(repairing["gate_id"], "REPAIRING_PRIME_COMPLETE")
-        self.assertEqual(repairing["quest_source_sha256"], file_sha256(QUEST))
+        self.assertEqual(repairing_board["state"], "COMPLETE")
+        self.assertEqual(repairing_board["next_gate"], "CLOSED")
+        self.assertIn("Sunset PR #224", repairing_board["completion_basis"])
+        self.assertNotIn("CONT-REPAIRING-PRIME-R01", {item["continuity_id"] for item in self.continuity["entries"]})
+        self.assertEqual(self.continuity["register_revision"], 32)
+        self.assertEqual(self.continuity["source_base_sha"], "40e58dcf33bae68f8c819c2f65c6474f52381718")
+        self.assertEqual(self.continuity["event_ids"][-1], "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05")
         self.assertEqual(self.continuity["quest_board_sha256"], continuity_sha256(self.board))
-        self.assertEqual(
-            repairing["blockers"],
-            ["Restart-safe Sunset and final Quest completion remain pending after accepted Phoenix recovery."],
-        )
-        self.assertIn("restart-safe Sunset", repairing["next_action"])
-        self.assertNotIn("final Phoenix recovery proof", repairing["next_action"])
-        self.assertNotIn("COMPLETE", repairing_board["state"])
         self.assertTrue(PROOF_MD.is_file())
-
 
 if __name__ == "__main__":
     unittest.main()
