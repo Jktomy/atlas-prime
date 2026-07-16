@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:e2715ef39fad7cd8e879a2d7a5211540a4bf1e8ae77d4881a7cc5c9a5fa2f452
+Source fingerprint: sha256:1f14aa6784fe75a22e30c4804c926e6abfe0155be7a8589d5d72aa7bdc99e028
 Generator format: 2
 Status: Generated support artifact
 
@@ -90,6 +90,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c08-cap010-reconciliation-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-cap011-reconciliation-r01.md` | missing | missing | missing | missing |
 | `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` | CANDIDATE_ACCEPTANCE_EVIDENCE | PROOF | missing | HIGH |
+| `proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.md` | CANDIDATE_ACCEPTANCE_RECONCILIATION | PROOF | missing | MEDIUM |
 | `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` | ACCEPTED_PARTIAL_CLOSEOUT | PROOF | missing | MEDIUM |
 | `proof/repairing-prime/rp-c08-post-m06-current-state-strikeforce-r01.md` | PROPOSED_CURRENT_STATE_RECONCILIATION | PROOF | missing | CRITICAL |
 | `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` | CANONICAL_CURRENT_DISPOSITION | PROOF_RECONCILIATION | missing | CRITICAL |
