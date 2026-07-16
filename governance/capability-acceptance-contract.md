@@ -143,9 +143,25 @@ exact merged-main AJ-12 Ubuntu/Windows validation run.
 The frozen 28-capability register therefore has no `STILL_MISSING` records:
 4 `PRESERVED`, 7 `IMPROVED`, 15 `RESTORED`, 1 `REPLACED`, 1
 `INTENTIONALLY_RETIRED`, 0 `BLOCKED`, and 0 `STILL_MISSING`. This completes the
-capability-parity layer only. RP-C08 and Repairing Prime remain `IN_PROGRESS`
-for the final generated-current proof, whole-Quest Strikeforce, Board and
-continuity closeout, Phoenix recovery, and restart-safe Sunset.
+capability-parity layer only.
+
+The final generated-current layer is accepted through generated-only PR `#216`,
+whose exact head `abdef410815ded8230ea9e55c19b2b2f967fbed7` passed Ubuntu and
+Windows validation in run `29472056220` and merged as canonical main
+`3fbcc5fdb95c40665cbd6ee3fff752b149a81cb9`. Post-merge readback found all five
+projections current at source fingerprint
+`sha256:bec1e11e85091017abda4a2943cb2cc9805dcd9b8ce7897342f40ae08ece3a95`
+with no successor generated candidate or canonical generated delta.
+
+The independent final whole-Quest Strikeforce at that exact main is GREEN. It
+found zero blocking defects, authority contradictions, capability gaps,
+generated drift, privacy violations, or rollback contradictions. This changes
+no capability or journey disposition.
+
+RP-C08 and Repairing Prime remain `IN_PROGRESS` only for final Phoenix
+recovery, restart-safe Sunset, and the separately authorized completion
+transaction. The controlling current-state record is
+`proof/repairing-prime/rp-c08-final-whole-quest-strikeforce-reconciliation-r01.md`.
 
 ## Current controlling dispositions
 
