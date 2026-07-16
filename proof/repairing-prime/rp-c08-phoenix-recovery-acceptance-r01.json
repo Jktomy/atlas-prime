@@ -1,0 +1,134 @@
+{
+  "schema_version": "atlas.repairing-prime.rp-c08-phoenix-recovery-acceptance.v1",
+  "mission_id": "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01",
+  "authority": "CANONICAL_AUTHORED_ACCEPTANCE_RECONCILIATION",
+  "transaction_base_sha": "797fb2a1add829ccc304086a56f6d223d130d90d",
+  "result": "FINAL_PHOENIX_RECOVERY_ACCEPTED",
+  "accepted_recovery_proof": {
+    "proof_mission": "RP-C08-PHOENIX-RECOVERY-FINAL-MAIN-CLEAN-CLONE-PROOF-R01",
+    "proof_revision": "R01",
+    "operator": "JAYSON",
+    "runtime_mode": "READ_ONLY_CLEAN_CLONE_RECOVERY_PROOF",
+    "repository": "Jktomy/atlas-prime",
+    "expected_sha": "797fb2a1add829ccc304086a56f6d223d130d90d",
+    "observed_sha": "797fb2a1add829ccc304086a56f6d223d130d90d",
+    "remote_main_before": "797fb2a1add829ccc304086a56f6d223d130d90d",
+    "remote_main_after": "797fb2a1add829ccc304086a56f6d223d130d90d",
+    "oathbringer_carrier_sha256": "a1083ca9c5123b1bfa552602b008a45314cab847c50e143cc58d80275ed8fa75",
+    "receipt_gemstone_sha256": "9dc2726e30f6b3ff8748804e991feb1441a03dcd715212d9cf391203dbfc22e7",
+    "original_private_evidence_zip_sha256": "b4049ff69a9347ad7ca7ee2fd0712966c8a45888faba86df1d656127fc156103",
+    "sanitized_detached_audit_envelope_sha256": "a920e86fa22a548521e619bd1d77d267b39b617b221ee36c63d53b4dcc832617",
+    "mission_sha256": "3dc5d82aa0bccf8f6bde2b897913ad5072fc823e88d2c58c6d78de2f4a8efb98",
+    "receipt_self_sha256": "7fc50f501ae4599081c62abcd7f126163247568c4140604c342f80f8b0d36b02",
+    "receipt_file_sha256": "1705807d142c361d61b039b5cca6f7eeebe3ba893e398c1d5a0e78ea8701fbab",
+    "receipt_sidecar_file_sha256": "00667cdda52ec0012225326d3d9f4f31ac4215472c927d12d56b016db7fa79f7",
+    "original_transcript_sha256": "9f575cf72279097117c77a44197a99eab2eb5697537f65706d8c0837a49323f3",
+    "sanitized_transcript_sha256": "50c3209b71d8bbb7c5e59f57fa8b615e0d74f38a364e8e989fc9e90422740477",
+    "clone_isolated": true,
+    "detached_exact_head": true,
+    "symlink_free": true,
+    "inherited_hooks": [],
+    "inherited_worktrees": [],
+    "working_tree_clean_before": true,
+    "working_tree_clean_after": true,
+    "validation": {
+      "result": "GREEN",
+      "command_count": 13,
+      "pass_count": 13,
+      "all_commands_passed": true
+    },
+    "generated_state": {
+      "status": "CURRENT",
+      "changed_paths": [],
+      "projection_count": 5,
+      "all_outputs_byte_equal": true
+    },
+    "thread_engine_state": {
+      "implementation_state": "THREAD_ENGINE_ACTIVE_MISSION_SCOPED",
+      "standing_authority": false,
+      "automatic_merge": false,
+      "direct_main": false,
+      "self_change_isolated": true
+    },
+    "normal_atlas_codex_dependency": false,
+    "rollback_classification": {
+      "source_rollback": "NEW_REVIEWED_PR",
+      "force_push": "FORBIDDEN",
+      "history_rewrite": "FORBIDDEN",
+      "atlas_codex": "PREDECESSOR_AUDIT_EVIDENCE_ONLY",
+      "normal_recovery_target": "Jktomy/atlas-prime"
+    },
+    "mutation": {
+      "attempted": false,
+      "branch_created": false,
+      "commit_created": false,
+      "pr_created": false,
+      "workflow_dispatched": false,
+      "ready_transition_attempted": false,
+      "merge_attempted": false,
+      "force_push_attempted": false
+    }
+  },
+  "detached_audit": {
+    "original_private_evidence_preserved_external": true,
+    "sanitized_envelope_outer_sha256_valid": true,
+    "original_evidence_binding_valid": true,
+    "mission_binding_valid": true,
+    "receipt_self_hash_valid": true,
+    "receipt_sidecar_valid": true,
+    "checks_passed": 22,
+    "privacy_scan": "GREEN",
+    "canonical_main_readback": "797fb2a1add829ccc304086a56f6d223d130d90d",
+    "canonical_main_comparison": "IDENTICAL",
+    "ahead_by": 0,
+    "behind_by": 0,
+    "result": "GREEN"
+  },
+  "preserved_stage_ledger_limitation": {
+    "original_receipt_current_stage": "EVIDENCE_SEAL",
+    "original_receipt_last_completed_stage": "FINAL_READBACK",
+    "original_transcript_endpoint": "STAGE_ENTER EVIDENCE_SEAL",
+    "original_zip_self_contains_evidence_seal_completion": false,
+    "original_zip_self_contains_stop_boundary_completion": false,
+    "limitation_disclosed_not_rewritten": true,
+    "acceptance_basis": "RECOVERY_SUBSTANCE_PLUS_SANITIZED_DETACHED_AUDIT_AND_REPEATED_CANONICAL_MAIN_READBACK"
+  },
+  "transitions": {
+    "PHOENIX_RECOVERY": {
+      "from": "PENDING",
+      "to": "PROVEN/ACCEPTED"
+    }
+  },
+  "capability_counts": {
+    "PRESERVED": 4,
+    "IMPROVED": 7,
+    "RESTORED": 15,
+    "REPLACED": 1,
+    "INTENTIONALLY_RETIRED": 1,
+    "BLOCKED": 0,
+    "STILL_MISSING": 0
+  },
+  "preserved_open": [
+    "RESTART_SAFE_SUNSET",
+    "RP-C08",
+    "QUEST-REPAIRING-PRIME-R01"
+  ],
+  "forbidden_promotions": {
+    "RP-C08": false,
+    "QUEST_REPAIRING_PRIME": false,
+    "restart_safe_sunset": false,
+    "automatic_ready": false,
+    "automatic_merge": false,
+    "direct_main_write": false,
+    "force_push": false,
+    "cleanup": false
+  },
+  "protected_data": {
+    "classification": "PUBLIC_CLEAN_HASH_BINDINGS_ONLY",
+    "original_private_evidence_embedded": false,
+    "sanitized_envelope_embedded": false,
+    "raw_credentials_committed": false,
+    "raw_private_runtime_paths_committed": false
+  },
+  "next_gate": "RESTART_SAFE_SUNSET"
+}

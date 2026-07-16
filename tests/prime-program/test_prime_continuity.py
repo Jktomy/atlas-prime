@@ -54,13 +54,21 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(repairing_board["state"], "IN_PROGRESS")
         self.assertEqual(
             repairing_board["next_gate"],
-            "Phoenix recovery, then restart-safe Sunset and final Quest closeout",
+            "Restart-safe Sunset, then final Quest closeout",
         )
         self.assertIn("CAP-027 is RESTORED/ACTIVE", repairing_board["readiness_basis"])
         self.assertIn("0 STILL_MISSING", repairing_board["readiness_basis"])
         self.assertIn("final whole-Quest Strikeforce is GREEN", repairing_board["readiness_basis"])
+        self.assertIn("Final Phoenix recovery is PROVEN", repairing_board["readiness_basis"])
         self.assertEqual(repairing_continuity["campaign_id"], "RP-C08")
         self.assertEqual(repairing_continuity["gate_id"], rp_c08["gate_id"])
+        self.assertEqual(self.register["register_revision"], 31)
+        self.assertEqual(self.register["source_base_sha"], "797fb2a1add829ccc304086a56f6d223d130d90d")
+        self.assertEqual(
+            repairing_continuity["last_event_id"],
+            "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01",
+        )
+        self.assertEqual(repairing_continuity["revision"], 26)
         self.assertEqual(rp_c06["state"], "COMPLETE")
         self.assertEqual(rp_c07["state"], "COMPLETE")
         self.assertEqual(rp_c08["state"], "IN_PROGRESS")
@@ -82,7 +90,9 @@ class PrimeContinuityTests(unittest.TestCase):
         )
         self.assertIn("capability and acceptance layers are complete", repairing_continuity["current_position"].lower())
         self.assertIn("final whole-Quest Strikeforce is GREEN", repairing_continuity["current_position"])
-        self.assertIn("Phoenix recovery", repairing_continuity["current_position"])
+        self.assertIn("Final Phoenix recovery is PROVEN", repairing_continuity["current_position"])
+        self.assertIn("restart-safe Sunset", repairing_continuity["next_action"])
+        self.assertNotIn("final Phoenix recovery proof", repairing_continuity["next_action"])
         self.assertNotIn("await", repairing_continuity["current_position"].lower())
         rp_c01 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C01")
         unfinished_missions = {mission["mission_id"] for mission in rp_c01["missions"] if mission["state"] != "PROVEN"}
@@ -155,7 +165,7 @@ class PrimeContinuityTests(unittest.TestCase):
 
     def test_duplicate_or_unsafe_quest_admission_fails_closed(self) -> None:
         duplicate = copy.deepcopy(self.board)
-        duplicate["entries"].append(copy.deepcopy(duplicate["entries"][1]))
+        duplicate["entries"].append(copy.deepcopy(self.board["entries"][1]))
         with self.assertRaisesRegex(ContinuityError, "QUEST_BOARD_DUPLICATE"):
             validate_board(duplicate)
         unsafe = copy.deepcopy(self.board)

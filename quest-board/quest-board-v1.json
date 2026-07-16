@@ -10,12 +10,12 @@
       "state": "COMPLETE"
     },
     {
-      "next_gate": "Phoenix recovery, then restart-safe Sunset and final Quest closeout",
+      "next_gate": "Restart-safe Sunset, then final Quest closeout",
       "owner": "Codex / Source Governance",
       "quest_id": "QUEST-REPAIRING-PRIME-R01",
       "source": "quests/repairing-prime.md",
       "state": "IN_PROGRESS",
-      "readiness_basis": "AJ-01 through AJ-12 are PROVEN; CAP-027 is RESTORED/ACTIVE; all 28 capability dispositions are reconciled with 15 RESTORED and 0 STILL_MISSING. Generated-only PR #216 passed exact-head Ubuntu/Windows validation, merged as canonical main 3fbcc5fdb95c40665cbd6ee3fff752b149a81cb9, and left all five projections current with no successor candidate. final whole-Quest Strikeforce is GREEN. RP-C08 remains IN_PROGRESS for Phoenix recovery, restart-safe Sunset, and separately authorized completion."
+      "readiness_basis": "AJ-01 through AJ-12 are PROVEN; CAP-027 is RESTORED/ACTIVE; all 28 capability dispositions are reconciled with 15 RESTORED and 0 STILL_MISSING. Final generated-current state is accepted through PR #218 at canonical main 797fb2a1add829ccc304086a56f6d223d130d90d. The final whole-Quest Strikeforce is GREEN. Final Phoenix recovery is PROVEN from the exact-main Oathbringer mission and GREEN sanitized audit envelope. RP-C08 remains IN_PROGRESS for restart-safe Sunset and final completion."
     },
     {
       "next_gate": "FS-C01-M04 — Prove the Light",

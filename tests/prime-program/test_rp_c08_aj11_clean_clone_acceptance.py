@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 PROOF_PATH = ROOT / "proof" / "repairing-prime" / "rp-c08-aj11-clean-clone-acceptance-r08.json"
 FINAL_PATH = ROOT / "proof" / "repairing-prime" / "rp-c08-cap027-final-capability-reconciliation-r01.json"
 STRIKEFORCE_PATH = ROOT / "proof" / "repairing-prime" / "rp-c08-final-whole-quest-strikeforce-reconciliation-r01.md"
+RECOVERY_PATH = ROOT / "proof" / "repairing-prime" / "rp-c08-phoenix-recovery-acceptance-r01.json"
 QUEST_PATH = ROOT / "quests" / "repairing-prime.md"
 BOARD_PATH = ROOT / "quest-board" / "quest-board-v1.json"
 CONTINUITY_PATH = ROOT / "continuity" / "prime-continuity-register-r01.json"
@@ -31,6 +32,7 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
     def setUp(self) -> None:
         self.proof = load_json(PROOF_PATH)
         self.final = load_json(FINAL_PATH)
+        self.recovery = load_json(RECOVERY_PATH)
 
     def test_receipt_and_exact_main_bindings_are_exact(self) -> None:
         accepted = self.proof["accepted_local_proof"]
@@ -98,8 +100,12 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
         )
         self.assertTrue(all(value is False for value in self.proof["forbidden_promotions"].values()))
         self.assertEqual(self.final["transitions"]["CAP-027"]["to"], "RESTORED/ACTIVE")
+        self.assertEqual(
+            self.recovery["transitions"],
+            {"PHOENIX_RECOVERY": {"from": "PENDING", "to": "PROVEN/ACCEPTED"}},
+        )
 
-    def test_canonical_surfaces_preserve_aj11_and_advance_to_phoenix(self) -> None:
+    def test_canonical_surfaces_preserve_aj11_and_advance_to_sunset(self) -> None:
         acceptance = ACCEPTANCE_PATH.read_text(encoding="utf-8")
         route = ROUTE_PATH.read_text(encoding="utf-8")
         quest = QUEST_PATH.read_text(encoding="utf-8")
@@ -109,10 +115,11 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
         self.assertIn("AJ-11 PROVEN", acceptance)
         self.assertIn("AJ-12 PROVEN", acceptance)
         self.assertIn("CAP-027 RESTORED / ACTIVE", acceptance)
-        self.assertIn("final whole-Quest Strikeforce at that exact main is GREEN", acceptance)
+        self.assertIn("Final Phoenix recovery is `PROVEN` and `ACCEPTED`", acceptance)
         self.assertIn("AJ-01 through AJ-12 are PROVEN", quest)
         self.assertIn("CAP-027: RESTORED / ACTIVE", quest)
-        self.assertIn("NEXT GATE: PHOENIX RECOVERY", quest)
+        self.assertIn("PHOENIX RECOVERY: PROVEN / ACCEPTED", quest)
+        self.assertIn("NEXT GATE: RESTART-SAFE SUNSET", quest)
         self.assertTrue(STRIKEFORCE_PATH.is_file())
         self.assertIn(
             "AJ-11 and AJ-12 are now PROVEN; CAP-027 is RESTORED/ACTIVE by the separate final capability reconciliation; RP-C08 and Repairing Prime remain open.",
@@ -126,30 +133,33 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
         self.assertEqual(repairing["state"], "IN_PROGRESS")
         self.assertEqual(
             repairing["next_gate"],
-            "Phoenix recovery, then restart-safe Sunset and final Quest closeout",
+            "Restart-safe Sunset, then final Quest closeout",
         )
+        self.assertIn("Final Phoenix recovery is PROVEN", repairing["readiness_basis"])
 
         entry = next(
             item for item in continuity["entries"]
             if item["continuity_id"] == "CONT-REPAIRING-PRIME-R01"
         )
-        self.assertEqual(continuity["source_base_sha"], "3fbcc5fdb95c40665cbd6ee3fff752b149a81cb9")
-        self.assertEqual(continuity["register_revision"], 30)
-        self.assertEqual(entry["revision"], 25)
+        self.assertEqual(continuity["source_base_sha"], "797fb2a1add829ccc304086a56f6d223d130d90d")
+        self.assertEqual(continuity["register_revision"], 31)
+        self.assertEqual(entry["revision"], 26)
         self.assertEqual(
             entry["last_event_id"],
-            "RP-C08-FINAL-WHOLE-QUEST-STRIKEFORCE-RECONCILIATION-R01",
+            "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01",
         )
         self.assertEqual(entry["quest_source_sha256"], sha256(QUEST_PATH))
         self.assertEqual(continuity["quest_board_sha256"], continuity_sha256(board))
-        self.assertIn("Phoenix recovery", entry["next_action"])
-        self.assertNotIn("whole-Quest Strikeforce", entry["next_action"])
+        self.assertIn("restart-safe Sunset", entry["next_action"])
+        self.assertNotIn("final Phoenix recovery proof", entry["next_action"])
         self.assertFalse(any("AJ-11 requires" in blocker for blocker in entry["blockers"]))
         self.assertFalse(any("CAP-027 remains missing" in blocker for blocker in entry["blockers"]))
+        self.assertFalse(any("Final Phoenix recovery has not yet" in blocker for blocker in entry["blockers"]))
         self.assertIn("RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08", continuity["event_ids"])
         self.assertIn("RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01", continuity["event_ids"])
         self.assertIn("RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01", continuity["event_ids"])
         self.assertIn("RP-C08-FINAL-WHOLE-QUEST-STRIKEFORCE-RECONCILIATION-R01", continuity["event_ids"])
+        self.assertIn("RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01", continuity["event_ids"])
 
 
 if __name__ == "__main__":

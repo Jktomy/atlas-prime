@@ -58,7 +58,7 @@ class RpC01M07LiveRejectionTests(unittest.TestCase):
         self.assertEqual({item["run"] for item in self.proof["superseded_no_mutation_diagnostics"]}, {29233989153, 29234050494})
         self.assertTrue(all(item["mutation"] is False for item in self.proof["superseded_no_mutation_diagnostics"]))
 
-    def test_continuity_preserves_history_and_advances_to_phoenix(self) -> None:
+    def test_continuity_preserves_history_and_advances_to_sunset(self) -> None:
         repairing = next(item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         events = self.continuity["event_ids"]
         historical_event = "RP-C01-M07-LIVE-REJECTION-RECONCILIATION-R01"
@@ -67,23 +67,27 @@ class RpC01M07LiveRejectionTests(unittest.TestCase):
         aj12_event = "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01"
         cap027_event = "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01"
         strikeforce_event = "RP-C08-FINAL-WHOLE-QUEST-STRIKEFORCE-RECONCILIATION-R01"
-        for event in (historical_event, m07_event, aj11_event, aj12_event, cap027_event, strikeforce_event):
+        recovery_event = "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01"
+        for event in (historical_event, m07_event, aj11_event, aj12_event, cap027_event, strikeforce_event, recovery_event):
             self.assertEqual(events.count(event), 1)
         self.assertLess(events.index(historical_event), events.index(m07_event))
         self.assertLess(events.index(m07_event), events.index(aj11_event))
         self.assertLess(events.index(aj11_event), events.index(aj12_event))
         self.assertLess(events.index(aj12_event), events.index(cap027_event))
         self.assertLess(events.index(cap027_event), events.index(strikeforce_event))
-        self.assertEqual(self.continuity["register_revision"], 30)
-        self.assertEqual(repairing["revision"], 25)
-        self.assertEqual(repairing["last_event_id"], strikeforce_event)
+        self.assertLess(events.index(strikeforce_event), events.index(recovery_event))
+        self.assertEqual(self.continuity["register_revision"], 31)
+        self.assertEqual(self.continuity["source_base_sha"], "797fb2a1add829ccc304086a56f6d223d130d90d")
+        self.assertEqual(repairing["revision"], 26)
+        self.assertEqual(repairing["last_event_id"], recovery_event)
         self.assertEqual(repairing["quest_state"], "IN_PROGRESS")
         self.assertFalse(any("genuine non-owner" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("AJ-11 requires" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("AJ-12 requires complete" in blocker for blocker in repairing["blockers"]))
         self.assertFalse(any("CAP-027 remains missing" in blocker for blocker in repairing["blockers"]))
-        self.assertIn("Phoenix recovery", repairing["next_action"])
-        self.assertNotIn("whole-Quest Strikeforce", repairing["next_action"])
+        self.assertFalse(any("Final Phoenix recovery has not yet" in blocker for blocker in repairing["blockers"]))
+        self.assertIn("restart-safe Sunset", repairing["next_action"])
+        self.assertNotIn("final Phoenix recovery proof", repairing["next_action"])
 
 
 if __name__ == "__main__":

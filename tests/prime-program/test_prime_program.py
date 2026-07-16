@@ -58,16 +58,16 @@ class PrimeProgramTests(unittest.TestCase):
             repairing_prime,
             [
                 {
-                    "next_gate": "Phoenix recovery, then restart-safe Sunset and final Quest closeout",
+                    "next_gate": "Restart-safe Sunset, then final Quest closeout",
                     "owner": "Codex / Source Governance",
                     "quest_id": "QUEST-REPAIRING-PRIME-R01",
                     "readiness_basis": (
                         "AJ-01 through AJ-12 are PROVEN; CAP-027 is RESTORED/ACTIVE; all 28 capability "
-                        "dispositions are reconciled with 15 RESTORED and 0 STILL_MISSING. Generated-only PR #216 "
-                        "passed exact-head Ubuntu/Windows validation, merged as canonical main "
-                        "3fbcc5fdb95c40665cbd6ee3fff752b149a81cb9, and left all five projections current with no "
-                        "successor candidate. final whole-Quest Strikeforce is GREEN. RP-C08 remains IN_PROGRESS for "
-                        "Phoenix recovery, restart-safe Sunset, and separately authorized completion."
+                        "dispositions are reconciled with 15 RESTORED and 0 STILL_MISSING. Final generated-current "
+                        "state is accepted through PR #218 at canonical main "
+                        "797fb2a1add829ccc304086a56f6d223d130d90d. The final whole-Quest Strikeforce is GREEN. "
+                        "Final Phoenix recovery is PROVEN from the exact-main Oathbringer mission and GREEN sanitized "
+                        "audit envelope. RP-C08 remains IN_PROGRESS for restart-safe Sunset and final completion."
                     ),
                     "source": "quests/repairing-prime.md",
                     "state": "IN_PROGRESS",
@@ -81,7 +81,8 @@ class PrimeProgramTests(unittest.TestCase):
         self.assertIn("CAP-027: RESTORED / ACTIVE", repairing_source)
         self.assertIn("0 STILL_MISSING", repairing_source)
         self.assertIn("FINAL WHOLE-QUEST STRIKEFORCE: GREEN", repairing_source)
-        self.assertIn("NEXT GATE: PHOENIX RECOVERY", repairing_source)
+        self.assertIn("PHOENIX RECOVERY: PROVEN / ACCEPTED", repairing_source)
+        self.assertIn("NEXT GATE: RESTART-SAFE SUNSET", repairing_source)
         self.assertIn("Former G4-E means only the construction layer", conservation)
         self.assertIn("Former G4-F means only the later live", conservation)
         self.assertIn("invokes only the singular Thread Engine", conservation)
@@ -189,6 +190,8 @@ class PrimeProgramTests(unittest.TestCase):
             "recovery/phoenix-recovery.md",
             "quests/repairing-prime.md",
             "proof/repairing-prime/rp-c08-final-whole-quest-strikeforce-reconciliation-r01.md",
+            "proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.md",
+            "proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.json",
             "tools/atlas-sword/engine/oathbringer_contract.py",
             "tools/build_index.py",
         )
