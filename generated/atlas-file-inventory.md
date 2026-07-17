@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:03c8544ec4013930745b98384ffcdae8398494c3ea09d25175b963994fdb9480
+Source fingerprint: sha256:07569419b41a18d881e4c0f39b99c9ca6c84b6c3b4e51c7509503369fcc66905
 Generator format: 2
 Status: Generated support artifact
 
@@ -17,7 +17,7 @@ Status: Generated support artifact
 | `governance/agentic-warrant-contract.md` | governance | yes | policy-reference |
 | `governance/athena-execution-route-contract.md` | governance | yes | policy-reference |
 | `governance/athena-fresh-work-origin-contract.md` | governance | yes | policy-reference |
-| `governance/atlas-aegis.md` | governance | yes | none |
+| `governance/atlas-aegis.md` | governance | yes | policy-reference |
 | `governance/atlas-strikeforce.md` | governance | yes | none |
 | `governance/capability-acceptance-contract.md` | governance | yes | policy-reference |
 | `governance/change-routes.md` | governance | yes | policy-reference |
@@ -101,6 +101,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` | proof | yes | none |
 | `quests/found-silverlight.md` | quests | yes | policy-reference |
 | `quests/notums-watch.md` | quests | yes | policy-reference |
+| `quests/prime-ascendant-covenant.md` | quests | yes | policy-reference |
 | `quests/prime-ascendant.md` | quests | yes | policy-reference |
 | `quests/prime-continuity-proof.md` | quests | yes | none |
 | `quests/prime-reborn.md` | quests | yes | none |
