@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 EVENT = "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05"
 BASE = "40e58dcf33bae68f8c819c2f65c6474f52381718"
+REGISTER_SOURCE_BASE = "e87dbf05252fd80829143474b83b7fa180d66fb7"
 
 def load(relative: str) -> dict:
     return json.loads((ROOT / relative).read_text(encoding="utf-8"))
@@ -22,10 +23,10 @@ def assert_final_state(case: unittest.TestCase) -> None:
     case.assertEqual(repairing["next_gate"], "CLOSED")
     case.assertIn("Sunset PR #224", repairing["completion_basis"])
     case.assertNotIn("QUEST-REPAIRING-PRIME-R01", {item["quest_id"] for item in register["entries"]})
-    case.assertEqual(register["register_revision"], 32)
-    case.assertEqual(register["source_base_sha"], BASE)
+    case.assertEqual(register["register_revision"], 33)
+    case.assertEqual(register["source_base_sha"], REGISTER_SOURCE_BASE)
     case.assertEqual(register["event_ids"].count(EVENT), 1)
-    case.assertEqual(register["event_ids"][-1], EVENT)
+    case.assertEqual(register["event_ids"][-1], "PA-C01-QUEST-CREATION-R01")
     rp_c08 = next(item for item in identities["campaigns"] if item["campaign_id"] == "RP-C08")
     case.assertEqual(rp_c08["state"], "COMPLETE")
     case.assertEqual(qem["quest_revision"], 4)

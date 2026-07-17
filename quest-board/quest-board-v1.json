@@ -46,6 +46,14 @@
       "quest_id": "QUEST-PRIME-CONTINUITY-PROOF-R01",
       "source": "quests/prime-continuity-proof.md",
       "state": "READY_FOR_CAMPAIGN_1_PREVIEW"
+    },
+    {
+      "next_gate": "PA-C01 — Write the Covenant",
+      "owner": "Artemis / Operation Nexus",
+      "quest_id": "QUEST-PRIME-ASCENDANT-20260717",
+      "source": "quests/prime-ascendant.md",
+      "state": "IN_PROGRESS",
+      "readiness_basis": "Official architecture-refinement Quest admitted with PA-C01 current and PA-C02 through PA-C10 as the initial roadmap. Runtime, infrastructure deployment, Living Memory, Nexus Core, Dawnshard, private website, Gitea shadow, canonical cutover, and legacy-route retirement remain unauthorized or unstarted by this Quest."
     }
   ],
   "format_version": "1.0",

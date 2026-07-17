@@ -29,10 +29,10 @@ class PostM06CurrentTruthTests(unittest.TestCase):
     def test_continuity_register_records_completion_and_removes_active_row(self) -> None:
         register = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
         self.assertNotIn("QUEST-REPAIRING-PRIME-R01", {item["quest_id"] for item in register["entries"]})
-        self.assertEqual(register["register_revision"], 32)
-        self.assertEqual(register["source_base_sha"], "40e58dcf33bae68f8c819c2f65c6474f52381718")
+        self.assertEqual(register["register_revision"], 33)
+        self.assertEqual(register["source_base_sha"], "e87dbf05252fd80829143474b83b7fa180d66fb7")
         self.assertEqual(register["event_ids"].count("RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05"), 1)
-        self.assertEqual(register["event_ids"][-1], "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05")
+        self.assertEqual(register["event_ids"][-1], "PA-C01-QUEST-CREATION-R01")
 
     def test_quest_board_is_complete_and_closed(self) -> None:
         board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))

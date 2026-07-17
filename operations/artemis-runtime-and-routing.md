@@ -26,8 +26,9 @@ The VM substrate, PostgreSQL, WAL protection, ClamAV/FreshClam, private health
 endpoints, backup, and restore are proof boundaries for Prometheus's Fire.
 Living Memory application semantics, Dawnshard, database-backed Controlled
 Burn/Phoenix Burn, the private Atlas website, Gitea authority migration, and
-other lifecycle/workflow behavior remain deferred to a future Prime Ascendant
-Quest, which is not created here.
+other lifecycle/workflow behaviors are governed by the official architecture-
+refinement Quest `quests/prime-ascendant.md`; this source does not claim
+implementation or runtime deployment.
 
 Nexus has no Matrix / Synapse / Element dependency. Matrix / Element is
 disposed from the active Prometheus baseline by PF-C06, with lineage preserved

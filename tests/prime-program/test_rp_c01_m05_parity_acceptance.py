@@ -66,7 +66,7 @@ class RpC01M05ParityAcceptanceTests(unittest.TestCase):
         self.assertEqual(events.count("RP-C01-M05-PARITY-ACCEPTANCE-R01"), 1)
         self.assertEqual(events.count("RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05"), 1)
         self.assertLess(events.index("RP-C01-M05-PARITY-ACCEPTANCE-R01"), events.index("RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05"))
-        self.assertGreaterEqual(self.continuity["register_revision"], 32)
+        self.assertGreaterEqual(self.continuity["register_revision"], 33)
         self.assertNotIn("QUEST-REPAIRING-PRIME-R01", {item["quest_id"] for item in self.continuity["entries"]})
         repairing = next(item for item in self.board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         self.assertEqual(repairing["state"], "COMPLETE")

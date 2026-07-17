@@ -94,8 +94,8 @@ class Aj11CleanCloneAcceptanceTests(unittest.TestCase):
         self.assertEqual(repairing["next_gate"], "CLOSED")
         self.assertIn("Sunset PR #224", repairing["completion_basis"])
         self.assertNotIn("CONT-REPAIRING-PRIME-R01", {item["continuity_id"] for item in continuity["entries"]})
-        self.assertEqual(continuity["source_base_sha"], "40e58dcf33bae68f8c819c2f65c6474f52381718")
-        self.assertEqual(continuity["register_revision"], 32)
+        self.assertEqual(continuity["source_base_sha"], "e87dbf05252fd80829143474b83b7fa180d66fb7")
+        self.assertEqual(continuity["register_revision"], 33)
         self.assertEqual(continuity["quest_board_sha256"], continuity_sha256(board))
         for event in ("RP-C08-AJ11-CLEAN-CLONE-ACCEPTANCE-RECONCILIATION-R08", "RP-C08-AJ12-MERGED-MAIN-VALIDATION-ACCEPTANCE-R01", "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01", "RP-C08-FINAL-WHOLE-QUEST-STRIKEFORCE-RECONCILIATION-R01", "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01", "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05"):
             self.assertEqual(continuity["event_ids"].count(event), 1)

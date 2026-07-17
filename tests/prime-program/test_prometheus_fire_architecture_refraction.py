@@ -47,7 +47,7 @@ class PrometheusFireArchitectureRefractionTests(unittest.TestCase):
         self.assertIn("point-in-time recovery direction", self.recovery)
         self.assertIn("These are future proof requirements", self.recovery)
         self.assertIn("does not claim deployment", self.quest)
-        self.assertIn("Prime Ascendant remains a planned follow-on Quest", self.quest)
+        self.assertIn("Prime Ascendant is an official architecture-refinement Quest", self.quest)
 
     def test_identity_state_and_continuity_digest_are_preserved(self) -> None:
         board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
@@ -65,7 +65,9 @@ class PrometheusFireArchitectureRefractionTests(unittest.TestCase):
         self.assertEqual(bound["mission_id"], "PF-C01-M02")
         self.assertEqual(bound["gate_id"], "PF-C01-M02-PREVIEW")
 
-        self.assertFalse((ROOT / "quests/prime-ascendant.md").exists())
+        self.assertTrue((ROOT / "quests/prime-ascendant.md").exists())
+        ascendant = next(item for item in board["entries"] if item["quest_id"] == "QUEST-PRIME-ASCENDANT-20260717")
+        self.assertEqual(ascendant["source"], "quests/prime-ascendant.md")
 
 
 if __name__ == "__main__":

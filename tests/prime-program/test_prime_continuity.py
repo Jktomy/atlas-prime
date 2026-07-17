@@ -46,8 +46,8 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(repairing_board["next_gate"], "CLOSED")
         self.assertIn("Sunset PR #224", repairing_board["completion_basis"])
         self.assertNotIn(self.identities["quest_id"], {entry["quest_id"] for entry in self.register["entries"]})
-        self.assertEqual(self.register["register_revision"], 32)
-        self.assertEqual(self.register["source_base_sha"], "40e58dcf33bae68f8c819c2f65c6474f52381718")
+        self.assertEqual(self.register["register_revision"], 33)
+        self.assertEqual(self.register["source_base_sha"], "e87dbf05252fd80829143474b83b7fa180d66fb7")
         self.assertEqual(self.register["event_ids"].count("RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05"), 1)
         rp_c06 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C06")
         rp_c07 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C07")
@@ -84,6 +84,13 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(prometheus_continuity["gate_id"], "PF-C01-M02-PREVIEW")
         self.assertEqual(prometheus_continuity["revision"], 2)
         self.assertEqual(prometheus_continuity["last_event_id"], prometheus_event)
+        ascendant = next(entry for entry in self.register["entries"] if entry["continuity_id"] == "CONT-PRIME-ASCENDANT-R01")
+        self.assertEqual(ascendant["quest_state"], "IN_PROGRESS")
+        self.assertEqual(ascendant["campaign_id"], "PA-C01")
+        self.assertIsNone(ascendant["mission_id"])
+        self.assertEqual(ascendant["gate_id"], "PA-C01-COVENANT-REFINEMENT")
+        self.assertEqual(ascendant["revision"], 1)
+        self.assertEqual(ascendant["last_event_id"], "PA-C01-QUEST-CREATION-R01")
 
     def test_schema_driven_board_accepts_later_quest_without_validator_edit(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

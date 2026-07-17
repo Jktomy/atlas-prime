@@ -149,7 +149,7 @@ Prometheus's Fire is complete only when:
 12. The Prime Quest Board and continuity register remain synchronized, with generated projections refreshed separately.
 13. Required Windows-specific work and Codex continuity are safely evacuated from the current Prometheus Windows installation before destructive action.
 14. Forge retains the persistent Helios backend while Apollo provides the separately bounded interactive Helios Control Deck.
-15. Prime Ascendant remains a planned follow-on Quest and is not created by this mission.
+15. Prime Ascendant is an official architecture-refinement Quest; this mission does not implement it or authorize runtime.
 
 ## 5. Explicit exclusions
 
@@ -174,7 +174,7 @@ The baseline does not include:
 - Proxmox Backup Server as an immediate requirement;
 - acting Kandra workers before governance and tool gates pass;
 - automatic UPS shutdown or ONT / Eero recovery without a separate Phoenix / Beacon Preview and proof;
-- Prime Ascendant creation, Living Memory application semantics, Dawnshard, Gitea cutover, or a private Atlas website.
+- Living Memory application semantics, Dawnshard, Gitea cutover, or a private Atlas website.
 
 Forge retains HAOS, Paperless-ngx, Dozzle, Diun, and the persistent Helios backend: Gluetun, qBittorrent, Prowlarr, Sonarr, Radarr, optional Readarr, automated watchers and import workflows, storage-adjacent processing, Audiobookshelf, and current Plex until separately proven cutover.
 
