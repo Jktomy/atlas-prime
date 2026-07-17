@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:9ed7dbf4602a3588feb9b8faf5d900cd42e61904581e00211f7309d32680f523
+Source fingerprint: sha256:03c8544ec4013930745b98384ffcdae8398494c3ea09d25175b963994fdb9480
 Generator format: 2
 Status: Generated support artifact
 
@@ -101,6 +101,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` | CANONICAL_CURRENT_DISPOSITION | PROOF_RECONCILIATION | missing | CRITICAL |
 | `quests/found-silverlight.md` | Active | Quest | Parent Quest for establishing Atlas's private cognitive interface through Investiture Accounting, the seven-pillar Glass Codex, and the Seon Apple Reminders integration. | High |
 | `quests/notums-watch.md` | Active | Quest | Parent Quest for bringing Notum's Watch forward as Gatehouse/Citadel observability and rescue infrastructure, including the interim Notum vessel, future Notum Phoenix vessel, Nightwatcher lineage, and backup-capacity boundaries. | High |
+| `quests/prime-ascendant.md` | Active | Quest | Parent Quest for the future self-hosted living-memory and orchestration chapter of Prime, from constitutional architecture through proven, bounded integration. | High |
 | `quests/prime-continuity-proof.md` | READY_FOR_CAMPAIGN_1_PREVIEW | QUEST | missing | MEDIUM |
 | `quests/prime-reborn.md` | COMPLETE | QUEST | missing | CRITICAL |
 | `quests/prometheus-fire.md` | Active | Quest | Parent Quest for converting Prometheus into a stable, recoverable Proxmox compute platform with the approved Crucible VM, Nexus Living Memory VM, and future Plex LXC topology. | High |
