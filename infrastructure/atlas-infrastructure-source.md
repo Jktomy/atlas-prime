@@ -18,8 +18,8 @@ This source records clean architecture and recovery boundaries. It contains no a
 - **Prometheus** — Proxmox compute and service foundation; minimal host services, private administration, independent rescue, narrow storage mounts, backup, and restore proof precede service migration.
 - **Forge** — storage backbone. **Hammer** is staging/processing; **Anvil** is durable archive. Mounts and write paths remain least-privilege.
 - **Crucible** — Artemis local-intelligence VM; model runtime and accelerator use require isolation, backup, restore, thermal, soak, and rollback proof.
-- **Nexus** — deterministic routing and mission-state service; no broad infrastructure or source authority.
-- **Matrix** — private command-room transport; no public registration or federation without a separate approved design.
+- **Nexus** — dedicated Living Memory QEMU VM substrate for deterministic routing and mission state; no broad infrastructure or source authority.
+- **Matrix / Synapse / Element** — removed from the active Prometheus baseline; PF-C06 preserves lineage without claiming deployment or retirement.
 - **Citadel/Gatehouse** — physical infrastructure, WAN edge, power, cooling, wiring, observability, and rescue boundary.
 - **Notum's Watch** — observability and diagnostics that must not become routing, identity, DNS, DHCP, public endpoint, source truth, or automatic recovery authority.
 - **Beacon/HAOS** — home automation boundary with safe manual fallback.
@@ -64,10 +64,38 @@ Apollo may host the on-demand, human-interactive Helios Control Deck:
 
 Hermes may access Helios administration and dashboards remotely. Iris may display status and support human review or approval. Neither Hermes nor Iris is a persistent Helios backend.
 
+## Prometheus launch planning envelope
+
+The accepted source planning envelope is:
+
+```text
+Crucible VM — 28 GB RAM
+Nexus Living Memory VM — 10 GB RAM
+Plex LXC — 12 GB RAM
+Protected Proxmox reserve — 8 GB
+Flexible headroom — 6 GB
+Total — 64 GB
+```
+
+Launch uses no memory ballooning or overcommit. Crucible may grow only after
+measured concurrent-load proof, and temporary restore guests require explicit
+RAM reallocation or guest shutdown. The plan is not deployment evidence.
+
+The thin-provisioned local-NVMe plan is approximately 64 GB for host
+ISOs/templates, 350 GB for Crucible, 120 GB for Nexus, and 150 GB for Plex.
+Remaining usable capacity is reserved for pool/filesystem overhead,
+snapshots, temporary restore needs, and growth; exact remaining capacity is
+unknown until storage formatting and pool creation are measured.
+
 ## Infrastructure rules
 
 - Foundation and recovery precede broad migration.
 - Major applications do not run directly on the Proxmox host.
+- Plex application database, metadata, artwork, cache, and transcode workspace
+  remain on Prometheus local NVMe; Forge/Anvil holds media, completed DVR
+  media, application backups, and recovery copies through narrow paths.
+- Nexus Phase 1 retrieval uses PostgreSQL relational state, PostgreSQL full-text
+  search, and `pgvector`; Qdrant is deferred until measured need is proven.
 - Public exposure, automatic power action, destructive restore, storage reclassification, and credential changes require separate protected authority.
 - A planned topology is not an active runtime fact.
 - All configuration committed to Prime is sanitized and reproducible; protected values come from external secret/evidence systems at runtime.

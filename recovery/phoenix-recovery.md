@@ -25,6 +25,22 @@ Prime recovery begins from a clean clone of `Jktomy/atlas-prime`, a verified mai
 8. Perform a destructive canary restore only with explicit Jayson-side authority and a protected evidence plan.
 9. Read back recovered source and runtime evidence before declaring success.
 
+## Prometheus's Fire recovery boundary
+
+The Prometheus architecture requires narrow Forge mounts with safe unavailable-
+mount behavior, Prometheus guest backups, a destructive canary restore, and an
+independent recovery copy not confined to Forge. Nexus recovery must include
+the dedicated Nexus VM, PostgreSQL base backups, WAL protection, and a
+point-in-time recovery direction. Plex recovery must include its local-NVMe
+database, metadata, configuration, cache, and transcode state; media and
+completed DVR media remain on Forge/Anvil through narrow paths. Temporary
+restore guests require an explicit RAM reallocation or guest-shutdown plan.
+
+These are future proof requirements. This runbook and the Prometheus Quest do
+not claim that any backup, restore, deployment, or runtime cutover has
+occurred. Recovery receipts must be sanitized and must not contain secrets,
+private runtime values, or protected records.
+
 ## Rollback
 
 - Every source transaction records base, head, tree, paths, payload hashes, PR, merge, and recovery classification.

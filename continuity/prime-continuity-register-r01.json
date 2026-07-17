@@ -65,7 +65,7 @@
       "continuity_id": "CONT-PROMETHEUS-FIRE-R01",
       "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
       "quest_source": "quests/prometheus-fire.md",
-      "quest_source_sha256": "fb853dec7c193a930908bfbee824cac82a5ecccf804d566860ae03af669dd79f",
+      "quest_source_sha256": "da82109ef1c9788aeb3b3e127790060facbe146a091f5ebf19a8ee9d1a729280",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "PF-C01",
       "mission_id": "PF-C01-M02",
