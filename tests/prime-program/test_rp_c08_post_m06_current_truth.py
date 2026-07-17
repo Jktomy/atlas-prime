@@ -39,7 +39,7 @@ class PostM06CurrentTruthTests(unittest.TestCase):
         repairing = next(item for item in board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         self.assertEqual(repairing["state"], "COMPLETE")
         self.assertEqual(repairing["next_gate"], "CLOSED")
-        self.assertIn("CAP-027 remains RESTORED/ACTIVE", repairing["completion_basis"])
+        self.assertIn("CAP-027 is RESTORED/ACTIVE", repairing["completion_basis"])
         self.assertIn("Sunset PR #224", repairing["completion_basis"])
         self.assertIn("publisher run 29536662886", repairing["completion_basis"])
         register = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
