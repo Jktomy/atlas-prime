@@ -118,7 +118,7 @@ class RpC01M06ProtectedDispatchAcceptanceTests(unittest.TestCase):
         quest = (ROOT / "quests/repairing-prime.md").read_text(encoding="utf-8")
         self.assertIn("RP-C01 is `COMPLETE`", quest)
         self.assertIn("AJ-01 through AJ-12 are PROVEN", quest)
-        self.assertIn("CAP-027 is RESTORED and ACTIVE", quest)
+        self.assertIn("CAP-027 remains RESTORED and ACTIVE", quest)
         self.assertIn("PHOENIX RECOVERY: PROVEN / ACCEPTED", quest)
         self.assertIn("NEXT GATE: CLOSED", quest)
 
