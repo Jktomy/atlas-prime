@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:8a466ed15f362668c55ff037768f2fe9f4f793772fc108f467f35404c59ad5f3
+Source fingerprint: sha256:f70f1cad9433845d55d6bbbda8a07adc21427c1bf45e507176e160d804b33c02
 Generator format: 2
 Status: Generated support artifact
 
@@ -93,6 +93,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` | CANDIDATE_ACCEPTANCE_EVIDENCE | PROOF | missing | HIGH |
 | `proof/repairing-prime/rp-c08-cap027-final-capability-reconciliation-r01.md` | CANDIDATE_ACCEPTANCE_RECONCILIATION | PROOF | missing | MEDIUM |
 | `proof/repairing-prime/rp-c08-capability-reconciliation-r01.md` | ACCEPTED_PARTIAL_CLOSEOUT | PROOF | missing | MEDIUM |
+| `proof/repairing-prime/rp-c08-final-repairing-prime-completion-r05.md` | Candidate | Proof | missing | Critical |
 | `proof/repairing-prime/rp-c08-final-whole-quest-strikeforce-reconciliation-r01.md` | ACCEPTED_READ_ONLY_STRIKEFORCE | PROOF | missing | CRITICAL |
 | `proof/repairing-prime/rp-c08-living-emberline-repair-r01.md` | CANDIDATE_SOURCE_REPAIR | PROOF | missing | CRITICAL |
 | `proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.md` | ACCEPTED_RECOVERY_GATE | PROOF | missing | CRITICAL |
@@ -103,7 +104,7 @@ Status: Generated support artifact
 | `quests/prime-continuity-proof.md` | READY_FOR_CAMPAIGN_1_PREVIEW | QUEST | missing | MEDIUM |
 | `quests/prime-reborn.md` | COMPLETE | QUEST | missing | CRITICAL |
 | `quests/prometheus-fire.md` | Active | Quest | Parent Quest for converting Prometheus into a stable, recoverable Proxmox compute platform with the approved Crucible VM, Nexus LXC, Matrix LXC, and future Plex LXC topology. | High |
-| `quests/repairing-prime.md` | Active | Quest | Repair Prime's missing execution, agentic, continuity, Quest, generated-parity, acceptance, and closeout capabilities without rebuilding accepted foundations or weakening Atlas boundaries. | Critical |
+| `quests/repairing-prime.md` | Complete | Quest | Repair Prime's missing execution, agentic, continuity, Quest, generated-parity, acceptance, and closeout capabilities without rebuilding accepted foundations or weakening Atlas boundaries. | Critical |
 | `recovery/phoenix-recovery.md` | ACTIVE | RUNBOOK | missing | CRITICAL |
 | `routing/command-surfaces.md` | ACTIVE | REGISTER | missing | HIGH |
 | `routing/interaction-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | HIGH |
