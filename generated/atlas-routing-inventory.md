@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:9ed7dbf4602a3588feb9b8faf5d900cd42e61904581e00211f7309d32680f523
+Source fingerprint: sha256:03c8544ec4013930745b98384ffcdae8398494c3ea09d25175b963994fdb9480
 Generator format: 2
 Status: Generated support artifact
 
@@ -101,6 +101,7 @@ Status: Generated support artifact
 | `proof/repairing-prime/rp-c08-sunset-feather-truth-reconciliation-r03.md` | no |
 | `quests/found-silverlight.md` | yes |
 | `quests/notums-watch.md` | yes |
+| `quests/prime-ascendant.md` | yes |
 | `quests/prime-continuity-proof.md` | yes |
 | `quests/prime-reborn.md` | yes |
 | `quests/prometheus-fire.md` | yes |
