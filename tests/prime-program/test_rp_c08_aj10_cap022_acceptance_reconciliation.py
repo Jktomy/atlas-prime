@@ -143,8 +143,8 @@ class Aj10Cap022AcceptanceReconciliationTests(unittest.TestCase):
         recovery_event = "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01"
         completion_event = "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05"
         ordered = (gate_three_event, gate_four_event, m07_event, aj11_event, aj12_event, cap027_event, strikeforce_event, recovery_event, completion_event)
-        self.assertEqual(self.continuity["register_revision"], 32)
-        self.assertEqual(self.continuity["source_base_sha"], "40e58dcf33bae68f8c819c2f65c6474f52381718")
+        self.assertEqual(self.continuity["register_revision"], 33)
+        self.assertEqual(self.continuity["source_base_sha"], "e87dbf05252fd80829143474b83b7fa180d66fb7")
         for event in ordered:
             self.assertEqual(self.continuity["event_ids"].count(event), 1)
         for left, right in zip(ordered, ordered[1:]):

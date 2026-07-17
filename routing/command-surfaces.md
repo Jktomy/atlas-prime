@@ -41,7 +41,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Athena executes a Sword | `methods/phoenix-blade.md`, `methods/sword-forge-standard.md`, `methods/sword-lessons.json`, `methods/atlas-sword.md`, then the exact Sword and live target state |
 | Jayson Sword or Oathbringer request | `methods/sword-forge-standard.md`, `methods/sword-lessons.json`, `methods/atlas-sword.md`, `tools/atlas-sword/README.md`, then the exact live repository or PR state |
 | Oathbringer Foundry carrier compile | `methods/oathbringer-foundry.md`, `methods/sword-forge-standard.md`, `methods/sword-lessons.json`, `tools/oathbringer-foundry/README.md`, then exact current source and read-only live-state binding |
-| Active Quests | `quest-board/quest-board-v1.json`, `quests/` |
+| Active Quests | `quest-board/quest-board-v1.json`, `quests/` (Prime Ascendant: `quests/prime-ascendant.md`) |
 | Quest identities and unfinished-work continuity | `governance/quest-engine-continuity-contract.md`, `continuity/quest-engine-identities-r01.json`, `continuity/prime-continuity-register-r01.json`, `tools/prime_continuity/README.md` |
 | Validate continuity or surface Argus | `python -B -m tools.prime_continuity.cli validate`, `python -B -m tools.prime_continuity.cli argus` |
 | Preview one bounded continuity update | `python -B -m tools.prime_continuity.cli plan-update ...`; candidate only, then reviewed draft-PR route |

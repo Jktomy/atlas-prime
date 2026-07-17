@@ -2,9 +2,9 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 32,
-  "source_base_sha": "40e58dcf33bae68f8c819c2f65c6474f52381718",
-  "quest_board_sha256": "6db081288442109a045039fd51bee51e3196b0421f64b33d5ae6a65eae241324",
+  "register_revision": 33,
+  "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
+  "quest_board_sha256": "43dce745c7a7a1ca678c8fa5bfa6243271a4951e5e55505693b25db4735de584",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -40,7 +40,8 @@
     "RP-C08-CAP027-FINAL-CAPABILITY-RECONCILIATION-R01",
     "RP-C08-FINAL-WHOLE-QUEST-STRIKEFORCE-RECONCILIATION-R01",
     "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01",
-    "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05"
+    "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05",
+    "PA-C01-QUEST-CREATION-R01"
   ],
   "entries": [
     {
@@ -65,7 +66,7 @@
       "continuity_id": "CONT-PROMETHEUS-FIRE-R01",
       "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
       "quest_source": "quests/prometheus-fire.md",
-      "quest_source_sha256": "da82109ef1c9788aeb3b3e127790060facbe146a091f5ebf19a8ee9d1a729280",
+      "quest_source_sha256": "ee012b754b17e1a8fe586ca5587261c36955ebf39bf9254b03790fbc697f0836",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "PF-C01",
       "mission_id": "PF-C01-M02",
@@ -116,6 +117,25 @@
       "next_approval": "Exact-head AJ-08 CI, detached review, and canonical readback.",
       "revision": 1,
       "last_event_id": "RP-C05-AJ08-ADMISSION-R01"
+    },
+    {
+      "continuity_id": "CONT-PRIME-ASCENDANT-R01",
+      "quest_id": "QUEST-PRIME-ASCENDANT-20260717",
+      "quest_source": "quests/prime-ascendant.md",
+      "quest_source_sha256": "b3a2e8db62dec3db194704397b6d7e96d988c4aeff1b006894bc2209ee380215",
+      "quest_state": "IN_PROGRESS",
+      "campaign_id": "PA-C01",
+      "mission_id": null,
+      "gate_id": "PA-C01-COVENANT-REFINEMENT",
+      "current_position": "Official Quest admitted in ACTIVE — ARCHITECTURE REFINEMENT with PA-C01 current and PA-C02 through PA-C10 established as the initial roadmap. No runtime or infrastructure work is authorized by this source transaction.",
+      "blockers": [
+        "PA-C01 covenant acceptance remains unproven.",
+        "The architecture decisions listed in the Quest source remain unresolved by design."
+      ],
+      "next_action": "Draft and review PA-C01 until the covenant acceptance gate is proven without authorizing runtime, infrastructure, migration, or route retirement.",
+      "next_approval": "Jayson must separately approve covenant acceptance and any later runtime, infrastructure, migration, cutover, or route-retirement transaction.",
+      "revision": 1,
+      "last_event_id": "PA-C01-QUEST-CREATION-R01"
     }
   ]
 }

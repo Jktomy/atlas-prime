@@ -100,9 +100,9 @@ class PhoenixRecoveryAcceptanceTests(unittest.TestCase):
         self.assertEqual(repairing_board["next_gate"], "CLOSED")
         self.assertIn("Sunset PR #224", repairing_board["completion_basis"])
         self.assertNotIn("CONT-REPAIRING-PRIME-R01", {item["continuity_id"] for item in self.continuity["entries"]})
-        self.assertEqual(self.continuity["register_revision"], 32)
-        self.assertEqual(self.continuity["source_base_sha"], "40e58dcf33bae68f8c819c2f65c6474f52381718")
-        self.assertEqual(self.continuity["event_ids"][-1], "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05")
+        self.assertEqual(self.continuity["register_revision"], 33)
+        self.assertEqual(self.continuity["source_base_sha"], "e87dbf05252fd80829143474b83b7fa180d66fb7")
+        self.assertEqual(self.continuity["event_ids"][-1], "PA-C01-QUEST-CREATION-R01")
         self.assertEqual(self.continuity["quest_board_sha256"], continuity_sha256(self.board))
         self.assertTrue(PROOF_MD.is_file())
 

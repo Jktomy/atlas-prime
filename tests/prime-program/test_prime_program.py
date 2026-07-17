@@ -76,9 +76,40 @@ class PrimeProgramTests(unittest.TestCase):
             "QUEST-FOUND-SILVERLIGHT-R01": ("quests/found-silverlight.md", "IN_PROGRESS", "FS-C01-M04 — Prove the Light"),
             "QUEST-PROMETHEUS-FIRE-20260701": ("quests/prometheus-fire.md", "IN_PROGRESS", "PF-C01-M02 Preview — Preserve the Old Flame"),
             "QUEST-NOTUMS-WATCH-20260708": ("quests/notums-watch.md", "READY_FOR_JAYSON_EXECUTION_PACKAGE", "NW-C01 readiness package and Jayson-side proof"),
+            "QUEST-PRIME-ASCENDANT-20260717": ("quests/prime-ascendant.md", "IN_PROGRESS", "PA-C01 — Write the Covenant"),
         }
         self.assertEqual({identity: independent[identity] for identity in expected_preserved}, expected_preserved)
         self.assertEqual(independent["QUEST-PRIME-CONTINUITY-PROOF-R01"], ("quests/prime-continuity-proof.md", "READY_FOR_CAMPAIGN_1_PREVIEW", "PCP-C01-PREVIEW"))
+
+    def test_prime_ascendant_is_architecture_refinement_only(self) -> None:
+        source = (ROOT / "quests/prime-ascendant.md").read_text(encoding="utf-8")
+        board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
+        quest = next(item for item in board["entries"] if item["quest_id"] == "QUEST-PRIME-ASCENDANT-20260717")
+        self.assertEqual(quest["source"], "quests/prime-ascendant.md")
+        self.assertEqual(quest["state"], "IN_PROGRESS")
+        self.assertEqual(quest["next_gate"], "PA-C01 — Write the Covenant")
+        for marker in (
+            "Prime Ascendant — The Dawnshard Covenant",
+            "ACTIVE — ARCHITECTURE REFINEMENT",
+            "PA-C01 — Write the Covenant",
+            "PA-C02 — Raise the Living Archive",
+            "PA-C03 — Forge Nexus Core",
+            "PA-C04 — Shape the Dawnshard",
+            "PA-C05 — Open the Private Gate",
+            "PA-C06 — Crown Gitea",
+            "PA-C07 — Awaken Artemis",
+            "PA-C08 — Bind the Realms",
+            "PA-C09 — Temper the Old Blades",
+            "PA-C10 — Prove the Dawn",
+            "**Runtime:** `NOT STARTED`",
+            "**Canonical cutover:** `NOT AUTHORIZED`",
+            "No route is retired during Quest creation.",
+        ):
+            self.assertIn(marker, source)
+        self.assertIn("Prime Reborn remains separate", source)
+        self.assertIn("Prometheus's Fire provides host and recovery substrate", source)
+        self.assertIn("PostgreSQL provides future Atlas Living Memory operational state", source)
+        self.assertIn("Qdrant remains deferred", source)
 
     def test_kandra_and_operator_endpoint_reconciliation_is_exact(self) -> None:
         projects = (ROOT / "projects/project-registry.md").read_text(encoding="utf-8")
@@ -134,6 +165,7 @@ class PrimeProgramTests(unittest.TestCase):
             "infrastructure/atlas-infrastructure-source.md",
             "recovery/phoenix-recovery.md",
             "quests/repairing-prime.md",
+            "quests/prime-ascendant.md",
             "proof/repairing-prime/rp-c08-final-whole-quest-strikeforce-reconciliation-r01.md",
             "proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.md",
             "proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.json",

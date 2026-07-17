@@ -44,10 +44,10 @@ class RpC01M08PartialTests(unittest.TestCase):
         self.assertTrue(all(value is False for value in self.cap015["forbidden_promotions"].values()))
 
     def test_continuity_history_survives_final_quest_closeout(self) -> None:
-        self.assertGreaterEqual(self.continuity["register_revision"], 32)
+        self.assertGreaterEqual(self.continuity["register_revision"], 33)
         self.assertIn("RP-C01-M08-FREE-FORM-ACCEPTANCE-R01", self.continuity["event_ids"])
         self.assertIn("RP-C08-CAP015-ARCHITECTURE-REALIGNMENT-R02", self.continuity["event_ids"])
-        self.assertEqual(self.continuity["event_ids"][-1], "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05")
+        self.assertEqual(self.continuity["event_ids"][-1], "PA-C01-QUEST-CREATION-R01")
         self.assertNotIn("QUEST-REPAIRING-PRIME-R01", {item["quest_id"] for item in self.continuity["entries"]})
         repairing = next(item for item in self.board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         self.assertEqual(repairing["state"], "COMPLETE")

@@ -77,7 +77,7 @@ class RpC01M07NonOwnerAcceptanceTests(unittest.TestCase):
         self.assertIn("Sunset PR #224", board["completion_basis"])
         self.assertNotIn("QUEST-REPAIRING-PRIME-R01", {item["quest_id"] for item in self.continuity["entries"]})
         self.assertEqual(self.continuity["event_ids"].count("RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"), 1)
-        self.assertEqual(self.continuity["event_ids"][-1], "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05")
+        self.assertEqual(self.continuity["event_ids"][-1], "PA-C01-QUEST-CREATION-R01")
         self.assertEqual(cap027["capability_disposition"], "RESTORED")
         self.assertEqual(cap027["activation_state"], "ACTIVE")
         self.assertIn("AJ-01 through AJ-12 are PROVEN", cap027["current_state"])
