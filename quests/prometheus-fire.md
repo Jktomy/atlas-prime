@@ -8,7 +8,7 @@ supporting_projects:
   - "Project Helios"
   - "Project Codex"
 source_type: Quest
-canonical_scope: "Parent Quest for converting Prometheus into a stable, recoverable Proxmox compute platform with the approved Crucible VM, Nexus LXC, Matrix LXC, and future Plex LXC topology."
+canonical_scope: "Parent Quest for converting Prometheus into a stable, recoverable Proxmox compute platform with the approved Crucible VM, Nexus Living Memory VM, and future Plex LXC topology."
 protected_level: High
 routes_from:
   - atlas-prime.md
@@ -27,7 +27,7 @@ routes_to:
 private_boundary: "Store only clean architecture, campaign status, gates, sanitized evidence pointers, and completion claims. Do not store IP addresses, private network maps, device registers, credentials, tokens, MFA or recovery codes, real environment values, PHI, raw finance evidence, account data, or unrestricted terminal output."
 evidence_boundary: "This Quest coordinates verified source and sanitized operating evidence. Original hardware diagnostics, backup artifacts, restore receipts, screenshots, private runtime values, and protected records remain in their approved evidence systems. Planning acceptance does not prove deployment."
 cleanup_path: "Keep active until all required Campaigns and Quest-level gates pass. Close through a final Noctua completion audit, Prime Quest Board and continuity-register synchronization, restart-safe Sunset, and verified merged-main readback."
-last_verified: 2026-07-14
+last_verified: 2026-07-17
 ---
 
 # Quest — Prometheus's Fire
@@ -44,53 +44,92 @@ last_verified: 2026-07-14
 
 ## 2. Purpose
 
-Prometheus's Fire converts Prometheus into Atlas's stable, recoverable, privately administered Proxmox compute and service node without bypassing Citadel readiness, Forge storage boundaries, Phoenix restore proof, or Atlas approval gates.
+Prometheus's Fire converts Prometheus into Atlas's stable, recoverable, privately administered Proxmox compute and service node without bypassing Citadel readiness, Forge storage boundaries, Phoenix restore proof, or Atlas approval gates. This source records architecture and proof requirements only; it does not claim deployment.
 
-The Quest coordinates:
+The Quest coordinates clean source and future proof for:
 
 - Prometheus hardware and Proxmox foundation;
 - private administration and rescue access;
 - narrow Forge, Hammer, and Anvil mounts;
 - Prometheus-to-Forge backup and destructive Phoenix restore proof;
 - Crucible and exclusive Intel Arc Pro B50 passthrough;
-- Nexus deterministic routing and mission state;
-- Matrix / Element private command-room transport;
+- a dedicated Nexus Living Memory VM with deterministic routing and mission state;
+- PF-C06 disposition of Matrix / Element from the active baseline;
 - future Plex LXC and controlled Forge-to-Prometheus cutover;
 - observability through Notum's Watch;
 - final source, recovery, and completion audit.
+
+The accepted launch envelope is:
+
+```text
+Prometheus / Proxmox
+├── Crucible VM — 28 GB RAM
+├── Nexus Living Memory VM — 10 GB RAM
+└── Plex LXC — 12 GB RAM
+
+Protected Proxmox reserve — 8 GB
+Flexible headroom — 6 GB
+Total — 64 GB
+```
+
+Launch rules are no ballooning and no memory overcommit. Crucible may grow
+only after measured concurrent-load proof. Temporary restore guests require an
+explicit RAM reallocation or guest-shutdown plan.
+
+The thin-provisioned NVMe planning envelope is approximately 64 GB for host
+ISOs/templates, 350 GB for Crucible, 120 GB for Nexus, and 150 GB for Plex;
+the remaining usable capacity is reserved for pool/filesystem overhead,
+snapshots, temporary restore needs, and growth. Exact remaining capacity is
+unknown until storage is formatted and measured.
 
 ## 3. Approved topology baseline
 
 ```text
 Prometheus / Proxmox
-├── Crucible VM — 20 GB
-├── Nexus LXC — 6 GB
-├── Matrix LXC — 4 GB
-└── Plex LXC — 12 GB, future cutover
+├── Crucible VM — 28 GB RAM
+├── Nexus Living Memory VM — 10 GB RAM
+└── Plex LXC — 12 GB RAM
 
-Temporary proof object:
-└── Phoenix restore-test LXC
+Protected Proxmox reserve — 8 GB
+Flexible headroom — 6 GB
+Total launch envelope — 64 GB
 ```
 
 ### Resource envelope
 
 | Guest or reserve | RAM |
 |---|---:|
-| Crucible VM | 20 GB |
-| Nexus LXC | 6 GB |
-| Matrix LXC | 4 GB |
+| Crucible VM | 28 GB |
+| Nexus Living Memory VM | 10 GB |
 | Plex LXC | 12 GB |
-| Permanent planned guests | 42 GB |
+| Permanent planned guests | 50 GB |
 | Protected Proxmox reserve | 8 GB |
-| Unassigned headroom | 14 GB |
+| Flexible headroom | 6 GB |
 
 Rules:
 
 - Prometheus remains a 64 GB baseline.
 - Ballooning and memory overcommit are disabled at launch.
-- A memory upgrade is not a Quest prerequisite.
 - The B50 is planned for exclusive passthrough to Crucible and is not shared with Forge.
 - The iGPU remains reserved for Prometheus display/recovery needs and future Plex Quick Sync proof.
+- Crucible may grow only after measured concurrent-load proof.
+- Temporary restore guests require an explicit RAM reallocation or guest-shutdown plan.
+
+### NVMe planning envelope
+
+This is a thin-provisioned, expandable plan rather than a measured capacity
+claim:
+
+| Planned area | Approximate capacity |
+|---|---:|
+| Proxmox host, ISO, and templates | 64 GB |
+| Crucible VM | 350 GB |
+| Nexus Living Memory VM | 120 GB |
+| Plex LXC | 150 GB |
+
+Remaining usable capacity is reserved for pool and filesystem overhead,
+snapshots, temporary restore needs, and future growth. Exact remaining
+capacity must be measured after storage formatting and pool creation.
 
 ## 4. Desired end state
 
@@ -102,14 +141,15 @@ Prometheus's Fire is complete only when:
 4. Prometheus backs up to Forge / Anvil and Phoenix proves an independent recovery copy.
 5. A destructive canary restore succeeds.
 6. Crucible passes B50 passthrough, model-runtime, backup, restore, and rollback proof.
-7. Nexus passes deterministic intake, validation, approval, quarantine, mission-state, and receipt proof.
-8. Matrix passes private access, encryption, signing, and recovery proof.
-9. Plex passes metadata restore, acceleration, recording, playback, concurrency, reboot, rollback, and cutover proof before leaving Forge.
+7. Nexus passes deterministic intake, validation, approval, quarantine, mission-state, and receipt proof on the dedicated VM substrate, with PostgreSQL, full-text search, and `pgvector` as the Phase 1 retrieval direction.
+8. PF-C06 records that Matrix / Synapse / Element are not part of the active Prometheus baseline and preserves lineage without claiming deployment or retirement.
+9. Plex passes metadata restore, acceleration, recording, playback, concurrency, reboot, rollback, and cutover proof before leaving Forge; its application database, metadata, cache, and transcode workspace remain on Prometheus local NVMe.
 10. Notum's Watch improves observability without becoming a mandatory control dependency or Prometheus prerequisite.
 11. Noctua verifies the final topology and exact evidence.
-12. The Prime Quest Board, continuity register, and Sunset closeout are synchronized.
+12. The Prime Quest Board and continuity register remain synchronized, with generated projections refreshed separately.
 13. Required Windows-specific work and Codex continuity are safely evacuated from the current Prometheus Windows installation before destructive action.
 14. Forge retains the persistent Helios backend while Apollo provides the separately bounded interactive Helios Control Deck.
+15. Prime Ascendant remains a planned follow-on Quest and is not created by this mission.
 
 ## 5. Explicit exclusions
 
@@ -128,12 +168,13 @@ The baseline does not include:
 - Komga;
 - Calibre / ebook-convert;
 - m4b-tool;
-- Element Web as a dedicated guest;
-- public Matrix registration or federation;
+- Matrix, Synapse, and Element as active Prometheus workloads;
 - public model, Nexus, n8n, or Proxmox endpoints;
+- Qdrant as a Phase 1 requirement;
 - Proxmox Backup Server as an immediate requirement;
 - acting Kandra workers before governance and tool gates pass;
-- automatic UPS shutdown or ONT / Eero recovery without a separate Phoenix / Beacon Preview and proof.
+- automatic UPS shutdown or ONT / Eero recovery without a separate Phoenix / Beacon Preview and proof;
+- Prime Ascendant creation, Living Memory application semantics, Dawnshard, Gitea cutover, or a private Atlas website.
 
 Forge retains HAOS, Paperless-ngx, Dozzle, Diun, and the persistent Helios backend: Gluetun, qBittorrent, Prowlarr, Sonarr, Radarr, optional Readarr, automated watchers and import workflows, storage-adjacent processing, Audiobookshelf, and current Plex until separately proven cutover.
 
@@ -201,6 +242,12 @@ Required proof:
 12. No credential, recovery key, token, private key, or secret enters Prime or ordinary migration artifacts.
 13. A later exact Execute gate authorizes Windows removal or Proxmox installation.
 
+The continuity proof must also record matching-memory and extended-memory
+testing, NVMe health, WHEA/PCIe/USB/KVM/thermal stability, firmware and BIOS
+state, virtualization/IOMMU/ReBAR/iGPU/B50 state, and Citadel power, cooling,
+cabling, console, and recovery readiness. These are proof requirements, not
+claims that any device or software has been changed.
+
 **Exit gate:** Apollo and Hermes continuity is proven, Windows recovery posture is preserved, and a separately approved destructive-action Preview may be prepared. Until then, Windows removal and Proxmox installation remain blocked.
 
 ## Campaign PF-C02 — Light the First Flame
@@ -219,6 +266,8 @@ Required proof:
 - 10 GbE primary path and independent rescue path;
 - minimal host services only;
 - local storage health and thin-pool thresholds;
+- Proxmox firewall baseline and guest network segmentation;
+- private management and an independent rescue path;
 - host configuration backup and recovery notes.
 
 ## Campaign PF-C03 — Carry the Phoenix Ember
@@ -234,13 +283,16 @@ Required proof:
 
 - approved NFS or SMB exports and permissions;
 - reboot persistence and safe unavailable-mount behavior;
-- temporary canary LXC creation;
+- temporary canary guest creation with an explicit RAM reallocation or guest-shutdown plan;
 - off-host backup;
 - original deletion;
 - restore under a different ID;
 - boot, marker, and network verification;
 - sanitized restore receipt;
-- independent off-Forge recovery plan.
+- independent off-Forge recovery plan;
+- Nexus VM backup/restore, PostgreSQL base-backup and WAL/PITR direction,
+  Plex metadata/configuration restoration, and a recovery copy not confined to
+  Forge.
 
 ## Campaign PF-C04 — Ignite the Crucible
 
@@ -261,57 +313,62 @@ Required proof:
 - Soulcaster local generation, embeddings, and reranking;
 - active Spren baseline and replacement discipline;
 - Open WebUI private model-lab posture;
-- read-only Atlas mirror, Indexer, Qdrant, and Mnemosyne boundaries;
+- read-only Atlas mirror, Indexer, and Mnemosyne boundaries;
+- Qdrant deferred from Phase 1 until measured need is proven;
 - cold-load, reboot, reset, thermal, cancellation, soak, backup, restore, and rollback tests;
 - no durable-action authority during probation.
 
-## Campaign PF-C05 — Raise Nexus
+## Campaign PF-C05 — Raise the Nexus Vessel
 
 **Owner:** Artemis / Operation Nexus
 **Support:** Codex / AI Governance
 **Status:** `BLOCKED_BY_PF-C04`
 **Depends on:** PF-C03 and PF-C04
 
-Build Nexus as the deterministic integration and mission-state LXC.
+Build Nexus as a dedicated QEMU VM substrate for the deterministic integration
+and mission-state service. This Campaign owns substrate proof, not the later
+Prime Ascendant application semantics.
 
 Required proof:
 
-- unprivileged LXC;
+- 10 GB RAM planning baseline and approximately 120 GB expandable local-NVMe disk;
+- 4–6 vCPU planning range;
 - n8n single-main with PostgreSQL;
 - Python / FastAPI integration surface;
+- ClamAV/FreshClam and private health endpoints;
 - Gemstone quarantine, hashing, archive safety, ClamAV, and manifest validation;
 - approval state, retries, timeouts, mission register, and Receipt Gemstone creation;
 - restricted private Kandra call path;
 - no broad Proxmox, Forge, GitHub, shell, merge, deletion, or cleanup authority;
-- application-aware backup and restore.
+- application-aware backup and restore;
+- base-backup and WAL path to Forge with sanitized recovery receipts.
 
-## Campaign PF-C06 — Open the Matrix
+## Campaign PF-C06 — Close the Matrix Gate
 
 **Owner:** Artemis / Operation Nexus
 **Support:** Phoenix / AI Governance
 **Status:** `BLOCKED_BY_PF-C05`
 **Depends on:** PF-C03 and PF-C05
 
-Build the private Matrix / Element transport LXC.
+Disposition Matrix, Synapse, and Element as removed from the active Prometheus
+baseline. Preserve the PF-C06 lineage and do not claim that Matrix was
+deployed and then retired.
 
 Required proof:
 
-- Synapse and dedicated PostgreSQL;
-- private registration only;
-- no federation;
-- restricted Nexus bot identity;
-- signing material protection;
-- encrypted-room state;
-- second-device and recovery-key restoration;
-- database and application-state backup and restore;
-- Element native-client operation.
+- no current Matrix/Element deployment requirement;
+- no Matrix dependency for Nexus or Plex;
+- VS Code/Apollo and a future private Atlas website replace the immediate
+  interaction need;
+- any future communications requirement must justify a separate source
+  decision or Quest.
 
 ## Campaign PF-C07 — Raise Relay
 
 **Owner:** Helios / Operation Relay
 **Support:** Odyssey / Phoenix
-**Status:** `BLOCKED_BY_PF-C06`
-**Depends on:** PF-C03 and PF-C06
+**Status:** `BLOCKED_BY_PF-C03_AND_RESOURCE_REVIEW`
+**Depends on:** PF-C03 and PF-C04/PF-C05 resource review
 
 Build the future Plex LXC and perform a separately approved controlled cutover from Forge.
 
@@ -345,6 +402,8 @@ Required proof:
 - no automatic shutdown, plug cycling, or ONT / Eero recovery unless separately approved;
 - exact configuration manifests and sanitized runbooks;
 - Prime Quest Board and continuity-register reconciliation;
+- PF-C06 Matrix disposition and no stale Matrix dependency;
+- PostgreSQL/WAL health, backup/restore boundaries, and no public endpoints;
 - final Strikeforce and Noctua audit;
 - restart-safe Sunset.
 
