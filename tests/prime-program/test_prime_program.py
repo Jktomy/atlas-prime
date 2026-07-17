@@ -83,6 +83,7 @@ class PrimeProgramTests(unittest.TestCase):
 
     def test_prime_ascendant_is_architecture_refinement_only(self) -> None:
         source = (ROOT / "quests/prime-ascendant.md").read_text(encoding="utf-8")
+        covenant = (ROOT / "quests/prime-ascendant-covenant.md").read_text(encoding="utf-8")
         board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
         quest = next(item for item in board["entries"] if item["quest_id"] == "QUEST-PRIME-ASCENDANT-20260717")
         self.assertEqual(quest["source"], "quests/prime-ascendant.md")
@@ -103,13 +104,38 @@ class PrimeProgramTests(unittest.TestCase):
             "PA-C10 — Prove the Dawn",
             "**Runtime:** `NOT STARTED`",
             "**Canonical cutover:** `NOT AUTHORIZED`",
-            "No route is retired during Quest creation.",
         ):
             self.assertIn(marker, source)
-        self.assertIn("Prime Reborn remains separate", source)
-        self.assertIn("Prometheus's Fire provides host and recovery substrate", source)
-        self.assertIn("PostgreSQL provides future Atlas Living Memory operational state", source)
-        self.assertIn("Qdrant remains deferred", source)
+        self.assertIn("prime-ascendant-covenant.md", source)
+        self.assertEqual([path.name for path in ROOT.glob("quests/prime-ascendant-covenant*.md")], ["prime-ascendant-covenant.md"])
+        for marker in (
+            "Prime Reborn owns",
+            "Prometheus's Fire owns",
+            "PostgreSQL full-text search + pgvector",
+            "Qdrant remains deferred",
+            "PA-C01-DEC-001",
+            "PA-C01-DEC-025",
+            "Campaign ownership map",
+            "Founding context and provenance",
+            "Proven workflow lesson",
+            "Shardblade is merge authority",
+            "Goddess Mode is persistence through safe repair and alternate routes",
+            "GREEN means the exact reviewed candidate is ready",
+        ):
+            self.assertIn(marker, covenant)
+
+    def test_universal_mode_definitions_are_narrow_and_aligned(self) -> None:
+        shardblade = (ROOT / "governance/shard-doctrine.md").read_text(encoding="utf-8")
+        aegis = (ROOT / "governance/atlas-aegis.md").read_text(encoding="utf-8")
+        strikeforce = (ROOT / "governance/atlas-strikeforce.md").read_text(encoding="utf-8")
+        protocols = (ROOT / "operations/protocol-library.md").read_text(encoding="utf-8")
+        self.assertIn("Shardblade is merge authority", shardblade)
+        self.assertIn("Shardblade is the separate authority that permits merging", shardblade)
+        self.assertIn("Goddess Mode is persistence through safe repair and alternate routes", aegis)
+        self.assertIn("GREEN means the exact reviewed candidate is ready for the next authorized gate", strikeforce)
+        self.assertIn("Shardblade is the\nseparate merge authority", strikeforce)
+        self.assertIn("Shardblade** is merge authority at the exact direct-Jayson permanence boundary", protocols)
+        self.assertNotIn("Goddess Mode grants", aegis)
 
     def test_kandra_and_operator_endpoint_reconciliation_is_exact(self) -> None:
         projects = (ROOT / "projects/project-registry.md").read_text(encoding="utf-8")
@@ -166,6 +192,7 @@ class PrimeProgramTests(unittest.TestCase):
             "recovery/phoenix-recovery.md",
             "quests/repairing-prime.md",
             "quests/prime-ascendant.md",
+            "quests/prime-ascendant-covenant.md",
             "proof/repairing-prime/rp-c08-final-whole-quest-strikeforce-reconciliation-r01.md",
             "proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.md",
             "proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.json",
