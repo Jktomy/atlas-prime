@@ -5,9 +5,7 @@ import json
 import unittest
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[2]
-
 
 class RpC01M05ParityAcceptanceTests(unittest.TestCase):
     def setUp(self) -> None:
@@ -18,6 +16,7 @@ class RpC01M05ParityAcceptanceTests(unittest.TestCase):
         self.route = json.loads((ROOT / "proof/repairing-prime/rp-c01-route-evidence-r01.json").read_text(encoding="utf-8"))
         self.identities = json.loads((ROOT / "continuity/quest-engine-identities-r01.json").read_text(encoding="utf-8"))
         self.continuity = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
+        self.board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
 
     def test_one_carrier_joins_direct_compiler_guided_and_hosted_evidence(self) -> None:
         journey = self.acceptance["same_carrier_journey"]
@@ -59,20 +58,19 @@ class RpC01M05ParityAcceptanceTests(unittest.TestCase):
         self.assertEqual(campaign["state"], "COMPLETE")
         self.assertEqual(missions["RP-C01-M07"], "PROVEN")
 
-    def test_route_and_continuity_preserve_historical_boundary(self) -> None:
+    def test_route_history_and_final_closeout_are_both_preserved(self) -> None:
         self.assertEqual(self.route["m05_same_carrier_parity"]["state"], "PROVEN")
         self.assertIn("PROVEN_SAME_CARRIER", self.route["mission_states"]["RP-C01-M05"])
-        repairing = next(item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         events = self.continuity["event_ids"]
         self.assertEqual(self.acceptance["transaction_base_sha"], "df66ae78dac1991db3902537fe338a4191d0da11")
         self.assertEqual(events.count("RP-C01-M05-PARITY-ACCEPTANCE-R01"), 1)
-        self.assertGreaterEqual(self.continuity["register_revision"], 15)
-        self.assertGreaterEqual(repairing["revision"], 14)
-        self.assertIn(repairing["last_event_id"], events)
-        self.assertFalse(any("RP-C01-M05" in blocker for blocker in repairing["blockers"]))
-        quest_sha = hashlib.sha256((ROOT / "quests/repairing-prime.md").read_bytes()).hexdigest()
-        self.assertEqual(repairing["quest_source_sha256"], quest_sha)
-
+        self.assertEqual(events.count("RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05"), 1)
+        self.assertLess(events.index("RP-C01-M05-PARITY-ACCEPTANCE-R01"), events.index("RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05"))
+        self.assertGreaterEqual(self.continuity["register_revision"], 32)
+        self.assertNotIn("QUEST-REPAIRING-PRIME-R01", {item["quest_id"] for item in self.continuity["entries"]})
+        repairing = next(item for item in self.board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
+        self.assertEqual(repairing["state"], "COMPLETE")
+        self.assertEqual(repairing["next_gate"], "CLOSED")
 
 if __name__ == "__main__":
     unittest.main()

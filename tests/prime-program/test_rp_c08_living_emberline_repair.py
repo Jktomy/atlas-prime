@@ -20,9 +20,9 @@ class RepairingPrimeLivingEmberlineTests(unittest.TestCase):
         self.assertEqual(record["record_id"], "QEM-R6QKBDHLY7I7PVVEKIGTZFMZZT")
         self.assertEqual(record["lineage_root_id"], record["record_id"])
         self.assertEqual(record["schema_version"], "2.0.0")
-        self.assertEqual(record["quest_state"], "IN_PROGRESS")
-        self.assertNotEqual(record["next_gate"], "CLOSED")
-        self.assertTrue({"MAIN", "SIDE", "BRANCHED"} <= {entry["entry_type"] for entry in record["journey_entries"]})
+        self.assertEqual(record["quest_state"], "COMPLETE")
+        self.assertEqual(record["next_gate"], "CLOSED")
+        self.assertTrue({"MAIN", "SIDE", "BRANCHED", "FINAL"} <= {entry["entry_type"] for entry in record["journey_entries"]})
         self.assertEqual(record["current_entry_id"], record["journey_entries"][-1]["entry_id"])
 
     def test_checkpoint_reference_remains_valid(self) -> None:

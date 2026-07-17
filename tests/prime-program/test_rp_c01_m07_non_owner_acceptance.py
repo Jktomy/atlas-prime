@@ -5,11 +5,9 @@ import json
 import unittest
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[2]
 PROOF = ROOT / "proof/repairing-prime/rp-c01-m07-non-owner-acceptance-r01.json"
 RECEIPT_SHA256 = "2b96117650e426b2fdea9b830b5ef8da1ee69ee74fb6127f90c9de648e13999b"
-
 
 class RpC01M07NonOwnerAcceptanceTests(unittest.TestCase):
     @classmethod
@@ -55,18 +53,11 @@ class RpC01M07NonOwnerAcceptanceTests(unittest.TestCase):
         self.assertEqual(artifact["artifact_id"], 8345413762)
         self.assertEqual(artifact["artifact_zip_sha256"], "77795a9da645a6788f369f31ed84a2141445366dff1f81807dec2d6ce47e5699")
         self.assertEqual(artifact["receipt_sha256"], RECEIPT_SHA256)
-        canonical_receipt = (
-            json.dumps(
-                self.proof["sanitized_receipt"], sort_keys=True, separators=(",", ":"), ensure_ascii=False
-            ) + "\n"
-        ).encode("utf-8")
+        canonical_receipt = (json.dumps(self.proof["sanitized_receipt"], sort_keys=True, separators=(",", ":"), ensure_ascii=False) + "\n").encode("utf-8")
         self.assertEqual(hashlib.sha256(canonical_receipt).hexdigest(), RECEIPT_SHA256)
 
     def test_only_m07_aj03_and_rp_c01_transition(self) -> None:
-        self.assertEqual(
-            set(self.proof["transitions"]),
-            {"RP-C01-M07", "AJ-03", "RP-C01", "ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN"},
-        )
+        self.assertEqual(set(self.proof["transitions"]), {"RP-C01-M07", "AJ-03", "RP-C01", "ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN"})
         self.assertEqual(self.proof["mission_state"], "PROVEN")
         self.assertEqual(self.proof["acceptance_journey_state"], "PROVEN")
         self.assertEqual(self.proof["campaign_state"], "COMPLETE")
@@ -78,27 +69,19 @@ class RpC01M07NonOwnerAcceptanceTests(unittest.TestCase):
         self.assertTrue(all(item["state"] == "PROVEN" for item in campaign["missions"]))
         self.assertEqual(self.route["campaign_gate_state"], "ACCEPTED")
 
-    def test_later_recovery_reconciliation_preserves_non_owner_evidence(self) -> None:
+    def test_later_final_closeout_preserves_non_owner_evidence(self) -> None:
         board = next(item for item in self.board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
-        continuity = next(item for item in self.continuity["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         cap027 = next(item for item in self.capabilities["capabilities"] if item["id"] == "CAP-027")
-        self.assertEqual(
-            board["next_gate"],
-            "Restart-safe Sunset, then final Quest closeout",
-        )
-        self.assertIn("Final Phoenix recovery is PROVEN", board["readiness_basis"])
-        self.assertEqual(
-            continuity["last_event_id"],
-            "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01",
-        )
-        self.assertEqual(continuity["revision"], 26)
-        self.assertIn("restart-safe Sunset", continuity["next_action"])
-        self.assertNotIn("final Phoenix recovery proof", continuity["next_action"])
+        self.assertEqual(board["state"], "COMPLETE")
+        self.assertEqual(board["next_gate"], "CLOSED")
+        self.assertIn("Sunset PR #224", board["completion_basis"])
+        self.assertNotIn("QUEST-REPAIRING-PRIME-R01", {item["quest_id"] for item in self.continuity["entries"]})
+        self.assertEqual(self.continuity["event_ids"].count("RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"), 1)
+        self.assertEqual(self.continuity["event_ids"][-1], "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05")
         self.assertEqual(cap027["capability_disposition"], "RESTORED")
         self.assertEqual(cap027["activation_state"], "ACTIVE")
         self.assertIn("AJ-01 through AJ-12 are PROVEN", cap027["current_state"])
         self.assertIn("rp-c08-cap027-final-capability-reconciliation-r01.md", cap027["required_proof"])
-
 
 if __name__ == "__main__":
     unittest.main()

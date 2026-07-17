@@ -10,12 +10,12 @@
       "state": "COMPLETE"
     },
     {
-      "next_gate": "Restart-safe Sunset, then final Quest closeout",
+      "next_gate": "CLOSED",
       "owner": "Codex / Source Governance",
       "quest_id": "QUEST-REPAIRING-PRIME-R01",
       "source": "quests/repairing-prime.md",
-      "state": "IN_PROGRESS",
-      "readiness_basis": "AJ-01 through AJ-12 are PROVEN; CAP-027 is RESTORED/ACTIVE; all 28 capability dispositions are reconciled with 15 RESTORED and 0 STILL_MISSING. Final generated-current state is accepted through PR #218 at canonical main 797fb2a1add829ccc304086a56f6d223d130d90d. The final whole-Quest Strikeforce is GREEN. Final Phoenix recovery is PROVEN from the exact-main Oathbringer mission and GREEN sanitized audit envelope. RP-C08 remains IN_PROGRESS for restart-safe Sunset and final completion."
+      "state": "COMPLETE",
+      "completion_basis": "RP-C01-RP-C08 are complete; AJ-01-AJ-12 are PROVEN; CAP-027 is RESTORED/ACTIVE; all 28 capability dispositions are reconciled with 0 BLOCKED and 0 STILL_MISSING. Phoenix recovery is accepted. Sunset PR #224 merged at 40e58dcf33bae68f8c819c2f65c6474f52381718. The generated publisher run 29536662886 proved Ubuntu/Windows parity and a truthful zero-delta NOOP. Living Emberline is COMPLETE/CLOSED; Repairing Prime is removed from active continuity; independent Quest states are unchanged."
     },
     {
       "next_gate": "FS-C01-M04 — Prove the Light",
