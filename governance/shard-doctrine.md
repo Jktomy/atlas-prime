@@ -23,10 +23,10 @@ an authorizer or writer.
 
 ## Shardblade
 
-Shardblade is the exact Jayson-authorized permanence boundary. It is not an
-agent, model, provider, Light, work surface, construction route, repository
-writer, or standing authority. It may act only on the exact already-authored,
-reviewed candidate named by one current request.
+Shardblade is merge authority for the exact Jayson-authorized permanence
+boundary. It is not an agent, model, provider, Light, work surface, construction
+route, repository writer, or standing authority. It may act only on the exact
+already-authored, reviewed candidate named by one current request.
 
 Both `READY` and `MERGE` are Shardblade actions, but they are distinct and
 non-substitutable:
@@ -36,8 +36,9 @@ non-substitutable:
 - `MERGE` makes that same exact ready candidate canonical only after a fresh
   readback and a new Jayson approval.
 
-READY authority never implies MERGE authority. A successful READY receipt is
-evidence, not approval. Each action has a different request ID and digest,
+READY authority never implies MERGE authority. Strikeforce GREEN establishes
+readiness; Shardblade is the separate authority that permits merging the
+reviewed exact head. A successful READY receipt is evidence, not approval. Each action has a different request ID and digest,
 approval ID and nonce, attempt and receipt identity, stop point, and readback.
 Delegation, standing approval, combined READY+MERGE, automatic retry, and
 approval reuse are forbidden.

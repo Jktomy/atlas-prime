@@ -20,4 +20,6 @@ Noctua verifies
 
 Strikeforce is read-only.
 
-GREEN does not merge, activate, promote, or cut over Prime.
+GREEN means the exact reviewed candidate is ready for the next authorized gate.
+GREEN does not merge, activate, promote, or cut over Prime. Shardblade is the
+separate merge authority for the reviewed exact head.
