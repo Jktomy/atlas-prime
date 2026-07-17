@@ -26,7 +26,7 @@ The VM substrate, PostgreSQL, WAL protection, ClamAV/FreshClam, private health
 endpoints, backup, and restore are proof boundaries for Prometheus's Fire.
 Living Memory application semantics, Dawnshard, database-backed Controlled
 Burn/Phoenix Burn, the private Atlas website, Gitea authority migration, and
-other lifecycle/workflow behavior are governed by the official architecture-
+other lifecycle/workflow behaviors are governed by the official architecture-
 refinement Quest `quests/prime-ascendant.md`; this source does not claim
 implementation or runtime deployment.
 
