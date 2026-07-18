@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -216,11 +215,31 @@ def write_github_output(path: str, plan: dict[str, object]) -> None:
         stream.write(f"check_count={len(plan['checks'])}\n")
 
 
+def _bounded_failure_output(text: str, *, max_lines: int = 160) -> str:
+    lines = text.splitlines()
+    if len(lines) <= max_lines:
+        return text
+    omitted = len(lines) - max_lines
+    return f"[... {omitted} earlier lines omitted ...]\n" + "\n".join(lines[-max_lines:])
+
+
 def execute_plan(plan: dict[str, object]) -> None:
     for check_id in plan["checks"]:
         check = CHECKS[str(check_id)]
         print(f"\n=== Prime validation: {check.check_id} ===", flush=True)
-        subprocess.run(check.command, cwd=ROOT, check=True)
+        completed = subprocess.run(
+            check.command,
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+        if completed.returncode != 0:
+            print(f"Prime validation FAILED: {check.check_id}", file=sys.stderr)
+            combined = "\n".join(value for value in (completed.stdout, completed.stderr) if value)
+            if combined:
+                print(_bounded_failure_output(combined), file=sys.stderr)
+            raise subprocess.CalledProcessError(completed.returncode, check.command)
+        print(f"Prime validation PASS: {check.check_id}", flush=True)
 
 
 def build_parser() -> argparse.ArgumentParser:
