@@ -64,13 +64,30 @@ jobs:
           --github-output "$GITHUB_OUTPUT"
       - name: Run targeted pull-request validation
         if: github.event_name == 'pull_request'
-        run: >-
-          python -B tools/prime_checks/targeted_validation.py
-          --base "$BASE_SHA"
-          --head "$HEAD_SHA"
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/prime-validation"
+          python -B tools/prime_checks/targeted_validation.py \
+            --base "$BASE_SHA" \
+            --head "$HEAD_SHA" \
+            2>&1 | tee "$RUNNER_TEMP/prime-validation/validation.log"
       - name: Run explicit full validation
         if: github.event_name == 'workflow_dispatch'
-        run: python -B tools/prime_checks/targeted_validation.py --full
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/prime-validation"
+          python -B tools/prime_checks/targeted_validation.py --full \
+            2>&1 | tee "$RUNNER_TEMP/prime-validation/validation.log"
+      - name: Upload bounded failure evidence
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: prime-validation-failure-ubuntu-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/prime-validation/validation.log
+          if-no-files-found: error
+          retention-days: 7
       - name: Record validation profile
         if: always()
         run: |
@@ -106,10 +123,27 @@ jobs:
           python-version: "3.12"
       - name: Run targeted Windows validation
         if: github.event_name == 'pull_request'
-        run: >-
-          python -B tools/prime_checks/targeted_validation.py
-          --base "$env:BASE_SHA"
-          --head "$env:HEAD_SHA"
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force "$env:RUNNER_TEMP/prime-validation" | Out-Null
+          python -B tools/prime_checks/targeted_validation.py `
+            --base "$env:BASE_SHA" `
+            --head "$env:HEAD_SHA" 2>&1 |
+            Tee-Object -FilePath "$env:RUNNER_TEMP/prime-validation/validation.log"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Run explicit full Windows validation
         if: github.event_name == 'workflow_dispatch'
-        run: python -B tools/prime_checks/targeted_validation.py --full
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force "$env:RUNNER_TEMP/prime-validation" | Out-Null
+          python -B tools/prime_checks/targeted_validation.py --full 2>&1 |
+            Tee-Object -FilePath "$env:RUNNER_TEMP/prime-validation/validation.log"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Upload bounded failure evidence
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: prime-validation-failure-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/prime-validation/validation.log
+          if-no-files-found: error
+          retention-days: 7
