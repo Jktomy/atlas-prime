@@ -37,7 +37,7 @@ def campaign_sha256(warrant: dict[str, Any]) -> str:
 
 def _canonical_paths(paths: list[str]) -> bool:
     folded = [path.casefold() for path in paths]
-    return ([safe_path(path) for path in paths] == paths
+    return (bool(paths) and [safe_path(path) for path in paths] == paths
             and paths == sorted(paths, key=str.casefold)
             and len(folded) == len(set(folded)))
 
@@ -60,6 +60,8 @@ def validate_campaign_warrant(
     if not REQUIRED_FORBIDDEN.issubset(warrant["forbidden"]):
         raise WarrantValidationError("CAMPAIGN_FORBIDDEN_SET_INVALID")
     stages = warrant["stages"]
+    if not 1 <= len(stages) <= 64:
+        raise WarrantValidationError("CAMPAIGN_STAGE_SET_INVALID")
     ids = [item["stage_id"] for item in stages]
     if ids != list(range(len(ids))) or warrant["completion_stage_id"] != ids[-1]:
         raise WarrantValidationError("CAMPAIGN_STAGE_SET_INVALID")

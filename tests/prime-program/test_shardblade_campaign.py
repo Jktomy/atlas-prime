@@ -66,6 +66,7 @@ class CampaignShardbladeTests(unittest.TestCase):
         with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_AUTHORIZATION_REJECTED"):
             validate_campaign_warrant(warrant, authorization_verifier=None, now=self.now)
         for mutate, code in (
+            (lambda value: value.update({"stages": []}), "CAMPAIGN_STAGE_SET_INVALID"),
             (lambda value: value["stages"][0].update({"allowed_paths": ["governance/*"]}), "PATH_SCOPE_INVALID|CAMPAIGN_PATH_INVALID"),
             (lambda value: value.update({"expires_at": "2026-07-22T12:00:01Z"}), "CAMPAIGN_EXPIRY_INVALID"),
             (lambda value: value.update({"status": "COMPLETED"}), "CAMPAIGN_INACTIVE"),
@@ -73,6 +74,8 @@ class CampaignShardbladeTests(unittest.TestCase):
             candidate = copy.deepcopy(warrant); mutate(candidate)
             with self.assertRaisesRegex(WarrantValidationError, code): validate_campaign_warrant(candidate, authorization_verifier=self.trusted, now=self.now)
         request = self.request(warrant); request["changed_paths"] = ["governance/change-routes.md"]
+        with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_SCOPE_WIDENED"): validate_stage_request(request, warrant, authorization_verifier=self.trusted, now=self.now)
+        request = self.request(warrant); request["changed_paths"] = []
         with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_SCOPE_WIDENED"): validate_stage_request(request, warrant, authorization_verifier=self.trusted, now=self.now)
         request = self.request(warrant); request.update({"created_at": "2026-07-18T17:02:00Z", "readback_at": "2026-07-18T17:01:00Z"})
         with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_READBACK_TIME_INVALID"): validate_stage_request(request, warrant, authorization_verifier=self.trusted, now=self.now)
