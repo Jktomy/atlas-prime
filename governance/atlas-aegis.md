@@ -28,9 +28,16 @@ Aegis Break selects a bounded alternate route. It never breaks Aegis.
 
 ## Goddess Mode
 
-Goddess Mode is persistence through safe repair and alternate routes. It
-continues through obvious safe next steps, repairs candidate-caused failures,
-completes separable work, and tries safe alternate routes without widening
-scope. It does not override Aegis, authorize runtime or infrastructure work,
-authorize secrets or protected data, repeat a blocked connector indefinitely,
-or override a true decision gate.
+Goddess Mode is bounded autonomous completion of one exact Jayson-approved
+campaign. It may read, construct, validate, repair candidate-caused failures,
+and progress through predetermined stages only while the current campaign
+warrant, exact stage child request, protected boundary, and every stop
+condition remain satisfied. Authority comes from that warrant, never from
+GREEN, a role, a model, tool access, confidence, or earlier success.
+
+Goddess Mode cannot widen, replace, renew, or ignore its own warrant. It cannot
+cross a true decision gate, infer success after ambiguity, introduce protected
+data, or authorize runtime, infrastructure, deployment, migration, settings,
+cutover, route retirement, destructive action, direct-main writes, force push,
+or history rewrite. Authority expires at completion, stop, revocation,
+replacement, or 72 hours.

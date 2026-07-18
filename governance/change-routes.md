@@ -24,7 +24,7 @@ protected_level: "CRITICAL"
 | Normal repository engine | Prime Thread Engine, singular |
 | Repository substrate | Exact GitHub-native tree transaction or Fresh Clone First |
 | AI-assisted work surface | Shardplate |
-| Exact permanence boundary | Shardblade: distinct direct-Jayson READY or MERGE request under `governance/shard-doctrine.md`; machine route remains `CONTRACT_ONLY_NOT_ACTIVATED` pending trusted adapter and live proof |
+| Exact permanence boundary | Shardblade: distinct READY or MERGE request under `governance/shard-doctrine.md`; one current direct-Jayson candidate request or one exact Jayson-approved bounded campaign warrant may authorize the applicable operation |
 | Provider, model, and runtime identity | Bound independently; trusted reported tokens map only to Spirallight, Chromelight, or Emberlight under `governance/investiture-source-identity-contract.md` |
 
 ```text
@@ -47,7 +47,8 @@ Every route:
 - uses exact base and payload locks;
 - contains durable construction in a branch and draft PR for Noctua;
 - prohibits direct main and force push;
-- prohibits automatic ready and automatic merge;
-- requires separate Jayson permanence authority.
+- prohibits standing or unbounded automatic ready and merge;
+- requires separate permanence authority from an exact Jayson request or exact
+  bounded campaign warrant, with READY and MERGE still separate.
 
 Prime has one normal repository engine. Spear and Arrow/Bow invoke Thread Engine. Phoenix Blade and Oathbringer execute Swords independently of Thread Engine. Aegis Break selects or constructs a safe bounded route and never becomes a second normal repository writer. Thread Engine never performs its own self-change.

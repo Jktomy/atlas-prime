@@ -17,8 +17,12 @@ when their recorded error matches the validator's observed reason.
 The generic v1 path is structural RP-C02 evidence only for permanence. It
 rejects every v1 READY, MERGE, or `SHARDBLADE_PERMANENCE` warrant with
 `SHARDBLADE_DEDICATED_CONTRACT_REQUIRED`. Current Shardblade validation uses
-`permanence.py` and the dedicated request, direct approval, and receipt schemas.
-That module is also read-only and `CONTRACT_ONLY_NOT_ACTIVATED`: callers must
+`permanence.py` for one directly approved candidate and `campaign.py` for one
+exact Jayson-approved bounded campaign. Campaign validation closes stage IDs,
+paths, expiry, exact-head checks, independent reviews, Copilot dispositions,
+separate READY/MERGE chains, fresh readback, replay, receipts, and rollback.
+Both modules are read-only; the single-candidate route remains
+`CONTRACT_ONLY_NOT_ACTIVATED`. Callers must
 supply trusted Jayson verification, fresh GitHub readbacks, and one durable
 reservation ledger that binds each accepted receipt to its prior request and
 approval reservation before any mutation.

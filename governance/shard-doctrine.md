@@ -23,10 +23,9 @@ an authorizer or writer.
 
 ## Shardblade
 
-Shardblade is merge authority for the exact Jayson-authorized permanence
-boundary. It is not an agent, model, provider, Light, work surface, construction
-route, repository writer, or standing authority. It may act only on the exact
-already-authored, reviewed candidate named by one current request.
+Shardblade is the bounded permanence executor for an exact Jayson-approved
+candidate or campaign warrant. It is not an agent, model, provider, Light, work
+surface, construction route, repository writer, or standing authority.
 
 Both `READY` and `MERGE` are Shardblade actions, but they are distinct and
 non-substitutable:
@@ -42,6 +41,23 @@ reviewed exact head. A successful READY receipt is evidence, not approval. Each 
 approval ID and nonce, attempt and receipt identity, stop point, and readback.
 Delegation, standing approval, combined READY+MERGE, automatic retry, and
 approval reuse are forbidden.
+
+## Campaign Shardblade
+
+One exact Jayson-approved campaign warrant may prospectively authorize separate
+READY and MERGE operations for predetermined stages. Every operation still
+requires a stage child request binding the current canonical base, campaign
+digest, PR, branch, head, tree, complete changed-path inventory, Preview,
+construction receipt, exact-head checks, Noctua, Ares, Athena, Strikeforce,
+Copilot dispositions, rollback, and protected-path posture. After READY,
+Campaign Shardblade requires a fresh unchanged-candidate readback and a new
+MERGE request. Each operation has its own nonce, replay reservation, and
+immutable receipt.
+
+Campaign Shardblade receives authority from the campaign warrant, not from
+GREEN. It cannot author, repair, widen, substitute, self-renew, retry ambiguity,
+or merge a different head. It stops and expires with the campaign. The existing
+single-candidate route remains valid and separate.
 
 Shardblade may not author, modify, repair, widen, substitute, bypass checks,
 change the candidate head, select an undeclared merge method, or conceal a
@@ -84,8 +100,17 @@ The machine contracts are
 objects satisfy this contract. It does not perform GitHub mutation, prove that
 the supplied readbacks came from GitHub, or grant permanence by itself.
 
-This source layer is `CONTRACT_ONLY_NOT_ACTIVATED`. No production Shardblade
-route is accepted yet. Activation still requires a trusted GitHub adapter that
+The bounded campaign contracts are
+`schemas/shardblade-campaign-warrant-v1.schema.json`,
+`schemas/shardblade-campaign-stage-request-v1.schema.json`, and
+`schemas/shardblade-campaign-stage-receipt-v1.schema.json`, validated by
+`tools/agentic_warrants/campaign.py`. They enforce stage, expiry, exact path,
+review, READY-chain, readback, replay, receipt, and rollback bindings without
+turning a campaign warrant into a credential or standing authority.
+
+The single-candidate source layer is `CONTRACT_ONLY_NOT_ACTIVATED`. No
+production Shardblade route is accepted yet. Activation still requires a
+trusted GitHub adapter that
 proves the construction and protected-path approvals, canonical-base policy,
 PR readback, workflow source and exact run identities, detached-review origin,
 atomic request reservation, mutation compare-and-swap, and final readback, plus

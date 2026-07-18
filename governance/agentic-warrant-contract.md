@@ -67,6 +67,11 @@ an explicit human approval record at the exact action boundary. That record
 binds the attempted request digest and cannot authorize a different request.
 READY and MERGE are distinct Shardblade actions under
 `governance/shard-doctrine.md`; neither may use the generic v1 warrant path.
+The dedicated Campaign Shardblade path may bind one exact Jayson-approved
+campaign to predetermined stage child requests. It preserves separate READY
+and MERGE requests, receipts, compare-and-swap checks, and readbacks; it cannot
+widen, renew, or treat the campaign warrant as a credential or standing
+authority.
 Each requires the dedicated request, direct Jayson approval, exact candidate
 readback, and receipt chain. A READY receipt never implies MERGE authority.
 Prime routes remain governed by `governance/change-routes.md`; a warrant cannot

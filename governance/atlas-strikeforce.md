@@ -23,3 +23,9 @@ Strikeforce is read-only.
 GREEN means the exact reviewed candidate is ready for the next authorized gate.
 GREEN does not merge, activate, promote, or cut over Prime. Shardblade is the
 separate merge authority for the reviewed exact head.
+
+For a bounded campaign, Strikeforce also reconciles the campaign digest, stage
+child request, full changed-path inventory, Preview and construction receipts,
+required checks, Copilot dispositions, rollback, expiry, and fresh post-READY
+readback. Campaign GREEN creates no authority; only the exact Jayson-approved
+campaign warrant can authorize the separate Shardblade action.
