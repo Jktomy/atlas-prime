@@ -76,6 +76,11 @@ The Feather retains the rich authored restart meaning, while the Sunset retains
 the closeout assessment, unresolved items, next safe action, next approval gate,
 source locks, and protected pointers.
 
+This completed lifecycle transaction is the **full Atlas Sunset**. It is not a
+continuity snapshot, and a compact continuity view cannot claim its closeout,
+cardinality, lesson evaluation, or recovery result. The shared historical word
+`sunset` on a low-level continuity command does not change this semantic route.
+
 Sunrise resolves one exact Sunset/Feather pair. It must name the same Feather
 recorded by the Sunset and reconstruct only the bounded compact context. A
 missing, null, dangling, reused, cross-scope, or mismatched Feather binding fails

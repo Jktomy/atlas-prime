@@ -43,6 +43,14 @@ Skip:
 
 - [File / heading / line concept]
 
+## Semantic objective and assurance controls
+
+- User semantic objective: [Exact meaning, independent of command-name overlap]
+- Objective-to-route reconciliation: [Canonical route and rejected substitution]
+- Assurance-control applicability:
+  - [ASC-ID]: [APPLIED with exact enforcement/evidence | NOT_APPLICABLE with exact objective-specific reason]
+- Unknown or omitted applicability: FAIL CLOSED
+
 ## Rollback plan
 
 [Revert commit / remove new files / restore previous routing.]

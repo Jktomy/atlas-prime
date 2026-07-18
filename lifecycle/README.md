@@ -31,6 +31,9 @@ Authority is deliberately narrow:
 - archive and supersession records change other lifecycle interpretation
   without deleting an identity or breaking a reference.
 - Golden Wings are reusable-lesson candidates, never doctrine.
+- a full Atlas Sunset is the lifecycle closeout that creates one exact
+  Feather/Sunset/Sunrise binding; the compact `prime_continuity` snapshot is a
+  distinct read-only view and cannot claim closeout;
 - `fixtures/` is harmless test material and has no Atlas authority.
 - `generated/lifecycle/` is a deterministic, noncanonical projection.
 - `events/` is append-only canonical history only after the applicable apply
