@@ -87,14 +87,18 @@ class PrimeContinuityTests(unittest.TestCase):
         ascendant = next(entry for entry in self.register["entries"] if entry["continuity_id"] == "CONT-PRIME-ASCENDANT-R01")
         creation_event = "PA-C01-QUEST-CREATION-R01"
         sunset_event = "PA-C01-HOSTED-ACTIONS-SUNSET-R01"
+        reconciliation_event = "PA-C01-POST-237-RECONCILIATION-R01"
         self.assertEqual(ascendant["quest_state"], "IN_PROGRESS")
         self.assertEqual(ascendant["campaign_id"], "PA-C01")
         self.assertIsNone(ascendant["mission_id"])
         self.assertEqual(ascendant["gate_id"], "PA-C01-COVENANT-REFINEMENT")
-        self.assertGreaterEqual(ascendant["revision"], 2)
+        self.assertEqual(ascendant["revision"], 3)
         self.assertEqual(self.register["event_ids"].count(creation_event), 1)
         self.assertEqual(self.register["event_ids"].count(sunset_event), 1)
+        self.assertEqual(self.register["event_ids"].count(reconciliation_event), 1)
         self.assertLess(self.register["event_ids"].index(creation_event), self.register["event_ids"].index(sunset_event))
+        self.assertLess(self.register["event_ids"].index(sunset_event), self.register["event_ids"].index(reconciliation_event))
+        self.assertEqual(ascendant["last_event_id"], reconciliation_event)
         self.assertIn(ascendant["last_event_id"], self.register["event_ids"])
         self.assertGreaterEqual(self.register["event_ids"].index(ascendant["last_event_id"]), self.register["event_ids"].index(sunset_event))
 
