@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 import json
 import unittest
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from tools.athena_routes.schema import SchemaValidationError, validate_schema
 
@@ -30,7 +30,12 @@ class AssuranceControlTests(unittest.TestCase):
             self.assertTrue(control["required_evidence"])
             self.assertTrue(control["enforcement_sources"])
             for source in control["enforcement_sources"]:
-                self.assertTrue((ROOT / source).is_file(), source)
+                relative = PurePosixPath(source)
+                self.assertFalse(relative.is_absolute(), source)
+                self.assertNotIn("..", relative.parts, source)
+                resolved = (ROOT / source).resolve()
+                self.assertTrue(resolved.is_relative_to(ROOT.resolve()), source)
+                self.assertTrue(resolved.is_file(), source)
 
     def test_schema_rejects_unknown_fields_and_statuses(self) -> None:
         extra = copy.deepcopy(self.register); extra["controls"][0]["candidate_note"] = "not controlling"
@@ -45,6 +50,9 @@ class AssuranceControlTests(unittest.TestCase):
         active_with_successor = copy.deepcopy(self.register); active_with_successor["controls"][0]["superseded_by"] = "ASC-003"
         with self.assertRaises(SchemaValidationError):
             validate_schema(self.schema, active_with_successor)
+        escaped = copy.deepcopy(self.register); escaped["controls"][0]["enforcement_sources"] = ["../outside.md"]
+        with self.assertRaises(SchemaValidationError):
+            validate_schema(self.schema, escaped)
 
     def test_seed_controls_have_real_semantic_enforcement(self) -> None:
         controls = {item["control_id"]: item for item in self.register["controls"]}
