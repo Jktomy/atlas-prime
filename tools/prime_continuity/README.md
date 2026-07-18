@@ -5,8 +5,9 @@ operational continuity register. It plans exactly one-entry, replay-ledger-bound
 continuity updates, renders a deterministic non-authoritative Emberline, and
 reconstructs bounded Sunset, Sunrise, and Argus views without chat memory.
 Here, `sunset` is the historical command name for a compact continuity
-snapshot. It is not a full Atlas Sunset, creates no lifecycle Feather/Sunset/
-Sunrise record set, performs no lesson absorption, and cannot claim closeout.
+snapshot. It is not a full Atlas Sunset, creates no lifecycle
+Feather/Sunset/Sunrise record set, performs no lesson absorption, and cannot
+claim closeout.
 Route the full lifecycle objective through `governance/lesson-harvest-protocol.md`
 and `tools.atlas_lifecycle` instead.
 
