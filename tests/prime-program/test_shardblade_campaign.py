@@ -33,7 +33,7 @@ class CampaignShardbladeTests(unittest.TestCase):
                 {"stage_id": 0, "route": "AEGIS_BREAK_BOOTSTRAP", "base_source": "EXACT_INITIAL", "initial_base_sha": "a" * 40, "allowed_paths": ["governance/atlas-aegis.md"], "actions": ["READY", "MERGE"]},
                 {"stage_id": 1, "route": "CAMPAIGN_SHARDBLADE", "base_source": "PRIOR_STAGE_MERGE", "initial_base_sha": None, "allowed_paths": ["governance/lesson-harvest-protocol.md"], "actions": ["READY", "MERGE"]},
             ],
-            "stop_conditions": ["DRIFT", "SCOPE_EXPANSION"], "forbidden": ["DIRECT_MAIN", "FORCE_PUSH", "HISTORY_REWRITE", "BLIND_RETRY", "WARRANT_SELF_MODIFICATION", "SCOPE_EXPANSION", "PROTECTED_DATA"],
+            "stop_conditions": ["AMBIGUITY", "AMBIGUOUS_MUTATION", "DRIFT", "FAILED_CHECK", "IDENTITY_MISMATCH", "INTERRUPTION", "PATH_OUTSIDE_ENVELOPE", "PROTECTED_BOUNDARY_FAILURE", "RED", "REPLAY", "ROLLBACK_UNPROVEN", "TRUE_DECISION_GATE", "UNRESOLVED_REVIEW", "YELLOW"], "forbidden": ["DIRECT_MAIN", "FORCE_PUSH", "HISTORY_REWRITE", "BLIND_RETRY", "WARRANT_SELF_MODIFICATION", "SCOPE_EXPANSION", "PROTECTED_DATA"],
             "completion_stage_id": 1, "no_standing_authority": True,
         }
 
@@ -83,6 +83,7 @@ class CampaignShardbladeTests(unittest.TestCase):
             validate_campaign_warrant(warrant, authorization_verifier=None, now=self.now)
         for mutate, code in (
             (lambda value: value.update({"stages": []}), "CAMPAIGN_STAGE_SET_INVALID"),
+            (lambda value: value.update({"stop_conditions": []}), "CAMPAIGN_STOP_SET_INVALID"),
             (lambda value: value["stages"][0].update({"allowed_paths": ["governance/*"]}), "PATH_SCOPE_INVALID|CAMPAIGN_PATH_INVALID"),
             (lambda value: value.update({"expires_at": "2026-07-22T12:00:01Z"}), "CAMPAIGN_EXPIRY_INVALID"),
             (lambda value: value.update({"status": "COMPLETED"}), "CAMPAIGN_INACTIVE"),
@@ -107,7 +108,7 @@ class CampaignShardbladeTests(unittest.TestCase):
     def test_later_stage_base_is_bound_to_prior_verified_merge(self) -> None:
         warrant = self.warrant(); ready = self.request(warrant); prior = self.receipt(ready)
         prior.update({"action": "MERGE", "observed_pr_state": "MERGED", "merge_commit_sha": "e" * 40,
-                      "canonical_main_sha": "e" * 40, "canonical_tree_sha": "f" * 40,
+                      "canonical_main_sha": "e" * 40, "canonical_tree_sha": prior["tree_sha"],
                       "rollback": "REVIEWED_REVERT_PR"})
         request = self.request(warrant)
         request.update({"stage_id": 1, "base_sha": "e" * 40,

@@ -19,6 +19,12 @@ REQUIRED_FORBIDDEN = {
     "DIRECT_MAIN", "FORCE_PUSH", "HISTORY_REWRITE", "BLIND_RETRY",
     "WARRANT_SELF_MODIFICATION", "SCOPE_EXPANSION", "PROTECTED_DATA",
 }
+REQUIRED_STOPS = {
+    "DRIFT", "AMBIGUITY", "YELLOW", "RED", "FAILED_CHECK",
+    "UNRESOLVED_REVIEW", "ROLLBACK_UNPROVEN", "AMBIGUOUS_MUTATION",
+    "REPLAY", "INTERRUPTION", "IDENTITY_MISMATCH", "PATH_OUTSIDE_ENVELOPE",
+    "PROTECTED_BOUNDARY_FAILURE", "TRUE_DECISION_GATE",
+}
 ReplayGuard = Callable[[tuple[str, ...]], bool]
 AuthorizationVerifier = Callable[[dict[str, Any]], bool]
 ReceiptVerifier = Callable[[dict[str, Any]], bool]
@@ -59,6 +65,9 @@ def validate_campaign_warrant(
         raise WarrantValidationError("CAMPAIGN_AUTHORIZATION_REJECTED")
     if not REQUIRED_FORBIDDEN.issubset(warrant["forbidden"]):
         raise WarrantValidationError("CAMPAIGN_FORBIDDEN_SET_INVALID")
+    if (not REQUIRED_STOPS.issubset(warrant["stop_conditions"])
+            or len(warrant["stop_conditions"]) != len(set(warrant["stop_conditions"]))):
+        raise WarrantValidationError("CAMPAIGN_STOP_SET_INVALID")
     stages = warrant["stages"]
     if not 1 <= len(stages) <= 64:
         raise WarrantValidationError("CAMPAIGN_STAGE_SET_INVALID")
@@ -190,7 +199,9 @@ def validate_stage_receipt(
                 or receipt["merge_commit_sha"] is not None or receipt["canonical_main_sha"] is not None
                 or receipt["canonical_tree_sha"] is not None or receipt["rollback"] != "CLOSE_PR_BEFORE_MERGE"):
             raise WarrantValidationError("CAMPAIGN_READY_READBACK_INVALID")
-        if receipt["action"] == "MERGE" and (receipt["observed_pr_state"] != "MERGED" or receipt["merge_commit_sha"] is None or receipt["canonical_main_sha"] != receipt["merge_commit_sha"] or receipt["canonical_tree_sha"] is None or receipt["rollback"] != "REVIEWED_REVERT_PR"):
+        if receipt["action"] == "MERGE" and (receipt["observed_pr_state"] != "MERGED"
+                or receipt["merge_commit_sha"] is None or receipt["canonical_main_sha"] != receipt["merge_commit_sha"]
+                or receipt["canonical_tree_sha"] != receipt["tree_sha"] or receipt["rollback"] != "REVIEWED_REVERT_PR"):
             raise WarrantValidationError("CAMPAIGN_MERGE_READBACK_INVALID")
     else:
         if not receipt["error_code"]:
