@@ -251,37 +251,37 @@
       "id": "CAP-019",
       "domain": "Generated support",
       "capability": "Continuous cross-platform reproduction/parity",
-      "audit_status": "HOSTED_BYTE_PARITY_LIVE_PROVEN",
+      "audit_status": "HISTORICAL_HOSTED_PARITY_PROVEN_DISABLED_FIRST",
       "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "RESTORED",
-      "activation_state": "ACTIVE",
-      "current_state": "Owner-triggered hosted Ubuntu and Windows builds produced byte-identical five-report hash registers bound to one exact source and workflow run.",
-      "required_proof": "AJ-09 evidence in proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md."
+      "activation_state": "DISABLED_FIRST",
+      "current_state": "Historical hosted Ubuntu and Windows byte-parity remains proven. Routine hosted parity is disabled-first to conserve private-repository Actions minutes; cross-platform proof is invoked explicitly for sensitive changes or through local and future self-hosted execution.",
+      "required_proof": "Historical AJ-09 evidence in proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md plus current disabled-first route doctrine and exact-head validation."
     },
     {
       "id": "CAP-020",
       "domain": "Generated support",
       "capability": "Owner-triggered immutable generated checkpoint publisher",
-      "audit_status": "HOSTED_GENERATED_ROUTE_LIVE_PROVEN",
+      "audit_status": "HISTORICAL_HOSTED_GENERATED_ROUTE_PROVEN_DISABLED_FIRST",
       "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "RESTORED",
-      "activation_state": "ACTIVE",
-      "current_state": "The owner-triggered GENERATED_CHECKPOINT_V1 route invokes the singular Thread Engine to create an immutable exact-base generated-only draft PR and stop at exact readback.",
-      "required_proof": "AJ-09 evidence in proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md."
+      "activation_state": "DISABLED_FIRST",
+      "current_state": "The historically proven GENERATED_CHECKPOINT_V1 publisher implementation and evidence are preserved, but hosted publication is disabled-first. The active workflow is owner-only and read-only, checks projection freshness, and cannot create a branch or pull request.",
+      "required_proof": "Historical AJ-09 evidence in proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md plus current workflow, route doctrine, and no-write regression proof."
     },
     {
       "id": "CAP-021",
       "domain": "CI",
       "capability": "Cross-platform whole-program validation",
-      "audit_status": "PRESERVED_AND_CONSOLIDATED",
+      "audit_status": "PRESERVED_TARGETED_AND_EXPLICIT_FULL",
       "audit_severity": "GREEN",
       "path_disposition": "CURRENT_PRIME_NATIVE",
       "capability_disposition": "IMPROVED",
       "activation_state": "ACTIVE",
-      "current_state": "One read-only workflow validates Prime on Ubuntu and Windows.",
-      "required_proof": "Exact-head validate checks succeed on both platforms."
+      "current_state": "One read-only workflow runs fail-closed targeted validation on Ubuntu for ordinary pull requests, adds Windows only for classified cross-platform surfaces, and retains explicit full Ubuntu and Windows validation.",
+      "required_proof": "Exact-head targeted-planner tests, full fallback for workflow and unknown-path changes, and successful Ubuntu and Windows validation when cross-platform proof is required."
     },
     {
       "id": "CAP-022",
