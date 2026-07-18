@@ -136,6 +136,9 @@ class CampaignShardbladeTests(unittest.TestCase):
         for check in drifted["checks"]: check["head_sha"] = drifted["head_sha"]
         self.bind_request(drifted)
         with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_CANDIDATE_DRIFT"): validate_stage_request(drifted, warrant, authorization_verifier=self.trusted, receipt_verifier=self.trusted_receipt, prior_ready_receipt=receipt, now=self.now)
+        path_drifted_receipt = copy.deepcopy(receipt); path_drifted_receipt["changed_paths_sha256"] = "8" * 64
+        path_drifted = copy.deepcopy(merge); path_drifted["prior_ready_receipt_sha256"] = sha256(path_drifted_receipt)
+        with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_CANDIDATE_DRIFT"): validate_stage_request(path_drifted, warrant, authorization_verifier=self.trusted, receipt_verifier=self.trusted_receipt, prior_ready_receipt=path_drifted_receipt, now=self.now)
         stale = copy.deepcopy(merge); stale["created_at"] = receipt["executed_at"]
         with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_FRESH_READBACK_REQUIRED"): validate_stage_request(stale, warrant, authorization_verifier=self.trusted, receipt_verifier=self.trusted_receipt, prior_ready_receipt=receipt, now=self.now)
 

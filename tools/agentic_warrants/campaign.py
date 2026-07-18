@@ -167,7 +167,9 @@ def validate_stage_request(
             raise WarrantValidationError("CAMPAIGN_READY_RECEIPT_REQUIRED")
         if request["prior_ready_receipt_sha256"] != sha256(prior_ready_receipt):
             raise WarrantValidationError("CAMPAIGN_READY_RECEIPT_MISMATCH")
-        if any(request[key] != prior_ready_receipt[key] for key in ("campaign_id", "stage_id", "repository", "pull_request", "base_sha", "head_sha", "tree_sha")):
+        if any(request[key] != prior_ready_receipt[key] for key in (
+                "campaign_id", "stage_id", "repository", "pull_request", "base_sha",
+                "head_sha", "tree_sha", "changed_paths_sha256", "protected_paths_sha256")):
             raise WarrantValidationError("CAMPAIGN_CANDIDATE_DRIFT")
         ready_executed = parse_time(prior_ready_receipt["executed_at"])
         if (request["fresh_ready_readback_sha256"] is None or request["merge_method"] != "MERGE_COMMIT"
