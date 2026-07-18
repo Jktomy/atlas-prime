@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from tools.athena_routes.schema import SchemaValidationError, validate_schema
-from tools.agentic_warrants.validator import WarrantValidationError, parse_time, safe_path, sha256
+from tools.agentic_warrants.validator import WarrantValidationError, parse_time, protected_path, safe_path, sha256
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -35,9 +35,9 @@ def campaign_sha256(warrant: dict[str, Any]) -> str:
     return sha256(warrant)
 
 
-def _canonical_paths(paths: list[str]) -> bool:
+def _canonical_paths(paths: list[str], *, allow_empty: bool = False) -> bool:
     folded = [path.casefold() for path in paths]
-    return (bool(paths) and [safe_path(path) for path in paths] == paths
+    return ((allow_empty or bool(paths)) and [safe_path(path) for path in paths] == paths
             and paths == sorted(paths, key=str.casefold)
             and len(folded) == len(set(folded)))
 
@@ -116,6 +116,19 @@ def validate_stage_request(
     paths = request["changed_paths"]
     if not _canonical_paths(paths) or not set(paths).issubset(stage["allowed_paths"]):
         raise WarrantValidationError("CAMPAIGN_SCOPE_WIDENED")
+    protected = request["protected_paths"]
+    expected_protected = [path for path in paths if protected_path(path)]
+    if (request["changed_paths_sha256"] != sha256(paths)
+            or not _canonical_paths(protected, allow_empty=True)
+            or protected != expected_protected
+            or request["protected_paths_sha256"] != sha256(protected)):
+        raise WarrantValidationError("CAMPAIGN_PATH_BINDING_MISMATCH")
+    readback = {key: request[key] for key in (
+        "repository", "base_sha", "pull_request", "pr_state", "source_branch",
+        "head_sha", "tree_sha", "changed_paths", "protected_paths",
+    )}
+    if request["pr_readback_sha256"] != sha256(readback):
+        raise WarrantValidationError("CAMPAIGN_PR_READBACK_MISMATCH")
     required_checks = {"validate (ubuntu-latest)", "validate (windows-latest)"}
     if ({item["name"] for item in request["checks"]} != required_checks
             or len(request["checks"]) != len(required_checks)
@@ -128,10 +141,11 @@ def validate_stage_request(
     if not (issued <= created <= readback <= observed < expires):
         raise WarrantValidationError("CAMPAIGN_READBACK_TIME_INVALID")
     if request["action"] == "READY":
-        if request["pr_state"] != "DRAFT" or any(request[key] is not None for key in ("prior_ready_receipt_sha256", "fresh_ready_readback_sha256", "merge_method")):
+        if (request["pr_state"] != "DRAFT" or request["rollback"] != "CLOSE_PR_BEFORE_MERGE"
+                or any(request[key] is not None for key in ("prior_ready_receipt_sha256", "fresh_ready_readback_sha256", "merge_method"))):
             raise WarrantValidationError("CAMPAIGN_READY_REQUEST_INVALID")
     else:
-        if request["pr_state"] != "OPEN_READY" or prior_ready_receipt is None:
+        if request["pr_state"] != "OPEN_READY" or request["rollback"] != "REVIEWED_REVERT_PR" or prior_ready_receipt is None:
             raise WarrantValidationError("CAMPAIGN_READY_RECEIPT_REQUIRED")
         if receipt_verifier is None or not receipt_verifier(prior_ready_receipt):
             raise WarrantValidationError("CAMPAIGN_RECEIPT_TRUST_REJECTED")
@@ -156,13 +170,14 @@ def validate_stage_receipt(
     replay_guard: ReplayGuard | None = None, now: datetime | None = None,
 ) -> None:
     _schema(RECEIPT_SCHEMA, receipt, "CAMPAIGN_STAGE_RECEIPT_SCHEMA_INVALID")
-    if receipt["campaign_id"] != warrant["campaign_id"] or receipt["repository"] != warrant["repository"]:
+    if (receipt["campaign_id"] != warrant["campaign_id"] or receipt["campaign_sha256"] != campaign_sha256(warrant)
+            or receipt["repository"] != warrant["repository"]):
         raise WarrantValidationError("CAMPAIGN_RECEIPT_BINDING_MISMATCH")
     if receipt["warrant_status"] != warrant["status"]:
         raise WarrantValidationError("CAMPAIGN_RECEIPT_BINDING_MISMATCH")
     _stage(warrant, receipt["stage_id"])
     if request is not None:
-        expected = ("request_id", "campaign_id", "stage_id", "action", "repository", "pull_request", "base_sha", "head_sha", "tree_sha")
+        expected = ("request_id", "campaign_id", "campaign_sha256", "stage_id", "action", "repository", "pull_request", "base_sha", "head_sha", "tree_sha", "changed_paths_sha256", "protected_paths_sha256", "pr_readback_sha256")
         if receipt["request_sha256"] != sha256(request) or any(receipt[key] != request[key] for key in expected):
             raise WarrantValidationError("CAMPAIGN_RECEIPT_BINDING_MISMATCH")
         executed = parse_time(receipt["executed_at"])
