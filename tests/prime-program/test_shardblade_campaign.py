@@ -84,6 +84,7 @@ class CampaignShardbladeTests(unittest.TestCase):
         for mutate, code in (
             (lambda value: value.update({"stages": []}), "CAMPAIGN_STAGE_SET_INVALID"),
             (lambda value: value.update({"stop_conditions": []}), "CAMPAIGN_STOP_SET_INVALID"),
+            (lambda value: value["forbidden"].append("DIRECT_MAIN"), "CAMPAIGN_FORBIDDEN_SET_INVALID"),
             (lambda value: value["stages"][0].update({"allowed_paths": ["governance/*"]}), "PATH_SCOPE_INVALID|CAMPAIGN_PATH_INVALID"),
             (lambda value: value.update({"expires_at": "2026-07-22T12:00:01Z"}), "CAMPAIGN_EXPIRY_INVALID"),
             (lambda value: value.update({"status": "COMPLETED"}), "CAMPAIGN_INACTIVE"),
@@ -138,6 +139,8 @@ class CampaignShardbladeTests(unittest.TestCase):
         with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_READY_READBACK_INVALID"): validate_stage_receipt(invalid_ready, request, warrant)
         wrong_campaign = copy.deepcopy(receipt); wrong_campaign["campaign_sha256"] = "8" * 64
         with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_RECEIPT_BINDING_MISMATCH"): validate_stage_receipt(wrong_campaign, request, warrant)
+        future = copy.deepcopy(receipt); future["executed_at"] = "2026-07-18T19:00:00Z"
+        with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_RECEIPT_TIME_INVALID"): validate_stage_receipt(future, None, warrant, now=self.now)
         receipt.update({"result": "PARTIAL", "error_code": "AMBIGUOUS_REMOTE_RESULT", "observed_pr_state": "UNKNOWN", "rollback": "PRESERVE_AND_READBACK_ONLY"})
         validate_stage_receipt(receipt, request, warrant)
         invented = copy.deepcopy(receipt); invented.update({"result": "SUCCESS", "error_code": None, "observed_pr_state": "MERGED"})

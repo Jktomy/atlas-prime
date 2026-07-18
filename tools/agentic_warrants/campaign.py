@@ -63,7 +63,8 @@ def validate_campaign_warrant(
         raise WarrantValidationError("CAMPAIGN_INACTIVE")
     if authorization_verifier is None or not authorization_verifier(warrant):
         raise WarrantValidationError("CAMPAIGN_AUTHORIZATION_REJECTED")
-    if not REQUIRED_FORBIDDEN.issubset(warrant["forbidden"]):
+    if (not REQUIRED_FORBIDDEN.issubset(warrant["forbidden"])
+            or len(warrant["forbidden"]) != len(set(warrant["forbidden"]))):
         raise WarrantValidationError("CAMPAIGN_FORBIDDEN_SET_INVALID")
     if (not REQUIRED_STOPS.issubset(warrant["stop_conditions"])
             or len(warrant["stop_conditions"]) != len(set(warrant["stop_conditions"]))):
@@ -116,7 +117,7 @@ def validate_stage_request(
             raise WarrantValidationError("CAMPAIGN_PREDECESSOR_RECEIPT_REQUIRED")
         if receipt_verifier is None or not receipt_verifier(prior_stage_merge_receipt):
             raise WarrantValidationError("CAMPAIGN_RECEIPT_TRUST_REJECTED")
-        validate_stage_receipt(prior_stage_merge_receipt, request=None, warrant=warrant)
+        validate_stage_receipt(prior_stage_merge_receipt, request=None, warrant=warrant, now=observed)
         if (prior_stage_merge_receipt["action"] != "MERGE" or prior_stage_merge_receipt["result"] != "SUCCESS"
                 or prior_stage_merge_receipt["stage_id"] != request["stage_id"] - 1
                 or request["predecessor_merge_receipt_sha256"] != sha256(prior_stage_merge_receipt)
@@ -158,7 +159,7 @@ def validate_stage_request(
             raise WarrantValidationError("CAMPAIGN_READY_RECEIPT_REQUIRED")
         if receipt_verifier is None or not receipt_verifier(prior_ready_receipt):
             raise WarrantValidationError("CAMPAIGN_RECEIPT_TRUST_REJECTED")
-        validate_stage_receipt(prior_ready_receipt, request=None, warrant=warrant)
+        validate_stage_receipt(prior_ready_receipt, request=None, warrant=warrant, now=observed)
         if prior_ready_receipt["action"] != "READY" or prior_ready_receipt["result"] != "SUCCESS":
             raise WarrantValidationError("CAMPAIGN_READY_RECEIPT_REQUIRED")
         if request["prior_ready_receipt_sha256"] != sha256(prior_ready_receipt):
@@ -185,12 +186,14 @@ def validate_stage_receipt(
     if receipt["warrant_status"] != warrant["status"]:
         raise WarrantValidationError("CAMPAIGN_RECEIPT_BINDING_MISMATCH")
     _stage(warrant, receipt["stage_id"])
+    executed = parse_time(receipt["executed_at"])
+    if now is not None and executed > now:
+        raise WarrantValidationError("CAMPAIGN_RECEIPT_TIME_INVALID")
     if request is not None:
         expected = ("request_id", "campaign_id", "campaign_sha256", "stage_id", "action", "repository", "pull_request", "base_sha", "head_sha", "tree_sha", "changed_paths_sha256", "protected_paths_sha256", "pr_readback_sha256")
         if receipt["request_sha256"] != sha256(request) or any(receipt[key] != request[key] for key in expected):
             raise WarrantValidationError("CAMPAIGN_RECEIPT_BINDING_MISMATCH")
-        executed = parse_time(receipt["executed_at"])
-        if executed < parse_time(request["readback_at"]) or (now is not None and executed > now):
+        if executed < parse_time(request["readback_at"]):
             raise WarrantValidationError("CAMPAIGN_RECEIPT_TIME_INVALID")
     if receipt["result"] == "SUCCESS":
         if receipt["error_code"] is not None:
