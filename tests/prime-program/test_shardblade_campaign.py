@@ -86,6 +86,7 @@ class CampaignShardbladeTests(unittest.TestCase):
             (lambda value: value.update({"stop_conditions": []}), "CAMPAIGN_STOP_SET_INVALID"),
             (lambda value: value["forbidden"].append("DIRECT_MAIN"), "CAMPAIGN_FORBIDDEN_SET_INVALID"),
             (lambda value: value["stages"][0].update({"allowed_paths": ["governance/*"]}), "PATH_SCOPE_INVALID|CAMPAIGN_PATH_INVALID"),
+            (lambda value: value["stages"][0].update({"allowed_paths": ["governance/cafe\u0301.md"]}), "CAMPAIGN_PATH_INVALID"),
             (lambda value: value.update({"expires_at": "2026-07-22T12:00:01Z"}), "CAMPAIGN_EXPIRY_INVALID"),
             (lambda value: value.update({"status": "COMPLETED"}), "CAMPAIGN_INACTIVE"),
         ):
@@ -113,12 +114,17 @@ class CampaignShardbladeTests(unittest.TestCase):
                       "rollback": "REVIEWED_REVERT_PR"})
         request = self.request(warrant)
         request.update({"stage_id": 1, "base_sha": "e" * 40,
+                        "created_at": "2026-07-18T17:03:00Z", "readback_at": "2026-07-18T17:04:00Z",
                         "predecessor_merge_receipt_sha256": sha256(prior),
                         "changed_paths": ["governance/lesson-harvest-protocol.md"]})
         self.bind_request(request)
         validate_stage_request(request, warrant, authorization_verifier=self.trusted,
                                receipt_verifier=self.trusted_receipt, prior_stage_merge_receipt=prior, now=self.now)
         request["base_sha"] = "8" * 40; self.bind_request(request)
+        with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_BASE_DRIFT"):
+            validate_stage_request(request, warrant, authorization_verifier=self.trusted,
+                                   receipt_verifier=self.trusted_receipt, prior_stage_merge_receipt=prior, now=self.now)
+        request["base_sha"] = "e" * 40; request["created_at"] = prior["executed_at"]; self.bind_request(request)
         with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_BASE_DRIFT"):
             validate_stage_request(request, warrant, authorization_verifier=self.trusted,
                                    receipt_verifier=self.trusted_receipt, prior_stage_merge_receipt=prior, now=self.now)

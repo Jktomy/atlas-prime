@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import unicodedata
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Callable
@@ -44,6 +45,7 @@ def campaign_sha256(warrant: dict[str, Any]) -> str:
 def _canonical_paths(paths: list[str], *, allow_empty: bool = False) -> bool:
     folded = [path.casefold() for path in paths]
     return ((allow_empty or bool(paths)) and [safe_path(path) for path in paths] == paths
+            and all(unicodedata.normalize("NFC", path) == path for path in paths)
             and paths == sorted(paths, key=str.casefold)
             and len(folded) == len(set(folded)))
 
@@ -121,7 +123,8 @@ def validate_stage_request(
         if (prior_stage_merge_receipt["action"] != "MERGE" or prior_stage_merge_receipt["result"] != "SUCCESS"
                 or prior_stage_merge_receipt["stage_id"] != request["stage_id"] - 1
                 or request["predecessor_merge_receipt_sha256"] != sha256(prior_stage_merge_receipt)
-                or request["base_sha"] != prior_stage_merge_receipt["canonical_main_sha"]):
+                or request["base_sha"] != prior_stage_merge_receipt["canonical_main_sha"]
+                or parse_time(prior_stage_merge_receipt["executed_at"]) >= parse_time(request["created_at"])):
             raise WarrantValidationError("CAMPAIGN_BASE_DRIFT")
     paths = request["changed_paths"]
     if not _canonical_paths(paths) or not set(paths).issubset(stage["allowed_paths"]):
