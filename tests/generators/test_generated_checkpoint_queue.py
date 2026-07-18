@@ -357,60 +357,30 @@ class GeneratedCheckpointQueueTests(unittest.TestCase):
             self.assert_receipt_shape(rejected, checkpoint=False)
             self.assert_receipt_hash(rejected)
 
-    def test_workflow_admission_query_and_deferred_topology_are_exact(self) -> None:
+    def test_active_workflow_admission_is_owner_only_and_exact(self) -> None:
         workflow = (
             Path(__file__).resolve().parents[2]
             / ".github"
             / "workflows"
             / "generated-checkpoint-publisher.yml"
         ).read_text(encoding="utf-8")
-        queue_block = workflow.split("\n  queue:\n", 1)[1].split("\n  parity:\n", 1)[0]
-        parity_block = workflow.split("\n  parity:\n", 1)[1].split("\n  reconcile:\n", 1)[0]
-        reconcile_block = workflow.split("\n  reconcile:\n", 1)[1].split("\n  prepare:\n", 1)[0]
-        prepare_block = workflow.split("\n  prepare:\n", 1)[1].split("\n  publish:\n", 1)[0]
-        publish_block = workflow.split("\n  publish:\n", 1)[1].split("\n  validate_exact_head:\n", 1)[0]
-        validate_block = workflow.split("\n  validate_exact_head:\n", 1)[1]
-
-        self.assertLess(queue_block.index("Admit exact publisher invocation"), queue_block.index("uses:"))
         for phrase in (
-            'expectedRepository = "Jktomy/atlas-prime"',
-            'expectedOwner = "Jktomy"',
-            "$env:GITHUB_ACTOR",
-            "$env:GITHUB_TRIGGERING_ACTOR",
-            "$env:GITHUB_EVENT_NAME -ceq \"push\"",
-            "$env:GITHUB_EVENT_NAME -ceq \"workflow_dispatch\"",
-            '"refs/heads/main"',
-            "$env:GITHUB_SHA",
-            "$env:GITHUB_WORKFLOW_SHA",
-            "$env:GENERATED_BASE_SHA",
+            "name: Generated projection status",
+            "workflow_dispatch:",
+            "Admit exact owner read-only request",
+            'GITHUB_REPOSITORY -cne "Jktomy/atlas-prime"',
+            "GITHUB_ACTOR -cne $env:GITHUB_REPOSITORY_OWNER",
+            "GITHUB_TRIGGERING_ACTOR -cne $env:GITHUB_REPOSITORY_OWNER",
+            'GITHUB_REF -cne "refs/heads/main"',
+            "PUBLIC_CLEAN_CONFIRMED",
             "git/ref/heads/main",
+            "Generated status base is stale",
         ):
-            self.assertIn(phrase, queue_block)
-        self.assertIn("pull-requests: read", queue_block)
-        self.assertNotIn("contents: write", queue_block)
-        self.assertNotIn("pull-requests: write", queue_block)
-        self.assertIn("--limit 1001", queue_block)
-        self.assertIn(
-            "--json number,state,isDraft,isCrossRepository,author,headRefName,headRefOid,headRepository,headRepositoryOwner,baseRefName,baseRefOid,title,body",
-            queue_block,
-        )
-        self.assertIn("sort_by(.number) | map({", queue_block)
-        self.assertIn("tools.generated_checkpoint.queue", queue_block)
-        self.assertIn('"queue_result=DEFERRED_OPEN_CHECKPOINT"', queue_block)
-        self.assertIn("needs: queue", parity_block)
-        self.assertIn("needs.queue.result == 'success'", parity_block)
-        self.assertIn("needs.queue.outputs.queue_result == 'CLEAR'", parity_block)
-        self.assertIn("needs: parity", reconcile_block)
-        self.assertIn("needs: reconcile", prepare_block)
-        self.assertIn("- prepare", publish_block)
-        self.assertIn("needs: publish", validate_block)
-        for block in (parity_block, reconcile_block, prepare_block, publish_block, validate_block):
-            job_preamble = block.split("\n    steps:\n", 1)[0]
-            self.assertNotIn("always()", job_preamble)
-            self.assertNotIn("!cancelled()", job_preamble)
-            self.assertNotIn("continue-on-error", block)
+            self.assertIn(phrase, workflow)
+        self.assertNotIn("\n  push:", workflow)
+        self.assertNotIn("pull_request_target", workflow)
 
-    def test_workflow_preserves_single_writer_and_no_automatic_permanence(self) -> None:
+    def test_active_workflow_is_read_only_and_has_no_permanence(self) -> None:
         workflow = (
             Path(__file__).resolve().parents[2]
             / ".github"
@@ -419,17 +389,26 @@ class GeneratedCheckpointQueueTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertNotIn("paths-ignore:", workflow)
         self.assertNotIn('"generated/**"', workflow)
-        self.assertEqual(workflow.count("contents: write"), 1)
-        self.assertEqual(workflow.count("pull-requests: write"), 1)
-        self.assertEqual(workflow.count("production_adapter.cli"), 1)
-        self.assertNotIn("pull_request_target", workflow)
-        self.assertNotIn("actions: write", workflow)
-        self.assertNotIn("persist-credentials: true", workflow)
-        self.assertNotIn("gh workflow run", workflow)
-        self.assertNotIn("gh pr close", workflow)
-        self.assertNotIn("gh pr ready", workflow)
-        self.assertNotIn("gh pr merge", workflow)
-        self.assertNotIn("force-push", workflow)
+        self.assertIn("contents: read", workflow)
+        self.assertEqual(workflow.count("contents: write"), 0)
+        self.assertEqual(workflow.count("pull-requests: write"), 0)
+        self.assertEqual(workflow.count("production_adapter.cli"), 0)
+        self.assertIn("tools/build_index.py", workflow)
+        self.assertIn("--compare-dir generated", workflow)
+        for forbidden in (
+            "pull_request_target",
+            "actions: write",
+            "persist-credentials: true",
+            "gh workflow run",
+            "gh pr create",
+            "gh pr close",
+            "gh pr ready",
+            "gh pr merge",
+            "force-push",
+            "git push",
+            "--generated-checkpoint-route",
+        ):
+            self.assertNotIn(forbidden, workflow)
 
 
 if __name__ == "__main__":
