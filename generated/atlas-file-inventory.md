@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:07569419b41a18d881e4c0f39b99c9ca6c84b6c3b4e51c7509503369fcc66905
+Source fingerprint: sha256:cab87c3c8a29b0b880ca242ccf6d5b714e9d669cb8ca52509afe06d2ae58fcce
 Generator format: 2
 Status: Generated support artifact
 
@@ -17,7 +17,7 @@ Status: Generated support artifact
 | `governance/agentic-warrant-contract.md` | governance | yes | policy-reference |
 | `governance/athena-execution-route-contract.md` | governance | yes | policy-reference |
 | `governance/athena-fresh-work-origin-contract.md` | governance | yes | policy-reference |
-| `governance/atlas-aegis.md` | governance | yes | policy-reference |
+| `governance/atlas-aegis.md` | governance | yes | none |
 | `governance/atlas-strikeforce.md` | governance | yes | none |
 | `governance/capability-acceptance-contract.md` | governance | yes | policy-reference |
 | `governance/change-routes.md` | governance | yes | policy-reference |
@@ -26,6 +26,7 @@ Status: Generated support artifact
 | `governance/deterministic-conservation-contract.md` | governance | yes | none |
 | `governance/investiture-accounting-contract.md` | governance | yes | policy-reference |
 | `governance/investiture-source-identity-contract.md` | governance | yes | review |
+| `governance/lesson-harvest-protocol.md` | governance | yes | none |
 | `governance/noctua.md` | governance | yes | none |
 | `governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md` | governance | yes | none |
 | `governance/protected-source-boundary.md` | governance | yes | policy-reference |
@@ -125,6 +126,7 @@ Status: Generated support artifact
 | `tools/generated_checkpoint/README.md` | tools | no | none |
 | `tools/investiture_accounting/README.md` | tools | no | none |
 | `tools/oathbringer-foundry/README.md` | tools | no | none |
+| `tools/prime_checks/README.md` | tools | no | none |
 | `tools/prime_continuity/README.md` | tools | no | none |
 | `tools/resonance/README.md` | tools | no | none |
 | `tools/thread-engine/ARCHITECTURE.md` | tools | no | none |
