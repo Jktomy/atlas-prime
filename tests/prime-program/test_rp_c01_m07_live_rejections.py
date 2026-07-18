@@ -66,7 +66,7 @@ class RpC01M07LiveRejectionTests(unittest.TestCase):
             self.assertEqual(events.count(event), 1)
         for left, right in zip(ordered, ordered[1:]):
             self.assertLess(events.index(left), events.index(right))
-        self.assertEqual(self.continuity["register_revision"], 33)
+        self.assertGreaterEqual(self.continuity["register_revision"], 33)
         self.assertEqual(self.continuity["source_base_sha"], "e87dbf05252fd80829143474b83b7fa180d66fb7")
         self.assertNotIn("QUEST-REPAIRING-PRIME-R01", {item["quest_id"] for item in self.continuity["entries"]})
         board_entry = next(item for item in self.board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")

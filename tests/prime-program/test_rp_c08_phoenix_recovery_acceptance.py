@@ -93,6 +93,9 @@ class PhoenixRecoveryAcceptanceTests(unittest.TestCase):
         quest = QUEST.read_text(encoding="utf-8")
         acceptance = ACCEPTANCE.read_text(encoding="utf-8")
         repairing_board = next(item for item in self.board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
+        events = self.continuity["event_ids"]
+        creation_event = "PA-C01-QUEST-CREATION-R01"
+        sunset_event = "PA-C01-HOSTED-ACTIONS-SUNSET-R01"
         self.assertIn("PHOENIX RECOVERY: PROVEN / ACCEPTED", quest)
         self.assertIn("NEXT GATE: CLOSED", quest)
         self.assertIn("Final Phoenix recovery is `PROVEN` and `ACCEPTED`", acceptance)
@@ -100,9 +103,11 @@ class PhoenixRecoveryAcceptanceTests(unittest.TestCase):
         self.assertEqual(repairing_board["next_gate"], "CLOSED")
         self.assertIn("Sunset PR #224", repairing_board["completion_basis"])
         self.assertNotIn("CONT-REPAIRING-PRIME-R01", {item["continuity_id"] for item in self.continuity["entries"]})
-        self.assertEqual(self.continuity["register_revision"], 33)
+        self.assertGreaterEqual(self.continuity["register_revision"], 33)
         self.assertEqual(self.continuity["source_base_sha"], "e87dbf05252fd80829143474b83b7fa180d66fb7")
-        self.assertEqual(self.continuity["event_ids"][-1], "PA-C01-QUEST-CREATION-R01")
+        self.assertEqual(events.count(creation_event), 1)
+        self.assertEqual(events.count(sunset_event), 1)
+        self.assertLess(events.index(creation_event), events.index(sunset_event))
         self.assertEqual(self.continuity["quest_board_sha256"], continuity_sha256(self.board))
         self.assertTrue(PROOF_MD.is_file())
 

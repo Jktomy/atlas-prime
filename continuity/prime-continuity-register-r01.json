@@ -2,7 +2,7 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 33,
+  "register_revision": 34,
   "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
   "quest_board_sha256": "43dce745c7a7a1ca678c8fa5bfa6243271a4951e5e55505693b25db4735de584",
   "event_ids": [
@@ -41,7 +41,8 @@
     "RP-C08-FINAL-WHOLE-QUEST-STRIKEFORCE-RECONCILIATION-R01",
     "RP-C08-PHOENIX-RECOVERY-ACCEPTANCE-R01",
     "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05",
-    "PA-C01-QUEST-CREATION-R01"
+    "PA-C01-QUEST-CREATION-R01",
+    "PA-C01-HOSTED-ACTIONS-SUNSET-R01"
   ],
   "entries": [
     {
@@ -127,15 +128,16 @@
       "campaign_id": "PA-C01",
       "mission_id": null,
       "gate_id": "PA-C01-COVENANT-REFINEMENT",
-      "current_position": "Official Quest admitted in ACTIVE — ARCHITECTURE REFINEMENT with PA-C01 current and PA-C02 through PA-C10 established as the initial roadmap. No runtime or infrastructure work is authorized by this source transaction.",
+      "current_position": "Prime Ascendant remains in PA-C01 architecture refinement. PR #236 merged at a02e048209ec3e5f9f329c8772440bc4f728e652, making PR validation fail-closed and path-targeted while removing automatic generated publishing on main pushes. Generated projections remain STALE, the repository remains public, and no runtime, infrastructure, cutover, or route-retirement authority was granted.",
       "blockers": [
         "PA-C01 covenant acceptance remains unproven.",
-        "The architecture decisions listed in the Quest source remain unresolved by design."
+        "The architecture decisions listed in the Quest source remain unresolved by design.",
+        "Private visibility remains a separate Jayson-controlled repository-settings action after this continuity-only validation proof."
       ],
-      "next_action": "Draft and review PA-C01 until the covenant acceptance gate is proven without authorizing runtime, infrastructure, migration, or route retirement.",
-      "next_approval": "Jayson must separately approve covenant acceptance and any later runtime, infrastructure, migration, cutover, or route-retirement transaction.",
-      "revision": 1,
-      "last_event_id": "PA-C01-QUEST-CREATION-R01"
+      "next_action": "Use this one-entry Sunset continuity transaction to prove that an ordinary continuity change runs the mandatory Ubuntu baseline plus Prime program validation while the Windows companion is skipped. After exact-head GREEN and a separately authorized merge, change repository visibility to private and verify it independently.",
+      "next_approval": "Jayson must separately authorize merge of the unchanged Sunset candidate, then separately perform the private-visibility settings action; no runtime or infrastructure authority is included.",
+      "revision": 2,
+      "last_event_id": "PA-C01-HOSTED-ACTIONS-SUNSET-R01"
     }
   ]
 }
