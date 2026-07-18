@@ -18,9 +18,12 @@ QUEST_PATH = ROOT / "quests/repairing-prime.md"
 BOARD_PATH = ROOT / "quest-board/quest-board-v1.json"
 CONTINUITY_PATH = ROOT / "continuity/prime-continuity-register-r01.json"
 WORKFLOW_PATH = ROOT / ".github/workflows/prime-readonly-validation.yml"
+PLANNER_PATH = ROOT / "tools/prime_checks/targeted_validation.py"
+
 
 def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
+
 
 class Aj12MergedMainValidationAcceptanceTests(unittest.TestCase):
     @classmethod
@@ -57,12 +60,36 @@ class Aj12MergedMainValidationAcceptanceTests(unittest.TestCase):
         self.assertTrue(audit["exact_main_unchanged"])
         self.assertFalse(audit["protected_data_observed"])
         self.assertEqual(audit["result"], "GREEN")
+
         workflow = WORKFLOW_PATH.read_text(encoding="utf-8")
+        planner = PLANNER_PATH.read_text(encoding="utf-8")
         self.assertIn("contents: read", workflow)
         self.assertIn("ubuntu-latest", workflow)
         self.assertIn("windows-latest", workflow)
-        for stage in evidence["substantive_stages"]:
-            self.assertIn(stage, workflow)
+        self.assertIn("Run targeted pull-request validation", workflow)
+        self.assertIn("Run explicit full validation", workflow)
+        self.assertIn("inputs.include_windows == true", workflow)
+        self.assertNotIn("contents: write", workflow)
+        self.assertNotIn("pull-requests: write", workflow)
+
+        expected_checks = (
+            "kernel",
+            "repository_policy",
+            "privacy",
+            "lifecycle",
+            "thread_engine",
+            "thread_engine_static",
+            "atlas_sword_static",
+            "generators",
+            "prime_program",
+            "athena_routes",
+            "source_validation",
+            "powershell_resolver",
+        )
+        for check_id in expected_checks:
+            self.assertIn(f'"{check_id}"', planner)
+        self.assertIn("FULL_CHECK_IDS: tuple[str, ...] = tuple(CHECKS)", planner)
+        self.assertIn("selected.update(FULL_CHECK_IDS)", planner)
 
     def test_only_aj12_transitioned_in_its_historical_record(self) -> None:
         self.assertEqual(self.proof["transitions"], {"AJ-12": {"from": "UNPROVEN", "to": "PROVEN"}})
@@ -127,6 +154,7 @@ class Aj12MergedMainValidationAcceptanceTests(unittest.TestCase):
         self.assertTrue(boundary["separate_ready_authorization_required"])
         self.assertTrue(boundary["separate_merge_authorization_required"])
         self.assertEqual(self.final["next_gate"], "MERGE_THEN_FINAL_GENERATED_CURRENT_STATE_THEN_WHOLE_QUEST_STRIKEFORCE")
+
 
 if __name__ == "__main__":
     unittest.main()
