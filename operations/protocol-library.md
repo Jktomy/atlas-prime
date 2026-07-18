@@ -28,8 +28,9 @@ protected_level: "HIGH"
 - **Fresh Clone First** is one repository substrate. Exact GitHub-native blob/tree/commit construction is an equivalent substrate when it preserves the same locks, candidate proof, draft-PR boundary, and readback.
 - **Spirallight**, **Chromelight**, and **Emberlight** identify trusted reported OpenAI, Google, and Atlas-controlled local-model tokens respectively under `governance/investiture-source-identity-contract.md`. They are accounting identities, never an operator, work surface, route, launcher, runtime, credential principal, engine, or permanence authority.
 - **Phoenix Burn/Reborn** governs controlled removal, clean reconstruction, restore proof, and rollback.
-- **Sunrise/Sunset** governs activation and retirement with durable routing and lineage.
-- **Feather** is an immutable checkpoint with a stable permanent identity; archival and supersession preserve readback and do not create competing Quest authority.
-- **Golden Wing** is a reusable-lesson candidate supported across independent contexts; it is never doctrine and is never promoted automatically.
+- **Full Atlas Sunset** is the complete lifecycle closeout: it locks final known state, creates exactly one new sealed Feather, one bound immutable Sunset, and one matching Sunrise, evaluates lessons, and records recovery. It is distinct from the low-level continuity snapshot historically exposed by a command with the same name.
+- **Feather** is immutable exact-context evidence with a stable permanent identity; archival and supersession preserve readback and do not create competing Quest authority.
+- **Golden Wing** is the sole reusable-lesson candidate supported across independent contexts or one justified systemic exception; it is never doctrine and is never promoted automatically.
+- **Lesson Harvest** routes Observation → Feather → Golden Wing candidate → Noctua → Ares → human-controlled reviewed absorption → active assurance control → pre-Build applicability → Strikeforce exact-head verification.
 
 Protocols do not broaden authority by being named. Each invocation must bind the repository, exact source, allowed actions, protected boundary, stop point, evidence, and rollback.

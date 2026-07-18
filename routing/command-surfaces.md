@@ -46,7 +46,8 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Quest identities and unfinished-work continuity | `governance/quest-engine-continuity-contract.md`, `continuity/quest-engine-identities-r01.json`, `continuity/prime-continuity-register-r01.json`, `tools/prime_continuity/README.md` |
 | Validate continuity or surface Argus | `python -B -m tools.prime_continuity.cli validate`, `python -B -m tools.prime_continuity.cli argus` |
 | Preview one bounded continuity update | `python -B -m tools.prime_continuity.cli plan-update ...`; candidate only, then reviewed draft-PR route |
-| Emberline, Sunset, or Sunrise | `python -B -m tools.prime_continuity.cli emberline|sunset|sunrise ...`; projections/evidence never govern |
+| Full Atlas Sunset or continuity snapshot | Full lifecycle closeout: `governance/lesson-harvest-protocol.md`, `lifecycle/lifecycle-contract.md`, then `python -B -m tools.atlas_lifecycle sunset candidate`; compact continuity snapshot only: `python -B -m tools.prime_continuity.cli sunset --continuity-id ID`; never substitute one for the other |
+| Lesson Harvest and active assurance controls | `governance/lesson-harvest-protocol.md`, `governance/assurance-controls.json`, `schemas/assurance-controls-v1.schema.json` |
 | Lifecycle records and read-only mechanics | `lifecycle/README.md`, `lifecycle/lifecycle-contract.md`, `lifecycle/schemas/`, `tools/atlas_lifecycle/README.md` |
 | Infrastructure source | `infrastructure/atlas-infrastructure-source.md` |
 | Clean-clone recovery, protected runtime restoration, and recovery proof | `recovery/phoenix-recovery.md` |

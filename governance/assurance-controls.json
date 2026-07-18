@@ -1,0 +1,47 @@
+{
+  "schema_version": "atlas.assurance-controls.v1",
+  "canonical_repository": "Jktomy/atlas-prime",
+  "register_role": "CONTROLLING_ASSURANCE_RULES_ONLY",
+  "applicability_outcomes": [
+    "APPLIED",
+    "NOT_APPLICABLE"
+  ],
+  "unknown_applicability": "FAIL_CLOSED",
+  "controls": [
+    {
+      "control_id": "ASC-001",
+      "title": "Sunset exact Feather, Sunset, and Sunrise cardinality",
+      "status": "ACTIVE",
+      "objective": "Every completed full Atlas Sunset creates exactly one new sealed Feather, exactly one immutable Sunset bound to it, and exactly one Sunrise bound to the same pair.",
+      "applies_when": "The semantic objective is a full Atlas Sunset or a closeout that claims Sunset completion.",
+      "required_evidence": [
+        "Exact candidate inventory proves one Feather, one Sunset, and one Sunrise.",
+        "Schema and relationship validation prove the same Feather/Sunset pair across all three records."
+      ],
+      "enforcement_sources": [
+        "governance/lesson-harvest-protocol.md",
+        "lifecycle/lifecycle-contract.md",
+        "tests/prime-program/test_lesson_harvest_protocol.py"
+      ],
+      "superseded_by": null
+    },
+    {
+      "control_id": "ASC-002",
+      "title": "Lessons never self-promote",
+      "status": "ACTIVE",
+      "objective": "Observations and Golden Wing candidates gain no authority until human-controlled review absorbs the lesson into a real enforced control.",
+      "applies_when": "A Preview, Build, review, Sunset, or continuity action identifies, evaluates, records, or reuses a lesson.",
+      "required_evidence": [
+        "The lesson remains observation evidence or a Golden Wing candidate before reviewed absorption.",
+        "Any claimed absorption names an ACTIVE assurance control and its enforcing source and test."
+      ],
+      "enforcement_sources": [
+        "governance/lesson-harvest-protocol.md",
+        "governance/atlas-aegis.md",
+        "governance/atlas-strikeforce.md",
+        "tests/prime-program/test_assurance_controls.py"
+      ],
+      "superseded_by": null
+    }
+  ]
+}

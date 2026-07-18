@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/schemas/assurance-controls-v1.schema.json",
+  "title": "Atlas active assurance controls",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "canonical_repository",
+    "register_role",
+    "applicability_outcomes",
+    "unknown_applicability",
+    "controls"
+  ],
+  "properties": {
+    "schema_version": { "const": "atlas.assurance-controls.v1" },
+    "canonical_repository": { "const": "Jktomy/atlas-prime" },
+    "register_role": { "const": "CONTROLLING_ASSURANCE_RULES_ONLY" },
+    "applicability_outcomes": {
+      "type": "array",
+      "items": { "enum": ["APPLIED", "NOT_APPLICABLE"] },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "unknown_applicability": { "const": "FAIL_CLOSED" },
+    "controls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "control_id",
+          "title",
+          "status",
+          "objective",
+          "applies_when",
+          "required_evidence",
+          "enforcement_sources",
+          "superseded_by"
+        ],
+        "properties": {
+          "control_id": { "type": "string", "pattern": "^ASC-[0-9]{3}$" },
+          "title": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["ACTIVE", "SUPERSEDED"] },
+          "objective": { "type": "string", "minLength": 1 },
+          "applies_when": { "type": "string", "minLength": 1 },
+          "required_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "enforcement_sources": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-zA-Z0-9._/-]+$" }
+          },
+          "superseded_by": {
+            "type": ["string", "null"],
+            "pattern": "^ASC-[0-9]{3}$"
+          }
+        }
+      }
+    }
+  }
+}

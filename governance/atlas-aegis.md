@@ -26,6 +26,14 @@ Aegis requires:
 
 Aegis Break selects a bounded alternate route. It never breaks Aegis.
 
+Before Build, Aegis preserves and states the user's semantic objective, routes
+from that meaning rather than a shared command name, and records
+assurance-control applicability against every matching ACTIVE control in
+`governance/assurance-controls.json`. Each match is `APPLIED` with exact
+enforcement evidence or `NOT_APPLICABLE` with an exact objective-specific
+reason. Missing controls, omitted matches, or unknown applicability fail
+closed. Lesson evidence and Golden Wing candidates never promote themselves.
+
 ## Goddess Mode
 
 Goddess Mode is bounded autonomous completion of one exact Jayson-approved

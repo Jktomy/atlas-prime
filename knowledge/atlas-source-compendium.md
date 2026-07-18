@@ -24,3 +24,10 @@ hold current admitted-Quest state; Feathers and checkpoints preserve immutable
 positions; Golden Wings remain lesson candidates. Website and Quest Board views
 are generated projections after the lifecycle authority cutover is proven and
 must never be scraped back into source authority.
+
+Lesson Harvest routes reusable meaning through exact Feather evidence and, only
+when justified, the singular Golden Wing candidate form. A Golden Wing candidate
+never self-promotes. Human-controlled reviewed absorption must name a real
+ACTIVE control in `governance/assurance-controls.json`, its enforcing source,
+and regression proof. Observations, chats, checks, Feathers, and generated views
+remain evidence; none are controlling rules.
