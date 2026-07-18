@@ -72,12 +72,17 @@ class RpC01M07NonOwnerAcceptanceTests(unittest.TestCase):
     def test_later_final_closeout_preserves_non_owner_evidence(self) -> None:
         board = next(item for item in self.board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
         cap027 = next(item for item in self.capabilities["capabilities"] if item["id"] == "CAP-027")
+        events = self.continuity["event_ids"]
+        creation_event = "PA-C01-QUEST-CREATION-R01"
+        sunset_event = "PA-C01-HOSTED-ACTIONS-SUNSET-R01"
         self.assertEqual(board["state"], "COMPLETE")
         self.assertEqual(board["next_gate"], "CLOSED")
         self.assertIn("Sunset PR #224", board["completion_basis"])
         self.assertNotIn("QUEST-REPAIRING-PRIME-R01", {item["quest_id"] for item in self.continuity["entries"]})
-        self.assertEqual(self.continuity["event_ids"].count("RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"), 1)
-        self.assertEqual(self.continuity["event_ids"][-1], "PA-C01-QUEST-CREATION-R01")
+        self.assertEqual(events.count("RP-C01-M07-AJ03-NON-OWNER-ACCEPTANCE-R05"), 1)
+        self.assertEqual(events.count(creation_event), 1)
+        self.assertEqual(events.count(sunset_event), 1)
+        self.assertLess(events.index(creation_event), events.index(sunset_event))
         self.assertEqual(cap027["capability_disposition"], "RESTORED")
         self.assertEqual(cap027["activation_state"], "ACTIVE")
         self.assertIn("AJ-01 through AJ-12 are PROVEN", cap027["current_state"])
