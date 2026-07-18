@@ -381,17 +381,31 @@ Git may contain clean doctrine, protocols, schemas, pointers, and non-secret sum
 
 Prime Ascendant was created separately after Prometheus's Fire refraction. Prometheus's Fire was intentionally updated first as the host and recovery substrate; Prime Ascendant was then created as a refinement-first Quest for application semantics and future orchestration. This R02 harvest consolidates the full meaningful context into one Covenant to prevent documentation sprawl.
 
-Independently verified founding lineage:
+Independently verified historical founding lineage:
 
-| Transaction | Verified source |
+| Historical transaction | Historical verified source |
 |---|---|
 | Prometheus's Fire authored | PR #229, merge `07d45cd6c6486e968f25521f429b8273b128eaed` |
 | Prometheus's Fire generated | PR #230, merge `e87dbf05252fd80829143474b83b7fa180d66fb7` |
 | Prime Ascendant authored | PR #232, reviewed head `98a57845082e8f051b913e94e2b56da7d70a0d00`, merge `8f8f36b2c83b19deecff4979f940a8c450aa8444` |
 | Prime Ascendant generated | PR #233, reviewed head `39e8080789041541617d61baec1c909b2cdfb190`, merge `7d21616e5e625bf4f3ce0b3d78e73187d82c331f` |
-| Current verified main | `7d21616e5e625bf4f3ce0b3d78e73187d82c331f` |
+| Main immediately after the founding generated transaction | `7d21616e5e625bf4f3ce0b3d78e73187d82c331f` |
 
-The current main and PR values above are GitHub facts, not local receipt paths. Operator-held private receipts may exist but are not reproduced or stored here. The Covenant's architecture remains conceptual until later Campaign evidence proves implementation.
+These values are historical GitHub facts, not claims about current `main` and
+not local receipt paths. Operator-held private receipts may exist but are not
+reproduced or stored here. The Covenant's architecture remains conceptual until
+later Campaign evidence proves implementation.
+
+Later validation history is also reconciled without changing that architecture:
+
+| Validation transaction | Verified result |
+|---|---|
+| PR #236 — minimize hosted Actions while preserving validation | Merged as `a02e048209ec3e5f9f329c8772440bc4f728e652`; validation became fail-closed and path-targeted, and automatic generated publishing on every `main` push was removed. |
+| PR #237 — targeted hosted-Actions continuity proof | Merged as `e95e13f8e7185bb50e773b2033d06f172d928f58`; proved the Ubuntu baseline/Prime validation route for a continuity transaction. It did not execute the full Atlas Sunset for this chat and created no lifecycle Feather. |
+
+Generated projections remain stale until the separately governed generated
+refresh. Runtime is not started. Gitea cutover, route retirement, repository
+visibility changes, and repository-settings changes remain unauthorized.
 
 ## 10. Proven workflow lesson
 
