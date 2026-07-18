@@ -129,13 +129,21 @@ class PrimeProgramTests(unittest.TestCase):
         aegis = (ROOT / "governance/atlas-aegis.md").read_text(encoding="utf-8")
         strikeforce = (ROOT / "governance/atlas-strikeforce.md").read_text(encoding="utf-8")
         protocols = (ROOT / "operations/protocol-library.md").read_text(encoding="utf-8")
-        self.assertIn("Shardblade is merge authority", shardblade)
+        self.assertIn("Shardblade is the bounded permanence executor", shardblade)
         self.assertIn("Shardblade is the separate authority that permits merging", shardblade)
-        self.assertIn("Goddess Mode is persistence through safe repair and alternate routes", aegis)
+        self.assertIn("Goddess Mode is bounded autonomous completion", aegis)
         self.assertIn("GREEN means the exact reviewed candidate is ready for the next authorized gate", strikeforce)
         self.assertIn("Shardblade is the\nseparate merge authority", strikeforce)
-        self.assertIn("Shardblade** is merge authority at the exact direct-Jayson permanence boundary", protocols)
+        self.assertIn("Shardblade** is the bounded permanence executor", protocols)
+        self.assertIn("Campaign GREEN creates no authority", strikeforce)
         self.assertNotIn("Goddess Mode grants", aegis)
+        for path in (
+            "schemas/shardblade-campaign-warrant-v1.schema.json",
+            "schemas/shardblade-campaign-stage-request-v1.schema.json",
+            "schemas/shardblade-campaign-stage-receipt-v1.schema.json",
+            "tools/agentic_warrants/campaign.py",
+        ):
+            self.assertTrue((ROOT / path).is_file(), path)
 
     def test_kandra_and_operator_endpoint_reconciliation_is_exact(self) -> None:
         projects = (ROOT / "projects/project-registry.md").read_text(encoding="utf-8")

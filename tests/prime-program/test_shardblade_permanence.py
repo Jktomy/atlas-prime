@@ -392,6 +392,7 @@ class ShardbladePermanenceTests(unittest.TestCase):
             "Shardblade may not author, modify, repair, widen, substitute, bypass checks",
             "Recovery is readback-only reconciliation; never a blind retry",
             "CONTRACT_ONLY_NOT_ACTIVATED",
+            "Campaign Shardblade receives authority from the campaign warrant, not from GREEN",
         ):
             self.assertIn(phrase, doctrine)
 
