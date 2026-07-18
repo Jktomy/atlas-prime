@@ -20,6 +20,8 @@ REQUIRED_FORBIDDEN = {
     "WARRANT_SELF_MODIFICATION", "SCOPE_EXPANSION", "PROTECTED_DATA",
 }
 ReplayGuard = Callable[[tuple[str, ...]], bool]
+AuthorizationVerifier = Callable[[dict[str, Any]], bool]
+ReceiptVerifier = Callable[[dict[str, Any]], bool]
 
 
 def _schema(path: Path, value: dict[str, Any], code: str) -> None:
@@ -33,7 +35,10 @@ def campaign_sha256(warrant: dict[str, Any]) -> str:
     return sha256(warrant)
 
 
-def validate_campaign_warrant(warrant: dict[str, Any], *, now: datetime | None = None) -> None:
+def validate_campaign_warrant(
+    warrant: dict[str, Any], *, authorization_verifier: AuthorizationVerifier | None,
+    now: datetime | None = None,
+) -> None:
     _schema(WARRANT_SCHEMA, warrant, "CAMPAIGN_WARRANT_SCHEMA_INVALID")
     observed = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
     issued, expires = parse_time(warrant["issued_at"]), parse_time(warrant["expires_at"])
@@ -43,6 +48,8 @@ def validate_campaign_warrant(warrant: dict[str, Any], *, now: datetime | None =
         raise WarrantValidationError("CAMPAIGN_INACTIVE")
     if warrant["status"] in TERMINAL:
         raise WarrantValidationError("CAMPAIGN_INACTIVE")
+    if authorization_verifier is None or not authorization_verifier(warrant):
+        raise WarrantValidationError("CAMPAIGN_AUTHORIZATION_REJECTED")
     if not REQUIRED_FORBIDDEN.issubset(warrant["forbidden"]):
         raise WarrantValidationError("CAMPAIGN_FORBIDDEN_SET_INVALID")
     stages = warrant["stages"]
@@ -51,6 +58,9 @@ def validate_campaign_warrant(warrant: dict[str, Any], *, now: datetime | None =
         raise WarrantValidationError("CAMPAIGN_STAGE_SET_INVALID")
     if stages[0]["route"] != "AEGIS_BREAK_BOOTSTRAP" or any(item["route"] != "CAMPAIGN_SHARDBLADE" for item in stages[1:]):
         raise WarrantValidationError("CAMPAIGN_ROUTE_INVALID")
+    if (stages[0]["base_source"] != "EXACT_INITIAL" or stages[0]["initial_base_sha"] is None
+            or any(item["base_source"] != "PRIOR_STAGE_MERGE" or item["initial_base_sha"] is not None for item in stages[1:])):
+        raise WarrantValidationError("CAMPAIGN_BASE_CHAIN_INVALID")
     for stage in stages:
         paths = stage["allowed_paths"]
         if [safe_path(path) for path in paths] != paths or len(paths) != len(set(paths)):
@@ -66,10 +76,13 @@ def _stage(warrant: dict[str, Any], stage_id: int) -> dict[str, Any]:
 
 def validate_stage_request(
     request: dict[str, Any], warrant: dict[str, Any], *,
+    authorization_verifier: AuthorizationVerifier | None,
+    receipt_verifier: ReceiptVerifier | None = None,
+    prior_stage_merge_receipt: dict[str, Any] | None = None,
     prior_ready_receipt: dict[str, Any] | None = None, replay_guard: ReplayGuard | None = None,
     now: datetime | None = None,
 ) -> None:
-    validate_campaign_warrant(warrant, now=now)
+    validate_campaign_warrant(warrant, authorization_verifier=authorization_verifier, now=now)
     _schema(REQUEST_SCHEMA, request, "CAMPAIGN_STAGE_REQUEST_SCHEMA_INVALID")
     observed = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
     if request["campaign_id"] != warrant["campaign_id"] or request["campaign_sha256"] != campaign_sha256(warrant):
@@ -77,8 +90,20 @@ def validate_stage_request(
     if request["repository"] != warrant["repository"] or request["authorizer"] != warrant["authorizer"]:
         raise WarrantValidationError("CAMPAIGN_AUTHORITY_MISMATCH")
     stage = _stage(warrant, request["stage_id"])
-    if request["base_sha"] != stage["base_sha"]:
-        raise WarrantValidationError("CAMPAIGN_BASE_DRIFT")
+    if request["stage_id"] == 0:
+        if request["base_sha"] != stage["initial_base_sha"] or request["predecessor_merge_receipt_sha256"] is not None:
+            raise WarrantValidationError("CAMPAIGN_BASE_DRIFT")
+    else:
+        if prior_stage_merge_receipt is None:
+            raise WarrantValidationError("CAMPAIGN_PREDECESSOR_RECEIPT_REQUIRED")
+        if receipt_verifier is None or not receipt_verifier(prior_stage_merge_receipt):
+            raise WarrantValidationError("CAMPAIGN_RECEIPT_TRUST_REJECTED")
+        validate_stage_receipt(prior_stage_merge_receipt, request=None, warrant=warrant)
+        if (prior_stage_merge_receipt["action"] != "MERGE" or prior_stage_merge_receipt["result"] != "SUCCESS"
+                or prior_stage_merge_receipt["stage_id"] != request["stage_id"] - 1
+                or request["predecessor_merge_receipt_sha256"] != sha256(prior_stage_merge_receipt)
+                or request["base_sha"] != prior_stage_merge_receipt["canonical_main_sha"]):
+            raise WarrantValidationError("CAMPAIGN_BASE_DRIFT")
     paths = request["changed_paths"]
     if [safe_path(path) for path in paths] != paths or not set(paths).issubset(stage["allowed_paths"]):
         raise WarrantValidationError("CAMPAIGN_SCOPE_WIDENED")
@@ -94,6 +119,8 @@ def validate_stage_request(
     else:
         if request["pr_state"] != "OPEN_READY" or prior_ready_receipt is None:
             raise WarrantValidationError("CAMPAIGN_READY_RECEIPT_REQUIRED")
+        if receipt_verifier is None or not receipt_verifier(prior_ready_receipt):
+            raise WarrantValidationError("CAMPAIGN_RECEIPT_TRUST_REJECTED")
         validate_stage_receipt(prior_ready_receipt, request=None, warrant=warrant)
         if prior_ready_receipt["action"] != "READY" or prior_ready_receipt["result"] != "SUCCESS":
             raise WarrantValidationError("CAMPAIGN_READY_RECEIPT_REQUIRED")
