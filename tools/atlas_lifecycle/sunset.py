@@ -8,7 +8,15 @@ from typing import Any
 from .candidate import _create_output_directory, _validated_output_path, _write_exact
 from .errors import LifecycleError
 from .jsonio import canonical_bytes, living_emberline_id, load_bounded, read_bounded, stable_record_id
-from .repository import _validate_living_emberline, _validate_sunset_feather_bindings, observed_head, validate_repository
+from .protection import enforce_clean_values, enforce_pointer_contract
+from .repository import (
+    LESSON_DISPOSITIONS,
+    _validate_lesson_harvest_bindings,
+    _validate_living_emberline,
+    _validate_sunset_feather_bindings,
+    observed_head,
+    validate_repository,
+)
 from .schema import SchemaValidator
 
 ARTIFACT_BUNDLE = "candidate-bundle.json"
@@ -47,6 +55,7 @@ REQUEST_KEYS = {
     "durable_source_references",
     "evidence_pointers",
     "protected_data",
+    "lesson_harvest",
 }
 
 
@@ -81,12 +90,9 @@ def _validate_request(root: Path, request_path: Path) -> dict[str, Any]:
         _fail("SUNSET_REQUEST_CANONICAL", "Sunset request bytes must be canonical JSON")
     if set(request) != REQUEST_KEYS:
         _fail("SUNSET_REQUEST_CONTRACT", "Sunset request has missing or undeclared fields")
-    if (
-        request.get("schema_id") != "atlas.lifecycle.sunset-request"
-        or request.get("schema_version") != "1.0.0"
-        or request.get("authority") != "PUBLIC_CLEAN_REQUEST"
-    ):
-        _fail("SUNSET_REQUEST_IDENTITY", "Sunset request identity is invalid")
+    SchemaValidator(root / "lifecycle" / "schemas").validate_sunset_request(request)
+    enforce_clean_values(request)
+    enforce_pointer_contract(request)
     for field in ("request_id", "project_id", "operation_id"):
         value = request.get(field)
         if not isinstance(value, str) or IDENTITY.fullmatch(value) is None or len(value) > 128:
@@ -139,6 +145,10 @@ def _validate_request(root: Path, request_path: Path) -> dict[str, Any]:
         _bounded_text(scope.get("work_scope"), "work_scope")
     else:
         _fail("SUNSET_REQUEST_SCOPE", "live Sunset accepts admitted-Quest or non-Quest scope only")
+    observations = request["lesson_harvest"]["observations"]
+    keys = [item["key"] for item in observations]
+    if len(keys) != len(set(keys)):
+        _fail("LESSON_HARVEST_DUPLICATE_KEY", "lesson observation keys must be unique")
     return request
 
 
@@ -168,6 +178,18 @@ def _canonical_record(record: dict[str, Any]) -> dict[str, Any]:
     value = dict(record)
     value["record_id"] = stable_record_id(value)
     return value
+
+
+def _lesson_summary(harvest: dict[str, Any]) -> dict[str, Any]:
+    observations = harvest["observations"]
+    return {
+        "observation_keys": [item["key"] for item in observations],
+        "disposition_counts": {
+            disposition: sum(item["disposition"] == disposition for item in observations)
+            for disposition in LESSON_DISPOSITIONS
+        },
+        "no_lesson_reason": harvest["no_lesson_reason"],
+    }
 
 
 def _build_records(root: Path, request: dict[str, Any]) -> tuple[list[dict[str, Any]], dict[str, Any]]:
@@ -218,7 +240,7 @@ def _build_records(root: Path, request: dict[str, Any]) -> tuple[list[dict[str, 
     feather = _canonical_record(
         {
             "schema_id": "atlas.lifecycle.feather",
-            "schema_version": "1.0.0",
+            "schema_version": "2.0.0",
             "record_id": "FTR-AAAAAAAAAAAAAAAAAAAAAAAAAA",
             "authority": "CANONICAL_RECORD",
             "project_id": request["project_id"],
@@ -229,6 +251,7 @@ def _build_records(root: Path, request: dict[str, Any]) -> tuple[list[dict[str, 
             "gate": request["gate"],
             "lifecycle_status": "SEALED",
             "context_summary": request["context_summary"],
+            "lesson_harvest": request["lesson_harvest"],
             "concurrency": concurrency,
             "durable_source_references": request["durable_source_references"],
             "evidence_pointers": request["evidence_pointers"],
@@ -314,7 +337,7 @@ def _build_records(root: Path, request: dict[str, Any]) -> tuple[list[dict[str, 
     sunset = _canonical_record(
         {
             "schema_id": "atlas.lifecycle.sunset",
-            "schema_version": "1.0.0",
+            "schema_version": "2.0.0",
             "record_id": "SUN-AAAAAAAAAAAAAAAAAAAAAAAAAA",
             "authority": "CANONICAL_RECORD",
             "project_id": request["project_id"],
@@ -323,6 +346,7 @@ def _build_records(root: Path, request: dict[str, Any]) -> tuple[list[dict[str, 
             "completion_assessment": request["completion_assessment"],
             "decisions": request["decisions"],
             "open_items": request["open_items"],
+            "lesson_harvest_summary": _lesson_summary(request["lesson_harvest"]),
             "next_safe_action": request["next_safe_action"],
             "next_approval_gate": request["next_approval_gate"],
             "latest_feather_id": feather["record_id"],
@@ -357,10 +381,15 @@ def _build_records(root: Path, request: dict[str, Any]) -> tuple[list[dict[str, 
     validator = SchemaValidator(root / "lifecycle" / "schemas")
     for record in records:
         validator.validate_record(record)
+        enforce_clean_values(record)
+        enforce_pointer_contract(record)
         _validate_living_emberline(record)
         if stable_record_id(record) != record["record_id"]:
             _fail("SUNSET_RECORD_ID", "Sunset candidate record ID is unstable")
     _validate_sunset_feather_bindings(records, record_class="candidate")
+    _validate_lesson_harvest_bindings(
+        [*snapshot.canonical_records, *records], record_class="candidate"
+    )
 
     assertions = {
         "feathers": sum(record["schema_id"] == "atlas.lifecycle.feather" for record in records),
@@ -593,6 +622,8 @@ def verify_sunset_candidate(repo_root: Path, candidate_dir: Path) -> dict[str, A
             _fail("SUNSET_CANDIDATE_RECORDS", "Sunset candidate record entry is invalid")
         seen_paths.add(path)
         validator.validate_record(record)
+        enforce_clean_values(record)
+        enforce_pointer_contract(record)
         _validate_living_emberline(record)
         if record.get("authority") != "CANONICAL_RECORD" or stable_record_id(record) != record.get(
             "record_id"
@@ -644,6 +675,9 @@ def verify_sunset_candidate(repo_root: Path, candidate_dir: Path) -> dict[str, A
         _fail("SUNSET_CANDIDATE_SCOPE", "Sunset candidate scope type is unsupported")
 
     snapshot = validate_repository(root)
+    _validate_lesson_harvest_bindings(
+        [*snapshot.canonical_records, *records], record_class="candidate"
+    )
     known_ids = {record["record_id"] for record in snapshot.canonical_records} | seen_ids
     for record in records:
         concurrency = record.get("concurrency")

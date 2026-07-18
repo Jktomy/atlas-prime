@@ -131,6 +131,75 @@ def _validate_sunset_feather_bindings(
             )
 
 
+LESSON_DISPOSITIONS = (
+    "LOCAL_ONLY",
+    "REINFORCES_EXISTING",
+    "NEW_CANDIDATE",
+    "SYSTEMIC_EXCEPTION_CANDIDATE",
+    "REJECTED",
+    "ABSORPTION_REQUIRED",
+)
+
+
+def _validate_lesson_harvest_bindings(
+    records: list[dict[str, Any]],
+    *,
+    record_class: str,
+) -> None:
+    """Bind every v2 Sunset summary to its exact v2 Feather harvest."""
+
+    records_by_id = {record.get("record_id"): record for record in records}
+    golden_wings = {
+        record.get("record_id")
+        for record in records
+        if record.get("schema_id") == "atlas.lifecycle.golden-wing"
+    }
+    for sunset in (
+        record
+        for record in records
+        if record.get("schema_id") == "atlas.lifecycle.sunset"
+        and record.get("schema_version") == "2.0.0"
+    ):
+        feather = records_by_id.get(sunset.get("latest_feather_id"))
+        if feather is None or feather.get("schema_version") != "2.0.0":
+            raise LifecycleError(
+                "LESSON_HARVEST_FEATHER_VERSION",
+                f"{record_class} v2 Sunset must bind one v2 Feather",
+            )
+        harvest = feather.get("lesson_harvest", {})
+        observations = harvest.get("observations", [])
+        keys = [item.get("key") for item in observations if isinstance(item, dict)]
+        if len(keys) != len(observations) or len(keys) != len(set(keys)):
+            raise LifecycleError(
+                "LESSON_HARVEST_DUPLICATE_KEY",
+                f"{record_class} lesson observation keys must be unique",
+            )
+        for observation in observations:
+            if (
+                observation.get("disposition") == "REINFORCES_EXISTING"
+                and observation.get("golden_wing_id") not in golden_wings
+            ):
+                raise LifecycleError(
+                    "LESSON_HARVEST_GOLDEN_WING",
+                    f"{record_class} reinforcement Golden Wing does not resolve",
+                )
+        expected = {
+            "observation_keys": keys,
+            "disposition_counts": {
+                disposition: sum(
+                    item.get("disposition") == disposition for item in observations
+                )
+                for disposition in LESSON_DISPOSITIONS
+            },
+            "no_lesson_reason": harvest.get("no_lesson_reason"),
+        }
+        if sunset.get("lesson_harvest_summary") != expected:
+            raise LifecycleError(
+                "LESSON_HARVEST_SUMMARY_MISMATCH",
+                f"{record_class} Sunset summary does not match its Feather harvest",
+            )
+
+
 
 def _validate_living_emberline(record: dict[str, Any]) -> None:
     if record.get("schema_id") != "atlas.lifecycle.quest-emberline" or record.get("schema_version") != "2.0.0":
@@ -337,6 +406,8 @@ def validate_repository(
     fixtures = [record for record, fixture in loaded if fixture]
     _validate_sunset_feather_bindings(canonical, record_class="canonical")
     _validate_sunset_feather_bindings(fixtures, record_class="fixture")
+    _validate_lesson_harvest_bindings(canonical, record_class="canonical")
+    _validate_lesson_harvest_bindings(fixtures, record_class="fixture")
     records_by_id = {record["record_id"]: record for record in canonical}
     emberlines: dict[str, dict[str, Any]] = {}
     for record in canonical:

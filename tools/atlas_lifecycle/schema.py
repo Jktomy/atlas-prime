@@ -11,12 +11,14 @@ from .jsonio import canonical_bytes, load_bounded
 
 TRUSTED_SCHEMAS = {
     ("atlas.lifecycle.feather", "1.0.0"): "feather-v1.schema.json",
+    ("atlas.lifecycle.feather", "2.0.0"): "feather-v2.schema.json",
     ("atlas.lifecycle.feather-archive", "1.0.0"): "feather-archive-v1.schema.json",
     ("atlas.lifecycle.golden-wing", "1.0.0"): "golden-wing-v1.schema.json",
     ("atlas.lifecycle.quest-emberline", "1.0.0"): "quest-emberline-v1.schema.json",
     ("atlas.lifecycle.quest-emberline", "2.0.0"): "quest-emberline-v2.schema.json",
     ("atlas.lifecycle.quest-checkpoint", "1.0.0"): "quest-checkpoint-v1.schema.json",
     ("atlas.lifecycle.sunset", "1.0.0"): "sunset-v1.schema.json",
+    ("atlas.lifecycle.sunset", "2.0.0"): "sunset-v2.schema.json",
     ("atlas.lifecycle.sunrise", "1.0.0"): "sunrise-v1.schema.json",
     ("atlas.lifecycle.continuity", "1.0.0"): "continuity-v1.schema.json",
     ("atlas.lifecycle.receipt", "1.0.0"): "lifecycle-receipt-v1.schema.json",
@@ -26,6 +28,8 @@ TRUSTED_PROJECTIONS = {
     ("atlas.lifecycle.website-index", "2.0.0"): "website-index-v2.schema.json",
 }
 TRUSTED_AUXILIARY_SCHEMAS = {
+    ("atlas.lifecycle.lesson-harvest", "1.0.0"): "lesson-harvest-v1.schema.json",
+    ("atlas.lifecycle.sunset-request", "2.0.0"): "sunset-request-v2.schema.json",
     ("atlas.lifecycle.event-trust-root", "1.0.0"): "lifecycle-event-trust-root-v1.schema.json",
     (
         "atlas.lifecycle.event-candidate-manifest",
@@ -118,6 +122,12 @@ class SchemaValidator:
 
     def validate_lifecycle_construction_profile(self, profile: dict[str, Any]) -> None:
         self._validate_auxiliary(profile, "atlas.lifecycle.construction-profile")
+
+    def validate_lesson_harvest(self, harvest: dict[str, Any]) -> None:
+        self._validate_auxiliary(harvest, "atlas.lifecycle.lesson-harvest")
+
+    def validate_sunset_request(self, request: dict[str, Any]) -> None:
+        self._validate_auxiliary(request, "atlas.lifecycle.sunset-request")
 
     def _validate_auxiliary(self, value: dict[str, Any], expected_schema_id: str) -> None:
         key = (value.get("schema_id"), value.get("schema_version"))

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/lesson-harvest-v1.schema.json",
+  "title": "Atlas Lesson Harvest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id", "schema_version", "observations", "no_lesson_reason"],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.lesson-harvest" },
+    "schema_version": { "const": "1.0.0" },
+    "observations": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["key", "observation", "disposition", "golden_wing_id", "rationale"],
+        "properties": {
+          "key": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$", "maxLength": 128 },
+          "observation": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+          "disposition": {
+            "enum": ["LOCAL_ONLY", "REINFORCES_EXISTING", "NEW_CANDIDATE", "SYSTEMIC_EXCEPTION_CANDIDATE", "REJECTED", "ABSORPTION_REQUIRED"]
+          },
+          "golden_wing_id": { "type": ["string", "null"], "pattern": "^GWN-[A-Z2-7]{26}$" },
+          "rationale": { "$ref": "common-v1.schema.json#/$defs/bounded_text" }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "disposition": { "const": "REINFORCES_EXISTING" } } },
+            "then": { "properties": { "golden_wing_id": { "type": "string", "pattern": "^GWN-[A-Z2-7]{26}$" } } }
+          }
+        ]
+      }
+    },
+    "no_lesson_reason": { "type": ["string", "null"], "maxLength": 4000 }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "observations": { "type": "array", "minItems": 1 },
+        "no_lesson_reason": { "const": null }
+      }
+    },
+    {
+      "properties": {
+        "observations": { "type": "array", "maxItems": 0 },
+        "no_lesson_reason": { "$ref": "common-v1.schema.json#/$defs/bounded_text" }
+      }
+    }
+  ]
+}
