@@ -75,6 +75,11 @@ CHECKS: dict[str, Check] = {
 }
 
 FULL_CHECK_IDS: tuple[str, ...] = tuple(CHECKS)
+CHECKS["continuity"] = Check(
+    "continuity",
+    (PYTHON, "-B", "-m", "tools.prime_continuity.cli", "validate"),
+)
+CHECK_ORDER: tuple[str, ...] = (*FULL_CHECK_IDS, "continuity")
 BASELINE_CHECK_IDS = {"kernel", "repository_policy", "privacy", "source_validation"}
 
 
@@ -138,12 +143,15 @@ def classify_paths(paths: Sequence[str], *, full: bool = False) -> dict[str, obj
             selected.update({"athena_routes", "thread_engine", "prime_program"})
             matched = True
 
+        if path.startswith("continuity/"):
+            selected.add("continuity")
+            matched = True
+
         if _starts(
             path,
             (
                 "quests/",
                 "quest-board/",
-                "continuity/",
                 "projects/",
                 "operations/",
                 "governance/",
@@ -181,15 +189,16 @@ def classify_paths(paths: Sequence[str], *, full: bool = False) -> dict[str, obj
             unclassified.append(path)
 
     if unclassified:
-        selected.update(FULL_CHECK_IDS)
+        selected = set(FULL_CHECK_IDS)
         windows_required = True
         profile = "full-fail-closed"
-    elif selected == set(FULL_CHECK_IDS):
+    elif set(FULL_CHECK_IDS).issubset(selected):
+        selected = set(FULL_CHECK_IDS)
         profile = "full"
     else:
         profile = "targeted"
 
-    ordered = [check_id for check_id in FULL_CHECK_IDS if check_id in selected]
+    ordered = [check_id for check_id in CHECK_ORDER if check_id in selected]
     return {
         "profile": profile,
         "checks": ordered,
