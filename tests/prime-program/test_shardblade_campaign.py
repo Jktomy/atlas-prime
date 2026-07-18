@@ -150,6 +150,10 @@ class CampaignShardbladeTests(unittest.TestCase):
         with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_RECEIPT_BINDING_MISMATCH"): validate_stage_receipt(wrong_campaign, request, warrant)
         future = copy.deepcopy(receipt); future["executed_at"] = "2026-07-18T19:00:00Z"
         with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_RECEIPT_TIME_INVALID"): validate_stage_receipt(future, None, warrant, now=self.now)
+        before_campaign = copy.deepcopy(receipt); before_campaign["executed_at"] = "2026-07-18T11:59:59Z"
+        with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_RECEIPT_TIME_INVALID"): validate_stage_receipt(before_campaign, None, warrant)
+        after_campaign = copy.deepcopy(receipt); after_campaign["executed_at"] = warrant["expires_at"]
+        with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_RECEIPT_TIME_INVALID"): validate_stage_receipt(after_campaign, None, warrant)
         receipt.update({"result": "PARTIAL", "error_code": "AMBIGUOUS_REMOTE_RESULT", "observed_pr_state": "UNKNOWN", "rollback": "PRESERVE_AND_READBACK_ONLY"})
         validate_stage_receipt(receipt, request, warrant)
         invented = copy.deepcopy(receipt); invented.update({"result": "SUCCESS", "error_code": None, "observed_pr_state": "MERGED"})

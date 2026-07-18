@@ -136,11 +136,11 @@ def validate_stage_request(
             or protected != expected_protected
             or request["protected_paths_sha256"] != sha256(protected)):
         raise WarrantValidationError("CAMPAIGN_PATH_BINDING_MISMATCH")
-    readback = {key: request[key] for key in (
+    pr_readback = {key: request[key] for key in (
         "repository", "base_sha", "pull_request", "pr_state", "source_branch",
         "head_sha", "tree_sha", "changed_paths", "protected_paths",
     )}
-    if request["pr_readback_sha256"] != sha256(readback):
+    if request["pr_readback_sha256"] != sha256(pr_readback):
         raise WarrantValidationError("CAMPAIGN_PR_READBACK_MISMATCH")
     required_checks = {"validate (ubuntu-latest)", "validate (windows-latest)"}
     if ({item["name"] for item in request["checks"]} != required_checks
@@ -192,7 +192,8 @@ def validate_stage_receipt(
         raise WarrantValidationError("CAMPAIGN_RECEIPT_BINDING_MISMATCH")
     _stage(warrant, receipt["stage_id"])
     executed = parse_time(receipt["executed_at"])
-    if now is not None and executed > now:
+    issued, expires = parse_time(warrant["issued_at"]), parse_time(warrant["expires_at"])
+    if not issued <= executed < expires or (now is not None and executed > now):
         raise WarrantValidationError("CAMPAIGN_RECEIPT_TIME_INVALID")
     if request is not None:
         expected = ("request_id", "campaign_id", "campaign_sha256", "stage_id", "action", "repository", "pull_request", "base_sha", "head_sha", "tree_sha", "changed_paths_sha256", "protected_paths_sha256", "pr_readback_sha256")
