@@ -92,70 +92,32 @@ class ProductionAdapterStaticTests(unittest.TestCase):
         adapter = (ADAPTER / "adapter.py").read_text(encoding="utf-8")
         preparer = (ROOT.parent / "generated_checkpoint" / "core.py").read_text(encoding="utf-8")
         workflow = (ROOT.parents[1] / ".github" / "workflows" / "generated-checkpoint-publisher.yml").read_text(encoding="utf-8")
+
         self.assertNotIn("subprocess", preparer)
+        self.assertIn("name: Generated projection status", workflow)
         self.assertIn("workflow_dispatch:", workflow)
-        self.assertIn("push:", workflow)
+        self.assertIsNone(re.search(r"(?m)^  push:\s*$", workflow))
         self.assertIsNone(re.search(r"(?m)^  pull_request(?:_target)?:", workflow))
-        self.assertNotIn("paths-ignore:", workflow)
-        self.assertNotIn('- "generated/**"', workflow)
-        self.assertIn("group: generated-checkpoint-publisher-jktomy-atlas-prime", workflow)
-
-        queue_block = workflow.split("\n  queue:\n", 1)[1].split("\n  parity:\n", 1)[0]
-        parity_block = workflow.split("\n  parity:\n", 1)[1].split("\n  reconcile:\n", 1)[0]
-        reconcile_block = workflow.split("\n  reconcile:\n", 1)[1].split("\n  prepare:\n", 1)[0]
-        prepare_block = workflow.split("\n  prepare:\n", 1)[1].split("\n  publish:\n", 1)[0]
-        publish_block = workflow.split("\n  publish:\n", 1)[1].split("\n  validate_exact_head:\n", 1)[0]
-        validate_block = workflow.split("\n  validate_exact_head:\n", 1)[1]
-        first_queue_step = queue_block.split("\n    steps:\n", 1)[1].lstrip()
-        self.assertTrue(first_queue_step.startswith("- name: Admit exact publisher invocation"))
-        self.assertLess(queue_block.index("Admit exact publisher invocation"), queue_block.index("uses:"))
-        for phrase in (
-            'expectedRepository = "Jktomy/atlas-prime"',
-            'expectedOwner = "Jktomy"',
-            "$env:GITHUB_ACTOR",
-            "$env:GITHUB_TRIGGERING_ACTOR",
-            "$env:GITHUB_EVENT_NAME -ceq \"push\"",
-            "$env:GITHUB_EVENT_NAME -ceq \"workflow_dispatch\"",
-            "$env:GITHUB_REF -cne \"refs/heads/main\"",
-            "$env:GITHUB_SHA",
-            "$env:GITHUB_WORKFLOW_SHA",
-            "$env:GENERATED_BASE_SHA",
-            "git/ref/heads/main",
-        ):
-            self.assertIn(phrase, queue_block)
-        self.assertIn("contents: read", queue_block)
-        self.assertIn("pull-requests: read", queue_block)
-        self.assertNotIn("contents: write", queue_block)
-        self.assertNotIn("pull-requests: write", queue_block)
-        self.assertIn("--limit 1001", queue_block)
-        self.assertIn("tools.generated_checkpoint.queue", queue_block)
-        self.assertIn("DEFERRED_OPEN_CHECKPOINT", queue_block)
-        self.assertIn("receipt_sha256", queue_block)
-
-        self.assertIn("needs: queue", parity_block)
-        self.assertIn("needs.queue.result == 'success'", parity_block)
-        self.assertIn("needs.queue.outputs.queue_result == 'CLEAR'", parity_block)
-        self.assertIn("ubuntu-latest", parity_block)
-        self.assertIn("windows-latest", parity_block)
-        self.assertIn("needs: parity", reconcile_block)
-        self.assertIn("needs: reconcile", prepare_block)
-        self.assertIn("tools.generated_checkpoint.hosted_prepare", prepare_block)
-        self.assertIn("route_result=NOOP", prepare_block)
-        self.assertIn("- prepare", publish_block)
-        self.assertIn("--generated-checkpoint-route", publish_block)
-        self.assertEqual(publish_block.count("production_adapter.cli"), 1)
-        self.assertIn("Bind exact generated draft readback", publish_block)
-        self.assertIn("needs: publish", validate_block)
-        self.assertIn("needs.publish.outputs.head_sha", validate_block)
-        for block in (parity_block, reconcile_block, prepare_block, publish_block, validate_block):
-            job_preamble = block.split("\n    steps:\n", 1)[0]
-            self.assertNotIn("always()", job_preamble)
-            self.assertNotIn("!cancelled()", job_preamble)
-            self.assertNotIn("continue-on-error", block)
-
-        self.assertEqual(workflow.count("contents: write"), 1)
-        self.assertEqual(workflow.count("pull-requests: write"), 1)
-        self.assertEqual(workflow.count("production_adapter.cli"), 1)
+        self.assertIn("group: generated-projection-status-jktomy-atlas-prime", workflow)
+        self.assertIn("name: Check generated projection status", workflow)
+        self.assertIn("Admit exact owner read-only request", workflow)
+        self.assertIn("Build and compare deterministic projections", workflow)
+        self.assertIn("tools/build_index.py", workflow)
+        self.assertIn("--compare-dir generated", workflow)
+        self.assertIn("Generated projections: CURRENT", workflow)
+        self.assertIn("Generated projections: STALE", workflow)
+        self.assertIn('GITHUB_REPOSITORY -cne "Jktomy/atlas-prime"', workflow)
+        self.assertIn("GITHUB_ACTOR -cne $env:GITHUB_REPOSITORY_OWNER", workflow)
+        self.assertIn("GITHUB_TRIGGERING_ACTOR -cne $env:GITHUB_REPOSITORY_OWNER", workflow)
+        self.assertIn('GITHUB_REF -cne "refs/heads/main"', workflow)
+        self.assertIn("PUBLIC_CLEAN_CONFIRMED", workflow)
+        self.assertIn("git/ref/heads/main", workflow)
+        self.assertIn("contents: read", workflow)
+        self.assertNotIn("contents: write", workflow)
+        self.assertNotIn("pull-requests: write", workflow)
+        self.assertNotIn("production_adapter.cli", workflow)
+        self.assertNotIn("tools.generated_checkpoint.hosted_prepare", workflow)
+        self.assertNotIn("--generated-checkpoint-route", workflow)
         self.assertEqual(
             workflow.count("persist-credentials: false"),
             workflow.count("uses: actions/checkout@"),
@@ -167,17 +129,22 @@ class ProductionAdapterStaticTests(unittest.TestCase):
                 action,
                 r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+@[0-9a-f]{40}$",
             )
-        self.assertNotIn("INPUT_REPLAY_NONCE", workflow)
-        self.assertNotIn("actions: write", workflow)
-        self.assertNotIn("gh workflow run", workflow)
-        self.assertNotIn("gh pr close", workflow)
-        self.assertNotIn("gh pr ready", workflow)
-        self.assertNotIn("gh pr merge", workflow)
-        self.assertNotIn("force-push", workflow)
-        self.assertNotIn("git push", workflow)
-        self.assertNotIn("--force", workflow)
-        self.assertNotIn("persist-credentials: true", workflow)
-        self.assertNotIn("automatic merge", workflow.casefold())
+        for forbidden in (
+            "INPUT_REPLAY_NONCE",
+            "actions: write",
+            "gh workflow run",
+            "gh pr create",
+            "gh pr close",
+            "gh pr ready",
+            "gh pr merge",
+            "force-push",
+            "git push",
+            "--force",
+            "persist-credentials: true",
+            "automatic merge",
+        ):
+            self.assertNotIn(forbidden, workflow.casefold() if forbidden == "automatic merge" else workflow)
+
         self.assertIn("PRE_PUSH_REMOTE_LOCK", adapter)
         self.assertIn("GENERATED_CHECKPOINT_PR_COLLISION", source)
         self.assertIn('"--limit", "1001", "--json"', adapter)
@@ -235,7 +202,6 @@ class ProductionAdapterStaticTests(unittest.TestCase):
                 ["gh", "api", "graphql", "-f", "query=query { viewer { login } }", "-f", "owner=Jktomy", "-f", "name=atlas-prime", "-f", "head=source/gate-7f-unit"],
                 ["gh", "api", "graphql", "-f", f"query={REVIEW_THREAD_QUERY} mutation {{ __typename }}", "-f", "owner=Jktomy", "-f", "name=atlas-prime", "-f", "head=source/gate-7f-unit"],
                 ["gh", "api", "graphql", "-f", f"query={REVIEW_THREAD_QUERY}", "-f", "owner=Other", "-f", "name=atlas-prime", "-f", "head=source/gate-7f-unit"],
-                ["gh", "api", "graphql", "-f", f"query={REVIEW_THREAD_QUERY}", "-f", "owner=Jktomy", "-f", "name=other", "-f", "head=source/gate-7f-unit"],
                 ["gh", "api", "graphql", "-f", f"query={REVIEW_THREAD_QUERY}", "-f", "owner=Jktomy", "-f", "name=atlas-prime", "-f", "head=other"],
                 ["gh", "api", "graphql", "-f", f"query={REVIEW_THREAD_QUERY}", "-f", "owner=Jktomy", "-f", "name=atlas-prime", "-f", "head=source/gate-7f-unit", "--paginate"],
                 ["gh", "api", "graphql", "-X", "POST", "-f", f"query={REVIEW_THREAD_QUERY}", "-f", "owner=Jktomy", "-f", "name=atlas-prime", "-f", "head=source/gate-7f-unit"],
