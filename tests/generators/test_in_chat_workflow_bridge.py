@@ -12,7 +12,7 @@ from tools.generated_checkpoint.hosted_prepare import bind_hosted_event
 
 
 class InChatWorkflowBridgeTests(unittest.TestCase):
-    def test_preserved_generated_profile_event_binding_remains_closed(self) -> None:
+    def test_hosted_event_binding_is_closed_and_rehashes_mission(self) -> None:
         original = {
             "mission_id": "RP-C08-GENERATED-AUTO-1-1",
             "mission_sha256": "0" * 64,
@@ -31,53 +31,77 @@ class InChatWorkflowBridgeTests(unittest.TestCase):
             bind_hosted_event(deepcopy(original), "schedule")
         self.assertEqual(raised.exception.code, "GENERATED_CHECKPOINT_EVENT")
 
-    def test_active_workflow_is_manual_read_only_and_has_no_push_trigger(self) -> None:
+    def test_publisher_is_explicit_manual_only_and_retains_full_safe_route(self) -> None:
         workflow = (
             ROOT / ".github" / "workflows" / "generated-checkpoint-publisher.yml"
         ).read_text(encoding="utf-8")
         for phrase in (
-            "name: Generated projection status",
             "workflow_dispatch:",
-            "Check generated projection status",
-            "Admit exact owner read-only request",
-            "Build and compare deterministic projections",
-            "tools/build_index.py",
-            "--compare-dir generated",
-            "Generated projections: CURRENT",
-            "Generated projections: STALE",
-            "contents: read",
+            "Admit exact publisher invocation",
+            'expectedRepository = "Jktomy/atlas-prime"',
+            'expectedOwner = "Jktomy"',
+            "git/ref/heads/main",
+            "github.actor == github.repository_owner",
+            "github.triggering_actor == github.repository_owner",
+            "tools.generated_checkpoint.hosted_prepare",
+            "Bind exact generated draft readback",
+            "validate_exact_head:",
+            "needs.publish.outputs.head_sha",
             "ubuntu-latest",
+            "windows-latest",
         ):
             self.assertIn(phrase, workflow)
 
-        for forbidden in (
-            "\n  push:",
-            "contents: write",
-            "pull-requests: write",
-            "production_adapter.cli",
-            "--execute-draft-pr",
-            "gh pr create",
-            "automatic merge",
-        ):
-            self.assertNotIn(forbidden, workflow.casefold() if forbidden == "automatic merge" else workflow)
+        self.assertNotIn("\n  push:", workflow)
+        self.assertNotIn("paths-ignore:", workflow)
+        self.assertNotIn('"generated/**"', workflow)
+        self.assertNotIn("actions: write", workflow)
+        self.assertNotIn("automatic merge", workflow.casefold())
+        self.assertNotIn("gh workflow run", workflow)
 
-    def test_manual_status_workflow_requires_exact_main_and_owner(self) -> None:
+    def test_publisher_defers_cleanly_while_one_generated_draft_is_open(self) -> None:
         workflow = (
             ROOT / ".github" / "workflows" / "generated-checkpoint-publisher.yml"
         ).read_text(encoding="utf-8")
-        for phrase in (
-            'GITHUB_REPOSITORY -cne "Jktomy/atlas-prime"',
-            "GITHUB_ACTOR -cne $env:GITHUB_REPOSITORY_OWNER",
-            "GITHUB_TRIGGERING_ACTOR -cne $env:GITHUB_REPOSITORY_OWNER",
-            'GITHUB_REF -cne "refs/heads/main"',
-            "PUBLIC_CLEAN_CONFIRMED",
-            "git/ref/heads/main",
-            "Generated status base is stale",
-            "persist-credentials: false",
-        ):
-            self.assertIn(phrase, workflow)
+        queue_block = workflow.split("\n  queue:\n", 1)[1].split("\n  parity:\n", 1)[0]
+        parity_block = workflow.split("\n  parity:\n", 1)[1].split("\n  reconcile:\n", 1)[0]
+        self.assertIn("Inspect generated checkpoint queue", queue_block)
+        self.assertIn("pull-requests: read", queue_block)
+        self.assertIn("tools.generated_checkpoint.queue", queue_block)
+        self.assertIn("DEFERRED_OPEN_CHECKPOINT", queue_block)
+        self.assertIn("No mutation attempted", queue_block)
+        self.assertIn("--limit 1001", queue_block)
+        self.assertIn("receipt_sha256", queue_block)
+        self.assertNotIn("contents: write", queue_block)
+        self.assertNotIn("pull-requests: write", queue_block)
+        self.assertIn("needs: queue", parity_block)
+        self.assertIn("needs.queue.outputs.queue_result == 'CLEAR'", parity_block)
 
-    def test_disabled_hosted_publisher_code_remains_fail_closed(self) -> None:
+        reconcile_block = workflow.split("\n  reconcile:\n", 1)[1].split("\n  prepare:\n", 1)[0]
+        prepare_block = workflow.split("\n  prepare:\n", 1)[1].split("\n  publish:\n", 1)[0]
+        publish_block = workflow.split("\n  publish:\n", 1)[1].split("\n  validate_exact_head:\n", 1)[0]
+        validate_block = workflow.split("\n  validate_exact_head:\n", 1)[1]
+        self.assertIn("needs: parity", reconcile_block)
+        self.assertIn("needs: reconcile", prepare_block)
+        self.assertIn("- prepare", publish_block)
+        self.assertIn("needs: publish", validate_block)
+        for block in (parity_block, reconcile_block, prepare_block, publish_block, validate_block):
+            job_preamble = block.split("\n    steps:\n", 1)[0]
+            self.assertNotIn("always()", job_preamble)
+            self.assertNotIn("continue-on-error", block)
+
+    def test_push_identity_is_deterministic_and_public_clean_by_construction(self) -> None:
+        workflow = (
+            ROOT / ".github" / "workflows" / "generated-checkpoint-publisher.yml"
+        ).read_text(encoding="utf-8")
+        self.assertIn("RP-C08-GENERATED-AUTO-{0}-{1}", workflow)
+        self.assertIn("generated-checkpoint-auto-{0}-{1}", workflow)
+        self.assertIn("'PUBLIC_CLEAN_CONFIRMED'", workflow)
+        self.assertIn("GENERATED_BASE_SHA", workflow)
+        self.assertIn("GENERATED_REPLAY_NONCE", workflow)
+        self.assertNotIn("--github-event", workflow)
+
+    def test_generated_profile_accepts_only_push_or_manual_dispatch(self) -> None:
         source = (
             ROOT
             / "tools"
@@ -98,17 +122,25 @@ class InChatWorkflowBridgeTests(unittest.TestCase):
             source,
         )
 
-    def test_governance_records_disabled_first_hosted_publisher(self) -> None:
+    def test_generated_queue_governance_defines_coalescing_and_manual_recovery(self) -> None:
         governance = (
             ROOT / "governance" / "athena-execution-route-contract.md"
         ).read_text(encoding="utf-8")
         for phrase in (
-            "Hosted generated publication is `DISABLED_FIRST`",
-            "no `push` trigger",
-            "ordinary bounded local source transaction",
-            "reviewed draft PR",
-            "does not erase the historical AJ-09",
-            "must not be interpreted as current automatic operation",
+            "1,001-entry sentinel",
+            "DEFERRED_OPEN_CHECKPOINT",
+            "overall GREEN workflow outcome",
+            "older serialized event",
+            "`CLEAR` decision with event-base drift fails closed before parity",
+            "Canonical `main` pushes do not launch",
+            "explicit later dispatch",
+            "recomputes all five projections",
+            "one full five-file mission",
+            "Closing a generated draft without merge",
+            "explicit owner `workflow_dispatch`",
+            "There is no push, pull-request-close, or schedule trigger",
+            "singular Thread Engine retains",
+            "No generated queue component may become a second repository writer",
         ):
             self.assertIn(phrase, governance)
 

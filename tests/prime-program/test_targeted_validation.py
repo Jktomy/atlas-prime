@@ -20,7 +20,7 @@ class TargetedValidationTests(unittest.TestCase):
         self.assertEqual(plan["profile"], "targeted")
         self.assertEqual(
             plan["checks"],
-            ["kernel", "privacy", "prime_program", "source_validation"],
+            ["kernel", "repository_policy", "privacy", "prime_program", "source_validation"],
         )
         self.assertFalse(plan["windows_required"])
         self.assertEqual(plan["unclassified_paths"], [])
@@ -41,9 +41,21 @@ class TargetedValidationTests(unittest.TestCase):
 
     def test_workflow_change_runs_full_cross_platform_validation(self) -> None:
         plan = MODULE.classify_paths([".github/workflows/prime-readonly-validation.yml"])
-        self.assertEqual(plan["profile"], "targeted")
+        self.assertEqual(plan["profile"], "full")
         self.assertEqual(plan["checks"], list(MODULE.FULL_CHECK_IDS))
         self.assertTrue(plan["windows_required"])
+
+    def test_privacy_and_repository_policy_are_mandatory_for_every_targeted_plan(self) -> None:
+        for changed_path in (
+            "README.md",
+            "quests/prime-ascendant.md",
+            "tools/athena_routes/adapter.py",
+            "tests/privacy/test_boundary.py",
+        ):
+            with self.subTest(changed_path=changed_path):
+                plan = MODULE.classify_paths([changed_path])
+                self.assertIn("privacy", plan["checks"])
+                self.assertIn("repository_policy", plan["checks"])
 
     def test_unknown_path_fails_closed_to_full_validation(self) -> None:
         plan = MODULE.classify_paths(["unclassified/new-surface.bin"])

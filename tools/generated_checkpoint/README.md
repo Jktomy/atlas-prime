@@ -2,17 +2,14 @@
 
 This package is the read-only construction layer for
 `GENERATED_CHECKPOINT_V1`. It builds the five approved reporting projections,
-emits a canonical byte-hash register, reconciles independently produced Ubuntu
+emits a canonical byte-hash register, reconciles independently hosted Ubuntu
 and Windows registers, and prepares one exact Thread Engine mission package.
 
 It has no Git, GitHub, credential, branch, pull-request, or repository-write
-authority. Only the singular production Thread Engine may publish a prepared
+authority. Only the singular production Thread Engine may publish the prepared
 mission, and it stops at exact draft pull-request readback.
 
-Hosted generated publication is currently `DISABLED_FIRST`. The retained
-`.github/workflows/generated-checkpoint-publisher.yml` surface is an explicit
-owner-only, read-only freshness check with no `push` trigger and no write
-permission. Normal refresh work is performed locally with `tools/build_index.py`
-and advanced through an ordinary reviewed draft PR. The hosted publisher code
-and historical acceptance evidence remain preserved for rollback, comparison,
-and any separately approved future reactivation.
+The hosted publisher is explicit and owner-dispatched only; canonical `main`
+pushes do not launch it automatically. Local deterministic generation remains
+available through `python -B tools/build_index.py`, and the hosted route retains
+its full privacy, exact-base, parity, draft-readback, and rollback boundaries.

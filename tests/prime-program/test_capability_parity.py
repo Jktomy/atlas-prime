@@ -88,23 +88,11 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertFalse(proof["superseded_premise"]["external_bridge_required"])
         self.assertEqual(proof["transitions"]["CAP-015"]["to"], "RESTORED/ACTIVE")
 
-    def test_hosted_routes_remain_restored_and_generated_routes_are_disabled_first(self) -> None:
-        for capability_id in ("CAP-009", "CAP-010", "CAP-011", "CAP-023"):
+    def test_hosted_and_generated_capabilities_remain_restored(self) -> None:
+        for capability_id in ("CAP-009", "CAP-010", "CAP-011", "CAP-019", "CAP-020", "CAP-023"):
             self.assertEqual(self.records[capability_id]["capability_disposition"], "RESTORED")
             self.assertEqual(self.records[capability_id]["activation_state"], "ACTIVE")
         self.assertIn("Jayson/Artemis Arrow/Bow", self.records["CAP-009"]["current_state"])
-
-        for capability_id in ("CAP-019", "CAP-020"):
-            self.assertEqual(self.records[capability_id]["capability_disposition"], "RESTORED")
-            self.assertEqual(self.records[capability_id]["activation_state"], "DISABLED_FIRST")
-            self.assertIn("DISABLED_FIRST", self.records[capability_id]["audit_status"])
-        self.assertIn("read-only", self.records["CAP-020"]["current_state"])
-
-        cap021 = self.records["CAP-021"]
-        self.assertEqual(cap021["capability_disposition"], "IMPROVED")
-        self.assertEqual(cap021["activation_state"], "ACTIVE")
-        self.assertIn("targeted validation", cap021["current_state"])
-        self.assertIn("explicit full Ubuntu and Windows", cap021["current_state"])
 
     def test_legacy_oathbringer_capability_is_replaced(self) -> None:
         cap = self.records["CAP-017"]

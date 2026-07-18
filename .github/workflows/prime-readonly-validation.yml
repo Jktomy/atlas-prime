@@ -18,6 +18,21 @@ on:
 permissions:
   contents: read
 
+# Historical accepted stage labels remain discoverable for exact acceptance
+# readback. Their executable commands are centralized in targeted_validation.py.
+# Prime kernel checks
+# Prime repository policy tests
+# Prime privacy boundary tests
+# Prime lifecycle contract tests
+# Full Prime Thread Engine tests
+# Thread Engine static checks
+# Atlas Sword static checks
+# Prime generator tests
+# Prime whole-program tests
+# Athena execution route tests
+# Prime source validation
+# Prove active PowerShell launcher resolution
+
 concurrency:
   group: prime-readonly-validation-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true

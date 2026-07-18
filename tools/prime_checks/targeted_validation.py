@@ -75,7 +75,7 @@ CHECKS: dict[str, Check] = {
 }
 
 FULL_CHECK_IDS: tuple[str, ...] = tuple(CHECKS)
-BASELINE_CHECK_IDS = {"kernel", "privacy", "source_validation"}
+BASELINE_CHECK_IDS = {"kernel", "repository_policy", "privacy", "source_validation"}
 
 
 def _starts(path: str, prefixes: Iterable[str]) -> bool:
@@ -184,6 +184,8 @@ def classify_paths(paths: Sequence[str], *, full: bool = False) -> dict[str, obj
         selected.update(FULL_CHECK_IDS)
         windows_required = True
         profile = "full-fail-closed"
+    elif selected == set(FULL_CHECK_IDS):
+        profile = "full"
     else:
         profile = "targeted"
 
