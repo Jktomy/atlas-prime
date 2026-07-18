@@ -19,14 +19,20 @@ def assert_final_state(case: unittest.TestCase) -> None:
     identities = load("continuity/quest-engine-identities-r01.json")
     qem = load("lifecycle/quest-emberlines/QEM-R6QKBDHLY7I7PVVEKIGTZFMZZT.json")
     repairing = next(item for item in board["entries"] if item["quest_id"] == "QUEST-REPAIRING-PRIME-R01")
+    events = register["event_ids"]
+    creation_event = "PA-C01-QUEST-CREATION-R01"
+    sunset_event = "PA-C01-HOSTED-ACTIONS-SUNSET-R01"
     case.assertEqual(repairing["state"], "COMPLETE")
     case.assertEqual(repairing["next_gate"], "CLOSED")
     case.assertIn("Sunset PR #224", repairing["completion_basis"])
     case.assertNotIn("QUEST-REPAIRING-PRIME-R01", {item["quest_id"] for item in register["entries"]})
-    case.assertEqual(register["register_revision"], 33)
+    case.assertGreaterEqual(register["register_revision"], 33)
     case.assertEqual(register["source_base_sha"], REGISTER_SOURCE_BASE)
-    case.assertEqual(register["event_ids"].count(EVENT), 1)
-    case.assertEqual(register["event_ids"][-1], "PA-C01-QUEST-CREATION-R01")
+    case.assertEqual(events.count(EVENT), 1)
+    case.assertEqual(events.count(creation_event), 1)
+    case.assertEqual(events.count(sunset_event), 1)
+    case.assertLess(events.index(EVENT), events.index(creation_event))
+    case.assertLess(events.index(creation_event), events.index(sunset_event))
     rp_c08 = next(item for item in identities["campaigns"] if item["campaign_id"] == "RP-C08")
     case.assertEqual(rp_c08["state"], "COMPLETE")
     case.assertEqual(qem["quest_revision"], 4)
