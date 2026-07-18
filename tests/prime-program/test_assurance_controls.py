@@ -21,12 +21,14 @@ class AssuranceControlTests(unittest.TestCase):
         controls = self.register["controls"]
         self.assertEqual([item["control_id"] for item in controls], ["ASC-001", "ASC-002"])
         self.assertEqual(len({item["control_id"] for item in controls}), len(controls))
-        self.assertEqual({item["status"] for item in controls}, {"ACTIVE"})
+        self.assertLessEqual({item["status"] for item in controls}, {"ACTIVE", "SUPERSEDED"})
+        self.assertTrue(all(item["status"] == "ACTIVE" for item in controls if item["control_id"] in {"ASC-001", "ASC-002"}))
         self.assertEqual(self.register["applicability_outcomes"], ["APPLIED", "NOT_APPLICABLE"])
         self.assertEqual(self.register["unknown_applicability"], "FAIL_CLOSED")
         for control in controls:
             self.assertTrue(control["applies_when"].strip())
             self.assertTrue(control["required_evidence"])
+            self.assertTrue(control["enforcement_sources"])
             for source in control["enforcement_sources"]:
                 self.assertTrue((ROOT / source).is_file(), source)
 
@@ -37,6 +39,12 @@ class AssuranceControlTests(unittest.TestCase):
         invalid = copy.deepcopy(self.register); invalid["controls"][0]["status"] = "CANDIDATE"
         with self.assertRaises(SchemaValidationError):
             validate_schema(self.schema, invalid)
+        ambiguous = copy.deepcopy(self.register); ambiguous["controls"][0]["status"] = "SUPERSEDED"
+        with self.assertRaises(SchemaValidationError):
+            validate_schema(self.schema, ambiguous)
+        active_with_successor = copy.deepcopy(self.register); active_with_successor["controls"][0]["superseded_by"] = "ASC-003"
+        with self.assertRaises(SchemaValidationError):
+            validate_schema(self.schema, active_with_successor)
 
     def test_seed_controls_have_real_semantic_enforcement(self) -> None:
         controls = {item["control_id"]: item for item in self.register["controls"]}

@@ -29,6 +29,29 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": { "status": { "const": "ACTIVE" } }
+            },
+            "then": {
+              "properties": { "superseded_by": { "const": null } }
+            }
+          },
+          {
+            "if": {
+              "properties": { "status": { "const": "SUPERSEDED" } }
+            },
+            "then": {
+              "properties": {
+                "superseded_by": {
+                  "type": "string",
+                  "pattern": "^ASC-[0-9]{3}$"
+                }
+              }
+            }
+          }
+        ],
         "required": [
           "control_id",
           "title",
