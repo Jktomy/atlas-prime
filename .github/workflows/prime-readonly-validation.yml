@@ -2,56 +2,114 @@ name: Prime read-only validation
 
 on:
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
   workflow_dispatch:
+    inputs:
+      include_windows:
+        description: Run the complete Windows validation companion.
+        required: true
+        default: true
+        type: boolean
 
 permissions:
   contents: read
 
+concurrency:
+  group: prime-readonly-validation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
-    name: validate (${{ matrix.os }})
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-          - windows-latest
-    runs-on: ${{ matrix.os }}
+    name: validate (ubuntu-latest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      windows_required: ${{ steps.plan_targeted.outputs.windows_required || steps.plan_full.outputs.windows_required }}
+      profile: ${{ steps.plan_targeted.outputs.profile || steps.plan_full.outputs.profile }}
+      check_count: ${{ steps.plan_targeted.outputs.check_count || steps.plan_full.outputs.check_count }}
+    env:
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      - name: Check out exact candidate head
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: "3.12"
-      - name: Prime kernel checks
-        run: python -B tests/bootstrap/test_prime_kernel.py
-      - name: Prime repository policy tests
-        run: python -B -m unittest discover -s tests/repository-policy -p "test_*.py" -v
-      - name: Prime privacy boundary tests
-        run: python -B -m unittest discover -s tests/privacy -p "test_*.py" -v
-      - name: Prime lifecycle contract tests
-        run: python -B -m unittest discover -s tests/lifecycle -p "test_*.py" -v
-      - name: Full Prime Thread Engine tests
-        run: python -B -m unittest discover -s tools/thread-engine/tests -p "test_*.py" -v
-      - name: Thread Engine static checks
-        run: python -B tools/thread-engine/tests/static_checks.py
-      - name: Atlas Sword static checks
-        run: python -B tools/atlas-sword/tests/static_checks.py
-      - name: Prime generator tests
-        run: python -B -m unittest discover -s tests/generators -p "test_*.py" -v
-      - name: Prime whole-program tests
-        run: python -B -m unittest discover -s tests/prime-program -p "test_*.py" -v
-      - name: Athena execution route tests
-        run: python -B -m unittest discover -s tests/athena-routes -p "test_*.py" -v
-      - name: Prime source validation
-        run: python -B tools/prime_checks/validate_prime.py
-      - name: Prove active PowerShell launcher resolution
-        shell: pwsh
+      - name: Plan targeted pull-request validation
+        id: plan_targeted
+        if: github.event_name == 'pull_request'
+        run: >-
+          python -B tools/prime_checks/targeted_validation.py
+          --base "$BASE_SHA"
+          --head "$HEAD_SHA"
+          --plan-only
+          --github-output "$GITHUB_OUTPUT"
+      - name: Plan explicit full validation
+        id: plan_full
+        if: github.event_name == 'workflow_dispatch'
+        run: >-
+          python -B tools/prime_checks/targeted_validation.py
+          --full
+          --plan-only
+          --github-output "$GITHUB_OUTPUT"
+      - name: Run targeted pull-request validation
+        if: github.event_name == 'pull_request'
+        run: >-
+          python -B tools/prime_checks/targeted_validation.py
+          --base "$BASE_SHA"
+          --head "$HEAD_SHA"
+      - name: Run explicit full validation
+        if: github.event_name == 'workflow_dispatch'
+        run: python -B tools/prime_checks/targeted_validation.py --full
+      - name: Record validation profile
+        if: always()
         run: |
-          $result = & ./tools/thread-engine/Invoke-AtlasThreadEngineProductionAdapter.ps1 -ResolverSelfTest | ConvertFrom-Json
-          if ($result.invocation -ne "native-argument-array") {
-            throw "Prime production launcher did not use native argument-array invocation"
-          }
-          if ($result.implementation_state -ne "THREAD_ENGINE_ACTIVE_MISSION_SCOPED") {
-            throw "Prime production launcher did not report active mission-scoped state"
-          }
-          Write-Host "Prime production launcher active resolver proof: PASS"
+          echo "Validation profile: ${{ steps.plan_targeted.outputs.profile || steps.plan_full.outputs.profile }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Selected checks: ${{ steps.plan_targeted.outputs.check_count || steps.plan_full.outputs.check_count }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Windows companion required: ${{ steps.plan_targeted.outputs.windows_required || steps.plan_full.outputs.windows_required }}" >> "$GITHUB_STEP_SUMMARY"
+
+  validate_windows:
+    name: validate (windows-latest)
+    needs: validate
+    if: >-
+      always() &&
+      needs.validate.result == 'success' &&
+      (
+        (github.event_name == 'pull_request' && needs.validate.outputs.windows_required == 'true') ||
+        (github.event_name == 'workflow_dispatch' && inputs.include_windows == true)
+      )
+    runs-on: windows-latest
+    timeout-minutes: 25
+    env:
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Check out exact candidate head
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Run targeted Windows validation
+        if: github.event_name == 'pull_request'
+        run: >-
+          python -B tools/prime_checks/targeted_validation.py
+          --base "$env:BASE_SHA"
+          --head "$env:HEAD_SHA"
+      - name: Run explicit full Windows validation
+        if: github.event_name == 'workflow_dispatch'
+        run: python -B tools/prime_checks/targeted_validation.py --full
