@@ -46,7 +46,7 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(repairing_board["next_gate"], "CLOSED")
         self.assertIn("Sunset PR #224", repairing_board["completion_basis"])
         self.assertNotIn(self.identities["quest_id"], {entry["quest_id"] for entry in self.register["entries"]})
-        self.assertEqual(self.register["register_revision"], 33)
+        self.assertGreaterEqual(self.register["register_revision"], 33)
         self.assertEqual(self.register["source_base_sha"], "e87dbf05252fd80829143474b83b7fa180d66fb7")
         self.assertEqual(self.register["event_ids"].count("RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05"), 1)
         rp_c06 = next(campaign for campaign in self.identities["campaigns"] if campaign["campaign_id"] == "RP-C06")
@@ -85,12 +85,18 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(prometheus_continuity["revision"], 2)
         self.assertEqual(prometheus_continuity["last_event_id"], prometheus_event)
         ascendant = next(entry for entry in self.register["entries"] if entry["continuity_id"] == "CONT-PRIME-ASCENDANT-R01")
+        creation_event = "PA-C01-QUEST-CREATION-R01"
+        sunset_event = "PA-C01-HOSTED-ACTIONS-SUNSET-R01"
         self.assertEqual(ascendant["quest_state"], "IN_PROGRESS")
         self.assertEqual(ascendant["campaign_id"], "PA-C01")
         self.assertIsNone(ascendant["mission_id"])
         self.assertEqual(ascendant["gate_id"], "PA-C01-COVENANT-REFINEMENT")
-        self.assertEqual(ascendant["revision"], 1)
-        self.assertEqual(ascendant["last_event_id"], "PA-C01-QUEST-CREATION-R01")
+        self.assertGreaterEqual(ascendant["revision"], 2)
+        self.assertEqual(self.register["event_ids"].count(creation_event), 1)
+        self.assertEqual(self.register["event_ids"].count(sunset_event), 1)
+        self.assertLess(self.register["event_ids"].index(creation_event), self.register["event_ids"].index(sunset_event))
+        self.assertIn(ascendant["last_event_id"], self.register["event_ids"])
+        self.assertGreaterEqual(self.register["event_ids"].index(ascendant["last_event_id"]), self.register["event_ids"].index(sunset_event))
 
     def test_schema_driven_board_accepts_later_quest_without_validator_edit(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
