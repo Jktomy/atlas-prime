@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:07569419b41a18d881e4c0f39b99c9ca6c84b6c3b4e51c7509503369fcc66905
+Source fingerprint: sha256:cab87c3c8a29b0b880ca242ccf6d5b714e9d669cb8ca52509afe06d2ae58fcce
 Generator format: 2
 Status: Generated support artifact
 
@@ -26,6 +26,7 @@ Status: Generated support artifact
 | `governance/deterministic-conservation-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/investiture-accounting-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/investiture-source-identity-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
+| `governance/lesson-harvest-protocol.md` | CANONICAL_ACTIVE | PROTOCOL | missing | HIGH |
 | `governance/noctua.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md` | NON_GOVERNING_PROOF_FIXTURE | PROOF_FIXTURE | missing | CRITICAL |
 | `governance/protected-source-boundary.md` | CANONICAL_ACTIVE | POLICY | missing | CRITICAL |
@@ -125,6 +126,7 @@ Status: Generated support artifact
 | `tools/generated_checkpoint/README.md` | missing | missing | missing | missing |
 | `tools/investiture_accounting/README.md` | missing | missing | missing | missing |
 | `tools/oathbringer-foundry/README.md` | missing | missing | missing | missing |
+| `tools/prime_checks/README.md` | missing | missing | missing | missing |
 | `tools/prime_continuity/README.md` | missing | missing | missing | missing |
 | `tools/resonance/README.md` | missing | missing | missing | missing |
 | `tools/thread-engine/ARCHITECTURE.md` | missing | missing | missing | missing |
