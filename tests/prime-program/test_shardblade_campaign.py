@@ -110,6 +110,8 @@ class CampaignShardbladeTests(unittest.TestCase):
 
     def test_ambiguous_receipt_never_infers_success(self) -> None:
         warrant = self.warrant(); request = self.request(warrant); receipt = self.receipt(request)
+        invalid_ready = copy.deepcopy(receipt); invalid_ready["canonical_tree_sha"] = "f" * 40
+        with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_READY_READBACK_INVALID"): validate_stage_receipt(invalid_ready, request, warrant)
         receipt.update({"result": "PARTIAL", "error_code": "AMBIGUOUS_REMOTE_RESULT", "observed_pr_state": "UNKNOWN", "rollback": "PRESERVE_AND_READBACK_ONLY"})
         validate_stage_receipt(receipt, request, warrant)
         invented = copy.deepcopy(receipt); invented.update({"result": "SUCCESS", "error_code": None, "observed_pr_state": "MERGED"})

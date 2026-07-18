@@ -169,7 +169,9 @@ def validate_stage_receipt(
     if receipt["result"] == "SUCCESS":
         if receipt["error_code"] is not None:
             raise WarrantValidationError("CAMPAIGN_RECEIPT_RESULT_INVALID")
-        if receipt["action"] == "READY" and (receipt["observed_pr_state"] != "OPEN_READY" or receipt["merge_commit_sha"] is not None or receipt["canonical_main_sha"] is not None or receipt["rollback"] != "CLOSE_PR_BEFORE_MERGE"):
+        if receipt["action"] == "READY" and (receipt["observed_pr_state"] != "OPEN_READY"
+                or receipt["merge_commit_sha"] is not None or receipt["canonical_main_sha"] is not None
+                or receipt["canonical_tree_sha"] is not None or receipt["rollback"] != "CLOSE_PR_BEFORE_MERGE"):
             raise WarrantValidationError("CAMPAIGN_READY_READBACK_INVALID")
         if receipt["action"] == "MERGE" and (receipt["observed_pr_state"] != "MERGED" or receipt["merge_commit_sha"] is None or receipt["canonical_main_sha"] != receipt["merge_commit_sha"] or receipt["canonical_tree_sha"] is None or receipt["rollback"] != "REVIEWED_REVERT_PR"):
             raise WarrantValidationError("CAMPAIGN_MERGE_READBACK_INVALID")
