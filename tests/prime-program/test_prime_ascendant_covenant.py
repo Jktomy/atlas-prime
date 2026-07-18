@@ -45,7 +45,7 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
         self.assertIn("PR #237 merged", self.entry["current_position"])
         self.assertIn("not the complete Atlas Sunset", self.entry["current_position"])
         self.assertIn("generated projections remain STALE", self.entry["current_position"])
-        for prohibited in ("change repository visibility", "awaits merge", "merge PR #237"):
+        for prohibited in ("change repository visibility", "awaits merge", "merge pr #237"):
             self.assertNotIn(prohibited, self.entry["next_action"].lower())
 
         prior = copy.deepcopy(self.register)
