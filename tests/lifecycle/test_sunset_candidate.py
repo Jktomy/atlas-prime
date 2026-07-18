@@ -63,7 +63,7 @@ def request(scope_type: str) -> dict:
         durable = [item for item in durable if item["uri"] != "quests/repairing-prime.md"]
     return {
         "schema_id": "atlas.lifecycle.sunset-request",
-        "schema_version": "1.0.0",
+        "schema_version": "2.0.0",
         "authority": "PUBLIC_CLEAN_REQUEST",
         "request_id": f"sunset-test-{scope_type.lower().replace('_', '-')}",
         "expected_main_sha": observed_head(ROOT),
@@ -88,6 +88,20 @@ def request(scope_type: str) -> dict:
             "classification": "INTERNAL_CLEAN",
             "clean_summary": "The test contains no protected values.",
             "protected_pointers": [],
+        },
+        "lesson_harvest": {
+            "schema_id": "atlas.lifecycle.lesson-harvest",
+            "schema_version": "1.0.0",
+            "observations": [
+                {
+                    "key": "exact-cardinality",
+                    "observation": "Full Sunset requires one Feather, Sunset, and Sunrise.",
+                    "disposition": "LOCAL_ONLY",
+                    "golden_wing_id": None,
+                    "rationale": "The candidate test preserves the exact transaction invariant.",
+                }
+            ],
+            "no_lesson_reason": None,
         },
     }
 
@@ -116,6 +130,17 @@ class SunsetCandidateTests(unittest.TestCase):
             verified = verify_sunset_candidate(ROOT, parent / "candidate")
             self.assertEqual(verified["candidate_set_digest"], result["candidate_set_digest"])
             bundle = json.loads((parent / "candidate" / "candidate-bundle.json").read_text())
+            feather = next(
+                item["record"] for item in bundle["records"]
+                if item["record"]["schema_id"] == "atlas.lifecycle.feather"
+            )
+            sunset = next(
+                item["record"] for item in bundle["records"]
+                if item["record"]["schema_id"] == "atlas.lifecycle.sunset"
+            )
+            self.assertEqual(feather["schema_version"], "2.0.0")
+            self.assertEqual(sunset["schema_version"], "2.0.0")
+            self.assertEqual(sunset["lesson_harvest_summary"]["observation_keys"], ["exact-cardinality"])
             emberline_entries = [
                 item for item in bundle["records"]
                 if item["record"]["schema_id"] == "atlas.lifecycle.quest-emberline"

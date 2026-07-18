@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/sunset-v2.schema.json",
+  "title": "Atlas Sunset checkpoint v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "record_id", "authority", "project_id", "operation_id",
+    "quest_scope", "completion_assessment", "decisions", "open_items", "lesson_harvest_summary",
+    "next_safe_action", "next_approval_gate", "latest_feather_id", "concurrency",
+    "durable_source_references", "evidence_pointers", "protected_data"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.sunset" },
+    "schema_version": { "const": "2.0.0" },
+    "record_id": { "type": "string", "pattern": "^SUN-[A-Z2-7]{26}$" },
+    "authority": { "enum": ["CANONICAL_RECORD", "NONCANONICAL_FIXTURE"] },
+    "project_id": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+    "operation_id": { "oneOf": [{ "type": "null" }, { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }] },
+    "quest_scope": { "$ref": "common-v1.schema.json#/$defs/quest_scope" },
+    "completion_assessment": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "decisions": { "$ref": "common-v1.schema.json#/$defs/bounded_text_list" },
+    "open_items": { "$ref": "common-v1.schema.json#/$defs/bounded_text_list" },
+    "lesson_harvest_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observation_keys", "disposition_counts", "no_lesson_reason"],
+      "properties": {
+        "observation_keys": {
+          "type": "array", "maxItems": 64, "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$" }
+        },
+        "disposition_counts": {
+          "type": "object", "additionalProperties": false,
+          "required": ["LOCAL_ONLY", "REINFORCES_EXISTING", "NEW_CANDIDATE", "SYSTEMIC_EXCEPTION_CANDIDATE", "REJECTED", "ABSORPTION_REQUIRED"],
+          "properties": {
+            "LOCAL_ONLY": { "type": "integer", "minimum": 0 },
+            "REINFORCES_EXISTING": { "type": "integer", "minimum": 0 },
+            "NEW_CANDIDATE": { "type": "integer", "minimum": 0 },
+            "SYSTEMIC_EXCEPTION_CANDIDATE": { "type": "integer", "minimum": 0 },
+            "REJECTED": { "type": "integer", "minimum": 0 },
+            "ABSORPTION_REQUIRED": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "no_lesson_reason": { "type": ["string", "null"], "maxLength": 4000 }
+      }
+    },
+    "next_safe_action": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "next_approval_gate": { "$ref": "common-v1.schema.json#/$defs/bounded_text" },
+    "latest_feather_id": { "type": "string", "pattern": "^FTR-[A-Z2-7]{26}$" },
+    "concurrency": { "$ref": "common-v1.schema.json#/$defs/concurrency" },
+    "durable_source_references": { "$ref": "common-v1.schema.json#/$defs/source_references" },
+    "evidence_pointers": { "$ref": "common-v1.schema.json#/$defs/source_references" },
+    "protected_data": { "$ref": "common-v1.schema.json#/$defs/protected_data" }
+  }
+}

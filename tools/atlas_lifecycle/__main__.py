@@ -51,10 +51,12 @@ def build_parser() -> argparse.ArgumentParser:
     event_candidate.add_argument("--state", type=Path, required=True)
     event_candidate.add_argument("--expected-state-digest", required=True)
     event_candidate.add_argument("--output-dir", type=Path, required=True)
-    sunset = subcommands.add_parser("sunset", help="build or verify one bounded Sunset candidate set")
+    sunset = subcommands.add_parser(
+        "sunset", help="build or verify one full Atlas Sunset with explicit lesson harvest"
+    )
     sunset_commands = sunset.add_subparsers(dest="sunset_command", required=True)
     sunset_candidate = sunset_commands.add_parser(
-        "candidate", help="create exactly one Feather/Sunset/Sunrise candidate set"
+        "candidate", help="create one v2 Feather/Sunset, one Sunrise, and explicit lesson harvest"
     )
     sunset_candidate.add_argument("--request", type=Path, required=True)
     sunset_candidate.add_argument("--output-dir", type=Path, required=True)
@@ -193,6 +195,9 @@ def main() -> int:
         candidate_failure = (
             getattr(args, "command", None) == "event"
             and getattr(args, "event_command", None) == "candidate"
+        ) or (
+            getattr(args, "command", None) == "sunset"
+            and getattr(args, "sunset_command", None) == "candidate"
         )
         failure = {
             "authority": "TEMPORARY_CANDIDATE_ONLY" if candidate_failure else "READ_ONLY",

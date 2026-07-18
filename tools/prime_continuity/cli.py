@@ -43,13 +43,17 @@ def emit(value: Any, output: str | None) -> None:
 
 
 def parser() -> argparse.ArgumentParser:
-    command = argparse.ArgumentParser(description="Prime continuity read-only command surface")
+    command = argparse.ArgumentParser(
+        description="Prime continuity read-only snapshots; not the full Atlas Sunset"
+    )
     subcommands = command.add_subparsers(dest="command", required=True)
     subcommands.add_parser("validate")
     for name in ("emberline", "argus"):
         item = subcommands.add_parser(name)
         item.add_argument("--output")
-    sunset_parser = subcommands.add_parser("sunset")
+    sunset_parser = subcommands.add_parser(
+        "sunset", help="render a continuity snapshot, not the full Atlas Sunset"
+    )
     sunset_parser.add_argument("--continuity-id", required=True)
     sunset_parser.add_argument("--output")
     sunrise_parser = subcommands.add_parser("sunrise")
