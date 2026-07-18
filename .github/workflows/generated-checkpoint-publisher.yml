@@ -21,10 +21,6 @@ on:
         type: choice
         options:
           - PUBLIC_CLEAN_CONFIRMED
-  push:
-    branches:
-      - main
-
 permissions:
   contents: read
 

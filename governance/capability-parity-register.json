@@ -280,8 +280,8 @@
       "path_disposition": "CURRENT_PRIME_NATIVE",
       "capability_disposition": "IMPROVED",
       "activation_state": "ACTIVE",
-      "current_state": "One read-only workflow validates Prime on Ubuntu and Windows.",
-      "required_proof": "Exact-head validate checks succeed on both platforms."
+      "current_state": "One read-only workflow always runs mandatory Linux privacy and repository-policy validation, selects additional checks from changed paths, requires Windows for protected or cross-platform surfaces, and retains explicit full Ubuntu and Windows validation.",
+      "required_proof": "Selector contracts, complete local validation, and exact-head checks prove the chosen Linux profile and any required Windows companion."
     },
     {
       "id": "CAP-022",

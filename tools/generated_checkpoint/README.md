@@ -8,3 +8,8 @@ and Windows registers, and prepares one exact Thread Engine mission package.
 It has no Git, GitHub, credential, branch, pull-request, or repository-write
 authority. Only the singular production Thread Engine may publish the prepared
 mission, and it stops at exact draft pull-request readback.
+
+The hosted publisher is explicit and owner-dispatched only; canonical `main`
+pushes do not launch it automatically. Local deterministic generation remains
+available through `python -B tools/build_index.py`, and the hosted route retains
+its full privacy, exact-base, parity, draft-readback, and rollback boundaries.

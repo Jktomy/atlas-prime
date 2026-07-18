@@ -94,7 +94,7 @@ class ProductionAdapterStaticTests(unittest.TestCase):
         workflow = (ROOT.parents[1] / ".github" / "workflows" / "generated-checkpoint-publisher.yml").read_text(encoding="utf-8")
         self.assertNotIn("subprocess", preparer)
         self.assertIn("workflow_dispatch:", workflow)
-        self.assertIn("push:", workflow)
+        self.assertIsNone(re.search(r"(?m)^  push:\s*$", workflow))
         self.assertIsNone(re.search(r"(?m)^  pull_request(?:_target)?:", workflow))
         self.assertNotIn("paths-ignore:", workflow)
         self.assertNotIn('- "generated/**"', workflow)

@@ -31,23 +31,18 @@ class InChatWorkflowBridgeTests(unittest.TestCase):
             bind_hosted_event(deepcopy(original), "schedule")
         self.assertEqual(raised.exception.code, "GENERATED_CHECKPOINT_EVENT")
 
-    def test_publisher_keeps_manual_fallback_and_adds_owner_push_route(self) -> None:
+    def test_publisher_is_explicit_manual_only_and_retains_full_safe_route(self) -> None:
         workflow = (
             ROOT / ".github" / "workflows" / "generated-checkpoint-publisher.yml"
         ).read_text(encoding="utf-8")
         for phrase in (
             "workflow_dispatch:",
-            "push:",
-            "branches:",
-            "- main",
             "Admit exact publisher invocation",
             'expectedRepository = "Jktomy/atlas-prime"',
             'expectedOwner = "Jktomy"',
             "git/ref/heads/main",
             "github.actor == github.repository_owner",
             "github.triggering_actor == github.repository_owner",
-            "github.event_name == 'push'",
-            "github.sha == github.workflow_sha",
             "tools.generated_checkpoint.hosted_prepare",
             "Bind exact generated draft readback",
             "validate_exact_head:",
@@ -57,6 +52,7 @@ class InChatWorkflowBridgeTests(unittest.TestCase):
         ):
             self.assertIn(phrase, workflow)
 
+        self.assertNotIn("\n  push:", workflow)
         self.assertNotIn("paths-ignore:", workflow)
         self.assertNotIn('"generated/**"', workflow)
         self.assertNotIn("actions: write", workflow)
@@ -136,13 +132,13 @@ class InChatWorkflowBridgeTests(unittest.TestCase):
             "overall GREEN workflow outcome",
             "older serialized event",
             "`CLEAR` decision with event-base drift fails closed before parity",
-            "generated-only merge",
+            "Canonical `main` pushes do not launch",
+            "explicit later dispatch",
             "recomputes all five projections",
-            "one later full five-file mission",
+            "one full five-file mission",
             "Closing a generated draft without merge",
             "explicit owner `workflow_dispatch`",
-            "next authorized source merge",
-            "no pull-request-close trigger",
+            "There is no push, pull-request-close, or schedule trigger",
             "singular Thread Engine retains",
             "No generated queue component may become a second repository writer",
         ):

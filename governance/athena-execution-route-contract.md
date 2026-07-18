@@ -139,19 +139,19 @@ The owner-guided publisher is a Jayson/Artemis Arrow/Bow launcher over the exist
 
 The guided publisher may not call the adapter directly, create or update a branch or PR, retry partial state, mark ready, merge, change settings, or become a second writer. CAP-010 is already accepted from its separate live journey and does not establish or limit Athena's Spear identity.
 
-## Generated post-merge route
+## Generated explicit owner-dispatch route
 
-Every owner-authorized push to canonical `main`, including a generated-only merge, enters `.github/workflows/generated-checkpoint-publisher.yml`. Before parity work, the read-only queue admission binds the exact repository, owner actor, triggering actor, event, main ref, workflow source, event base, current-main readback, run identity, and ephemeral GitHub credential class. It enumerates at most 1,000 open pull requests through a 1,001-entry sentinel so the accepted queue cannot silently truncate. Its durable sanitized receipt binds the closed query boundary and observed snapshot by SHA-256 and never authorizes mutation.
+Canonical `main` pushes do not launch `.github/workflows/generated-checkpoint-publisher.yml`. An explicit owner `workflow_dispatch`, bound to exact current `main`, is the only hosted entrypoint. Before parity work, the read-only queue admission binds the exact repository, owner actor, triggering actor, event, main ref, workflow source, requested base, current-main readback, run identity, and ephemeral GitHub credential class. It enumerates at most 1,000 open pull requests through a 1,001-entry sentinel so the accepted queue cannot silently truncate. Its durable sanitized receipt binds the closed query boundary and observed snapshot by SHA-256 and never authorizes mutation.
 
 Exactly one open generated checkpoint may yield successful `DEFERRED_OPEN_CHECKPOINT` only when its readback is an internally consistent publisher-owned draft: GitHub Actions bot author, same Prime repository and owner, `main` base, exact generated title and mission, deterministic branch and replay relation, and canonical publisher body provenance. Its historical base may truthfully precede the newer queue run's current main. An older serialized event may likewise defer against a recorded newer current main because deferral cannot mutate; a `CLEAR` decision with event-base drift fails closed before parity. A malformed, inconsistent, forged, non-draft, or multiple generated identity fails closed. Successful deferral leaves parity, reconciliation, preparation, publication, and exact-head validation skipped, performs no mutation, and is an overall GREEN workflow outcome.
 
-While one valid generated draft is open, later source merges defer read-only and accumulate only as canonical source state. Merging that generated draft moves `main`, re-enters the same publisher, and recomputes all five projections from the then-current source. Current reports return successful `NOOP` with no mission, commit, branch, PR, or self-dispatch. Accumulated source changes produce one later full five-file mission and one fresh deterministic generated-only draft through the singular Thread Engine; a partial delta fails closed.
+While one valid generated draft is open, an explicit later dispatch defers read-only and canonical source changes continue to accumulate without hosted work. A later owner dispatch recomputes all five projections from then-current source. Current reports return successful `NOOP` with no mission, commit, branch, PR, or self-dispatch. Accumulated source changes produce one full five-file mission and one fresh deterministic generated-only draft through the singular Thread Engine; a partial delta fails closed.
 
-Closing a generated draft without merge does not move `main` and therefore does not wake the publisher. Recovery is an explicit owner `workflow_dispatch` bound to exact current main, or the next authorized source merge. There is no pull-request-close trigger and no automatic close, replacement, retry, ready, merge, branch deletion, or direct generated write to `main`.
+Closing a generated draft without merge does not move `main` and does not wake the publisher. Recovery is an explicit owner `workflow_dispatch` bound to exact current main. There is no push, pull-request-close, or schedule trigger and no automatic close, replacement, retry, ready, merge, branch deletion, or direct generated write to `main`.
 
 Queue preflight is defense in depth, not a replacement writer. The singular Thread Engine retains its final remote-head, branch-collision, generated-PR-collision, mission replay, nonce replay, stale-base, pre-push, exact path/blob, and draft readback locks. No generated queue component may become a second repository writer.
 
-This post-merge generated route is not Spear, Phoenix Blade, Aegis Break, or Bow/Arrow route ownership. It is the accepted generated lifecycle described by AJ-09 and CAP-019/CAP-020. It never automatically readies or merges the generated PR.
+This explicit generated route is not Spear, Phoenix Blade, Aegis Break, or Bow/Arrow route ownership. It preserves the generated lifecycle described by AJ-09 and CAP-019/CAP-020 while removing automatic launch. It never automatically readies or merges the generated PR.
 
 ## Evidence and promotion boundary
 
@@ -160,7 +160,7 @@ This realignment uses already merged evidence; it does not manufacture new opera
 - direct Spear PR `#102` proves Athena-to-Thread-Engine mechanics;
 - merged parity proof preserves direct Spear and Arrow/Bow compiler equivalence;
 - Oathbringer production acceptance proves the Sword operation set used by Phoenix Blade's counterpart definition;
-- PRs `#181` and `#182` prove the automatic generated post-merge route and zero-delta behavior;
+- PRs `#181` and `#182` remain historical proof of the former automatic generated post-merge route and its zero-delta behavior;
 - protected dispatch PR `#187` and its accepted adapter receipt prove mission-scoped Aegis Break execution against one exact protected path.
 
 CAP-015, AJ-01, RP-C01-M02, and RP-C01-M06 remain reconciled by their respective accepted evidence. The later non-owner acceptance separately proves AJ-03 and RP-C01-M07 and completes RP-C01. Before the later exact-main validation, the accepted boundary was: AJ-11 is PROVEN; AJ-12, CAP-027, RP-C08, and Repairing Prime remain open. AJ-11 and AJ-12 are now PROVEN; CAP-027 is RESTORED/ACTIVE by the separate final capability reconciliation; RP-C08 and Repairing Prime remain open.
