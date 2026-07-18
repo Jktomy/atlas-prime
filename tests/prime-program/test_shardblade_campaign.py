@@ -74,6 +74,10 @@ class CampaignShardbladeTests(unittest.TestCase):
             with self.assertRaisesRegex(WarrantValidationError, code): validate_campaign_warrant(candidate, authorization_verifier=self.trusted, now=self.now)
         request = self.request(warrant); request["changed_paths"] = ["governance/change-routes.md"]
         with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_SCOPE_WIDENED"): validate_stage_request(request, warrant, authorization_verifier=self.trusted, now=self.now)
+        request = self.request(warrant); request.update({"created_at": "2026-07-18T17:02:00Z", "readback_at": "2026-07-18T17:01:00Z"})
+        with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_READBACK_TIME_INVALID"): validate_stage_request(request, warrant, authorization_verifier=self.trusted, now=self.now)
+        request = self.request(warrant); request["changed_paths"] = ["Governance/atlas-aegis.md", "governance/atlas-aegis.md"]
+        with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_SCOPE_WIDENED"): validate_stage_request(request, warrant, authorization_verifier=self.trusted, now=self.now)
         request = self.request(warrant); request["checks"][0]["head_sha"] = "f" * 40
         with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_CHECK_HEAD_MISMATCH"): validate_stage_request(request, warrant, authorization_verifier=self.trusted, now=self.now)
         request = self.request(warrant); request["copilot_dispositions"] = [{"id": "c1", "classification": "ACTIONABLE", "reason": "repair"}]
@@ -101,7 +105,7 @@ class CampaignShardbladeTests(unittest.TestCase):
         drifted = copy.deepcopy(merge); drifted["head_sha"] = "e" * 40
         for check in drifted["checks"]: check["head_sha"] = drifted["head_sha"]
         with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_CANDIDATE_DRIFT"): validate_stage_request(drifted, warrant, authorization_verifier=self.trusted, receipt_verifier=self.trusted_receipt, prior_ready_receipt=receipt, now=self.now)
-        stale = copy.deepcopy(merge); stale["readback_at"] = receipt["executed_at"]
+        stale = copy.deepcopy(merge); stale["created_at"] = receipt["executed_at"]
         with self.assertRaisesRegex(WarrantValidationError, "CAMPAIGN_FRESH_READBACK_REQUIRED"): validate_stage_request(stale, warrant, authorization_verifier=self.trusted, receipt_verifier=self.trusted_receipt, prior_ready_receipt=receipt, now=self.now)
 
     def test_ambiguous_receipt_never_infers_success(self) -> None:

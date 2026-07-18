@@ -35,6 +35,13 @@ def campaign_sha256(warrant: dict[str, Any]) -> str:
     return sha256(warrant)
 
 
+def _canonical_paths(paths: list[str]) -> bool:
+    folded = [path.casefold() for path in paths]
+    return ([safe_path(path) for path in paths] == paths
+            and paths == sorted(paths, key=str.casefold)
+            and len(folded) == len(set(folded)))
+
+
 def validate_campaign_warrant(
     warrant: dict[str, Any], *, authorization_verifier: AuthorizationVerifier | None,
     now: datetime | None = None,
@@ -54,7 +61,7 @@ def validate_campaign_warrant(
         raise WarrantValidationError("CAMPAIGN_FORBIDDEN_SET_INVALID")
     stages = warrant["stages"]
     ids = [item["stage_id"] for item in stages]
-    if ids != sorted(ids) or len(ids) != len(set(ids)) or warrant["completion_stage_id"] != ids[-1]:
+    if ids != list(range(len(ids))) or warrant["completion_stage_id"] != ids[-1]:
         raise WarrantValidationError("CAMPAIGN_STAGE_SET_INVALID")
     if stages[0]["route"] != "AEGIS_BREAK_BOOTSTRAP" or any(item["route"] != "CAMPAIGN_SHARDBLADE" for item in stages[1:]):
         raise WarrantValidationError("CAMPAIGN_ROUTE_INVALID")
@@ -63,7 +70,7 @@ def validate_campaign_warrant(
         raise WarrantValidationError("CAMPAIGN_BASE_CHAIN_INVALID")
     for stage in stages:
         paths = stage["allowed_paths"]
-        if [safe_path(path) for path in paths] != paths or len(paths) != len(set(paths)):
+        if not _canonical_paths(paths):
             raise WarrantValidationError("CAMPAIGN_PATH_INVALID")
 
 
@@ -105,13 +112,18 @@ def validate_stage_request(
                 or request["base_sha"] != prior_stage_merge_receipt["canonical_main_sha"]):
             raise WarrantValidationError("CAMPAIGN_BASE_DRIFT")
     paths = request["changed_paths"]
-    if [safe_path(path) for path in paths] != paths or not set(paths).issubset(stage["allowed_paths"]):
+    if not _canonical_paths(paths) or not set(paths).issubset(stage["allowed_paths"]):
         raise WarrantValidationError("CAMPAIGN_SCOPE_WIDENED")
-    if any(item["head_sha"] != request["head_sha"] for item in request["checks"]):
+    required_checks = {"validate (ubuntu-latest)", "validate (windows-latest)"}
+    if ({item["name"] for item in request["checks"]} != required_checks
+            or len(request["checks"]) != len(required_checks)
+            or any(item["head_sha"] != request["head_sha"] for item in request["checks"])):
         raise WarrantValidationError("CAMPAIGN_CHECK_HEAD_MISMATCH")
     if any(item["classification"] in {"ACTIONABLE", "REQUIRES_JAYSON_DECISION"} for item in request["copilot_dispositions"]):
         raise WarrantValidationError("CAMPAIGN_REVIEW_UNRESOLVED")
-    if parse_time(request["created_at"]) > observed or parse_time(request["readback_at"]) > observed:
+    created, readback = parse_time(request["created_at"]), parse_time(request["readback_at"])
+    issued, expires = parse_time(warrant["issued_at"]), parse_time(warrant["expires_at"])
+    if not (issued <= created <= readback <= observed < expires):
         raise WarrantValidationError("CAMPAIGN_READBACK_TIME_INVALID")
     if request["action"] == "READY":
         if request["pr_state"] != "DRAFT" or any(request[key] is not None for key in ("prior_ready_receipt_sha256", "fresh_ready_readback_sha256", "merge_method")):
@@ -128,7 +140,10 @@ def validate_stage_request(
             raise WarrantValidationError("CAMPAIGN_READY_RECEIPT_MISMATCH")
         if any(request[key] != prior_ready_receipt[key] for key in ("campaign_id", "stage_id", "repository", "pull_request", "base_sha", "head_sha", "tree_sha")):
             raise WarrantValidationError("CAMPAIGN_CANDIDATE_DRIFT")
-        if request["fresh_ready_readback_sha256"] is None or request["merge_method"] != "MERGE_COMMIT" or parse_time(request["readback_at"]) <= parse_time(prior_ready_receipt["executed_at"]):
+        ready_executed = parse_time(prior_ready_receipt["executed_at"])
+        if (request["fresh_ready_readback_sha256"] is None or request["merge_method"] != "MERGE_COMMIT"
+                or parse_time(request["created_at"]) <= ready_executed
+                or parse_time(request["readback_at"]) <= ready_executed):
             raise WarrantValidationError("CAMPAIGN_FRESH_READBACK_REQUIRED")
     if replay_guard is not None and not replay_guard((request["request_id"], request["nonce"], sha256(request))):
         raise WarrantValidationError("CAMPAIGN_REQUEST_REPLAYED")
@@ -136,16 +151,21 @@ def validate_stage_request(
 
 def validate_stage_receipt(
     receipt: dict[str, Any], request: dict[str, Any] | None, warrant: dict[str, Any], *,
-    replay_guard: ReplayGuard | None = None,
+    replay_guard: ReplayGuard | None = None, now: datetime | None = None,
 ) -> None:
     _schema(RECEIPT_SCHEMA, receipt, "CAMPAIGN_STAGE_RECEIPT_SCHEMA_INVALID")
     if receipt["campaign_id"] != warrant["campaign_id"] or receipt["repository"] != warrant["repository"]:
+        raise WarrantValidationError("CAMPAIGN_RECEIPT_BINDING_MISMATCH")
+    if receipt["warrant_status"] != warrant["status"]:
         raise WarrantValidationError("CAMPAIGN_RECEIPT_BINDING_MISMATCH")
     _stage(warrant, receipt["stage_id"])
     if request is not None:
         expected = ("request_id", "campaign_id", "stage_id", "action", "repository", "pull_request", "base_sha", "head_sha", "tree_sha")
         if receipt["request_sha256"] != sha256(request) or any(receipt[key] != request[key] for key in expected):
             raise WarrantValidationError("CAMPAIGN_RECEIPT_BINDING_MISMATCH")
+        executed = parse_time(receipt["executed_at"])
+        if executed < parse_time(request["readback_at"]) or (now is not None and executed > now):
+            raise WarrantValidationError("CAMPAIGN_RECEIPT_TIME_INVALID")
     if receipt["result"] == "SUCCESS":
         if receipt["error_code"] is not None:
             raise WarrantValidationError("CAMPAIGN_RECEIPT_RESULT_INVALID")
