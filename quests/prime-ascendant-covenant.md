@@ -65,7 +65,7 @@ PostgreSQL full-text search + pgvector:
 initial retrieval stack
 
 Qdrant:
-deferred until demonstrated need. Qdrant remains deferred until demonstrated need.
+deferred until demonstrated need.
 ```
 
 Coppermind does not replace durable doctrine. Dawnshard is not a second source of truth. AI models, browser clients, and arbitrary workflows do not receive unrestricted direct SQL authority. Exact schemas, APIs, retention, event model, and retrieval thresholds remain unresolved decisions below.
@@ -361,15 +361,16 @@ Goddess Mode is persistence through safe repair and alternate routes. It continu
 
 ### Strikeforce
 
+Strikeforce consists of Noctua, Ares, and Aegis working cumulatively against one exact candidate head.
+
 ```text
-Athena improves
-→ Noctua verifies
-→ Ares attacks
-→ Athena repairs
-→ repeat until GREEN
+Noctua verifies
+→ Ares red-teams
+→ Aegis audits and improves Athena's interface with Jayson
+→ GREEN, YELLOW, or RED
 ```
 
-GREEN means the exact reviewed candidate is ready for the next authorized gate. It does not itself merge, activate, promote, cut over, or grant permanence authority.
+Aegis is Athena's shield. It cannot cure a Noctua or Ares failure through wording, confidence, or simplification. GREEN means the exact reviewed candidate is ready for the next authorized gate. It does not itself merge, activate, promote, cut over, or grant permanence authority.
 
 ### Protected-source boundary
 
