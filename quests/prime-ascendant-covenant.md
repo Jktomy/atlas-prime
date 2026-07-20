@@ -113,32 +113,65 @@ In ChatGPT, Harmony must not create a second planning ceremony or independently 
 
 Emberdark remains the governed transit, validated-intake, authorization, idempotency, reconciliation, workflow-execution, retry, mission-state, quarantine, audit-receipt, mediated-integration, failure-behavior, and controlled-export System. Harmony may request and supervise work through Emberdark, but the resident intelligence does not become the workflow engine or permanent state store. Perpendicularity is the approved Google Drive crossing. Dynamic retrieves and preserves Gemstone provenance; Navigator prepares and routes it; TenSoon verifies intake before Coppermind absorption and verifies the exact Phoenix draft before Athena audit. n8n may act through governed interfaces; it does not inherit broad database authority. Exact API shape, versioning, authorization model, write contracts, reconciliation algorithm, retry behavior, and audit format remain unresolved.
 
-Harmony is not canonical source, permanent memory, infrastructure control, recovery authority, monitoring, a dashboard, a scheduler, a notification platform, or automatic permanence authority. Prime retains doctrine; Coppermind retains operational memory; Odyssey retains infrastructure; Elantris retains backup, restore, rollback, and recovery; Notum's Watch and Sentinel retain monitoring; and each human-facing interface retains its own presentation role.
+Harmony is not canonical source, permanent memory, infrastructure control, recovery authority, monitoring, a dashboard, a scheduler, a notification platform, or automatic permanence authority. Prime retains doctrine; Coppermind retains operational memory; Emberdark retains workflow execution and mission state; Odyssey retains infrastructure; Elantris retains backup, restore, rollback, and recovery; Notum's Watch and Sentinel retain monitoring; and each human-facing interface retains its own presentation role.
 
-### 2.4 Private Atlas control surface
+### 2.4 Prometheus substrate direction
+
+The accepted source-placement direction is:
+
+```text
+Prometheus / Proxmox
+├── Harmony VM — resident intelligence and exclusive planned B50 passthrough
+├── Atlas VM — logically separate Emberdark, Coppermind, and Phoenix services
+└── Plex LXC — primary and only final-state Plex server
+```
+
+The Harmony VM is the intelligence vessel. The Atlas VM is the operational-soul vessel, not Atlas itself and not canonical source. Emberdark, Coppermind, and Phoenix retain distinct service identities, private interfaces, database roles, credentials, data directories, health checks, backup units, and selective restore procedures. The Atlas VM requires independently bounded OS/application, Coppermind, Phoenix, and Emberdark storage areas.
+
+The Atlas VM is the selected future Phoenix/Gitea shadow substrate direction. This resolves host-substrate direction only. It does not prove capacity, database layout, parity, backup, restore, mirror behavior, mobile/Athena access, workflow replacement, or cutover.
+
+### 2.5 Household media continuity
+
+```text
+Normal stored media:
+Samsung TV → Plex on Prometheus → media on Forge/Anvil
+
+Prometheus or Plex unavailable:
+Samsung TV → local-only Jellyfin on Forge → media and completed DVR files on Forge
+
+Live television:
+Samsung TV → direct antenna input
+```
+
+Plex remains the primary and only final-state Plex server and the HDHomeRun DVR scheduler. Jellyfin is a separate local-only continuity player with its own users, database, metadata, and cache. Jellyfin is not a Plex standby, shares no Plex application database, owns no automatic failover, and does not require HDHomeRun/DVR ownership for this role. During a Plex or Prometheus outage, stored media and completed DVR recordings remain available through Jellyfin and live television remains available by direct antenna, but new and in-progress Plex recordings are not guaranteed.
+
+Plex application database, configuration, metadata, artwork, cache, and transcode workspace remain on Prometheus local NVMe. Media and completed DVR recordings remain on Forge/Anvil. Missing mounts must fail safely without unintended local DVR writes, silent library destruction, or filesystem exhaustion. Plex playback and recording outrank discretionary Harmony/Atlas batch work, Jellyfin scans, and unproven backup activity.
+
+### 2.6 Private Atlas control surface
 
 The future Operation Glass Codex website/API is a private control surface for Jayson with local/mobile access, approvals, Quest views, Dawnshard views, health, receipts, and bounded actions. Tailscale or another separately approved private route is an accepted direction. No public endpoint is approved. Framework, authentication, authorization, session handling, and approval UX remain unresolved.
 
-### 2.5 Gitea direction
+### 2.7 Gitea direction
 
-Gitea may become future canonical Prime source only after shadow parity, backup, restore, rollback, mirror, mobile access, Athena access, and exact source identity are proven. GitHub Prime remains canonical until an explicit Preview → Execute and Jayson-approved cutover. Gitea host placement, database placement, mirror direction/cadence, branch/tag/PR parity, and rollback criteria remain unresolved.
+Gitea may become future canonical Prime source only after shadow parity, backup, restore, rollback, mirror, mobile access, Athena access, exact source identity, and workflow replacement are proven. GitHub Prime remains canonical until an explicit Preview → Execute and Jayson-approved cutover. The Atlas VM is the selected shadow host substrate direction; database layout, mirror direction/cadence, branch/tag/PR parity, and rollback criteria remain unproven.
 
-### 2.6 Harmony/Sazed and local intelligence
+### 2.8 Harmony/Sazed and local intelligence
 
 Harmony/Sazed is the resident intelligence inside Operation Harmony. It may retrieve, summarize, classify, embed, rerank, perform OCR and intake, propose, coordinate bounded workers, and route to permitted local or external models. In ChatGPT, Athena remains the primary intent, reasoning, and conversational lead. On approved surfaces where Athena is absent, Harmony may lead ordinary interpretation and delegation.
 
-Models, Kandra, and tools serving Harmony do not gain source authority, merge authority by inference, infrastructure authority, unrestricted database writes, or silent action authority. Model selection, routing implementation, resource allocation, evaluation, read boundaries, tool permissions, and delegation criteria remain future work. A future larger local model may serve Harmony, but its identity, hardware, and runtime are not decided here and it is not automatically named Artemis.
+Models, Kandra, and tools serving Harmony do not gain source authority, merge authority by inference, infrastructure authority, unrestricted database writes, or silent action authority. Model selection, routing implementation, resource allocation, evaluation, read boundaries, tool permissions, and delegation criteria remain future work. A future larger local model may serve Harmony, but its identity and implementation are not automatically named Artemis.
 
-### 2.7 Node boundaries
+### 2.9 Node boundaries
 
 | Node | Accepted role | Boundary |
 |---|---|---|
-| Prometheus | Proxmox host, Crucible, Emberdark, Plex, future runtime substrate | Host and recovery substrate; no application deployment is claimed here. |
-| Forge | Storage backbone, Hammer/Anvil, persistent services, backup destination, possible future Gitea placement | Storage and protected backup boundary; no cutover is authorized. |
+| Prometheus | Proxmox host; Harmony VM; Atlas VM; Plex LXC | Host and recovery substrate; no application deployment is claimed here. |
+| Forge | Storage backbone; Hammer/Anvil; persistent Helios services; backups; local-only Jellyfin continuity | Media and protected backup boundary; current Plex remains only through controlled migration and final disposition. |
 | Apollo | Human-operated workstation, VS Code, Codex, Git, PowerShell, interactive tools, administration | Not a persistent-service dependency. |
 | Notum | Parallel-safe monitoring | No source, routing, automatic recovery, or blocking authority. |
+| Samsung television | Direct-antenna live-TV continuity and Plex/Jellyfin client | No source, storage, DVR-scheduler, or infrastructure authority. |
 
-### 2.8 Future Gitea/Phoenix pull-request validation augmentation
+### 2.10 Future Gitea/Phoenix pull-request validation augmentation
 
 The future PA-C06 validation route is:
 
@@ -154,41 +187,15 @@ Gitea pull-request event
 → Jayson-controlled permanence
 ```
 
-The Prime Integrity Cognitive Shadow receives and validates one event, rejects
-replay, moved heads, malformed repository/base/head identity, protected-data
-ingress, and undeclared paths, and prepares an immutable mission carrier. It does
-not judge permanence, mark READY, or merge. One bounded Kandra executes only the
-mission-bound carrier and receives no standing repository authority. TenSoon
-independently verifies the exact candidate head, changed-path inventory, checks,
-and receipts and may report `VERIFIED_FOR_ATHENA_AUDIT`; it has no READY or MERGE
-authority. Operation Phoenix owns canonical-source maintenance and future Gitea
-branch, draft-PR, or commit-status publication. Phoenix does not own backup or
-restore, which remains Elantris, and it never merges automatically.
+The Prime Integrity Cognitive Shadow receives and validates one event, rejects replay, moved heads, malformed repository/base/head identity, protected-data ingress, and undeclared paths, and prepares an immutable mission carrier. It does not judge permanence or merge. One bounded Kandra executes only the mission-bound carrier and receives no standing repository authority. TenSoon independently verifies the exact candidate head, changed-path inventory, checks, and receipts and may report `VERIFIED_FOR_ATHENA_AUDIT`; it has no merge authority. Operation Phoenix owns canonical-source maintenance and future Gitea branch, draft-PR, or commit-status publication. Phoenix does not own backup or restore, which remains Elantris, and it never merges automatically.
 
 The future Gitea model uses three logical contexts:
 
-- `prime/integrity` — required repository/source policy, protected-data, JSON,
-  schema, Project, Operation, Quest Board, continuity, routing, metadata,
-  deterministic generated-current comparison, changed-path tests, and exact
-  base/head/path identity.
-- `prime/windows-compatibility` — conditional for PowerShell, Atlas Sword,
-  Oathbringer, Windows launcher or resolution behavior, Thread Engine,
-  Athena-route execution, validation/workflow, and unknown paths that fail closed.
-- `prime/generated-current` — required for generated-only refresh candidates or
-  wherever accepted source/generated parity applies.
+- `prime/integrity` — required repository/source policy, protected-data, JSON, schema, Project, Operation, Quest Board, continuity, routing, metadata, deterministic generated-current comparison, changed-path tests, and exact base/head/path identity.
+- `prime/windows-compatibility` — conditional for PowerShell, Atlas Sword, Oathbringer, Windows launcher or resolution behavior, Thread Engine, Athena-route execution, validation/workflow, and unknown paths that fail closed.
+- `prime/generated-current` — required for generated-only refresh candidates or wherever accepted source/generated parity applies.
 
-GitHub remains canonical during this planning chapter. Its current main ruleset
-still requires `validate (ubuntu-latest)` and `validate (windows-latest)`, so a
-source-side migration must preserve those legacy contexts until the new contexts
-are observed at exact heads and Jayson separately changes the ruleset. Proof
-before removal requires one Windows-required candidate, one Windows-skipped
-ordinary source candidate, successful new and legacy contexts, strict-base
-readback, and a reviewed rollback. Rollback is a reviewed workflow revert that
-restores the former job topology while the legacy contexts remain required.
-
-No Gitea deployment, webhook activation, database activation, canonical cutover,
-GitHub retirement, credential detail, private-network value, or route retirement
-is authorized by this augmentation.
+GitHub remains canonical during this planning chapter. Legacy required contexts remain until replacement contexts are observed at exact heads and Jayson separately changes the ruleset. No Gitea deployment, webhook activation, database activation, canonical cutover, GitHub retirement, credential detail, private-network value, repository-settings change, or route retirement is authorized by this augmentation.
 
 ## 3. Separation of existing Quests
 
@@ -210,9 +217,13 @@ One companion is chosen because all material remains PA-C01 context, one source 
 
 The relational-first direction keeps operational state, retrieval, backup, and recovery close with fewer moving parts. Qdrant remains a valid later specialization after measured retrieval or scale need; it is deferred, not rejected forever.
 
-### Emberdark VM rather than LXC
+### Harmony VM plus Atlas VM
 
-The VM direction provides a clearer recovery unit, stronger application isolation, and a cleaner Coppermind/Emberdark operational boundary. The substrate belongs primarily to Prometheus's Fire; this Covenant records only the dependency and rationale, not deployment.
+Two VMs preserve a clear intelligence boundary and a clear operational-state boundary without creating a separate guest for every service. Harmony receives the accelerator and model workload. The Atlas VM co-locates Emberdark, Coppermind, and Phoenix behind distinct identities, data areas, database roles, and restore units. This reduces guest sprawl while retaining application-aware recovery and authority separation.
+
+### Plex LXC with Forge-local Jellyfin continuity
+
+The LXC direction keeps Quick Sync access and Plex overhead simple. Plex metadata and transcode remain local to Prometheus while durable media and completed DVR files remain on Forge. Jellyfin on Forge provides independent stored-media playback without the identity, database replication, and dual-DVR complexity of a second Plex server. Direct antenna television avoids making live viewing depend on the network or a transcoder.
 
 ### Matrix/Element removed from the Prometheus baseline
 
@@ -222,7 +233,7 @@ Apollo/VS Code and the future private website meet the immediate interaction nee
 
 GitHub source and workflows are proven today, while Gitea parity, backup, recovery, mirror, mobile access, and rollback are not. Keeping GitHub canonical preserves reversibility and avoids a premature source-truth migration.
 
-### Legacy routes remain active
+### Current routes remain until parity and recovery are proven
 
 Replacement capability and recovery are not yet proven. Existing routes remain available until parity, rollback, and explicit Preview → Execute retirement approval are complete.
 
@@ -240,7 +251,7 @@ The hybrid surface model keeps one conversational lead and avoids duplicate plan
 
 ## 5. Internal unresolved-decision register
 
-All entries below remain open by design. No entry is silently resolved by this harvest.
+All entries below remain open unless explicitly marked as a selected direction. A selected substrate direction is not deployment, proof, or gate advancement. The alternatives, reasoning, unresolved basis, evidence, downstream effects, owners, dates, and pointers remain part of the restart-safe record.
 
 ### PA-C01-DEC-001 — PostgreSQL schema boundaries
 
@@ -310,7 +321,7 @@ All entries below remain open by design. No entry is silently resolved by this h
 
 ### PA-C01-DEC-012 — n8n integration boundary
 
-**Campaign:** PA-C03 · **Status:** OPEN — UNRESOLVED · **Direction:** n8n acts through Emberdark and cannot inherit broad database or source authority.
+**Campaign:** PA-C03 · **Status:** OPEN — UNRESOLVED · **Direction:** n8n acts through Emberdark and cannot inherit broad database or source authority.  
 **Alternatives:** n8n as writer; n8n as orchestrator; no n8n. **Reasoning:** Mediated orchestration preserves governance and replacement options. **Why unresolved:** Workflow inventory and latency needs are unknown.  
 **Evidence needed:** Typed integration contract, denied-direct-write tests, failure/retry proof. **Downstream:** PA-C03/05/08. **Gate/owner:** PA-C03 integration gate / Harmony-Emberdark. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.3.
 
@@ -348,31 +359,31 @@ All entries below remain open by design. No entry is silently resolved by this h
 
 **Campaign:** PA-C05 · **Status:** OPEN — UNRESOLVED · **Direction:** Private, authenticated, approval-aware local/mobile control surface with no public endpoint.  
 **Alternatives:** Framework A/B; Tailscale identity; VPN plus application auth; passkey/session hybrid. **Reasoning:** Private reachability and explicit approvals reduce exposure. **Why unresolved:** Framework, identity provider, session model, and threat model need Jayson review.  
-**Evidence needed:** Threat model, auth denial, session, audit, health, and bounded-action tests. **Downstream:** PA-C05/08/10. **Gate/owner:** PA-C05 private-gate decision / Artemis-Codex. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.4.
+**Evidence needed:** Threat model, auth denial, session, audit, health, and bounded-action tests. **Downstream:** PA-C05/08/10. **Gate/owner:** PA-C05 private-gate decision / Artemis-Codex. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.6.
 
 ### PA-C01-DEC-019 — Website approval UX and audit logging
 
 **Campaign:** PA-C05 · **Status:** OPEN — UNRESOLVED · **Direction:** Preview → approval → bounded Execute with receipt and rollback visibility.  
-**Alternatives:** Per-command approval; campaign approval; staged approval with expiry. **Reasoning:** Exact scope and expiry prevent standing authority. **Why unresolved:** Command taxonomy and Emberdark contracts are open.
-**Evidence needed:** User journey, replay/expiry, denial, receipt, and rollback proof. **Downstream:** PA-C05/09/10. **Gate/owner:** PA-C05 approval gate / Jayson-Artemis. **Last verified:** 2026-07-17. **Pointers:** `governance/change-routes.md`; Covenant §7.
+**Alternatives:** Per-command approval; campaign approval; staged approval with expiry. **Reasoning:** Exact scope and expiry prevent standing authority. **Why unresolved:** Command taxonomy and Emberdark contracts are open.  
+**Evidence needed:** User journey, replay/expiry, denial, receipt, and rollback proof. **Downstream:** PA-C05/09/10. **Gate/owner:** PA-C05 approval gate / Jayson-Artemis. **Last verified:** 2026-07-17. **Pointers:** `governance/change-routes.md`; Covenant §8.
 
 ### PA-C01-DEC-020 — Gitea host and database placement
 
-**Campaign:** PA-C06 · **Status:** OPEN — UNRESOLVED · **Direction:** Shadow placement must preserve independent backup, recovery, and source identity.  
-**Alternatives:** Forge; Prometheus; separate host; future dedicated substrate. **Reasoning:** Placement affects failure domains and cutover rollback. **Why unresolved:** Prometheus/Forge capacity and recovery gates are not complete.  
-**Evidence needed:** Capacity, network, backup, restore, parity, and rollback proof. **Downstream:** PA-C06/08/10. **Gate/owner:** PA-C06 placement gate / Odyssey-Phoenix-Elantris-Harmony. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.5; `quests/prometheus-fire.md`.
+**Campaign:** PA-C06 · **Status:** SELECTED SUBSTRATE DIRECTION — UNPROVEN · **Direction:** Phoenix/Gitea shadow is planned inside the Atlas VM while independent service identity, backup, recovery, and source identity remain mandatory.  
+**Alternatives:** Forge; Prometheus Atlas VM; separate host; future dedicated substrate. **Reasoning:** The Atlas VM keeps Phoenix beside the governed operational systems while separate data areas and independent recovery limit coupling. **Why unresolved:** Database layout, capacity, runtime segmentation, parity, mirror behavior, access, and recovery gates are not complete.  
+**Evidence needed:** Capacity, network segmentation, database layout, backup, restore, exact-ref parity, mobile/Athena access, mirror interruption, and rollback proof. **Downstream:** PA-C06/08/10. **Gate/owner:** PA-C06 placement gate / Odyssey-Phoenix-Elantris-Harmony. **Last verified:** 2026-07-20. **Pointers:** Covenant §§2.4, 2.7; `quests/prometheus-fire.md`.
 
 ### PA-C01-DEC-021 — Gitea mirror, parity, cutover, and rollback
 
 **Campaign:** PA-C06 · **Status:** OPEN — UNRESOLVED · **Direction:** Begin shadow; prove one-way or bidirectional mechanics, exact refs, workflow replacement, mobile/Athena access, and reversible cutover before authority changes.  
 **Alternatives:** GitHub primary with Gitea shadow; Gitea primary with GitHub mirror; dual-write. **Reasoning:** Shadow-first preserves current proven authority. **Why unresolved:** Operational parity and rollback are unproven.  
-**Evidence needed:** Exact ref parity, PR/workflow parity, backup/restore, mirror interruption, and rollback receipt. **Downstream:** PA-C06/09/10. **Gate/owner:** PA-C06 cutover gate / Jayson-Codex. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.5; `governance/cutover-boundary.md`.
+**Evidence needed:** Exact ref parity, PR/workflow parity, backup/restore, mirror interruption, and rollback receipt. **Downstream:** PA-C06/09/10. **Gate/owner:** PA-C06 cutover gate / Jayson-Codex. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.7; `governance/cutover-boundary.md`.
 
 ### PA-C01-DEC-022 — Harmony capability selection and resource allocation
 
 **Campaign:** PA-C07 · **Status:** OPEN — UNRESOLVED · **Direction:** Harmony routes permitted local or external models, Kandra, and tools through bounded retrieval and typed interfaces without source or merge authority.  
-**Alternatives:** One local model; routed specialists; external-first; hybrid. **Reasoning:** Resource cost, quality, privacy, availability, and recovery must be measured while preserving the resident Harmony identity. **Why unresolved:** Corpus, hardware, workload, evaluation set, and future model identity are not proven.  
-**Evidence needed:** Quality, resource, privacy, failure, fallback, surface-routing, and authority-boundary tests. **Downstream:** PA-C07/08/10. **Gate/owner:** PA-C07 model gate / Artemis-Harmony. **Last verified:** 2026-07-20. **Pointers:** Covenant §§2.3, 2.6; `quests/found-silverlight.md`.
+**Alternatives:** One local model; routed specialists; external-first; hybrid. **Reasoning:** Resource cost, quality, privacy, availability, and recovery must be measured while preserving the resident Harmony identity. **Why unresolved:** Corpus, workload, evaluation set, and future model identity are not proven.  
+**Evidence needed:** Quality, resource, privacy, failure, fallback, surface-routing, and authority-boundary tests. **Downstream:** PA-C07/08/10. **Gate/owner:** PA-C07 model gate / Artemis-Harmony. **Last verified:** 2026-07-20. **Pointers:** Covenant §§2.3, 2.8; `quests/found-silverlight.md`.
 
 ### PA-C01-DEC-023 — Controlled Burn, Phoenix Burn, Feather, and Golden Wing
 
@@ -384,7 +395,7 @@ All entries below remain open by design. No entry is silently resolved by this h
 
 **Campaign:** PA-C09 · **Status:** OPEN — UNRESOLVED · **Direction:** Keep Spear, Arrow/Bow, Sword/Oathbringer, Phoenix Blade, Aegis Break, Thread Engine, Codex, and GitHub routes until parity, recovery, rollback, and explicit retirement approval.  
 **Alternatives:** Immediate simplification; gradual deprecation; parallel routes with evidence. **Reasoning:** Existing routes are proven or historically required; removing them early reduces resilience. **Why unresolved:** New workflows and recovery evidence do not exist.  
-**Evidence needed:** Old/new capability matrix, rollback, operator access, and Jayson Preview → Execute approval. **Downstream:** PA-C06/08/09/10. **Gate/owner:** PA-C09 retirement gate / Codex-Jayson. **Last verified:** 2026-07-17. **Pointers:** `governance/change-routes.md`; Covenant §7.
+**Evidence needed:** Old/new capability matrix, rollback, operator access, and Jayson Preview → Execute approval. **Downstream:** PA-C06/08/09/10. **Gate/owner:** PA-C09 retirement gate / Codex-Jayson. **Last verified:** 2026-07-17. **Pointers:** `governance/change-routes.md`; Covenant §8.
 
 ### PA-C01-DEC-025 — Gemstone, Spiralstone, and BEU relationship
 
@@ -401,7 +412,7 @@ All entries below remain open by design. No entry is silently resolved by this h
 | PA-C03 | Harmony/Emberdark intake, API, validation, receipts, idempotency, integrations | Authorization, failure, replay, rollback, receipt, and mediated-integration proof. |
 | PA-C04 | Coppermind-to-Athena Dawnshard projection, watermark, stale behavior, portable context | Watermark, fail-closed, last-known-good, integrity, restart, and backup proof. |
 | PA-C05 | Glass Codex private website, authentication, approvals, access, health, bounded actions | Private-access threat model and denied/public-exposure, approval, audit, and recovery proof. |
-| PA-C06 | Gitea shadow, parity, mirror, backup, rollback, cutover readiness | Exact identity/ref parity, recovery, mirror interruption, access, and Jayson gate. |
+| PA-C06 | Atlas-VM-hosted Gitea shadow, parity, mirror, backup, rollback, cutover readiness | Exact identity/ref parity, recovery, mirror interruption, access, and Jayson gate. |
 | PA-C07 | Harmony/Sazed, RAG, OCR/intake, context assembly, capability awareness, surface routing, local/external models, embeddings, reranking, and bounded workers | Quality, resource, privacy, fallback, frictionless-routing, and authority-boundary evidence. |
 | PA-C08 | Cross-component integration and degraded modes | Boundary, failure, recovery, monitoring nonauthority, and integration proof. |
 | PA-C09 | Old/new route parity, lifecycle refraction, retirement criteria | Comparison, rollback, recovery, operator access, and explicit retirement approval. |
@@ -427,9 +438,13 @@ Current routes remain until parity and recovery are proven. Gemstones may become
 
 ## 8. Authority, safety, and operating definitions
 
-### Shardblade
+### Normal human-merge boundary
 
-Shardblade is merge authority for one exact already-authored and reviewed candidate. After exact-head Strikeforce GREEN, Shardblade may mark that exact candidate ready and merge it using the accepted route, with fresh head/base/readback checks. Shardblade cannot author, repair, widen, substitute, bypass checks, force-push, change settings, access secrets, perform runtime or infrastructure work, authorize cutover, or turn into standing authority. Strikeforce GREEN is readiness; it is not merge authority.
+One direct Jayson instruction may authorize one bounded Prime transaction through an unchanged merge-ready PR. The authorized worker may build, validate, repair candidate-caused failures, address actionable review, run exact-head Strikeforce, and mark the unchanged validated PR ready. No assistant, model, tool, workflow, or automated route may merge. Jayson alone makes the candidate permanent by manually clicking Merge in GitHub.
+
+Validation occurs before publication where practical or while the PR remains draft. Marking an unchanged PR ready must not trigger another validation run. If any candidate byte changes after READY, the PR returns to draft and the replacement exact head repeats validation, review, and Strikeforce before it may be ready again. The final worker report is `Prime PR #___ is ready to merge.`
+
+Shardblade is merge authority only inside the separate inactive machine contract; machine Shardblade remains `CONTRACT_ONLY_NOT_ACTIVATED` and is not the ordinary Prime workflow.
 
 ### Goddess Mode
 
@@ -446,7 +461,7 @@ Noctua verifies
 → GREEN, YELLOW, or RED
 ```
 
-Aegis is Athena's shield. It cannot cure a Noctua or Ares failure through wording, confidence, or simplification. GREEN means the exact reviewed candidate is ready for the next authorized gate. It does not itself merge, activate, promote, cut over, or grant permanence authority.
+Aegis is Athena's shield. It cannot cure a Noctua or Ares failure through wording, confidence, or simplification. GREEN means the exact reviewed candidate is ready for the next authorized gate; under the normal human-merge route, the unchanged validated candidate may advance to ready-for-review. It does not itself merge, activate, promote, cut over, or grant permanence authority.
 
 ### Protected-source boundary
 
@@ -454,7 +469,7 @@ Git may contain clean doctrine, protocols, schemas, pointers, and non-secret sum
 
 ## 9. Founding context and provenance
 
-Prime Ascendant was created separately after Prometheus's Fire refraction. Prometheus's Fire was intentionally updated first as the host and recovery substrate; Prime Ascendant was then created as a refinement-first Quest for application semantics and future orchestration. This R02 harvest consolidates the full meaningful context into one Covenant to prevent documentation sprawl.
+Prime Ascendant was created separately after Prometheus's Fire refraction. Prometheus's Fire was intentionally updated first as the host and recovery substrate; Prime Ascendant was then created as a refinement-first Quest for application semantics and future orchestration. This Covenant consolidates the full meaningful context into one source to prevent documentation sprawl.
 
 Independently verified historical founding lineage:
 
@@ -466,10 +481,7 @@ Independently verified historical founding lineage:
 | Prime Ascendant generated | PR #233, reviewed head `39e8080789041541617d61baec1c909b2cdfb190`, merge `7d21616e5e625bf4f3ce0b3d78e73187d82c331f` |
 | Main immediately after the founding generated transaction | `7d21616e5e625bf4f3ce0b3d78e73187d82c331f` |
 
-These values are historical GitHub facts, not claims about current `main` and
-not local receipt paths. Operator-held private receipts may exist but are not
-reproduced or stored here. The Covenant's architecture remains conceptual until
-later Campaign evidence proves implementation.
+These values are historical GitHub facts, not claims about current `main` and not local receipt paths. Operator-held private receipts may exist but are not reproduced or stored here. The Covenant's architecture remains conceptual until later Campaign evidence proves implementation.
 
 Later validation history is also reconciled without changing that architecture:
 
@@ -478,33 +490,32 @@ Later validation history is also reconciled without changing that architecture:
 | PR #236 — minimize hosted Actions while preserving validation | Merged as `a02e048209ec3e5f9f329c8772440bc4f728e652`; validation became fail-closed and path-targeted, and automatic generated publishing on every `main` push was removed. |
 | PR #237 — targeted hosted-Actions continuity proof | Merged as `e95e13f8e7185bb50e773b2033d06f172d928f58`; proved the Ubuntu baseline/Prime validation route for a continuity transaction. It did not execute the full Atlas Sunset for this chat and created no lifecycle Feather. |
 
-Generated projections remain stale until the separately governed generated
-refresh. Runtime is not started. Gitea cutover, route retirement, repository
-visibility changes, and repository-settings changes remain unauthorized.
+Generated projections remain stale until the separately governed generated refresh. Runtime is not started. Gitea cutover, route retirement, repository visibility changes, and repository-settings changes remain unauthorized.
 
 ## 10. Proven workflow lesson
 
-The proven bounded transaction pattern is:
+The current bounded transaction pattern is:
 
 ```text
-Bounded Gemstone
-→ exact-base lock
-→ authored-source PR
-→ exact-head Strikeforce
-→ review-comment repair
-→ Shardblade merge
+one bounded Jayson instruction
+→ exact-base and path lock
+→ local validation where practical
+→ branch and draft PR
+→ required hosted validation while draft
+→ candidate-caused and actionable-review repair
+→ exact-head Noctua, Ares, Aegis, and Strikeforce GREEN
+→ unchanged ready-for-review transition
+→ `Prime PR #___ is ready to merge.`
+→ Jayson manually clicks Merge in GitHub
 → merged-main readback
-→ separate generated-refresh PR
-→ exact-head Strikeforce
-→ Shardblade merge
-→ final-main verification
+→ separate generated refresh when applicable
 ```
 
-Authored and generated transactions remain separate. Copilot and other reviewer findings are advisory evidence; Codex owns implementation and must address actionable findings. Threads are resolved only after the issue is fixed or proven obsolete. Strikeforce GREEN establishes readiness; Shardblade authorizes merge. Goddess Mode persists through safe repair and alternate routes without scope expansion. Completion requires merged-main readback and restart-safe proof.
+Authored and generated transactions remain separate. Reviewer findings are advisory evidence; the implementation owner must address actionable findings. Threads are resolved only after the issue is fixed or proven obsolete. Any byte change after READY returns the PR to draft and repeats validation, review, and exact-head Strikeforce. Completion requires merged-main readback and restart-safe proof.
 
 ## 11. Restart and next gates
 
-On restart, read the parent Quest, this Covenant, the current Quest Board and continuity register, then active Aegis, Shardblade, Strikeforce, change-route, Prime Reborn, Prometheus's Fire, Artemis, and generated-index sources. Re-lock current `main` before any mutation.
+On restart, read the parent Quest, this Covenant, the current Quest Board and continuity register, then active Aegis, Strikeforce, change-route, Prime Reborn, Prometheus's Fire, Artemis, and generated-index sources. Re-lock current `main` before any mutation.
 
 The next safe sequence is:
 

@@ -2,7 +2,7 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 41,
+  "register_revision": 43,
   "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
   "quest_board_sha256": "ab41ca9de7bbb0a444880128efedffed7225a6eae7fe4698b1d5b28e55f282c1",
   "event_ids": [
@@ -49,7 +49,9 @@
     "PF-C01-ATLAS-NAMING-REFRACTION-R01",
     "PA-C01-ATLAS-NAMING-REFRACTION-R01",
     "PA-C01-GITEA-PHOENIX-VALIDATION-AUGMENTATION-R01",
-    "PA-C01-HARMONY-HYBRID-ROLE-REFINEMENT-R01"
+    "PA-C01-HARMONY-HYBRID-ROLE-REFINEMENT-R01",
+    "PF-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03",
+    "PA-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
   ],
   "entries": [
     {
@@ -74,12 +76,12 @@
       "continuity_id": "CONT-PROMETHEUS-FIRE-R01",
       "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
       "quest_source": "quests/prometheus-fire.md",
-      "quest_source_sha256": "1fd8540a23a80b24bd260fd630b0fcfdcc989f7bb14a98557eeb0c4357efc7e5",
+      "quest_source_sha256": "60d4a1033c029d0ee3807147a7866cf1a3d0b5ca0452039401cb0c79b45f4c7d",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "PF-C01",
       "mission_id": "PF-C01-M02",
       "gate_id": "PF-C01-M02-PREVIEW",
-      "current_position": "PF-C01-M01 is PROVEN_WITH_CARRY_FORWARD and PF-C01-M02 remains READY_FOR_PREVIEW. The source architecture now names Harmony, Emberdark, Coppermind, Elantris, Sentinel, Beacon/Tempest, and Zeus without changing the gate or claiming deployment.",
+      "current_position": "PF-C01-M01 remains PROVEN_WITH_CARRY_FORWARD and PF-C01-M02 remains READY_FOR_PREVIEW. The accepted source topology now plans Harmony VM, Atlas VM, and the household-critical Plex LXC on Prometheus; Forge retains media, completed DVR files, persistent Helios services, backups, and local-only Jellyfin continuity; direct antenna television remains the live-TV fallback. No deployment, migration, cutover, or gate advancement is claimed.",
       "blockers": [
         "Apollo is not yet commissioned and proven as the Windows orchestration endpoint.",
         "Windows-specific Codex continuity has not yet been evacuated from Prometheus to Apollo.",
@@ -87,10 +89,10 @@
         "Windows recovery media, system-image disposition, and manufacturer-driver preservation remain unresolved.",
         "Extended memory testing and bounded stability follow-up remain pending."
       ],
-      "next_action": "Prepare the exact PF-C01-M02 Preserve the Old Flame Preview without performing device renames, migration, Windows removal, or Proxmox installation.",
-      "next_approval": "Jayson must separately authorize endpoint commissioning and migration, then separately authorize any destructive Windows or Proxmox action.",
-      "revision": 3,
-      "last_event_id": "PF-C01-ATLAS-NAMING-REFRACTION-R01"
+      "next_action": "Prepare and execute the exact PF-C01-M02 Preserve the Old Flame work only through a separately bounded authorization; do not infer device renames, migration, Windows removal, Proxmox installation, Plex cutover, Jellyfin deployment, or Gitea activation from this architecture refraction.",
+      "next_approval": "Jayson must separately authorize endpoint commissioning and migration, then separately authorize any destructive Windows, Proxmox, Plex, Jellyfin, Gitea, or infrastructure action.",
+      "revision": 4,
+      "last_event_id": "PF-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
     },
     {
       "continuity_id": "CONT-NOTUMS-WATCH-R01",
@@ -135,16 +137,16 @@
       "campaign_id": "PA-C01",
       "mission_id": null,
       "gate_id": "PA-C01-COVENANT-REFINEMENT",
-      "current_position": "Prime Ascendant remains in PA-C01 refinement. Artemis is the Project, Operation Harmony the workflow, and Harmony/Sazed the resident intelligence. Harmony owns frictionless RAG, OCR/intake, context, capability awareness, delegation, and reconciliation. Athena leads in ChatGPT; Harmony may lead on approved surfaces without Athena. Emberdark retains workflow and mission state. No Artemis model, Runtime, deployment, promotion, cutover, retirement, READY, MERGE, or settings authority advances.",
+      "current_position": "Prime Ascendant remains in PA-C01 refinement. Operation Harmony and Harmony/Sazed retain the resident-intelligence boundary. The Harmony VM is the selected intelligence substrate direction; the Atlas VM is the selected operational-soul and future Phoenix/Gitea shadow substrate direction for separately bounded Emberdark, Coppermind, and Phoenix services. GitHub remains canonical. Runtime, deployment, cutover, route retirement, repository settings, and merge remain unadvanced.",
       "blockers": [
         "PA-C01 covenant acceptance remains unproven.",
-        "The architecture decisions listed in the Quest source remain unresolved by design.",
+        "Application contracts, database layout, backup/restore, parity, and cutover evidence remain unproven.",
         "Repository visibility and settings remain unchanged and outside this campaign; no settings action is authorized."
       ],
-      "next_action": "Review the exact Harmony hybrid-role candidate and preserve PA-C01 as architecture refinement; after any separately authorized merge, continue PA-C01 covenant review without deployment, cutover, route retirement, or repository-settings mutation.",
-      "next_approval": "Jayson must separately authorize READY and later MERGE for the unchanged candidate, and separately approve any later PA-C01 gate advancement; runtime, infrastructure, Gitea cutover, route retirement, visibility, and settings authority remain excluded.",
-      "revision": 6,
-      "last_event_id": "PA-C01-HARMONY-HYBRID-ROLE-REFINEMENT-R01"
+      "next_action": "Continue PA-C01 covenant review and later source-contract design without treating the Harmony VM, Atlas VM, Plex, Jellyfin, or Gitea placement directions as deployment evidence or cutover authority.",
+      "next_approval": "Jayson must separately approve any later PA-C01 gate advancement and any runtime, infrastructure, Gitea cutover, route-retirement, visibility, settings, or merge action.",
+      "revision": 7,
+      "last_event_id": "PA-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
     }
   ]
 }

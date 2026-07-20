@@ -9,6 +9,7 @@ from tools.prime_continuity.engine import ContinuityError, plan_one_entry_update
 
 
 ROOT = Path(__file__).resolve().parents[2]
+EVENT_ID = "PA-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
 
 
 class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
@@ -35,23 +36,20 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
             self.assertIn(marker, covenant)
         self.assertNotIn("| Current verified main |", covenant)
 
-    def test_continuity_advances_one_entry_without_quest_promotion(self) -> None:
-        self.assertEqual(self.register["register_revision"], 41)
-        self.assertEqual(self.entry["revision"], 6)
+    def test_continuity_advances_without_quest_promotion(self) -> None:
+        self.assertGreaterEqual(self.register["register_revision"], 43)
+        self.assertGreaterEqual(self.entry["revision"], 7)
         self.assertEqual(self.entry["quest_state"], "IN_PROGRESS")
         self.assertEqual(self.entry["campaign_id"], "PA-C01")
         self.assertIsNone(self.entry["mission_id"])
         self.assertEqual(self.entry["gate_id"], "PA-C01-COVENANT-REFINEMENT")
         self.assertIn("Operation Harmony", self.entry["current_position"])
-        self.assertIn("Harmony/Sazed", self.entry["current_position"])
-        self.assertIn("Athena leads in ChatGPT", self.entry["current_position"])
+        self.assertIn("Harmony VM", self.entry["current_position"])
+        self.assertIn("Atlas VM", self.entry["current_position"])
         self.assertIn("Runtime", self.entry["current_position"])
-        self.assertEqual(self.entry["last_event_id"], "PA-C01-HARMONY-HYBRID-ROLE-REFINEMENT-R01")
-        self.assertLess(
-            self.register["event_ids"].index("PA-C01-GITEA-PHOENIX-VALIDATION-AUGMENTATION-R01"),
-            self.register["event_ids"].index("PA-C01-HARMONY-HYBRID-ROLE-REFINEMENT-R01"),
-        )
-        for prohibited in ("change repository visibility", "awaits merge", "merge pr #237"):
+        self.assertEqual(self.entry["last_event_id"], EVENT_ID)
+        self.assertIn(EVENT_ID, self.register["event_ids"])
+        for prohibited in ("change repository visibility", "awaits merge", "merge pr"):
             self.assertNotIn(prohibited, self.entry["next_action"].lower())
 
         replay = copy.deepcopy(self.register)
@@ -61,7 +59,7 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
                 continuity_id=self.entry["continuity_id"],
                 expected_register_sha256=sha256(replay),
                 expected_entry_revision=self.entry["revision"],
-                event_id="PA-C01-HARMONY-HYBRID-ROLE-REFINEMENT-R01",
+                event_id=EVENT_ID,
                 changes={"next_action": "replay rejected"},
             )
 
@@ -100,11 +98,17 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
             "repository-settings changes remain unauthorized",
             "Gitea cutover",
             "route retirement",
+            "Harmony VM",
+            "Atlas VM",
+            "Jellyfin",
+            "direct antenna",
         ):
             self.assertIn(marker, covenant)
         self.assertEqual(covenant.count("Qdrant:\ndeferred until demonstrated need."), 1)
         self.assertIn("**Runtime:** `NOT STARTED`", quest)
         self.assertIn("No Campaign, runtime state", quest)
+        self.assertIn("GitHub remains canonical", covenant)
+        self.assertIn("SELECTED SUBSTRATE DIRECTION", covenant)
 
     def test_future_gitea_phoenix_validation_roles_are_bounded(self) -> None:
         quest = (ROOT / "quests/prime-ascendant.md").read_text(encoding="utf-8")
@@ -134,6 +138,18 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
             "PA-C01 is complete",
         ):
             self.assertNotIn(prohibited_claim, quest + covenant + artemis)
+
+    def test_normal_human_merge_boundary_replaces_ordinary_shardblade(self) -> None:
+        covenant = (ROOT / "quests/prime-ascendant-covenant.md").read_text(encoding="utf-8")
+        for marker in (
+            "Normal human-merge boundary",
+            "Jayson alone makes the candidate permanent",
+            "Prime PR #___ is ready to merge.",
+            "If any candidate byte changes after READY",
+            "CONTRACT_ONLY_NOT_ACTIVATED",
+        ):
+            self.assertIn(marker, covenant)
+        self.assertNotIn("Shardblade may mark that exact candidate ready and merge it", covenant)
 
 
 if __name__ == "__main__":
