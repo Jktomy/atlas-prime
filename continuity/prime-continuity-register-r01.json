@@ -2,7 +2,7 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 42,
+  "register_revision": 43,
   "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
   "quest_board_sha256": "ab41ca9de7bbb0a444880128efedffed7225a6eae7fe4698b1d5b28e55f282c1",
   "event_ids": [
@@ -50,7 +50,8 @@
     "PA-C01-ATLAS-NAMING-REFRACTION-R01",
     "PA-C01-GITEA-PHOENIX-VALIDATION-AUGMENTATION-R01",
     "PA-C01-HARMONY-HYBRID-ROLE-REFINEMENT-R01",
-    "PF-PA-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
+    "PF-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03",
+    "PA-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
   ],
   "entries": [
     {
@@ -91,7 +92,7 @@
       "next_action": "Prepare and execute the exact PF-C01-M02 Preserve the Old Flame work only through a separately bounded authorization; do not infer device renames, migration, Windows removal, Proxmox installation, Plex cutover, Jellyfin deployment, or Gitea activation from this architecture refraction.",
       "next_approval": "Jayson must separately authorize endpoint commissioning and migration, then separately authorize any destructive Windows, Proxmox, Plex, Jellyfin, Gitea, or infrastructure action.",
       "revision": 4,
-      "last_event_id": "PF-PA-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
+      "last_event_id": "PF-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
     },
     {
       "continuity_id": "CONT-NOTUMS-WATCH-R01",
@@ -145,7 +146,7 @@
       "next_action": "Continue PA-C01 covenant review and later source-contract design without treating the Harmony VM, Atlas VM, Plex, Jellyfin, or Gitea placement directions as deployment evidence or cutover authority.",
       "next_approval": "Jayson must separately approve any later PA-C01 gate advancement and any runtime, infrastructure, Gitea cutover, route-retirement, visibility, settings, or merge action.",
       "revision": 7,
-      "last_event_id": "PF-PA-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
+      "last_event_id": "PA-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
     }
   ]
 }
