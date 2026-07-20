@@ -4,8 +4,8 @@ atlas_id: "prime.safety.doctrine"
 status: "ACTIVE"
 source_type: "CORE_DOCTRINE"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
-owner_project: "Atlas"
-owner_operation: "Aegis"
+owner_project: "Project Codex"
+owner_operation: "Operation Source Governance"
 protected_level: "CRITICAL"
 ---
 
