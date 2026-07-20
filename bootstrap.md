@@ -37,4 +37,6 @@ Chat memory and generated projections are never startup authority.
 
 ## Change rule
 
-Every durable mutation uses an exact branch and draft PR. Eligible source construction uses Athena Weave → Spear or Arrow/Bow → Prime Thread Engine. Protected Thread Engine self-change uses Aegis Break → Oathbringer. Merge follows exact-head Noctua, Ares, Athena reconciliation, and Strikeforce GREEN.
+Every durable mutation uses an exact branch and draft PR. Eligible source construction uses Athena Weave → Spear or Arrow/Bow → Prime Thread Engine. Protected Thread Engine self-change uses Aegis Break → Oathbringer.
+
+A direct Jayson instruction to change, repair, update, add to, or Sunset Prime authorizes one bounded transaction through an unchanged merge-ready PR unless the instruction is explicitly Preview-only, draft-only, or narrower. That build-through-ready authority includes validation, candidate-caused repair, actionable review repair, exact-head Strikeforce, and the ready-for-review transition. Athena then reports `Prime PR #___ is ready to merge.` Jayson alone makes the candidate permanent by manually clicking Merge in GitHub; no assistant, model, tool, workflow, or automated route may perform that merge.

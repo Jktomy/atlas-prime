@@ -86,6 +86,13 @@ class TargetedValidationTests(unittest.TestCase):
         ):
             self.assertIn(marker, workflow)
 
+    def test_validation_workflow_uses_byte_changing_pr_triggers_only(self) -> None:
+        workflow = (ROOT / ".github/workflows/prime-readonly-validation.yml").read_text(encoding="utf-8")
+        trigger_block = workflow.split("workflow_dispatch:", 1)[0]
+        for event in ("opened", "synchronize", "reopened"):
+            self.assertIn(f"- {event}", trigger_block)
+        self.assertNotIn("ready_for_review", trigger_block)
+
     def test_privacy_and_repository_policy_are_mandatory_for_every_targeted_plan(self) -> None:
         for changed_path in (
             "README.md",

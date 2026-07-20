@@ -27,3 +27,9 @@ currently requires the legacy `validate (ubuntu-latest)` and
 jobs until Jayson separately changes the ruleset after exact-head proof. Remove
 the bridges only in a later reviewed source transaction after the new contexts
 are required and observed on both Windows-required and Windows-skipped PRs.
+
+Pull-request validation runs when a PR is `opened`, `synchronize`d, or
+`reopened`. The unchanged ready-for-review transition does not rerun validation;
+READY must rely on the already completed exact-head checks. If candidate bytes
+change after READY, return the PR to draft and push the replacement head so the
+`synchronize` event validates it before review, Strikeforce, and READY repeat.
