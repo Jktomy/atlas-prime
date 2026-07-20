@@ -36,20 +36,20 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
         self.assertNotIn("| Current verified main |", covenant)
 
     def test_continuity_advances_one_entry_without_quest_promotion(self) -> None:
-        self.assertEqual(self.register["register_revision"], 40)
-        self.assertEqual(self.entry["revision"], 5)
+        self.assertEqual(self.register["register_revision"], 41)
+        self.assertEqual(self.entry["revision"], 6)
         self.assertEqual(self.entry["quest_state"], "IN_PROGRESS")
         self.assertEqual(self.entry["campaign_id"], "PA-C01")
         self.assertIsNone(self.entry["mission_id"])
         self.assertEqual(self.entry["gate_id"], "PA-C01-COVENANT-REFINEMENT")
         self.assertIn("Operation Harmony", self.entry["current_position"])
-        self.assertIn("Operation Coppermind", self.entry["current_position"])
-        self.assertIn("Project Elantris", self.entry["current_position"])
-        self.assertIn("Runtime is not started", self.entry["current_position"])
-        self.assertEqual(self.entry["last_event_id"], "PA-C01-GITEA-PHOENIX-VALIDATION-AUGMENTATION-R01")
+        self.assertIn("Harmony/Sazed", self.entry["current_position"])
+        self.assertIn("Athena remains the ChatGPT intent and reasoning lead", self.entry["current_position"])
+        self.assertIn("Runtime", self.entry["current_position"])
+        self.assertEqual(self.entry["last_event_id"], "PA-C01-HARMONY-HYBRID-ROLE-REFINEMENT-R01")
         self.assertLess(
-            self.register["event_ids"].index("PA-C01-POST-237-RECONCILIATION-R01"),
             self.register["event_ids"].index("PA-C01-GITEA-PHOENIX-VALIDATION-AUGMENTATION-R01"),
+            self.register["event_ids"].index("PA-C01-HARMONY-HYBRID-ROLE-REFINEMENT-R01"),
         )
         for prohibited in ("change repository visibility", "awaits merge", "merge pr #237"):
             self.assertNotIn(prohibited, self.entry["next_action"].lower())
@@ -61,12 +61,38 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
                 continuity_id=self.entry["continuity_id"],
                 expected_register_sha256=sha256(replay),
                 expected_entry_revision=self.entry["revision"],
-                event_id="PA-C01-ATLAS-NAMING-REFRACTION-R01",
+                event_id="PA-C01-HARMONY-HYBRID-ROLE-REFINEMENT-R01",
                 changes={"next_action": "replay rejected"},
             )
 
+    def test_harmony_hybrid_role_is_surface_aware_and_frictionless(self) -> None:
+        quest = (ROOT / "quests/prime-ascendant.md").read_text(encoding="utf-8")
+        artemis = (ROOT / "operations/artemis-runtime-and-routing.md").read_text(encoding="utf-8")
+        combined = quest + artemis
+        for marker in (
+            "Project Artemis is the owning durable domain, not a model identity",
+            "Harmony/Sazed is Atlas's frictionless context",
+            "governed retrieval-augmented generation",
+            "OCR and intake normalization",
+            "capability awareness",
+            "In ChatGPT, Athena remains the primary intent, reasoning, and conversational lead",
+            "In VS Code and other approved surfaces where Athena is absent",
+            "must not create a second planning ceremony",
+            "No separate Artemis-model identity",
+            "No routine RAG, OCR, or capability-selection step creates a new approval gate",
+        ):
+            self.assertIn(marker, combined)
+        for prohibited_claim in (
+            "Artemis is the resident intelligence",
+            "Harmony grants merge authority",
+            "routine RAG requires Jayson approval",
+            "PA-C01 is complete",
+        ):
+            self.assertNotIn(prohibited_claim, combined)
+
     def test_runtime_cutover_retirement_topology_and_settings_stay_closed(self) -> None:
         covenant = (ROOT / "quests/prime-ascendant-covenant.md").read_text(encoding="utf-8")
+        quest = (ROOT / "quests/prime-ascendant.md").read_text(encoding="utf-8")
         for marker in (
             "PostgreSQL full-text search + pgvector",
             "Qdrant:\ndeferred until demonstrated need.",
@@ -77,7 +103,8 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
         ):
             self.assertIn(marker, covenant)
         self.assertEqual(covenant.count("Qdrant:\ndeferred until demonstrated need."), 1)
-        self.assertIn("Runtime is not started", covenant)
+        self.assertIn("**Runtime:** `NOT STARTED`", quest)
+        self.assertIn("No Campaign, runtime state", quest)
 
     def test_future_gitea_phoenix_validation_roles_are_bounded(self) -> None:
         quest = (ROOT / "quests/prime-ascendant.md").read_text(encoding="utf-8")
