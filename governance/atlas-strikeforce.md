@@ -24,7 +24,8 @@ Strikeforce is read-only. Its members may report defects, required repairs, clea
 
 Aegis is Athena's shield within Strikeforce. It confirms that the candidate and its presentation preserve Jayson's semantic objective, accepted lessons, active safeguards, explicit choices, stop conditions, protected boundaries, selected route, generated-state policy, and permanence mode. Aegis cannot convert a Noctua or Ares failure into GREEN through wording, confidence, or simplification.
 
-GREEN means the exact reviewed candidate is ready for the next authorized gate. GREEN does not merge. It also does not itself READY, activate, promote, deploy, migrate, change settings, or cut over Prime.
+GREEN means the exact reviewed candidate is ready for the next authorized gate. GREEN does not merge. It also does not itself READY, activate, promote, deploy, migrate, change settings, or cut over Prime. Shardblade is the
+separate merge authority for an explicitly authorized exact head; it remains distinct from Strikeforce and must perform its own fresh gate.
 
 For a Prime repository transaction, Strikeforce also reconciles:
 
@@ -42,6 +43,6 @@ For a Prime repository transaction, Strikeforce also reconciles:
 
 When the current Jayson instruction explicitly authorizes `with Shardblade`, Strikeforce GREEN confirms evidence readiness only. The separate Shardblade actuation must still freshly compare-and-swap the expected head, re-read required status and review state, consume the one-use authority, and perform post-merge canonical readback. Any head, tree, path, status, review, or authority drift rejects the action.
 
-For a bounded campaign, Strikeforce additionally reconciles the campaign digest, stage child request, Preview and construction receipts, expiry, and applicable stage authority. Campaign GREEN creates no standing authority and cannot substitute for the exact current stage action.
+For a bounded campaign, Strikeforce additionally reconciles the campaign digest, stage child request, Preview and construction receipts, expiry, and applicable stage authority. Campaign GREEN creates no authority and cannot substitute for the exact current stage action.
 
 Strikeforce also reconciles the user's semantic objective, objective-to-route alignment, and the exact `governance/assurance-controls.json` applicability record. It verifies that every matching ACTIVE control is `APPLIED` or carries an exact `NOT_APPLICABLE` reason, that claimed absorption has a real enforcing source and regression proof, and that dependent canonical sources make the same claim. Passing checks cannot cure a misleading name, event ID, route, or claim. Any missing or unknown applicability is YELLOW or RED, never GREEN.
