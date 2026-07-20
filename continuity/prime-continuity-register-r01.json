@@ -2,7 +2,7 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 40,
+  "register_revision": 41,
   "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
   "quest_board_sha256": "ab41ca9de7bbb0a444880128efedffed7225a6eae7fe4698b1d5b28e55f282c1",
   "event_ids": [
@@ -48,7 +48,8 @@
     "NW-C01-ELANTRIS-NAMING-R01",
     "PF-C01-ATLAS-NAMING-REFRACTION-R01",
     "PA-C01-ATLAS-NAMING-REFRACTION-R01",
-    "PA-C01-GITEA-PHOENIX-VALIDATION-AUGMENTATION-R01"
+    "PA-C01-GITEA-PHOENIX-VALIDATION-AUGMENTATION-R01",
+    "PA-C01-HARMONY-HYBRID-ROLE-REFINEMENT-R01"
   ],
   "entries": [
     {
@@ -129,21 +130,21 @@
       "continuity_id": "CONT-PRIME-ASCENDANT-R01",
       "quest_id": "QUEST-PRIME-ASCENDANT-20260717",
       "quest_source": "quests/prime-ascendant.md",
-      "quest_source_sha256": "cc99c59d155f5fb09057b9ecdfd81b203919fee417c95985b6b15c5ad60088d2",
+      "quest_source_sha256": "9d2073f64bab1f168154cad53b8f91713750864d8efec8cab6fb437899588871",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "PA-C01",
       "mission_id": null,
       "gate_id": "PA-C01-COVENANT-REFINEMENT",
-      "current_position": "Prime Ascendant remains in PA-C01 architecture refinement under Operation Harmony with Operation Coppermind, Operation Phoenix, and Project Elantris boundaries preserved. The future Gitea/Phoenix validation augmentation now defines bounded Cognitive Shadow, Kandra, TenSoon, Phoenix, Athena, and Jayson roles plus three logical validation contexts. Runtime is not started; no Quest gate, deployment, cutover, route retirement, visibility, READY, MERGE, or settings authority advances.",
+      "current_position": "Prime Ascendant remains in PA-C01 architecture refinement. Project Artemis is the durable domain, Operation Harmony is the workflow and resource boundary, and Harmony/Sazed is the resident intelligence. The accepted hybrid role assigns frictionless RAG, OCR/intake, context assembly, capability awareness, delegation, worker coordination, and result reconciliation to Harmony. Athena remains the ChatGPT intent and reasoning lead; Harmony may lead in VS Code or other approved surfaces where Athena is absent. Emberdark retains workflow execution and mission-state plumbing. No separate Artemis-model identity, runtime, deployment, Quest promotion, cutover, route retirement, visibility, READY, MERGE, or settings authority advances.",
       "blockers": [
         "PA-C01 covenant acceptance remains unproven.",
         "The architecture decisions listed in the Quest source remain unresolved by design.",
         "Repository visibility and settings remain unchanged and outside this campaign; no settings action is authorized."
       ],
-      "next_action": "Review and accept PA-C01 Covenant boundaries, then define PA-C02 source contracts and evidence requirements without deployment, cutover, route retirement, or repository-settings mutation.",
-      "next_approval": "Jayson must separately approve any later PA-C01 gate advancement; runtime, infrastructure, Gitea cutover, route retirement, visibility, and settings authority are excluded.",
-      "revision": 5,
-      "last_event_id": "PA-C01-GITEA-PHOENIX-VALIDATION-AUGMENTATION-R01"
+      "next_action": "Review the exact Harmony hybrid-role candidate and preserve PA-C01 as architecture refinement; after any separately authorized merge, continue PA-C01 covenant review without deployment, cutover, route retirement, or repository-settings mutation.",
+      "next_approval": "Jayson must separately authorize READY and later MERGE for the unchanged candidate, and separately approve any later PA-C01 gate advancement; runtime, infrastructure, Gitea cutover, route retirement, visibility, and settings authority remain excluded.",
+      "revision": 6,
+      "last_event_id": "PA-C01-HARMONY-HYBRID-ROLE-REFINEMENT-R01"
     }
   ]
 }
