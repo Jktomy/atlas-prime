@@ -112,7 +112,7 @@ class PrimeProgramTests(unittest.TestCase):
             "Prime Reborn owns",
             "Prometheus's Fire owns",
             "PostgreSQL full-text search + pgvector",
-            "Qdrant remains deferred",
+            "Qdrant:\ndeferred until demonstrated need.",
             "PA-C01-DEC-001",
             "PA-C01-DEC-025",
             "Campaign ownership map",
@@ -123,6 +123,7 @@ class PrimeProgramTests(unittest.TestCase):
             "GREEN means the exact reviewed candidate is ready",
         ):
             self.assertIn(marker, covenant)
+        self.assertEqual(covenant.count("Qdrant:\ndeferred until demonstrated need."), 1)
 
     def test_universal_mode_definitions_are_narrow_and_aligned(self) -> None:
         shardblade = (ROOT / "governance/shard-doctrine.md").read_text(encoding="utf-8")
