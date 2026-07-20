@@ -19,6 +19,7 @@ class AegisStrikeforceAlignmentTests(unittest.TestCase):
 
     def test_strikeforce_is_noctua_ares_and_aegis(self) -> None:
         strikeforce = (ROOT / "governance/atlas-strikeforce.md").read_text(encoding="utf-8")
+        covenant = (ROOT / "quests/prime-ascendant-covenant.md").read_text(encoding="utf-8")
         self.assertIn("Strikeforce consists of Noctua, Ares, and Aegis", strikeforce)
         self.assertIn("Noctua verifies source, identity, evidence, paths, bytes, and claims", strikeforce)
         self.assertIn("Ares red-teams assumptions", strikeforce)
@@ -26,6 +27,10 @@ class AegisStrikeforceAlignmentTests(unittest.TestCase):
         self.assertIn("Aegis is Athena's shield within Strikeforce", strikeforce)
         self.assertNotIn("→ Athena reconciles", strikeforce)
         self.assertIn("GREEN does not merge", strikeforce)
+        self.assertIn("Strikeforce consists of Noctua, Ares, and Aegis", covenant)
+        self.assertIn("→ Aegis audits and improves Athena's interface with Jayson", covenant)
+        self.assertNotIn("Athena improves\n→ Noctua verifies", covenant)
+        self.assertNotIn("Qdrant remains deferred until demonstrated need", covenant)
 
     def test_safety_and_core_sources_match_the_composition(self) -> None:
         safety = (ROOT / "safety/atlas-safety-doctrine.md").read_text(encoding="utf-8")
