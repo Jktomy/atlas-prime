@@ -24,7 +24,8 @@ protected_level: "CRITICAL"
 | Normal repository engine | Prime Thread Engine, singular |
 | Repository substrate | Exact GitHub-native tree transaction or Fresh Clone First |
 | AI-assisted work surface | Shardplate |
-| Exact permanence boundary | Shardblade: distinct READY or MERGE request under `governance/shard-doctrine.md`; one current direct-Jayson candidate request or one exact Jayson-approved bounded campaign warrant may authorize the applicable operation |
+| Normal human-merge boundary | One direct Jayson instruction may authorize a bounded Prime transaction through an unchanged merge-ready PR; Jayson separately executes permanence by manually clicking Merge in GitHub |
+| Machine permanence boundary | Shardblade remains the separate `CONTRACT_ONLY_NOT_ACTIVATED` machine READY/MERGE contract under `governance/shard-doctrine.md`; this normal route does not activate or invoke it |
 | Provider, model, and runtime identity | Bound independently; trusted reported tokens map only to Spirallight, Chromelight, or Emberlight under `governance/investiture-source-identity-contract.md` |
 
 ```text
@@ -47,8 +48,18 @@ Every route:
 - uses exact base and payload locks;
 - contains durable construction in a branch and draft PR for Noctua;
 - prohibits direct main and force push;
-- prohibits standing or unbounded automatic ready and merge;
-- requires separate permanence authority from an exact Jayson request or exact
-  bounded campaign warrant, with READY and MERGE still separate.
+- prohibits standing or unbounded automatic ready and all assistant, model,
+  tool, workflow, or automated merge;
+- respects Preview-only and draft-only instructions as narrower than the normal
+  build-through-ready route;
+- includes validation, candidate-caused repair, actionable review repair,
+  exact-head Strikeforce, and ready-for-review within one direct Jayson request;
+- requires Jayson to execute the normal permanence action manually in GitHub.
+
+After READY, changed candidate bytes invalidate readiness. Return the PR to
+draft, validate and review the replacement exact head, repeat Strikeforce, and
+mark that unchanged replacement head ready before reporting
+`Prime PR #___ is ready to merge.` Merge authority is never inferred from
+construction, validation, GREEN, READY, delegation, or a prior transaction.
 
 Prime has one normal repository engine. Spear and Arrow/Bow invoke Thread Engine. Phoenix Blade and Oathbringer execute Swords independently of Thread Engine. Aegis Break selects or constructs a safe bounded route and never becomes a second normal repository writer. Thread Engine never performs its own self-change.

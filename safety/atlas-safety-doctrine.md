@@ -26,11 +26,13 @@ Strikeforce reconciles the combined Noctua, Ares, and Aegis result at one exact 
 - Prime is the only active source repository after cutover.
 - Generated projections report; they never govern.
 - Private records, credentials, tokens, recovery codes, PHI, raw finance evidence, account data, private network values, and unrestricted terminal output remain outside Prime.
-- No tool receives standing authority, direct-main authority, force-push authority, automatic-ready authority, or automatic-merge authority.
+- No tool receives standing authority, direct-main authority, force-push authority, unbounded automatic-ready authority, merge authority, or automatic-merge authority.
 - Thread Engine authority is exact, mission-scoped, draft-PR-only, and stops after independent GitHub readback.
 - Thread Engine cannot alter or activate itself. Aegis Break → Oathbringer is required for Thread Engine self-change.
 - Protected source changes require an exact protected-path authority binding.
-- Human-authorized merge occurs only after exact-head Strikeforce GREEN.
+- One direct Jayson instruction may grant mission-scoped build-through-ready authority, including candidate-caused repair, actionable review repair, validation, exact-head Strikeforce, and the ready-for-review transition. Preview-only and draft-only instructions remain narrower.
+- After READY, any candidate-byte change returns the PR to draft and requires validation, review, and Strikeforce on the replacement exact head before it may be marked ready again.
+- Human-authorized merge occurs only after exact-head Strikeforce GREEN, and Jayson executes it by manually clicking Merge in GitHub. No assistant, model, tool, workflow, or automated route merges a Prime PR.
 - Hardware, destructive restore, credential, account, private-network, and regulated-data actions remain Jayson-side unless separately and explicitly authorized.
 
 ## Execution stop conditions

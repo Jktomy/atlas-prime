@@ -21,8 +21,8 @@ Prime is the sole active canonical authored source. A source file controls only 
 4. **Author** an exact Athena Weave with repository, base, paths, bytes, and stop point.
 5. **Deliver** through Spear or immutable Arrow/Bow without changing the Weave.
 6. **Execute** with Prime Thread Engine, or Aegis Break → Oathbringer when self-change or a non-engine protected bootstrap requires it.
-7. **Verify** Noctua, Ares, tests, CI, reviews, exact readback, and Strikeforce.
-8. **Merge** only the authorized exact head.
+7. **Verify and ready** Noctua, Ares, tests, CI, actionable review repair, exact readback, and Strikeforce; mark only the unchanged validated head ready and report `Prime PR #___ is ready to merge.`
+8. **Merge** only when Jayson manually clicks Merge in GitHub after that report.
 9. **Regenerate** projections separately from source.
 10. **Sunset** superseded source with an explicit replacement or archive pointer.
 
@@ -41,5 +41,21 @@ Prime is the sole active canonical authored source. A source file controls only 
 - Protected non-self-change: exact Aegis Break authority → Thread Engine protected route.
 - Thread Engine self-change or emergency bootstrap: Aegis Break → Oathbringer.
 - Generated refresh: generator-only transaction after source merge.
+
+## Normal human-merge authority
+
+A direct Jayson instruction to change, repair, update, add to, or Sunset Prime
+authorizes one bounded transaction through merge-ready. It includes validation
+and candidate-caused repair before publication or while the PR is draft,
+actionable review repair, exact-head Strikeforce, and the ready-for-review
+transition without a second user command. Preview-only and draft-only
+instructions remain narrower and stop where directed.
+
+Build-through-ready never includes merge, auto-merge, direct-main, force-push,
+repository-settings, runtime, infrastructure, account, or protected-data
+authority. Jayson manually clicks Merge in GitHub. If candidate bytes change
+after READY, return the PR to draft, revalidate and review the replacement exact
+head, repeat Strikeforce, and mark that unchanged head ready again. Machine
+Shardblade remains a separate inactive contract.
 
 The frozen `Jktomy/atlas-codex` repository is predecessor and rollback evidence only. It is never an active source, runtime dependency, recovery dependency, or future update destination after cutover.

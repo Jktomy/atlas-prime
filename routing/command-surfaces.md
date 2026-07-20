@@ -33,6 +33,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Chromelight provider evidence and account boundary | `governance/chromelight-provider-boundary.md`, `schemas/chromelight-evidence-register-v1.schema.json`, `proof/repairing-prime/rp-c03-chromelight-evidence-r01.json` |
 | Resonance independent finding reconciliation | `governance/resonance-reconciliation-contract.md`, `schemas/resonance-finding-v1.schema.json`, `schemas/aberration-register-v1.schema.json`, `tools/resonance/README.md`, `proof/repairing-prime/rp-c04-aberration-register-r01.json` |
 | Source changes and route selection | `governance/source-lifecycle.md`, `governance/change-routes.md` |
+| Normal one-request human-merge route | One direct Jayson instruction grants bounded build-through-ready authority under `governance/change-routes.md`; after exact-head Strikeforce, Athena reports `Prime PR #___ is ready to merge.` and Jayson manually clicks Merge in GitHub |
 | Projects | `projects/project-registry.md` |
 | Operations | `operations/operation-registry.md` |
 | Artemis, Harmony, Emberdark, Cognitive Shadows, Kandra, and Sazed | `operations/artemis-runtime-and-routing.md` |
@@ -71,6 +72,8 @@ A request for Athena to construct, repair, or otherwise accomplish a bounded Atl
 Bow and Arrow belong to Jayson and Artemis delegated delivery. They are never selected as Athena's direct route.
 
 A request to build, repair, recover, execute, or otherwise make a Sword automatically routes first through `methods/sword-forge-standard.md` and `methods/sword-lessons.json`, then through current Sword doctrine and the exact live GitHub target state. The user does not need to invoke a separate preflight command or remind Athena to recall earlier lessons.
+
+A direct request to change, repair, update, add to, or Sunset Prime routes one bounded transaction through merge-ready without a second user command. Preview-only and draft-only requests remain narrower. The route includes candidate-caused repair, actionable review repair, validation, exact-head Strikeforce, and ready-for-review only while the candidate head remains unchanged. Merge never routes to Athena, Harmony, an implementation worker, a tool, or a workflow; Jayson performs the normal permanence action manually in GitHub.
 
 ## Decision box
 

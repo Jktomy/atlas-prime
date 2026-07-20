@@ -27,6 +27,25 @@ Shardblade is the bounded permanence executor for an exact Jayson-approved
 candidate or campaign warrant. It is not an agent, model, provider, Light, work
 surface, construction route, repository writer, or standing authority.
 
+### Separation from the normal human-merge route
+
+The normal Prime route does not invoke Shardblade. One direct Jayson instruction
+may authorize Athena, Harmony, or another authorized implementation worker to
+complete one bounded transaction through an unchanged merge-ready PR, including
+validation, candidate-caused repair, actionable review repair, exact-head
+Strikeforce, and ready-for-review. Preview-only and draft-only instructions stay
+narrower. Athena reports `Prime PR #___ is ready to merge.` Jayson then executes
+permanence himself by manually clicking Merge in the GitHub application or
+website. No assistant, model, tool, workflow, or automated route performs that
+merge.
+
+If candidate bytes change after READY, the PR returns to draft. The replacement
+exact head must repeat validation, review, and Strikeforce before it may be
+marked ready and reported again. This human route grants no machine Shardblade
+authority and does not change `CONTRACT_ONLY_NOT_ACTIVATED`.
+
+### Inactive machine contract
+
 Both `READY` and `MERGE` are Shardblade actions, but they are distinct and
 non-substitutable:
 
