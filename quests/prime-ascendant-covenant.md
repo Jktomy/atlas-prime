@@ -251,35 +251,157 @@ The hybrid surface model keeps one conversational lead and avoids duplicate plan
 
 ## 5. Internal unresolved-decision register
 
-All entries remain open unless explicitly marked as a selected direction. A selected substrate direction is not deployment or proof. The table preserves every decision identity, current direction, and evidence gate; prior alternatives and rationale remain historical evidence and do not silently become new authority.
+All entries below remain open unless explicitly marked as a selected direction. A selected substrate direction is not deployment, proof, or gate advancement. The alternatives, reasoning, unresolved basis, evidence, downstream effects, owners, dates, and pointers remain part of the restart-safe record.
 
-| ID | Campaign | Status and direction | Evidence still required |
-|---|---|---|---|
-| PA-C01-DEC-001 | PA-C02 | OPEN — separate doctrine references from operational objects, events, audit, and protected pointers | Schema proposal, migration/recovery rehearsal, access matrix. |
-| PA-C01-DEC-002 | PA-C02 | OPEN — preserve append-only auditable transitions without prematurely choosing full event sourcing | Replay, correction, retention, restore exercise. |
-| PA-C01-DEC-003 | PA-C02 | OPEN — bind source identity, live objects, Quest identity, and receipts without duplicate authority | Collision, clean-clone, restore, and identity invariants. |
-| PA-C01-DEC-004 | PA-C02 | OPEN — retention follows evidence and recovery need | Classification, cost, retention, and restore proof. |
-| PA-C01-DEC-005 | PA-C02 | OPEN — base backup plus WAL/PITR remains the preferred direction | Backup, restore, PITR, integrity, and rollback rehearsal. |
-| PA-C01-DEC-006 | PA-C02 | OPEN — export clean schemas, pointers, and sanitized summaries only | Classification, redaction, export/import proof. |
-| PA-C01-DEC-007 | PA-C02 | OPEN — start with PostgreSQL full-text plus pgvector | Retrieval benchmark, resources, stale/rebuild behavior. |
-| PA-C01-DEC-008 | PA-C07 | DEFERRED — do not add Qdrant until demonstrated need | Quality, latency, resource threshold, rollback. |
-| PA-C01-DEC-009 | PA-C03 | OPEN — every durable write uses a validated, versioned application contract | API proposal, compatibility, schema, failure tests. |
-| PA-C01-DEC-010 | PA-C03 | OPEN — separate read, propose, approve, write, and export capabilities | Threat model, authorization matrix, denial/replay tests. |
-| PA-C01-DEC-011 | PA-C03 | OPEN — retries, duplicates, stale inputs, and reconciliation fail closed | Replay, interruption, stale-base, rollback, restore tests. |
-| PA-C01-DEC-012 | PA-C03 | OPEN — n8n acts through Emberdark and inherits no broad SQL or source authority | Typed integration, denial, failure/retry proof. |
-| PA-C01-DEC-013 | PA-C03 | OPEN — every governed write and reconciliation emits a sanitized receipt | Receipt schema, integrity, redaction, restart tests. |
-| PA-C01-DEC-014 | PA-C04 | OPEN — Dawnshard uses a monotonic event sequence or watermark | Gap, restart, stale, last-known-good, concurrency tests. |
-| PA-C01-DEC-015 | PA-C04 | OPEN — bounded generated view plus portable approved twin without large Git churn | Manifest, checksum, restore, retention, cost proof. |
-| PA-C01-DEC-016 | PA-C04 | OPEN — expose watermark, freshness, stale state, last-known-good, and integrity | Tamper, stale, restart, consumer fail-closed tests. |
-| PA-C01-DEC-017 | PA-C04/08 | OPEN — Quest Board remains canonical; live memory may supplement but never silently advance it | Admission, stale, conflict, readback proof. |
-| PA-C01-DEC-018 | PA-C05 | OPEN — private authenticated local/mobile control surface, no public endpoint | Threat model, auth denial, session, audit, recovery. |
-| PA-C01-DEC-019 | PA-C05 | OPEN — approval-aware bounded actions with receipt and rollback visibility | Journey, replay/expiry, denial, receipt, rollback. |
-| PA-C01-DEC-020 | PA-C06 | SELECTED SUBSTRATE DIRECTION — Phoenix/Gitea shadow is planned inside the Atlas VM; database layout and runtime remain unproven | Capacity, segmentation, backup, restore, parity, access, mirror, rollback. |
-| PA-C01-DEC-021 | PA-C06 | OPEN — shadow first; prove exact refs, workflow replacement, access, and reversible cutover | Ref/PR/workflow parity, interruption, restore, rollback receipt. |
-| PA-C01-DEC-022 | PA-C07 | OPEN — Harmony routes permitted local/external models, Kandra, and tools through bounded interfaces | Quality, resource, privacy, fallback, routing, authority tests. |
-| PA-C01-DEC-023 | PA-C09 | OPEN — preserve Controlled Burn, Phoenix Burn, Feather, and Golden Wing as future context only | Schema, state, rollback, evidence, lifecycle proof. |
-| PA-C01-DEC-024 | PA-C09 | OPEN — retain legacy routes until parity, recovery, rollback, and explicit retirement approval | Capability matrix, rollback, operator access, approval. |
-| PA-C01-DEC-025 | PA-C01/09 | OPEN — Gemstone may become a mission object; Spiralstone/BEU may evolve without authority | Schema, provenance, privacy, replay, integration proof. |
+### PA-C01-DEC-001 — PostgreSQL schema boundaries
+
+**Campaign:** PA-C02 · **Status:** OPEN — UNRESOLVED · **Direction:** Separate durable doctrine references from operational objects, events, audit, and protected-data pointers.  
+**Alternatives:** One broad schema; domain schemas; event-only storage. **Reasoning:** Domain separation improves authority and recovery boundaries. **Why unresolved:** Object ownership and retention are not proven.  
+**Evidence needed:** Schema proposal, migration/recovery rehearsal, access matrix. **Downstream:** PA-C02/03/08. **Gate/owner:** PA-C02 design gate / Codex-Coppermind with Artemis-Harmony. **Last verified:** 2026-07-17. **Pointers:** Covenant §§2.1, 6.
+
+### PA-C01-DEC-002 — Event sourcing versus conventional audit/event tables
+
+**Campaign:** PA-C02 · **Status:** OPEN — UNRESOLVED · **Direction:** Preserve an append-only, auditable transition record without choosing the implementation prematurely.  
+**Alternatives:** Full event sourcing; conventional state plus audit tables; hybrid. **Reasoning:** A hybrid may balance replay and operational simplicity. **Why unresolved:** Replay, correction, and retention costs need proof.  
+**Evidence needed:** Failure/replay/restore exercise and write-contract comparison. **Downstream:** PA-C02/03/04/10. **Gate/owner:** PA-C02 event contract / Codex-Coppermind with Artemis-Harmony. **Last verified:** 2026-07-17. **Pointers:** Covenant §§2.1, 2.2.
+
+### PA-C01-DEC-003 — Identity and object model
+
+**Campaign:** PA-C02 · **Status:** OPEN — UNRESOLVED · **Direction:** Bind source identity, live objects, Quest identity, and receipts without duplicate authority.  
+**Alternatives:** Quest-centric; object-centric; event-sourced identity registry. **Reasoning:** Identity must survive restart, mirror, and rollback. **Why unresolved:** Live-state relationship to the Quest Board is not yet contracted.  
+**Evidence needed:** Identity invariants, collision tests, clean-clone and restore proof. **Downstream:** PA-C02/04/06/08. **Gate/owner:** PA-C02 identity gate / Codex-Artemis. **Last verified:** 2026-07-17. **Pointers:** Quest source; `continuity/quest-engine-continuity-contract.md`.
+
+### PA-C01-DEC-004 — Retention and archival
+
+**Campaign:** PA-C02 · **Status:** OPEN — UNRESOLVED · **Direction:** Retain enough live history for audit, rollback, and restart while keeping protected data outside Prime.  
+**Alternatives:** Time-based retention; event-class retention; immutable archive plus compact live state. **Reasoning:** Retention must follow evidence and recovery need, not convenience. **Why unresolved:** Data classes and volume are unknown.  
+**Evidence needed:** Classification matrix, cost model, restore test. **Downstream:** PA-C02/04/10. **Gate/owner:** PA-C02 retention decision / Coppermind-Elantris-Harmony. **Last verified:** 2026-07-17. **Pointers:** Covenant §§2.1, 8.
+
+### PA-C01-DEC-005 — WAL, PITR, backup, and restore design
+
+**Campaign:** PA-C02 · **Status:** OPEN — UNRESOLVED · **Direction:** Preserve recoverable operational state with independent backup and point-in-time recovery.  
+**Alternatives:** Base backups plus WAL; managed backup; snapshot-only. **Reasoning:** Base plus WAL supports bounded PITR and explicit restore proof. **Why unresolved:** Placement, cadence, and protected-storage route await Prometheus gates.  
+**Evidence needed:** Backup/restore/PITR rehearsal, integrity hashes, rollback receipt. **Downstream:** PA-C02/06/10. **Gate/owner:** Elantris recovery gate / Elantris-Odyssey. **Last verified:** 2026-07-17. **Pointers:** `quests/prometheus-fire.md`; `recovery/elantris-recovery.md`.
+
+### PA-C01-DEC-006 — Export format and protected-data classification
+
+**Campaign:** PA-C02 · **Status:** OPEN — UNRESOLVED · **Direction:** Export only clean schemas, pointers, and sanitized summaries.  
+**Alternatives:** Full database export; class-filtered export; pointer-only export. **Reasoning:** Pointer-only or classified export reduces leakage and keeps doctrine clean. **Why unresolved:** Protected-data categories and consumer contracts need review.  
+**Evidence needed:** Classification table, redaction tests, export/import exercise. **Downstream:** PA-C02/04/05/07. **Gate/owner:** PA-C02 protected-boundary gate / Codex. **Last verified:** 2026-07-17. **Pointers:** Covenant §8; `governance/protected-source-boundary.md`.
+
+### PA-C01-DEC-007 — pgvector indexing strategy
+
+**Campaign:** PA-C02 · **Status:** OPEN — UNRESOLVED · **Direction:** Start with PostgreSQL full-text search plus pgvector.  
+**Alternatives:** Full-text only; pgvector hybrid; external vector store first. **Reasoning:** Hybrid retrieval remains close to state and backup. **Why unresolved:** Corpus size, embedding model, index type, and quality thresholds are unmeasured.  
+**Evidence needed:** Retrieval benchmark, resource profile, stale/rebuild behavior. **Downstream:** PA-C02/07/08. **Gate/owner:** PA-C02 retrieval gate / Artemis. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.1.
+
+### PA-C01-DEC-008 — Qdrant trigger criteria
+
+**Campaign:** PA-C07 · **Status:** DEFERRED — UNRESOLVED · **Direction:** Do not add Qdrant until demonstrated need.  
+**Alternatives:** Adopt now; PostgreSQL only; threshold-triggered specialization. **Reasoning:** Deferral reduces moving parts and recovery surface. **Why unresolved:** No measured need exists.  
+**Evidence needed:** Retrieval quality/latency/resource threshold and rollback plan. **Downstream:** PA-C02/07/10. **Gate/owner:** PA-C07 evidence gate / Artemis. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.1.
+
+### PA-C01-DEC-009 — Emberdark API and versioning
+
+**Campaign:** PA-C03 · **Status:** OPEN — UNRESOLVED · **Direction:** Govern every durable write through validated, versioned application contracts.  
+**Alternatives:** REST; typed command API; workflow-native interface; hybrid. **Reasoning:** Explicit contracts support authorization, receipts, and rollback. **Why unresolved:** Domain objects and error model are not final.  
+**Evidence needed:** API proposal, schema validation, compatibility and failure tests. **Downstream:** PA-C03/05/08. **Gate/owner:** PA-C03 contract gate / Artemis-Harmony. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.3.
+
+### PA-C01-DEC-010 — Emberdark authorization model
+
+**Campaign:** PA-C03 · **Status:** OPEN — UNRESOLVED · **Direction:** Separate read, propose, approve, write, and export capabilities.  
+**Alternatives:** Role-based; capability-based; human approval per command; hybrid. **Reasoning:** Capability separation limits silent action and SQL reach. **Why unresolved:** Actor and private-site boundaries are not proven.  
+**Evidence needed:** Threat model, authorization matrix, denial and replay tests. **Downstream:** PA-C03/05/07/08. **Gate/owner:** PA-C03 authority gate / Artemis-Codex. **Last verified:** 2026-07-17. **Pointers:** `governance/atlas-aegis.md`; Covenant §7.
+
+### PA-C01-DEC-011 — Write idempotency and reconciliation
+
+**Campaign:** PA-C03 · **Status:** OPEN — UNRESOLVED · **Direction:** Make retries, duplicate commands, stale inputs, and reconciliation explicit and fail closed.  
+**Alternatives:** Client keys; server receipts; event sequence; hybrid. **Reasoning:** Durable source must not fork under retries or partial failure. **Why unresolved:** Event and object contracts remain open.  
+**Evidence needed:** Replay, interruption, stale-base, rollback, and restore tests. **Downstream:** PA-C03/04/06/10. **Gate/owner:** PA-C03 reliability gate / Harmony-Phoenix-Elantris. **Last verified:** 2026-07-17. **Pointers:** Covenant §§2.1, 7.
+
+### PA-C01-DEC-012 — n8n integration boundary
+
+**Campaign:** PA-C03 · **Status:** OPEN — UNRESOLVED · **Direction:** n8n acts through Emberdark and cannot inherit broad database or source authority.  
+**Alternatives:** n8n as writer; n8n as orchestrator; no n8n. **Reasoning:** Mediated orchestration preserves governance and replacement options. **Why unresolved:** Workflow inventory and latency needs are unknown.  
+**Evidence needed:** Typed integration contract, denied-direct-write tests, failure/retry proof. **Downstream:** PA-C03/05/08. **Gate/owner:** PA-C03 integration gate / Harmony-Emberdark. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.3.
+
+### PA-C01-DEC-013 — Audit-receipt model
+
+**Campaign:** PA-C03 · **Status:** OPEN — UNRESOLVED · **Direction:** Every governed write and reconciliation emits a sanitized receipt.  
+**Alternatives:** Event-only; receipt-only; event plus receipt. **Reasoning:** Receipts provide operator-facing proof while events preserve state history. **Why unresolved:** Fields, retention, and protected pointers need design.  
+**Evidence needed:** Receipt schema, integrity binding, redaction and restart tests. **Downstream:** PA-C03/04/05/10. **Gate/owner:** PA-C03 receipt gate / Codex-Harmony. **Last verified:** 2026-07-17. **Pointers:** Covenant §§2.3, 8.
+
+### PA-C01-DEC-014 — Dawnshard watermark and cadence
+
+**Campaign:** PA-C04 · **Status:** OPEN — UNRESOLVED · **Direction:** Generate from a monotonic event sequence or watermark and fail closed on drift.  
+**Alternatives:** Time window; sequence watermark; event cursor plus snapshot. **Reasoning:** Time windows lose events and cannot prove freshness. **Why unresolved:** Event model and generation owner are not settled.  
+**Evidence needed:** Gap, restart, stale, last-known-good, and concurrent-generation tests. **Downstream:** PA-C04/08/10. **Gate/owner:** PA-C04 projection gate / Coppermind-Codex-Harmony. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.2.
+
+### PA-C01-DEC-015 — Dawnshard storage and portable twin
+
+**Campaign:** PA-C04 · **Status:** OPEN — UNRESOLVED · **Direction:** Keep a bounded generated view and portable approved backup without repeated large Git commits.  
+**Alternatives:** Git history; private storage; object store; approved ZIP twin. **Reasoning:** Source and projection history have different durability and size needs. **Why unresolved:** Backup target and retention are not approved.  
+**Evidence needed:** Portable manifest, checksum, restore, stale, and storage-cost proof. **Downstream:** PA-C04/06/10. **Gate/owner:** PA-C04 backup gate / Elantris-Codex. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.2.
+
+### PA-C01-DEC-016 — Dawnshard stale presentation and manifest
+
+**Campaign:** PA-C04 · **Status:** OPEN — UNRESOLVED · **Direction:** Show source watermark, freshness, stale state, last-known-good, and integrity manifest.  
+**Alternatives:** Silent refresh; visible stale marker; hard failure with preserved output. **Reasoning:** Operators must not mistake stale context for live truth. **Why unresolved:** Consumer UX and event contract are open.  
+**Evidence needed:** Tamper, stale, restart, and consumer fail-closed tests. **Downstream:** PA-C04/05/08. **Gate/owner:** PA-C04 integrity gate / Codex-Coppermind-Harmony. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.2.
+
+### PA-C01-DEC-017 — Quest Board and live-state relationship
+
+**Campaign:** PA-C04 · **Status:** OPEN — UNRESOLVED · **Direction:** Quest Board remains canonical Quest registry; live memory may supplement but never silently advance it.  
+**Alternatives:** Board authoritative; live state authoritative; explicit reconciled projection. **Reasoning:** Existing Prime contract forbids generated or live state from self-promoting a Quest. **Why unresolved:** Future read/write interfaces are not defined.  
+**Evidence needed:** Admission, stale, conflict, and readback proof. **Downstream:** PA-C04/08/10. **Gate/owner:** PA-C04/08 boundary gate / Codex-Coppermind-Harmony. **Last verified:** 2026-07-17. **Pointers:** `governance/quest-engine-continuity-contract.md`.
+
+### PA-C01-DEC-018 — Private website framework, authentication, and access
+
+**Campaign:** PA-C05 · **Status:** OPEN — UNRESOLVED · **Direction:** Private, authenticated, approval-aware local/mobile control surface with no public endpoint.  
+**Alternatives:** Framework A/B; Tailscale identity; VPN plus application auth; passkey/session hybrid. **Reasoning:** Private reachability and explicit approvals reduce exposure. **Why unresolved:** Framework, identity provider, session model, and threat model need Jayson review.  
+**Evidence needed:** Threat model, auth denial, session, audit, health, and bounded-action tests. **Downstream:** PA-C05/08/10. **Gate/owner:** PA-C05 private-gate decision / Artemis-Codex. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.6.
+
+### PA-C01-DEC-019 — Website approval UX and audit logging
+
+**Campaign:** PA-C05 · **Status:** OPEN — UNRESOLVED · **Direction:** Preview → approval → bounded Execute with receipt and rollback visibility.  
+**Alternatives:** Per-command approval; campaign approval; staged approval with expiry. **Reasoning:** Exact scope and expiry prevent standing authority. **Why unresolved:** Command taxonomy and Emberdark contracts are open.  
+**Evidence needed:** User journey, replay/expiry, denial, receipt, and rollback proof. **Downstream:** PA-C05/09/10. **Gate/owner:** PA-C05 approval gate / Jayson-Artemis. **Last verified:** 2026-07-17. **Pointers:** `governance/change-routes.md`; Covenant §8.
+
+### PA-C01-DEC-020 — Gitea host and database placement
+
+**Campaign:** PA-C06 · **Status:** SELECTED SUBSTRATE DIRECTION — UNPROVEN · **Direction:** Phoenix/Gitea shadow is planned inside the Atlas VM while independent service identity, backup, recovery, and source identity remain mandatory.  
+**Alternatives:** Forge; Prometheus Atlas VM; separate host; future dedicated substrate. **Reasoning:** The Atlas VM keeps Phoenix beside the governed operational systems while separate data areas and independent recovery limit coupling. **Why unresolved:** Database layout, capacity, runtime segmentation, parity, mirror behavior, access, and recovery gates are not complete.  
+**Evidence needed:** Capacity, network segmentation, database layout, backup, restore, exact-ref parity, mobile/Athena access, mirror interruption, and rollback proof. **Downstream:** PA-C06/08/10. **Gate/owner:** PA-C06 placement gate / Odyssey-Phoenix-Elantris-Harmony. **Last verified:** 2026-07-20. **Pointers:** Covenant §§2.4, 2.7; `quests/prometheus-fire.md`.
+
+### PA-C01-DEC-021 — Gitea mirror, parity, cutover, and rollback
+
+**Campaign:** PA-C06 · **Status:** OPEN — UNRESOLVED · **Direction:** Begin shadow; prove one-way or bidirectional mechanics, exact refs, workflow replacement, mobile/Athena access, and reversible cutover before authority changes.  
+**Alternatives:** GitHub primary with Gitea shadow; Gitea primary with GitHub mirror; dual-write. **Reasoning:** Shadow-first preserves current proven authority. **Why unresolved:** Operational parity and rollback are unproven.  
+**Evidence needed:** Exact ref parity, PR/workflow parity, backup/restore, mirror interruption, and rollback receipt. **Downstream:** PA-C06/09/10. **Gate/owner:** PA-C06 cutover gate / Jayson-Codex. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.7; `governance/cutover-boundary.md`.
+
+### PA-C01-DEC-022 — Harmony capability selection and resource allocation
+
+**Campaign:** PA-C07 · **Status:** OPEN — UNRESOLVED · **Direction:** Harmony routes permitted local or external models, Kandra, and tools through bounded retrieval and typed interfaces without source or merge authority.  
+**Alternatives:** One local model; routed specialists; external-first; hybrid. **Reasoning:** Resource cost, quality, privacy, availability, and recovery must be measured while preserving the resident Harmony identity. **Why unresolved:** Corpus, workload, evaluation set, and future model identity are not proven.  
+**Evidence needed:** Quality, resource, privacy, failure, fallback, surface-routing, and authority-boundary tests. **Downstream:** PA-C07/08/10. **Gate/owner:** PA-C07 model gate / Artemis-Harmony. **Last verified:** 2026-07-20. **Pointers:** Covenant §§2.3, 2.8; `quests/found-silverlight.md`.
+
+### PA-C01-DEC-023 — Controlled Burn, Phoenix Burn, Feather, and Golden Wing
+
+**Campaign:** PA-C09 · **Status:** OPEN — UNRESOLVED · **Direction:** Preserve lifecycle concepts as future architecture context only; current lifecycle doctrine remains unchanged and inactive for this harvest.  
+**Alternatives:** Activate now; defer all; map concepts to current routes without activation. **Reasoning:** Mapping supports restart while avoiding premature doctrine replacement. **Why unresolved:** Contracts, schemas, and proof are not ready.  
+**Evidence needed:** Future schema, state-transition, rollback, evidence, and independent lifecycle proof. **Downstream:** PA-C04/09/10. **Gate/owner:** PA-C09 refraction gate / Codex. **Last verified:** 2026-07-17. **Pointers:** `governance/source-lifecycle.md`; `lifecycle/`.
+
+### PA-C01-DEC-024 — Legacy-route parity and retirement criteria
+
+**Campaign:** PA-C09 · **Status:** OPEN — UNRESOLVED · **Direction:** Keep Spear, Arrow/Bow, Sword/Oathbringer, Phoenix Blade, Aegis Break, Thread Engine, Codex, and GitHub routes until parity, recovery, rollback, and explicit retirement approval.  
+**Alternatives:** Immediate simplification; gradual deprecation; parallel routes with evidence. **Reasoning:** Existing routes are proven or historically required; removing them early reduces resilience. **Why unresolved:** New workflows and recovery evidence do not exist.  
+**Evidence needed:** Old/new capability matrix, rollback, operator access, and Jayson Preview → Execute approval. **Downstream:** PA-C06/08/09/10. **Gate/owner:** PA-C09 retirement gate / Codex-Jayson. **Last verified:** 2026-07-17. **Pointers:** `governance/change-routes.md`; Covenant §8.
+
+### PA-C01-DEC-025 — Gemstone, Spiralstone, and BEU relationship
+
+**Campaign:** PA-C01 / PA-C09 · **Status:** OPEN — UNRESOLVED · **Direction:** Gemstones may become user-facing mission objects; Spiralstone/BEU concepts may evolve without becoming authority or protected raw evidence.  
+**Alternatives:** Keep separate; unify metadata; event-linked objects. **Reasoning:** Clear identity and provenance support restart and accounting without duplicate source. **Why unresolved:** Object contracts and private evidence boundaries are not final.  
+**Evidence needed:** Schema, provenance, privacy, replay, and workflow integration proof. **Downstream:** PA-C01/03/04/09. **Gate/owner:** PA-C01 covenant gate / Codex-Artemis. **Last verified:** 2026-07-17. **Pointers:** `governance/investiture-accounting-contract.md`; `operations/protocol-library.md`.
 
 ## 6. Campaign ownership map
 
