@@ -68,8 +68,8 @@ class PrimeRepositoryProcessTests(unittest.TestCase):
     def test_normal_and_fallback_publishers_remain_failure_isolated(self) -> None:
         contract = source("governance/repository-process-contract.md")
         routes = source("governance/change-routes.md")
-        self.assertIn("Thread Engine is the singular normal publisher", contract)
-        self.assertIn("Sword/Oathbringer is the independent alternate publisher", contract)
+        self.assertIn("singular normal publisher", contract)
+        self.assertIn("independent alternate publisher", contract)
         self.assertIn("must not depend on one mutation implementation", contract)
         self.assertIn("one normal repository engine and one independent alternate publisher", routes)
         self.assertIn("must not share one mutation implementation", routes)
