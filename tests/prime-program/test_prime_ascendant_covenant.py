@@ -9,7 +9,7 @@ from tools.prime_continuity.engine import ContinuityError, plan_one_entry_update
 
 
 ROOT = Path(__file__).resolve().parents[2]
-EVENT_ID = "PF-PA-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
+EVENT_ID = "PA-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
 
 
 class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
@@ -37,7 +37,7 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
         self.assertNotIn("| Current verified main |", covenant)
 
     def test_continuity_advances_without_quest_promotion(self) -> None:
-        self.assertGreaterEqual(self.register["register_revision"], 42)
+        self.assertGreaterEqual(self.register["register_revision"], 43)
         self.assertGreaterEqual(self.entry["revision"], 7)
         self.assertEqual(self.entry["quest_state"], "IN_PROGRESS")
         self.assertEqual(self.entry["campaign_id"], "PA-C01")
