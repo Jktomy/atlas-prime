@@ -79,12 +79,12 @@ Those contracts preserve valuable exact-candidate, replay, approval, receipt, an
 
 The ordinary transaction-scoped meaning above does not activate standing warrants. It allows one exact merge only when the current Jayson instruction explicitly invokes Shardblade and the available adapter proves the required exact-head, compare-and-swap, status, review, Strikeforce, replay, and canonical-readback conditions.
 
-Both `READY` and `MERGE` are Shardblade actions, but they are distinct and non-substitutable in the legacy dedicated contract:
+Both `READY` and `MERGE` are Shardblade actions, but they are distinct and non-substitutable in the legacy dedicated contract. READY authority never implies MERGE authority. Shardblade is the separate authority that permits merging the reviewed exact head; a READY receipt remains evidence rather than reusable approval.
 
 - `READY` changes one exact draft PR to open ready state without changing its candidate;
 - `MERGE` makes that same exact ready candidate canonical only through a separately bound action.
 
-A legacy successful READY receipt is evidence, not reusable approval. Combined READY+MERGE, automatic retry, approval reuse, candidate substitution, and standing delegation remain forbidden.
+Combined READY+MERGE, automatic retry, approval reuse, candidate substitution, and standing delegation remain forbidden.
 
 ## Campaign compatibility
 
