@@ -27,14 +27,9 @@ Prime recovery begins from a clean clone of `Jktomy/atlas-prime`, a verified mai
 
 ## Prometheus's Fire recovery boundary
 
-The Prometheus architecture requires narrow Forge mounts with safe unavailable-
-mount behavior, Prometheus guest backups, a destructive canary restore, and an
-independent recovery copy not confined to Forge. Emberdark and Coppermind recovery must include
-the dedicated Emberdark VM, PostgreSQL base backups, WAL protection, and a
-point-in-time recovery direction. Plex recovery must include its local-NVMe
-database, metadata, configuration, cache, and transcode state; media and
-completed DVR media remain on Forge/Anvil through narrow paths. Temporary
-restore guests require an explicit RAM reallocation or guest-shutdown plan.
+The Prometheus architecture requires narrow Forge mounts with safe unavailable-mount behavior, Prometheus guest backups, a destructive canary restore, and an independent recovery copy not confined to Forge.
+
+Emberdark and Coppermind recovery must include the dedicated Emberdark VM, PostgreSQL base backups, WAL protection, and a point-in-time recovery direction. Plex recovery must include its local-NVMe database, metadata, configuration, cache, and transcode state; media and completed DVR media remain on Forge/Anvil through narrow paths. Temporary restore guests require an explicit RAM reallocation or guest-shutdown plan.
 
 These are future proof requirements. This runbook and the Prometheus Quest do
 not claim that any backup, restore, deployment, or runtime cutover has
