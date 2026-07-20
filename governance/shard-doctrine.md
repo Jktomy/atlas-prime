@@ -64,7 +64,7 @@ Immediately after mutation, the actuator records:
 - receipt identity and authority consumption;
 - rollback classification.
 
-An interruption or ambiguous mutation result stops automatic action. Recovery is readback-only reconciliation against the exact transaction and remote state, never a blind retry. Pre-merge rollback is closing the PR. Post-merge rollback is a separately reviewed repair-forward or revert PR. History rewrite is forbidden.
+An interruption or ambiguous mutation result stops automatic action. Recovery is readback-only reconciliation; never a blind retry. Reconciliation reads the exact transaction and remote state before any new action. Pre-merge rollback is closing the PR. Post-merge rollback is a separately reviewed repair-forward or revert PR. History rewrite is forbidden.
 
 ## Legacy dedicated warrant contracts
 
@@ -90,7 +90,7 @@ Combined READY+MERGE, automatic retry, approval reuse, candidate substitution, a
 
 An exact bounded campaign warrant may define predetermined stages, but each stage remains exact, expiring, replay-resistant, and limited to its declared candidate and action. Campaign GREEN creates no authority. Campaign Goddess Mode cannot self-renew or convert campaign construction authority into permanence.
 
-When a campaign invokes Shardblade, the current stage must carry exact transaction-scoped permanence authority, fresh exact-head evidence, and one-use reservation. Changed candidate bytes invalidate the prior stage evidence and require a new exact current action.
+Campaign Shardblade receives authority from the campaign warrant, not from GREEN. When a campaign invokes Shardblade, the current stage must carry exact transaction-scoped permanence authority, fresh exact-head evidence, and one-use reservation. Changed candidate bytes invalidate the prior stage evidence and require a new exact current action.
 
 ## Implementation boundary
 
