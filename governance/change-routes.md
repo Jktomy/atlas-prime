@@ -11,6 +11,8 @@ protected_level: "CRITICAL"
 
 # Prime Change Routes
 
+`governance/repository-process-contract.md` controls the common repository transaction, review, validation, fallback, Goddess Mode, Shardblade, and readback rules across these routes.
+
 | Concept | Meaning |
 |---|---|
 | Authorizer | Jayson or one exact delegated authority; controls scope and permanence |
@@ -22,10 +24,11 @@ protected_level: "CRITICAL"
 | Athena safe rerouting | Aegis Break: Athena selects or constructs any safe bounded equivalent route, including direct GitHub-native work when appropriate |
 | Hosted or local launcher | Thin intake or client that invokes a method or engine without becoming one |
 | Normal repository engine | Prime Thread Engine, singular |
+| Independent alternate publisher | Sword/Oathbringer for PowerShell, Thread Engine self-change, emergency bootstrap, or a proven blocked-route recovery |
 | Repository substrate | Exact GitHub-native tree transaction or Fresh Clone First |
 | AI-assisted work surface | Shardplate |
-| Normal human-merge boundary | One direct Jayson instruction may authorize a bounded Prime transaction through an unchanged merge-ready PR; Jayson separately executes permanence by manually clicking Merge in GitHub |
-| Machine permanence boundary | Shardblade remains the separate `CONTRACT_ONLY_NOT_ACTIVATED` machine READY/MERGE contract under `governance/shard-doctrine.md`; this normal route does not activate or invoke it |
+| Default permanence boundary | An unchanged merge-ready PR; Jayson merges manually when no exact Shardblade authority is present |
+| Explicit Shardblade boundary | One transaction-scoped exact-head machine merge only when the current Jayson instruction says `with Shardblade` or an unambiguous equivalent |
 | Provider, model, and runtime identity | Bound independently; trusted reported tokens map only to Spirallight, Chromelight, or Emberlight under `governance/investiture-source-identity-contract.md` |
 
 ```text
@@ -40,26 +43,23 @@ Spear is Athena's Thread Engine route. Arrow and Bow are not Athena's direct rou
 
 Phoenix Blade is Athena executing a Sword and mirrors what Oathbringer is to Jayson. Phoenix Blade does not use Thread Engine. Aegis Break owns direct safe-route selection or construction, including direct GitHub-native work when that is the safest bounded route.
 
-Aegis Break is not hardwired to Phoenix Blade, Spear, Oathbringer, or any one substrate. It does not erase Aegis, widen scope, grant new authority, or convert a one-time route into standing authority.
+Aegis Break is not hardwired to Phoenix Blade, Spear, Oathbringer, or any one substrate. It does not erase Aegis, widen scope, or convert a one-time route into standing authority.
 
 Every route:
 
-- separates Build from Execute and permanence;
-- uses exact base and payload locks;
+- separates Preview, Build, Execute, READY, and permanence;
+- uses exact base, path, payload, and candidate-tree locks;
 - contains durable construction in a branch and draft PR for Noctua;
-- prohibits direct main and force push;
-- prohibits standing or unbounded automatic ready and all assistant, model,
-  tool, workflow, or automated merge;
-- respects Preview-only and draft-only instructions as narrower than the normal
-  build-through-ready route;
-- includes validation, candidate-caused repair, actionable review repair,
-  exact-head Strikeforce, and ready-for-review within one direct Jayson request;
-- requires Jayson to execute the normal permanence action manually in GitHub.
+- prohibits direct main, force push, and history rewrite;
+- preserves requesting surface, operator, selected route, fallback routes, branch, PR, and exact-head identity;
+- rejects duplicate transactions, branches, PRs, replay, ambiguous partial state, and blind retry;
+- respects Preview-only and draft-only instructions as narrower than the normal build-through-ready route;
+- includes complete-candidate construction, validation, candidate-caused repair, actionable review repair, exact-head Strikeforce, and ready-for-review within one direct Jayson request;
+- uses `with Goddess Mode` only for bounded autonomous completion inside the same transaction and safeguards;
+- uses `with Shardblade` only for one exact unchanged head after required status, review, Strikeforce, fresh compare-and-swap readback, and rollback proof.
 
-After READY, changed candidate bytes invalidate readiness. Return the PR to
-draft, validate and review the replacement exact head, repeat Strikeforce, and
-mark that unchanged replacement head ready before reporting
-`Prime PR #___ is ready to merge.` Merge authority is never inferred from
-construction, validation, GREEN, READY, delegation, or a prior transaction.
+Without explicit Shardblade authority, Athena reports `Prime PR #___ is ready to merge.` and Jayson executes the normal permanence action manually in GitHub. With explicit Shardblade authority, the one machine action is consumed by success or terminal safe rejection and grants no standing approval.
 
-Prime has one normal repository engine. Spear and Arrow/Bow invoke Thread Engine. Phoenix Blade and Oathbringer execute Swords independently of Thread Engine. Aegis Break selects or constructs a safe bounded route and never becomes a second normal repository writer. Thread Engine never performs its own self-change.
+After READY, changed candidate bytes invalidate readiness. Return the PR to draft, validate and review the replacement exact head, repeat Strikeforce, and obtain exact current permanence authority for the unchanged replacement head. Merge authority is never inferred from construction, validation, GREEN, READY, delegation, route identity, prior approval, or prior success.
+
+Prime has one normal repository engine and one independent alternate publisher. Spear and Arrow/Bow invoke Thread Engine. Phoenix Blade and Oathbringer execute Swords independently of Thread Engine. The two publishers may share reviewed contracts and fixtures but must not share one mutation implementation whose failure disables both. Thread Engine never performs its own self-change.

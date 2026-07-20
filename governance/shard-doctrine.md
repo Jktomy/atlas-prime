@@ -14,132 +14,86 @@ protected_level: "CRITICAL"
 
 ## Shardplate
 
-Shardplate is the AI-assisted work surface. It may help read, reason, draft,
-test, or prepare a candidate only through a separately authorized construction
-route. Shardplate grants no mutation, credential, route, launcher, engine,
-candidate, approval, provider, Light, or permanence authority. A provider,
-model, account, tool connection, or earlier success cannot turn Shardplate into
-an authorizer or writer.
+Shardplate is the AI-assisted work surface. It may help read, reason, draft, test, or prepare a candidate only through a separately authorized construction route. Shardplate grants no mutation, credential, route, launcher, engine, candidate, approval, provider, Light, or permanence authority. A provider, model, account, tool connection, or earlier success cannot turn Shardplate into an authorizer or writer.
 
 ## Shardblade
 
-Shardblade is the bounded permanence executor for an exact Jayson-approved
-candidate or campaign warrant. It is not an agent, model, provider, Light, work
-surface, construction route, repository writer, or standing authority.
+Shardblade is the bounded permanence executor and actuator for one exact Jayson-authorized candidate. It is not an agent, model, provider, Light, work surface, construction route, source author, repair worker, repository-settings manager, or standing authority.
 
-### Separation from the normal human-merge route
+`governance/repository-process-contract.md` controls ordinary use.
 
-The normal Prime route does not invoke Shardblade. One direct Jayson instruction
-may authorize Athena, Harmony, or another authorized implementation worker to
-complete one bounded transaction through an unchanged merge-ready PR, including
-validation, candidate-caused repair, actionable review repair, exact-head
-Strikeforce, and ready-for-review. Preview-only and draft-only instructions stay
-narrower. Athena reports `Prime PR #___ is ready to merge.` Jayson then executes
-permanence himself by manually clicking Merge in the GitHub application or
-website. No assistant, model, tool, workflow, or automated route performs that
-merge.
+### Default and explicit permanence modes
 
-If candidate bytes change after READY, the PR returns to draft. The replacement
-exact head must repeat validation, review, and Strikeforce before it may be
-marked ready and reported again. This human route grants no machine Shardblade
-authority and does not change `CONTRACT_ONLY_NOT_ACTIVATED`.
+The default normal Prime route stops at one unchanged merge-ready pull request. Athena reports `Prime PR #___ is ready to merge.` and Jayson performs the normal manual merge.
 
-### Inactive machine contract
+A current explicit Jayson instruction containing `with Shardblade` or an unambiguous equivalent grants one transaction-scoped machine permanence action for the exact unchanged candidate. This authority:
 
-Both `READY` and `MERGE` are Shardblade actions, but they are distinct and
-non-substitutable:
+- belongs only to the named transaction;
+- is not inferred from Build, Execute, READY, GREEN, route identity, tool access, prior approval, or prior success;
+- is consumed by one successful merge or one terminal safe rejection;
+- cannot be reused for changed bytes, another head, another PR, another repository, or a later transaction.
 
-- `READY` changes one exact draft PR to the reviewable ready state without
-  changing its base, head, tree, or path inventory.
-- `MERGE` makes that same exact ready candidate canonical only after a fresh
-  readback and a new Jayson approval.
+Goddess Mode may carry the same bounded transaction through construction, validation, review repair, and final evidence collection, but it never creates Shardblade authority by itself.
 
-READY authority never implies MERGE authority. Strikeforce GREEN establishes
-readiness; Shardblade is the separate authority that permits merging the
-reviewed exact head. A successful READY receipt is evidence, not approval. Each action has a different request ID and digest,
-approval ID and nonce, attempt and receipt identity, stop point, and readback.
-Delegation, standing approval, combined READY+MERGE, automatic retry, and
-approval reuse are forbidden.
+### Exact merge gate
 
-## Campaign Shardblade
+Before mutation, the invoking adapter must freshly verify:
 
-One exact Jayson-approved campaign warrant may prospectively authorize separate
-READY and MERGE operations for predetermined stages. Every operation still
-requires a stage child request binding the current canonical base, campaign
-digest, PR, branch, head, tree, complete changed-path inventory, Preview,
-construction receipt, exact-head checks, Noctua, Ares, Athena, Strikeforce,
-Copilot dispositions, rollback, and protected-path posture. After READY,
-Campaign Shardblade requires a fresh unchanged-candidate readback and a new
-MERGE request. Each operation has its own nonce, replay reservation, and
-immutable receipt.
+- repository, base branch, current base SHA, PR, source branch, and open state;
+- exact expected head SHA and candidate tree;
+- sorted complete changed-path inventory and its digest;
+- protected-path construction authority;
+- final required status results for that exact head;
+- review reconciliation with no blocking finding;
+- exact-head Strikeforce GREEN;
+- declared merge method;
+- replay reservation, interruption posture, rollback, and transaction identity.
 
-Campaign Shardblade receives authority from the campaign warrant, not from
-GREEN. It cannot author, repair, widen, substitute, self-renew, retry ambiguity,
-or merge a different head. It stops and expires with the campaign. The existing
-single-candidate route remains valid and separate.
+The merge request must bind the expected head SHA through repository compare-and-swap or an equivalent atomic condition. A moved head, changed tree, changed path set, missing status, pending or blocking review, stale authority, duplicate reservation, or unreadable evidence rejects without mutation.
 
-Shardblade may not author, modify, repair, widen, substitute, bypass checks,
-change the candidate head, select an undeclared merge method, or conceal a
-partial result. Build or Execute authority never implies either Shardblade
-action.
+Shardblade may not author, modify, repair, widen, substitute, bypass checks, select another head, alter settings, force-push, write directly to main, conceal partial state, or blind-retry an ambiguous result.
 
-## Exact candidate and evidence
+### Readback and recovery
 
-Every action request binds the repository, current `main` SHA, PR and source
-branch, PR state, exact head and tree, sorted complete path inventory, Preview,
-construction receipt, exact protected-path subset and construction approval,
-pull-request readback, exact-head Ubuntu and Windows run identities, workflow
-source, and detached GREEN review. Protected paths must already have their
-applicable construction authority; Shardblade cannot create it after the fact.
+Immediately after mutation, the actuator records:
 
-A MERGE request additionally binds the SHA-256 of one successful READY receipt,
-the unchanged candidate and evidence, a new `OPEN_READY` readback taken after
-READY, and the declared merge method. Its direct Jayson approval is issued only
-after that fresh readback.
+- unchanged transaction, PR, head, tree, and path identity;
+- merge result and merge SHA;
+- final PR state;
+- canonical-main SHA and tree readback;
+- receipt identity and authority consumption;
+- rollback classification.
 
-Immediately before mutation, the invoking adapter must compare-and-swap the
-exact PR head and re-read base, tree, paths, CI, and review. After mutation, the
-receipt records unchanged candidate identity, final PR state, merge SHA, and
-canonical-main/tree readback. Pre-merge rollback is closing the PR; post-merge
-rollback is a separately reviewed revert PR. History rewrite is never allowed.
+An interruption or ambiguous mutation result stops automatic action. Recovery is readback-only reconciliation; never a blind retry. Reconciliation reads the exact transaction and remote state before any new action. Pre-merge rollback is closing the PR. Post-merge rollback is a separately reviewed repair-forward or revert PR. History rewrite is forbidden.
 
-## Replay, interruption, and recovery
+## Legacy dedicated warrant contracts
 
-The caller must durably and atomically reserve the request digest, request and
-approval identities before mutation, then consume the receipt identity. A
-replay, duplicate nonce, ambiguous mutation result, interruption, or delayed
-readback stops automatic action. Recovery is readback-only reconciliation;
-never a blind retry.
+The front-matter value `CONTRACT_ONLY_NOT_ACTIVATED` applies specifically to the older dedicated READY/MERGE warrant implementation in:
 
-The machine contracts are
-`schemas/shardblade-permanence-request-v1.schema.json`,
-`schemas/shardblade-permanence-approval-v1.schema.json`, and
-`schemas/shardblade-permanence-receipt-v1.schema.json`, validated by
-`tools/agentic_warrants/permanence.py`. Validation proves only that supplied
-objects satisfy this contract. It does not perform GitHub mutation, prove that
-the supplied readbacks came from GitHub, or grant permanence by itself.
+- `schemas/shardblade-permanence-request-v1.schema.json`;
+- `schemas/shardblade-permanence-approval-v1.schema.json`;
+- `schemas/shardblade-permanence-receipt-v1.schema.json`;
+- `tools/agentic_warrants/permanence.py`.
 
-The bounded campaign contracts are
-`schemas/shardblade-campaign-warrant-v1.schema.json`,
-`schemas/shardblade-campaign-stage-request-v1.schema.json`, and
-`schemas/shardblade-campaign-stage-receipt-v1.schema.json`, validated by
-`tools/agentic_warrants/campaign.py`. They enforce stage, expiry, exact path,
-review, READY-chain, readback, replay, receipt, and rollback bindings without
-turning a campaign warrant into a credential or standing authority.
+Those contracts preserve valuable exact-candidate, replay, approval, receipt, and rollback semantics. Their presence and passing fixture tests do not establish a standing production service, credential, scheduler, campaign bot, or generic machine authority.
 
-The single-candidate source layer is `CONTRACT_ONLY_NOT_ACTIVATED`. No
-production Shardblade route is accepted yet. Activation still requires a
-trusted GitHub adapter that
-proves the construction and protected-path approvals, canonical-base policy,
-PR readback, workflow source and exact run identities, detached-review origin,
-atomic request reservation, mutation compare-and-swap, and final readback, plus
-a live direct-Jayson READY journey and a separately approved MERGE journey.
-Digest-shaped fixture values, passing unit tests, or this contract's presence
-are not that evidence and may not promote the route.
+The ordinary transaction-scoped meaning above does not activate standing warrants. It allows one exact merge only when the current Jayson instruction explicitly invokes Shardblade and the available adapter proves the required exact-head, compare-and-swap, status, review, Strikeforce, replay, and canonical-readback conditions.
 
-The accepted RP-C02 v1 agentic-warrant evidence remains historical structural
-proof. Its generic validator is not a production permanence executor and now
-rejects v1 READY, MERGE, and `SHARDBLADE_PERMANENCE` authority in favor of this
-dedicated boundary. Current Oathbringer EXECUTE compatibility remains subject
-to the separate Sword-route reliability transaction; this doctrine does not
-self-certify that journey.
+Both `READY` and `MERGE` are Shardblade actions, but they are distinct and non-substitutable in the legacy dedicated contract. READY authority never implies MERGE authority. Shardblade is the separate authority that permits merging the reviewed exact head; a READY receipt remains evidence rather than reusable approval.
+
+- `READY` changes one exact draft PR to open ready state without changing its candidate;
+- `MERGE` makes that same exact ready candidate canonical only through a separately bound action.
+
+Combined READY+MERGE, automatic retry, approval reuse, candidate substitution, and standing delegation remain forbidden.
+
+## Campaign compatibility
+
+An exact bounded campaign warrant may define predetermined stages, but each stage remains exact, expiring, replay-resistant, and limited to its declared candidate and action. Campaign GREEN creates no authority. Campaign Goddess Mode cannot self-renew or convert campaign construction authority into permanence.
+
+Campaign Shardblade receives authority from the campaign warrant, not from GREEN. When a campaign invokes Shardblade, the current stage must carry exact transaction-scoped permanence authority, fresh exact-head evidence, and one-use reservation. Changed candidate bytes invalidate the prior stage evidence and require a new exact current action.
+
+## Implementation boundary
+
+Existing Oathbringer EXECUTE mechanics and exact GitHub adapters may provide proven transport and compare-and-swap primitives. Reuse of those primitives does not grant standing authority or permit a different candidate.
+
+Future Coppermind, Emberdark, Phoenix, Gitea, or dedicated Shardblade services must preserve these semantics. Architecture source or schema presence does not prove deployment, credentials, runtime activation, settings configuration, or cutover.

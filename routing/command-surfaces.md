@@ -17,6 +17,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 |---|---|
 | Atlas identity and canonical authority | `atlas-prime.md`, `governance/source-hierarchy.md` |
 | Safety and execution boundaries | `safety/atlas-safety-doctrine.md`, `governance/noctua.md`, `governance/atlas-aegis.md`, `governance/atlas-strikeforce.md`, `governance/protected-source-boundary.md`, `governance/cutover-boundary.md` |
+| Repository process, complete candidate, fallback, Goddess Mode, review, validation, Shardblade, and readback | `governance/repository-process-contract.md`, `governance/change-routes.md`, `governance/shard-doctrine.md` |
 | Capability parity and acceptance | `governance/capability-parity-register.json`, `schemas/capability-parity-register.schema.json`, `governance/capability-acceptance-contract.md` |
 | Athena execution routes and hosted identity | `governance/athena-execution-route-contract.md`, `methods/athenas-spear.md`, `methods/phoenix-blade.md`, `schemas/athena-hosted-route-request-v1.schema.json`, `schemas/athena-hosted-route-receipt-v1.schema.json`, `tools/athena_routes/README.md` |
 | Ordinary free-form mission fields to immutable carrier | `python -B -m tools.athena_routes.free_form_intake --fields <fields.json> --output-dir <new-directory>`; closed inputs/receipt use `schemas/athena-free-form-mission-fields-v1.schema.json` and `schemas/athena-free-form-intake-receipt-v1.schema.json`; constructor is local, read-only, and non-promoting |
@@ -24,7 +25,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Historical fresh-origin construction | `governance/athena-fresh-work-origin-contract.md`, `tools.athena_routes.fresh_work_bridge`; retained only as inert historical construction evidence and never required for Jayson-authorized Spear, Phoenix Blade, or Aegis Break work |
 | RP-C01-M05 same-carrier parity evidence | `tools.athena_routes.m05_parity`, `schemas/rp-c01-m05-parity-evidence-v1.schema.json`; verifies exact direct-Spear and hosted Arrow/Bow compiler/adapter joins and cannot self-promote M05 |
 | Agent identity and capability warrants | `governance/agentic-warrant-contract.md`, `schemas/agentic-capability-warrant-v1.schema.json`, `schemas/agentic-approval-record-v1.schema.json`, `schemas/agentic-warrant-receipt-v1.schema.json` |
-| Shardplate work-surface and Shardblade permanence contract (`CONTRACT_ONLY_NOT_ACTIVATED`) | `governance/shard-doctrine.md`, `schemas/shardblade-permanence-request-v1.schema.json`, `schemas/shardblade-permanence-approval-v1.schema.json`, `schemas/shardblade-permanence-receipt-v1.schema.json`, `tools/agentic_warrants/permanence.py` |
+| Legacy dedicated Shardblade warrant contracts | `governance/shard-doctrine.md`, `schemas/shardblade-permanence-request-v1.schema.json`, `schemas/shardblade-permanence-approval-v1.schema.json`, `schemas/shardblade-permanence-receipt-v1.schema.json`, `tools/agentic_warrants/permanence.py`; the dedicated standing service remains `CONTRACT_ONLY_NOT_ACTIVATED` while explicit one-transaction Shardblade is governed by the repository-process contract |
 | Bounded Campaign Goddess Mode and Campaign Shardblade | `governance/atlas-aegis.md`, `governance/shard-doctrine.md`, `schemas/shardblade-campaign-warrant-v1.schema.json`, `schemas/shardblade-campaign-stage-request-v1.schema.json`, `schemas/shardblade-campaign-stage-receipt-v1.schema.json`, `tools/agentic_warrants/campaign.py` |
 | Investiture source identity and Light-name migration | `governance/investiture-source-identity-contract.md` |
 | Found Silverlight Investiture Accounting doctrine, ledger, summaries, and receipts | `governance/investiture-accounting-contract.md`, `quests/found-silverlight.md` |
@@ -33,7 +34,9 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Chromelight provider evidence and account boundary | `governance/chromelight-provider-boundary.md`, `schemas/chromelight-evidence-register-v1.schema.json`, `proof/repairing-prime/rp-c03-chromelight-evidence-r01.json` |
 | Resonance independent finding reconciliation | `governance/resonance-reconciliation-contract.md`, `schemas/resonance-finding-v1.schema.json`, `schemas/aberration-register-v1.schema.json`, `tools/resonance/README.md`, `proof/repairing-prime/rp-c04-aberration-register-r01.json` |
 | Source changes and route selection | `governance/source-lifecycle.md`, `governance/change-routes.md` |
-| Normal one-request human-merge route | One direct Jayson instruction grants bounded build-through-ready authority under `governance/change-routes.md`; after exact-head Strikeforce, Athena reports `Prime PR #___ is ready to merge.` and Jayson manually clicks Merge in GitHub |
+| Default one-request route | One direct Jayson instruction grants bounded build-through-ready authority under `governance/repository-process-contract.md`; without explicit Shardblade authority, Athena reports `Prime PR #___ is ready to merge.` and Jayson merges manually |
+| Explicit Goddess Mode | `with Goddess Mode` authorizes bounded autonomous completion only inside the exact approved transaction or campaign and all existing stops |
+| Explicit Shardblade | `with Shardblade` or an unambiguous equivalent authorizes one exact-head compare-and-swap merge after required status, review reconciliation, Strikeforce GREEN, replay reservation, rollback, and fresh readback |
 | Projects | `projects/project-registry.md` |
 | Operations | `operations/operation-registry.md` |
 | Artemis, Harmony, Emberdark, Cognitive Shadows, Kandra, and Sazed | `operations/artemis-runtime-and-routing.md` |
@@ -73,7 +76,9 @@ Bow and Arrow belong to Jayson and Artemis delegated delivery. They are never se
 
 A request to build, repair, recover, execute, or otherwise make a Sword automatically routes first through `methods/sword-forge-standard.md` and `methods/sword-lessons.json`, then through current Sword doctrine and the exact live GitHub target state. The user does not need to invoke a separate preflight command or remind Athena to recall earlier lessons.
 
-A direct request to change, repair, update, add to, or Sunset Prime routes one bounded transaction through merge-ready without a second user command. Preview-only and draft-only requests remain narrower. The route includes candidate-caused repair, actionable review repair, validation, exact-head Strikeforce, and ready-for-review only while the candidate head remains unchanged. Merge never routes to Athena, Harmony, an implementation worker, a tool, or a workflow; Jayson performs the normal permanence action manually in GitHub.
+A direct request to change, repair, update, add to, or Sunset Prime routes one bounded transaction through merge-ready without a second user command. Preview-only and draft-only requests remain narrower. The route includes complete-candidate construction, candidate-caused repair, actionable review repair, validation, exact-head Strikeforce, and ready-for-review only while the candidate head remains unchanged.
+
+`with Goddess Mode` keeps the same transaction moving through obvious safe work and candidate-caused repair without widening. `with Shardblade` grants one exact-head permanence action after fresh compare-and-swap verification. Without Shardblade, merge remains Jayson's manual action.
 
 ## Decision box
 
