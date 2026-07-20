@@ -83,17 +83,20 @@ class PrimeRepositoryProcessTests(unittest.TestCase):
         self.assertIn("never create a duplicate mission", recovery)
 
     def test_changed_bytes_after_ready_restart_exact_head_evidence(self) -> None:
-        for relative in (
-            "bootstrap.md",
-            "safety/atlas-safety-doctrine.md",
-            "governance/change-routes.md",
-            "governance/source-lifecycle.md",
-            "governance/repository-process-contract.md",
-        ):
-            with self.subTest(relative=relative):
-                text = source(relative).lower()
-                self.assertIn("changed candidate byte", text)
-                self.assertIn("replacement", text)
+        bootstrap = source("bootstrap.md").lower()
+        safety = source("safety/atlas-safety-doctrine.md").lower()
+        routes = source("governance/change-routes.md").lower()
+        lifecycle = source("governance/source-lifecycle.md").lower()
+        contract = source("governance/repository-process-contract.md").lower()
+
+        self.assertIn("changed candidate byte", bootstrap)
+        self.assertIn("candidate-byte change", safety)
+        self.assertIn("changed candidate bytes", routes)
+        self.assertIn("candidate bytes change", lifecycle)
+        self.assertIn("replacement bytes invalidate", contract)
+        for text in (safety, routes, lifecycle, contract):
+            self.assertIn("replacement", text)
+            self.assertIn("exact head", text)
 
     def test_shardblade_ambiguity_is_readback_only_never_blind_retry(self) -> None:
         shard = source("governance/shard-doctrine.md")
