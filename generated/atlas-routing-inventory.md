@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:cab87c3c8a29b0b880ca242ccf6d5b714e9d669cb8ca52509afe06d2ae58fcce
+Source fingerprint: sha256:3ca959a603817d820c703a5c80a7f673e1e8a2e4c9de72cd63162ff28a8a56ba
 Generator format: 2
 Status: Generated support artifact
 
@@ -108,7 +108,8 @@ Status: Generated support artifact
 | `quests/prime-reborn.md` | yes |
 | `quests/prometheus-fire.md` | yes |
 | `quests/repairing-prime.md` | yes |
-| `recovery/phoenix-recovery.md` | yes |
+| `recovery/elantris-recovery.md` | yes |
+| `recovery/phoenix-recovery.md` | no |
 | `routing/command-surfaces.md` | yes |
 | `routing/interaction-contract.md` | no |
 | `safety/atlas-safety-doctrine.md` | yes |

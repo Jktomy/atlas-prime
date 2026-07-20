@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:cab87c3c8a29b0b880ca242ccf6d5b714e9d669cb8ca52509afe06d2ae58fcce
+Source fingerprint: sha256:3ca959a603817d820c703a5c80a7f673e1e8a2e4c9de72cd63162ff28a8a56ba
 Generator format: 2
 Status: Generated support artifact
 
@@ -106,9 +106,10 @@ Status: Generated support artifact
 | `quests/prime-ascendant.md` | Active | Quest | Parent Quest for the future self-hosted living-memory and orchestration chapter of Prime. | High |
 | `quests/prime-continuity-proof.md` | READY_FOR_CAMPAIGN_1_PREVIEW | QUEST | missing | MEDIUM |
 | `quests/prime-reborn.md` | COMPLETE | QUEST | missing | CRITICAL |
-| `quests/prometheus-fire.md` | Active | Quest | Parent Quest for converting Prometheus into a stable, recoverable Proxmox compute platform with the approved Crucible VM, Nexus Living Memory VM, and future Plex LXC topology. | High |
+| `quests/prometheus-fire.md` | Active | Quest | Parent Quest for converting Prometheus into a stable, recoverable Proxmox compute platform with the approved Crucible VM, Emberdark VM with initial Coppermind services, and future Plex LXC topology. | High |
 | `quests/repairing-prime.md` | Complete | Quest | Repair Prime's missing execution, agentic, continuity, Quest, generated-parity, acceptance, and closeout capabilities without rebuilding accepted foundations or weakening Atlas boundaries. | Critical |
-| `recovery/phoenix-recovery.md` | ACTIVE | RUNBOOK | missing | CRITICAL |
+| `recovery/elantris-recovery.md` | ACTIVE | RUNBOOK | missing | CRITICAL |
+| `recovery/phoenix-recovery.md` | SUPERSEDED_COMPATIBILITY | SUPPORT | missing | HIGH |
 | `routing/command-surfaces.md` | ACTIVE | REGISTER | missing | HIGH |
 | `routing/interaction-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | HIGH |
 | `safety/atlas-safety-doctrine.md` | ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
