@@ -64,8 +64,8 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(found_continuity["campaign_id"], "FS-C01")
         self.assertEqual(found_continuity["mission_id"], "FS-C01-M04")
         self.assertEqual(found_continuity["gate_id"], "INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN")
-        self.assertEqual(found_continuity["revision"], 4)
-        self.assertEqual(found_continuity["last_event_id"], "FS-C03-HERMES-BRIDGE-NAMING-R01")
+        self.assertEqual(found_continuity["revision"], 5)
+        self.assertEqual(found_continuity["last_event_id"], "FS-C03-HARMONY-ELANTRIS-NAMING-R01")
         old_found_event = "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01"
         naming_event = "FS-C03-HERMES-BRIDGE-NAMING-R01"
         prometheus_event = "PF-C01-M01-KANDRA-ENDPOINT-RECONCILIATION-R01"
@@ -82,8 +82,8 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(prometheus_continuity["campaign_id"], "PF-C01")
         self.assertEqual(prometheus_continuity["mission_id"], "PF-C01-M02")
         self.assertEqual(prometheus_continuity["gate_id"], "PF-C01-M02-PREVIEW")
-        self.assertEqual(prometheus_continuity["revision"], 2)
-        self.assertEqual(prometheus_continuity["last_event_id"], prometheus_event)
+        self.assertEqual(prometheus_continuity["revision"], 3)
+        self.assertEqual(prometheus_continuity["last_event_id"], "PF-C01-ATLAS-NAMING-REFRACTION-R01")
         ascendant = next(entry for entry in self.register["entries"] if entry["continuity_id"] == "CONT-PRIME-ASCENDANT-R01")
         creation_event = "PA-C01-QUEST-CREATION-R01"
         sunset_event = "PA-C01-HOSTED-ACTIONS-SUNSET-R01"

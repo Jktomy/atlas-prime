@@ -4,7 +4,7 @@ status: Complete
 owner: "Project Codex / Operation Source Governance"
 supporting_projects:
   - "Project Artemis"
-  - "Project Phoenix"
+  - "Project Elantris"
 source_type: Quest
 canonical_scope: "Repair Prime's missing execution, agentic, continuity, Quest, generated-parity, acceptance, and closeout capabilities without rebuilding accepted foundations or weakening Atlas boundaries."
 protected_level: Critical
@@ -18,7 +18,7 @@ routes_to:
   - governance/change-routes.md
   - governance/atlas-aegis.md
   - governance/atlas-strikeforce.md
-  - recovery/phoenix-recovery.md
+  - recovery/elantris-recovery.md
 private_boundary: "Store only clean doctrine, schemas, code, sanitized evidence, and non-secret status. Keep secrets, credentials, PHI, finance/account evidence, IP addresses, network maps, device registers, and private runtime values outside Prime."
 evidence_boundary: "Capabilities and journeys move only from exact receipts, live proof where required, independent review, and canonical readback. Code existence and generated output do not prove availability."
 cleanup_path: "Close only after RP-C01 through RP-C08, all capability and acceptance reconciliation, generated refresh, clean-clone proof, independent whole-Quest Strikeforce, Quest Board closeout, Phoenix recovery, and restart-safe Sunset."
@@ -30,7 +30,7 @@ last_verified: 2026-07-16
 **Quest ID:** `QUEST-REPAIRING-PRIME-R01`<br>
 **Parent Project:** Project Codex<br>
 **Owning Operation:** Operation Source Governance<br>
-**Supporting Projects:** Artemis, Phoenix<br>
+**Supporting Projects:** Artemis, Elantris<br>
 **Current lane:** `UPDATE -> CLOSED`<br>
 **Current state:** `COMPLETE`<br>
 **Current Campaign:** `RP-C08 — COMPLETE`<br>

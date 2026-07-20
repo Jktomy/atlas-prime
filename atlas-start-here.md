@@ -21,7 +21,7 @@ Read in order:
 6. `operations/operation-registry.md`
 7. `quest-board/quest-board-v1.json`
 8. `tools/thread-engine/PRIME-PORT-STATUS.json`
-9. `recovery/phoenix-recovery.md`
+9. `recovery/elantris-recovery.md`
 
 Current authority:
 

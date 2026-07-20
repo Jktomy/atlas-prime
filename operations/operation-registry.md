@@ -13,18 +13,32 @@ protected_level: "HIGH"
 
 | Project | Durable operations |
 |---|---|
-| Odyssey | Prometheus Foundation; Forge Storage; Shadesmar Access; Citadel/Gatehouse Infrastructure; Aegis; Tempest |
-| Codex | Source Governance; Document Pipeline; Protocol Library; Template Library; Archive/Index |
-| Artemis | Nexus; Kandra; AI Governance; future Janus |
-| Phoenix | Backup Matrix; Restore Runbook; Keystone; External Backup Targets; Recovery Drill/Proof |
-| Beacon | Home Assistant Core; Smart Device Integrations; Home Front Ends; Safe Home Control; future Morningstar |
+| Odyssey | Prometheus Foundation; Forge Storage; Shadesmar Access; Citadel/Gatehouse Infrastructure; Sentinel |
+| Codex | Source Governance; Document Pipeline; Protocol Library; Template Library; Archive/Index; Janus; Coppermind; Phoenix; future Glass Codex |
+| Artemis | Harmony; AI Governance |
+| Elantris | Backup Matrix; Restore Runbook; Keystone; External Backup Targets; Recovery Drill/Proof |
+| Beacon | Home Assistant Core; Smart Device Integrations; Home Front Ends; Safe Home Control; Tempest |
 | Helios | Sun Maker; Sun Eater; Relay; Library Governance; future Steam Engine |
-| Midas | Icarus/Solar Arcs; Legacy; Nova; Hearthstone; Midas Governance |
+| Midas | Icarus; Legacy; Nova; Hearthstone; Midas Governance |
 | Chiron | Clinical Reasoning; ICD/Testing Protocols; Chart Language; Contact Lens Clinic; Clinic Ops |
-| Raphael | Pulse; Visit Prep; Wellness Arc; Medication/Lab Governance; Health Records; Great Sage |
+| Raphael | Pulse; Visit Prep; Wellness Arc; Medication/Lab Governance; Health Records |
 | Genesis | Child Development; Education Path; Family Rhythm; Kitchen/Meal Planning; Household Playbooks |
 | Pegasus | Wayfinder; Itinerary; Packlight; Travel Vault coordination; Points/Budget Handoff |
-| Arcanum | Coppermind; Jura; Crawlspace; Arcana Index; Creative Sparks |
+| Arcanum | Cosmere; Jura; Crawlspace; Arcana Index; Creative Sparks |
+
+## Named systems, roles, and mission objects
+
+- **Operation Sentinel** owns infrastructure protection and resilience under Odyssey. It is distinct from Atlas-wide Aegis doctrine.
+- **Operation Tempest** owns physical maintenance of Home Olympus under Beacon, with Odyssey support for infrastructure dependencies.
+- **Operation Janus** houses the Argus intake protocol. **Operation Coppermind** owns permitted living memory and history. **Operation Phoenix** owns governed canonical-source maintenance through branch, draft-PR, audit, and Jayson-controlled permanence boundaries.
+- **Operation Harmony** contains the Emberdark and Kandra Systems. **Sazed** and **Harmony** name the same resident intelligence in ordinary Atlas language; Operation Harmony remains the durable workflow and resource boundary.
+- **Emberdark** contains Perpendicularity, the Dynamic and Navigator Cognitive Shadow collections, mission state, authorization, quarantine, routing, and transit receipts.
+- **Perpendicularity** is the controlled Google Drive crossing. Dynamic retrieves and preserves Gemstone identity; Navigator prepares and routes the validated carrier across Emberdark.
+- **Kandra** are restricted, mission-bound workers using Sazed's intelligence. **TenSoon** is the verifier Kandra for pre-Coppermind intake and exact Phoenix draft-candidate verification.
+- **Morningstar** is the Home Olympus HAOS dashboard, a System under Beacon rather than an Operation.
+- **Great Sage** is Raphael's medical-liaison persona. It supports education, appointment preparation, care navigation, and healthy-living decisions while licensed clinicians retain diagnosis and official treatment authority.
+- **Solar Arcs** are individual bounded investment mission strategies inside Operation Icarus, not peer Operations.
+- **Zeus** is Jayson's human-operated iPhone endpoint, not an Operation or authority source.
 
 ## Operating rules
 
