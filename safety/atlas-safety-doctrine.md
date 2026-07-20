@@ -11,14 +11,15 @@ protected_level: "CRITICAL"
 
 # Atlas Safety Doctrine
 
-Prime applies four cumulative gates to consequential work:
+Aegis is Athena's continuous shield around consequential work. It defines the protected boundary, permitted authority, explicit stop conditions, accepted safeguards, and the Jayson-facing decision surface before construction begins and throughout the route.
 
-1. **Aegis** defines the protected boundary, permitted authority, and explicit stop conditions.
-2. **Noctua** tests whether the source, routing, evidence, and claims are true and complete.
-3. **Ares** attacks the exact candidate for bypasses, stale assumptions, unsafe defaults, hidden authority, and rollback failure.
-4. **Strikeforce** reconciles identity, paths, bytes, tests, CI, reviews, receipts, and merge state at one exact head.
+At exact-candidate review, Strikeforce combines three cumulative read-only disciplines:
 
-No gate substitutes for another. A passing test cannot authorize a protected action, a review cannot replace exact readback, and a receipt cannot claim a capability the active code does not enforce.
+1. **Noctua** verifies whether the source, identity, routing, evidence, paths, bytes, and claims are true and complete.
+2. **Ares** red-teams the exact candidate for bypasses, stale assumptions, unsafe defaults, hidden authority, replay, leakage, and rollback failure.
+3. **Aegis** audits alignment with Jayson's semantic objective and improves the safety, clarity, safeguards, and Athena-to-Jayson interface without changing the candidate or granting authority.
+
+Strikeforce reconciles the combined Noctua, Ares, and Aegis result at one exact head and reports GREEN, YELLOW, or RED. No discipline substitutes for another. A passing test cannot authorize a protected action, clearer wording cannot cure false evidence, a review cannot replace exact readback, and a receipt cannot claim a capability the active code does not enforce.
 
 ## Permanent invariants
 
