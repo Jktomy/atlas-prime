@@ -43,7 +43,7 @@ Spear is Athena's Thread Engine route. Arrow and Bow are not Athena's direct rou
 
 Phoenix Blade is Athena executing a Sword and mirrors what Oathbringer is to Jayson. Phoenix Blade does not use Thread Engine. Aegis Break owns direct safe-route selection or construction, including direct GitHub-native work when that is the safest bounded route.
 
-Aegis Break is not hardwired to Phoenix Blade, Spear, Oathbringer, or any one substrate. It does not erase Aegis, widen scope, grant standing authority, or convert a one-time route into standing authority.
+Aegis Break is not hardwired to Phoenix Blade, Spear, Oathbringer, or any one substrate. It does not erase Aegis, widen scope, or convert a one-time route into standing authority.
 
 Every route:
 
