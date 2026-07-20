@@ -91,8 +91,8 @@ class FoundSilverlightDoctrineTests(unittest.TestCase):
         self.assertEqual(entry["campaign_id"], "FS-C01")
         self.assertEqual(entry["mission_id"], "FS-C01-M04")
         self.assertEqual(entry["gate_id"], "INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN")
-        self.assertEqual(entry["last_event_id"], "FS-C03-HERMES-BRIDGE-NAMING-R01")
-        self.assertEqual(entry["revision"], 4)
+        self.assertEqual(entry["last_event_id"], "FS-C03-HARMONY-ELANTRIS-NAMING-R01")
+        self.assertEqual(entry["revision"], 5)
         fs_event = "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01"
         later_event = "RP-C08-CAP015-ARCHITECTURE-REALIGNMENT-R02"
         naming_event = "FS-C03-HERMES-BRIDGE-NAMING-R01"

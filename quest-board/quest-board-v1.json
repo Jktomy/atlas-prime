@@ -31,7 +31,7 @@
       "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
       "source": "quests/prometheus-fire.md",
       "state": "IN_PROGRESS",
-      "readiness_basis": "PF-C01-M01 Mission Seal is accepted with carry-forwards. Apollo commissioning, Windows-specific Codex evacuation, Hermes independent portable access, Windows recovery preservation, extended memory testing, and bounded stability follow-up remain incomplete. Iris is a source-accepted nonblocking companion endpoint."
+      "readiness_basis": "PF-C01-M01 Mission Seal is accepted with carry-forwards. Apollo commissioning, Windows-specific Codex evacuation, Hermes independent portable access, Windows recovery preservation, extended memory testing, and bounded stability follow-up remain incomplete. Iris and Zeus are source-accepted nonblocking companion endpoints."
     },
     {
       "next_gate": "NW-C01 readiness package and Jayson-side proof",
@@ -49,11 +49,11 @@
     },
     {
       "next_gate": "PA-C01 — Write the Covenant",
-      "owner": "Artemis / Operation Nexus",
+      "owner": "Artemis / Operation Harmony",
       "quest_id": "QUEST-PRIME-ASCENDANT-20260717",
       "source": "quests/prime-ascendant.md",
       "state": "IN_PROGRESS",
-      "readiness_basis": "Official architecture-refinement Quest admitted with PA-C01 current and PA-C02 through PA-C10 as the initial roadmap. Runtime, infrastructure deployment, Living Memory, Nexus Core, Dawnshard, private website, Gitea shadow, canonical cutover, and legacy-route retirement remain unauthorized or unstarted by this Quest."
+      "readiness_basis": "Official architecture-refinement Quest admitted with PA-C01 current and PA-C02 through PA-C10 as the initial roadmap. Runtime, infrastructure deployment, Coppermind, Emberdark, Harmony/Kandra/Cognitive Shadows, Dawnshard, Glass Codex, Phoenix source maintenance, Gitea shadow, canonical cutover, and legacy-route retirement remain unauthorized or unstarted by this Quest."
     }
   ],
   "format_version": "1.0",

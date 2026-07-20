@@ -93,12 +93,12 @@ class PrimeProgramTests(unittest.TestCase):
             "Prime Ascendant — The Dawnshard Covenant",
             "ACTIVE — ARCHITECTURE REFINEMENT",
             "PA-C01 — Write the Covenant",
-            "PA-C02 — Raise the Living Archive",
-            "PA-C03 — Forge Nexus Core",
+            "PA-C02 — Raise the Coppermind",
+            "PA-C03 — Establish Emberdark",
             "PA-C04 — Shape the Dawnshard",
-            "PA-C05 — Open the Private Gate",
+            "PA-C05 — Open Glass Codex",
             "PA-C06 — Crown Gitea",
-            "PA-C07 — Awaken Artemis",
+            "PA-C07 — Awaken Harmony",
             "PA-C08 — Bind the Realms",
             "PA-C09 — Temper the Old Blades",
             "PA-C10 — Prove the Dawn",
@@ -112,7 +112,7 @@ class PrimeProgramTests(unittest.TestCase):
             "Prime Reborn owns",
             "Prometheus's Fire owns",
             "PostgreSQL full-text search + pgvector",
-            "Qdrant remains deferred",
+            "Qdrant:\ndeferred until demonstrated need.",
             "PA-C01-DEC-001",
             "PA-C01-DEC-025",
             "Campaign ownership map",
@@ -123,6 +123,7 @@ class PrimeProgramTests(unittest.TestCase):
             "GREEN means the exact reviewed candidate is ready",
         ):
             self.assertIn(marker, covenant)
+        self.assertEqual(covenant.count("Qdrant:\ndeferred until demonstrated need."), 1)
 
     def test_universal_mode_definitions_are_narrow_and_aligned(self) -> None:
         shardblade = (ROOT / "governance/shard-doctrine.md").read_text(encoding="utf-8")
@@ -157,19 +158,23 @@ class PrimeProgramTests(unittest.TestCase):
         continuity = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
         found_continuity = next(entry for entry in continuity["entries"] if entry["continuity_id"] == "CONT-FOUND-SILVERLIGHT-R01")
 
-        self.assertIn("Nexus, Kandra, AI governance", projects)
-        self.assertIn("| Artemis | Nexus; Kandra; AI Governance; future Janus |", operations)
-        self.assertNotIn("| Artemis | Nexus; Hermes;", operations)
+        self.assertIn("Operation Harmony, Sazed/Harmony, Emberdark transit", projects)
+        self.assertIn("| Artemis | Harmony; AI Governance |", operations)
+        self.assertIn("| Codex | Source Governance; Document Pipeline; Protocol Library; Template Library; Archive/Index; Janus; Coppermind; Phoenix; future Glass Codex |", operations)
+        self.assertIn("| Elantris | Backup Matrix; Restore Runbook; Keystone; External Backup Targets; Recovery Drill/Proof |", operations)
+        self.assertNotIn("| Artemis | Nexus;", operations)
         self.assertIn("## Kandra", artemis)
         self.assertIn("Hermes is reserved for the portable human-operated Atlas command endpoint", artemis)
-        self.assertIn("Artemis, Kandra, Nexus", routes)
-        self.assertIn("Apollo, Hermes, and Iris operator endpoints", routes)
+        self.assertIn("Artemis, Harmony, Emberdark, Cognitive Shadows, Kandra, and Sazed", routes)
+        self.assertIn("Apollo, Hermes, Iris, and Zeus operator endpoints", routes)
         self.assertIn("| **Apollo** | Lenovo M720q |", infrastructure)
         self.assertIn("| **Hermes** | MacBook Pro |", infrastructure)
         self.assertIn("| **Iris** | iPad Pro |", infrastructure)
+        self.assertIn("| **Zeus** | Jayson’s iPhone |", infrastructure)
         self.assertIn("Forge retains the persistent Helios backend", infrastructure)
         self.assertIn("Apollo may host the on-demand, human-interactive Helios Control Deck", infrastructure)
         self.assertIn("Iris role: SOURCE_ACCEPTED / NONBLOCKING", prometheus)
+        self.assertIn("Zeus role: SOURCE_ACCEPTED / NONBLOCKING", prometheus)
         self.assertIn("Windows wipe: BLOCKED", prometheus)
         self.assertIn("Proxmox installation: BLOCKED", prometheus)
         self.assertIn("Mission FS-C03-M01 — Prove Hermes", found)
@@ -178,7 +183,7 @@ class PrimeProgramTests(unittest.TestCase):
         self.assertIn("Jktomy/atlas-prime#195", proof)
         self.assertIn("93def9d8f9716547de69e101bc44a5f896dad67d", proof)
         self.assertIn("the changing final REPAIR head is intentionally not self-embedded", proof)
-        self.assertIn("The ledger, receipts, lifecycle binding, recovery, rollback planning, exact-head CI, and canonical synthetic exercise are accepted", found_continuity["current_position"])
+        self.assertIn("Artemis ownership now routes through Operation Harmony", found_continuity["current_position"])
         self.assertIn("The future FS-C03 Seon macOS bridge vessel is Hermes; Apollo is no longer reserved for that bridge role.", found_continuity["current_position"])
 
     def test_prime_is_canonical_and_codex_is_predecessor_only(self) -> None:
@@ -197,7 +202,7 @@ class PrimeProgramTests(unittest.TestCase):
             "projects/project-registry.md",
             "operations/operation-registry.md",
             "infrastructure/atlas-infrastructure-source.md",
-            "recovery/phoenix-recovery.md",
+            "recovery/elantris-recovery.md",
             "quests/repairing-prime.md",
             "quests/prime-ascendant.md",
             "quests/prime-ascendant-covenant.md",

@@ -22,7 +22,7 @@ protected_level: "CRITICAL"
 
 ## Recovery bootstrap
 
-Clone Prime fresh, verify the expected main head, run the complete read-only validation workflow, compare generated projections as CURRENT, verify Thread Engine state, and follow `recovery/phoenix-recovery.md`. Normal bootstrap and recovery do not read from or write to `Jktomy/atlas-codex`.
+Clone Prime fresh, verify the expected main head, run the complete read-only validation workflow, compare generated projections as CURRENT, verify Thread Engine state, and follow `recovery/elantris-recovery.md`. Normal bootstrap and recovery do not read from or write to `Jktomy/atlas-codex`.
 
 ## Continuity startup
 

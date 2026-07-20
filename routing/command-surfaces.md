@@ -34,8 +34,8 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Source changes and route selection | `governance/source-lifecycle.md`, `governance/change-routes.md` |
 | Projects | `projects/project-registry.md` |
 | Operations | `operations/operation-registry.md` |
-| Artemis, Kandra, Nexus | `operations/artemis-runtime-and-routing.md` |
-| Apollo, Hermes, and Iris operator endpoints | `infrastructure/atlas-infrastructure-source.md` |
+| Artemis, Harmony, Emberdark, Cognitive Shadows, Kandra, and Sazed | `operations/artemis-runtime-and-routing.md` |
+| Apollo, Hermes, Iris, and Zeus operator endpoints | `infrastructure/atlas-infrastructure-source.md` |
 | Protocols and delivery methods | `operations/protocol-library.md`, `methods/artemis-bow-and-arrow.md`, `methods/athenas-spear.md`, `methods/atlas-sword.md`, `methods/phoenix-blade.md` |
 | Athena through Thread Engine | `methods/athenas-spear.md`, then the exact Weave, base, Thread Engine state, and draft-PR stop boundary |
 | Athena direct safe construction or repair | `methods/phoenix-blade.md` for Aegis Break route selection, then the exact live repository or PR state |
@@ -50,7 +50,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Lesson Harvest and active assurance controls | `governance/lesson-harvest-protocol.md`, `governance/assurance-controls.json`, `schemas/assurance-controls-v1.schema.json` |
 | Lifecycle records and read-only mechanics | `lifecycle/README.md`, `lifecycle/lifecycle-contract.md`, `lifecycle/schemas/`, `tools/atlas_lifecycle/README.md` |
 | Infrastructure source | `infrastructure/atlas-infrastructure-source.md` |
-| Clean-clone recovery, protected runtime restoration, and recovery proof | `recovery/phoenix-recovery.md` |
+| Clean-clone recovery, protected runtime restoration, and recovery proof | `recovery/elantris-recovery.md` |
 | Prime-native source rollback and reviewed revert | `migration/rollback-map.md` |
 | Knowledge lifecycle | `knowledge/atlas-source-compendium.md` |
 | Thread Engine | `tools/thread-engine/README.md`, `tools/thread-engine/PRIME-PORT-STATUS.json` |

@@ -3,12 +3,12 @@ title: "Quest — Prometheus's Fire"
 status: Active
 owner: "Project Odyssey / Operation Prometheus Foundation"
 supporting_projects:
-  - "Project Phoenix"
+  - "Project Elantris"
   - "Project Artemis"
   - "Project Helios"
   - "Project Codex"
 source_type: Quest
-canonical_scope: "Parent Quest for converting Prometheus into a stable, recoverable Proxmox compute platform with the approved Crucible VM, Nexus Living Memory VM, and future Plex LXC topology."
+canonical_scope: "Parent Quest for converting Prometheus into a stable, recoverable Proxmox compute platform with the approved Crucible VM, Emberdark VM with initial Coppermind services, and future Plex LXC topology."
 protected_level: High
 routes_from:
   - atlas-prime.md
@@ -37,23 +37,23 @@ last_verified: 2026-07-17
 **Quest ID:** `QUEST-PROMETHEUS-FIRE-20260701`
 **Parent Project:** Project Odyssey
 **Owning Operation:** Operation Prometheus Foundation
-**Supporting Projects:** Phoenix, Artemis, Helios, Codex
+**Supporting Projects:** Elantris, Artemis, Helios, Codex
 **Current lane:** `UPDATE -> VERIFY`
 **Current route:** `PF-C01 -> PF-C01-M02 Preserve the Old Flame Preview`
 **Current state:** `IN_PROGRESS`
 
 ## 2. Purpose
 
-Prometheus's Fire converts Prometheus into Atlas's stable, recoverable, privately administered Proxmox compute and service node without bypassing Citadel readiness, Forge storage boundaries, Phoenix restore proof, or Atlas approval gates. This source records architecture and proof requirements only; it does not claim deployment.
+Prometheus's Fire converts Prometheus into Atlas's stable, recoverable, privately administered Proxmox compute and service node without bypassing Citadel readiness, Forge storage boundaries, Elantris restore proof, or Atlas approval gates. This source records architecture and proof requirements only; it does not claim deployment.
 
 The Quest coordinates clean source and future proof for:
 
 - Prometheus hardware and Proxmox foundation;
 - private administration and rescue access;
 - narrow Forge, Hammer, and Anvil mounts;
-- Prometheus-to-Forge backup and destructive Phoenix restore proof;
+- Prometheus-to-Forge backup and destructive Elantris restore proof;
 - Crucible and exclusive Intel Arc Pro B50 passthrough;
-- a dedicated Nexus Living Memory VM with deterministic routing and mission state;
+- a dedicated Emberdark VM with governed transit, mission state, and initial Coppermind PostgreSQL services;
 - PF-C06 disposition of Matrix / Element from the active baseline;
 - future Plex LXC and controlled Forge-to-Prometheus cutover;
 - observability through Notum's Watch;
@@ -64,7 +64,7 @@ The accepted launch envelope is:
 ```text
 Prometheus / Proxmox
 ├── Crucible VM — 28 GB RAM
-├── Nexus Living Memory VM — 10 GB RAM
+├── Emberdark VM — 10 GB RAM
 └── Plex LXC — 12 GB RAM
 
 Protected Proxmox reserve — 8 GB
@@ -77,7 +77,7 @@ only after measured concurrent-load proof. Temporary restore guests require an
 explicit RAM reallocation or guest-shutdown plan.
 
 The thin-provisioned NVMe planning envelope is approximately 64 GB for host
-ISOs/templates, 350 GB for Crucible, 120 GB for Nexus, and 150 GB for Plex;
+ISOs/templates, 350 GB for Crucible, 120 GB for Emberdark, and 150 GB for Plex;
 the remaining usable capacity is reserved for pool/filesystem overhead,
 snapshots, temporary restore needs, and growth. Exact remaining capacity is
 unknown until storage is formatted and measured.
@@ -87,7 +87,7 @@ unknown until storage is formatted and measured.
 ```text
 Prometheus / Proxmox
 ├── Crucible VM — 28 GB RAM
-├── Nexus Living Memory VM — 10 GB RAM
+├── Emberdark VM — 10 GB RAM
 └── Plex LXC — 12 GB RAM
 
 Protected Proxmox reserve — 8 GB
@@ -100,7 +100,7 @@ Total launch envelope — 64 GB
 | Guest or reserve | RAM |
 |---|---:|
 | Crucible VM | 28 GB |
-| Nexus Living Memory VM | 10 GB |
+| Emberdark VM | 10 GB |
 | Plex LXC | 12 GB |
 | Permanent planned guests | 50 GB |
 | Protected Proxmox reserve | 8 GB |
@@ -124,7 +124,7 @@ claim:
 |---|---:|
 | Proxmox host, ISO, and templates | 64 GB |
 | Crucible VM | 350 GB |
-| Nexus Living Memory VM | 120 GB |
+| Emberdark VM | 120 GB |
 | Plex LXC | 150 GB |
 
 Remaining usable capacity is reserved for pool and filesystem overhead,
@@ -138,10 +138,10 @@ Prometheus's Fire is complete only when:
 1. Prometheus runs Proxmox VE stably with verified 64 GB memory.
 2. Primary private administration and an independent rescue route are proven.
 3. Forge mounts are narrow, persistent, and fail safely.
-4. Prometheus backs up to Forge / Anvil and Phoenix proves an independent recovery copy.
+4. Prometheus backs up to Forge / Anvil and Elantris proves an independent recovery copy.
 5. A destructive canary restore succeeds.
 6. Crucible passes B50 passthrough, model-runtime, backup, restore, and rollback proof.
-7. Nexus passes deterministic intake, validation, approval, quarantine, mission-state, and receipt proof on the dedicated VM substrate, with PostgreSQL, full-text search, and `pgvector` as the Phase 1 retrieval direction.
+7. Emberdark passes deterministic intake, validation, approval, quarantine, mission-state, and receipt proof on the dedicated VM substrate, with Coppermind PostgreSQL, full-text search, and `pgvector` as the Phase 1 retrieval direction.
 8. PF-C06 records that Matrix / Synapse / Element are not part of the active Prometheus baseline and preserves lineage without claiming deployment or retirement.
 9. Plex passes metadata restore, acceleration, recording, playback, concurrency, reboot, rollback, and cutover proof before leaving Forge; its application database, metadata, cache, and transcode workspace remain on Prometheus local NVMe.
 10. Notum's Watch improves observability without becoming a mandatory control dependency or Prometheus prerequisite.
@@ -169,12 +169,12 @@ The baseline does not include:
 - Calibre / ebook-convert;
 - m4b-tool;
 - Matrix, Synapse, and Element as active Prometheus workloads;
-- public model, Nexus, n8n, or Proxmox endpoints;
+- public model, Emberdark, n8n, or Proxmox endpoints;
 - Qdrant as a Phase 1 requirement;
 - Proxmox Backup Server as an immediate requirement;
 - acting Kandra workers before governance and tool gates pass;
-- automatic UPS shutdown or ONT / Eero recovery without a separate Phoenix / Beacon Preview and proof;
-- Living Memory application semantics, Dawnshard, Gitea cutover, or a private Atlas website.
+- automatic UPS shutdown or ONT / Eero recovery without a separate Elantris / Beacon Preview and proof;
+- Coppermind application semantics, Dawnshard, Gitea cutover, or a private Glass Codex website.
 
 Forge retains HAOS, Paperless-ngx, Dozzle, Diun, and the persistent Helios backend: Gluetun, qBittorrent, Prowlarr, Sonarr, Radarr, optional Readarr, automated watchers and import workflows, storage-adjacent processing, Audiobookshelf, and current Plex until separately proven cutover.
 
@@ -185,7 +185,7 @@ Apollo may host the on-demand interactive Helios Control Deck: Libation, FileBot
 ## Campaign PF-C01 — Forge the Vessel
 
 **Owner:** Odyssey / Prometheus Foundation
-**Support:** Phoenix / Keystone
+**Support:** Elantris / Keystone
 **Status:** `IN_PROGRESS`
 **Depends on:** none
 
@@ -232,15 +232,16 @@ Required proof:
 2. Required Windows applications and Windows-specific Codex workflows operate on Apollo.
 3. Hermes can independently access Prime, GitHub, Element, and approved private administration surfaces.
 4. Iris remains a nonblocking companion and is not treated as the sole source, approval, administration, or recovery route.
-5. Every relevant Prometheus repository and working directory is identified.
-6. Dirty worktrees, uncommitted changes, unpushed commits, local branches, and local-only artifacts are reconciled.
-7. Required Prime source and branches are visible in GitHub or preserved through another approved route.
-8. Active Codex work is completed, safely stopped, or transferred.
-9. A representative Windows-specific workflow resumes on Apollo.
-10. A representative portable command and administration workflow succeeds from Hermes.
-11. Windows recovery media, system-image disposition, manufacturer drivers, and rollback expectations are preserved.
-12. No credential, recovery key, token, private key, or secret enters Prime or ordinary migration artifacts.
-13. A later exact Execute gate authorizes Windows removal or Proxmox installation.
+5. Zeus is recorded as Jayson's nonblocking iPhone endpoint and is not treated as the sole source, approval, administration, or recovery route.
+6. Every relevant Prometheus repository and working directory is identified.
+7. Dirty worktrees, uncommitted changes, unpushed commits, local branches, and local-only artifacts are reconciled.
+8. Required Prime source and branches are visible in GitHub or preserved through another approved route.
+9. Active Codex work is completed, safely stopped, or transferred.
+10. A representative Windows-specific workflow resumes on Apollo.
+11. A representative portable command and administration workflow succeeds from Hermes.
+12. Windows recovery media, system-image disposition, manufacturer drivers, and rollback expectations are preserved.
+13. No credential, recovery key, token, private key, or secret enters Prime or ordinary migration artifacts.
+14. A later exact Execute gate authorizes Windows removal or Proxmox installation.
 
 The continuity proof must also record matching-memory and extended-memory
 testing, NVMe health, WHEA/PCIe/USB/KVM/thermal stability, firmware and BIOS
@@ -253,7 +254,7 @@ claims that any device or software has been changed.
 ## Campaign PF-C02 — Light the First Flame
 
 **Owner:** Odyssey / Prometheus Foundation
-**Support:** Aegis / Shadesmar Access
+**Support:** Sentinel / Shadesmar Access
 **Status:** `BLOCKED_BY_PF-C01`
 **Depends on:** PF-C01
 
@@ -270,9 +271,9 @@ Required proof:
 - private management and an independent rescue path;
 - host configuration backup and recovery notes.
 
-## Campaign PF-C03 — Carry the Phoenix Ember
+## Campaign PF-C03 — Prove Elantris Recovery
 
-**Owner:** Phoenix / Restore Runbook and Recovery Drill
+**Owner:** Elantris / Restore Runbook and Recovery Drill
 **Support:** Odyssey / Forge Storage
 **Status:** `BLOCKED_BY_PF-C02`
 **Depends on:** PF-C02
@@ -290,13 +291,13 @@ Required proof:
 - boot, marker, and network verification;
 - sanitized restore receipt;
 - independent off-Forge recovery plan;
-- Nexus VM backup/restore, PostgreSQL base-backup and WAL/PITR direction,
+- Emberdark VM and Coppermind backup/restore, PostgreSQL base-backup and WAL/PITR direction,
   Plex metadata/configuration restoration, and a recovery copy not confined to
   Forge.
 
 ## Campaign PF-C04 — Ignite the Crucible
 
-**Owner:** Artemis / Operation Kandra and AI Governance
+**Owner:** Artemis / Operation Harmony and AI Governance
 **Support:** Odyssey / Prometheus Foundation
 **Status:** `BLOCKED_BY_PF-C03`
 **Depends on:** PF-C03
@@ -318,15 +319,15 @@ Required proof:
 - cold-load, reboot, reset, thermal, cancellation, soak, backup, restore, and rollback tests;
 - no durable-action authority during probation.
 
-## Campaign PF-C05 — Raise the Nexus Vessel
+## Campaign PF-C05 — Establish the Emberdark Substrate
 
-**Owner:** Artemis / Operation Nexus
+**Owner:** Artemis / Operation Harmony
 **Support:** Codex / AI Governance
 **Status:** `BLOCKED_BY_PF-C04`
 **Depends on:** PF-C03 and PF-C04
 
-Build Nexus as a dedicated QEMU VM substrate for the deterministic integration
-and mission-state service. This Campaign owns substrate proof, not the later
+Build Emberdark as a dedicated QEMU VM substrate for governed transit,
+deterministic integration, mission state, and initial Coppermind services. This Campaign owns substrate proof, not the later
 Prime Ascendant application semantics.
 
 Required proof:
@@ -338,15 +339,15 @@ Required proof:
 - ClamAV/FreshClam and private health endpoints;
 - Gemstone quarantine, hashing, archive safety, ClamAV, and manifest validation;
 - approval state, retries, timeouts, mission register, and Receipt Gemstone creation;
-- restricted private Kandra call path;
+- restricted private Kandra and Cognitive Shadow call paths;
 - no broad Proxmox, Forge, GitHub, shell, merge, deletion, or cleanup authority;
 - application-aware backup and restore;
 - base-backup and WAL path to Forge with sanitized recovery receipts.
 
 ## Campaign PF-C06 — Close the Matrix Gate
 
-**Owner:** Artemis / Operation Nexus
-**Support:** Phoenix / AI Governance
+**Owner:** Artemis / Operation Harmony
+**Support:** Elantris / AI Governance
 **Status:** `BLOCKED_BY_PF-C05`
 **Depends on:** PF-C03 and PF-C05
 
@@ -357,8 +358,8 @@ deployed and then retired.
 Required proof:
 
 - no current Matrix/Element deployment requirement;
-- no Matrix dependency for Nexus or Plex;
-- VS Code/Apollo and a future private Atlas website replace the immediate
+- no Matrix dependency for Emberdark, Coppermind, or Plex;
+- VS Code/Apollo and a future private Glass Codex website replace the immediate
   interaction need;
 - any future communications requirement must justify a separate source
   decision or Quest.
@@ -366,7 +367,7 @@ Required proof:
 ## Campaign PF-C07 — Raise Relay
 
 **Owner:** Helios / Operation Relay
-**Support:** Odyssey / Phoenix
+**Support:** Odyssey / Elantris
 **Status:** `BLOCKED_BY_PF-C03_AND_RESOURCE_REVIEW`
 **Depends on:** PF-C03 and PF-C04/PF-C05 resource review
 
@@ -384,10 +385,10 @@ Required proof:
 - guide, Live TV, DVR recording, completed playback, concurrent clients, reboot recovery, remote access, and rollback;
 - Forge Plex remains intact until final disposition.
 
-## Campaign PF-C08 — Close the Aegis Ring
+## Campaign PF-C08 — Close the Sentinel Ring
 
-**Owner:** Odyssey / Aegis and Tempest
-**Support:** Phoenix, Artemis, Helios, Beacon
+**Owner:** Odyssey / Sentinel
+**Support:** Beacon / Tempest; Elantris; Artemis; Helios
 **Status:** `BLOCKED_BY_PF-C04_TO_PF-C07`
 **Depends on:** PF-C04, PF-C05, PF-C06, PF-C07
 
@@ -403,7 +404,7 @@ Required proof:
 - exact configuration manifests and sanitized runbooks;
 - Prime Quest Board and continuity-register reconciliation;
 - PF-C06 Matrix disposition and no stale Matrix dependency;
-- PostgreSQL/WAL health, backup/restore boundaries, and no public endpoints;
+- Coppermind PostgreSQL/WAL health, backup/restore boundaries, and no public endpoints;
 - final Strikeforce and Noctua audit;
 - restart-safe Sunset.
 
@@ -419,6 +420,7 @@ PF-C01-M02 Preserve the Old Flame: READY_FOR_PREVIEW
 Apollo commissioning: NOT PROVEN
 Hermes independent route: NOT PROVEN
 Iris role: SOURCE_ACCEPTED / NONBLOCKING
+Zeus role: SOURCE_ACCEPTED / NONBLOCKING
 Windows wipe: BLOCKED
 Proxmox installation: BLOCKED
 Operational readiness: NOT CLEARED

@@ -11,14 +11,18 @@ protected_level: "CRITICAL"
 
 # Prime Strikeforce
 
+Strikeforce consists of Noctua, Ares, and Aegis working cumulatively against one exact candidate head.
+
 ```text
-Noctua verifies
-→ Ares attacks assumptions, authority, replay, recovery, leakage, and route confusion
-→ Athena reconciles
+Noctua verifies source, identity, evidence, paths, bytes, and claims
+→ Ares red-teams assumptions, authority, replay, recovery, leakage, and rollback
+→ Aegis audits alignment and improves the safety, clarity, and Athena-to-Jayson interface
 → GREEN, YELLOW, or RED
 ```
 
-Strikeforce is read-only.
+Strikeforce is read-only. Its members may report defects, required repairs, clearer decision surfaces, and safer next actions, but they do not alter the exact candidate during reconciliation.
+
+Aegis is Athena's shield within Strikeforce. It confirms that the candidate and its presentation preserve Jayson's semantic objective, accepted lessons, active safeguards, explicit choices, stop conditions, and protected boundaries. Aegis cannot convert a Noctua or Ares failure into GREEN through wording, confidence, or simplification.
 
 GREEN means the exact reviewed candidate is ready for the next authorized gate.
 GREEN does not merge, activate, promote, or cut over Prime. Shardblade is the

@@ -3,7 +3,7 @@ title: "Quest - Notum's Watch"
 status: Active
 owner: "Project Odyssey / Operation Citadel / Gatehouse Infrastructure"
 supporting_projects:
-  - "Project Phoenix"
+  - "Project Elantris"
   - "Project Beacon"
   - "Project Codex"
 source_type: Quest
@@ -21,8 +21,8 @@ routes_to:
   - infrastructure/atlas-infrastructure-source.md
   - infrastructure/atlas-infrastructure-source.md
   - infrastructure/atlas-infrastructure-source.md
-  - recovery/phoenix-recovery.md
-  - recovery/phoenix-recovery.md
+  - recovery/elantris-recovery.md
+  - recovery/elantris-recovery.md
   - quest-board/quest-board-v1.json
   - quests/prometheus-fire.md
   - governance/atlas-strikeforce.md
@@ -40,7 +40,7 @@ last_verified: 2026-07-09
 **Quest ID:** `quest.notums-watch`
 **Parent Project:** Project Odyssey
 **Owning Operation:** Operation Citadel / Gatehouse Infrastructure
-**Supporting Projects:** Phoenix, Beacon, Codex
+**Supporting Projects:** Elantris, Beacon, Codex
 **Current lane:** `PLAN -> VERIFY`
 **Current route:** `Official Quest source -> infrastructure readback -> Jayson-executed readiness package`
 **Current state:** `READY_FOR_JAYSON_EXECUTION_PACKAGE`
@@ -73,8 +73,8 @@ Minimum readback route:
 3. `infrastructure/atlas-infrastructure-source.md`
 4. `infrastructure/atlas-infrastructure-source.md`
 5. `infrastructure/atlas-infrastructure-source.md`
-6. `recovery/phoenix-recovery.md`
-7. `recovery/phoenix-recovery.md` when backup or disk capacity is discussed
+6. `recovery/elantris-recovery.md`
+7. `recovery/elantris-recovery.md` when backup or disk capacity is discussed
 8. `quests/prometheus-fire.md` only when Prometheus dependency, sequencing, or observability consumption is discussed
 9. approved private evidence only when current hardware, capacity, topology, or runtime facts are needed
 
@@ -226,7 +226,7 @@ Stop before action if:
 ### Campaign NW-C01 - Bring Notum's Watch Forward
 
 **Owner:** Odyssey / Citadel-Gatehouse Infrastructure
-**Support:** Codex / Phoenix / Beacon
+**Support:** Codex / Elantris / Beacon
 **Status:** `READY_FOR_JAYSON_EXECUTION`
 **Depends on:** merged source readback
 
@@ -243,7 +243,7 @@ Exit only after:
 ### Campaign NW-C02 - Light the Watch
 
 **Owner:** Odyssey / Citadel-Gatehouse Infrastructure
-**Support:** Beacon / Phoenix
+**Support:** Beacon / Elantris
 **Status:** `BLOCKED_BY_NW-C01_AND_JAYSON_EXECUTION`
 **Depends on:** NW-C01
 
@@ -261,7 +261,7 @@ Define and later prove the future two-bay x86 Gatehouse vessel.
 ### Campaign NW-C04 - Preserve Nightwatcher Lineage
 
 **Owner:** Codex / Odyssey
-**Support:** Phoenix / Beacon
+**Support:** Elantris / Beacon
 **Status:** `SOURCE_LINEAGE_PENDING_WORKBOARD_TRANSACTION`
 **Depends on:** NW-C01 source merge/readback
 

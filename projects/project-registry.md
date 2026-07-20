@@ -14,14 +14,14 @@ protected_level: "HIGH"
 Atlas is the umbrella ecosystem. Its twelve durable Projects are:
 
 1. **Odyssey** — Prometheus, Forge, network, Citadel, Gatehouse, access, and infrastructure.
-2. **Codex** — source governance, document pipeline, protocols, templates, archive, indexing, and hash-bound Context Packs governed by `knowledge/context-pack-contract.md`. After cutover this is a domain name, not a repository dependency.
-3. **Artemis** — AI coordination, Nexus, Kandra, AI governance, and future intelligence surfaces.
-4. **Phoenix** — backup, restore, recovery, rollback, power resilience, and recovery drills.
-5. **Beacon** — Home Assistant, smart-device integrations, home front ends, and safe manual fallback.
+2. **Codex** — source governance, Janus/Argus intake, document pipeline, protocols, templates, Coppermind memory, Phoenix canonical maintenance, archive, indexing, and hash-bound Context Packs governed by `knowledge/context-pack-contract.md`. After cutover this is a domain name, not a repository dependency.
+3. **Artemis** — Operation Harmony, Sazed/Harmony, Emberdark transit, Perpendicularity, Cognitive Shadows, Kandra, AI governance, and future intelligence surfaces.
+4. **Elantris** — backup, restore, recovery, rollback, power resilience, and recovery drills.
+5. **Beacon** — Home Olympus, Home Assistant, Morningstar, smart-device integrations, physical maintenance through Tempest, home front ends, and safe manual fallback.
 6. **Helios** — Sun Maker, Sun Eater, Relay, library governance, and future Steam Engine.
-7. **Midas** — finance governance, Icarus/Solar Arcs, Legacy, Nova, and Hearthstone; detailed evidence remains private.
+7. **Midas** — finance governance, Icarus investing strategy and its individual Solar Arc missions, Legacy, Nova, and Hearthstone; detailed evidence remains private.
 8. **Chiron** — PHI-free professional reasoning, testing protocols, chart language, contact-lens workflow, and clinic operations; raw PHI is excluded.
-9. **Raphael** — personal and family health coordination; records and identifiers remain outside Prime.
+9. **Raphael** — personal and family health coordination, including the Great Sage medical-liaison persona; records and identifiers remain outside Prime.
 10. **Genesis** — family rhythm, education, child development, kitchen and meal planning, and household playbooks.
 11. **Pegasus** — Wayfinder, itinerary, Packlight, travel preparation, and protected document coordination.
 12. **Arcanum** — hobbies, lore, research interests, personal indexes, and creative sparks.

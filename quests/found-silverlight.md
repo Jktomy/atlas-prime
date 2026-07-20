@@ -5,7 +5,7 @@ owner: "Project Codex / Operation Source Governance"
 supporting_projects:
   - "Project Artemis"
   - "Project Odyssey"
-  - "Project Phoenix"
+  - "Project Elantris"
 source_type: Quest
 canonical_scope: "Parent Quest for establishing Atlas's private cognitive interface through Investiture Accounting, the seven-pillar Glass Codex, and the Seon Apple Reminders integration."
 protected_level: High
@@ -22,10 +22,10 @@ routes_to:
   - governance/change-routes.md
   - governance/atlas-aegis.md
   - governance/atlas-strikeforce.md
-  - recovery/phoenix-recovery.md
+  - recovery/elantris-recovery.md
 private_boundary: "Store only clean doctrine, schemas, sanitized status, non-secret architecture, safe evidence pointers, and completion claims. Do not store raw conversations, reminder contents, personal task history, IP addresses, device registers, private network maps, credentials, tokens, MFA or recovery codes, real environment values, PHI, raw finance evidence, account data, or private runtime values."
 evidence_boundary: "This Quest coordinates canonical source and sanitized proof. Only trusted provider/runtime-reported model tokens may emit BEU; partial or unavailable telemetry remains explicit and deterministic non-model work is zero BEU. Raw usage, conversations, account data, private locations, credentials, and protected evidence remain outside Prime. Apple Reminders remains authoritative for Seon. Planning or package readiness does not prove deployment."
-cleanup_path: "Keep active until all three Campaigns and Quest-level gates pass. Close through final Noctua, Ares, Athena reconciliation, whole-Quest Strikeforce, Quest Board and generated refresh, Phoenix recovery proof, and restart-safe Sunset."
+cleanup_path: "Keep active until all three Campaigns and Quest-level gates pass. Close through final Noctua, Ares, Athena reconciliation, whole-Quest Strikeforce, Quest Board and generated refresh, Elantris recovery proof, and restart-safe Sunset."
 last_verified: 2026-07-14
 ---
 
@@ -36,7 +36,7 @@ last_verified: 2026-07-14
 **Quest ID:** `QUEST-FOUND-SILVERLIGHT-R01`  
 **Parent Project:** Project Codex  
 **Owning Operation:** Operation Source Governance  
-**Supporting Projects:** Artemis, Odyssey, Phoenix  
+**Supporting Projects:** Artemis, Odyssey, Elantris
 **Current lane:** `EXECUTE -> VERIFY`
 **Current route:** `Canonical Investiture identity -> Found Silverlight accounting doctrine -> append-only ledger construction`
 **Current state:** `IN_PROGRESS`
@@ -95,7 +95,7 @@ Gates govern entry, exit, promotion, Campaign completion, and Quest completion. 
 ## Campaign FS-C01 — Infuse the Gemstone
 
 **Owner:** Codex / Source Governance  
-**Support:** Artemis / AI Governance; Phoenix  
+**Support:** Artemis / AI Governance; Elantris
 **Status:** `IN_PROGRESS`
 **Depends on:** Found Silverlight source admission
 
@@ -182,7 +182,7 @@ Record real events and prove:
 ## Campaign FS-C02 — Raise the Glass Codex
 
 **Owner:** Codex / Source Governance  
-**Support:** Odyssey / Forge Storage; Phoenix; Artemis  
+**Support:** Odyssey / Forge Storage; Elantris; Artemis
 **Status:** `BLOCKED_BY_FS-C01`  
 **Depends on:** FS-C01
 
@@ -215,7 +215,7 @@ Prove privacy filtering, local assets, Content Security Policy, accessibility, f
 
 ### Mission FS-C02-M05 — Raise It on Forge
 
-Deploy one manual Tailnet-only release after applicable Phoenix restore proof.
+Deploy one manual Tailnet-only release after applicable Elantris restore proof.
 
 ### Mission FS-C02-M06 — Awaken the Living View
 
@@ -230,8 +230,8 @@ or website ledger-write authority.
 
 ## Campaign FS-C03 — Awaken Seon
 
-**Owner:** Artemis / Nexus  
-**Support:** Codex; Odyssey; Phoenix  
+**Owner:** Artemis / Harmony
+**Support:** Codex; Odyssey; Elantris
 **Status:** `BLOCKED_BY_FS-C02_AND_HERMES_EVIDENCE`  
 **Depends on:** FS-C02 and Hermes suitability proof
 
@@ -308,7 +308,7 @@ Found Silverlight is complete only when:
 3. Seon operates within its approved data and action boundary.
 4. Prime remains sole canonical clean source.
 5. Live data remains outside Prime, Git history, static search, and immutable releases.
-6. Phoenix backup, restore, rollback, and disablement are proven.
+6. Elantris backup, restore, rollback, and disablement are proven.
 7. No public endpoint is required.
 8. Seon writes are idempotent, conflict-aware, and Apple-confirmed.
 9. Reminder completion never changes Atlas source or operational state.

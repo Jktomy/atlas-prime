@@ -13,9 +13,9 @@ protected_level: "CRITICAL"
 
 Atlas is the umbrella ecosystem and governance layer. Prime is its sole active clean-source repository.
 
-Atlas has twelve Projects: Odyssey, Codex, Artemis, Phoenix, Beacon, Helios, Midas, Chiron, Raphael, Genesis, Pegasus, and Arcanum. Their durable ownership and Operations are defined by `projects/project-registry.md` and `operations/operation-registry.md`.
+Atlas has twelve Projects: Odyssey, Codex, Artemis, Elantris, Beacon, Helios, Midas, Chiron, Raphael, Genesis, Pegasus, and Arcanum. Their durable ownership and Operations are defined by `projects/project-registry.md` and `operations/operation-registry.md`.
 
-Atlas governs. Athena advises and authors. Artemis coordinates. Phoenix protects. Aegis bounds. Noctua verifies. Ares challenges. Strikeforce reconciles. Jayson decides permanence.
+Atlas governs. Athena advises and authors. Harmony coordinates. Phoenix maintains canonical source. Elantris protects recovery. Noctua verifies. Ares red-teams. Aegis is Athena's shield and audits and improves her interface with Jayson. Together Noctua, Ares, and Aegis form Strikeforce. Jayson decides permanence.
 
 GitHub stores clean source, clean summaries, clean pointers, schemas, protocols, tests, generators, and non-authoritative projections. Secrets, protected raw evidence, PHI, raw finance evidence, account data, and private runtime values remain outside Prime.
 

@@ -2,9 +2,9 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 35,
+  "register_revision": 39,
   "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
-  "quest_board_sha256": "43dce745c7a7a1ca678c8fa5bfa6243271a4951e5e55505693b25db4735de584",
+  "quest_board_sha256": "ab41ca9de7bbb0a444880128efedffed7225a6eae7fe4698b1d5b28e55f282c1",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -43,37 +43,41 @@
     "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05",
     "PA-C01-QUEST-CREATION-R01",
     "PA-C01-HOSTED-ACTIONS-SUNSET-R01",
-    "PA-C01-POST-237-RECONCILIATION-R01"
+    "PA-C01-POST-237-RECONCILIATION-R01",
+    "FS-C03-HARMONY-ELANTRIS-NAMING-R01",
+    "NW-C01-ELANTRIS-NAMING-R01",
+    "PF-C01-ATLAS-NAMING-REFRACTION-R01",
+    "PA-C01-ATLAS-NAMING-REFRACTION-R01"
   ],
   "entries": [
     {
       "continuity_id": "CONT-FOUND-SILVERLIGHT-R01",
       "quest_id": "QUEST-FOUND-SILVERLIGHT-R01",
       "quest_source": "quests/found-silverlight.md",
-      "quest_source_sha256": "e99601452be42f111c5dabd0e889acdebea7724ba29f85f51baf5be69e6356bb",
+      "quest_source_sha256": "358492da7dacbbe39ae7eb3dc830ded02e592143bedea23630c5196a09c93b95",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "FS-C01",
       "mission_id": "FS-C01-M04",
       "gate_id": "INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN",
-      "current_position": "FS-C01-M01, M02, and M03 are PROVEN. The ledger, receipts, lifecycle binding, recovery, rollback planning, exact-head CI, and canonical synthetic exercise are accepted; M04 live acceptance remains unproven. The future FS-C03 Seon macOS bridge vessel is Hermes; Apollo is no longer reserved for that bridge role.",
+      "current_position": "FS-C01-M01, M02, and M03 are PROVEN. M04 live acceptance remains unproven. Artemis ownership now routes through Operation Harmony, and recovery support is Project Elantris. The future FS-C03 Seon macOS bridge vessel is Hermes; Apollo is no longer reserved for that bridge role.",
       "blockers": [
         "FS-C01-M04 requires a Jayson-selected protected external store and one bounded trusted provider/runtime usage receipt with authoritative category semantics."
       ],
       "next_action": "Await a separately authorized Jayson-selected protected store and one bounded trusted provider/runtime usage receipt, then execute FS-C01-M04 without widening the accepted construction boundary.",
       "next_approval": "Jayson must separately select the protected external store and authorize the bounded trusted usage acceptance journey.",
-      "revision": 4,
-      "last_event_id": "FS-C03-HERMES-BRIDGE-NAMING-R01"
+      "revision": 5,
+      "last_event_id": "FS-C03-HARMONY-ELANTRIS-NAMING-R01"
     },
     {
       "continuity_id": "CONT-PROMETHEUS-FIRE-R01",
       "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
       "quest_source": "quests/prometheus-fire.md",
-      "quest_source_sha256": "ee012b754b17e1a8fe586ca5587261c36955ebf39bf9254b03790fbc697f0836",
+      "quest_source_sha256": "1fd8540a23a80b24bd260fd630b0fcfdcc989f7bb14a98557eeb0c4357efc7e5",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "PF-C01",
       "mission_id": "PF-C01-M02",
       "gate_id": "PF-C01-M02-PREVIEW",
-      "current_position": "PF-C01-M01 is PROVEN_WITH_CARRY_FORWARD. Apollo is the fixed Windows evacuation target, Hermes is the portable independent command route, and Iris is a nonblocking companion endpoint. PF-C01-M02 remains READY_FOR_PREVIEW.",
+      "current_position": "PF-C01-M01 is PROVEN_WITH_CARRY_FORWARD and PF-C01-M02 remains READY_FOR_PREVIEW. The source architecture now names Harmony, Emberdark, Coppermind, Elantris, Sentinel, Beacon/Tempest, and Zeus without changing the gate or claiming deployment.",
       "blockers": [
         "Apollo is not yet commissioned and proven as the Windows orchestration endpoint.",
         "Windows-specific Codex continuity has not yet been evacuated from Prometheus to Apollo.",
@@ -83,26 +87,26 @@
       ],
       "next_action": "Prepare the exact PF-C01-M02 Preserve the Old Flame Preview without performing device renames, migration, Windows removal, or Proxmox installation.",
       "next_approval": "Jayson must separately authorize endpoint commissioning and migration, then separately authorize any destructive Windows or Proxmox action.",
-      "revision": 2,
-      "last_event_id": "PF-C01-M01-KANDRA-ENDPOINT-RECONCILIATION-R01"
+      "revision": 3,
+      "last_event_id": "PF-C01-ATLAS-NAMING-REFRACTION-R01"
     },
     {
       "continuity_id": "CONT-NOTUMS-WATCH-R01",
       "quest_id": "QUEST-NOTUMS-WATCH-20260708",
       "quest_source": "quests/notums-watch.md",
-      "quest_source_sha256": "ac07b89cde437fd774ec3d7cbd8c7fa6b44c551b3910608c8eb1296e3de0326f",
+      "quest_source_sha256": "dc9e04c4f92eb23f353e1a60d9b3e440bfd24b354a32ee8338643a57e6695d31",
       "quest_state": "READY_FOR_JAYSON_EXECUTION_PACKAGE",
       "campaign_id": null,
       "mission_id": null,
       "gate_id": "NW-C01-READINESS",
-      "current_position": "Ready for the Jayson execution package and protected proof.",
+      "current_position": "Ready for the Jayson execution package and protected proof. Project Elantris is the recovery support owner; the distinct Notum Phoenix vessel name remains unchanged.",
       "blockers": [
         "Protected runtime placement and execution remain Jayson-side."
       ],
       "next_action": "Use the approved execution package when Jayson provides runtime authority.",
       "next_approval": "Jayson execution and protected evidence readback.",
-      "revision": 1,
-      "last_event_id": "RP-C05-IMPORT-NW-R01"
+      "revision": 2,
+      "last_event_id": "NW-C01-ELANTRIS-NAMING-R01"
     },
     {
       "continuity_id": "CONT-PRIME-CONTINUITY-PROOF-R01",
@@ -124,12 +128,12 @@
       "continuity_id": "CONT-PRIME-ASCENDANT-R01",
       "quest_id": "QUEST-PRIME-ASCENDANT-20260717",
       "quest_source": "quests/prime-ascendant.md",
-      "quest_source_sha256": "54f9d8e6ef9235282829fcd0f91656f467c8b66300cc06659c3458efc2597ca4",
+      "quest_source_sha256": "e745e145f2d780461f698bbc5f044152858d87525ac84533921e59f223c99bbe",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "PA-C01",
       "mission_id": null,
       "gate_id": "PA-C01-COVENANT-REFINEMENT",
-      "current_position": "Prime Ascendant remains in PA-C01 architecture refinement with its accepted topology unchanged. PR #236 merged as a02e048209ec3e5f9f329c8772440bc4f728e652. PR #237 merged as e95e13f8e7185bb50e773b2033d06f172d928f58 and proved targeted hosted-Actions/continuity validation, not the complete Atlas Sunset for this chat. Runtime is not started; generated projections remain STALE; Gitea cutover, route retirement, visibility, and settings changes remain unauthorized.",
+      "current_position": "Prime Ascendant remains in PA-C01 architecture refinement. The accepted naming architecture now binds Operation Harmony, Emberdark, Perpendicularity, Dynamic, Navigator, Kandra/TenSoon, Operation Coppermind, Operation Phoenix, Glass Codex, and Project Elantris. Runtime is not started; no deployment, cutover, route retirement, visibility, or settings change is authorized.",
       "blockers": [
         "PA-C01 covenant acceptance remains unproven.",
         "The architecture decisions listed in the Quest source remain unresolved by design.",
@@ -137,8 +141,8 @@
       ],
       "next_action": "Review and accept PA-C01 Covenant boundaries, then define PA-C02 source contracts and evidence requirements without deployment, cutover, route retirement, or repository-settings mutation.",
       "next_approval": "Jayson must separately approve any later PA-C01 gate advancement; runtime, infrastructure, Gitea cutover, route retirement, visibility, and settings authority are excluded.",
-      "revision": 3,
-      "last_event_id": "PA-C01-POST-237-RECONCILIATION-R01"
+      "revision": 4,
+      "last_event_id": "PA-C01-ATLAS-NAMING-REFRACTION-R01"
     }
   ]
 }

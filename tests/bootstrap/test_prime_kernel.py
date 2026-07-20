@@ -93,7 +93,7 @@ for forbidden_fragment in (
     assert forbidden_fragment not in rollback
 
 assert (
-    "| Clean-clone recovery, protected runtime restoration, and recovery proof | `recovery/phoenix-recovery.md` |"
+    "| Clean-clone recovery, protected runtime restoration, and recovery proof | `recovery/elantris-recovery.md` |"
     in command_surfaces
 )
 assert (
@@ -101,7 +101,7 @@ assert (
     in command_surfaces
 )
 assert (
-    "| Backup, restore, recovery, rollback | `recovery/phoenix-recovery.md`, `migration/rollback-map.md` |"
+    "| Backup, restore, recovery, rollback | `recovery/elantris-recovery.md`, `migration/rollback-map.md` |"
     not in command_surfaces
 )
 

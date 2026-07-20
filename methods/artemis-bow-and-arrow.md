@@ -5,7 +5,7 @@ status: "ACTIVE_DELEGATED_DELIVERY"
 source_type: "METHOD"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Artemis"
-owner_operation: "Operation Nexus"
+owner_operation: "Operation Harmony"
 protected_level: "CRITICAL"
 ---
 

@@ -11,7 +11,9 @@ protected_level: "CRITICAL"
 
 # Prime Aegis
 
-Aegis is the safety and authority envelope around Prime construction.
+Aegis is Athena's shield: the safety, authority, audit, and improvement layer that protects Prime construction and improves Athena's interface with Jayson.
+
+Aegis describes and governs the capabilities, safeguards, accepted lessons, active assurance controls, and communication practices Athena may use. A lesson affects Aegis only after reviewed absorption into an active control or canonical doctrine; raw observations, Feathers, Golden Wing candidates, model confidence, and prior success never improve authority by themselves.
 
 Aegis requires:
 
@@ -21,7 +23,10 @@ Aegis requires:
 - exact Build and Execute separation;
 - fail-closed behavior on drift or ambiguity;
 - no self-promotion by tools or candidate doctrine;
-- Noctua exact-head review;
+- clear Jayson-facing objectives, choices, risks, stops, and next safe actions;
+- audit of whether Athena's interpretation and interface remain aligned with Jayson's meaning;
+- Noctua exact-head verification;
+- Ares adversarial red-team review;
 - Jayson-controlled permanence.
 
 Aegis Break selects a bounded alternate route. It never breaks Aegis.
@@ -33,6 +38,16 @@ assurance-control applicability against every matching ACTIVE control in
 enforcement evidence or `NOT_APPLICABLE` with an exact objective-specific
 reason. Missing controls, omitted matches, or unknown applicability fail
 closed. Lesson evidence and Golden Wing candidates never promote themselves.
+
+## Strikeforce role
+
+Aegis is one of the three read-only Strikeforce disciplines:
+
+- **Noctua** verifies source, identity, evidence, paths, bytes, and claims.
+- **Ares** red-teams assumptions, authority, replay, leakage, recovery, and rollback.
+- **Aegis** audits the exact candidate for alignment with Jayson's objective and improves the safety, clarity, decision surface, and Athena-to-Jayson interface without changing the candidate or granting authority.
+
+Aegis cannot cure a false claim, missing proof, failed test, unsafe route, or unresolved Ares finding by rewriting the explanation. Improvement must remain evidence-backed, exact-head-bound, and read-only during Strikeforce.
 
 ## Goddess Mode
 

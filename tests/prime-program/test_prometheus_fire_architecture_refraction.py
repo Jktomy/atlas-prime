@@ -12,12 +12,12 @@ class PrometheusFireArchitectureRefractionTests(unittest.TestCase):
         self.quest = (ROOT / "quests/prometheus-fire.md").read_text(encoding="utf-8")
         self.infrastructure = (ROOT / "infrastructure/atlas-infrastructure-source.md").read_text(encoding="utf-8")
         self.artemis = (ROOT / "operations/artemis-runtime-and-routing.md").read_text(encoding="utf-8")
-        self.recovery = (ROOT / "recovery/phoenix-recovery.md").read_text(encoding="utf-8")
+        self.recovery = (ROOT / "recovery/elantris-recovery.md").read_text(encoding="utf-8")
 
     def test_topology_and_ram_arithmetic_are_exact(self) -> None:
         for text in (self.quest, self.infrastructure):
             self.assertIn("Crucible VM — 28 GB", text)
-            self.assertIn("Nexus Living Memory VM — 10 GB", text)
+            self.assertIn("Emberdark VM — 10 GB", text)
             self.assertIn("Plex LXC — 12 GB", text)
             self.assertIn("Protected Proxmox reserve — 8 GB", text)
             self.assertIn("Flexible headroom — 6 GB", text)
@@ -28,8 +28,8 @@ class PrometheusFireArchitectureRefractionTests(unittest.TestCase):
         self.assertNotIn("Permanent planned guests | 42 GB", self.quest)
         self.assertNotIn("Unassigned headroom | 14 GB", self.quest)
 
-    def test_nexus_matrix_plex_and_qdrant_boundaries_are_exact(self) -> None:
-        self.assertIn("## Campaign PF-C05 — Raise the Nexus Vessel", self.quest)
+    def test_emberdark_matrix_plex_and_qdrant_boundaries_are_exact(self) -> None:
+        self.assertIn("## Campaign PF-C05 — Establish the Emberdark Substrate", self.quest)
         self.assertIn("dedicated QEMU VM substrate", self.quest)
         self.assertIn("## Campaign PF-C06 — Close the Matrix Gate", self.quest)
         normalized_quest = " ".join(self.quest.split())
@@ -37,7 +37,7 @@ class PrometheusFireArchitectureRefractionTests(unittest.TestCase):
         self.assertIn("application database, metadata, cache, and transcode workspace remain on Prometheus local NVMe", self.quest)
         self.assertIn("Qdrant deferred from Phase 1", self.quest)
         self.assertNotIn("Build the private Matrix / Element transport LXC", self.quest)
-        self.assertIn("Nexus has no Matrix / Synapse / Element dependency", self.artemis)
+        self.assertIn("Emberdark has no Matrix / Synapse / Element dependency", self.artemis)
         self.assertIn("Qdrant is a future option only after measured need is proven", self.artemis)
 
     def test_support_sources_preserve_runtime_and_recovery_boundaries(self) -> None:
