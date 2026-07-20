@@ -44,7 +44,7 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
         self.assertEqual(self.entry["gate_id"], "PA-C01-COVENANT-REFINEMENT")
         self.assertIn("Operation Harmony", self.entry["current_position"])
         self.assertIn("Harmony/Sazed", self.entry["current_position"])
-        self.assertIn("Athena remains the ChatGPT intent and reasoning lead", self.entry["current_position"])
+        self.assertIn("Athena leads in ChatGPT", self.entry["current_position"])
         self.assertIn("Runtime", self.entry["current_position"])
         self.assertEqual(self.entry["last_event_id"], "PA-C01-HARMONY-HYBRID-ROLE-REFINEMENT-R01")
         self.assertLess(
