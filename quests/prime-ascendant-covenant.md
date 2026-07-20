@@ -251,7 +251,7 @@ The hybrid surface model keeps one conversational lead and avoids duplicate plan
 
 ## 5. Internal unresolved-decision register
 
-All entries remain open unless explicitly marked as a selected direction. A selected substrate direction is not deployment or proof.
+All entries remain open unless explicitly marked as a selected direction. A selected substrate direction is not deployment or proof. The table preserves every decision identity, current direction, and evidence gate; prior alternatives and rationale remain historical evidence and do not silently become new authority.
 
 | ID | Campaign | Status and direction | Evidence still required |
 |---|---|---|---|
@@ -322,7 +322,7 @@ One direct Jayson instruction may authorize one bounded Prime transaction throug
 
 Validation occurs before publication where practical or while the PR remains draft. Marking an unchanged PR ready must not trigger another validation run. If any candidate byte changes after READY, the PR returns to draft and the replacement exact head repeats validation, review, and Strikeforce before it may be ready again. The final worker report is `Prime PR #___ is ready to merge.`
 
-Machine Shardblade remains a separate `CONTRACT_ONLY_NOT_ACTIVATED` contract and is not the ordinary Prime workflow.
+Shardblade is merge authority only inside the separate inactive machine contract; machine Shardblade remains `CONTRACT_ONLY_NOT_ACTIVATED` and is not the ordinary Prime workflow.
 
 ### Goddess Mode
 
@@ -335,11 +335,11 @@ Strikeforce consists of Noctua, Ares, and Aegis working cumulatively against one
 ```text
 Noctua verifies
 → Ares red-teams
-→ Aegis audits alignment and safeguards
+→ Aegis audits and improves Athena's interface with Jayson
 → GREEN, YELLOW, or RED
 ```
 
-Aegis is Athena's shield. It cannot cure a Noctua or Ares failure through wording, confidence, or simplification. GREEN means the unchanged exact candidate may advance to the authorized ready-for-review transition. It does not itself merge, activate, promote, cut over, or grant permanence authority.
+Aegis is Athena's shield. It cannot cure a Noctua or Ares failure through wording, confidence, or simplification. GREEN means the exact reviewed candidate is ready for the next authorized gate; under the normal human-merge route, the unchanged validated candidate may advance to ready-for-review. It does not itself merge, activate, promote, cut over, or grant permanence authority.
 
 ### Protected-source boundary
 
