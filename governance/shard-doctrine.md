@@ -18,7 +18,7 @@ Shardplate is the AI-assisted work surface. It may help read, reason, draft, tes
 
 ## Shardblade
 
-Shardblade is the bounded permanence actuator for one exact Jayson-authorized candidate. It is not an agent, model, provider, Light, work surface, construction route, source author, repair worker, repository-settings manager, or standing authority.
+Shardblade is the bounded permanence executor and actuator for one exact Jayson-authorized candidate. It is not an agent, model, provider, Light, work surface, construction route, source author, repair worker, repository-settings manager, or standing authority.
 
 `governance/repository-process-contract.md` controls ordinary use.
 
@@ -79,7 +79,7 @@ Those contracts preserve valuable exact-candidate, replay, approval, receipt, an
 
 The ordinary transaction-scoped meaning above does not activate standing warrants. It allows one exact merge only when the current Jayson instruction explicitly invokes Shardblade and the available adapter proves the required exact-head, compare-and-swap, status, review, Strikeforce, replay, and canonical-readback conditions.
 
-The legacy dedicated contract keeps READY and MERGE distinct and non-substitutable:
+Both `READY` and `MERGE` are Shardblade actions, but they are distinct and non-substitutable in the legacy dedicated contract:
 
 - `READY` changes one exact draft PR to open ready state without changing its candidate;
 - `MERGE` makes that same exact ready candidate canonical only through a separately bound action.
