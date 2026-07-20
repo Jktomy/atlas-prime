@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:cab87c3c8a29b0b880ca242ccf6d5b714e9d669cb8ca52509afe06d2ae58fcce
+Source fingerprint: sha256:3ca959a603817d820c703a5c80a7f673e1e8a2e4c9de72cd63162ff28a8a56ba
 Generator format: 2
 Status: Generated support artifact
 
@@ -108,7 +108,8 @@ Status: Generated support artifact
 | `quests/prime-reborn.md` | quests | yes | none |
 | `quests/prometheus-fire.md` | quests | yes | policy-reference |
 | `quests/repairing-prime.md` | quests | yes | policy-reference |
-| `recovery/phoenix-recovery.md` | recovery | yes | policy-reference |
+| `recovery/elantris-recovery.md` | recovery | yes | policy-reference |
+| `recovery/phoenix-recovery.md` | recovery | yes | none |
 | `routing/command-surfaces.md` | routing | yes | none |
 | `routing/interaction-contract.md` | routing | yes | none |
 | `safety/atlas-safety-doctrine.md` | safety | yes | policy-reference |
