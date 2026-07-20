@@ -23,7 +23,7 @@ routes_to:
   - recovery/elantris-recovery.md
 private_boundary: "This Covenant contains clean architecture, rationale, unresolved decisions, provenance, and sanitized restart guidance only. Private runtime facts, network maps, device registers, account data, PHI, raw finance evidence, credentials, tokens, keys, MFA/recovery codes, seed phrases, and real environment values remain outside Prime."
 evidence_boundary: "Statements below are accepted source direction or explicit future evidence requirements. They do not claim deployment, recovery, parity, model use, Gitea shadow, private-site security, or lifecycle activation."
-last_verified: 2026-07-19
+last_verified: 2026-07-20
 ---
 
 # Prime Ascendant Covenant
@@ -95,7 +95,25 @@ It must eventually use an event sequence or watermark, fail closed, retain last-
 
 ### 2.3 Operation Harmony and Emberdark
 
-Operation Harmony coordinates Sazed, Emberdark, Cognitive Shadows, and Kandra without receiving autonomous durable authority. Emberdark should eventually govern Gemstone transit, validated intake, authorization, idempotency, reconciliation, audit receipts, mediated integrations, failure behavior, and controlled exports. Perpendicularity is the approved Google Drive crossing. Dynamic retrieves and preserves Gemstone provenance; Navigator prepares and routes it; TenSoon verifies intake before Coppermind absorption and verifies the exact Phoenix draft before Athena audit. n8n may act through governed interfaces; it does not inherit broad database authority. Exact API shape, versioning, authorization model, write contracts, reconciliation algorithm, retry behavior, and audit format remain unresolved.
+Project Artemis is the durable owning domain, not a model identity. Operation Harmony is the durable workflow and resource boundary. Harmony and Sazed name the same resident intelligence in ordinary Atlas language; no separate Artemis-model identity exists or is created by this Covenant.
+
+Harmony/Sazed provides frictionless RAG and bounded context assembly, OCR and intake normalization, capability awareness, delegation, worker coordination, result reconciliation, and lightweight intent interpretation when the active surface does not provide a stronger conversational lead. Routine retrieval, intake, and route selection should require no new user-facing command or approval. Harmony should perform small work directly when delegation would add complexity or latency without improving the result.
+
+The interaction model is surface-dependent:
+
+```text
+ChatGPT:
+Jayson → Athena intent/reasoning lead → Harmony context/intake/delegation → workers/tools → Athena response
+
+VS Code or another approved surface without Athena:
+Jayson → Harmony intent/orchestration lead → workers/tools → Harmony response
+```
+
+In ChatGPT, Harmony must not create a second planning ceremony or independently reinterpret an already-closed Athena mission. It may surface missing context, capability limits, or a real protected boundary. In VS Code and other approved surfaces without Athena, Harmony may interpret ordinary intent, gather repository and Coppermind context, select the appropriate model, Kandra, tool, or route, and reconcile the result. An immutable mission is executed or delegated without reopening intent unnecessarily.
+
+Emberdark remains the governed transit, validated-intake, authorization, idempotency, reconciliation, workflow-execution, retry, mission-state, quarantine, audit-receipt, mediated-integration, failure-behavior, and controlled-export System. Harmony may request and supervise work through Emberdark, but the resident intelligence does not become the workflow engine or permanent state store. Perpendicularity is the approved Google Drive crossing. Dynamic retrieves and preserves Gemstone provenance; Navigator prepares and routes it; TenSoon verifies intake before Coppermind absorption and verifies the exact Phoenix draft before Athena audit. n8n may act through governed interfaces; it does not inherit broad database authority. Exact API shape, versioning, authorization model, write contracts, reconciliation algorithm, retry behavior, and audit format remain unresolved.
+
+Harmony is not canonical source, permanent memory, infrastructure control, recovery authority, monitoring, a dashboard, a scheduler, a notification platform, or automatic permanence authority. Prime retains doctrine; Coppermind retains operational memory; Odyssey retains infrastructure; Elantris retains backup, restore, rollback, and recovery; Notum's Watch and Sentinel retain monitoring; and each human-facing interface retains its own presentation role.
 
 ### 2.4 Private Atlas control surface
 
@@ -105,9 +123,11 @@ The future Operation Glass Codex website/API is a private control surface for Ja
 
 Gitea may become future canonical Prime source only after shadow parity, backup, restore, rollback, mirror, mobile access, Athena access, and exact source identity are proven. GitHub Prime remains canonical until an explicit Preview → Execute and Jayson-approved cutover. Gitea host placement, database placement, mirror direction/cadence, branch/tag/PR parity, and rollback criteria remain unresolved.
 
-### 2.6 Artemis and local intelligence
+### 2.6 Harmony/Sazed and local intelligence
 
-Artemis and local models may retrieve, summarize, classify, embed, rerank, OCR, propose, and coordinate bounded workers. They do not gain source authority, merge authority by inference, infrastructure authority, unrestricted database writes, or silent action authority. Model selection, routing, resource allocation, evaluation, read boundaries, tool permissions, and delegation criteria remain future work.
+Harmony/Sazed is the resident intelligence inside Operation Harmony. It may retrieve, summarize, classify, embed, rerank, perform OCR and intake, propose, coordinate bounded workers, and route to permitted local or external models. In ChatGPT, Athena remains the primary intent, reasoning, and conversational lead. On approved surfaces where Athena is absent, Harmony may lead ordinary interpretation and delegation.
+
+Models, Kandra, and tools serving Harmony do not gain source authority, merge authority by inference, infrastructure authority, unrestricted database writes, or silent action authority. Model selection, routing implementation, resource allocation, evaluation, read boundaries, tool permissions, and delegation criteria remain future work. A future larger local model may serve Harmony, but its identity, hardware, and runtime are not decided here and it is not automatically named Artemis.
 
 ### 2.7 Node boundaries
 
@@ -213,6 +233,10 @@ Durable doctrine and live operational state need a clear separation; projections
 ### Direct SQL access for AI and browsers is rejected
 
 Unrestricted direct SQL bypasses validation, expands authority, weakens auditability, and complicates rollback. Emberdark remains the future governed transit and application boundary around Coppermind writes.
+
+### Frictionless hybrid surfaces
+
+The hybrid surface model keeps one conversational lead and avoids duplicate planning. Athena leads in ChatGPT because that paid hosted intelligence already performs intent and primary reasoning. Harmony leads in VS Code and other approved surfaces where Athena is absent. RAG, OCR/intake, context assembly, capability awareness, and routine delegation should happen automatically. Existing approval gates remain only where the underlying action already requires them; this role definition creates no new gate, service, dashboard, scheduler, notification platform, or manual model picker.
 
 ## 5. Internal unresolved-decision register
 
@@ -344,11 +368,11 @@ All entries below remain open by design. No entry is silently resolved by this h
 **Alternatives:** GitHub primary with Gitea shadow; Gitea primary with GitHub mirror; dual-write. **Reasoning:** Shadow-first preserves current proven authority. **Why unresolved:** Operational parity and rollback are unproven.  
 **Evidence needed:** Exact ref parity, PR/workflow parity, backup/restore, mirror interruption, and rollback receipt. **Downstream:** PA-C06/09/10. **Gate/owner:** PA-C06 cutover gate / Jayson-Codex. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.5; `governance/cutover-boundary.md`.
 
-### PA-C01-DEC-022 — Artemis model selection and resource allocation
+### PA-C01-DEC-022 — Harmony capability selection and resource allocation
 
-**Campaign:** PA-C07 · **Status:** OPEN — UNRESOLVED · **Direction:** Local or external models assist through bounded retrieval and typed tools without source or merge authority.  
-**Alternatives:** One local model; routed specialists; external-first; hybrid. **Reasoning:** Resource cost, quality, privacy, and recovery must be measured. **Why unresolved:** Corpus, hardware, workload, and evaluation set are not proven.  
-**Evidence needed:** Quality, resource, privacy, failure, fallback, and authority-boundary tests. **Downstream:** PA-C07/08/10. **Gate/owner:** PA-C07 model gate / Artemis. **Last verified:** 2026-07-17. **Pointers:** Covenant §2.6; `quests/found-silverlight.md`.
+**Campaign:** PA-C07 · **Status:** OPEN — UNRESOLVED · **Direction:** Harmony routes permitted local or external models, Kandra, and tools through bounded retrieval and typed interfaces without source or merge authority.  
+**Alternatives:** One local model; routed specialists; external-first; hybrid. **Reasoning:** Resource cost, quality, privacy, availability, and recovery must be measured while preserving the resident Harmony identity. **Why unresolved:** Corpus, hardware, workload, evaluation set, and future model identity are not proven.  
+**Evidence needed:** Quality, resource, privacy, failure, fallback, surface-routing, and authority-boundary tests. **Downstream:** PA-C07/08/10. **Gate/owner:** PA-C07 model gate / Artemis-Harmony. **Last verified:** 2026-07-20. **Pointers:** Covenant §§2.3, 2.6; `quests/found-silverlight.md`.
 
 ### PA-C01-DEC-023 — Controlled Burn, Phoenix Burn, Feather, and Golden Wing
 
@@ -378,7 +402,7 @@ All entries below remain open by design. No entry is silently resolved by this h
 | PA-C04 | Coppermind-to-Athena Dawnshard projection, watermark, stale behavior, portable context | Watermark, fail-closed, last-known-good, integrity, restart, and backup proof. |
 | PA-C05 | Glass Codex private website, authentication, approvals, access, health, bounded actions | Private-access threat model and denied/public-exposure, approval, audit, and recovery proof. |
 | PA-C06 | Gitea shadow, parity, mirror, backup, rollback, cutover readiness | Exact identity/ref parity, recovery, mirror interruption, access, and Jayson gate. |
-| PA-C07 | Local models, retrieval, OCR, embeddings, reranking, bounded workers | Quality, resource, privacy, fallback, and authority-boundary evidence. |
+| PA-C07 | Harmony/Sazed, RAG, OCR/intake, context assembly, capability awareness, surface routing, local/external models, embeddings, reranking, and bounded workers | Quality, resource, privacy, fallback, frictionless-routing, and authority-boundary evidence. |
 | PA-C08 | Cross-component integration and degraded modes | Boundary, failure, recovery, monitoring nonauthority, and integration proof. |
 | PA-C09 | Old/new route parity, lifecycle refraction, retirement criteria | Comparison, rollback, recovery, operator access, and explicit retirement approval. |
 | PA-C10 | Integrated acceptance and final Sunset | Backup/restore/restart/rollback, stale/private/model boundaries, cutover readiness, and final Strikeforce. |
