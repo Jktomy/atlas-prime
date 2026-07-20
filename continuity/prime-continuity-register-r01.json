@@ -135,7 +135,7 @@
       "campaign_id": "PA-C01",
       "mission_id": null,
       "gate_id": "PA-C01-COVENANT-REFINEMENT",
-      "current_position": "Prime Ascendant remains in PA-C01 architecture refinement. Project Artemis is the durable domain, Operation Harmony is the workflow and resource boundary, and Harmony/Sazed is the resident intelligence. The accepted hybrid role assigns frictionless RAG, OCR/intake, context assembly, capability awareness, delegation, worker coordination, and result reconciliation to Harmony. Athena remains the ChatGPT intent and reasoning lead; Harmony may lead in VS Code or other approved surfaces where Athena is absent. Emberdark retains workflow execution and mission-state plumbing. No separate Artemis-model identity, runtime, deployment, Quest promotion, cutover, route retirement, visibility, READY, MERGE, or settings authority advances.",
+      "current_position": "Prime Ascendant remains in PA-C01 refinement. Artemis is the Project, Harmony the Operation, and Harmony/Sazed the resident intelligence. Harmony owns frictionless RAG, OCR/intake, context, capability awareness, delegation, and reconciliation. Athena leads in ChatGPT; Harmony may lead on approved surfaces without Athena. Emberdark retains workflow and mission state. No Artemis model, Runtime, deployment, promotion, cutover, retirement, READY, MERGE, or settings authority advances.",
       "blockers": [
         "PA-C01 covenant acceptance remains unproven.",
         "The architecture decisions listed in the Quest source remain unresolved by design.",
