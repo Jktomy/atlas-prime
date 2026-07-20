@@ -69,13 +69,14 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
         covenant = (ROOT / "quests/prime-ascendant-covenant.md").read_text(encoding="utf-8")
         for marker in (
             "PostgreSQL full-text search + pgvector",
-            "Qdrant remains deferred",
+            "Qdrant:\ndeferred until demonstrated need.",
             "Current routes remain until parity and recovery are proven",
             "repository-settings changes remain unauthorized",
             "Gitea cutover",
             "route retirement",
         ):
             self.assertIn(marker, covenant)
+        self.assertEqual(covenant.count("Qdrant:\ndeferred until demonstrated need."), 1)
         self.assertIn("Runtime is not started", covenant)
 
 
