@@ -30,6 +30,8 @@ class AegisStrikeforceAlignmentTests(unittest.TestCase):
     def test_safety_and_core_sources_match_the_composition(self) -> None:
         safety = (ROOT / "safety/atlas-safety-doctrine.md").read_text(encoding="utf-8")
         core = (ROOT / "atlas-prime.md").read_text(encoding="utf-8")
+        self.assertIn('owner_project: "Project Codex"', safety)
+        self.assertIn('owner_operation: "Operation Source Governance"', safety)
         self.assertIn("Aegis is Athena's continuous shield", safety)
         self.assertIn("Strikeforce combines three cumulative read-only disciplines", safety)
         self.assertIn("Noctua, Ares, and Aegis", safety)
