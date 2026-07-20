@@ -38,11 +38,28 @@ without claiming deployment or retirement.
 
 Perpendicularity is Emberdark's controlled Google Drive crossing. Jayson places an Athena-authored Gemstone in the approved Drive location; a Dynamic Cognitive Shadow retrieves the unchanged carrier and preserves its provenance, while a Navigator Cognitive Shadow validates and prepares its route across Emberdark. Dynamic and Navigator are collections of mission-bound Cognitive Shadows, not source or permanence authorities.
 
+A future Prime Integrity Cognitive Shadow may receive a Gitea pull-request event
+under an exact PA-C06 source contract. It must reject replay, moved heads,
+malformed exact-base/exact-head identity, undeclared paths, and protected-data
+ingress before preparing an immutable validation carrier. It cannot judge
+permanence, publish READY, or merge.
+
 ## Kandra
 
 Kandra is Operation Harmony's adaptive-agent, Skill, and typed-tool System. Hermes is reserved for the portable human-operated Atlas command endpoint. Kandras are restricted and mission-bound; worker roles include Coppermind retrieval, Phoenix source construction, specialist assistance, and an executor that remains disabled until an exact mission explicitly supplies bounded authority. Results return through typed packets and receipts.
 
+The future Prime validation executor is one such bounded Kandra. It may execute
+only one immutable mission carrier, including the conditional Windows companion
+when the fail-closed path classifier requires it, and receives no general or
+standing repository authority.
+
 **TenSoon** is the verifier Kandra. Before Coppermind absorption, TenSoon verifies Gemstone identity, integrity, provenance, destination, classification, and protected-boundary compliance. After a Phoenix Kandra constructs a draft PR, TenSoon verifies the exact Gemstone intent, Coppermind packet, Prime base, path inventory, tests, head, and receipts, then may report `VERIFIED_FOR_ATHENA_AUDIT`. TenSoon never grants READY or MERGE authority.
+
+For the future Gitea/Phoenix route, TenSoon independently binds the exact base,
+head, merge base, complete changed-path inventory, logical validation contexts,
+and receipts before reporting `VERIFIED_FOR_ATHENA_AUDIT`. Operation Phoenix may
+then publish or report only the bounded draft-candidate or commit status; Athena
+audits and Jayson retains permanence.
 
 Coppermind and Phoenix are Operations under Project Codex. Their Kandras remain Harmony workers assigned bounded missions in support of those Operations; the worker does not own the Operation or its canon.
 
