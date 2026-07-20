@@ -84,6 +84,7 @@ class PrimeProgramTests(unittest.TestCase):
     def test_prime_ascendant_is_architecture_refinement_only(self) -> None:
         source = (ROOT / "quests/prime-ascendant.md").read_text(encoding="utf-8")
         covenant = (ROOT / "quests/prime-ascendant-covenant.md").read_text(encoding="utf-8")
+        artemis = (ROOT / "operations/artemis-runtime-and-routing.md").read_text(encoding="utf-8")
         board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
         quest = next(item for item in board["entries"] if item["quest_id"] == "QUEST-PRIME-ASCENDANT-20260717")
         self.assertEqual(quest["source"], "quests/prime-ascendant.md")
@@ -104,8 +105,15 @@ class PrimeProgramTests(unittest.TestCase):
             "PA-C10 — Prove the Dawn",
             "**Runtime:** `NOT STARTED`",
             "**Canonical cutover:** `NOT AUTHORIZED`",
+            "Project Artemis is the durable owning domain, not a model identity",
+            "Harmony/Sazed's frictionless resident role",
+            "In ChatGPT, Athena remains the primary intent, reasoning, and conversational lead",
+            "no separate Artemis-model identity",
         ):
             self.assertIn(marker, source)
+        self.assertIn("Harmony/Sazed is Atlas's frictionless context", artemis)
+        self.assertIn("must not create a second planning ceremony", artemis)
+        self.assertIn("No routine RAG, OCR, or capability-selection step creates a new approval gate", artemis)
         self.assertIn("prime-ascendant-covenant.md", source)
         self.assertEqual([path.name for path in ROOT.glob("quests/prime-ascendant-covenant*.md")], ["prime-ascendant-covenant.md"])
         for marker in (
@@ -163,7 +171,9 @@ class PrimeProgramTests(unittest.TestCase):
         self.assertIn("| Codex | Source Governance; Document Pipeline; Protocol Library; Template Library; Archive/Index; Janus; Coppermind; Phoenix; future Glass Codex |", operations)
         self.assertIn("| Elantris | Backup Matrix; Restore Runbook; Keystone; External Backup Targets; Recovery Drill/Proof |", operations)
         self.assertNotIn("| Artemis | Nexus;", operations)
+        self.assertIn("## Harmony / Sazed resident-intelligence role", artemis)
         self.assertIn("## Kandra", artemis)
+        self.assertIn("Project Artemis is the owning durable domain, not a model identity", artemis)
         self.assertIn("Hermes is reserved for the portable human-operated Atlas command endpoint", artemis)
         self.assertIn("Artemis, Harmony, Emberdark, Cognitive Shadows, Kandra, and Sazed", routes)
         self.assertIn("Apollo, Hermes, Iris, and Zeus operator endpoints", routes)
