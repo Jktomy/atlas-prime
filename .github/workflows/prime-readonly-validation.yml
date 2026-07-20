@@ -38,8 +38,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  validate:
-    name: validate (ubuntu-latest)
+  prime_integrity:
+    name: prime/integrity
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -110,14 +110,14 @@ jobs:
           echo "Selected checks: ${{ steps.plan_targeted.outputs.check_count || steps.plan_full.outputs.check_count }}" >> "$GITHUB_STEP_SUMMARY"
           echo "Windows companion required: ${{ steps.plan_targeted.outputs.windows_required || steps.plan_full.outputs.windows_required }}" >> "$GITHUB_STEP_SUMMARY"
 
-  validate_windows:
-    name: validate (windows-latest)
-    needs: validate
+  prime_windows_compatibility:
+    name: prime/windows-compatibility
+    needs: prime_integrity
     if: >-
       always() &&
-      needs.validate.result == 'success' &&
+      needs.prime_integrity.result == 'success' &&
       (
-        (github.event_name == 'pull_request' && needs.validate.outputs.windows_required == 'true') ||
+        (github.event_name == 'pull_request' && needs.prime_integrity.outputs.windows_required == 'true') ||
         (github.event_name == 'workflow_dispatch' && inputs.include_windows == true)
       )
     runs-on: windows-latest
@@ -162,3 +162,40 @@ jobs:
           path: ${{ runner.temp }}/prime-validation/validation.log
           if-no-files-found: error
           retention-days: 7
+
+  # Migration bridge: Prime Main Protection still requires these two legacy
+  # contexts. Keep them until Jayson verifies the new exact-head contexts and
+  # separately updates ruleset 19014636. Removing them earlier deadlocks main.
+  legacy_validate_ubuntu:
+    name: validate (ubuntu-latest)
+    needs: prime_integrity
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Require Prime Integrity success
+        env:
+          PRIME_INTEGRITY_RESULT: ${{ needs.prime_integrity.result }}
+        run: test "$PRIME_INTEGRITY_RESULT" = "success"
+
+  legacy_validate_windows:
+    name: validate (windows-latest)
+    needs:
+      - prime_integrity
+      - prime_windows_compatibility
+    if: >-
+      always() &&
+      (
+        (github.event_name == 'pull_request' && needs.prime_integrity.outputs.windows_required == 'true') ||
+        (github.event_name == 'workflow_dispatch' && inputs.include_windows == true)
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Require conditional Windows compatibility success
+        env:
+          PRIME_INTEGRITY_RESULT: ${{ needs.prime_integrity.result }}
+          PRIME_WINDOWS_RESULT: ${{ needs.prime_windows_compatibility.result }}
+        run: >-
+          test "$PRIME_INTEGRITY_RESULT" = "success" &&
+          test "$PRIME_WINDOWS_RESULT" = "success"

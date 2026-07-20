@@ -2,7 +2,7 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 39,
+  "register_revision": 40,
   "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
   "quest_board_sha256": "ab41ca9de7bbb0a444880128efedffed7225a6eae7fe4698b1d5b28e55f282c1",
   "event_ids": [
@@ -47,7 +47,8 @@
     "FS-C03-HARMONY-ELANTRIS-NAMING-R01",
     "NW-C01-ELANTRIS-NAMING-R01",
     "PF-C01-ATLAS-NAMING-REFRACTION-R01",
-    "PA-C01-ATLAS-NAMING-REFRACTION-R01"
+    "PA-C01-ATLAS-NAMING-REFRACTION-R01",
+    "PA-C01-GITEA-PHOENIX-VALIDATION-AUGMENTATION-R01"
   ],
   "entries": [
     {
@@ -128,12 +129,12 @@
       "continuity_id": "CONT-PRIME-ASCENDANT-R01",
       "quest_id": "QUEST-PRIME-ASCENDANT-20260717",
       "quest_source": "quests/prime-ascendant.md",
-      "quest_source_sha256": "e745e145f2d780461f698bbc5f044152858d87525ac84533921e59f223c99bbe",
+      "quest_source_sha256": "cc99c59d155f5fb09057b9ecdfd81b203919fee417c95985b6b15c5ad60088d2",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "PA-C01",
       "mission_id": null,
       "gate_id": "PA-C01-COVENANT-REFINEMENT",
-      "current_position": "Prime Ascendant remains in PA-C01 architecture refinement. The accepted naming architecture now binds Operation Harmony, Emberdark, Perpendicularity, Dynamic, Navigator, Kandra/TenSoon, Operation Coppermind, Operation Phoenix, Glass Codex, and Project Elantris. Runtime is not started; no deployment, cutover, route retirement, visibility, or settings change is authorized.",
+      "current_position": "Prime Ascendant remains in PA-C01 architecture refinement under Operation Harmony with Operation Coppermind, Operation Phoenix, and Project Elantris boundaries preserved. The future Gitea/Phoenix validation augmentation now defines bounded Cognitive Shadow, Kandra, TenSoon, Phoenix, Athena, and Jayson roles plus three logical validation contexts. Runtime is not started; no Quest gate, deployment, cutover, route retirement, visibility, READY, MERGE, or settings authority advances.",
       "blockers": [
         "PA-C01 covenant acceptance remains unproven.",
         "The architecture decisions listed in the Quest source remain unresolved by design.",
@@ -141,8 +142,8 @@
       ],
       "next_action": "Review and accept PA-C01 Covenant boundaries, then define PA-C02 source contracts and evidence requirements without deployment, cutover, route retirement, or repository-settings mutation.",
       "next_approval": "Jayson must separately approve any later PA-C01 gate advancement; runtime, infrastructure, Gitea cutover, route retirement, visibility, and settings authority are excluded.",
-      "revision": 4,
-      "last_event_id": "PA-C01-ATLAS-NAMING-REFRACTION-R01"
+      "revision": 5,
+      "last_event_id": "PA-C01-GITEA-PHOENIX-VALIDATION-AUGMENTATION-R01"
     }
   ]
 }

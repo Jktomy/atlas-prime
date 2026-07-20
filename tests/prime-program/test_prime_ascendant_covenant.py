@@ -36,8 +36,8 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
         self.assertNotIn("| Current verified main |", covenant)
 
     def test_continuity_advances_one_entry_without_quest_promotion(self) -> None:
-        self.assertEqual(self.register["register_revision"], 39)
-        self.assertEqual(self.entry["revision"], 4)
+        self.assertEqual(self.register["register_revision"], 40)
+        self.assertEqual(self.entry["revision"], 5)
         self.assertEqual(self.entry["quest_state"], "IN_PROGRESS")
         self.assertEqual(self.entry["campaign_id"], "PA-C01")
         self.assertIsNone(self.entry["mission_id"])
@@ -46,10 +46,10 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
         self.assertIn("Operation Coppermind", self.entry["current_position"])
         self.assertIn("Project Elantris", self.entry["current_position"])
         self.assertIn("Runtime is not started", self.entry["current_position"])
-        self.assertEqual(self.entry["last_event_id"], "PA-C01-ATLAS-NAMING-REFRACTION-R01")
+        self.assertEqual(self.entry["last_event_id"], "PA-C01-GITEA-PHOENIX-VALIDATION-AUGMENTATION-R01")
         self.assertLess(
             self.register["event_ids"].index("PA-C01-POST-237-RECONCILIATION-R01"),
-            self.register["event_ids"].index("PA-C01-ATLAS-NAMING-REFRACTION-R01"),
+            self.register["event_ids"].index("PA-C01-GITEA-PHOENIX-VALIDATION-AUGMENTATION-R01"),
         )
         for prohibited in ("change repository visibility", "awaits merge", "merge pr #237"):
             self.assertNotIn(prohibited, self.entry["next_action"].lower())
@@ -78,6 +78,35 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
             self.assertIn(marker, covenant)
         self.assertEqual(covenant.count("Qdrant:\ndeferred until demonstrated need."), 1)
         self.assertIn("Runtime is not started", covenant)
+
+    def test_future_gitea_phoenix_validation_roles_are_bounded(self) -> None:
+        quest = (ROOT / "quests/prime-ascendant.md").read_text(encoding="utf-8")
+        covenant = (ROOT / "quests/prime-ascendant-covenant.md").read_text(encoding="utf-8")
+        artemis = (ROOT / "operations/artemis-runtime-and-routing.md").read_text(encoding="utf-8")
+        for marker in (
+            "Gitea pull-request event",
+            "Prime Integrity Cognitive Shadow",
+            "immutable exact-base/exact-head validation carrier",
+            "bounded Kandra integrity executor",
+            "TenSoon exact-head verification",
+            "Jayson-controlled permanence",
+            "prime/integrity",
+            "prime/windows-compatibility",
+            "prime/generated-current",
+        ):
+            self.assertIn(marker, quest + covenant)
+        for marker in (
+            "It cannot judge",
+            "receives no general or",
+            "VERIFIED_FOR_ATHENA_AUDIT",
+        ):
+            self.assertIn(marker, artemis)
+        for prohibited_claim in (
+            "Gitea deployment is complete",
+            "Gitea cutover is authorized",
+            "PA-C01 is complete",
+        ):
+            self.assertNotIn(prohibited_claim, quest + covenant + artemis)
 
 
 if __name__ == "__main__":

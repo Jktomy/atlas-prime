@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import subprocess
 import sys
 import unittest
 from pathlib import Path
@@ -20,7 +21,7 @@ class TargetedValidationTests(unittest.TestCase):
         self.assertEqual(plan["profile"], "targeted")
         self.assertEqual(
             plan["checks"],
-            ["kernel", "repository_policy", "privacy", "prime_program", "source_validation"],
+            ["kernel", "repository_policy", "privacy", "prime_program", "source_validation", "generated_current"],
         )
         self.assertFalse(plan["windows_required"])
         self.assertEqual(plan["unclassified_paths"], [])
@@ -44,6 +45,46 @@ class TargetedValidationTests(unittest.TestCase):
         self.assertEqual(plan["profile"], "full")
         self.assertEqual(plan["checks"], list(MODULE.FULL_CHECK_IDS))
         self.assertTrue(plan["windows_required"])
+
+    def test_athena_and_oathbringer_tooling_require_windows(self) -> None:
+        for changed_path in (
+            "tools/athena_routes/adapter.py",
+            "tools/oathbringer-foundry/foundry.py",
+        ):
+            with self.subTest(changed_path=changed_path):
+                plan = MODULE.classify_paths([changed_path])
+                self.assertTrue(plan["windows_required"])
+
+    def test_generated_only_change_keeps_windows_conditional(self) -> None:
+        plan = MODULE.classify_paths(["generated/atlas-file-inventory.md"])
+        self.assertEqual(plan["profile"], "targeted")
+        self.assertIn("generators", plan["checks"])
+        self.assertIn("generated_current", plan["checks"])
+        self.assertFalse(plan["windows_required"])
+
+    def test_exact_candidate_identity_binds_base_head_and_merge_base(self) -> None:
+        head = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, check=True, capture_output=True, text=True
+        ).stdout.strip()
+        base = subprocess.run(
+            ["git", "rev-parse", "HEAD^"], cwd=ROOT, check=True, capture_output=True, text=True
+        ).stdout.strip()
+        identity = MODULE.git_candidate_identity(base, head)
+        self.assertEqual(identity["base_sha"], base)
+        self.assertEqual(identity["head_sha"], head)
+        self.assertEqual(identity["merge_base_sha"], base)
+        self.assertEqual(identity["checkout_sha"], head)
+
+    def test_validation_workflow_exposes_new_and_legacy_contexts(self) -> None:
+        workflow = (ROOT / ".github/workflows/prime-readonly-validation.yml").read_text(encoding="utf-8")
+        for marker in (
+            "name: prime/integrity",
+            "name: prime/windows-compatibility",
+            "name: validate (ubuntu-latest)",
+            "name: validate (windows-latest)",
+            "ruleset 19014636",
+        ):
+            self.assertIn(marker, workflow)
 
     def test_privacy_and_repository_policy_are_mandatory_for_every_targeted_plan(self) -> None:
         for changed_path in (

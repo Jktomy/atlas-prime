@@ -33,7 +33,7 @@ routes_to:
 private_boundary: "Store only clean doctrine, campaign status, gates, sanitized evidence pointers, and completion claims. Protected runtime facts, credentials, tokens, PHI, raw finance evidence, and private exports remain outside Prime."
 evidence_boundary: "This Quest records source and sanitized proof only. Planning and source presence do not prove deployment, recovery, model use, Gitea parity, or private-site security."
 cleanup_path: "Keep active until all Campaign and Quest gates pass. Close through integrated proof, recovery, restart-safe Sunset, explicit route-retirement evidence, and merged-main readback."
-last_verified: 2026-07-17
+last_verified: 2026-07-19
 ---
 
 # Quest — Prime Ascendant — The Dawnshard Covenant
@@ -63,6 +63,22 @@ Prime Ascendant is the controlled, phased self-hosted Prime chapter. The detaile
 - Perpendicularity is the approved Google Drive crossing; Dynamic and Navigator are Cognitive Shadow collections that retrieve, preserve, prepare, and route Gemstones across Emberdark. Kandra are restricted mission-bound workers, and TenSoon verifies both pre-Coppermind intake and exact Phoenix draft candidates without granting permanence.
 - Phoenix is Codex's canonical-source maintenance Operation. Elantris owns backup, restore, rollback, and recovery. Controlled Burn and Phoenix Burn retain their current meanings pending a later bounded redefinition.
 - Runtime, infrastructure, database, Gitea, website, lifecycle, migration, and route-retirement work require later bounded source and proof transactions. No public endpoint, unrestricted SQL authority, secret, or protected raw evidence is authorized here.
+
+## Future Gitea/Phoenix validation augmentation
+
+The PA-C06 source direction includes a future Gitea pull-request event route:
+Prime Integrity Cognitive Shadow under Artemis / Operation Harmony → immutable
+exact-base/exact-head validation carrier → bounded Kandra integrity executor →
+conditional Windows executor → TenSoon exact-head verification → Operation
+Phoenix draft or status publication → Athena audit → Jayson-controlled
+permanence.
+
+The future logical contexts are `prime/integrity` (required),
+`prime/windows-compatibility` (conditional), and `prime/generated-current`
+(required for generated-only refresh candidates or wherever source/generated
+parity applies). This is source architecture only. It does not advance PA-C01,
+activate Gitea, deploy a webhook or database, retire GitHub, grant READY or MERGE,
+or authorize repository-settings mutation.
 
 ## Campaign roadmap
 

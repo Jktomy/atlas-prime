@@ -23,7 +23,7 @@ routes_to:
   - recovery/elantris-recovery.md
 private_boundary: "This Covenant contains clean architecture, rationale, unresolved decisions, provenance, and sanitized restart guidance only. Private runtime facts, network maps, device registers, account data, PHI, raw finance evidence, credentials, tokens, keys, MFA/recovery codes, seed phrases, and real environment values remain outside Prime."
 evidence_boundary: "Statements below are accepted source direction or explicit future evidence requirements. They do not claim deployment, recovery, parity, model use, Gitea shadow, private-site security, or lifecycle activation."
-last_verified: 2026-07-17
+last_verified: 2026-07-19
 ---
 
 # Prime Ascendant Covenant
@@ -117,6 +117,58 @@ Artemis and local models may retrieve, summarize, classify, embed, rerank, OCR, 
 | Forge | Storage backbone, Hammer/Anvil, persistent services, backup destination, possible future Gitea placement | Storage and protected backup boundary; no cutover is authorized. |
 | Apollo | Human-operated workstation, VS Code, Codex, Git, PowerShell, interactive tools, administration | Not a persistent-service dependency. |
 | Notum | Parallel-safe monitoring | No source, routing, automatic recovery, or blocking authority. |
+
+### 2.8 Future Gitea/Phoenix pull-request validation augmentation
+
+The future PA-C06 validation route is:
+
+```text
+Gitea pull-request event
+→ Prime Integrity Cognitive Shadow under Artemis / Operation Harmony
+→ immutable exact-base/exact-head validation carrier
+→ bounded Kandra integrity executor
+→ conditional Windows executor only when classification requires it
+→ TenSoon exact-head verification
+→ Operation Phoenix publishes or reports the draft candidate/status
+→ Athena audit
+→ Jayson-controlled permanence
+```
+
+The Prime Integrity Cognitive Shadow receives and validates one event, rejects
+replay, moved heads, malformed repository/base/head identity, protected-data
+ingress, and undeclared paths, and prepares an immutable mission carrier. It does
+not judge permanence, mark READY, or merge. One bounded Kandra executes only the
+mission-bound carrier and receives no standing repository authority. TenSoon
+independently verifies the exact candidate head, changed-path inventory, checks,
+and receipts and may report `VERIFIED_FOR_ATHENA_AUDIT`; it has no READY or MERGE
+authority. Operation Phoenix owns canonical-source maintenance and future Gitea
+branch, draft-PR, or commit-status publication. Phoenix does not own backup or
+restore, which remains Elantris, and it never merges automatically.
+
+The future Gitea model uses three logical contexts:
+
+- `prime/integrity` — required repository/source policy, protected-data, JSON,
+  schema, Project, Operation, Quest Board, continuity, routing, metadata,
+  deterministic generated-current comparison, changed-path tests, and exact
+  base/head/path identity.
+- `prime/windows-compatibility` — conditional for PowerShell, Atlas Sword,
+  Oathbringer, Windows launcher or resolution behavior, Thread Engine,
+  Athena-route execution, validation/workflow, and unknown paths that fail closed.
+- `prime/generated-current` — required for generated-only refresh candidates or
+  wherever accepted source/generated parity applies.
+
+GitHub remains canonical during this planning chapter. Its current main ruleset
+still requires `validate (ubuntu-latest)` and `validate (windows-latest)`, so a
+source-side migration must preserve those legacy contexts until the new contexts
+are observed at exact heads and Jayson separately changes the ruleset. Proof
+before removal requires one Windows-required candidate, one Windows-skipped
+ordinary source candidate, successful new and legacy contexts, strict-base
+readback, and a reviewed rollback. Rollback is a reviewed workflow revert that
+restores the former job topology while the legacy contexts remain required.
+
+No Gitea deployment, webhook activation, database activation, canonical cutover,
+GitHub retirement, credential detail, private-network value, or route retirement
+is authorized by this augmentation.
 
 ## 3. Separation of existing Quests
 

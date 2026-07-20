@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -60,6 +61,10 @@ CHECKS: dict[str, Check] = {
         "source_validation",
         (PYTHON, "-B", "tools/prime_checks/validate_prime.py"),
     ),
+    "generated_current": Check(
+        "generated_current",
+        (PYTHON, "-B", "tools/build_index.py", "--compare-dir", "generated", "--dry-run"),
+    ),
     "powershell_resolver": Check(
         "powershell_resolver",
         (
@@ -75,7 +80,8 @@ CHECKS: dict[str, Check] = {
 }
 
 FULL_CHECK_IDS: tuple[str, ...] = tuple(CHECKS)
-BASELINE_CHECK_IDS = {"kernel", "repository_policy", "privacy", "source_validation"}
+BASELINE_CHECK_IDS = {"kernel", "repository_policy", "privacy", "source_validation", "generated_current"}
+FULL_SHA = re.compile(r"[0-9a-fA-F]{40}")
 
 
 def _starts(path: str, prefixes: Iterable[str]) -> bool:
@@ -136,6 +142,12 @@ def classify_paths(paths: Sequence[str], *, full: bool = False) -> dict[str, obj
 
         if _starts(path, ("tools/athena_routes/", "tests/athena-routes/", "schemas/athena")) or path == ".github/workflows/athena-bow-hosted.yml":
             selected.update({"athena_routes", "thread_engine", "prime_program"})
+            windows_required = True
+            matched = True
+
+        if path.startswith("tools/oathbringer-foundry/"):
+            selected.update({"atlas_sword_static", "prime_program"})
+            windows_required = True
             matched = True
 
         if _starts(
@@ -210,6 +222,36 @@ def git_changed_paths(base: str, head: str) -> list[str]:
     return [line.strip() for line in completed.stdout.splitlines() if line.strip()]
 
 
+def _git_output(*args: str) -> str:
+    completed = subprocess.run(
+        ["git", *args],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return completed.stdout.strip()
+
+
+def git_candidate_identity(base: str, head: str) -> dict[str, str]:
+    if not FULL_SHA.fullmatch(base) or not FULL_SHA.fullmatch(head):
+        raise SystemExit("--base and --head must be exact 40-character commit SHAs")
+    base_sha = _git_output("rev-parse", "--verify", f"{base}^{{commit}}")
+    head_sha = _git_output("rev-parse", "--verify", f"{head}^{{commit}}")
+    checkout_sha = _git_output("rev-parse", "HEAD")
+    merge_base_sha = _git_output("merge-base", base_sha, head_sha)
+    if checkout_sha != head_sha:
+        raise SystemExit(f"checked-out HEAD {checkout_sha} does not match exact candidate head {head_sha}")
+    if merge_base_sha != base_sha:
+        raise SystemExit(f"candidate is not based on exact base: expected {base_sha}, merge base is {merge_base_sha}")
+    return {
+        "base_sha": base_sha,
+        "head_sha": head_sha,
+        "merge_base_sha": merge_base_sha,
+        "checkout_sha": checkout_sha,
+    }
+
+
 def write_github_output(path: str, plan: dict[str, object]) -> None:
     with open(path, "a", encoding="utf-8", newline="\n") as stream:
         stream.write(f"windows_required={str(bool(plan['windows_required'])).lower()}\n")
@@ -241,6 +283,10 @@ def execute_plan(plan: dict[str, object]) -> None:
             if combined:
                 print(_bounded_failure_output(combined), file=sys.stderr)
             raise subprocess.CalledProcessError(completed.returncode, check.command)
+        if check_id == "generated_current":
+            for line in completed.stdout.splitlines():
+                if line.startswith(("Source fingerprint:", "Generated index status:")):
+                    print(line, flush=True)
         print(f"Prime validation PASS: {check.check_id}", flush=True)
 
 
@@ -259,8 +305,11 @@ def main() -> int:
     if not args.full and not args.base:
         raise SystemExit("--base is required unless --full is selected")
 
+    identity = None if args.full else git_candidate_identity(args.base, args.head)
     paths = [] if args.full else git_changed_paths(args.base, args.head)
     plan = classify_paths(paths, full=args.full)
+    if identity is not None:
+        plan["identity"] = identity
     print(json.dumps(plan, indent=2, sort_keys=True))
 
     if args.github_output:
