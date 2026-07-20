@@ -19,7 +19,7 @@ Prime recovery begins from a clean clone of `Jktomy/atlas-prime`, a verified mai
 2. Clone without inherited worktrees, hooks, generated output, caches, or local configuration.
 3. Run kernel, repository-policy, privacy, Thread Engine, generator, and whole-program checks.
 4. Regenerate projections into a separate output directory and compare deterministically.
-5. Verify Thread Engine active state and its isolated disablement path.
+5. Verify Thread Engine state and its isolated disablement path.
 6. Verify Sword/Oathbringer can classify the recovery point without blind replay.
 7. Restore only declared external runtime configuration from its approved backup system; never infer private values from source.
 8. Perform a destructive canary restore only with explicit Jayson-side authority and a protected evidence plan.
@@ -29,12 +29,31 @@ Prime recovery begins from a clean clone of `Jktomy/atlas-prime`, a verified mai
 
 The Prometheus architecture requires narrow Forge mounts with safe unavailable-mount behavior, Prometheus guest backups, a destructive canary restore, and an independent recovery copy not confined to Forge.
 
-Emberdark and Coppermind recovery must include the dedicated Emberdark VM, PostgreSQL base backups, WAL protection, and a point-in-time recovery direction. Plex recovery must include its local-NVMe database, metadata, configuration, cache, and transcode state; media and completed DVR media remain on Forge/Anvil through narrow paths. Temporary restore guests require an explicit RAM reallocation or guest-shutdown plan.
+Harmony recovery must include the Harmony VM, Intel Arc Pro B50 detachment and reattachment safety, model/runtime configuration, backup, restoration, thermal and soak evidence, and rollback without making host administration depend on the accelerator.
 
-These are future proof requirements. This runbook and the Prometheus Quest do
-not claim that any backup, restore, deployment, or runtime cutover has
-occurred. Recovery receipts must be sanitized and must not contain secrets,
-private runtime values, or protected records.
+Atlas recovery must include:
+
+- complete Atlas VM backup and restoration under a different guest ID;
+- independently bounded OS/application, Coppermind, Phoenix, and Emberdark storage areas;
+- Emberdark application and workflow-state restoration;
+- PostgreSQL base backups, WAL protection, and a point-in-time recovery direction;
+- Phoenix repository, Gitea application-state, and database consistency restoration;
+- selective service restoration as well as full-VM restoration;
+- an independent repository mirror and clean-clone Prime recovery that does not depend on the Atlas VM.
+
+Plex recovery must include its local-NVMe database, metadata, configuration, and durable application state. Cache and transcode workspace are disposable and need not be restored as durable evidence. Media and completed DVR media remain on Forge/Anvil through narrow paths. Plex restoration must prove Quick Sync, playback, recording, reboot recovery, safe mount loss, and rollback.
+
+Household media continuity is intentionally degraded rather than seamless high availability:
+
+- local-only Jellyfin on Forge may read stored media and completed DVR recordings through its own database and metadata;
+- the Samsung television's direct antenna input remains the live-TV continuity route;
+- Jellyfin is not a Plex standby and shares no Plex application database;
+- during a Plex or Prometheus outage, new scheduled recordings and in-progress recordings are not guaranteed;
+- failure of Forge/Anvil removes stored-media continuity even when Prometheus remains healthy.
+
+Temporary restore guests require an explicit RAM reallocation or guest-shutdown plan. The 8 GB protected Proxmox reserve is not consumed merely to simplify a restoration exercise.
+
+These are future proof requirements. This runbook and the Prometheus Quest do not claim that any backup, restore, deployment, migration, Jellyfin installation, Gitea activation, Plex cutover, or runtime action has occurred. Recovery receipts must be sanitized and must not contain secrets, private runtime values, or protected records.
 
 ## Rollback
 
@@ -43,5 +62,6 @@ private runtime values, or protected records.
 - Thread Engine emergency disablement changes the reviewed activation state through Aegis Break → Oathbringer and must reject at `ACTIVATION_GATE` before mission parsing.
 - The original Prime shadow head remains preserved by the locked archive branch and annotated tag.
 - The frozen Codex predecessor remains audit evidence only and is never the normal rollback target after cutover.
+- Before final Forge Plex removal, a separately authorized migration rollback may temporarily restore service to Forge Plex. After final removal, stored-media continuity is Jellyfin, live-TV continuity is the direct antenna, and normal Plex service returns through restoration of the Prometheus Plex LXC.
 
-RAID, snapshots, a green backup job, or an undeleted predecessor are not restore proof. Recovery is proven only by exact restoration and readback.
+RAID, snapshots, a green backup job, an undeleted predecessor, or the presence of Jellyfin are not restore proof. Recovery is proven only by exact restoration and readback.
