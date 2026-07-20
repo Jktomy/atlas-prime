@@ -42,6 +42,45 @@
         "tests/prime-program/test_assurance_controls.py"
       ],
       "superseded_by": null
+    },
+    {
+      "control_id": "ASC-003",
+      "title": "Repository process preserves one transaction and isolated fallback",
+      "status": "ACTIVE",
+      "objective": "Prime repository work uses one exact transaction identity and one complete candidate while preserving Thread Engine as the normal publisher and Sword/Oathbringer as an independently executable alternate publisher.",
+      "applies_when": "The objective creates, repairs, reviews, readies, merges, reverts, or recovers a Prime repository candidate or changes repository-process doctrine or tooling.",
+      "required_evidence": [
+        "The exact candidate binds transaction, base, route, paths, tree, validation, review, permanence mode, and rollback identity.",
+        "Any route takeover reconciles the existing branch, PR, head, and receipts before mutation and does not create duplicate work.",
+        "Normal and alternate publishers remain failure-isolated; shared schemas or fixtures do not create one common mutation dependency."
+      ],
+      "enforcement_sources": [
+        "governance/repository-process-contract.md",
+        "governance/change-routes.md",
+        "recovery/elantris-recovery.md",
+        "tests/prime-program/test_prime_human_merge_route.py"
+      ],
+      "superseded_by": null
+    },
+    {
+      "control_id": "ASC-004",
+      "title": "Shardblade is one-use exact-head compare-and-swap permanence",
+      "status": "ACTIVE",
+      "objective": "Machine permanence occurs only from a current explicit Jayson Shardblade instruction for one unchanged exact candidate after required status, resolved review, Strikeforce GREEN, replay reservation, rollback proof, atomic expected-head binding, and canonical readback.",
+      "applies_when": "A Prime repository transaction proposes, authorizes, performs, reports, recovers, or changes Shardblade or any automated merge behavior.",
+      "required_evidence": [
+        "The current instruction unambiguously grants transaction-scoped Shardblade authority and no standing approval is inferred.",
+        "The merge request binds the expected head SHA and rejects any head, tree, path, status, review, authority, or replay drift.",
+        "The receipt and canonical-main readback prove the exact result; ambiguous results use readback-only reconciliation and never blind retry."
+      ],
+      "enforcement_sources": [
+        "governance/repository-process-contract.md",
+        "governance/shard-doctrine.md",
+        "safety/atlas-safety-doctrine.md",
+        "governance/atlas-strikeforce.md",
+        "tests/prime-program/test_prime_human_merge_route.py"
+      ],
+      "superseded_by": null
     }
   ]
 }
