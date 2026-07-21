@@ -66,6 +66,7 @@ class SunsetRouterPreviewIngressPolicyTests(unittest.TestCase):
             "!github.event.issue.pull_request",
             "github.event.comment.user.login == github.repository_owner",
             "github.event.comment.author_association == 'OWNER'",
+            "startsWith(github.event.comment.body, '```atlas-sunset-router-preview-intake-v1')",
             "expected_repository='Jktomy/atlas-prime'",
             "expected_owner='Jktomy'",
             "refs/heads/main",
