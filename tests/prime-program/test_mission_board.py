@@ -187,6 +187,22 @@ class MissionBoardTests(unittest.TestCase):
         with self.assertRaisesRegex(MissionError, "FALSE_COMPLETION"):
             validate_mission(mission)
 
+    def test_boolean_issue_and_pr_numbers_fail_closed(self) -> None:
+        mission = load("blocked-resumable.json")
+        mission["issue_number"] = True
+        with self.assertRaisesRegex(MissionError, "ISSUE_IDENTITY"):
+            validate_mission(mission)
+        mission = load("canonical-implementation.json")
+        mission["source_binding"]["pull_request"] = True
+        with self.assertRaisesRegex(MissionError, "source_binding.pull_request"):
+            validate_mission(mission)
+
+    def test_pending_coppermind_cannot_claim_archive_timestamp(self) -> None:
+        mission = load("blocked-resumable.json")
+        mission["coppermind"]["archive_timestamp"] = "2026-07-21T14:00:00Z"
+        with self.assertRaisesRegex(MissionError, "ARCHIVE_STATE_MISMATCH"):
+            validate_mission(mission)
+
     def test_canonical_state_requires_canonical_source_readback(self) -> None:
         mission = load("blocked-resumable.json")
         mission["mission_state"] = "CANONICAL"

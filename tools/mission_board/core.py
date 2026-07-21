@@ -212,7 +212,7 @@ def _validate_source_binding(binding: Any, source_status: str) -> None:
     _require_nullable_sha(binding["merged_commit"], "source_binding.merged_commit", SHA40)
     if binding["branch"] is not None:
         _require_nonempty_text(binding["branch"], "source_binding.branch")
-    if binding["pull_request"] is not None and (not isinstance(binding["pull_request"], int) or binding["pull_request"] < 1):
+    if binding["pull_request"] is not None and (type(binding["pull_request"]) is not int or binding["pull_request"] < 1):
         _fail("INVALID_FIELD", "source_binding.pull_request")
     paths = binding["changed_paths"]
     if not isinstance(paths, list):
@@ -255,10 +255,12 @@ def _validate_coppermind(value: Any) -> None:
             _require_nonempty_text(package[field], f"coppermind.archive_package.{field}")
         for field in ("decisions", "relationships", "changed_paths", "receipts", "lesson_harvest", "unresolved_follow_up"):
             _require_text_list(package[field], f"coppermind.archive_package.{field}")
+        if package["pull_request"] is not None and (type(package["pull_request"]) is not int or package["pull_request"] < 1):
+            _fail("INVALID_FIELD", "coppermind.archive_package.pull_request")
         if package["archive_timestamp"] is not None:
             _require_timestamp(package["archive_timestamp"], "coppermind.archive_package.archive_timestamp")
-    if value["status"] == "PENDING" and (value["reference"] is not None or package is not None):
-        _fail("ARCHIVE_STATE_MISMATCH", "PENDING cannot claim a reference or package")
+    if value["status"] == "PENDING" and (value["reference"] is not None or value["archive_timestamp"] is not None or package is not None):
+        _fail("ARCHIVE_STATE_MISMATCH", "PENDING cannot claim a reference, timestamp, or package")
     if value["status"] == "PACKAGE_READY" and package is None:
         _fail("ARCHIVE_STATE_MISMATCH", "PACKAGE_READY requires archive_package")
     if value["status"] == "ARCHIVED" and (package is None or value["reference"] is None or value["archive_timestamp"] is None or package["archive_timestamp"] is None):
@@ -297,7 +299,7 @@ def validate_mission(mission: Mapping[str, Any]) -> dict[str, Any]:
         _fail("SCHEMA_VERSION", str(mission["schema_version"]))
     if not isinstance(mission["repository"], str) or not REPOSITORY.fullmatch(mission["repository"]):
         _fail("REPOSITORY_IDENTITY", str(mission["repository"]))
-    if not isinstance(mission["issue_number"], int) or mission["issue_number"] < 1:
+    if type(mission["issue_number"]) is not int or mission["issue_number"] < 1:
         _fail("ISSUE_IDENTITY", str(mission["issue_number"]))
     for field in ("mission_id", "attempt_id"):
         if not isinstance(mission[field], str) or not IDENTITY.fullmatch(mission[field]):
