@@ -48,7 +48,7 @@ The `sequence` command preserves the requested order. It continues past
 2. Reject pull-request objects and repository mismatch.
 3. Read the Issue and every comment.
 4. Fresh-read canonical `main` and linked PR state.
-5. Ignore the unbound draft, extract exactly one manifest per admitted update, and reconcile chronological state transitions.
+5. Ignore the unbound draft, extract exactly one manifest per admitted update, and reconcile chronological state transitions. A later valid append-only update may supersede an invalid historical candidate; the latest manifest-shaped update must validate or reconciliation fails closed.
 6. Search Mission ID, attempt ID, branch, PR, head, and changed-path digest before mutation.
 7. Use the returned next safe action; never blind retry.
 8. Append sanitized evidence to the same Mission.

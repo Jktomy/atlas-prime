@@ -104,6 +104,36 @@ class MissionBoardTests(unittest.TestCase):
         with self.assertRaisesRegex(MissionError, "STALE_MISSION_CLAIM"):
             reconcile_issue_snapshot(snapshot, "Jktomy/atlas-prime", 259)
 
+    def test_later_valid_manifest_supersedes_invalid_historical_candidate(self) -> None:
+        invalid = load("captured-sunset.json")
+        invalid["source_binding"]["changed_paths"] = ["z.md", "a.md"]
+        invalid["source_binding"]["changed_paths_digest"] = changed_paths_digest(["z.md", "a.md"])
+        valid = load("captured-sunset.json")
+        valid["updated_at"] = "2026-07-21T14:03:00Z"
+        snapshot = {
+            "repository": "Jktomy/atlas-prime",
+            "number": 259,
+            "is_pull_request": False,
+            "body": "```atlas-mission-v1\n" + json.dumps(invalid) + "\n```",
+            "comments": [{"body": "```atlas-mission-v1\n" + json.dumps(valid) + "\n```"}],
+        }
+        self.assertEqual(reconcile_issue_snapshot(snapshot, "Jktomy/atlas-prime", 259)["updated_at"], "2026-07-21T14:03:00Z")
+
+    def test_latest_invalid_manifest_still_fails_closed(self) -> None:
+        valid = load("captured-sunset.json")
+        invalid = deepcopy(valid)
+        invalid["source_binding"]["changed_paths"] = ["z.md", "a.md"]
+        invalid["source_binding"]["changed_paths_digest"] = changed_paths_digest(["z.md", "a.md"])
+        snapshot = {
+            "repository": "Jktomy/atlas-prime",
+            "number": 259,
+            "is_pull_request": False,
+            "body": "```atlas-mission-v1\n" + json.dumps(valid) + "\n```",
+            "comments": [{"body": "```atlas-mission-v1\n" + json.dumps(invalid) + "\n```"}],
+        }
+        with self.assertRaisesRegex(MissionError, "PATH_ORDER"):
+            reconcile_issue_snapshot(snapshot, "Jktomy/atlas-prime", 259)
+
     def test_sequential_5_7_12_order_and_nonblocking_resume(self) -> None:
         missions = {5: load("sequence-5.json"), 7: load("sequence-7.json"), 12: load("sequence-12.json")}
         receipt = sequence_missions(missions, [5, 7, 12])

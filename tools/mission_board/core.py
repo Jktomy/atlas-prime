@@ -450,12 +450,20 @@ def reconcile_issue_snapshot(snapshot: Mapping[str, Any], expected_repository: s
     if snapshot.get("is_pull_request") is True:
         _fail("IDENTITY_MISMATCH", f"repository object #{expected_issue_number} is a pull request, not a Mission Issue")
     bodies = [snapshot.get("body") or ""] + [str(item.get("body") or "") for item in snapshot.get("comments", []) if isinstance(item, Mapping)]
-    manifests: list[dict[str, Any]] = []
-    for body in bodies:
-        if MANIFEST_BLOCK.search(body):
-            manifests.append(extract_manifest(body))
-    if not manifests:
+    manifest_bodies = [body for body in bodies if MANIFEST_BLOCK.search(body)]
+    if not manifest_bodies:
         _fail("MISSION_MANIFEST_MISSING", f"Issue #{expected_issue_number}")
+    manifests: list[dict[str, Any]] = []
+    for index, body in enumerate(manifest_bodies):
+        try:
+            manifests.append(extract_manifest(body))
+        except MissionError:
+            if index == len(manifest_bodies) - 1:
+                raise
+            # Append-only Issue history can contain rejected candidate manifests.
+            # A later valid manifest explicitly supersedes them; the most recent
+            # manifest-shaped update must always validate or reconciliation stops.
+            continue
     mission_ids = {item["mission_id"] for item in manifests}
     attempt_ids = {item["attempt_id"] for item in manifests}
     if len(mission_ids) != 1 or len(attempt_ids) != 1:
