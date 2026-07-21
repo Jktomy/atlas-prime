@@ -20,6 +20,15 @@ ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW = ROOT / ".github/workflows/sunset-router-preview-intake.yml"
 
 
+def json_bytes(value: object) -> bytes:
+    if isinstance(value, dict):
+        return canonical_bytes(value)
+    return (
+        json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        + "\n"
+    ).encode("utf-8")
+
+
 def intake() -> dict:
     lifecycle = request("NON_QUEST")
     lifecycle["campaign"] = "CAMPAIGN-CODEX-OPEN-PATHWAYS-SUNSET-R01"
@@ -69,7 +78,7 @@ def event(value: dict) -> dict:
 
 class SunsetRouterPreviewWorkflowTests(unittest.TestCase):
     def write(self, path: Path, value: object) -> Path:
-        path.write_bytes(canonical_bytes(value))
+        path.write_bytes(json_bytes(value))
         return path
 
     def test_intake_schema_is_trusted_and_closed(self) -> None:
