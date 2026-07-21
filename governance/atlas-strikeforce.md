@@ -24,7 +24,8 @@ Strikeforce is read-only. Its members may report defects, required repairs, clea
 
 Aegis is Athena's shield within Strikeforce. It confirms that the candidate and its presentation preserve Jayson's semantic objective, accepted lessons, active safeguards, explicit choices, stop conditions, protected boundaries, selected route, generated-state policy, and permanence mode. Aegis cannot convert a Noctua or Ares failure into GREEN through wording, confidence, or simplification.
 
-GREEN means the exact reviewed candidate is ready for the next authorized gate. GREEN does not merge. It also does not itself READY, activate, promote, deploy, migrate, change settings, or cut over Prime. Shardblade is the separate merge authority for an explicitly authorized exact head; it remains distinct from Strikeforce and must perform its own fresh gate.
+GREEN means the exact reviewed candidate is ready for the next authorized gate. GREEN does not merge. It also does not itself READY, activate, promote, deploy, migrate, change settings, or cut over Prime. Shardblade is the
+separate merge authority for an explicitly authorized exact head; it remains distinct from Strikeforce and must perform its own fresh gate.
 
 For a Prime repository transaction, Strikeforce also reconciles:
 
