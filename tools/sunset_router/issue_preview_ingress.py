@@ -75,12 +75,30 @@ def _loads(text: str) -> Any:
         ) from exc
 
 
-def _read_json(path: Path, limit: int) -> Any:
-    if not path.is_file() or path.is_symlink():
-        _fail("SUNSET_PREVIEW_INTAKE_FILE", "required JSON input is unavailable")
-    data = path.read_bytes()
+def _read_bounded(path: Path, limit: int) -> bytes:
+    try:
+        if path.is_symlink() or not path.is_file():
+            _fail("SUNSET_PREVIEW_INTAKE_FILE", "required JSON input is unavailable")
+        size = path.stat().st_size
+    except OSError as exc:
+        raise LifecycleError(
+            "SUNSET_PREVIEW_INTAKE_FILE", "required JSON input is unavailable"
+        ) from exc
+    if size > limit:
+        _fail("SUNSET_PREVIEW_INTAKE_SIZE", "JSON input exceeds its bounded size")
+    try:
+        with path.open("rb") as handle:
+            data = handle.read(limit + 1)
+    except OSError as exc:
+        raise LifecycleError(
+            "SUNSET_PREVIEW_INTAKE_FILE", "required JSON input is unavailable"
+        ) from exc
     if len(data) > limit:
         _fail("SUNSET_PREVIEW_INTAKE_SIZE", "JSON input exceeds its bounded size")
+    return data
+
+
+def _decode_json(data: bytes) -> Any:
     try:
         text = data.decode("utf-8")
     except UnicodeDecodeError as exc:
@@ -90,9 +108,14 @@ def _read_json(path: Path, limit: int) -> Any:
     return _loads(text)
 
 
+def _read_json(path: Path, limit: int) -> Any:
+    return _decode_json(_read_bounded(path, limit))
+
+
 def _read_canonical(path: Path, limit: int) -> dict[str, Any]:
-    value = _read_json(path, limit)
-    if not isinstance(value, dict) or path.read_bytes() != canonical_bytes(value):
+    data = _read_bounded(path, limit)
+    value = _decode_json(data)
+    if not isinstance(value, dict) or data != canonical_bytes(value):
         _fail("SUNSET_PREVIEW_INTAKE_CANONICAL", "artifact is not canonical JSON")
     return value
 
