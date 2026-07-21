@@ -14,7 +14,10 @@ sys.path.insert(0, str(THREAD_ENGINE))
 
 from production_adapter.authority import validate_mission  # noqa: E402
 from production_adapter.path_policy import PolicyError, validate_declared_path_set  # noqa: E402
-from production_adapter.protected_paths import direct_spear_path_scope  # noqa: E402
+from production_adapter.protected_paths import (  # noqa: E402
+    compiler_bound_safe_declared_path_scope,
+    direct_spear_path_scope,
+)
 from production_adapter.receipt import stable_json  # noqa: E402
 from spear_bridge.compiler import MANIFEST_IDENTITY, compile_package  # noqa: E402
 from spear_bridge.git_reader import SourceAbsentError  # noqa: E402
@@ -134,6 +137,15 @@ class SpearUniversalPathTests(unittest.TestCase):
         with self.assertRaises(PolicyError) as raised:
             validate_declared_path_set(["governance/noctua.md"])
         self.assertEqual(raised.exception.code, "PROTECTED_PATH")
+
+    def test_route_neutral_compiler_scope_is_bounded(self) -> None:
+        with self.assertRaises(PolicyError):
+            validate_declared_path_set(["lifecycle/feathers/example.json"])
+        with compiler_bound_safe_declared_path_scope():
+            declared = validate_declared_path_set(["lifecycle/feathers/example.json"])
+            self.assertEqual([path.as_posix() for path in declared], ["lifecycle/feathers/example.json"])
+        with self.assertRaises(PolicyError):
+            validate_declared_path_set(["lifecycle/feathers/example.json"])
 
 
 if __name__ == "__main__":

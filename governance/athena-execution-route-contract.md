@@ -113,6 +113,8 @@ Route selection occurs before compiler or adapter mutation:
 
 The hosted workflow separates read-only intake validation from mission-scoped execution. The execution job receives only bounded ephemeral write permissions after owner identity, workflow source, carrier, base, mission, replay, path, and privacy checks pass.
 
+Safe-declared path eligibility is implemented by one route-neutral compiler-bound context shared with Direct Spear. Arrow/Bow opens it only around exact compilation and adapter execution, and automatic context closure restores the default-deny protected-path policy. This does not alias Arrow/Bow to Spear or grant a standing path exception.
+
 It must not use `pull_request_target`, unpinned reusable workflows, arbitrary URLs, caller-provided commands, shell evaluation, repository-setting authority, automatic ready, automatic merge, persistent credentials, or a second repository writer.
 
 ## Fail-closed rejection set

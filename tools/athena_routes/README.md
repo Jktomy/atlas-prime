@@ -15,6 +15,8 @@ Direct Spear and delegated Arrow/Bow may author any safe declared repository-rel
 
 The hosted adapter contains no second Git writer. It has no direct-main, force-push, ready, merge, settings, cleanup, standing-credential, or standing-authority surface. Hosted Arrow/Bow retains its launcher-specific identity, exact-carrier admission, and draft-only stop boundary while matching Spear's safe declared authored path eligibility.
 
+That eligibility is activated only inside a compiler-bound context around Arrow/Bow compilation and adapter execution. The context is route-neutral, closes automatically after each call, and does not turn Arrow/Bow into Spear or create a standing protected-path exception.
+
 ## Safe-declared free-form intake
 
 `python -B -m tools.athena_routes.free_form_intake --fields <fields.json> --output-dir <new-directory>` accepts a closed local public-clean mission-fields object and atomically creates one new output directory outside canonical source. It constructs deterministic carrier, Preview, receipt, and retained compiled files.
