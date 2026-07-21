@@ -46,7 +46,7 @@
     "preview_filename": {"const": "preview.json"},
     "preview_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "deterministic_branch": {"type": "string", "pattern": "^source/athena-bow-[a-f0-9]{20}$"},
-    "path_classification": {"const": "ORDINARY"},
+    "path_classification": {"enum": ["ORDINARY", "SAFE_DECLARED"]},
     "paths": {
       "type": "array",
       "minItems": 1,

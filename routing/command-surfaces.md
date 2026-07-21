@@ -77,7 +77,7 @@ A request for Athena to execute an exact Sword herself routes to Phoenix Blade. 
 
 A request for Athena to construct, repair, or otherwise accomplish a bounded Atlas task directly routes through Aegis Break, which selects or constructs the safest exact route available. Direct GitHub-native construction is an Aegis Break route, not a synonym for Phoenix Blade.
 
-Bow and Arrow belong to Jayson and Artemis delegated delivery. They are never selected as Athena's direct route.
+Bow and Arrow belong to Jayson and Artemis delegated delivery. They are never selected as Athena's direct route. Their compiler-declared authored path eligibility matches Spear, including governance and Thread Engine self-change, while their exact authority, launcher, and draft-only boundaries remain distinct.
 
 A request to build, repair, recover, execute, or otherwise make a Sword automatically routes first through `methods/sword-forge-standard.md` and `methods/sword-lessons.json`, then through current Sword doctrine and the exact live GitHub target state. The user does not need to invoke a separate preflight command or remind Athena to recall earlier lessons.
 

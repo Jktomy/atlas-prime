@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import base64
 import binascii
-import fnmatch
 import hashlib
 import json
 import re
@@ -21,7 +20,6 @@ THREAD_ENGINE_ROOT = ROOT / "tools" / "thread-engine"
 REQUEST_SCHEMA = ROOT / "schemas" / "athena-hosted-route-request-v1.schema.json"
 RECEIPT_SCHEMA = ROOT / "schemas" / "athena-hosted-route-receipt-v1.schema.json"
 ADAPTER_EVIDENCE_SCHEMA = ROOT / "schemas" / "athena-thread-engine-evidence-v2.schema.json"
-PROTECTED_POLICY = ROOT / "policies" / "protected-paths.json"
 REPOSITORY = "Jktomy/atlas-prime"
 OWNER = "Jktomy"
 MAX_ENCODED_BYTES = 60_000
@@ -173,15 +171,9 @@ def privacy_scan(package: Any) -> None:
 
 
 def classify_paths(paths: list[str]) -> tuple[str, str]:
-    policy = json.loads(PROTECTED_POLICY.read_text(encoding="utf-8"))
-    patterns = tuple(policy["critical_paths"])
     if any(path.startswith("generated/") for path in paths):
         return "GENERATED_SOURCE_MIXING", "ARROW_BOW_HOSTED"
-    if any(path.startswith("tools/thread-engine/") for path in paths):
-        return "THREAD_ENGINE_SELF_CHANGE", "AEGIS_BREAK_TO_OATHBRINGER"
-    if any(any(fnmatch.fnmatchcase(path, pattern) for pattern in patterns) for path in paths):
-        return "PROTECTED_AEGIS_REQUIRED", "AEGIS_BREAK_PROTECTED"
-    return "ORDINARY", "ARROW_BOW_HOSTED"
+    return "SAFE_DECLARED", "ARROW_BOW_HOSTED"
 
 
 def identity_from(values: dict[str, str], mission_id: str) -> dict[str, Any]:
@@ -352,7 +344,7 @@ def completed_remote_checkpoint(raw: dict[str, Any]) -> bool:
     )
 
 
-def build_request(values: dict[str, str], package: Any, event_bytes: bytes, run: dict[str, Any]) -> dict[str, Any]:
+def build_request(values: dict[str, str], package: Any, event_bytes: bytes, run: dict[str, Any], classification: str) -> dict[str, Any]:
     actor = ((run.get("actor") or {}).get("login"))
     triggering_actor = ((run.get("triggering_actor") or {}).get("login"))
     if actor != OWNER or triggering_actor != OWNER:
@@ -412,7 +404,7 @@ def build_request(values: dict[str, str], package: Any, event_bytes: bytes, run:
             "token_mode": "GITHUB_TOKEN",
         },
         "replay_key": "sha256:" + sha256_bytes(stable_json(replay_material).encode("utf-8")),
-        "protected_path_classification": "ORDINARY",
+        "protected_path_classification": classification,
         "stop_boundary": "DRAFT_PR_READBACK",
         "forbidden_actions": {
             "direct_main": False,
@@ -600,7 +592,7 @@ def preflight_hosted(
             privacy_scan(package)
             paths = [item["path"] for item in package.weave["threads"]]
             classification, route = classify_paths(paths)
-            if classification != "ORDINARY":
+            if classification != "SAFE_DECLARED":
                 receipt = no_mutation_receipt(
                     values,
                     code=classification,
@@ -612,7 +604,7 @@ def preflight_hosted(
                 write_json(evidence_dir / "athena-hosted-route-receipt.json", receipt)
                 return receipt
             run = run_metadata or fetch_run_metadata(REPOSITORY, values["GITHUB_RUN_ID"])
-            request = build_request(values, package, event_bytes, run)
+            request = build_request(values, package, event_bytes, run, classification)
             replay_probe(package.weave["branch"])
             write_json(evidence_dir / "athena-hosted-route-request.json", request)
             result = {
@@ -673,7 +665,7 @@ def run_hosted(
             privacy_scan(package)
             paths = [item["path"] for item in package.weave["threads"]]
             classification, route = classify_paths(paths)
-            if classification != "ORDINARY":
+            if classification != "SAFE_DECLARED":
                 receipt = no_mutation_receipt(
                     values,
                     code=classification,
@@ -685,7 +677,7 @@ def run_hosted(
                 write_json(receipt_path, receipt)
                 return receipt
             run = run_metadata or fetch_run_metadata(REPOSITORY, values["GITHUB_RUN_ID"])
-            request = build_request(values, package, event_bytes, run)
+            request = build_request(values, package, event_bytes, run, classification)
             replay_probe(package.weave["branch"])
             write_json(receipt_path.with_name("athena-hosted-route-request.json"), request)
             compiled = temp / "compiled"

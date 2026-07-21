@@ -106,7 +106,7 @@ def valid_request() -> dict:
             "token_mode": "GITHUB_TOKEN",
         },
         "replay_key": "sha256:" + "5" * 64,
-        "protected_path_classification": "ORDINARY",
+        "protected_path_classification": "SAFE_DECLARED",
         "stop_boundary": "DRAFT_PR_READBACK",
         "forbidden_actions": {
             "direct_main": False,

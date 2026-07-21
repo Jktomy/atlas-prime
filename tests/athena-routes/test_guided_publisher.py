@@ -163,15 +163,14 @@ class GuidedPublisherTests(unittest.TestCase):
             self.preview(package=fake_package(base="8" * 40))
         self.assertEqual(caught.exception.code, "STALE_BASE")
 
-    def test_preview_rejects_generated_and_protected_paths(self) -> None:
-        for path, code in (
-            ("generated/atlas-file-inventory.md", "GENERATED_SOURCE_MIXING"),
-            ("tools/thread-engine/engine/thread_engine.py", "THREAD_ENGINE_SELF_CHANGE"),
-        ):
-            with self.subTest(path=path):
-                with self.assertRaises(GuidedPublisherError) as caught:
-                    self.preview(package=fake_package(path=path))
-                self.assertEqual(caught.exception.code, code)
+    def test_preview_rejects_generated_source(self) -> None:
+        with self.assertRaises(GuidedPublisherError) as caught:
+            self.preview(package=fake_package(path="generated/atlas-file-inventory.md"))
+        self.assertEqual(caught.exception.code, "GENERATED_SOURCE_MIXING")
+
+    def test_preview_accepts_thread_engine_self_change(self) -> None:
+        receipt, _ = self.preview(package=fake_package(path="tools/thread-engine/engine/thread_engine.py"))
+        self.assertEqual(receipt["path_classification"], "SAFE_DECLARED")
 
     def test_preview_rejects_nondeterministic_branch_and_replay(self) -> None:
         wrong_branch = fake_package()
