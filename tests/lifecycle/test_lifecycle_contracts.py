@@ -44,6 +44,10 @@ VERSIONED_AND_AUXILIARY_SCHEMAS = {
     "feather-v2.schema.json",
     "sunset-v2.schema.json",
     "sunset-request-v2.schema.json",
+    "sunset-preview-v1.schema.json",
+    "sunset-approval-v1.schema.json",
+    "sunset-carrier-v1.schema.json",
+    "sunset-request-v3.schema.json",
 }
 
 
@@ -123,7 +127,13 @@ class LifecycleContractTests(unittest.TestCase):
         self.assertEqual(
             schema_ids,
             set(ENTITY_SCHEMAS)
-            | {"atlas.lifecycle.lesson-harvest", "atlas.lifecycle.sunset-request"},
+            | {
+                "atlas.lifecycle.lesson-harvest",
+                "atlas.lifecycle.sunset-request",
+                "atlas.lifecycle.sunset-preview",
+                "atlas.lifecycle.sunset-approval",
+                "atlas.lifecycle.sunset-carrier",
+            },
         )
 
     def test_fixtures_are_closed_shape_and_content_addressed(self) -> None:
@@ -233,6 +243,7 @@ class LifecycleContractTests(unittest.TestCase):
             "A sealed Feather is never edited",
             "never marks ready or merges",
             "`NOT_MEASURED`",
+            "Mandatory Sunset Preview and approval",
         ):
             self.assertIn(phrase, contract)
 
