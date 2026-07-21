@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import unicodedata
 from copy import deepcopy
 from datetime import datetime
 from pathlib import PurePosixPath
@@ -94,6 +95,7 @@ MANIFEST_BLOCK = re.compile(r"```atlas-mission-v1\s*\n(.*?)\n```", re.DOTALL)
 PROTECTED_PATTERNS = (
     ("private key", re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----")),
     ("GitHub token", re.compile(r"\bgh(?:p|o|u|s|r)_[A-Za-z0-9]{20,}\b")),
+    ("GitHub fine-grained token", re.compile(r"\bgithub_pat_[A-Za-z0-9_]{20,}\b")),
     ("AWS access key", re.compile(r"\bAKIA[0-9A-Z]{16}\b")),
     ("assigned secret", re.compile(r"(?i)\b(?:api[_-]?key|access[_-]?token|password|secret)\s*[:=]\s*['\"][^'\"\r\n]{8,}['\"]")),
     ("IP address", re.compile(r"(?<![0-9])(?:25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})(?:\.(?:25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}(?![0-9])")),
@@ -184,7 +186,7 @@ def normalize_changed_paths(paths: Iterable[str]) -> list[str]:
     normalized: list[str] = []
     seen_folded: set[str] = set()
     for raw in paths:
-        text = _require_nonempty_text(raw, "changed path").replace("\\", "/")
+        text = unicodedata.normalize("NFC", _require_nonempty_text(raw, "changed path").replace("\\", "/"))
         pure = PurePosixPath(text)
         if pure.is_absolute() or text.startswith("/") or re.match(r"^[A-Za-z]:/", text) or ".." in pure.parts or text != pure.as_posix():
             _fail("UNSAFE_PATH", text)

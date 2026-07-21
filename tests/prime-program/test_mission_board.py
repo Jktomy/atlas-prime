@@ -224,12 +224,23 @@ class MissionBoardTests(unittest.TestCase):
         mission["objective"] = "Connect to 10.20.30.40"
         with self.assertRaisesRegex(MissionError, "PROTECTED_BOUNDARY_FAILURE"):
             validate_mission(mission)
+        mission = load("blocked-resumable.json")
+        mission["objective"] = "Credential github_pat_abcdefghijklmnopqrstuvwxyz123456"
+        with self.assertRaisesRegex(MissionError, "PROTECTED_BOUNDARY_FAILURE"):
+            validate_mission(mission)
 
     def test_unsafe_windows_repository_path_fails_closed(self) -> None:
         mission = load("canonical-implementation.json")
         mission["source_binding"]["changed_paths"] = ["C:/outside.txt"]
         mission["source_binding"]["changed_paths_digest"] = changed_paths_digest(["governance/mission-board-contract.md"])
         with self.assertRaisesRegex(MissionError, "UNSAFE_PATH"):
+            validate_mission(mission)
+
+    def test_unicode_equivalent_repository_paths_collide(self) -> None:
+        mission = load("canonical-implementation.json")
+        mission["source_binding"]["changed_paths"] = ["proof/café.txt", "proof/cafe\u0301.txt"]
+        mission["source_binding"]["changed_paths_digest"] = "0" * 64
+        with self.assertRaisesRegex(MissionError, "DUPLICATE_PATH"):
             validate_mission(mission)
 
     def test_duplicate_json_keys_fail_closed(self) -> None:
