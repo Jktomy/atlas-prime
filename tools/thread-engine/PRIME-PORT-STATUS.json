@@ -1,5 +1,5 @@
 {
-  "activation_route": "AEGIS_BREAK_TO_OATHBRINGER",
+  "activation_route": "MISSION_SCOPED_DIRECT_ROUTE",
   "automatic_merge": false,
   "canonical_repository": "Jktomy/atlas-prime",
   "codex_workboard_route": "ABSENT",
@@ -12,7 +12,6 @@
   "harmless_pilot_state": "PROVEN_MERGED",
   "implementation_state": "THREAD_ENGINE_ACTIVE_MISSION_SCOPED",
   "known_disabled_routes": [
-    "Thread Engine self-change",
     "ready transition and merge",
     "direct main and force push",
     "standing or automatic authority"
@@ -20,7 +19,7 @@
   "next_gate": "NORMAL_PRIME_OPERATION",
   "production_execution_authorized": true,
   "proof_required": false,
-  "protected_path_policy": "PRIME_NATIVE_JSON_ENFORCED",
+  "protected_path_policy": "LEGACY_CLASSIFICATION_ONLY",
   "provenance_source_head": "1c43a5c7903a38a684b906e87a6475651a900a39",
   "provenance_source_repository": "Jktomy/atlas-codex",
   "spear_arrow_bow_merge": "7c8a533175da5c4fc9e8e0bb9de8bd37eba33dc5",

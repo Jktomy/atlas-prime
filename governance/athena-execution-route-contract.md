@@ -17,7 +17,7 @@ This contract separates Athena's methods, Jayson/Artemis delegated delivery, rep
 
 ```text
 ATHENA_SPEAR
-  -> Athena authors one exact Weave
+  -> Athena authors one exact Weave across any safe declared Prime paths
   -> Spear delivers it to the singular Prime Thread Engine
   -> immutable branch + one draft PR + exact readback
 
@@ -50,7 +50,8 @@ Prime has one normal repository engine: Thread Engine. Spear and Arrow/Bow may c
 Machine-stable invariants:
 
 ```text
-THREAD_ENGINE_SELF_CHANGE_ROUTE=AEGIS_BREAK_TO_NON_THREAD_ENGINE_METHOD
+SPEAR_REPOSITORY_PATH_SCOPE=ALL_SAFE_DECLARED_PATHS
+THREAD_ENGINE_SELF_CHANGE_ROUTE=ATHENA_SPEAR_DRAFT_PR
 NORMAL_STOP_BOUNDARY=DRAFT_PR_READBACK
 DIRECT_GITHUB_NATIVE_ROUTE=AEGIS_BREAK
 PHOENIX_BLADE_EXECUTES_SWORD=true
@@ -59,6 +60,16 @@ BOW_ARROW_OWNERSHIP=JAYSON_AND_ARTEMIS
 ROLLBACK_PRE_MERGE=CLOSE_DRAFT_PR
 ROLLBACK_POST_MERGE=REVIEWED_REVERT_PR
 ```
+
+## Universal Spear path scope
+
+Prime has no repository file class that blocks direct Spear authorship. A Jayson-authorized Spear Weave may declare governance, lifecycle, schema, workflow, generated, Quest, recovery, or Thread Engine paths in one exact candidate.
+
+Repository path is classification, not authority. High-impact and self-referential changes receive the validation profile required by their controlling source. A candidate that changes Thread Engine, validation planning, policy, schemas, or workflows cannot reduce the tests selected from trusted canonical `main`.
+
+The current canonical compiler and production adapter create only one branch, one single-parent commit, and one draft PR. They cannot ready, merge, write directly to `main`, modify settings, establish standing authority, or conceal partial state. A Thread Engine self-change becomes authoritative only through ordinary review, exact-head validation, Strikeforce, separately authorized permanence, and merged-main readback.
+
+Repository-path freedom does not weaken the protected-data boundary. Private or prohibited content remains outside Prime and outside all carriers, payloads, logs, receipts, and generated projections.
 
 ## Jayson authorization and CAP-015
 
@@ -75,15 +86,9 @@ The former requirement for an independently attested fresh-platform origin was a
 
 The hosted intake is a thin Jayson/Artemis launcher, never a source author, patch engine, normal repository writer, ready authority, merge authority, or replacement for Thread Engine. It may validate and invoke only.
 
-Every hosted request validates against `schemas/athena-hosted-route-request-v1.schema.json` and binds:
+Every hosted request validates against `schemas/athena-hosted-route-request-v1.schema.json` and binds Jayson as authorizer; repository, exact base SHA, route, mission identity, and carrier SHA-256; event identity and workflow source; run and credential identity; replay identity; hosted path classification; and the draft-PR stop boundary.
 
-- Jayson as authorizer;
-- repository, exact base SHA, route, mission identity, and carrier SHA-256;
-- event identity, actor, triggering actor, workflow ref and source SHA;
-- run ID, run attempt, credential principal, and token mode;
-- replay identity, protected-path classification, and draft-PR stop boundary.
-
-The hosted request schema accepts only `ARROW_BOW_HOSTED`, ephemeral `GITHUB_TOKEN`, and ordinary path classification. The submitted request cannot select trusted workflow SHA, credential principal, event actor, triggering actor, run identity, or repository owner.
+The hosted request schema accepts only `ARROW_BOW_HOSTED`, ephemeral `GITHUB_TOKEN`, and its currently supported hosted path classification. That compatibility field does not define a Prime-wide protected-file doctrine and does not limit direct Spear.
 
 ## Receipt and replay contract
 
@@ -97,17 +102,16 @@ The replay key is checked before write authority. Any matching current or histor
 
 Route selection occurs before compiler or adapter mutation:
 
-| Declared path class | Required result |
+| Declared objective | Required result |
 |---|---|
-| ordinary Athena Thread Engine delivery | Spear |
-| ordinary Jayson/Artemis delegated delivery | Arrow/Bow |
+| Athena authors any safe declared Prime repository paths through Thread Engine | Spear |
+| ordinary Jayson/Artemis delegated hosted delivery | Arrow/Bow |
 | Athena executes an exact Sword | Phoenix Blade |
 | bounded direct or alternate safe route | Aegis Break |
-| generated projection mixed with authored source | reject `GENERATED_SOURCE_MIXING` |
-| protected non-self-change without exact authority | reject `PROTECTED_ROUTE_AUTHORITY_REQUIRED` |
-| protected non-self-change with exact authority | Aegis Break selects the approved protected route |
-| `tools/thread-engine/**` self-change | Aegis Break to Phoenix Blade, Oathbringer, or another approved non-Thread-Engine route |
-| ambiguous, unknown, or policy-drifted path | reject `ROUTE_UNRESOLVED` |
+| generated projection mission requiring its dedicated profile | generated checkpoint route |
+| unsafe path syntax, collision, stale base, replay, private material, or policy drift | reject before mutation |
+
+Legacy hosted path classification may still decline a hosted Arrow/Bow carrier before mutation. That is a hosted-launch compatibility boundary, not evidence that direct Spear lacks path authority.
 
 ## Hosted permissions and separation
 
@@ -117,7 +121,9 @@ It must not use `pull_request_target`, unpinned reusable workflows, arbitrary UR
 
 ## Fail-closed rejection set
 
-Reject without mutation on non-owner or unauthorized delegation; edited input; stale base; replay; malformed or oversized carrier; duplicate JSON keys; unsafe archive members; hash mismatch; unsafe or duplicate paths; branch or PR collision; ambiguous credential principal; workflow-source drift; protected-path mismatch; generated mixing; private material; or any request for direct main, force push, ready, merge, cleanup, settings, standing authority, or a second writer.
+Reject without mutation on non-owner or unauthorized delegation; edited input; stale base; replay; malformed or oversized carrier; duplicate JSON keys; unsafe archive members; hash mismatch; unsafe or duplicate path syntax; branch or PR collision; ambiguous credential principal; workflow-source drift; private material; or any request for direct main, force push, ready, merge, cleanup, settings, standing authority, or a second writer.
+
+Path location alone is not a direct-Spear rejection reason.
 
 `AJ-03` is PROVEN by genuine non-owner workflow run `29421543076`. Both actors were `jaysontomyod`; the route returned `OWNER_IDENTITY_REJECTED` at pre-mutation rejection, the Thread Engine job was skipped, and exact sanitized evidence records zero mutation. This acceptance does not promote AJ-11, AJ-12, CAP-027, RP-C08, or the Repairing Prime Quest.
 
@@ -135,32 +141,25 @@ That constructor is not an external origin bridge and no longer carries a CAP-01
 
 ## Guided hosted publisher
 
-The owner-guided publisher is a Jayson/Artemis Arrow/Bow launcher over the existing hosted workflow. Preview audits canonical main, workflow identity, carrier, privacy, ordinary paths, and compiler output without mutation. Execute requires exact Preview identity, revalidates drift, reserves durable no-retry intent, dispatches only the existing hosted workflow, and reads back the run.
+The owner-guided publisher is a Jayson/Artemis Arrow/Bow launcher over the existing hosted workflow. Preview audits canonical main, workflow identity, carrier, privacy, hosted-supported paths, and compiler output without mutation. Execute requires exact Preview identity, revalidates drift, reserves durable no-retry intent, dispatches only the existing hosted workflow, and reads back the run.
 
 The guided publisher may not call the adapter directly, create or update a branch or PR, retry partial state, mark ready, merge, change settings, or become a second writer. CAP-010 is already accepted from its separate live journey and does not establish or limit Athena's Spear identity.
 
 ## Generated explicit owner-dispatch route
 
-Canonical `main` pushes do not launch `.github/workflows/generated-checkpoint-publisher.yml`. An explicit owner `workflow_dispatch`, bound to exact current `main`, is the only hosted entrypoint. Before parity work, the read-only queue admission binds the exact repository, owner actor, triggering actor, event, main ref, workflow source, requested base, current-main readback, run identity, and ephemeral GitHub credential class. It enumerates at most 1,000 open pull requests through a 1,001-entry sentinel so the accepted queue cannot silently truncate. Its durable sanitized receipt binds the closed query boundary and observed snapshot by SHA-256 and never authorizes mutation.
+Canonical `main` pushes do not launch `.github/workflows/generated-checkpoint-publisher.yml`. An explicit owner `workflow_dispatch`, bound to exact current `main`, is the only hosted entrypoint. The read-only queue admission and singular Thread Engine preserve exact identity, parity, replay, path, draft-readback, and no-automatic-permanence boundaries.
 
-Exactly one open generated checkpoint may yield successful `DEFERRED_OPEN_CHECKPOINT` only when its readback is an internally consistent publisher-owned draft: GitHub Actions bot author, same Prime repository and owner, `main` base, exact generated title and mission, deterministic branch and replay relation, and canonical publisher body provenance. Its historical base may truthfully precede the newer queue run's current main. An older serialized event may likewise defer against a recorded newer current main because deferral cannot mutate; a `CLEAR` decision with event-base drift fails closed before parity. A malformed, inconsistent, forged, non-draft, or multiple generated identity fails closed. Successful deferral leaves parity, reconciliation, preparation, publication, and exact-head validation skipped, performs no mutation, and is an overall GREEN workflow outcome.
+Current reports return successful `NOOP` with no mission, commit, branch, PR, or self-dispatch. Accumulated source changes produce one full five-file mission and one fresh deterministic generated-only draft; a partial delta fails closed. Closing a generated draft without merge does not move `main` or automatically restart the publisher.
 
-While one valid generated draft is open, an explicit later dispatch defers read-only and canonical source changes continue to accumulate without hosted work. A later owner dispatch recomputes all five projections from then-current source. Current reports return successful `NOOP` with no mission, commit, branch, PR, or self-dispatch. Accumulated source changes produce one full five-file mission and one fresh deterministic generated-only draft through the singular Thread Engine; a partial delta fails closed.
-
-Closing a generated draft without merge does not move `main` and does not wake the publisher. Recovery is an explicit owner `workflow_dispatch` bound to exact current main. There is no push, pull-request-close, or schedule trigger and no automatic close, replacement, retry, ready, merge, branch deletion, or direct generated write to `main`.
-
-Queue preflight is defense in depth, not a replacement writer. The singular Thread Engine retains its final remote-head, branch-collision, generated-PR-collision, mission replay, nonce replay, stale-base, pre-push, exact path/blob, and draft readback locks. No generated queue component may become a second repository writer.
-
-This explicit generated route is not Spear, Phoenix Blade, Aegis Break, or Bow/Arrow route ownership. It preserves the generated lifecycle described by AJ-09 and CAP-019/CAP-020 while removing automatic launch. It never automatically readies or merges the generated PR.
+This explicit generated route is not Spear, Phoenix Blade, Aegis Break, or Bow/Arrow route ownership. It never automatically readies or merges the generated PR.
 
 ## Evidence and promotion boundary
 
-This realignment uses already merged evidence; it does not manufacture new operating proof:
+This realignment uses already merged evidence and the current implementation regression; it does not manufacture operating proof:
 
 - direct Spear PR `#102` proves Athena-to-Thread-Engine mechanics;
 - merged parity proof preserves direct Spear and Arrow/Bow compiler equivalence;
 - Oathbringer production acceptance proves the Sword operation set used by Phoenix Blade's counterpart definition;
-- PRs `#181` and `#182` remain historical proof of the former automatic generated post-merge route and its zero-delta behavior;
-- protected dispatch PR `#187` and its accepted adapter receipt prove mission-scoped Aegis Break execution against one exact protected path.
+- protected dispatch PR `#187` remains historical evidence of the former path-gated model.
 
-CAP-015, AJ-01, RP-C01-M02, and RP-C01-M06 remain reconciled by their respective accepted evidence. The later non-owner acceptance separately proves AJ-03 and RP-C01-M07 and completes RP-C01. Before the later exact-main validation, the accepted boundary was: AJ-11 is PROVEN; AJ-12, CAP-027, RP-C08, and Repairing Prime remain open. AJ-11 and AJ-12 are now PROVEN; CAP-027 is RESTORED/ACTIVE by the separate final capability reconciliation; RP-C08 and Repairing Prime remain open.
+CAP-015, AJ-01, RP-C01-M02, and RP-C01-M06 remain reconciled by their respective accepted evidence. The universal-path change alters authoring scope, not permanence or capability-promotion authority.

@@ -3,8 +3,6 @@ from __future__ import annotations
 from pathlib import Path, PurePosixPath
 from typing import Iterable
 
-from .protected_paths import is_protected_path
-
 RUNTIME_BYPRODUCTS = {"__pycache__", ".pytest_cache"}
 RUNTIME_SUFFIXES = {".pyc", ".pyo"}
 
@@ -64,12 +62,19 @@ def reject_symlinks(root: Path) -> None:
 
 
 def validate_declared_path_set(paths: Iterable[str], *, allow_protected: bool = False) -> list[PurePosixPath]:
+    """Validate repository-relative path safety and uniqueness.
+
+    Prime no longer treats repository locations as an authorship boundary for
+    Spear. ``allow_protected`` remains as a compatibility argument for callers
+    and historical route evidence; it does not change path acceptance. Content,
+    authority, validation, generated-state, and permanence controls remain
+    separate and continue to fail closed.
+    """
+    del allow_protected
     seen: dict[str, str] = {}
     result: list[PurePosixPath] = []
     for value in paths:
         rel = validate_relative_path(value)
-        if not allow_protected and is_protected_path(rel):
-            raise PolicyError(f"protected path requires a separate route: {rel.as_posix()}", "PROTECTED_PATH")
         folded = rel.as_posix().casefold()
         if folded in seen:
             raise PolicyError(f"duplicate or case-fold collision rejected: {rel.as_posix()}", "PATH_COLLISION")
