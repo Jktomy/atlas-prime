@@ -1,0 +1,27 @@
+{
+  "schema_version": "atlas.sunset-router-preview-ingress-proof.v1",
+  "mission": "CAMPAIGN-CODEX-OPEN-PATHWAYS-SUNSET-R01",
+  "issue_number": 257,
+  "attempt_id": "MISSION-257-STAGE3-PREVIEW-INGRESS-R01",
+  "canonical_base": "b4df923150327c3fb46ee1d89462ef35b9a45507",
+  "branch": "mission/257-stage3-preview-ingress-r01",
+  "stage": "STAGE_3_EXECUTION_SURFACE_CANDIDATE",
+  "classification": "IMPLEMENTED_PENDING_VALIDATION",
+  "public_clean": true,
+  "changed_path_count": 13,
+  "objective_digest": "sha256:2cb426f4d94855cf7fc6b2fb506276534297601074e074771b1b4db33b028912",
+  "changed_paths_digest": "sha256:c94dde85a6520c52bf4dd88f6ea148cb0c14d340672fb7ece65714ae949fd922",
+  "claims": [
+    "One owner-only Issue-comment ingress is implemented for Mission #257.",
+    "The ingress validates exact repository, Issue, owner, current-main base, Athena Spear route, replay identity, closed schema, bounded size, and public-clean content before output.",
+    "The hosted workflow invokes only tools.sunset_router preview for lifecycle execution and keeps all request and Preview artifacts in system temporary storage.",
+    "A successful run returns the exact lifecycle Preview, Router receipt, their digests, replay binding, and a separate Jayson approval command to Mission #257."
+  ],
+  "forbidden_claims": [
+    "No live Preview has been generated or approved by this source candidate.",
+    "No lifecycle candidate, source branch, publication PR, READY, MERGE, settings, runtime, Quest advancement, operator transfer, route retirement, standing authority, or SUNSET COMPLETE claim is made by the ingress."
+  ],
+  "generated_state": "STALE_ALLOWED",
+  "rollback": "Before merge, close the exact PR. After merge, use one reviewed revert or repair-forward PR; never rewrite history.",
+  "next_safe_action": "Open one draft PR, run full cross-platform validation, reconcile review, and perform exact-head Strikeforce before the separately authorized Shardblade permanence gate."
+}

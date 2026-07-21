@@ -51,6 +51,7 @@ VERSIONED_AND_AUXILIARY_SCHEMAS = {
     "sunset-router-request-v1.schema.json",
     "sunset-router-plan-v1.schema.json",
     "sunset-router-receipt-v1.schema.json",
+    "sunset-router-preview-intake-v1.schema.json",
 }
 
 
@@ -139,6 +140,7 @@ class LifecycleContractTests(unittest.TestCase):
                 "atlas.sunset-router.request",
                 "atlas.sunset-router.plan",
                 "atlas.sunset-router.receipt",
+                "atlas.sunset-router.preview-intake",
             },
         )
 
