@@ -13,6 +13,8 @@ THREAD_ENGINE = ROOT / "tools" / "thread-engine"
 sys.path.insert(0, str(THREAD_ENGINE))
 
 from production_adapter.authority import validate_mission  # noqa: E402
+from production_adapter.path_policy import PolicyError, validate_declared_path_set  # noqa: E402
+from production_adapter.protected_paths import direct_spear_path_scope  # noqa: E402
 from production_adapter.receipt import stable_json  # noqa: E402
 from spear_bridge.compiler import MANIFEST_IDENTITY, compile_package  # noqa: E402
 from spear_bridge.git_reader import SourceAbsentError  # noqa: E402
@@ -104,14 +106,15 @@ class SpearUniversalPathTests(unittest.TestCase):
             root = Path(temporary)
             package, package_sha = write_package(root)
             output = root / "output"
-            receipt = compile_package(
-                package,
-                package_sha256=package_sha,
-                output_dir=output,
-                disabled_proof=True,
-                compile_only=True,
-                reader=AbsentReader(),
-            )
+            with direct_spear_path_scope():
+                receipt = compile_package(
+                    package,
+                    package_sha256=package_sha,
+                    output_dir=output,
+                    disabled_proof=True,
+                    compile_only=True,
+                    reader=AbsentReader(),
+                )
             mission = json.loads((output / "mission.json").read_text(encoding="utf-8"))
             validated = validate_mission(mission)
 
@@ -126,6 +129,11 @@ class SpearUniversalPathTests(unittest.TestCase):
             },
         )
         self.assertIsNone(validated.aegis_break_authority)
+
+    def test_direct_spear_scope_closes_after_compile(self) -> None:
+        with self.assertRaises(PolicyError) as raised:
+            validate_declared_path_set(["governance/noctua.md"])
+        self.assertEqual(raised.exception.code, "PROTECTED_PATH")
 
 
 if __name__ == "__main__":
