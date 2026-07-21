@@ -1,0 +1,23 @@
+{
+  "schema_version": "atlas.sunset-router-proof.v1",
+  "mission": "CAMPAIGN-CODEX-OPEN-PATHWAYS-SUNSET-R01",
+  "issue_number": 257,
+  "attempt_id": "CAMPAIGN-CODEX-OPEN-PATHWAYS-SUNSET-ATTEMPT-02-STAGE-2",
+  "canonical_base": "d7ee4ba0af3e28f2adc28316d6cbefe2172e52c8",
+  "branch": "mission/257-sunset-router-r01",
+  "stage": "STAGE_2_CANDIDATE",
+  "classification": "IMPLEMENTED_PENDING_VALIDATION",
+  "public_clean": true,
+  "claims": [
+    "Sunset Router R01 is implemented as a deterministic front door over the existing lifecycle engine.",
+    "Canonical ownership resolution and actor-bound route selection fail closed.",
+    "Publication plans bind exact ADD or REPLACE operations and payload digests.",
+    "READBACK_COMPLETE requires exact merged-main bytes and cannot be inferred from a merge response."
+  ],
+  "forbidden_claims": [
+    "No route is retired.",
+    "No Quest or Prime Ascendant gate is advanced.",
+    "No runtime, deployment, Gitea, repository-setting, READY, MERGE, or SUNSET COMPLETE claim is made."
+  ],
+  "next_safe_action": "Open one draft PR, run hosted and exact-head validation, reconcile review, and stop on Aegis failure."
+}
