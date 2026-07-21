@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/sunset-router-plan-v1.schema.json",
+  "title": "Atlas Sunset Router plan v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "plan_id",
+    "authority",
+    "phase",
+    "repository",
+    "request_digest",
+    "expected_main_sha",
+    "project_id",
+    "operation_id",
+    "quest_scope",
+    "actor",
+    "selected_route",
+    "fallback_routes",
+    "preview_id",
+    "preview_digest",
+    "approval_id",
+    "approval_digest",
+    "candidate_set_digest",
+    "changed_paths",
+    "changed_paths_digest",
+    "operations",
+    "branch",
+    "state",
+    "next_safe_action"
+  ],
+  "properties": {
+    "schema_id": {"const": "atlas.sunset-router.plan"},
+    "schema_version": {"const": "1.0.0"},
+    "plan_id": {"type": "string", "pattern": "^SRP-[A-Z2-7]{26}$"},
+    "authority": {"const": "ROUTE_PLAN_ONLY"},
+    "phase": {"enum": ["PREVIEW", "PUBLICATION"]},
+    "repository": {"const": "Jktomy/atlas-prime"},
+    "request_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "expected_main_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "project_id": {"$ref": "common-v1.schema.json#/$defs/atlas_identity"},
+    "operation_id": {"$ref": "common-v1.schema.json#/$defs/atlas_identity"},
+    "quest_scope": {"$ref": "common-v1.schema.json#/$defs/quest_scope"},
+    "actor": {"enum": ["ATHENA", "JAYSON", "DELEGATED_NON_ATHENA"]},
+    "selected_route": {
+      "enum": [
+        "ATHENA_SPEAR_THREAD_ENGINE",
+        "ATHENA_PHOENIX_BLADE",
+        "ATHENA_AEGIS_BREAK",
+        "JAYSON_ARROW_BOW_THREAD_ENGINE",
+        "JAYSON_OATHBRINGER_SWORD",
+        "DELEGATED_ARROW_BOW_THREAD_ENGINE"
+      ]
+    },
+    "fallback_routes": {
+      "type": "array",
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {"type": "string"}
+    },
+    "preview_id": {"type": "string", "pattern": "^SPV-[A-Z2-7]{26}$"},
+    "preview_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "approval_id": {"type": ["string", "null"], "pattern": "^SAP-[A-Z2-7]{26}$"},
+    "approval_digest": {"type": ["string", "null"], "pattern": "^sha256:[a-f0-9]{64}$"},
+    "candidate_set_digest": {"type": ["string", "null"], "pattern": "^sha256:[a-f0-9]{64}$"},
+    "changed_paths": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^lifecycle/(?!.*(?:^|/)\\.\\.(?:/|$))(?![A-Za-z]:/)(?!.*\\\\).+$"
+      }
+    },
+    "changed_paths_digest": {"type": ["string", "null"], "pattern": "^sha256:[a-f0-9]{64}$"},
+    "operations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "action", "payload_digest"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^lifecycle/(?!.*(?:^|/)\\.\\.(?:/|$))(?![A-Za-z]:/)(?!.*\\\\).+$"
+          },
+          "action": {"enum": ["ADD", "REPLACE"]},
+          "payload_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"}
+        }
+      }
+    },
+    "branch": {"type": ["string", "null"], "pattern": "^sunset/[a-z0-9-]+$"},
+    "state": {"enum": ["PREVIEW_READY", "APPROVED_PENDING_PUBLICATION"]},
+    "next_safe_action": {"$ref": "common-v1.schema.json#/$defs/bounded_text"}
+  }
+}

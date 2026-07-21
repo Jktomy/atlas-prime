@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/sunset-router-receipt-v1.schema.json",
+  "title": "Atlas Sunset Router receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "receipt_id",
+    "authority",
+    "plan_id",
+    "phase",
+    "state",
+    "request_digest",
+    "plan_digest",
+    "preview_id",
+    "preview_digest",
+    "approval_id",
+    "candidate_set_digest",
+    "changed_paths_digest",
+    "expected_head",
+    "pull_request",
+    "merged_commit",
+    "canonical_readback",
+    "reason_code",
+    "next_safe_action"
+  ],
+  "properties": {
+    "schema_id": {"const": "atlas.sunset-router.receipt"},
+    "schema_version": {"const": "1.0.0"},
+    "receipt_id": {"type": "string", "pattern": "^SRR-[A-Z2-7]{26}$"},
+    "authority": {"const": "READ_ONLY_RECEIPT"},
+    "plan_id": {"type": "string", "pattern": "^SRP-[A-Z2-7]{26}$"},
+    "phase": {"enum": ["PREVIEW", "APPROVAL", "PUBLICATION", "READBACK"]},
+    "state": {
+      "enum": [
+        "PREVIEW_READY",
+        "APPROVED_PENDING_COMPILATION",
+        "APPROVED_PENDING_PUBLICATION",
+        "APPROVED_PENDING_VALIDATION",
+        "APPROVED_PENDING_PERMANENCE",
+        "BLOCKED_RESUMABLE",
+        "READBACK_COMPLETE"
+      ]
+    },
+    "request_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "plan_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "preview_id": {"type": "string", "pattern": "^SPV-[A-Z2-7]{26}$"},
+    "preview_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "approval_id": {"type": ["string", "null"], "pattern": "^SAP-[A-Z2-7]{26}$"},
+    "candidate_set_digest": {"type": ["string", "null"], "pattern": "^sha256:[a-f0-9]{64}$"},
+    "changed_paths_digest": {"type": ["string", "null"], "pattern": "^sha256:[a-f0-9]{64}$"},
+    "expected_head": {"type": ["string", "null"], "pattern": "^[a-f0-9]{40}$"},
+    "pull_request": {"type": ["integer", "null"], "minimum": 1},
+    "merged_commit": {"type": ["string", "null"], "pattern": "^[a-f0-9]{40}$"},
+    "canonical_readback": {"type": "boolean"},
+    "reason_code": {"type": ["string", "null"], "maxLength": 128},
+    "next_safe_action": {"$ref": "common-v1.schema.json#/$defs/bounded_text"}
+  }
+}

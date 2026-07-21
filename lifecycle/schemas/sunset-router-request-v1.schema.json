@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/sunset-router-request-v1.schema.json",
+  "title": "Atlas Sunset Router request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "authority",
+    "actor",
+    "requested_route",
+    "operator_transfer_authorized",
+    "lifecycle_request"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "atlas.sunset-router.request"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "authority": {
+      "const": "PUBLIC_CLEAN_REQUEST"
+    },
+    "actor": {
+      "enum": [
+        "ATHENA",
+        "JAYSON",
+        "DELEGATED_NON_ATHENA"
+      ]
+    },
+    "requested_route": {
+      "enum": [
+        "AUTO",
+        "ATHENA_SPEAR_THREAD_ENGINE",
+        "ATHENA_PHOENIX_BLADE",
+        "ATHENA_AEGIS_BREAK",
+        "JAYSON_ARROW_BOW_THREAD_ENGINE",
+        "JAYSON_OATHBRINGER_SWORD",
+        "DELEGATED_ARROW_BOW_THREAD_ENGINE"
+      ]
+    },
+    "operator_transfer_authorized": {
+      "type": "boolean"
+    },
+    "lifecycle_request": {
+      "$ref": "sunset-request-v2.schema.json"
+    }
+  }
+}
