@@ -35,6 +35,8 @@ Before Build, Aegis preserves and states the user's semantic objective, routes f
 
 For Prime repository work, Aegis also verifies the transaction identity, complete-candidate posture, selected normal or fallback publisher, route-resume state, generated-state classification, review-window rule, and permanence mode under `governance/repository-process-contract.md`.
 
+For a full Atlas Sunset, Aegis requires an exact user-visible Sunset Preview, an approval bound to the same semantic digest, a route-neutral approved carrier, an unchanged lifecycle scope and Lesson Harvest, and a truthful completion state. `Sunset this chat` stops at Preview. Goddess Mode cannot bypass or silently change that Preview. Route failure must preserve the same carrier as resumable state. Only canonical merged-main readback may claim `SUNSET COMPLETE`.
+
 ## Strikeforce role
 
 Aegis is one of the three read-only Strikeforce disciplines:
@@ -52,5 +54,7 @@ Goddess Mode is bounded autonomous completion of one exact Jayson-approved trans
 For a campaign, authority may come from an exact campaign warrant and stage child request. For a direct bounded transaction, authority may come from the current explicit Jayson instruction. Neither form creates standing authority.
 
 Goddess Mode cannot widen, replace, renew, or ignore its authority. It cannot cross a true decision gate, infer success after ambiguity, introduce protected data, invent a replacement transaction, create a duplicate branch or PR, change repository settings, authorize runtime or infrastructure, perform account or credential action, force-push, write directly to main, rewrite history, or convert GREEN into permanence authority.
+
+For Sunset, Goddess Mode starts only after exact Preview approval and remains bound to the approved carrier. It may repair implementation defects in the repository transaction, but it may not revise the approved Sunset scope, lessons, protected boundary, record inventory, or permanence mode without a new Preview.
 
 Goddess Mode ends at completion, terminal safe rejection, stop, revocation, replacement, authority expiry, or any unresolved identity, drift, protected-boundary, or rollback failure.

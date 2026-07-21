@@ -51,7 +51,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Quest identities and unfinished-work continuity | `governance/quest-engine-continuity-contract.md`, `continuity/quest-engine-identities-r01.json`, `continuity/prime-continuity-register-r01.json`, `tools/prime_continuity/README.md` |
 | Validate continuity or surface Argus | `python -B -m tools.prime_continuity.cli validate`, `python -B -m tools.prime_continuity.cli argus` |
 | Preview one bounded continuity update | `python -B -m tools.prime_continuity.cli plan-update ...`; candidate only, then reviewed draft-PR route |
-| Full Atlas Sunset or continuity snapshot | Full lifecycle closeout: `governance/lesson-harvest-protocol.md`, `lifecycle/lifecycle-contract.md`, then `python -B -m tools.atlas_lifecycle sunset candidate`; compact continuity snapshot only: `python -B -m tools.prime_continuity.cli sunset --continuity-id ID`; never substitute one for the other |
+| Full Atlas Sunset or continuity snapshot | Full lifecycle closeout: `governance/lesson-harvest-protocol.md`, `lifecycle/lifecycle-contract.md`, then `python -B -m tools.atlas_lifecycle sunset preview`, exact `sunset approve`, and exact `sunset candidate`; compact continuity snapshot only: `python -B -m tools.prime_continuity.cli sunset --continuity-id ID`; never substitute one for the other |
 | Lesson Harvest and active assurance controls | `governance/lesson-harvest-protocol.md`, `governance/assurance-controls.json`, `schemas/assurance-controls-v1.schema.json` |
 | Lifecycle records and read-only mechanics | `lifecycle/README.md`, `lifecycle/lifecycle-contract.md`, `lifecycle/schemas/`, `tools/atlas_lifecycle/README.md` |
 | Infrastructure source | `infrastructure/atlas-infrastructure-source.md` |
@@ -76,9 +76,11 @@ Bow and Arrow belong to Jayson and Artemis delegated delivery. They are never se
 
 A request to build, repair, recover, execute, or otherwise make a Sword automatically routes first through `methods/sword-forge-standard.md` and `methods/sword-lessons.json`, then through current Sword doctrine and the exact live GitHub target state. The user does not need to invoke a separate preflight command or remind Athena to recall earlier lessons.
 
-A direct request to change, repair, update, add to, or Sunset Prime routes one bounded transaction through merge-ready without a second user command. Preview-only and draft-only requests remain narrower. The route includes complete-candidate construction, candidate-caused repair, actionable review repair, validation, exact-head Strikeforce, and ready-for-review only while the candidate head remains unchanged.
+A direct request to change, repair, update, or add to Prime routes one bounded transaction through merge-ready without a second user command. Preview-only and draft-only requests remain narrower. The route includes complete-candidate construction, candidate-caused repair, actionable review repair, validation, exact-head Strikeforce, and ready-for-review only while the candidate head remains unchanged.
 
-`with Goddess Mode` keeps the same transaction moving through obvious safe work and candidate-caused repair without widening. `with Shardblade` grants one exact-head permanence action after fresh compare-and-swap verification. Without Shardblade, merge remains Jayson's manual action.
+A request to `Sunset this chat` is the mandatory exception: it always returns one exact user-visible Sunset Preview and stops. After Jayson approves that exact Preview, the same transaction seals its approval carrier and may continue through candidate, draft PR, validation, Strikeforce, permanence, and canonical readback according to the approved mode.
+
+`with Goddess Mode` keeps the same transaction moving through obvious safe work and candidate-caused repair without widening, but cannot bypass or change a Sunset Preview. `with Shardblade` grants one exact-head permanence action only when the exact approval binds that mode. Without Shardblade, merge remains Jayson's manual action. A blocked Sunset route resumes the same approved carrier and cannot claim completion before canonical readback.
 
 ## Decision box
 

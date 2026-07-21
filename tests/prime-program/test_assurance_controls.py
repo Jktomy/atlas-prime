@@ -19,7 +19,10 @@ class AssuranceControlTests(unittest.TestCase):
     def test_register_is_closed_unique_and_controlling_only(self) -> None:
         validate_schema(self.schema, self.register)
         controls = self.register["controls"]
-        self.assertEqual([item["control_id"] for item in controls], ["ASC-001", "ASC-002", "ASC-003", "ASC-004"])
+        self.assertEqual(
+            [item["control_id"] for item in controls],
+            ["ASC-001", "ASC-002", "ASC-003", "ASC-004", "ASC-005", "ASC-006", "ASC-007"],
+        )
         self.assertEqual(len({item["control_id"] for item in controls}), len(controls))
         self.assertLessEqual({item["status"] for item in controls}, {"ACTIVE", "SUPERSEDED"})
         self.assertTrue(all(item["status"] == "ACTIVE" for item in controls))
@@ -62,6 +65,9 @@ class AssuranceControlTests(unittest.TestCase):
         self.assertIn("independently executable alternate publisher", controls["ASC-003"]["objective"])
         self.assertIn("current explicit Jayson Shardblade instruction", controls["ASC-004"]["objective"])
         self.assertIn("atomic expected-head binding", controls["ASC-004"]["objective"])
+        self.assertIn("user-visible Preview", controls["ASC-005"]["objective"])
+        self.assertIn("survives route failure", controls["ASC-006"]["title"])
+        self.assertIn("explicit disposition", controls["ASC-007"]["objective"])
 
         protocol = (ROOT / "governance/lesson-harvest-protocol.md").read_text(encoding="utf-8")
         aegis = (ROOT / "governance/atlas-aegis.md").read_text(encoding="utf-8")
@@ -73,6 +79,7 @@ class AssuranceControlTests(unittest.TestCase):
         self.assertIn("assurance-control applicability", aegis)
         self.assertIn("objective-to-route alignment", " ".join(strikeforce.split()))
         self.assertIn("Failure-isolated publishers", process)
+        self.assertIn("Full Atlas Sunset special route", process)
         self.assertIn("expected head SHA", shard)
         self.assertIn("readback-only reconciliation", shard)
 

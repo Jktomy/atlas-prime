@@ -82,6 +82,14 @@ A candidate is prepublication-complete when:
 
 Review may still discover a defect. That defect enters the consolidated repair process; it does not justify publishing knowingly partial work.
 
+## Full Atlas Sunset special route
+
+A request to `Sunset this chat` is always read-only Preview first, even though an ordinary direct repository instruction may otherwise authorize build-through-ready. Sunset Preview is a true semantic decision gate because it exposes Project, Operation, Quest classification, Feather meaning, Lesson Harvest, record inventory, protected handling, routes, and permanence choices before lifecycle construction.
+
+After Jayson approves the exact Preview, the same transaction seals an approved route-neutral carrier, compiles the lifecycle candidate from Preview, approval, carrier, and request v3, publishes one draft PR, validates, reconciles review, and proceeds through the authorized permanence mode. Goddess Mode cannot bypass or change the approved semantic payload. Shardblade authority applies only when the approval mode explicitly binds it.
+
+A blocked Sunset route preserves the approved carrier and resumes the same transaction. It never substitutes a narrative summary, duplicate transaction, or unapproved request. Only canonical merged-main readback permits the final `SUNSET COMPLETE` claim.
+
 ## Validation
 
 Every candidate receives a mandatory baseline:

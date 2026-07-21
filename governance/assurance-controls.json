@@ -81,6 +81,65 @@
         "tests/prime-program/test_prime_human_merge_route.py"
       ],
       "superseded_by": null
+    },
+    {
+      "control_id": "ASC-005",
+      "title": "Every full Sunset requires exact Preview approval",
+      "status": "ACTIVE",
+      "objective": "No full Atlas Sunset candidate may be constructed, published, or declared complete without one user-visible Preview and explicit Jayson approval bound to the same semantic payload.",
+      "applies_when": "The semantic objective is a full Atlas Sunset, a Sunset repair, or any action that constructs, publishes, resumes, or claims completion of Sunset lifecycle records.",
+      "required_evidence": [
+        "The exact Preview ID, Preview digest, semantic digest, scope, record plan, and permitted approval modes are present.",
+        "The explicit Jayson approval and generated request bind the unchanged Preview, semantic payload, and selected permanence mode.",
+        "Any changed scope, lesson harvest, source lock, route, or record plan invalidates approval before candidate output."
+      ],
+      "enforcement_sources": [
+        "lifecycle/lifecycle-contract.md",
+        "governance/lesson-harvest-protocol.md",
+        "tools/atlas_lifecycle/sunset_preview.py",
+        "tests/lifecycle/test_sunset_preview.py"
+      ],
+      "superseded_by": null
+    },
+    {
+      "control_id": "ASC-006",
+      "title": "Sunset save state survives route failure",
+      "status": "ACTIVE",
+      "objective": "A connector, executor, network, repository, or local-checkout failure may delay canonical Sunset publication but may not destroy, replace, duplicate, or falsely complete the approved save point.",
+      "applies_when": "A full Sunset is approved, blocked, resumed, rerouted, published, or recovered before canonical readback completes.",
+      "required_evidence": [
+        "One route-neutral approved carrier binds the exact Preview, approval, semantic payload, record plan, selected route, and fallback routes.",
+        "A blocked route preserves the same carrier and transaction identity and creates no duplicate branch, PR, or Sunset.",
+        "Only canonical merged-main readback permits the terminal SUNSET COMPLETE claim."
+      ],
+      "enforcement_sources": [
+        "lifecycle/lifecycle-contract.md",
+        "governance/repository-process-contract.md",
+        "recovery/elantris-recovery.md",
+        "tools/atlas_lifecycle/sunset_preview.py",
+        "tests/lifecycle/test_sunset_preview.py"
+      ],
+      "superseded_by": null
+    },
+    {
+      "control_id": "ASC-007",
+      "title": "Sunset lessons receive explicit disposition and follow-up",
+      "status": "ACTIVE",
+      "objective": "Every full Atlas Sunset performs Lesson Harvest, gives each observation one explicit disposition, and truthfully records whether it remains local, reinforces an existing safeguard, requires Golden Wing candidacy, requires assurance absorption, or is rejected.",
+      "applies_when": "A Sunset Preview, candidate, review, closeout, Sunrise, Golden Wing, or assurance-control action evaluates or reuses a lesson.",
+      "required_evidence": [
+        "Every observation has one permitted disposition and an evidence-backed rationale, or the Harvest has one exact no-lesson reason.",
+        "Existing Golden Wing references resolve and are carried into Sunrise; candidate and absorption dispositions remain explicit follow-up obligations.",
+        "No observation, Feather, Golden Wing candidate, CI result, or Strikeforce verdict self-promotes into doctrine or authority."
+      ],
+      "enforcement_sources": [
+        "governance/lesson-harvest-protocol.md",
+        "lifecycle/lifecycle-contract.md",
+        "tools/atlas_lifecycle/sunset_preview.py",
+        "tests/lifecycle/test_sunset_preview.py",
+        "tests/prime-program/test_assurance_controls.py"
+      ],
+      "superseded_by": null
     }
   ]
 }

@@ -86,17 +86,74 @@ recorded by the Sunset and reconstruct only the bounded compact context. A
 missing, null, dangling, reused, cross-scope, or mismatched Feather binding fails
 closed.
 
+### Mandatory Sunset Preview and approval
+
+`Sunset this chat` is a Preview request. It never authorizes immediate lifecycle
+candidate construction. Every full Atlas Sunset follows:
+
+```text
+current-source and continuity readback
+→ one user-visible Sunset Preview
+→ Jayson approval of that exact Preview
+→ one route-neutral approved carrier
+→ exact lifecycle candidate
+→ one reviewed draft PR
+→ validation and exact-head Strikeforce
+→ separately authorized permanence
+→ canonical-main readback
+```
+
+The Preview binds the exact base, Project, Operation, Quest classification,
+proposed Feather meaning, completion assessment, decisions, open items, current
+position, blockers, next gates, protected-data handling, Lesson Harvest,
+expected lifecycle record inventory, selected route, fallback routes, and
+permitted approval modes.
+
+Approval binds the exact Preview digest and one permanence mode. Any changed
+semantic field, scope, Lesson Harvest, record plan, protected boundary, or
+permanence mode invalidates approval and requires a new Preview. Prior approval,
+Goddess Mode, Shardblade authority, model confidence, or passing checks cannot
+approve a Preview that has not been shown.
+
+After approval, the engine seals a route-neutral carrier before candidate
+construction. The carrier is temporary execution evidence, never canonical
+lifecycle source or completion authority. Its resumable states include
+`APPROVED_PENDING_COMPILATION`, `APPROVED_PENDING_PUBLICATION`,
+`APPROVED_PENDING_VALIDATION`, `APPROVED_PENDING_PERMANENCE`,
+`BLOCKED_RESUMABLE`, `READBACK_COMPLETE`, and
+`SUPERSEDED_BY_NEW_PREVIEW`.
+
+A blocked connector, publisher, network path, or operator surface preserves the
+same carrier and transaction identity. Athena, Harmony, or Jayson PowerShell may
+resume it only after read-only reconciliation. Route failure never authorizes a
+replacement Sunset, duplicate branch, duplicate PR, fabricated fingerprint, or
+narrative completion claim. Only `READBACK_COMPLETE`, proven from merged
+canonical source and independent readback, may be reported as `SUNSET COMPLETE`.
+
 ### Bounded Sunset invocation
 
-`python -m tools.atlas_lifecycle sunset candidate` is the canonical Level 1B
-construction command for one bounded Sunset invocation. One invocation emits a
-temporary, exact, read-back-verified candidate set containing exactly one new
-sealed Feather, exactly one Sunset bound to that Feather, and exactly one
-Sunrise bound to the same pair. Admitted-Quest scope additionally emits exactly
-one replacement payload for the existing living Quest Emberline and one new
-Quest checkpoint. The Emberline replacement keeps the same stable ID, appends
-one Main-Gate journey entry, increments the Quest revision, and binds the prior
-file digest. Non-Quest scope emits neither and must not invent a Quest identity.
+The canonical full-Sunset command sequence is:
+
+```text
+python -B -m tools.atlas_lifecycle sunset preview --request REQUEST --selected-route ROUTE --fallback-route ROUTE --output-dir NEW_SYSTEM_TEMP_DIR
+python -B -m tools.atlas_lifecycle sunset approve --preview-dir PREVIEW_DIR --approval-mode STANDARD|GODDESS_MODE|GODDESS_MODE_SHARDBLADE --output-dir NEW_SYSTEM_TEMP_DIR
+python -B -m tools.atlas_lifecycle sunset candidate --request APPROVAL_DIR/sunset-request-v3.json --preview-dir PREVIEW_DIR --approval-dir APPROVAL_DIR --output-dir NEW_SYSTEM_TEMP_DIR
+python -B -m tools.atlas_lifecycle sunset verify --candidate-dir SYSTEM_TEMP_DIR
+```
+
+One approved invocation emits a temporary, exact, read-back-verified candidate
+set containing exactly one new sealed Feather, exactly one Sunset bound to that
+Feather, and exactly one Sunrise bound to the same pair. Admitted-Quest scope
+additionally emits exactly one replacement payload for the existing living
+Quest Emberline and one new Quest checkpoint. The Emberline replacement keeps
+the same stable ID, appends one Main-Gate journey entry, increments the Quest
+revision, and binds the prior file digest. Non-Quest scope emits neither and
+must not invent a Quest identity.
+
+The Preview, approval, carrier, and v3 request are canonical JSON temporary
+artifacts whose exact digests are cross-bound. Candidate construction rejects
+before output when any artifact is missing, malformed, noncanonical, tampered,
+stale, or semantically inconsistent with the approved mode.
 
 The request must bind the exact canonical `main` SHA used as the transaction
 input. Candidate construction rejects before output when that SHA does not match
@@ -107,10 +164,28 @@ integrity remains enforced through parent-Feather resolution, Quest revision,
 source fingerprint, replay protection, exact pair relationships, immutable
 receipt/readback, and the separately authorized merge gate.
 
-The command writes only beneath the system temporary directory. It never writes
-canonical source, invokes GitHub, marks a pull request ready, or merges. A
+The commands write only beneath the system temporary directory. They never
+write canonical source, invoke GitHub, mark a pull request ready, or merge. A
 separately authorized Level 1C route such as Oathbringer may publish the
 verified record bytes into one immutable draft source pull request.
+
+### Lesson Harvest routing
+
+Every full Sunset includes one explicit Lesson Harvest. Every observation has
+exactly one disposition:
+
+- `LOCAL_ONLY` remains Feather evidence;
+- `REINFORCES_EXISTING` resolves one existing Golden Wing reference;
+- `NEW_CANDIDATE` creates a visible pending Golden Wing follow-up;
+- `SYSTEMIC_EXCEPTION_CANDIDATE` creates an expedited pending Golden Wing review;
+- `ABSORPTION_REQUIRED` creates a pending doctrine or assurance-control repair;
+- `REJECTED` remains preserved with rationale.
+
+A Feather, observation, pending action, Golden Wing candidate, passing CI, or
+Strikeforce GREEN never self-promotes. Golden Wing creation and assurance
+absorption remain separate reviewed source transactions. Sunrise links only
+Golden Wing IDs that already resolve in the approved Lesson Harvest; unresolved
+follow-up obligations remain explicit blockers or open items.
 
 ## Plan, route, apply, verify
 
@@ -160,6 +235,11 @@ dangling, reused, cross-scope, and mismatched Feather references; supported and
 unsupported multi-Quest Golden Wings; deterministic indexes; stale-index,
 duplicate, replay, and malformed-schema rejection; Linux/Windows parity; and
 clean-context reconstruction.
+
+The Preview-first route additionally requires tests proving Preview-only
+invocation, exact approval binding, carrier creation before compilation,
+changed-scope and changed-lesson rejection, route-resume identity, truthful
+lesson follow-up, and canonical completion readback.
 
 The BEU pilot compares comparable manual and script-assisted operations. It
 records files and bytes read, steps, retries, elapsed agent work, interventions,

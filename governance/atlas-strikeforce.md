@@ -41,8 +41,21 @@ For a Prime repository transaction, Strikeforce also reconciles:
 - replay reservation and receipt identity;
 - whether permanence is manual or explicitly transaction-scoped Shardblade.
 
+For a full Atlas Sunset, Strikeforce additionally verifies:
+
+- the exact Preview ID, Preview digest, and user-visible scope;
+- the exact approval and approved permanence mode;
+- the route-neutral carrier and semantic payload digest;
+- unchanged Project, Operation, Quest classification, Feather meaning, Lesson Harvest, record plan, and protected boundary;
+- one Feather, one Sunset, and one Sunrise, plus one Emberline revision and checkpoint when admitted-Quest;
+- every lesson disposition and resolving Golden Wing reference;
+- explicit pending follow-up for new candidates or absorption-required findings;
+- resumable same-transaction state after any route failure;
+- rejection of narrative, branch, GREEN, READY, or merge-only claims as completion;
+- canonical readback before `SUNSET COMPLETE`.
+
 When the current Jayson instruction explicitly authorizes `with Shardblade`, Strikeforce GREEN confirms evidence readiness only. The separate Shardblade actuation must still freshly compare-and-swap the expected head, re-read required status and review state, consume the one-use authority, and perform post-merge canonical readback. Any head, tree, path, status, review, or authority drift rejects the action.
 
 For a bounded campaign, Strikeforce additionally reconciles the campaign digest, stage child request, Preview and construction receipts, expiry, and applicable stage authority. Campaign GREEN creates no authority and cannot substitute for the exact current stage action.
 
-Strikeforce also reconciles the user's semantic objective, objective-to-route alignment, and the exact `governance/assurance-controls.json` applicability record. It verifies that every matching ACTIVE control is `APPLIED` or carries an exact `NOT_APPLICABLE` reason, that claimed absorption has a real enforcing source and regression proof, and that dependent canonical sources make the same claim. Passing checks cannot cure a misleading name, event ID, route, or claim. Any missing or unknown applicability is YELLOW or RED, never GREEN.
+Strikeforce also reconciles the user's semantic objective, objective-to-route alignment, and the exact `governance/assurance-controls.json` applicability record. It verifies that every matching ACTIVE control is `APPLIED` or carries an exact `NOT_APPLICABLE` reason, that claimed absorption has a real enforcing source and regression proof, and that dependent canonical sources make the same claim. Passing checks cannot cure a misleading name, event ID, route, scope, lesson, or completion claim. Any missing or unknown applicability is YELLOW or RED, never GREEN.

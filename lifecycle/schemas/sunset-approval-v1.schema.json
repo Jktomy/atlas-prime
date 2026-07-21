@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/sunset-approval-v1.schema.json",
+  "title": "Atlas Sunset Approval v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "approval_id", "authority", "preview_id",
+    "preview_digest", "semantic_digest", "approved_by", "approval_mode",
+    "permanence_mode", "approval_scope", "state"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.sunset-approval" },
+    "schema_version": { "const": "1.0.0" },
+    "approval_id": { "type": "string", "pattern": "^SAP-[A-Z2-7]{26}$" },
+    "authority": { "const": "JAYSON_EXPLICIT_APPROVAL" },
+    "preview_id": { "type": "string", "pattern": "^SPV-[A-Z2-7]{26}$" },
+    "preview_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "semantic_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "approved_by": { "const": "JAYSON" },
+    "approval_mode": { "enum": ["STANDARD", "GODDESS_MODE", "GODDESS_MODE_SHARDBLADE"] },
+    "permanence_mode": { "enum": ["MANUAL_MERGE", "SHARDBLADE"] },
+    "approval_scope": { "const": "EXACT_PREVIEW_ONLY" },
+    "state": { "const": "APPROVED" }
+  }
+}
