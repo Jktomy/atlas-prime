@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/mission-publication-receipt-v1.schema.json",
+  "title": "Atlas Mission Publication Receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","status","repository","issue_number","mission_id","attempt_id","canonical_base","branch","changed_paths_digest","candidate_tree","expected_head","pull_request","draft","reconciled","next_safe_action"],
+  "properties": {
+    "schema_version": {"const":"atlas.mission-publication-receipt.v1"},
+    "status": {"enum":["PLANNED","PR_OPEN","BLOCKED_RESUMABLE"]},
+    "repository": {"type":"string"},
+    "issue_number": {"type":"integer","minimum":1},
+    "mission_id": {"type":"string"},
+    "attempt_id": {"type":"string"},
+    "canonical_base": {"type":"string","pattern":"^[0-9a-f]{40}$"},
+    "branch": {"type":"string"},
+    "changed_paths_digest": {"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "candidate_tree": {"type":["string","null"],"pattern":"^[0-9a-f]{40}$"},
+    "expected_head": {"type":["string","null"],"pattern":"^[0-9a-f]{40}$"},
+    "pull_request": {"type":["integer","null"],"minimum":1},
+    "draft": {"type":"boolean"},
+    "reconciled": {"type":"boolean"},
+    "next_safe_action": {"type":"string","minLength":3}
+  }
+}

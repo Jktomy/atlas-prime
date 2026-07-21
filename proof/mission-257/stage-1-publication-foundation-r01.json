@@ -1,0 +1,17 @@
+{
+  "schema_version": "atlas.mission-publication-proof.v1",
+  "mission": "CAMPAIGN-CODEX-OPEN-PATHWAYS-SUNSET-R01",
+  "issue_number": 257,
+  "attempt_id": "CAMPAIGN-CODEX-OPEN-PATHWAYS-SUNSET-ATTEMPT-02",
+  "canonical_base": "6ef7f2fd03b5b31fa2a7fe8cfcf80f6f50fa6b8e",
+  "stage": "STAGE_1_CANDIDATE",
+  "classification": "IMPLEMENTED_PENDING_VALIDATION",
+  "public_clean": true,
+  "claims": [
+    "Deterministic Mission publication planning is implemented.",
+    "The compiler is read-only and grants no mutation or permanence authority.",
+    "One-branch, one-commit, one-draft-PR execution remains an adapter responsibility.",
+    "Duplicate, unsafe path, protected-looking content, and incomplete receipt inputs fail closed."
+  ],
+  "next_safe_action": "Open one draft PR, run hosted and exact-head validation, reconcile review, and stop on Aegis failure."
+}
