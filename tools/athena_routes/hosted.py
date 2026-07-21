@@ -8,8 +8,9 @@ import re
 import subprocess
 import sys
 import tempfile
+from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any, Callable, Iterator
 from urllib.parse import quote
 
 from .schema import validate_schema
@@ -533,6 +534,16 @@ def _engine_imports() -> tuple[Any, Any, Any, Any]:
     return AdapterError, execute_mission, compile_package, read_spear_package
 
 
+@contextmanager
+def arrow_bow_safe_declared_path_scope() -> Iterator[None]:
+    if str(THREAD_ENGINE_ROOT) not in sys.path:
+        sys.path.insert(0, str(THREAD_ENGINE_ROOT))
+    from production_adapter.protected_paths import compiler_bound_safe_declared_path_scope
+
+    with compiler_bound_safe_declared_path_scope():
+        yield
+
+
 def preflight_hosted(
     encoded_carrier: str,
     *,
@@ -681,26 +692,28 @@ def run_hosted(
             replay_probe(package.weave["branch"])
             write_json(receipt_path.with_name("athena-hosted-route-request.json"), request)
             compiled = temp / "compiled"
-            compile_receipt = compile_package(
-                carrier_path,
-                package_sha256=expected_sha,
-                output_dir=compiled,
-                disabled_proof=True,
-                compile_only=True,
-            )
+            with arrow_bow_safe_declared_path_scope():
+                compile_receipt = compile_package(
+                    carrier_path,
+                    package_sha256=expected_sha,
+                    output_dir=compiled,
+                    disabled_proof=True,
+                    compile_only=True,
+                )
             mission_path = compiled / compile_receipt["output_mission_filename"]
             compile_receipt_path = compiled / compile_receipt["compile_receipt_filename"]
             compile_receipt_sha256 = sha256_bytes(compile_receipt_path.read_bytes())
             try:
                 adapter_started = True
-                adapter_receipt = execute_mission(
-                    mission_path,
-                    mission_scoped=True,
-                    execute_draft_pr=True,
-                    mission_sha256=compile_receipt["mission_sha256"],
-                    work_root=temp,
-                    package_root=compiled,
-                )
+                with arrow_bow_safe_declared_path_scope():
+                    adapter_receipt = execute_mission(
+                        mission_path,
+                        mission_scoped=True,
+                        execute_draft_pr=True,
+                        mission_sha256=compile_receipt["mission_sha256"],
+                        work_root=temp,
+                        package_root=compiled,
+                    )
             except Exception as exc:
                 raw = getattr(exc, "receipt", None)
                 if not isinstance(raw, dict):

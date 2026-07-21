@@ -91,6 +91,12 @@ def fake_package(*, base: str = MAIN, path: str = "proof/repairing-prime/guided-
 
 
 def compiler_receipt(*_args: object, **kwargs: object) -> dict[str, object]:
+    from pathlib import PurePosixPath
+
+    from production_adapter.protected_paths import is_protected_path
+
+    if is_protected_path(PurePosixPath("lifecycle/feathers/example.json")):
+        raise AssertionError("guided compiler call lacks safe-declared scope")
     output_dir = kwargs["output_dir"]
     assert isinstance(output_dir, Path)
     output_dir.mkdir(parents=True, exist_ok=True)

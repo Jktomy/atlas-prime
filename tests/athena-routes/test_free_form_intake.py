@@ -81,6 +81,12 @@ class FakeCompiler:
         self.fail_code = fail_code
 
     def __call__(self, package_path: Path, **kwargs: object) -> dict[str, object]:
+        from pathlib import PurePosixPath
+
+        from production_adapter.protected_paths import is_protected_path
+
+        if is_protected_path(PurePosixPath("lifecycle/feathers/example.json")):
+            raise AssertionError("free-form compiler call lacks safe-declared scope")
         self.calls += 1
         if self.fail_code is not None:
             raise CompilerFailure(self.fail_code)

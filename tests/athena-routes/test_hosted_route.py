@@ -410,10 +410,20 @@ class HostedRouteTests(unittest.TestCase):
         original_execute = engine[1]
 
         def compile_spy(*args: object, **kwargs: object) -> dict:
+            from pathlib import PurePosixPath
+
+            from production_adapter.protected_paths import is_protected_path
+
+            self.assertFalse(is_protected_path(PurePosixPath("governance/change-routes.md")))
             calls.append("compile")
             return original_compile(*args, **kwargs)
 
         def execute_spy(*args: object, **kwargs: object) -> dict:
+            from pathlib import PurePosixPath
+
+            from production_adapter.protected_paths import is_protected_path
+
+            self.assertFalse(is_protected_path(PurePosixPath("governance/change-routes.md")))
             calls.append("execute")
             return original_execute(*args, **kwargs)
 

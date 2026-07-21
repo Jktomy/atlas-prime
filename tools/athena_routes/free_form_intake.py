@@ -25,6 +25,7 @@ from .hosted import (
     REPOSITORY,
     SENSITIVE,
     _engine_imports,
+    arrow_bow_safe_declared_path_scope,
     classify_paths,
     expected_mission_branch,
     load_schema,
@@ -316,14 +317,15 @@ def construct_free_form_intake(
         try:
             package = package_reader(carrier_path, carrier_sha)
             privacy_scan(package)
-            compile_receipt = compiler(
-                carrier_path,
-                package_sha256=carrier_sha,
-                output_dir=compiled,
-                disabled_proof=True,
-                compile_only=True,
-                read_only_remote_url=REMOTE_URL,
-            )
+            with arrow_bow_safe_declared_path_scope():
+                compile_receipt = compiler(
+                    carrier_path,
+                    package_sha256=carrier_sha,
+                    output_dir=compiled,
+                    disabled_proof=True,
+                    compile_only=True,
+                    read_only_remote_url=REMOTE_URL,
+                )
             compile_sha, compiled_inventory, compiled_identity = _compiled_output_identity(compiled, compile_receipt)
         except Exception as exc:
             code = str(getattr(exc, "code", "FREE_FORM_COMPILE_REJECTED"))

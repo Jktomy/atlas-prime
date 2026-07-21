@@ -18,6 +18,7 @@ from .hosted import (
     REPOSITORY,
     HostedRouteError,
     _engine_imports,
+    arrow_bow_safe_declared_path_scope,
     classify_paths,
     expected_mission_branch,
     load_schema,
@@ -254,14 +255,15 @@ def build_preview(
     with tempfile.TemporaryDirectory(prefix="atlas-guided-preview-") as temporary:
         compiled = Path(temporary) / "compiled"
         try:
-            compile_receipt = compiler(
-                carrier_path,
-                package_sha256=carrier_sha,
-                output_dir=compiled,
-                disabled_proof=True,
-                compile_only=True,
-                read_only_remote_url=REMOTE_URL,
-            )
+            with arrow_bow_safe_declared_path_scope():
+                compile_receipt = compiler(
+                    carrier_path,
+                    package_sha256=carrier_sha,
+                    output_dir=compiled,
+                    disabled_proof=True,
+                    compile_only=True,
+                    read_only_remote_url=REMOTE_URL,
+                )
         except Exception as exc:
             code = str(getattr(exc, "code", "GUIDED_COMPILE_REJECTED"))
             raise GuidedPublisherError("guided carrier compile rejected", code) from exc

@@ -8,7 +8,7 @@ from pathlib import PurePosixPath
 from typing import Iterator
 
 POLICY_PATH = Path(__file__).resolve().parents[3] / "policies" / "protected-paths.json"
-_DIRECT_SPEAR_SCOPE: ContextVar[bool] = ContextVar("atlas_direct_spear_path_scope", default=False)
+_SAFE_DECLARED_COMPILER_SCOPE: ContextVar[bool] = ContextVar("atlas_safe_declared_compiler_path_scope", default=False)
 
 
 def _load_policy() -> tuple[frozenset[str], tuple[str, ...]]:
@@ -39,16 +39,22 @@ THREAD_ENGINE_SELF_CHANGE_PREFIXES = ("tools/thread-engine/",)
 
 
 @contextmanager
-def direct_spear_path_scope() -> Iterator[None]:
-    token = _DIRECT_SPEAR_SCOPE.set(True)
+def compiler_bound_safe_declared_path_scope() -> Iterator[None]:
+    token = _SAFE_DECLARED_COMPILER_SCOPE.set(True)
     try:
         yield
     finally:
-        _DIRECT_SPEAR_SCOPE.reset(token)
+        _SAFE_DECLARED_COMPILER_SCOPE.reset(token)
+
+
+@contextmanager
+def direct_spear_path_scope() -> Iterator[None]:
+    with compiler_bound_safe_declared_path_scope():
+        yield
 
 
 def is_protected_path(path: PurePosixPath) -> bool:
-    if _DIRECT_SPEAR_SCOPE.get():
+    if _SAFE_DECLARED_COMPILER_SCOPE.get():
         return False
     value = path.as_posix()
     if value in PROTECTED_EXACT:
