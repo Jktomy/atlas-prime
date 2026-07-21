@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -15,6 +16,15 @@ from tools.sunset_router.issue_preview_ingress import (
 )
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def json_bytes(value: object) -> bytes:
+    if isinstance(value, dict):
+        return canonical_bytes(value)
+    return (
+        json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        + "\n"
+    ).encode("utf-8")
 
 
 def envelope(context_summary: str) -> dict:
@@ -63,7 +73,7 @@ def event(body: str) -> dict:
 
 class SunsetRouterPreviewIngressPrivacyTests(unittest.TestCase):
     def write_json(self, path: Path, value: object) -> Path:
-        path.write_bytes(canonical_bytes(value))
+        path.write_bytes(json_bytes(value))
         return path
 
     def test_protected_looking_value_rejects_before_output(self) -> None:
