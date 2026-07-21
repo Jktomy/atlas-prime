@@ -111,6 +111,15 @@ class MissionBoardTests(unittest.TestCase):
         self.assertEqual([item["result"] for item in receipt["results"]], ["COMPLETE", "BLOCKED_RESUMABLE", "NOT_STARTED_AFTER_STOP"])
         self.assertTrue(receipt["stopped"])
 
+    def test_sequential_queue_does_not_validate_items_after_stop(self) -> None:
+        blocked = load("sequence-7.json")
+        blocked["queue_behavior"] = "TERMINAL_ON_BLOCK"
+        malformed_later = load("sequence-12.json")
+        malformed_later["issue_number"] = True
+        missions = {5: load("sequence-5.json"), 7: blocked, 12: malformed_later}
+        receipt = sequence_missions(missions, [5, 7, 12])
+        self.assertEqual([item["result"] for item in receipt["results"]], ["COMPLETE", "BLOCKED_RESUMABLE", "NOT_STARTED_AFTER_STOP"])
+
     def test_live_pull_request_objects_are_not_missions(self) -> None:
         snapshot = {
             "repository": "Jktomy/atlas-prime",
@@ -223,6 +232,14 @@ class MissionBoardTests(unittest.TestCase):
         mission = load("blocked-resumable.json")
         mission["objective"] = "Connect to 10.20.30.40"
         with self.assertRaisesRegex(MissionError, "PROTECTED_BOUNDARY_FAILURE"):
+            validate_mission(mission)
+
+    def test_protected_pointer_uses_closed_schema_grammar(self) -> None:
+        mission = load("blocked-resumable.json")
+        mission["public_clean_boundary"]["protected_pointer"] = "protected://approved/evidence-01"
+        validate_mission(mission)
+        mission["public_clean_boundary"]["protected_pointer"] = "protected://approved/evidence-01\nraw note"
+        with self.assertRaisesRegex(MissionError, "PROTECTED_POINTER"):
             validate_mission(mission)
         mission = load("blocked-resumable.json")
         mission["objective"] = "Credential github_pat_abcdefghijklmnopqrstuvwxyz123456"

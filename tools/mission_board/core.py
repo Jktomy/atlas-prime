@@ -91,6 +91,7 @@ SHA40 = re.compile(r"^[0-9a-f]{40}$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 IDENTITY = re.compile(r"^[A-Z0-9][A-Z0-9-]{2,127}$")
+PROTECTED_POINTER = re.compile(r"^protected://[A-Za-z0-9._/-]+$")
 MANIFEST_BLOCK = re.compile(r"```atlas-mission-v1\s*\n(.*?)\n```", re.DOTALL)
 PROTECTED_PATTERNS = (
     ("private key", re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----")),
@@ -359,7 +360,7 @@ def validate_mission(mission: Mapping[str, Any]) -> dict[str, Any]:
     if boundary["classification"] != "PUBLIC_CLEAN":
         _fail("PROTECTED_BOUNDARY_FAILURE", "classification must be PUBLIC_CLEAN")
     _require_nonempty_text(boundary["sanitized_summary"], "public_clean_boundary.sanitized_summary")
-    if boundary["protected_pointer"] is not None and not str(boundary["protected_pointer"]).startswith("protected://"):
+    if boundary["protected_pointer"] is not None and (not isinstance(boundary["protected_pointer"], str) or not PROTECTED_POINTER.fullmatch(boundary["protected_pointer"])):
         _fail("PROTECTED_POINTER", "only protected:// pointers are accepted")
     _require_text_list(mission["acceptance_criteria"], "acceptance_criteria", nonempty=True)
     _require_nonempty_text(mission["next_safe_action"], "next_safe_action")
@@ -557,25 +558,22 @@ def _dependency_names(mission: Mapping[str, Any]) -> frozenset[str]:
     return frozenset({mission["mission_id"], f"Mission #{number}", f"Mission {number}", f"#{number}"})
 
 
-def _blocked_mission_stops_remaining(blocked: Mapping[str, Any], remaining: Sequence[Mapping[str, Any]]) -> bool:
-    blocked_names = _dependency_names(blocked)
-    remaining_names = set().union(*(_dependency_names(item) for item in remaining)) if remaining else set()
+def _blocked_mission_stops_remaining(blocked: Mapping[str, Any], remaining_numbers: Sequence[int], missions: Mapping[int, Mapping[str, Any]]) -> bool:
+    remaining_names: set[str] = set()
+    for number in remaining_numbers:
+        remaining_names.update({f"Mission #{number}", f"Mission {number}", f"#{number}"})
+        raw = missions.get(number)
+        if isinstance(raw, Mapping) and isinstance(raw.get("mission_id"), str):
+            remaining_names.add(raw["mission_id"])
     for dependency in blocked["dependencies"]:
         if dependency["repository"] == blocked["repository"] and dependency["relation"] == "BLOCKS" and dependency["mission_ref"] in remaining_names:
             return True
-    for item in remaining:
-        for dependency in item["dependencies"]:
-            if dependency["repository"] == blocked["repository"] and dependency["relation"] == "BLOCKED_BY" and dependency["mission_ref"] in blocked_names:
-                return True
     return False
 
 
 def sequence_missions(missions: Mapping[int, Mapping[str, Any]], order: Sequence[int]) -> dict[str, Any]:
     results: list[dict[str, Any]] = []
     stopped = False
-    validated: dict[int, dict[str, Any]] = {}
-    for issue_number, mission in missions.items():
-        validated[issue_number] = validate_mission(mission)
     for position, issue_number in enumerate(order):
         if stopped:
             results.append({"issue_number": issue_number, "result": "NOT_STARTED_AFTER_STOP"})
@@ -584,7 +582,7 @@ def sequence_missions(missions: Mapping[int, Mapping[str, Any]], order: Sequence
             results.append({"issue_number": issue_number, "result": "IDENTITY_MISMATCH", "detail": "Mission Issue not found"})
             stopped = True
             continue
-        mission = validated[issue_number]
+        mission = validate_mission(missions[issue_number])
         if mission["issue_number"] != issue_number:
             _fail("IDENTITY_MISMATCH", f"requested {issue_number}, manifest {mission['issue_number']}")
         state = mission["mission_state"]
@@ -592,8 +590,8 @@ def sequence_missions(missions: Mapping[int, Mapping[str, Any]], order: Sequence
             result = "COMPLETE"
         elif state == "BLOCKED_RESUMABLE":
             result = "BLOCKED_RESUMABLE"
-            remaining = [validated[number] for number in order[position + 1 :] if number in validated]
-            if mission["queue_behavior"] != "CONTINUE_IF_BLOCKED_RESUMABLE" or _blocked_mission_stops_remaining(mission, remaining):
+            remaining_numbers = order[position + 1 :]
+            if mission["queue_behavior"] != "CONTINUE_IF_BLOCKED_RESUMABLE" or _blocked_mission_stops_remaining(mission, remaining_numbers, missions):
                 stopped = True
         else:
             result = "ACTION_REQUIRED"
