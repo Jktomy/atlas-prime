@@ -98,6 +98,13 @@ def _write_boundary() -> dict[str, Any]:
 def _dynamic_validate(root: Path, value: dict[str, Any], schema_name: str) -> None:
     validator = SchemaValidator(root / "lifecycle" / "schemas")
     schema = load_bounded(root / "lifecycle" / "schemas" / schema_name)
+    expected_id = f"https://github.com/Jktomy/atlas-prime/lifecycle/schemas/{schema_name}"
+    if (
+        schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema"
+        or schema.get("$id") != expected_id
+        or schema.get("additionalProperties") is not False
+    ):
+        _fail("SUNSET_SCHEMA_IDENTITY", "Sunset auxiliary schema identity is invalid")
     validator.schemas[schema_name] = schema
     validator._validate(value, schema, schema_name, "$")
 
@@ -548,7 +555,7 @@ def verify_sunset_approval(
 def _validate_records(
     root: Path,
     records: list[dict[str, Any]],
-) -> tuple[list[dict[str, Any]], dict[str, int]]:
+) -> tuple[list[dict[str, Any]], dict[str, int], str]:
     validator = SchemaValidator(root / "lifecycle" / "schemas")
     bindings = []
     seen_ids: set[str] = set()
@@ -595,7 +602,7 @@ def _validate_records(
         ),
         "quest_identity_fabricated": False,
     }
-    return bindings, counts
+    return bindings, counts, snapshot.source_fingerprint
 
 
 def generate_approved_sunset_candidate(
@@ -649,7 +656,7 @@ def generate_approved_sunset_candidate(
             record["related_golden_wing_ids"] = related
             record["record_id"] = stable_record_id(record)
 
-    bindings, assertions = _validate_records(root, records)
+    bindings, assertions, source_fingerprint = _validate_records(root, records)
     expected = {
         **approved["preview"]["expected_records"],
         "quest_identity_fabricated": False,
@@ -677,7 +684,7 @@ def generate_approved_sunset_candidate(
         "approval_mode": request["approval_mode"],
         "permanence_mode": request["permanence_mode"],
         "expected_main_sha": observed_head(root),
-        "source_fingerprint": validate_repository(root).source_fingerprint,
+        "source_fingerprint": source_fingerprint,
         "scope_type": request["quest_scope"]["scope_type"],
         "record_bindings": bindings,
         "records": entries,
@@ -747,6 +754,24 @@ def generate_approved_sunset_candidate(
     }
 
 
+APPROVED_BUNDLE_KEYS = {
+    "schema_id", "schema_version", "authority", "engine_class", "request_id",
+    "request_digest", "preview_id", "preview_digest", "approval_id",
+    "approval_digest", "carrier_id", "carrier_digest", "semantic_digest",
+    "approval_mode", "permanence_mode", "expected_main_sha",
+    "source_fingerprint", "scope_type", "record_bindings", "records",
+    "assertions", "write_boundary",
+}
+APPROVED_RECEIPT_KEYS = {
+    "schema_id", "schema_version", "authority", "engine_class", "command",
+    "request_id", "request_digest", "preview_id", "preview_digest",
+    "approval_id", "approval_digest", "carrier_id", "carrier_digest",
+    "semantic_digest", "approval_mode", "permanence_mode", "bundle_digest",
+    "candidate_set_digest", "expected_main_sha", "source_fingerprint",
+    "record_count", "verification_result", "write_boundary",
+}
+
+
 def verify_approved_sunset_candidate(
     repo_root: Path,
     candidate_dir: Path,
@@ -766,12 +791,19 @@ def verify_approved_sunset_candidate(
         "SUNSET_CANDIDATE_CANONICAL",
     )
     if (
-        bundle.get("schema_id")
+        set(bundle) != APPROVED_BUNDLE_KEYS
+        or set(receipt) != APPROVED_RECEIPT_KEYS
+        or bundle.get("schema_id")
         != "atlas.lifecycle.approved-sunset-candidate-bundle"
         or receipt.get("schema_id")
         != "atlas.lifecycle.approved-sunset-candidate-receipt"
         or bundle.get("schema_version") != "1.0.0"
         or receipt.get("schema_version") != "1.0.0"
+        or bundle.get("authority") != "TEMPORARY_CANDIDATE_ONLY"
+        or receipt.get("authority") != "TEMPORARY_CANDIDATE_ONLY"
+        or bundle.get("engine_class") != "SCRIPT_ASSIST_LEVEL_1B"
+        or receipt.get("engine_class") != "SCRIPT_ASSIST_LEVEL_1B"
+        or receipt.get("command") != "sunset candidate"
     ):
         _fail("SUNSET_CANDIDATE_IDENTITY", "approved Sunset candidate identity is invalid")
     bundle_digest = _digest(canonical_bytes(bundle))
@@ -800,8 +832,12 @@ def verify_approved_sunset_candidate(
     ):
         _fail("SUNSET_CANDIDATE_BINDING", "approved Sunset candidate is not cross-bound")
     records = [entry["record"] for entry in bundle["records"]]
-    bindings, assertions = _validate_records(root, records)
-    if bindings != bundle["record_bindings"] or assertions != bundle["assertions"]:
+    bindings, assertions, source_fingerprint = _validate_records(root, records)
+    if (
+        bindings != bundle["record_bindings"]
+        or assertions != bundle["assertions"]
+        or source_fingerprint != bundle["source_fingerprint"]
+    ):
         _fail("SUNSET_CANDIDATE_BINDING", "approved Sunset record bindings changed")
     if [entry["path"] for entry in bundle["records"]] != [
         item["path"] for item in bindings
