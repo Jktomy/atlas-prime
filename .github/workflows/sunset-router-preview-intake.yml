@@ -1,0 +1,115 @@
+name: Mission 257 Sunset Router Preview intake
+
+on:
+  issue_comment:
+    types:
+      - created
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: sunset-router-preview-${{ github.event.issue.number }}-${{ github.event.comment.id }}
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    name: Read-only owner Mission Preview
+    if: >-
+      github.event.issue.number == 257 &&
+      !github.event.issue.pull_request &&
+      github.event.comment.user.login == github.repository_owner &&
+      github.event.comment.author_association == 'OWNER'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: "1"
+      TMPDIR: ${{ runner.temp }}
+      TEMP: ${{ runner.temp }}
+      TMP: ${{ runner.temp }}
+    steps:
+      - name: Admit exact repository and owner event
+        shell: bash
+        run: |
+          set -euo pipefail
+          hex40='^[0-9a-f]{40}$'
+          expected_repository='Jktomy/atlas-prime'
+          expected_owner='Jktomy'
+          expected_workflow_ref='Jktomy/atlas-prime/.github/workflows/sunset-router-preview-intake.yml@refs/heads/main'
+
+          test "$GITHUB_REPOSITORY" = "$expected_repository"
+          test "$GITHUB_REPOSITORY_OWNER" = "$expected_owner"
+          test "$GITHUB_ACTOR" = "$expected_owner"
+          test "$GITHUB_TRIGGERING_ACTOR" = "$expected_owner"
+          test "$GITHUB_REF" = 'refs/heads/main'
+          test "$GITHUB_WORKFLOW_REF" = "$expected_workflow_ref"
+          [[ "$GITHUB_SHA" =~ $hex40 ]]
+          [[ "$GITHUB_WORKFLOW_SHA" =~ $hex40 ]]
+
+          current_main="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha')"
+          [[ "$current_main" =~ $hex40 ]]
+          test "$current_main" = "$GITHUB_SHA"
+          test "$GITHUB_SHA" = "$GITHUB_WORKFLOW_SHA"
+          printf 'SUNSET_PREVIEW_MAIN_SHA=%s\n' "$current_main" >> "$GITHUB_ENV"
+
+      - name: Check out exact canonical workflow source
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: ${{ github.workflow_sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Read complete Mission comment history
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api --paginate --slurp \
+            "repos/$GITHUB_REPOSITORY/issues/257/comments?per_page=100" \
+            --jq 'add | map({id: .id, body: .body, user: {login: .user.login}})' \
+            > "$RUNNER_TEMP/mission-257-comments.json"
+
+      - name: Validate and bind Preview intake
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B -m tools.sunset_router.issue_preview_ingress admit \
+            --repo-root "$GITHUB_WORKSPACE" \
+            --event "$GITHUB_EVENT_PATH" \
+            --comments "$RUNNER_TEMP/mission-257-comments.json" \
+            --request-output "$RUNNER_TEMP/sunset-preview-intake/router-request.json" \
+            --admission-output "$RUNNER_TEMP/sunset-preview-intake/admission.json"
+
+      - name: Generate exact Sunset Router Preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B -m tools.sunset_router \
+            --repo-root "$GITHUB_WORKSPACE" \
+            preview \
+            --request "$RUNNER_TEMP/sunset-preview-intake/router-request.json" \
+            --output-dir "$RUNNER_TEMP/sunset-router-preview"
+
+      - name: Render exact Preview and receipt comment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B -m tools.sunset_router.issue_preview_ingress render \
+            --repo-root "$GITHUB_WORKSPACE" \
+            --router-dir "$RUNNER_TEMP/sunset-router-preview" \
+            --admission "$RUNNER_TEMP/sunset-preview-intake/admission.json" \
+            --output "$RUNNER_TEMP/sunset-preview-intake/result-comment.md"
+
+      - name: Return exact Preview to Mission 257
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api --method POST \
+            "repos/$GITHUB_REPOSITORY/issues/257/comments" \
+            -F "body=@$RUNNER_TEMP/sunset-preview-intake/result-comment.md"
