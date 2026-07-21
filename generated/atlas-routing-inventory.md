@@ -1,6 +1,6 @@
 # Atlas Routing Inventory
 
-Source fingerprint: sha256:b173fc994f72314184354f3e7d17333b0c4b3fad18181a1c51be4f2bcefad4ff
+Source fingerprint: sha256:8bd1986e0f5465f8d8585cba9bfe5430643f8c647099565987970ba5625eab52
 Generator format: 2
 Status: Generated support artifact
 
@@ -27,14 +27,17 @@ Status: Generated support artifact
 | `governance/investiture-accounting-contract.md` | yes |
 | `governance/investiture-source-identity-contract.md` | yes |
 | `governance/lesson-harvest-protocol.md` | yes |
+| `governance/mission-board-contract.md` | yes |
 | `governance/noctua.md` | yes |
 | `governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md` | no |
 | `governance/protected-source-boundary.md` | yes |
 | `governance/quest-engine-continuity-contract.md` | yes |
+| `governance/repository-process-contract.md` | yes |
 | `governance/resonance-reconciliation-contract.md` | yes |
 | `governance/shard-doctrine.md` | yes |
 | `governance/source-hierarchy.md` | yes |
 | `governance/source-lifecycle.md` | yes |
+| `governance/spear-repository-path-scope.md` | no |
 | `infrastructure/atlas-infrastructure-source.md` | yes |
 | `knowledge/atlas-source-compendium.md` | yes |
 | `knowledge/context-pack-contract.md` | yes |
@@ -126,6 +129,7 @@ Status: Generated support artifact
 | `tools/atlas_lifecycle/README.md` | yes |
 | `tools/generated_checkpoint/README.md` | yes |
 | `tools/investiture_accounting/README.md` | no |
+| `tools/mission_board/README.md` | yes |
 | `tools/oathbringer-foundry/README.md` | yes |
 | `tools/prime_checks/README.md` | yes |
 | `tools/prime_continuity/README.md` | yes |

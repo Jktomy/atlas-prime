@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:b173fc994f72314184354f3e7d17333b0c4b3fad18181a1c51be4f2bcefad4ff
+Source fingerprint: sha256:8bd1986e0f5465f8d8585cba9bfe5430643f8c647099565987970ba5625eab52
 Generator format: 2
 Status: Generated support artifact
 
@@ -27,14 +27,17 @@ Status: Generated support artifact
 | `governance/investiture-accounting-contract.md` | governance | yes | policy-reference |
 | `governance/investiture-source-identity-contract.md` | governance | yes | review |
 | `governance/lesson-harvest-protocol.md` | governance | yes | none |
+| `governance/mission-board-contract.md` | governance | yes | policy-reference |
 | `governance/noctua.md` | governance | yes | none |
 | `governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md` | governance | yes | none |
 | `governance/protected-source-boundary.md` | governance | yes | policy-reference |
 | `governance/quest-engine-continuity-contract.md` | governance | yes | none |
+| `governance/repository-process-contract.md` | governance | yes | none |
 | `governance/resonance-reconciliation-contract.md` | governance | yes | none |
 | `governance/shard-doctrine.md` | governance | yes | none |
 | `governance/source-hierarchy.md` | governance | yes | none |
 | `governance/source-lifecycle.md` | governance | yes | none |
+| `governance/spear-repository-path-scope.md` | governance | yes | none |
 | `infrastructure/atlas-infrastructure-source.md` | infrastructure | yes | policy-reference |
 | `knowledge/atlas-source-compendium.md` | knowledge | yes | none |
 | `knowledge/context-pack-contract.md` | knowledge | yes | policy-reference |
@@ -47,7 +50,7 @@ Status: Generated support artifact
 | `lifecycle/lifecycle-event-contract.md` | lifecycle | yes | none |
 | `lifecycle/trust-roots/README.md` | lifecycle | yes | none |
 | `methods/artemis-bow-and-arrow.md` | methods | yes | none |
-| `methods/athenas-spear.md` | methods | yes | none |
+| `methods/athenas-spear.md` | methods | yes | policy-reference |
 | `methods/atlas-sword.md` | methods | yes | policy-reference |
 | `methods/consistent-pr-delivery-standard.md` | methods | no | none |
 | `methods/oathbringer-foundry.md` | methods | yes | policy-reference |
@@ -123,9 +126,10 @@ Status: Generated support artifact
 | `tools/atlas-sword/ARCHITECTURE.md` | tools | no | policy-reference |
 | `tools/atlas-sword/README.md` | tools | no | policy-reference |
 | `tools/atlas-sword/tests/test-contract.md` | tools | no | policy-reference |
-| `tools/atlas_lifecycle/README.md` | tools | no | none |
+| `tools/atlas_lifecycle/README.md` | tools | no | policy-reference |
 | `tools/generated_checkpoint/README.md` | tools | no | none |
 | `tools/investiture_accounting/README.md` | tools | no | none |
+| `tools/mission_board/README.md` | tools | yes | none |
 | `tools/oathbringer-foundry/README.md` | tools | no | none |
 | `tools/prime_checks/README.md` | tools | no | none |
 | `tools/prime_continuity/README.md` | tools | no | none |
