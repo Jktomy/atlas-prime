@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:fd1d1a10dd19f95cdb9b46981ee7bdc3b21d0e55dfb3f9d408ed69bb9e841fe3
+Source fingerprint: sha256:da8bd9db27b5e032b553d21a7f76a6f5d9e033d2aa58a92980d6a57fda6ed0f1
 Generator format: 2
 Status: Generated support artifact
 
@@ -28,6 +28,7 @@ Status: Generated support artifact
 | `governance/investiture-source-identity-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/lesson-harvest-protocol.md` | CANONICAL_ACTIVE | PROTOCOL | missing | HIGH |
 | `governance/mission-board-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
+| `governance/mission-publication-contract.md` | CANDIDATE | PROTOCOL | missing | CRITICAL |
 | `governance/noctua.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md` | NON_GOVERNING_PROOF_FIXTURE | PROOF_FIXTURE | missing | CRITICAL |
 | `governance/protected-source-boundary.md` | CANONICAL_ACTIVE | POLICY | missing | CRITICAL |
@@ -38,6 +39,7 @@ Status: Generated support artifact
 | `governance/source-hierarchy.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `governance/source-lifecycle.md` | ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `governance/spear-repository-path-scope.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
+| `governance/sunset-router-contract.md` | CANDIDATE | PROTOCOL | missing | CRITICAL |
 | `infrastructure/atlas-infrastructure-source.md` | ACTIVE | ARCHITECTURE | missing | HIGH |
 | `knowledge/atlas-source-compendium.md` | ACTIVE | CORE_DOCTRINE | missing | MEDIUM |
 | `knowledge/context-pack-contract.md` | ACTIVE | PROTOCOL | missing | MEDIUM |
@@ -130,10 +132,12 @@ Status: Generated support artifact
 | `tools/generated_checkpoint/README.md` | missing | missing | missing | missing |
 | `tools/investiture_accounting/README.md` | missing | missing | missing | missing |
 | `tools/mission_board/README.md` | CANONICAL_ACTIVE | TOOL_CONTRACT | missing | HIGH |
+| `tools/mission_publisher/README.md` | CANDIDATE | TOOL_CONTRACT | missing | HIGH |
 | `tools/oathbringer-foundry/README.md` | missing | missing | missing | missing |
 | `tools/prime_checks/README.md` | missing | missing | missing | missing |
 | `tools/prime_continuity/README.md` | missing | missing | missing | missing |
 | `tools/resonance/README.md` | missing | missing | missing | missing |
+| `tools/sunset_router/README.md` | CANDIDATE | TOOL_CONTRACT | missing | CRITICAL |
 | `tools/thread-engine/ARCHITECTURE.md` | missing | missing | missing | missing |
 | `tools/thread-engine/PRIME-PORT-STATUS.md` | missing | missing | missing | missing |
 | `tools/thread-engine/README.md` | missing | missing | missing | missing |

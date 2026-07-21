@@ -1,6 +1,6 @@
 # Atlas Orphan Candidate Report
 
-Source fingerprint: sha256:fd1d1a10dd19f95cdb9b46981ee7bdc3b21d0e55dfb3f9d408ed69bb9e841fe3
+Source fingerprint: sha256:da8bd9db27b5e032b553d21a7f76a6f5d9e033d2aa58a92980d6a57fda6ed0f1
 Generator format: 2
 Status: Generated support artifact
 
@@ -12,6 +12,7 @@ An orphan candidate is not deletion approval. Review routing, support-file statu
 
 | Path | Reason |
 |---|---|
+| `governance/mission-publication-contract.md` | active metadata-bearing file not found in routing surfaces |
 | `governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md` | active metadata-bearing file not found in routing surfaces |
 | `governance/spear-repository-path-scope.md` | active metadata-bearing file not found in routing surfaces |
 | `lifecycle/architecture-decision-r01.md` | active metadata-bearing file not found in routing surfaces |
@@ -41,3 +42,4 @@ An orphan candidate is not deletion approval. Review routing, support-file statu
 | `quests/prime-ascendant-covenant.md` | active metadata-bearing file not found in routing surfaces |
 | `recovery/phoenix-recovery.md` | active metadata-bearing file not found in routing surfaces |
 | `routing/interaction-contract.md` | active metadata-bearing file not found in routing surfaces |
+| `tools/mission_publisher/README.md` | active metadata-bearing file not found in routing surfaces |
