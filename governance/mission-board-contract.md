@@ -163,6 +163,12 @@ rewriting historical pull requests.
 9. resume the same exact attempt without blind retry; and
 10. append public-clean evidence to the Mission.
 
+Append-only history may retain a rejected or malformed candidate manifest. A
+later validated manifest may supersede that historical candidate without editing
+or deleting evidence, but the most recent manifest-shaped update must validate.
+Every transition between validated manifests remains subject to chronological,
+identity, Mission-state, and canonical-source-state checks.
+
 Chat memory, generated projections, a stale manifest, or an unavailable operator
 surface is insufficient. A missing route preserves `BLOCKED_RESUMABLE`; it does
 not create a replacement Mission.
