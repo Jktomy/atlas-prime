@@ -4,11 +4,11 @@ import argparse
 import json
 from pathlib import Path
 
-from .core import MissionError, resume_plan, sequence_missions, validate_mission
+from .core import MissionError, parse_json_document, resume_plan, sequence_missions, validate_mission
 
 
 def _load(path: Path) -> dict[str, object]:
-    return json.loads(path.read_text(encoding="utf-8"))
+    return parse_json_document(path.read_text(encoding="utf-8"))
 
 
 def main() -> int:

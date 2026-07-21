@@ -14,6 +14,7 @@ from tools.mission_board.core import (
     assert_no_duplicate,
     changed_paths_digest,
     extract_manifest,
+    parse_json_document,
     reconcile_issue_snapshot,
     resume_plan,
     sequence_missions,
@@ -140,6 +141,8 @@ class MissionBoardTests(unittest.TestCase):
             pr_snapshot={"number": 260, "head_sha": "2" * 40, "branch": "codex/mission-board-foundation-r01"},
         )
         self.assertEqual(plan["last_proven_state"], "PR_OPEN")
+        with self.assertRaisesRegex(MissionError, "pr_snapshot must be an object"):
+            resume_plan(mission, "1" * 40, pr_snapshot=[])
 
     def test_changed_path_digest_is_sorted_and_exact(self) -> None:
         self.assertEqual(
@@ -163,6 +166,15 @@ class MissionBoardTests(unittest.TestCase):
         with self.assertRaisesRegex(MissionError, "CONFLICTING_BINDING"):
             assert_no_duplicate(mission, [conflicting])
 
+    def test_cross_mission_pr_binding_reuse_is_rejected(self) -> None:
+        mission = load("canonical-implementation.json")
+        conflicting = deepcopy(mission)
+        conflicting["mission_id"] = "DIFFERENT-MISSION-R01"
+        conflicting["issue_number"] = 260
+        conflicting["attempt_id"] = "DIFFERENT-MISSION-ATTEMPT-01"
+        with self.assertRaisesRegex(MissionError, "CONFLICTING_BINDING.*branch"):
+            assert_no_duplicate(mission, [conflicting])
+
     def test_false_sunset_completion_is_rejected(self) -> None:
         mission = load("captured-sunset.json")
         mission["sunset"]["truth_state"] = "SUNSET COMPLETE"
@@ -172,6 +184,12 @@ class MissionBoardTests(unittest.TestCase):
     def test_closed_issue_state_requires_source_and_proof(self) -> None:
         mission = load("sequence-5.json")
         mission["canonical_source_status"] = "PHOENIX_PENDING"
+        with self.assertRaisesRegex(MissionError, "FALSE_COMPLETION"):
+            validate_mission(mission)
+
+    def test_canonical_state_requires_canonical_source_readback(self) -> None:
+        mission = load("blocked-resumable.json")
+        mission["mission_state"] = "CANONICAL"
         with self.assertRaisesRegex(MissionError, "FALSE_COMPLETION"):
             validate_mission(mission)
         mission = load("sequence-5.json")
@@ -190,6 +208,17 @@ class MissionBoardTests(unittest.TestCase):
         mission["objective"] = "Connect to 10.20.30.40"
         with self.assertRaisesRegex(MissionError, "PROTECTED_BOUNDARY_FAILURE"):
             validate_mission(mission)
+
+    def test_unsafe_windows_repository_path_fails_closed(self) -> None:
+        mission = load("canonical-implementation.json")
+        mission["source_binding"]["changed_paths"] = ["C:/outside.txt"]
+        mission["source_binding"]["changed_paths_digest"] = changed_paths_digest(["governance/mission-board-contract.md"])
+        with self.assertRaisesRegex(MissionError, "UNSAFE_PATH"):
+            validate_mission(mission)
+
+    def test_duplicate_json_keys_fail_closed(self) -> None:
+        with self.assertRaisesRegex(MissionError, "DUPLICATE_JSON_KEY"):
+            parse_json_document('{"mission_state":"READY","mission_state":"CLOSED"}')
 
     def test_state_transitions_are_closed(self) -> None:
         validate_transition("CAPTURED", "TRIAGED")

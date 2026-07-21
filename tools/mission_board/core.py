@@ -186,7 +186,7 @@ def normalize_changed_paths(paths: Iterable[str]) -> list[str]:
     for raw in paths:
         text = _require_nonempty_text(raw, "changed path").replace("\\", "/")
         pure = PurePosixPath(text)
-        if pure.is_absolute() or text.startswith("/") or ".." in pure.parts or text != pure.as_posix():
+        if pure.is_absolute() or text.startswith("/") or re.match(r"^[A-Za-z]:/", text) or ".." in pure.parts or text != pure.as_posix():
             _fail("UNSAFE_PATH", text)
         folded = text.casefold()
         if folded in seen_folded:
@@ -385,6 +385,8 @@ def validate_mission(mission: Mapping[str, Any]) -> dict[str, Any]:
         _fail("UNEXPECTED_SUNSET", "only mission/sunset may contain sunset")
     if mission["mission_state"] == "COPPERMIND_ARCHIVED" and mission["coppermind"]["status"] != "ARCHIVED":
         _fail("ARCHIVE_STATE_MISMATCH", "COPPERMIND_ARCHIVED requires a real archive receipt")
+    if mission["mission_state"] in {"CANONICAL", "COPPERMIND_ARCHIVED", "CLOSED"} and mission["canonical_source_status"] not in {"CANONICAL", "NO_SOURCE_CHANGE_REQUIRED"}:
+        _fail("FALSE_COMPLETION", f"{mission['mission_state']} requires canonical readback or no source change")
     if mission["mission_state"] == "CLOSED":
         if mission["canonical_source_status"] not in {"CANONICAL", "NO_SOURCE_CHANGE_REQUIRED"}:
             _fail("FALSE_COMPLETION", "CLOSED requires canonical readback or no source change")
@@ -414,11 +416,27 @@ def extract_manifest(text: str) -> dict[str, Any]:
     matches = MANIFEST_BLOCK.findall(text or "")
     if len(matches) != 1:
         _fail("MANIFEST_CARDINALITY", f"expected 1 atlas-mission-v1 block, found {len(matches)}")
+    value = parse_json_document(matches[0])
+    return validate_mission(value)
+
+
+def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    value: dict[str, Any] = {}
+    for key, child in pairs:
+        if key in value:
+            _fail("DUPLICATE_JSON_KEY", key)
+        value[key] = child
+    return value
+
+
+def parse_json_document(text: str) -> dict[str, Any]:
     try:
-        value = json.loads(matches[0])
+        value = json.loads(text, object_pairs_hook=_unique_object)
     except json.JSONDecodeError as exc:
         _fail("MANIFEST_JSON", str(exc))
-    return validate_mission(value)
+    if not isinstance(value, dict):
+        _fail("INVALID_MISSION", "JSON document must be an object")
+    return value
 
 
 def reconcile_issue_snapshot(snapshot: Mapping[str, Any], expected_repository: str, expected_issue_number: int) -> dict[str, Any]:
@@ -461,6 +479,8 @@ def resume_plan(mission: Mapping[str, Any], canonical_head: str, *, pr_snapshot:
     if source_status in {"PR_OPEN", "MERGED_PENDING_READBACK"}:
         if pr_snapshot is None:
             _fail("PR_READBACK_REQUIRED", source_status)
+        if not isinstance(pr_snapshot, Mapping):
+            _fail("INVALID_FIELD", "pr_snapshot must be an object")
         expected = {"number": binding["pull_request"], "head_sha": binding["expected_head"], "branch": binding["branch"]}
         observed = {key: pr_snapshot.get(key) for key in expected}
         if observed != expected:
@@ -514,6 +534,18 @@ def assert_no_duplicate(candidate: Mapping[str, Any], existing: Sequence[Mapping
         same_attempt = observed["attempt_id"] == current["attempt_id"]
         if same_mission or same_attempt:
             _fail("CONFLICTING_BINDING", f"Mission or attempt already exists with different transaction bindings: {observed['mission_id']}")
+        current_binding = current["source_binding"]
+        observed_binding = observed["source_binding"]
+        for field in ("branch", "pull_request", "expected_head"):
+            if current_binding[field] is not None and current_binding[field] == observed_binding[field]:
+                _fail("CONFLICTING_BINDING", f"source_binding.{field} is already bound to {observed['mission_id']}")
+        if (
+            current_binding["base_sha"] is not None
+            and current_binding["changed_paths_digest"] is not None
+            and current_binding["base_sha"] == observed_binding["base_sha"]
+            and current_binding["changed_paths_digest"] == observed_binding["changed_paths_digest"]
+        ):
+            _fail("CONFLICTING_BINDING", f"base and changed-path digest are already bound to {observed['mission_id']}")
 
 
 def _dependency_names(mission: Mapping[str, Any]) -> frozenset[str]:
