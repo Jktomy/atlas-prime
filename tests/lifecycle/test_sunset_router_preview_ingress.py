@@ -21,6 +21,15 @@ from tools.sunset_router.issue_preview_ingress import (
 ROOT = Path(__file__).resolve().parents[2]
 
 
+def json_bytes(value: object) -> bytes:
+    if isinstance(value, dict):
+        return canonical_bytes(value)
+    return (
+        json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        + "\n"
+    ).encode("utf-8")
+
+
 def router_request() -> dict:
     return {
         "schema_id": "atlas.sunset-router.request",
@@ -74,7 +83,7 @@ def event(value: dict, *, login: str = "Jktomy", association: str = "OWNER") -> 
 
 class SunsetRouterPreviewIngressTests(unittest.TestCase):
     def write_json(self, path: Path, value: object) -> Path:
-        path.write_bytes(canonical_bytes(value))
+        path.write_bytes(json_bytes(value))
         return path
 
     def admit(
