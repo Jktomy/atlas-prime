@@ -96,8 +96,8 @@
       "enforcement_sources": [
         "lifecycle/lifecycle-contract.md",
         "governance/lesson-harvest-protocol.md",
-        "tools/atlas_lifecycle/sunset.py",
-        "tests/lifecycle/test_sunset_candidate.py"
+        "tools/atlas_lifecycle/sunset_preview.py",
+        "tests/lifecycle/test_sunset_preview.py"
       ],
       "superseded_by": null
     },
@@ -116,8 +116,8 @@
         "lifecycle/lifecycle-contract.md",
         "governance/repository-process-contract.md",
         "recovery/elantris-recovery.md",
-        "tools/atlas_lifecycle/sunset.py",
-        "tests/lifecycle/test_sunset_candidate.py"
+        "tools/atlas_lifecycle/sunset_preview.py",
+        "tests/lifecycle/test_sunset_preview.py"
       ],
       "superseded_by": null
     },
@@ -135,8 +135,8 @@
       "enforcement_sources": [
         "governance/lesson-harvest-protocol.md",
         "lifecycle/lifecycle-contract.md",
-        "tools/atlas_lifecycle/sunset.py",
-        "tests/lifecycle/test_sunset_candidate.py",
+        "tools/atlas_lifecycle/sunset_preview.py",
+        "tests/lifecycle/test_sunset_preview.py",
         "tests/prime-program/test_assurance_controls.py"
       ],
       "superseded_by": null
