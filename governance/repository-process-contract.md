@@ -88,7 +88,7 @@ A request to `Sunset this chat` is always read-only Preview first, even though a
 
 After Jayson approves the exact Preview, the same transaction seals an approved route-neutral carrier, compiles the lifecycle candidate from Preview, approval, carrier, and request v3, publishes one draft PR, validates, reconciles review, and proceeds through the authorized permanence mode. Goddess Mode cannot bypass or change the approved semantic payload. Shardblade authority applies only when the approval mode explicitly binds it.
 
-A blocked Sunset route preserves the approved carrier and resumes the same transaction. It never substitutes a narrative summary, duplicate transaction, or unapproved v2 request. Only canonical merged-main readback permits the final `SUNSET COMPLETE` claim.
+A blocked Sunset route preserves the approved carrier and resumes the same transaction. It never substitutes a narrative summary, duplicate transaction, or unapproved request. Only canonical merged-main readback permits the final `SUNSET COMPLETE` claim.
 
 ## Validation
 
@@ -164,6 +164,19 @@ After mutation, Shardblade records the merge result and canonical-main readback.
 ## Implementation posture
 
 This contract activates the process doctrine and the explicit one-transaction meaning of Goddess Mode and Shardblade. It does not by itself claim that later validation, transaction-state, Harmony, Coppermind, Phoenix, Gitea, or ruleset implementation waves are complete.
+
+The implementation order is:
+
+1. canonical process doctrine and route alignment;
+2. route-neutral transaction and receipt schemas;
+3. durable pre-Coppermind compatibility state;
+4. trusted validation planning and final aggregate integrity;
+5. normal Thread Engine pilot;
+6. Athena, Harmony, and PowerShell parity;
+7. failure-isolated fallback proof;
+8. narrow Shardblade actuator hardening and acceptance;
+9. separate ruleset transition where required;
+10. legacy retirement only after parity, recovery, rollback, and clean-clone proof.
 
 No current route retires merely because this contract exists.
 
