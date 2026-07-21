@@ -71,11 +71,29 @@ class MissionBoardTests(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertEqual(validate_mission(load(name))["schema_version"], "atlas.mission.v1")
 
-    def test_template_contains_one_valid_portable_manifest(self) -> None:
+    def test_template_uses_truthful_post_creation_identity_binding(self) -> None:
         template = (ROOT / ".github" / "ISSUE_TEMPLATE" / "mission.md").read_text(encoding="utf-8")
-        manifest = extract_manifest(template)
-        self.assertEqual(manifest["mission_state"], "CAPTURED")
+        self.assertIn("```atlas-mission-draft-v1", template)
+        self.assertIn('"issue_number": 0', template)
+        with self.assertRaisesRegex(MissionError, "MANIFEST_CARDINALITY"):
+            extract_manifest(template)
         self.assertNotIn("projects", template.casefold())
+
+    def test_comment_history_rejects_backdated_state_claim(self) -> None:
+        body = load("captured-sunset.json")
+        body["updated_at"] = "2026-07-21T14:02:00Z"
+        comment = deepcopy(body)
+        comment["mission_state"] = "TRIAGED"
+        comment["updated_at"] = "2026-07-21T14:01:00Z"
+        snapshot = {
+            "repository": "Jktomy/atlas-prime",
+            "number": 259,
+            "is_pull_request": False,
+            "body": "```atlas-mission-v1\n" + json.dumps(body) + "\n```",
+            "comments": [{"body": "```atlas-mission-v1\n" + json.dumps(comment) + "\n```"}],
+        }
+        with self.assertRaisesRegex(MissionError, "STALE_MISSION_CLAIM"):
+            reconcile_issue_snapshot(snapshot, "Jktomy/atlas-prime", 259)
 
     def test_sequential_5_7_12_order_and_nonblocking_resume(self) -> None:
         missions = {5: load("sequence-5.json"), 7: load("sequence-7.json"), 12: load("sequence-12.json")}

@@ -11,17 +11,20 @@ Mission Board records are public-clean coordination records. Never include secre
 credentials, private network details, PHI, raw financial/legal/tax/insurance data,
 account records, unrestricted logs, private exports, or real environment values.
 
-Keep the JSON manifest valid. A worker must reconcile this issue, every comment,
-current canonical main, and any linked branch or PR before mutation.
+The draft block cannot know its GitHub/Gitea Issue number before creation. After
+creation, replace it or append one validated `atlas-mission-v1` comment bound to
+the assigned number. Until that binding exists, the Issue is not an admitted
+Mission. A worker must reconcile the Issue, every comment, current canonical
+main, and any linked branch or PR before mutation.
 -->
 
 ## Mission manifest
 
-```atlas-mission-v1
+```atlas-mission-draft-v1
 {
   "schema_version": "atlas.mission.v1",
   "repository": "Jktomy/atlas-prime",
-  "issue_number": 1,
+  "issue_number": 0,
   "mission_id": "MISSION-REPLACE-ME-R01",
   "mission_type": "mission/research",
   "mission_state": "CAPTURED",

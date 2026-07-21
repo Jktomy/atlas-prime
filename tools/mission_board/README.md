@@ -21,6 +21,11 @@ and linked PR state before using these mechanics. The adapter remains responsibl
 for authenticated readback and for proving that the requested repository object
 is an Issue rather than a pull request.
 
+The Markdown template begins with an unbound `atlas-mission-draft-v1` block and
+`issue_number: 0` because the platform assigns the real number only after
+creation. The adapter must read back that number and publish a validated
+`atlas-mission-v1` body or comment before the Issue becomes an admitted Mission.
+
 Implementation paths are `tools/mission_board/__init__.py`,
 `tools/mission_board/__main__.py`, and `tools/mission_board/core.py`. The package
 entry point exposes only read-only validation and planning commands.
@@ -43,7 +48,7 @@ The `sequence` command preserves the requested order. It continues past
 2. Reject pull-request objects and repository mismatch.
 3. Read the Issue and every comment.
 4. Fresh-read canonical `main` and linked PR state.
-5. Extract exactly one manifest per update and reconcile valid state transitions.
+5. Ignore the unbound draft, extract exactly one manifest per admitted update, and reconcile chronological state transitions.
 6. Search Mission ID, attempt ID, branch, PR, head, and changed-path digest before mutation.
 7. Use the returned next safe action; never blind retry.
 8. Append sanitized evidence to the same Mission.

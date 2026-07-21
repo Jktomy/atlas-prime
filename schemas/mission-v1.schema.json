@@ -197,7 +197,7 @@
                 "unresolved_follow_up": {"type": "array", "items": {"type": "string"}},
                 "rollback": {"type": "string", "minLength": 1},
                 "canonical_readback": {"type": "string", "minLength": 1},
-                "archive_timestamp": {"type": "string", "format": "date-time"}
+                "archive_timestamp": {"type": ["string", "null"], "format": "date-time"}
               }
             }
           ]

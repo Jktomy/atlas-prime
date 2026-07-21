@@ -255,13 +255,16 @@ def _validate_coppermind(value: Any) -> None:
             _require_nonempty_text(package[field], f"coppermind.archive_package.{field}")
         for field in ("decisions", "relationships", "changed_paths", "receipts", "lesson_harvest", "unresolved_follow_up"):
             _require_text_list(package[field], f"coppermind.archive_package.{field}")
-        _require_timestamp(package["archive_timestamp"], "coppermind.archive_package.archive_timestamp")
+        if package["archive_timestamp"] is not None:
+            _require_timestamp(package["archive_timestamp"], "coppermind.archive_package.archive_timestamp")
     if value["status"] == "PENDING" and (value["reference"] is not None or package is not None):
         _fail("ARCHIVE_STATE_MISMATCH", "PENDING cannot claim a reference or package")
     if value["status"] == "PACKAGE_READY" and package is None:
         _fail("ARCHIVE_STATE_MISMATCH", "PACKAGE_READY requires archive_package")
-    if value["status"] == "ARCHIVED" and (package is None or value["reference"] is None or value["archive_timestamp"] is None):
+    if value["status"] == "ARCHIVED" and (package is None or value["reference"] is None or value["archive_timestamp"] is None or package["archive_timestamp"] is None):
         _fail("ARCHIVE_STATE_MISMATCH", "ARCHIVED requires package, reference, and timestamp")
+    if value["status"] == "NOT_APPLICABLE" and (value["reference"] is not None or value["archive_timestamp"] is not None or package is not None):
+        _fail("ARCHIVE_STATE_MISMATCH", "NOT_APPLICABLE cannot claim an archive")
 
 
 def _validate_sunset(value: Any, source_status: str, mission_state: str) -> None:
@@ -434,8 +437,11 @@ def reconcile_issue_snapshot(snapshot: Mapping[str, Any], expected_repository: s
     attempt_ids = {item["attempt_id"] for item in manifests}
     if len(mission_ids) != 1 or len(attempt_ids) != 1:
         _fail("CONTRADICTORY_MISSION_CLAIM", "Mission or attempt identity changed")
-    manifests.sort(key=lambda item: _require_timestamp(item["updated_at"], "updated_at"))
     for previous, current in zip(manifests, manifests[1:]):
+        previous_updated = _require_timestamp(previous["updated_at"], "updated_at")
+        current_updated = _require_timestamp(current["updated_at"], "updated_at")
+        if current_updated < previous_updated:
+            _fail("STALE_MISSION_CLAIM", "a later Issue comment carries an older updated_at")
         validate_transition(previous["mission_state"], current["mission_state"])
         validate_source_transition(previous["canonical_source_status"], current["canonical_source_status"])
     latest = manifests[-1]

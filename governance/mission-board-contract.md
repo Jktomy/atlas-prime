@@ -184,11 +184,15 @@ Never blind retry branch, PR, READY, merge, Sunset, or archive creation.
 
 ## Portable template and adapters
 
-`.github/ISSUE_TEMPLATE/mission.md` is ordinary Markdown plus one fenced
-`atlas-mission-v1` JSON manifest. This avoids dependence on GitHub Projects,
-custom fields, sub-issue semantics, or an Issue Form feature that lacks a direct
-Gitea equivalent. Optional labels are search indexes only and never state
-authority.
+`.github/ISSUE_TEMPLATE/mission.md` is ordinary Markdown plus one explicitly
+unbound `atlas-mission-draft-v1` block. An Issue number does not exist until the
+platform creates the Issue, so the draft uses `issue_number: 0` and has no
+Mission authority. The creating adapter must read back the assigned number and
+replace the draft or append one validated `atlas-mission-v1` comment bound to
+that Issue before any worker treats it as a Mission. This avoids a fabricated
+Issue identity and dependence on GitHub Projects, custom fields, sub-issue
+semantics, or an Issue Form feature that lacks a direct Gitea equivalent.
+Optional labels are search indexes only and never state authority.
 
 A future Gitea adapter copies the template to
 `.gitea/ISSUE_TEMPLATE/mission.md` and maps API pagination, author identity,
