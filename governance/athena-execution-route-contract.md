@@ -50,7 +50,8 @@ Prime has one normal repository engine: Thread Engine. Spear and Arrow/Bow may c
 Machine-stable invariants:
 
 ```text
-THREAD_ENGINE_SELF_CHANGE_ROUTE=AEGIS_BREAK_TO_NON_THREAD_ENGINE_METHOD
+THREAD_ENGINE_SELF_CHANGE_ROUTE=SAFE_DECLARED_COMPILER_BOUND_DRAFT
+ARROW_BOW_PATH_SCOPE=SPEAR_PARITY_SAFE_DECLARED_AUTHORED
 NORMAL_STOP_BOUNDARY=DRAFT_PR_READBACK
 DIRECT_GITHUB_NATIVE_ROUTE=AEGIS_BREAK
 PHOENIX_BLADE_EXECUTES_SWORD=true
@@ -83,7 +84,7 @@ Every hosted request validates against `schemas/athena-hosted-route-request-v1.s
 - run ID, run attempt, credential principal, and token mode;
 - replay identity, protected-path classification, and draft-PR stop boundary.
 
-The hosted request schema accepts only `ARROW_BOW_HOSTED`, ephemeral `GITHUB_TOKEN`, and ordinary path classification. The submitted request cannot select trusted workflow SHA, credential principal, event actor, triggering actor, run identity, or repository owner.
+The hosted request schema accepts only `ARROW_BOW_HOSTED`, ephemeral `GITHUB_TOKEN`, and safe-declared authored path classification. Historical `ORDINARY` receipts remain schema-valid, but new accepted requests emit `SAFE_DECLARED`. The submitted request cannot select trusted workflow SHA, credential principal, event actor, triggering actor, run identity, or repository owner.
 
 ## Receipt and replay contract
 
@@ -100,13 +101,12 @@ Route selection occurs before compiler or adapter mutation:
 | Declared path class | Required result |
 |---|---|
 | ordinary Athena Thread Engine delivery | Spear |
-| ordinary Jayson/Artemis delegated delivery | Arrow/Bow |
+| safe declared authored Jayson/Artemis delegated delivery | Arrow/Bow |
 | Athena executes an exact Sword | Phoenix Blade |
 | bounded direct or alternate safe route | Aegis Break |
 | generated projection mixed with authored source | reject `GENERATED_SOURCE_MIXING` |
-| protected non-self-change without exact authority | reject `PROTECTED_ROUTE_AUTHORITY_REQUIRED` |
-| protected non-self-change with exact authority | Aegis Break selects the approved protected route |
-| `tools/thread-engine/**` self-change | Aegis Break to Phoenix Blade, Oathbringer, or another approved non-Thread-Engine route |
+| governance or protected authored path with exact carrier authority | Arrow/Bow through compiler-bound Thread Engine draft |
+| `tools/thread-engine/**` self-change with exact carrier authority | Arrow/Bow through compiler-bound Thread Engine draft |
 | ambiguous, unknown, or policy-drifted path | reject `ROUTE_UNRESOLVED` |
 
 ## Hosted permissions and separation

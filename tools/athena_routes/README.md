@@ -11,15 +11,15 @@ Athena -> Sword -> Phoenix Blade -> no Thread Engine
 Athena -> Aegis Break -> any safe bounded equivalent route
 ```
 
-Direct Spear may author any safe declared repository-relative path, including governance, lifecycle, workflows, generated source, Quest source, and `tools/thread-engine/**`. Path location does not force Athena away from Spear. The current canonical engine constructs self-change only as an immutable draft candidate and cannot ready, merge, or activate that change.
+Direct Spear and delegated Arrow/Bow may author any safe declared repository-relative authored path, including governance, lifecycle, workflows, Quest source, and `tools/thread-engine/**`. Path location does not change route identity. The current canonical engine constructs self-change only as an immutable draft candidate and cannot ready, merge, or activate that change. Generated projections remain on their separate deterministic publication route.
 
-The hosted adapter contains no second Git writer. It has no direct-main, force-push, ready, merge, settings, cleanup, standing-credential, or standing-authority surface. Hosted Arrow/Bow retains its current launcher-specific admission rules until separately reconciled; those rules do not limit Athena's direct Spear route.
+The hosted adapter contains no second Git writer. It has no direct-main, force-push, ready, merge, settings, cleanup, standing-credential, or standing-authority surface. Hosted Arrow/Bow retains its launcher-specific identity, exact-carrier admission, and draft-only stop boundary while matching Spear's safe declared authored path eligibility.
 
-## Ordinary free-form intake
+## Safe-declared free-form intake
 
 `python -B -m tools.athena_routes.free_form_intake --fields <fields.json> --output-dir <new-directory>` accepts a closed local public-clean mission-fields object and atomically creates one new output directory outside canonical source. It constructs deterministic carrier, Preview, receipt, and retained compiled files.
 
-The constructor binds exact expected main and fresh mission/carrier identity, normalizes and sorts ordinary changes, screens content locally, rejects stale/replayed/unsafe input, and has no workflow dispatch or remote write authority.
+The constructor binds exact expected main and fresh mission/carrier identity, normalizes and sorts safe declared authored changes, screens content locally, rejects stale/replayed/unsafe input, and has no workflow dispatch or remote write authority.
 
 This constructor is not a platform-origin bridge. It carries no CAP-015 or AJ-01 proof burden. Its separate accepted live journey supports RP-C01-M08 and guided usability.
 

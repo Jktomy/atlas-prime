@@ -40,7 +40,7 @@
       }
     },
     "deterministic_branch": {"type": "string", "pattern": "^source/athena-bow-[a-f0-9]{20}$"},
-    "path_classification": {"const": "ORDINARY"},
+    "path_classification": {"enum": ["ORDINARY", "SAFE_DECLARED"]},
     "paths": {
       "type": "array",
       "items": {

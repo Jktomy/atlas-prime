@@ -242,8 +242,8 @@ def build_preview(
     if len(paths) != len(threads) or not all(isinstance(path, str) for path in paths):
         raise GuidedPublisherError("guided carrier path inventory is malformed", "GUIDED_PATHS_REJECTED")
     classification, _route = classify_paths(paths)
-    if classification != "ORDINARY":
-        raise GuidedPublisherError("guided carrier is outside the ordinary route", classification)
+    if classification != "SAFE_DECLARED":
+        raise GuidedPublisherError("guided carrier is outside the safe declared authored route", classification)
     main_sha, workflow_blob_sha = _read_live_identity(runner)
     if package.weave.get("base_sha") != main_sha:
         raise GuidedPublisherError("guided carrier base is not canonical main", "STALE_BASE")
@@ -303,7 +303,7 @@ def build_preview(
         "final_pathset_sha256": compiled_identity["final_pathset_sha256"],
         "compiled_inventory": compiled_inventory,
         "deterministic_branch": package.weave["branch"],
-        "path_classification": "ORDINARY",
+        "path_classification": classification,
         "paths": inventory,
         "public_clean": True,
         "stop_point": "PREVIEW_COMPLETE",

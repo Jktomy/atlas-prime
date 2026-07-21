@@ -206,11 +206,10 @@ class FreeFormIntakeTests(unittest.TestCase):
         self.assertEqual(first_compiled, second_compiled)
         self.assertEqual(first_receipt, second_receipt)
 
-    def test_rejects_stale_protected_generated_self_change_and_replay_without_output(self) -> None:
+    def test_rejects_stale_generated_and_replay_without_output(self) -> None:
         cases = [
             (fields(main="c" * 40), FakeRunner(), "STALE_BASE"),
             (fields(changes=[{"operation": "ADD", "path": "generated/x.md", "content": "x"}]), FakeRunner(), "GENERATED_SOURCE_MIXING"),
-            (fields(changes=[{"operation": "ADD", "path": "tools/thread-engine/x.py", "content": "x"}]), FakeRunner(), "THREAD_ENGINE_SELF_CHANGE"),
             (fields(), FakeRunner(branch_exists=True), "REPLAY_BRANCH_EXISTS"),
             (fields(), FakeRunner(prior_pr=True), "REPLAY_PR_EXISTS"),
         ]
@@ -221,6 +220,10 @@ class FreeFormIntakeTests(unittest.TestCase):
                     construct_free_form_intake(self.write_fields(value, f"rejected-{index}.json"), output, runner=runner, package_reader=read_package, compiler=FakeCompiler())
                 self.assertEqual(caught.exception.code, code)
                 self.assertFalse(output.exists())
+
+    def test_accepts_thread_engine_self_change(self) -> None:
+        receipt, _ = self.construct(fields(changes=[{"operation": "ADD", "path": "tools/thread-engine/x.py", "content": "x"}]), name="self-change")
+        self.assertEqual(receipt["path_classification"], "SAFE_DECLARED")
 
     def test_rejects_main_drift_between_construction_and_preview(self) -> None:
         output = self.root / "drifted-main"

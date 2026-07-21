@@ -240,10 +240,10 @@ class HostedRouteTests(unittest.TestCase):
         self.assertEqual(result["carrier_sha256"], observed)
 
     def test_route_detection_occurs_before_mutation(self) -> None:
-        self.assertEqual(classify_paths(["proof/pilot.txt"]), ("ORDINARY", "ARROW_BOW_HOSTED"))
+        self.assertEqual(classify_paths(["proof/pilot.txt"]), ("SAFE_DECLARED", "ARROW_BOW_HOSTED"))
         self.assertEqual(classify_paths(["generated/atlas-file-inventory.md"]), ("GENERATED_SOURCE_MIXING", "ARROW_BOW_HOSTED"))
-        self.assertEqual(classify_paths(["governance/change-routes.md"]), ("PROTECTED_AEGIS_REQUIRED", "AEGIS_BREAK_PROTECTED"))
-        self.assertEqual(classify_paths(["tools/thread-engine/README.md"]), ("THREAD_ENGINE_SELF_CHANGE", "AEGIS_BREAK_TO_OATHBRINGER"))
+        self.assertEqual(classify_paths(["governance/change-routes.md"]), ("SAFE_DECLARED", "ARROW_BOW_HOSTED"))
+        self.assertEqual(classify_paths(["tools/thread-engine/README.md"]), ("SAFE_DECLARED", "ARROW_BOW_HOSTED"))
 
     def test_privacy_scan_rejects_secret_shaped_payload_without_echo(self) -> None:
         clean = package("0" * 64)
@@ -401,7 +401,7 @@ class HostedRouteTests(unittest.TestCase):
         self.assertTrue(branch.startswith("source/athena-bow-"))
         self.assertIn('branch.startswith("source/")', authority)
 
-    def test_protected_route_blocks_before_compiler_or_adapter(self) -> None:
+    def test_governance_path_reaches_compiler_and_adapter(self) -> None:
         carrier = b"fake-arrow-zip"
         digest = hashlib.sha256(carrier).hexdigest()
         calls: list[str] = []
@@ -432,10 +432,10 @@ class HostedRouteTests(unittest.TestCase):
                 engine=tuple(engine),
                 replay_probe=lambda _branch: None,
             )
-        self.assertEqual(receipt["result"], "BLOCKED")
-        self.assertEqual(receipt["route"], "AEGIS_BREAK_PROTECTED")
-        self.assertEqual(receipt["stop_point"], "ROUTE_HANDOFF_REQUIRED")
-        self.assertEqual(calls, [])
+        self.assertEqual(receipt["result"], "SUCCESS")
+        self.assertEqual(receipt["route"], "ARROW_BOW_HOSTED")
+        self.assertEqual(receipt["stop_point"], "DRAFT_PR_READBACK")
+        self.assertEqual(calls, ["compile", "execute"])
 
     def test_generated_source_mixing_rejects_coherently_before_compiler(self) -> None:
         carrier = b"fake-arrow-zip"

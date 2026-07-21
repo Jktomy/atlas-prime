@@ -278,8 +278,8 @@ def construct_free_form_intake(
         raise FreeFormIntakeError("mission identity rejected", "MISSION_FIELDS_SCHEMA_REJECTED")
     _privacy_scan_local(normalized, payloads)
     classification, _route = classify_paths([item["path"] for item in paths])
-    if classification != "ORDINARY":
-        raise FreeFormIntakeError("mission paths are outside the ordinary route", classification)
+    if classification != "SAFE_DECLARED":
+        raise FreeFormIntakeError("mission paths are outside the safe declared authored route", classification)
     try:
         main_sha, workflow_blob_sha = _read_live_identity(runner)
     except GuidedPublisherError as exc:
@@ -376,7 +376,7 @@ def construct_free_form_intake(
             "preview_filename": "preview.json",
             "preview_sha256": sha256_bytes(preview_bytes),
             "deterministic_branch": branch,
-            "path_classification": "ORDINARY",
+            "path_classification": classification,
             "paths": receipt_paths,
             "public_clean": True,
             "origin_classification": "OWNER_GUIDED_LOCAL_NOT_FRESH_WORK_ORIGIN",
