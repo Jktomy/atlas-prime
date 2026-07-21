@@ -34,11 +34,11 @@ transfer and an exact route; `AUTO` never transfers operators.
 After `.github/workflows/sunset-router-preview-intake.yml` is canonical, Jayson
 may request one exact Mission #257 Preview by posting only this closed block:
 
-```text
+````text
 ```atlas-sunset-router-preview-intake-v1
 {CANONICAL_SINGLE_LINE_JSON}
 ```
-```
+````
 
 The JSON must validate as
 `atlas.sunset-router.preview-intake` version `1.0.0`, bind the exact current
