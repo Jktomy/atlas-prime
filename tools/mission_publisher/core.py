@@ -54,6 +54,7 @@ def _scan(value: Any) -> None:
 def build_plan(mission: Mapping[str, Any], canonical_base: str, changed_paths: Iterable[str], sealed_paths: Iterable[str], *, publisher: str = "MISSION_BOARD_ADAPTER") -> dict[str, Any]:
     if not isinstance(mission, Mapping):
         _fail("INVALID_MISSION", "mission must be an object")
+    _scan(mission)
     if not SHA40.fullmatch(canonical_base):
         _fail("INVALID_BASE", canonical_base)
     repository = mission.get("repository")

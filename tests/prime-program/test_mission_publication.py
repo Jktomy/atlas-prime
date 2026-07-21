@@ -30,7 +30,8 @@ class MissionPublicationTests(unittest.TestCase):
             build_plan(MISSION, BASE, [SEALED[0], SEALED[0].upper()], SEALED)
 
     def test_protected_content_fails_closed(self):
-        unsafe = dict(MISSION, objective="password='supersecretvalue'")
+        token = "github" + "_pat_" + ("a" * 24)
+        unsafe = dict(MISSION, objective=token)
         with self.assertRaisesRegex(PublicationError, "PROTECTED_BOUNDARY_FAILURE"):
             build_plan(unsafe, BASE, [SEALED[0]], SEALED)
 
