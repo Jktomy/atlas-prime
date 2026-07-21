@@ -553,11 +553,6 @@ def assert_no_duplicate(candidate: Mapping[str, Any], existing: Sequence[Mapping
             _fail("CONFLICTING_BINDING", f"base and changed-path digest are already bound to {observed['mission_id']}")
 
 
-def _dependency_names(mission: Mapping[str, Any]) -> frozenset[str]:
-    number = mission["issue_number"]
-    return frozenset({mission["mission_id"], f"Mission #{number}", f"Mission {number}", f"#{number}"})
-
-
 def _blocked_mission_stops_remaining(blocked: Mapping[str, Any], remaining_numbers: Sequence[int], missions: Mapping[int, Mapping[str, Any]]) -> bool:
     remaining_names: set[str] = set()
     for number in remaining_numbers:
