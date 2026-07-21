@@ -34,6 +34,15 @@ ATHENA_ROUTES = (
 JAYSON_ROUTES = ("JAYSON_ARROW_BOW_THREAD_ENGINE", "JAYSON_OATHBRINGER_SWORD")
 DELEGATED_ROUTES = ("DELEGATED_ARROW_BOW_THREAD_ENGINE",)
 TRANSFER_STOP = "OPERATOR_TRANSFER_REQUIRED"
+LIFECYCLE_ROUTE_TOKENS = {
+    "ATHENA_SPEAR_THREAD_ENGINE": "athena-spear-thread-engine",
+    "ATHENA_PHOENIX_BLADE": "athena-phoenix-blade",
+    "ATHENA_AEGIS_BREAK": "athena-aegis-break",
+    "JAYSON_ARROW_BOW_THREAD_ENGINE": "jayson-arrow-bow-thread-engine",
+    "JAYSON_OATHBRINGER_SWORD": "jayson-oathbringer-sword",
+    "DELEGATED_ARROW_BOW_THREAD_ENGINE": "delegated-arrow-bow-thread-engine",
+    TRANSFER_STOP: "operator-transfer-required",
+}
 DRIVE_PATH = re.compile(r"^[A-Za-z]:/")
 SHA40 = re.compile(r"^[a-f0-9]{40}$")
 
@@ -235,8 +244,11 @@ def generate_router_preview(repo_root: Path, request_path: Path, output_dir: Pat
         lifecycle_path = Path(temp) / "sunset-request-v2.json"
         lifecycle_path.write_bytes(canonical_bytes(request["lifecycle_request"]))
         preview = generate_sunset_preview(
-            root, lifecycle_path, destination / PREVIEW_DIR,
-            selected_route=selected, fallback_routes=fallbacks,
+            root,
+            lifecycle_path,
+            destination / PREVIEW_DIR,
+            selected_route=LIFECYCLE_ROUTE_TOKENS[selected],
+            fallback_routes=[LIFECYCLE_ROUTE_TOKENS[item] for item in fallbacks],
         )
     plan = {
         "schema_id": "atlas.sunset-router.plan",
