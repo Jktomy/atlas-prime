@@ -75,11 +75,10 @@ class SunsetRouterPreviewIngressPolicyTests(unittest.TestCase):
     def test_workflow_invokes_only_preview_lifecycle_command(self) -> None:
         workflow = WORKFLOW.read_text(encoding="utf-8")
         self.assertEqual(workflow.count("python -B -m tools.sunset_router \\\n"), 1)
-        self.assertIn("preview \\\n", workflow)
+        self.assertIn("            preview \\\n", workflow)
+        for forbidden_subcommand in ("approve", "candidate", "verify", "receipt"):
+            self.assertNotIn(f"            {forbidden_subcommand} \\\n", workflow)
         for forbidden in (
-            " approve ",
-            " candidate ",
-            " receipt ",
             "git commit",
             "git push",
             "gh pr create",
