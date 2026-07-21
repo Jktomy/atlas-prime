@@ -9,6 +9,10 @@ class MissionPublicationPolicyTests(unittest.TestCase):
         with self.assertRaisesRegex(PublicationError, "UNSAFE_PATH"):
             normalize_paths(["../main"])
 
+    def test_drive_letter_path_rejected(self):
+        with self.assertRaisesRegex(PublicationError, "UNSAFE_PATH"):
+            normalize_paths(["C:/tmp"])
+
     def test_backslashes_are_normalized(self):
         self.assertEqual(normalize_paths(["tools\\mission_publisher\\core.py"]), ["tools/mission_publisher/core.py"])
 

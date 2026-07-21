@@ -9,6 +9,7 @@ from typing import Any, Iterable, Mapping
 
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
+DRIVE_PATH = re.compile(r"^[A-Za-z]:/")
 PROTECTED = (
     re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
     re.compile(r"\bgithub_pat_[A-Za-z0-9_]{20,}\b"),
@@ -36,7 +37,7 @@ def normalize_paths(paths: Iterable[str]) -> list[str]:
             _fail("INVALID_PATH", "path must be nonempty text")
         text = unicodedata.normalize("NFC", raw.replace("\\", "/"))
         pure = PurePosixPath(text)
-        if pure.is_absolute() or text.startswith("/") or ".." in pure.parts or text != pure.as_posix():
+        if pure.is_absolute() or text.startswith("/") or DRIVE_PATH.match(text) or ".." in pure.parts or text != pure.as_posix():
             _fail("UNSAFE_PATH", text)
         folded = text.casefold()
         if folded in seen:
