@@ -1,6 +1,6 @@
 # Atlas File Inventory
 
-Source fingerprint: sha256:fd1d1a10dd19f95cdb9b46981ee7bdc3b21d0e55dfb3f9d408ed69bb9e841fe3
+Source fingerprint: sha256:da8bd9db27b5e032b553d21a7f76a6f5d9e033d2aa58a92980d6a57fda6ed0f1
 Generator format: 2
 Status: Generated support artifact
 
@@ -28,6 +28,7 @@ Status: Generated support artifact
 | `governance/investiture-source-identity-contract.md` | governance | yes | review |
 | `governance/lesson-harvest-protocol.md` | governance | yes | none |
 | `governance/mission-board-contract.md` | governance | yes | policy-reference |
+| `governance/mission-publication-contract.md` | governance | yes | none |
 | `governance/noctua.md` | governance | yes | none |
 | `governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md` | governance | yes | none |
 | `governance/protected-source-boundary.md` | governance | yes | policy-reference |
@@ -38,6 +39,7 @@ Status: Generated support artifact
 | `governance/source-hierarchy.md` | governance | yes | none |
 | `governance/source-lifecycle.md` | governance | yes | none |
 | `governance/spear-repository-path-scope.md` | governance | yes | none |
+| `governance/sunset-router-contract.md` | governance | yes | none |
 | `infrastructure/atlas-infrastructure-source.md` | infrastructure | yes | policy-reference |
 | `knowledge/atlas-source-compendium.md` | knowledge | yes | none |
 | `knowledge/context-pack-contract.md` | knowledge | yes | policy-reference |
@@ -130,10 +132,12 @@ Status: Generated support artifact
 | `tools/generated_checkpoint/README.md` | tools | no | none |
 | `tools/investiture_accounting/README.md` | tools | no | none |
 | `tools/mission_board/README.md` | tools | yes | none |
+| `tools/mission_publisher/README.md` | tools | yes | none |
 | `tools/oathbringer-foundry/README.md` | tools | no | none |
 | `tools/prime_checks/README.md` | tools | no | none |
 | `tools/prime_continuity/README.md` | tools | no | none |
 | `tools/resonance/README.md` | tools | no | none |
+| `tools/sunset_router/README.md` | tools | yes | none |
 | `tools/thread-engine/ARCHITECTURE.md` | tools | no | none |
 | `tools/thread-engine/PRIME-PORT-STATUS.md` | tools | no | none |
 | `tools/thread-engine/README.md` | tools | no | policy-reference |
