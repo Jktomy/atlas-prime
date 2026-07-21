@@ -12,6 +12,7 @@ from tools.atlas_lifecycle.repository import observed_head
 from tools.sunset_router.issue_preview_ingress import (
     INTAKE_LANGUAGE,
     MAX_COMMENT_BYTES,
+    MAX_COMMENTS_BYTES,
     admit_issue_comment,
 )
 
@@ -71,6 +72,11 @@ def event(body: str) -> dict:
     }
 
 
+def intake_body(context_summary: str) -> str:
+    payload = canonical_bytes(envelope(context_summary)).decode("utf-8").rstrip("\n")
+    return f"```{INTAKE_LANGUAGE}\n{payload}\n```\n"
+
+
 class SunsetRouterPreviewIngressPrivacyTests(unittest.TestCase):
     def write_json(self, path: Path, value: object) -> Path:
         path.write_bytes(json_bytes(value))
@@ -78,15 +84,14 @@ class SunsetRouterPreviewIngressPrivacyTests(unittest.TestCase):
 
     def test_protected_looking_value_rejects_before_output(self) -> None:
         protected_value = "github" + "_pat_" + ("z" * 24)
-        value = envelope(protected_value)
-        payload = canonical_bytes(value).decode("utf-8").rstrip("\n")
-        body = f"```{INTAKE_LANGUAGE}\n{payload}\n```\n"
         with tempfile.TemporaryDirectory() as temp:
             parent = Path(temp)
             with self.assertRaises(LifecycleError) as raised:
                 admit_issue_comment(
                     ROOT,
-                    self.write_json(parent / "event.json", event(body)),
+                    self.write_json(
+                        parent / "event.json", event(intake_body(protected_value))
+                    ),
                     self.write_json(parent / "comments.json", []),
                     parent / "request.json",
                     parent / "admission.json",
@@ -104,6 +109,24 @@ class SunsetRouterPreviewIngressPrivacyTests(unittest.TestCase):
                     ROOT,
                     self.write_json(parent / "event.json", event(body)),
                     self.write_json(parent / "comments.json", []),
+                    parent / "request.json",
+                    parent / "admission.json",
+                )
+            self.assertEqual(raised.exception.code, "SUNSET_PREVIEW_INTAKE_SIZE")
+            self.assertFalse((parent / "request.json").exists())
+
+    def test_oversized_history_file_rejects_before_read_or_parse(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            parent = Path(temp)
+            comments = parent / "comments.json"
+            comments.write_bytes(b"x" * (MAX_COMMENTS_BYTES + 1))
+            with self.assertRaises(LifecycleError) as raised:
+                admit_issue_comment(
+                    ROOT,
+                    self.write_json(
+                        parent / "event.json", event(intake_body("Public-clean test."))
+                    ),
+                    comments,
                     parent / "request.json",
                     parent / "admission.json",
                 )
