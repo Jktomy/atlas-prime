@@ -57,21 +57,36 @@ class SunsetRouterPreviewIngressPolicyTests(unittest.TestCase):
         self.assertIn("persist-credentials: false", workflow)
         self.assertNotIn("workflow_dispatch:", workflow)
 
-    def test_workflow_is_exact_mission_owner_comment_surface(self) -> None:
+    def test_workflow_prefilter_is_exact_issue_and_intake_prefix_only(self) -> None:
         workflow = WORKFLOW.read_text(encoding="utf-8")
         for marker in (
             "issue_comment:",
             "- created",
             "github.event.issue.number == 257",
-            "!github.event.issue.pull_request",
-            "github.event.comment.user.login == github.repository_owner",
-            "github.event.comment.author_association == 'OWNER'",
             "startsWith(github.event.comment.body, '```atlas-sunset-router-preview-intake-v1')",
             "expected_repository='Jktomy/atlas-prime'",
             "expected_owner='Jktomy'",
             "refs/heads/main",
         ):
             self.assertIn(marker, workflow)
+        condition = workflow.split("    runs-on:", 1)[0].split("    if: >-", 1)[1]
+        for unreliable_authority_check in (
+            "github.event.issue.pull_request",
+            "github.event.comment.user.login",
+            "github.event.comment.author_association",
+        ):
+            self.assertNotIn(unreliable_authority_check, condition)
+
+    def test_adapter_retains_exact_owner_and_non_pr_authority(self) -> None:
+        adapter = ADAPTER.read_text(encoding="utf-8")
+        for marker in (
+            'issue.get("pull_request") is not None',
+            'comment["user"].get("login") != EXPECTED_OWNER',
+            'comment.get("author_association") != "OWNER"',
+            'sender.get("login") != EXPECTED_OWNER',
+            'repository.get("full_name") != EXPECTED_REPOSITORY',
+        ):
+            self.assertIn(marker, adapter)
 
     def test_workflow_invokes_only_preview_lifecycle_command(self) -> None:
         workflow = WORKFLOW.read_text(encoding="utf-8")
