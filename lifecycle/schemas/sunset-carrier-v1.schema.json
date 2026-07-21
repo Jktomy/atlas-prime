@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/sunset-carrier-v1.schema.json",
+  "title": "Atlas approved Sunset carrier v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id", "schema_version", "carrier_id", "authority", "preview_id",
+    "preview_digest", "approval_id", "approval_digest", "semantic_digest",
+    "state", "selected_route", "fallback_routes", "approval_mode",
+    "permanence_mode", "expected_main_sha", "quest_scope", "record_plan_digest"
+  ],
+  "properties": {
+    "schema_id": { "const": "atlas.lifecycle.sunset-carrier" },
+    "schema_version": { "const": "1.0.0" },
+    "carrier_id": { "type": "string", "pattern": "^SCR-[A-Z2-7]{26}$" },
+    "authority": { "const": "ROUTE_NEUTRAL_APPROVED_CARRIER" },
+    "preview_id": { "type": "string", "pattern": "^SPV-[A-Z2-7]{26}$" },
+    "preview_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "approval_id": { "type": "string", "pattern": "^SAP-[A-Z2-7]{26}$" },
+    "approval_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "semantic_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" },
+    "state": {
+      "enum": [
+        "APPROVED_PENDING_COMPILATION", "APPROVED_PENDING_PUBLICATION",
+        "APPROVED_PENDING_VALIDATION", "APPROVED_PENDING_PERMANENCE",
+        "BLOCKED_RESUMABLE", "READBACK_COMPLETE", "SUPERSEDED_BY_NEW_PREVIEW"
+      ]
+    },
+    "selected_route": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" },
+    "fallback_routes": {
+      "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true,
+      "items": { "$ref": "common-v1.schema.json#/$defs/atlas_identity" }
+    },
+    "approval_mode": { "enum": ["STANDARD", "GODDESS_MODE", "GODDESS_MODE_SHARDBLADE"] },
+    "permanence_mode": { "enum": ["MANUAL_MERGE", "SHARDBLADE"] },
+    "expected_main_sha": { "$ref": "common-v1.schema.json#/$defs/git_sha" },
+    "quest_scope": { "$ref": "common-v1.schema.json#/$defs/quest_scope" },
+    "record_plan_digest": { "$ref": "common-v1.schema.json#/$defs/fingerprint" }
+  }
+}
