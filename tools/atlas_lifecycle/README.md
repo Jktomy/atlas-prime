@@ -13,7 +13,7 @@ python -m tools.atlas_lifecycle index build
 python -m tools.atlas_lifecycle pilot [--repetitions N]
 python -m tools.atlas_lifecycle event plan --event EVENT --trust-root TRUST --expected-trust-root-digest SHA256 --state STATE --expected-state-digest SHA256
 python -m tools.atlas_lifecycle event candidate --event EVENT --trust-root TRUST --expected-trust-root-digest SHA256 --state STATE --expected-state-digest SHA256 --output-dir NEW_SYSTEM_TEMP_DIR
-python -m tools.atlas_lifecycle sunset preview --request REQUEST_V2 --selected-route ROUTE [--fallback-route ROUTE ...] --output-dir NEW_SYSTEM_TEMP_DIR
+python -m tools.atlas_lifecycle sunset preview --request REQUEST_V2 --selected-route ROUTE --fallback-route ROUTE [--fallback-route ROUTE ...] --output-dir NEW_SYSTEM_TEMP_DIR
 python -m tools.atlas_lifecycle sunset approve --preview-dir PREVIEW_DIR --approval-mode STANDARD|GODDESS_MODE|GODDESS_MODE_SHARDBLADE --output-dir NEW_SYSTEM_TEMP_DIR
 python -m tools.atlas_lifecycle sunset candidate --request APPROVAL_DIR/sunset-request-v3.json --preview-dir PREVIEW_DIR --approval-dir APPROVAL_DIR --output-dir NEW_SYSTEM_TEMP_DIR
 python -m tools.atlas_lifecycle sunset verify --candidate-dir SYSTEM_TEMP_DIR
@@ -53,8 +53,9 @@ Level 1B commands have only the temporary write boundary described below.
 one new system-temporary directory containing `sunset-preview.json` and
 `sunset-preview-receipt.json`. It binds the exact source lock, lifecycle scope,
 semantic payload, Lesson Harvest, expected record inventory, selected route,
-fallback routes, and permitted approval modes. It creates no lifecycle
-candidate and cannot be bypassed by Goddess Mode or Shardblade.
+fallback routes, and permitted approval modes. At least one `--fallback-route`
+is required; the option may be repeated. Preview creates no lifecycle candidate
+and cannot be bypassed by Goddess Mode or Shardblade.
 
 `sunset approve` verifies the exact Preview and emits
 `sunset-approval.json`, `sunset-carrier.json`, `sunset-request-v3.json`, and
