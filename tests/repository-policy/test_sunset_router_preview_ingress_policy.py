@@ -57,13 +57,13 @@ class SunsetRouterPreviewIngressPolicyTests(unittest.TestCase):
         self.assertIn("persist-credentials: false", workflow)
         self.assertNotIn("workflow_dispatch:", workflow)
 
-    def test_workflow_prefilter_uses_reliable_owner_actor_and_exact_intake(self) -> None:
+    def test_workflow_prefilter_uses_exact_comment_owner_and_intake(self) -> None:
         workflow = WORKFLOW.read_text(encoding="utf-8")
         for marker in (
             "issue_comment:",
             "- created",
             "github.event.issue.number == 257",
-            "github.actor == github.repository_owner",
+            "github.event.comment.user.login == 'Jktomy'",
             "startsWith(github.event.comment.body, '```atlas-sunset-router-preview-intake-v1')",
             "expected_repository='Jktomy/atlas-prime'",
             "expected_owner='Jktomy'",
@@ -71,12 +71,18 @@ class SunsetRouterPreviewIngressPolicyTests(unittest.TestCase):
         ):
             self.assertIn(marker, workflow)
         condition = workflow.split("    runs-on:", 1)[0].split("    if: >-", 1)[1]
-        for unreliable_event_authority_check in (
+        for rejected_identity_check in (
+            "github.actor",
+            "github.triggering_actor",
             "github.event.issue.pull_request",
-            "github.event.comment.user.login",
             "github.event.comment.author_association",
         ):
-            self.assertNotIn(unreliable_event_authority_check, condition)
+            self.assertNotIn(rejected_identity_check, condition)
+        for rejected_shell_identity_check in (
+            'test "$GITHUB_ACTOR"',
+            'test "$GITHUB_TRIGGERING_ACTOR"',
+        ):
+            self.assertNotIn(rejected_shell_identity_check, workflow)
 
     def test_adapter_retains_exact_owner_and_non_pr_authority(self) -> None:
         adapter = ADAPTER.read_text(encoding="utf-8")

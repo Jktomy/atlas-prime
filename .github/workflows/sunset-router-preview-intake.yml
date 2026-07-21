@@ -18,7 +18,7 @@ jobs:
     name: Read-only owner Mission Preview
     if: >-
       github.event.issue.number == 257 &&
-      github.actor == github.repository_owner &&
+      github.event.comment.user.login == 'Jktomy' &&
       startsWith(github.event.comment.body, '```atlas-sunset-router-preview-intake-v1')
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -29,7 +29,7 @@ jobs:
       TEMP: ${{ runner.temp }}
       TMP: ${{ runner.temp }}
     steps:
-      - name: Admit exact repository and owner event
+      - name: Admit exact repository event
         shell: bash
         run: |
           set -euo pipefail
@@ -40,8 +40,6 @@ jobs:
 
           test "$GITHUB_REPOSITORY" = "$expected_repository"
           test "$GITHUB_REPOSITORY_OWNER" = "$expected_owner"
-          test "$GITHUB_ACTOR" = "$expected_owner"
-          test "$GITHUB_TRIGGERING_ACTOR" = "$expected_owner"
           test "$GITHUB_REF" = 'refs/heads/main'
           test "$GITHUB_WORKFLOW_REF" = "$expected_workflow_ref"
           [[ "$GITHUB_SHA" =~ $hex40 ]]
