@@ -561,7 +561,7 @@ def _blocked_mission_stops_remaining(blocked: Mapping[str, Any], remaining_numbe
         if isinstance(raw, Mapping) and isinstance(raw.get("mission_id"), str):
             remaining_names.add(raw["mission_id"])
     for dependency in blocked["dependencies"]:
-        if dependency["repository"] == blocked["repository"] and dependency["relation"] == "BLOCKS" and dependency["mission_ref"] in remaining_names:
+        if dependency["repository"] == blocked["repository"] and dependency["relation"] in {"BLOCKS", "BLOCKED_BY"} and dependency["mission_ref"] in remaining_names:
             return True
     return False
 

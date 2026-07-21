@@ -281,6 +281,13 @@ class MissionBoardTests(unittest.TestCase):
         receipt = sequence_missions(missions, [5, 7, 12])
         self.assertEqual([item["result"] for item in receipt["results"]], ["COMPLETE", "BLOCKED_RESUMABLE", "NOT_STARTED_AFTER_STOP"])
 
+    def test_explicit_blocked_by_edge_stops_the_remaining_queue(self) -> None:
+        blocked = load("sequence-7.json")
+        blocked["dependencies"] = [{"relation": "BLOCKED_BY", "repository": "Jktomy/atlas-prime", "mission_ref": "Mission 12"}]
+        missions = {5: load("sequence-5.json"), 7: blocked, 12: load("sequence-12.json")}
+        receipt = sequence_missions(missions, [5, 7, 12])
+        self.assertEqual([item["result"] for item in receipt["results"]], ["COMPLETE", "BLOCKED_RESUMABLE", "NOT_STARTED_AFTER_STOP"])
+
 
 if __name__ == "__main__":
     unittest.main()
