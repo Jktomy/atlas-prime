@@ -12,29 +12,34 @@ from .pilot import run_context_pilot
 from .planner import plan_event
 from .projection import INDEX_RELATIVE_PATH, check_website_index, compact_context
 from .repository import validate_repository
-from .sunset import generate_sunset_candidate, verify_sunset_candidate
+from .sunset_preview import (
+    generate_approved_sunset_candidate,
+    generate_sunset_approval,
+    generate_sunset_preview,
+    verify_approved_sunset_candidate,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="python -m tools.atlas_lifecycle")
     parser.add_argument("--repo-root", type=Path, default=Path.cwd())
-    subcommands = parser.add_subparsers(dest="command", required=True)
-    subcommands.add_parser("validate", help="validate schemas, records, IDs, and protected boundaries")
-    verify = subcommands.add_parser(
-        "verify", help="validate plus exact-HEAD stale-state and optional evidence verification"
-    )
+    commands = parser.add_subparsers(dest="command", required=True)
+    commands.add_parser("validate", help="validate schemas, records, IDs, and protected boundaries")
+    verify = commands.add_parser("verify", help="validate plus exact-HEAD and optional evidence")
     verify.add_argument("--archive", type=Path)
     verify.add_argument("--sidecar", type=Path)
     verify.add_argument("--receipt", type=Path)
     verify.add_argument("--trust-root", type=Path)
-    context = subcommands.add_parser("context", help="return one compact deterministic Quest context")
+    context = commands.add_parser("context", help="return one compact deterministic Quest context")
     context.add_argument("--quest-id")
-    index = subcommands.add_parser("index", help="website-facing lifecycle projection checks")
-    index_commands = index.add_subparsers(dest="index_command", required=True)
-    index_commands.add_parser("build", help="compute and compare the index without writing")
-    pilot = subcommands.add_parser("pilot", help="measure manual versus compact context reconstruction")
+    index = commands.add_parser("index", help="website-facing lifecycle projection checks")
+    index.add_subparsers(dest="index_command", required=True).add_parser(
+        "build", help="compute and compare the index without writing"
+    )
+    pilot = commands.add_parser("pilot", help="measure deterministic lifecycle mechanics")
     pilot.add_argument("--repetitions", type=int, default=500)
-    event = subcommands.add_parser("event", help="lifecycle event plan and candidate mechanics")
+
+    event = commands.add_parser("event", help="lifecycle event plan and candidate mechanics")
     event_commands = event.add_subparsers(dest="event_command", required=True)
     event_plan = event_commands.add_parser("plan", help="validate and propose deterministic deltas")
     event_plan.add_argument("--event", type=Path, required=True)
@@ -51,49 +56,83 @@ def build_parser() -> argparse.ArgumentParser:
     event_candidate.add_argument("--state", type=Path, required=True)
     event_candidate.add_argument("--expected-state-digest", required=True)
     event_candidate.add_argument("--output-dir", type=Path, required=True)
-    sunset = subcommands.add_parser(
-        "sunset", help="build or verify one full Atlas Sunset with explicit lesson harvest"
+
+    sunset = commands.add_parser(
+        "sunset", help="Preview, approve, build, or verify one full Atlas Sunset"
     )
     sunset_commands = sunset.add_subparsers(dest="sunset_command", required=True)
-    sunset_candidate = sunset_commands.add_parser(
-        "candidate", help="create one v2 Feather/Sunset, one Sunrise, and explicit lesson harvest"
+    preview = sunset_commands.add_parser(
+        "preview", help="create one user-visible read-only Sunset Preview"
     )
-    sunset_candidate.add_argument("--request", type=Path, required=True)
-    sunset_candidate.add_argument("--output-dir", type=Path, required=True)
+    preview.add_argument("--request", type=Path, required=True)
+    preview.add_argument("--selected-route", required=True)
+    preview.add_argument("--fallback-route", action="append", required=True)
+    preview.add_argument("--output-dir", type=Path, required=True)
+    approve = sunset_commands.add_parser(
+        "approve", help="seal exact approval and a route-neutral Sunset carrier"
+    )
+    approve.add_argument("--preview-dir", type=Path, required=True)
+    approve.add_argument(
+        "--approval-mode",
+        required=True,
+        choices=("STANDARD", "GODDESS_MODE", "GODDESS_MODE_SHARDBLADE"),
+    )
+    approve.add_argument("--output-dir", type=Path, required=True)
+    candidate = sunset_commands.add_parser(
+        "candidate", help="compile one exact approved Sunset candidate"
+    )
+    candidate.add_argument("--request", type=Path, required=True)
+    candidate.add_argument("--preview-dir", type=Path, required=True)
+    candidate.add_argument("--approval-dir", type=Path, required=True)
+    candidate.add_argument("--output-dir", type=Path, required=True)
     sunset_verify = sunset_commands.add_parser(
-        "verify", help="verify one temporary Sunset candidate set"
+        "verify", help="verify one temporary approved Sunset candidate"
     )
     sunset_verify.add_argument("--candidate-dir", type=Path, required=True)
     return parser
+
+
+def _print(value: dict) -> int:
+    print(json.dumps(value, sort_keys=True, separators=(",", ":")))
+    return 0
 
 
 def main() -> int:
     args = build_parser().parse_args()
     try:
         if args.command == "pilot":
-            print(
-                json.dumps(
-                    run_context_pilot(args.repo_root, repetitions=args.repetitions),
-                    sort_keys=True,
-                    separators=(",", ":"),
-                )
-            )
-            return 0
+            return _print(run_context_pilot(args.repo_root, repetitions=args.repetitions))
 
         if args.command == "sunset":
-            if args.sunset_command == "candidate":
-                output = generate_sunset_candidate(
+            if args.sunset_command == "preview":
+                output = generate_sunset_preview(
                     args.repo_root,
                     args.request,
                     args.output_dir,
+                    selected_route=args.selected_route,
+                    fallback_routes=args.fallback_route,
+                )
+            elif args.sunset_command == "approve":
+                output = generate_sunset_approval(
+                    args.repo_root,
+                    args.preview_dir,
+                    args.output_dir,
+                    approval_mode=args.approval_mode,
+                )
+            elif args.sunset_command == "candidate":
+                output = generate_approved_sunset_candidate(
+                    args.repo_root,
+                    args.request,
+                    args.preview_dir,
+                    args.approval_dir,
+                    args.output_dir,
                 )
             else:
-                output = verify_sunset_candidate(
+                output = verify_approved_sunset_candidate(
                     args.repo_root,
                     args.candidate_dir,
                 )
-            print(json.dumps(output, sort_keys=True, separators=(",", ":")))
-            return 0
+            return _print(output)
 
         if args.command == "event":
             if args.event_command == "candidate":
@@ -115,14 +154,7 @@ def main() -> int:
                     args.state,
                     args.expected_state_digest,
                 )
-            print(
-                json.dumps(
-                    output,
-                    sort_keys=True,
-                    separators=(",", ":"),
-                )
-            )
-            return 0
+            return _print(output)
 
         if args.command in {"context", "index"}:
             check, snapshot = check_website_index(args.repo_root)
@@ -143,8 +175,7 @@ def main() -> int:
                     "source_fingerprint": check.source_fingerprint,
                     "source_revision": check.source_revision,
                 }
-            print(json.dumps(output, sort_keys=True, separators=(",", ":")))
-            return 0
+            return _print(output)
 
         result = validate_repository(
             args.repo_root,
@@ -183,21 +214,14 @@ def main() -> int:
         }
         if evidence_digest is not None:
             output["verified_evidence_digest"] = evidence_digest
-        print(
-            json.dumps(
-                output,
-                sort_keys=True,
-                separators=(",", ":"),
-            )
-        )
-        return 0
+        return _print(output)
     except LifecycleError as exc:
         candidate_failure = (
             getattr(args, "command", None) == "event"
             and getattr(args, "event_command", None) == "candidate"
         ) or (
             getattr(args, "command", None) == "sunset"
-            and getattr(args, "sunset_command", None) == "candidate"
+            and getattr(args, "sunset_command", None) in {"preview", "approve", "candidate"}
         )
         failure = {
             "authority": "TEMPORARY_CANDIDATE_ONLY" if candidate_failure else "READ_ONLY",
@@ -205,18 +229,14 @@ def main() -> int:
             **exc.sanitized(),
         }
         if candidate_failure:
-            failure.update({
-                "canonical_writes": False,
-                "github_actions": [],
-                "temporary_output_state": "ABSENT_OR_PARTIAL_REVIEW_REQUIRED",
-            })
-        print(
-            json.dumps(
-                failure,
-                sort_keys=True,
-                separators=(",", ":"),
+            failure.update(
+                {
+                    "canonical_writes": False,
+                    "github_actions": [],
+                    "temporary_output_state": "ABSENT_OR_PARTIAL_REVIEW_REQUIRED",
+                }
             )
-        )
+        print(json.dumps(failure, sort_keys=True, separators=(",", ":")))
         return 2
 
 
