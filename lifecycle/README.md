@@ -31,19 +31,14 @@ Authority is deliberately narrow:
 - archive and supersession records change other lifecycle interpretation
   without deleting an identity or breaking a reference.
 - Golden Wings are reusable-lesson candidates, never doctrine.
-- a full Atlas Sunset is the lifecycle closeout that creates one exact
-  Feather/Sunset/Sunrise binding; the compact `prime_continuity` snapshot is a
-  distinct read-only view and cannot claim closeout;
+- a full Atlas Sunset begins with a user-visible Preview, then exact approval,
+  then one route-neutral carrier, then the lifecycle closeout that creates one
+  exact Feather/Sunset/Sunrise binding; the compact `prime_continuity` snapshot
+  is a distinct read-only view and cannot claim closeout.
+- the approved carrier is temporary execution evidence, never canonical
+  lifecycle source or a substitute for merged readback.
 - `fixtures/` is harmless test material and has no Atlas authority.
 - `generated/lifecycle/` is a deterministic, noncanonical projection.
-- `events/` is append-only canonical history only after the applicable apply
-  level is activated; G4-A adds noncanonical event fixtures, not live events.
-- explicit Level 1B candidate generation writes exact event, manifest, and
-  receipt bytes only to a fresh system-temporary directory; it grants no
-  canonical or GitHub authority.
-- Level 1C construction requires the closed lifecycle profile, protected
-  mission-scoped routing, one branch, one commit, one draft PR, and exact
-  readback; it grants no ready, merge, or direct-main authority.
 
 All canonical records are strict UTF-8 JSON. They must validate against the
 declared schema, use canonical serialization, pass the protected-source
@@ -51,4 +46,5 @@ boundary, and carry exact source and concurrency locks defined by
 `lifecycle-contract.md`.
 
 The lifecycle engine remains `SCRIPT ASSIST — LEVEL 1`. Presence of source or
-code does not activate a capability level.
+code does not activate a capability level. Only canonical merged-main readback
+may claim `SUNSET COMPLETE`.
