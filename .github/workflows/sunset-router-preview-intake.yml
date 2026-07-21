@@ -18,6 +18,7 @@ jobs:
     name: Read-only owner Mission Preview
     if: >-
       github.event.issue.number == 257 &&
+      github.actor == github.repository_owner &&
       startsWith(github.event.comment.body, '```atlas-sunset-router-preview-intake-v1')
     runs-on: ubuntu-latest
     timeout-minutes: 10
