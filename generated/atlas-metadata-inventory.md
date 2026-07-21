@@ -1,6 +1,6 @@
 # Atlas Metadata Inventory
 
-Source fingerprint: sha256:b173fc994f72314184354f3e7d17333b0c4b3fad18181a1c51be4f2bcefad4ff
+Source fingerprint: sha256:8bd1986e0f5465f8d8585cba9bfe5430643f8c647099565987970ba5625eab52
 Generator format: 2
 Status: Generated support artifact
 
@@ -27,14 +27,17 @@ Status: Generated support artifact
 | `governance/investiture-accounting-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/investiture-source-identity-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/lesson-harvest-protocol.md` | CANONICAL_ACTIVE | PROTOCOL | missing | HIGH |
+| `governance/mission-board-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/noctua.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/proof-fixtures/rp-c01-m06-protected-dispatch-marker-r01.md` | NON_GOVERNING_PROOF_FIXTURE | PROOF_FIXTURE | missing | CRITICAL |
 | `governance/protected-source-boundary.md` | CANONICAL_ACTIVE | POLICY | missing | CRITICAL |
 | `governance/quest-engine-continuity-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
+| `governance/repository-process-contract.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `governance/resonance-reconciliation-contract.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/shard-doctrine.md` | CANONICAL_ACTIVE | PROTOCOL | missing | CRITICAL |
 | `governance/source-hierarchy.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `governance/source-lifecycle.md` | ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
+| `governance/spear-repository-path-scope.md` | CANONICAL_ACTIVE | CORE_DOCTRINE | missing | CRITICAL |
 | `infrastructure/atlas-infrastructure-source.md` | ACTIVE | ARCHITECTURE | missing | HIGH |
 | `knowledge/atlas-source-compendium.md` | ACTIVE | CORE_DOCTRINE | missing | MEDIUM |
 | `knowledge/context-pack-contract.md` | ACTIVE | PROTOCOL | missing | MEDIUM |
@@ -106,7 +109,7 @@ Status: Generated support artifact
 | `quests/prime-ascendant.md` | Active | Quest | Parent Quest for the future self-hosted living-memory and orchestration chapter of Prime. | High |
 | `quests/prime-continuity-proof.md` | READY_FOR_CAMPAIGN_1_PREVIEW | QUEST | missing | MEDIUM |
 | `quests/prime-reborn.md` | COMPLETE | QUEST | missing | CRITICAL |
-| `quests/prometheus-fire.md` | Active | Quest | Parent Quest for converting Prometheus into a stable, recoverable Proxmox compute platform with the approved Crucible VM, Emberdark VM with initial Coppermind services, and future Plex LXC topology. | High |
+| `quests/prometheus-fire.md` | Active | Quest | Parent Quest for converting Prometheus into a stable, recoverable Proxmox platform with the Harmony VM, Atlas VM, household-critical Plex LXC, and bounded Forge media continuity topology. | High |
 | `quests/repairing-prime.md` | Complete | Quest | Repair Prime's missing execution, agentic, continuity, Quest, generated-parity, acceptance, and closeout capabilities without rebuilding accepted foundations or weakening Atlas boundaries. | Critical |
 | `recovery/elantris-recovery.md` | ACTIVE | RUNBOOK | missing | CRITICAL |
 | `recovery/phoenix-recovery.md` | SUPERSEDED_COMPATIBILITY | SUPPORT | missing | HIGH |
@@ -126,6 +129,7 @@ Status: Generated support artifact
 | `tools/atlas_lifecycle/README.md` | missing | missing | missing | missing |
 | `tools/generated_checkpoint/README.md` | missing | missing | missing | missing |
 | `tools/investiture_accounting/README.md` | missing | missing | missing | missing |
+| `tools/mission_board/README.md` | CANONICAL_ACTIVE | TOOL_CONTRACT | missing | HIGH |
 | `tools/oathbringer-foundry/README.md` | missing | missing | missing | missing |
 | `tools/prime_checks/README.md` | missing | missing | missing | missing |
 | `tools/prime_continuity/README.md` | missing | missing | missing | missing |
