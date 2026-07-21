@@ -125,7 +125,7 @@
       "control_id": "ASC-007",
       "title": "Sunset lessons receive explicit disposition and follow-up",
       "status": "ACTIVE",
-      "objective": "Every full Atlas Sunset performs Lesson Harvest and truthfully records whether each observation remains local, reinforces an existing safeguard, requires Golden Wing candidacy, requires assurance absorption, or is rejected.",
+      "objective": "Every full Atlas Sunset performs Lesson Harvest, gives each observation one explicit disposition, and truthfully records whether it remains local, reinforces an existing safeguard, requires Golden Wing candidacy, requires assurance absorption, or is rejected.",
       "applies_when": "A Sunset Preview, candidate, review, closeout, Sunrise, Golden Wing, or assurance-control action evaluates or reuses a lesson.",
       "required_evidence": [
         "Every observation has one permitted disposition and an evidence-backed rationale, or the Harvest has one exact no-lesson reason.",
