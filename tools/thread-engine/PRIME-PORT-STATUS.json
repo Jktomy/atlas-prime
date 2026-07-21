@@ -12,7 +12,6 @@
   "harmless_pilot_state": "PROVEN_MERGED",
   "implementation_state": "THREAD_ENGINE_ACTIVE_MISSION_SCOPED",
   "known_disabled_routes": [
-    "Thread Engine self-change",
     "ready transition and merge",
     "direct main and force push",
     "standing or automatic authority"

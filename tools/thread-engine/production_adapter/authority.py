@@ -19,6 +19,8 @@ EXPECTED_API = "https://api.github.com/repos/Jktomy/atlas-prime"
 AEGIS_BREAK_ROUTE_IDENTITY = "AEGIS_BREAK_PROTECTED_PATH_V1"
 AEGIS_BREAK_OPERATOR = "Jayson"
 AEGIS_BREAK_GITHUB_OPERATOR_LOGIN = "Jktomy"
+SPEAR_COMPILER_PAYLOAD_ROOT = "PAYLOADS"
+SPEAR_COMPILER_RECEIPT_NAME = "production-adapter-receipt.json"
 
 TOP_LEVEL_KEYS = {
     "schema_version",
@@ -83,6 +85,8 @@ AEGIS_BREAK_FALSE_FIELDS = {
     "automatic_merge",
     "workflow_dispatch",
 }
+
+
 class MissionError(Exception):
     def __init__(self, message: str, code: str = "MISSION_REJECTED") -> None:
         super().__init__(message)
@@ -281,7 +285,7 @@ def validate_mission(data: dict[str, Any]) -> Mission:
     build_identity = _require_string(data, "build_identity")
     execute_identity = _require_string(data, "execute_identity")
     if build_identity == execute_identity:
-        raise MissionError("build_identity and execute_identity must remain separate", "IDENTITY_COLLISION")
+        raise MissionError("build_identity and execute identities must remain separate", "IDENTITY_COLLISION")
 
     repository = _require_string(data, "repository")
     remote_url = _require_string(data, "remote_url")
@@ -302,9 +306,16 @@ def validate_mission(data: dict[str, Any]) -> Mission:
     if not isinstance(declared_paths_value, list) or not declared_paths_value or not all(isinstance(item, str) for item in declared_paths_value):
         raise MissionError("declared_paths must be a non-empty string array", "MISSION_SCHEMA")
     aegis_break_requested = data.get("aegis_break_authority") is not None
+    spear_compiler_mission = (
+        data.get("payload_root") == SPEAR_COMPILER_PAYLOAD_ROOT
+        and data.get("receipt_name") == SPEAR_COMPILER_RECEIPT_NAME
+        and not generated_checkpoint_requested
+    )
+    if spear_compiler_mission and aegis_break_requested:
+        raise MissionError("compiler-bound Spear authority cannot be combined with Aegis Break", "ROUTE_COLLISION")
     if aegis_break_requested and generated_checkpoint_requested:
         raise MissionError("Aegis Break and generated checkpoint profiles are mutually exclusive", "PROTECTED_ROUTE_COLLISION")
-    protected_route_requested = aegis_break_requested or generated_checkpoint_requested
+    protected_route_requested = aegis_break_requested or generated_checkpoint_requested or spear_compiler_mission
     try:
         declared_paths = tuple(item for item in declared_paths_value)
         validate_declared_path_set(declared_paths, allow_protected=protected_route_requested)
@@ -391,7 +402,7 @@ def validate_mission(data: dict[str, Any]) -> Mission:
     if set(operation_paths) != set(declared_paths):
         raise MissionError("operation paths must match declared_paths exactly", "PATH_SET_MISMATCH")
     aegis_break_authority = _validate_aegis_break_authority(data, protected_paths, source_blobs, operations_value) if aegis_break_requested else None
-    if protected_paths and aegis_break_authority is None and not generated_checkpoint_requested:
+    if protected_paths and aegis_break_authority is None and not generated_checkpoint_requested and not spear_compiler_mission:
         raise MissionError("protected path requires explicit protected route authority", "PROTECTED_PATH")
     delete_authority_id = data.get("delete_authority_id")
     if has_delete and not isinstance(delete_authority_id, str):

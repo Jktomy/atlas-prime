@@ -5,6 +5,8 @@ import json
 import sys
 from pathlib import Path
 
+from production_adapter.protected_paths import direct_spear_path_scope
+
 from .compiler import SpearBridgeError, compile_package
 
 
@@ -18,14 +20,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--compile-only", action="store_true")
     args = parser.parse_args(argv)
     try:
-        receipt = compile_package(
-            Path(args.package),
-            package_sha256=args.package_sha256,
-            output_dir=Path(args.output_dir),
-            disabled_proof=args.spear_bridge_disabled_proof,
-            compile_only=args.compile_only,
-            read_only_remote_url=args.read_only_remote_url,
-        )
+        with direct_spear_path_scope():
+            receipt = compile_package(
+                Path(args.package),
+                package_sha256=args.package_sha256,
+                output_dir=Path(args.output_dir),
+                disabled_proof=args.spear_bridge_disabled_proof,
+                compile_only=args.compile_only,
+                read_only_remote_url=args.read_only_remote_url,
+            )
     except SpearBridgeError as exc:
         print(json.dumps({"result": "REJECTED", "error_code": exc.code, "error_stage": exc.stage, "message": str(exc)}, sort_keys=True), file=sys.stderr)
         return 2

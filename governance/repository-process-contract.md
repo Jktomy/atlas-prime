@@ -29,7 +29,7 @@ one Jayson instruction
 → one merged-main readback
 ```
 
-Fewer steps never justify weaker source identity, protected-boundary handling, exact-head proof, rollback, or recovery.
+Fewer steps never justify weaker source identity, protected-data handling, exact-head proof, rollback, or recovery.
 
 ## Transaction identity
 
@@ -39,7 +39,7 @@ Every durable change binds:
 - objective and objective digest;
 - authorizer, operator, requesting surface, and selected route;
 - Project, Operation, Quest, Campaign, Mission, or Gate when applicable;
-- allowed paths, prohibited paths, and protected-path posture;
+- allowed paths, expected paths, and protected-data posture;
 - candidate generation, complete path inventory, payload hashes, and candidate-tree digest;
 - validation profile and generated-state policy;
 - branch, pull request, latest exact head, stop point, and rollback class;
@@ -61,14 +61,16 @@ The pathways share closed transaction, candidate, validation, and receipt semant
 
 Prime preserves two repository execution failure domains:
 
-1. **Thread Engine** is the singular normal publisher for Spear and Arrow/Bow.
-2. **Sword/Oathbringer** is the independent alternate publisher for PowerShell operation, Thread Engine self-change, emergency bootstrap, and an exact blocked-route recovery mission.
+1. **Thread Engine** is the singular normal publisher for Spear and Arrow/Bow. Direct Spear may author any safe declared repository path, including Thread Engine source itself, while remaining draft-PR-only.
+2. **Sword/Oathbringer** is the independent alternate publisher for PowerShell operation, emergency bootstrap, and exact blocked-route recovery.
 
-They may share reviewed schemas, fixtures, hash algorithms, path-policy source, and receipt vocabulary. They must not depend on one mutation implementation whose failure disables both normal and recovery publication.
+They may share reviewed schemas, fixtures, hash algorithms, validation source, and receipt vocabulary. They must not depend on one mutation implementation whose failure disables both normal and recovery publication.
+
+Thread Engine self-change is not a reason to bypass the normal publisher. The current canonical Thread Engine may construct one exact self-change draft candidate. The candidate cannot alter the already-running publisher, reduce trusted-base validation, ready or merge itself, or grant future authority. Oathbringer remains an independent fallback rather than a mandatory detour.
 
 ## Complete-candidate rule
 
-Before publication, the operator must discover the complete deterministically knowable change surface, including controlling source, dependent doctrine, registries, Quest state, continuity, lifecycle, recovery, routing, schemas, tests, generated consequences, and protected paths.
+Before publication, the operator must discover the complete deterministically knowable change surface, including controlling source, dependent doctrine, registries, Quest state, continuity, lifecycle, recovery, routing, schemas, tests, generated consequences, and protected-data boundaries.
 
 A candidate is prepublication-complete when:
 
@@ -96,7 +98,7 @@ Every candidate receives a mandatory baseline:
 
 - repository and exact-base identity;
 - complete changed-path inventory;
-- privacy and protected-source policy;
+- privacy and protected-data policy;
 - source, schema, and repository-policy validation;
 - undeclared-path rejection;
 - candidate-tree verification;
@@ -104,7 +106,7 @@ Every candidate receives a mandatory baseline:
 
 Additional checks come from a closed source-to-invariant dependency registry. Unknown paths fail closed to the full profile. Windows, Linux-specific, and other platform execution is conditional on the changed contracts.
 
-A candidate that changes validation planning, workflows, dependency mapping, repository policy, protected-path classification, or validation schemas may not reduce its own validation. The exact trusted-base planner selects the compulsory self-change profile; the candidate planner is tested as the subject. Disagreement fails closed.
+A candidate that changes validation planning, workflows, dependency mapping, repository policy, path classification, Thread Engine, or validation schemas may not reduce its own validation. The exact trusted-base planner selects the compulsory self-change profile; the candidate planner is tested as the subject. Disagreement fails closed.
 
 The logical `prime/integrity` result must eventually become the final aggregate for the exact head after all selected executors complete. Existing required contexts and compatibility bridges remain until later exact proof and a separately authorized repository-settings transition.
 

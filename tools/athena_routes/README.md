@@ -11,19 +11,21 @@ Athena -> Sword -> Phoenix Blade -> no Thread Engine
 Athena -> Aegis Break -> any safe bounded equivalent route
 ```
 
-The hosted adapter contains no second Git writer. It has no direct-main, force-push, ready, merge, settings, cleanup, standing-credential, or standing-authority surface. Thread Engine self-change is handed to Aegis Break before mutation.
+Direct Spear may author any safe declared repository-relative path, including governance, lifecycle, workflows, generated source, Quest source, and `tools/thread-engine/**`. Path location does not force Athena away from Spear. The current canonical engine constructs self-change only as an immutable draft candidate and cannot ready, merge, or activate that change.
+
+The hosted adapter contains no second Git writer. It has no direct-main, force-push, ready, merge, settings, cleanup, standing-credential, or standing-authority surface. Hosted Arrow/Bow retains its current launcher-specific admission rules until separately reconciled; those rules do not limit Athena's direct Spear route.
 
 ## Ordinary free-form intake
 
 `python -B -m tools.athena_routes.free_form_intake --fields <fields.json> --output-dir <new-directory>` accepts a closed local public-clean mission-fields object and atomically creates one new output directory outside canonical source. It constructs deterministic carrier, Preview, receipt, and retained compiled files.
 
-The constructor binds exact expected main and fresh mission/carrier identity, normalizes and sorts ordinary changes, screens content locally, rejects stale/replayed/unsafe/protected/generated/self-change inputs, and has no workflow dispatch or remote write authority.
+The constructor binds exact expected main and fresh mission/carrier identity, normalizes and sorts ordinary changes, screens content locally, rejects stale/replayed/unsafe input, and has no workflow dispatch or remote write authority.
 
 This constructor is not a platform-origin bridge. It carries no CAP-015 or AJ-01 proof burden. Its separate accepted live journey supports RP-C01-M08 and guided usability.
 
 ## Owner-guided hosted publisher
 
-`python -B -m tools.athena_routes.guided_publisher preview` audits one immutable carrier against canonical main, hosted workflow identity, privacy, path policy, and compile-only output. It performs no remote mutation.
+`python -B -m tools.athena_routes.guided_publisher preview` audits one immutable carrier against canonical main, hosted workflow identity, privacy, hosted admission policy, and compile-only output. It performs no remote mutation.
 
 `python -B -m tools.athena_routes.guided_publisher execute` requires exact Preview identity, revalidates drift, requires an owner session and explicit public-clean confirmation, journals no-retry intent, and dispatches only `.github/workflows/athena-bow-hosted.yml` through JSON standard input.
 
