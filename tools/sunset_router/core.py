@@ -312,13 +312,17 @@ def verify_router_preview(repo_root: Path, router_dir: Path, *, require_current_
     receipt = _read(router_dir / ROUTER_RECEIPT, "SUNSET_ROUTER_RECEIPT_CANONICAL")
     _validate_plan(root, plan)
     _validate_receipt(root, receipt)
+    expected_receipt = _receipt(
+        plan,
+        phase="PREVIEW",
+        state="PREVIEW_READY",
+        next_safe_action=plan["next_safe_action"],
+    )
     if (
         plan["phase"] != "PREVIEW"
         or plan["preview_id"] != preview["preview"]["preview_id"]
         or plan["preview_digest"] != preview["preview_digest"]
-        or receipt["plan_id"] != plan["plan_id"]
-        or receipt["plan_digest"] != _digest(canonical_bytes(plan))
-        or receipt["preview_digest"] != plan["preview_digest"]
+        or receipt != expected_receipt
     ):
         _fail("SUNSET_ROUTER_BINDING", "router Preview bindings do not reconcile")
     if require_current_head and plan["expected_main_sha"] != observed_head(root):
@@ -336,10 +340,11 @@ def generate_router_approval(
         root, router_dir / PREVIEW_DIR, destination / APPROVAL_DIR,
         approval_mode=approval_mode,
     )
+    next_safe_action = "Compile the exact approved lifecycle candidate without changing scope."
     receipt = _receipt(
         router["plan"], phase="APPROVAL", state="APPROVED_PENDING_COMPILATION",
         approval_id=approval["approval_id"],
-        next_safe_action="Compile the exact approved lifecycle candidate without changing scope.",
+        next_safe_action=next_safe_action,
     )
     _validate_receipt(root, receipt)
     _write(destination / ROUTER_RECEIPT, receipt)
@@ -362,11 +367,14 @@ def _verify_approval(root: Path, router_dir: Path, approval_dir: Path) -> tuple[
     approval = verify_sunset_approval(root, router_dir / PREVIEW_DIR, approval_dir / APPROVAL_DIR)
     receipt = _read(approval_dir / ROUTER_RECEIPT, "SUNSET_ROUTER_RECEIPT_CANONICAL")
     _validate_receipt(root, receipt)
-    if (
-        receipt["plan_id"] != router["plan"]["plan_id"]
-        or receipt["approval_id"] != approval["approval"]["approval_id"]
-        or receipt["preview_digest"] != router["plan"]["preview_digest"]
-    ):
+    expected_receipt = _receipt(
+        router["plan"],
+        phase="APPROVAL",
+        state="APPROVED_PENDING_COMPILATION",
+        approval_id=approval["approval"]["approval_id"],
+        next_safe_action="Compile the exact approved lifecycle candidate without changing scope.",
+    )
+    if receipt != expected_receipt:
         _fail("SUNSET_ROUTER_BINDING", "router approval bindings do not reconcile")
     return router, approval, receipt
 
@@ -458,6 +466,12 @@ def verify_router_candidate(
     _validate_plan(root, plan)
     _validate_receipt(root, receipt)
     operations, paths, paths_digest = _operations(root, bundle)
+    expected_receipt = _receipt(
+        plan,
+        phase="PUBLICATION",
+        state=plan["state"],
+        next_safe_action=plan["next_safe_action"],
+    )
     valid = (
         plan["phase"] == "PUBLICATION"
         and plan["approval_id"] == approval["approval"]["approval_id"]
@@ -465,10 +479,7 @@ def verify_router_candidate(
         and plan["changed_paths"] == paths
         and plan["changed_paths_digest"] == paths_digest
         and plan["operations"] == operations
-        and receipt["plan_id"] == plan["plan_id"]
-        and receipt["plan_digest"] == _digest(canonical_bytes(plan))
-        and receipt["candidate_set_digest"] == plan["candidate_set_digest"]
-        and receipt["changed_paths_digest"] == paths_digest
+        and receipt == expected_receipt
         and router["plan"]["plan_id"] == plan["plan_id"]
     )
     if not valid:
