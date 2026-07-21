@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jktomy/atlas-prime/lifecycle/schemas/sunset-router-preview-intake-v1.schema.json",
+  "title": "Atlas Sunset Router Preview issue-comment intake v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "authority",
+    "command",
+    "repository",
+    "issue_number",
+    "expected_main_sha",
+    "replay_nonce",
+    "public_clean_confirmation",
+    "router_request"
+  ],
+  "properties": {
+    "schema_id": {"const": "atlas.sunset-router.preview-intake"},
+    "schema_version": {"const": "1.0.0"},
+    "authority": {"const": "PREVIEW_ONLY"},
+    "command": {"const": "SUNSET_ROUTER_PREVIEW"},
+    "repository": {"const": "Jktomy/atlas-prime"},
+    "issue_number": {"const": 257},
+    "expected_main_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "replay_nonce": {
+      "type": "string",
+      "minLength": 24,
+      "maxLength": 200,
+      "pattern": "^[a-z0-9][a-z0-9._:-]+$"
+    },
+    "public_clean_confirmation": {"const": "PUBLIC_CLEAN_CONFIRMED"},
+    "router_request": {"$ref": "sunset-router-request-v1.schema.json"}
+  }
+}
