@@ -67,8 +67,8 @@
         "CLOSED"
       ]
     },
-    "created_at": {"type": "string", "format": "date-time"},
-    "updated_at": {"type": "string", "format": "date-time"},
+    "created_at": {"type": "string", "format": "date-time", "pattern": "(?:Z|[+-][0-9]{2}:[0-9]{2})$"},
+    "updated_at": {"type": "string", "format": "date-time", "pattern": "(?:Z|[+-][0-9]{2}:[0-9]{2})$"},
     "objective": {"type": "string", "minLength": 1, "maxLength": 4096},
     "rationale_and_decisions": {
       "type": "array",
@@ -172,7 +172,7 @@
       "properties": {
         "status": {"enum": ["PENDING", "PACKAGE_READY", "ARCHIVED", "NOT_APPLICABLE"]},
         "reference": {"type": ["string", "null"], "maxLength": 512},
-        "archive_timestamp": {"type": ["string", "null"], "format": "date-time"},
+        "archive_timestamp": {"type": ["string", "null"], "format": "date-time", "pattern": "(?:Z|[+-][0-9]{2}:[0-9]{2})$"},
         "archive_package": {
           "oneOf": [
             {"type": "null"},
@@ -197,7 +197,7 @@
                 "unresolved_follow_up": {"type": "array", "items": {"type": "string"}},
                 "rollback": {"type": "string", "minLength": 1},
                 "canonical_readback": {"type": "string", "minLength": 1},
-                "archive_timestamp": {"type": ["string", "null"], "format": "date-time"}
+                "archive_timestamp": {"type": ["string", "null"], "format": "date-time", "pattern": "(?:Z|[+-][0-9]{2}:[0-9]{2})$"}
               }
             }
           ]

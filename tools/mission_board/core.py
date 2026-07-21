@@ -556,12 +556,13 @@ def assert_no_duplicate(candidate: Mapping[str, Any], existing: Sequence[Mapping
 def _blocked_mission_stops_remaining(blocked: Mapping[str, Any], remaining_numbers: Sequence[int], missions: Mapping[int, Mapping[str, Any]]) -> bool:
     remaining_names: set[str] = set()
     for number in remaining_numbers:
-        remaining_names.update({f"Mission #{number}", f"Mission {number}", f"#{number}"})
+        remaining_names.update({f"mission #{number}", f"mission {number}", f"#{number}", str(number)})
         raw = missions.get(number)
         if isinstance(raw, Mapping) and isinstance(raw.get("mission_id"), str):
-            remaining_names.add(raw["mission_id"])
+            remaining_names.add(raw["mission_id"].strip().casefold())
     for dependency in blocked["dependencies"]:
-        if dependency["repository"] == blocked["repository"] and dependency["relation"] in {"BLOCKS", "BLOCKED_BY"} and dependency["mission_ref"] in remaining_names:
+        mission_ref = dependency["mission_ref"].strip().casefold()
+        if dependency["repository"] == blocked["repository"] and dependency["relation"] in {"BLOCKS", "BLOCKED_BY"} and mission_ref in remaining_names:
             return True
     return False
 

@@ -59,6 +59,14 @@ class MissionBoardTests(unittest.TestCase):
         dependency_enum = properties["dependencies"]["items"]["properties"]["relation"]["enum"]
         self.assertEqual(set(dependency_enum), set(DEPENDENCY_RELATIONS))
 
+    def test_schema_timestamps_require_timezone(self) -> None:
+        schema = json.loads((ROOT / "schemas" / "mission-v1.schema.json").read_text(encoding="utf-8"))
+        properties = schema["properties"]
+        coppermind = properties["coppermind"]["properties"]
+        package = coppermind["archive_package"]["oneOf"][1]["properties"]
+        for timestamp_schema in (properties["created_at"], properties["updated_at"], coppermind["archive_timestamp"], package["archive_timestamp"]):
+            self.assertEqual(timestamp_schema["pattern"], "(?:Z|[+-][0-9]{2}:[0-9]{2})$")
+
     def test_all_public_clean_fixtures_validate(self) -> None:
         names = (
             "captured-sunset.json",
@@ -282,11 +290,13 @@ class MissionBoardTests(unittest.TestCase):
         self.assertEqual([item["result"] for item in receipt["results"]], ["COMPLETE", "BLOCKED_RESUMABLE", "NOT_STARTED_AFTER_STOP"])
 
     def test_explicit_blocked_by_edge_stops_the_remaining_queue(self) -> None:
-        blocked = load("sequence-7.json")
-        blocked["dependencies"] = [{"relation": "BLOCKED_BY", "repository": "Jktomy/atlas-prime", "mission_ref": "Mission 12"}]
-        missions = {5: load("sequence-5.json"), 7: blocked, 12: load("sequence-12.json")}
-        receipt = sequence_missions(missions, [5, 7, 12])
-        self.assertEqual([item["result"] for item in receipt["results"]], ["COMPLETE", "BLOCKED_RESUMABLE", "NOT_STARTED_AFTER_STOP"])
+        for mission_ref in ("Mission 12", "  mission 12  ", "12"):
+            with self.subTest(mission_ref=mission_ref):
+                blocked = load("sequence-7.json")
+                blocked["dependencies"] = [{"relation": "BLOCKED_BY", "repository": "Jktomy/atlas-prime", "mission_ref": mission_ref}]
+                missions = {5: load("sequence-5.json"), 7: blocked, 12: load("sequence-12.json")}
+                receipt = sequence_missions(missions, [5, 7, 12])
+                self.assertEqual([item["result"] for item in receipt["results"]], ["COMPLETE", "BLOCKED_RESUMABLE", "NOT_STARTED_AFTER_STOP"])
 
 
 if __name__ == "__main__":
