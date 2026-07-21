@@ -455,6 +455,7 @@ def reconcile_issue_snapshot(snapshot: Mapping[str, Any], expected_repository: s
         _fail("MISSION_MANIFEST_MISSING", f"Issue #{expected_issue_number}")
     manifests: list[dict[str, Any]] = []
     for index, body in enumerate(manifest_bodies):
+        _scan_public_clean(body, f"manifest_update[{index}]")
         try:
             manifests.append(extract_manifest(body))
         except MissionError:

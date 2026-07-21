@@ -134,6 +134,22 @@ class MissionBoardTests(unittest.TestCase):
         with self.assertRaisesRegex(MissionError, "PATH_ORDER"):
             reconcile_issue_snapshot(snapshot, "Jktomy/atlas-prime", 259)
 
+    def test_invalid_historical_manifest_is_scanned_before_supersession(self) -> None:
+        invalid = load("captured-sunset.json")
+        invalid["issue_number"] = True
+        invalid["objective"] = "Credential github_pat_abcdefghijklmnopqrstuvwxyz123456"
+        valid = load("captured-sunset.json")
+        valid["updated_at"] = "2026-07-21T14:03:00Z"
+        snapshot = {
+            "repository": "Jktomy/atlas-prime",
+            "number": 259,
+            "is_pull_request": False,
+            "body": "```atlas-mission-v1\n" + json.dumps(invalid) + "\n```",
+            "comments": [{"body": "```atlas-mission-v1\n" + json.dumps(valid) + "\n```"}],
+        }
+        with self.assertRaisesRegex(MissionError, "PROTECTED_BOUNDARY_FAILURE"):
+            reconcile_issue_snapshot(snapshot, "Jktomy/atlas-prime", 259)
+
     def test_sequential_5_7_12_order_and_nonblocking_resume(self) -> None:
         missions = {5: load("sequence-5.json"), 7: load("sequence-7.json"), 12: load("sequence-12.json")}
         receipt = sequence_missions(missions, [5, 7, 12])
