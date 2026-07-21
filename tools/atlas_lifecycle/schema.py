@@ -43,6 +43,9 @@ TRUSTED_AUXILIARY_SCHEMAS = {
         "atlas.lifecycle.construction-profile",
         "1.0.0",
     ): "lifecycle-construction-profile-v1.schema.json",
+    ("atlas.sunset-router.request", "1.0.0"): "sunset-router-request-v1.schema.json",
+    ("atlas.sunset-router.plan", "1.0.0"): "sunset-router-plan-v1.schema.json",
+    ("atlas.sunset-router.receipt", "1.0.0"): "sunset-router-receipt-v1.schema.json",
 }
 SCHEMA_DRAFT = "https://json-schema.org/draft/2020-12/schema"
 
@@ -128,6 +131,15 @@ class SchemaValidator:
 
     def validate_sunset_request(self, request: dict[str, Any]) -> None:
         self._validate_auxiliary(request, "atlas.lifecycle.sunset-request")
+
+    def validate_sunset_router_request(self, request: dict[str, Any]) -> None:
+        self._validate_auxiliary(request, "atlas.sunset-router.request")
+
+    def validate_sunset_router_plan(self, plan: dict[str, Any]) -> None:
+        self._validate_auxiliary(plan, "atlas.sunset-router.plan")
+
+    def validate_sunset_router_receipt(self, receipt: dict[str, Any]) -> None:
+        self._validate_auxiliary(receipt, "atlas.sunset-router.receipt")
 
     def _validate_auxiliary(self, value: dict[str, Any], expected_schema_id: str) -> None:
         key = (value.get("schema_id"), value.get("schema_version"))
