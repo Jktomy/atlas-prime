@@ -27,6 +27,28 @@ Prime recovery begins from a clean clone of `Jktomy/atlas-prime`, a verified mai
 10. Perform a destructive canary restore only with explicit Jayson-side authority and a protected evidence plan.
 11. Read back recovered source and runtime evidence before declaring success.
 
+## Mission Board recovery boundary
+
+Mission Board recovery does not depend on chat memory, Coppermind runtime,
+Emberdark runtime, GitHub Projects, or an available normal publisher.
+
+For `Continue Mission #N`:
+
+1. resolve the exact repository and confirm object `#N` is an Issue, not a pull request;
+2. export and read the Issue plus every comment;
+3. fresh-read canonical `main` and this contract's routed sources;
+4. reconcile linked branch, PR, head, tree, changed paths, checks, reviews, receipts, and attempt identity;
+5. reject stale or contradictory Mission claims;
+6. search before creating any Mission, branch, PR, Sunset, child, receipt, or archive;
+7. resume the same attempt from its last proven state; and
+8. append a sanitized result and exact next safe action.
+
+An unavailable Issue service may be recovered from an exact public-clean Issue,
+comment, PR, and receipt export, but that export is evidence rather than source
+authority. It cannot authorize a blind retry or claim canonical completion.
+GitHub-to-Gitea recovery preserves `atlas.mission.v1` semantics and maps only the
+platform API; cutover remains separately gated.
+
 ## Repository-process recovery boundary
 
 Every source transaction records or permits reconstruction of:
