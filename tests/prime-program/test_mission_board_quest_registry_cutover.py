@@ -78,6 +78,14 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
             {item["parent_source_status"] for item in self.registry["entries"]},
             {"NO_SOURCE_CHANGE_REQUIRED"},
         )
+        self.assertEqual(
+            {item["parent_issue_label"] for item in self.registry["entries"]},
+            {"mission/quest"},
+        )
+        self.assertEqual(
+            len({item["emberline_id"] for item in self.registry["entries"]}),
+            3,
+        )
 
     def test_frozen_board_and_active_registry_have_exact_cutover_parity(self) -> None:
         frozen_active = {
@@ -105,10 +113,11 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
         )
 
     def test_continuity_is_bound_only_to_active_registry_and_preserves_history(self) -> None:
-        self.assertEqual(self.continuity["register_revision"], 52)
+        self.assertEqual(self.continuity["register_revision"], 53)
         self.assertEqual(self.continuity["quest_board_sha256"], sha256(self.board))
         self.assertEqual(self.continuity["quest_registry_sha256"], sha256(self.registry))
         self.assertEqual(self.continuity["event_ids"].count(EVENT), 1)
+        self.assertEqual(self.continuity["event_ids"].count("MISSION-QUEST-EMBERLINE-INTEGRATION-R01"), 1)
         self.assertEqual(
             {item["quest_id"] for item in self.continuity["entries"]},
             {item["quest_id"] for item in self.registry["entries"]},
@@ -125,6 +134,7 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
             "routing": (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8"),
             "operations": (ROOT / "operations/operation-registry.md").read_text(encoding="utf-8"),
             "mission": (ROOT / "governance/mission-board-contract.md").read_text(encoding="utf-8"),
+            "emberline": (ROOT / "governance/mission-quest-emberline-contract.md").read_text(encoding="utf-8"),
             "portfolio": (ROOT / "governance/atlas-quest-portfolio-contract.md").read_text(encoding="utf-8"),
             "continuity": (ROOT / "governance/quest-engine-continuity-contract.md").read_text(encoding="utf-8"),
             "recovery": (ROOT / "recovery/elantris-recovery.md").read_text(encoding="utf-8"),
@@ -140,6 +150,8 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
             "QUEST_BOARD_FROZEN",
             "live Issue availability is not required",
             "no split-brain",
+            "mission/quest",
+            "Living Emberline",
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker.casefold(), joined.casefold())
@@ -156,6 +168,7 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
             "continuity/prime-continuity-register-r01.json",
             "tools/prime_continuity/engine.py",
             "tools/prime_continuity/cli.py",
+            "governance/mission-quest-emberline-contract.md",
         )
         self.assertEqual([path for path in required if not (ROOT / path).is_file()], [])
 

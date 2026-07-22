@@ -3,7 +3,7 @@
   "authority": "CANONICAL_ADMITTED_QUEST_REGISTRY",
   "repository": "Jktomy/atlas-prime",
   "registry_id": "MISSION-BOARD-QUEST-REGISTRY-R01",
-  "registry_revision": 1,
+  "registry_revision": 2,
   "state": "CANONICAL_ACTIVE",
   "platform": "GitHub Issues",
   "live_issue_availability_required_for_recovery": false,
@@ -33,7 +33,9 @@
       "parent_mission_id": "MISSION-QUEST-PARENT-NOTUMS-WATCH-R01",
       "parent_attempt_id": "MISSION-QUEST-PARENT-NOTUMS-WATCH-R01-ATTEMPT-01",
       "parent_mission_state": "IN_PROGRESS",
-      "parent_source_status": "NO_SOURCE_CHANGE_REQUIRED"
+      "parent_source_status": "NO_SOURCE_CHANGE_REQUIRED",
+      "parent_issue_label": "mission/quest",
+      "emberline_id": "EMBERLINE-QUEST-NOTUMS-WATCH-R01"
     },
     {
       "next_gate": "PA-C01 — Write the Covenant",
@@ -46,7 +48,9 @@
       "parent_mission_id": "MISSION-QUEST-PARENT-PRIME-ASCENDANT-R01",
       "parent_attempt_id": "MISSION-QUEST-PARENT-PRIME-ASCENDANT-R01-ATTEMPT-01",
       "parent_mission_state": "IN_PROGRESS",
-      "parent_source_status": "NO_SOURCE_CHANGE_REQUIRED"
+      "parent_source_status": "NO_SOURCE_CHANGE_REQUIRED",
+      "parent_issue_label": "mission/quest",
+      "emberline_id": "EMBERLINE-QUEST-PRIME-ASCENDANT-R01"
     },
     {
       "next_gate": "PF-C01-M02 Preview — Preserve the Old Flame",
@@ -59,7 +63,9 @@
       "parent_mission_id": "MISSION-QUEST-PARENT-PROMETHEUS-FIRE-R01",
       "parent_attempt_id": "MISSION-QUEST-PARENT-PROMETHEUS-FIRE-R01-ATTEMPT-01",
       "parent_mission_state": "IN_PROGRESS",
-      "parent_source_status": "NO_SOURCE_CHANGE_REQUIRED"
+      "parent_source_status": "NO_SOURCE_CHANGE_REQUIRED",
+      "parent_issue_label": "mission/quest",
+      "emberline_id": "EMBERLINE-QUEST-PROMETHEUS-FIRE-R01"
     }
   ]
 }

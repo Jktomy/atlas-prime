@@ -93,11 +93,17 @@ def validate_quest_registry(
         [item["parent_issue_number"] for item in entries],
         [item["parent_mission_id"] for item in entries],
         [item["parent_attempt_id"] for item in entries],
+        [item["emberline_id"] for item in entries],
     ):
         if len(values) != len(set(values)):
             raise ContinuityError("QUEST_REGISTRY_DUPLICATE")
     for item in entries:
         _source(item["source"], root)
+        expected_emberline_id = item["parent_mission_id"].replace(
+            "MISSION-QUEST-PARENT-", "EMBERLINE-QUEST-", 1
+        )
+        if item["emberline_id"] != expected_emberline_id:
+            raise ContinuityError("MISSION_QUEST_EMBERLINE_ID_MISMATCH")
 
     cutover = registry["cutover"]
     if cutover["predecessor_sha256"] != sha256(frozen_board):
@@ -108,21 +114,22 @@ def validate_quest_registry(
         raise ContinuityError("QUEST_PREDECESSOR_SUCCESSOR_MISMATCH")
 
     baseline = set(cutover["baseline_active_quest_ids"])
-    frozen = {item["quest_id"]: item for item in frozen_board["entries"]}
-    for identity in baseline:
-        prior = frozen.get(identity)
-        if prior is None or prior["state"] == "COMPLETE":
-            raise ContinuityError("QUEST_REGISTRY_BASELINE_INVALID")
-
+    observed = {item["quest_id"] for item in entries}
+    if not baseline.issubset(observed):
+        raise ContinuityError("QUEST_REGISTRY_BASELINE_MISSING")
+    if registry["registry_revision"] == 1 and baseline != observed:
+        raise ContinuityError("QUEST_REGISTRY_CUTOVER_PARITY_MISMATCH")
     completed = sum(item["state"] == "COMPLETE" for item in frozen_board["entries"])
     if cutover["baseline_completed_quest_count"] != completed:
         raise ContinuityError("QUEST_REGISTRY_HISTORY_COUNT_MISMATCH")
 
+    frozen = {item["quest_id"]: item for item in frozen_board["entries"]}
+    current = {item["quest_id"]: item for item in entries}
+    for identity in baseline:
+        prior = frozen.get(identity)
+        if prior is None or prior["state"] == "COMPLETE":
+            raise ContinuityError("QUEST_REGISTRY_BASELINE_INVALID")
     if registry["registry_revision"] == 1:
-        observed = {item["quest_id"] for item in entries}
-        if baseline != observed:
-            raise ContinuityError("QUEST_REGISTRY_CUTOVER_PARITY_MISMATCH")
-        current = {item["quest_id"]: item for item in entries}
         for identity in baseline:
             for field in ("quest_id", "source", "owner", "state", "next_gate", "readiness_basis"):
                 if current[identity][field] != frozen[identity][field]:
@@ -273,6 +280,100 @@ def render_emberline(register: dict[str, Any]) -> dict[str, Any]:
             )}
             for item in sorted(register["entries"], key=lambda value: value["continuity_id"])
         ],
+    }
+
+
+def render_mission_quest_emberline(
+    register: dict[str, Any], registry: dict[str, Any], quest_id: str
+) -> dict[str, Any]:
+    emberline_ids = [item.get("emberline_id") for item in registry.get("entries", [])]
+    if len(emberline_ids) != len(set(emberline_ids)):
+        raise ContinuityError("QUEST_REGISTRY_DUPLICATE")
+    if register.get("quest_registry_sha256") != sha256(registry):
+        raise ContinuityError("QUEST_REGISTRY_DIGEST_MISMATCH")
+    parents = [item for item in registry["entries"] if item["quest_id"] == quest_id]
+    entries = [item for item in register["entries"] if item["quest_id"] == quest_id]
+    if len(parents) != 1 or len(entries) != 1:
+        raise ContinuityError("MISSION_QUEST_EMBERLINE_BINDING_INVALID")
+    parent = parents[0]
+    entry = entries[0]
+    if entry["quest_source"] != parent["source"] or entry["quest_state"] != parent["state"]:
+        raise ContinuityError("CONTINUITY_REGISTRY_BINDING_MISMATCH")
+    if parent["parent_issue_label"] != "mission/quest":
+        raise ContinuityError("MISSION_QUEST_LABEL_INVALID")
+    journey: list[dict[str, Any]] = [
+        {
+            "entry_id": "Main-Emberline-001",
+            "entry_type": "MAIN",
+            "scope": "EMBERLINE",
+            "summary": f"Admitted Quest parent #{parent['parent_issue_number']} with stable Emberline {parent['emberline_id']}.",
+        }
+    ]
+    sequence = 2
+    for scope, value in (
+        ("CAMPAIGN", entry["campaign_id"]),
+        ("MISSION", entry["mission_id"]),
+        ("GATE", entry["gate_id"]),
+    ):
+        if value is None:
+            continue
+        journey.append(
+            {
+                "entry_id": f"Main-{scope.title()}-{sequence:03d}",
+                "entry_type": "MAIN",
+                "scope": scope,
+                "summary": value,
+            }
+        )
+        sequence += 1
+    lines = [
+        f"## Living Emberline — {quest_id}",
+        "",
+        f"- **Emberline:** `{parent['emberline_id']}`",
+        f"- **Revision:** `{entry['revision']}`",
+        f"- **Mission Quest:** `#{parent['parent_issue_number']}`",
+        f"- **Required label:** `{parent['parent_issue_label']}`",
+        f"- **Quest state:** `{entry['quest_state']}`",
+        f"- **Current Campaign:** `{entry['campaign_id'] or 'NONE'}`",
+        f"- **Current Mission:** `{entry['mission_id'] or 'NONE'}`",
+        f"- **Current Gate:** `{entry['gate_id'] or 'NONE'}`",
+        "",
+        "### Current position",
+        entry["current_position"],
+        "",
+        "### Emberline path",
+    ]
+    lines.extend(f"- `{item['entry_id']}` — {item['summary']}" for item in journey)
+    lines.extend(["", "### Blockers"])
+    lines.extend(f"- {blocker}" for blocker in entry["blockers"] or ["None."])
+    lines.extend([
+        "",
+        "### Next safe action",
+        entry["next_action"],
+        "",
+        "### Next approval",
+        entry["next_approval"],
+        "",
+        "> Human-readable operational presentation only. Merged registry and continuity remain authoritative.",
+    ])
+    return {
+        "schema_version": "atlas.mission-quest-emberline.v1",
+        "authority": "NONAUTHORITATIVE_HUMAN_PRESENTATION",
+        "emberline_id": parent["emberline_id"],
+        "emberline_revision": entry["revision"],
+        "quest_id": quest_id,
+        "parent_issue_number": parent["parent_issue_number"],
+        "required_label": parent["parent_issue_label"],
+        "registry_revision": registry["registry_revision"],
+        "registry_sha256": sha256(registry),
+        "continuity_register_revision": register["register_revision"],
+        "continuity_register_sha256": sha256(register),
+        "journey_entries": journey,
+        "current_position": entry["current_position"],
+        "blockers": copy.deepcopy(entry["blockers"]),
+        "next_action": entry["next_action"],
+        "next_approval": entry["next_approval"],
+        "markdown": "\n".join(lines) + "\n",
     }
 
 

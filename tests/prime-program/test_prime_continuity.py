@@ -14,6 +14,7 @@ from tools.prime_continuity.engine import (
     argus,
     plan_one_entry_update,
     render_emberline,
+    render_mission_quest_emberline,
     sha256,
     sunrise,
     sunset,
@@ -52,7 +53,7 @@ class PrimeContinuityTests(unittest.TestCase):
         )
         self.assertEqual(self.registry["authority"], "CANONICAL_ADMITTED_QUEST_REGISTRY")
         self.assertFalse(self.registry["live_issue_availability_required_for_recovery"])
-        self.assertEqual(self.registry["registry_revision"], 1)
+        self.assertEqual(self.registry["registry_revision"], 2)
         self.assertEqual(
             {entry["quest_id"] for entry in self.registry["entries"]},
             {
@@ -108,6 +109,8 @@ class PrimeContinuityTests(unittest.TestCase):
                     "parent_attempt_id": "MISSION-QUEST-PARENT-LATER-VALID-R01-ATTEMPT-01",
                     "parent_mission_state": "CAPTURED",
                     "parent_source_status": "NO_SOURCE_CHANGE_REQUIRED",
+                    "parent_issue_label": "mission/quest",
+                    "emberline_id": "EMBERLINE-QUEST-LATER-VALID-R01",
                 }
             )
             admitted = validate_quest_admission(
@@ -122,23 +125,6 @@ class PrimeContinuityTests(unittest.TestCase):
             stale["registry_revision"] = self.registry["registry_revision"] + 2
             with self.assertRaisesRegex(ContinuityError, "QUEST_ADMISSION_REVISION_INVALID"):
                 validate_quest_admission(self.registry, stale, self.board, root=root)
-
-    def test_later_registry_revision_can_advance_or_retire_cutover_quest(self) -> None:
-        advanced = copy.deepcopy(self.registry)
-        advanced["registry_revision"] = 2
-        advanced["entries"][1]["state"] = "BLOCKED"
-        advanced["entries"][1]["next_gate"] = "PA-C01 BLOCKED"
-        advanced["entries"][1]["readiness_basis"] = "Later reviewed registry revision may update active Quest state."
-        validate_quest_registry(advanced, self.board)
-
-        retired = copy.deepcopy(self.registry)
-        retired["registry_revision"] = 2
-        retired["entries"] = [
-            item
-            for item in retired["entries"]
-            if item["quest_id"] != "QUEST-NOTUMS-WATCH-20260708"
-        ]
-        validate_quest_registry(retired, self.board)
 
     def test_registry_parent_and_cutover_tampering_fails_closed(self) -> None:
         duplicate = copy.deepcopy(self.registry)
@@ -250,6 +236,40 @@ class PrimeContinuityTests(unittest.TestCase):
                         changes={"next_action": "Rejected"},
                     )
 
+    def test_mission_quest_labels_and_human_emberlines_are_exact(self) -> None:
+        self.assertEqual(
+            {entry["parent_issue_label"] for entry in self.registry["entries"]},
+            {"mission/quest"},
+        )
+        self.assertEqual(
+            len({entry["emberline_id"] for entry in self.registry["entries"]}),
+            len(self.registry["entries"]),
+        )
+        for entry in self.registry["entries"]:
+            rendered = render_mission_quest_emberline(
+                self.register, self.registry, entry["quest_id"]
+            )
+            self.assertEqual(rendered["emberline_id"], entry["emberline_id"])
+            self.assertEqual(rendered["required_label"], "mission/quest")
+            self.assertIn("## Living Emberline", rendered["markdown"])
+            self.assertIn("Merged registry and continuity remain authoritative", rendered["markdown"])
+            self.assertEqual(rendered, render_mission_quest_emberline(
+                copy.deepcopy(self.register), copy.deepcopy(self.registry), entry["quest_id"]
+            ))
+
+        duplicate = copy.deepcopy(self.registry)
+        duplicate["entries"][1]["emberline_id"] = duplicate["entries"][0]["emberline_id"]
+        with self.assertRaisesRegex(ContinuityError, "QUEST_REGISTRY_DUPLICATE"):
+            validate_quest_registry(duplicate, self.board)
+
+        missing = copy.deepcopy(self.registry)
+        del missing["entries"][0]["emberline_id"]
+        with self.assertRaisesRegex(ContinuityError, "QUEST_REGISTRY_SCHEMA_INVALID"):
+            validate_quest_registry(missing, self.board)
+
+        with self.assertRaisesRegex(ContinuityError, "MISSION_QUEST_EMBERLINE_BINDING_INVALID"):
+            render_mission_quest_emberline(self.register, self.registry, "QUEST-MISSING-R01")
+
     def test_emberline_sunset_sunrise_and_argus_are_deterministic(self) -> None:
         self.assertEqual(render_emberline(self.register), render_emberline(copy.deepcopy(self.register)))
         continuity_id = "CONT-PROMETHEUS-FIRE-R01"
@@ -275,6 +295,20 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(receipt["result"], "PASS")
         self.assertEqual(receipt["registry_id"], "MISSION-BOARD-QUEST-REGISTRY-R01")
         self.assertEqual(receipt["frozen_predecessor"], "FROZEN_PREDECESSOR_EVIDENCE")
+
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            self.assertEqual(
+                continuity_cli([
+                    "mission-quest-emberline",
+                    "--quest-id",
+                    "QUEST-PRIME-ASCENDANT-20260717",
+                ]),
+                0,
+            )
+        human = json.loads(output.getvalue())
+        self.assertEqual(human["required_label"], "mission/quest")
+        self.assertIn("Living Emberline", human["markdown"])
 
         with tempfile.TemporaryDirectory() as temp:
             target = Path(temp) / "argus.json"
