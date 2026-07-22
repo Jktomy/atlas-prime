@@ -26,7 +26,7 @@ Quest owner, one owning Operation, and explicit supporting owners. Transfer does
 not advance a Campaign, Mission, acceptance journey, or runtime gate. Completed
 Quest source and accepted proof remain immutable historical evidence.
 
-The target finite active portfolio is centered on three durable Quests:
+The finite active portfolio is centered on three durable Quests:
 
 | Durable Quest | Exclusive portfolio responsibility | Owning Operation |
 |---|---|---|
@@ -34,10 +34,10 @@ The target finite active portfolio is centered on three durable Quests:
 | Prometheus's Fire | Prometheus substrate, capacity, service placement, Apollo endpoint continuity, backup topology, and household-critical priority | Odyssey / Operation Prometheus Foundation |
 | Notum's Watch | independent Gatehouse/Citadel monitoring, sanitized health, and rescue posture | Odyssey / Operation Sentinel and Citadel/Gatehouse Infrastructure |
 
-Mission #276 canonically closes Found Silverlight after transferring each
-responsibility to the exact destination below without advancing unfinished
-work. Prime Continuity Proof remains independently represented until its exact
-disposition Mission is canonically complete.
+Mission #276 canonically closed Found Silverlight after transferring each
+responsibility without advancing unfinished work. Mission #277 canonically
+closed Prime Continuity Proof after preserving the accepted AJ-08 admission
+evidence and confirming that no independent Quest-scale objective remained.
 
 ## Exact responsibility destinations
 
@@ -46,7 +46,7 @@ disposition Mission is canonically complete.
 | Glass Codex | Prime Ascendant / Operation Glass Codex | Mission #282 defines a client-independent service and first-party VS Code client direction; it consumes governed APIs and owns no backend, monitoring, recovery, or permanence authority |
 | Harmony and Seon | Prime Ascendant / Operation Harmony | Harmony remains a separate intelligence vessel; Apple Reminders remains authoritative for Seon and Hermes remains its bridge vessel |
 | Investiture Accounting | Codex / Operation Source Governance bounded Mission family | FS-C01-M01 through M03 remain proven; FS-C01-M04 remains unfinished and requires separate protected authorization |
-| Prime Continuity Proof | its existing Codex / Source Governance Quest pending Mission #277 | no absorption or closeout occurs in portfolio recomposition |
+| Prime Continuity Proof | completed Codex / Source Governance historical Quest | Mission #277 preserves AJ-08 admission proof, validator and engine unchanged evidence, and append-only continuity history; it transfers no unfinished objective because none remained |
 | Cloud Atlas | Prime Ascendant protected-realm architecture, owned by Artemis / Operation Harmony with bounded Codex service owners | Mission #279 establishes the public-clean class, access, provenance, export, recovery-requirement, and degraded-mode contract; it is not a Project, Quest, database, host, or deployment claim |
 | monitoring | Notum's Watch | Mission #284 keeps Notum and Sentinel authoritative while Glass Codex consumes only minimized read-only health with explicit freshness and no control authority |
 | infrastructure and Apollo continuity | Prometheus's Fire | Mission #283 fixes the Cloud Atlas topology; Mission #285 fixes Apollo/Hermes endpoint and recovery proof requirements while commissioning and PF-C01-M02 remain unproven |
@@ -69,31 +69,36 @@ disposition Mission is canonically complete.
   Codex; FS-C03 routes to Prime Ascendant / Operation Harmony. Its accepted
   receipts, checkpoints, Stormlight/Spirallight/Investiture lineage, identity
   decisions, and recovery evidence remain immutable history.
-- Prime Continuity Proof remains at `PCP-C01-PREVIEW` until Mission #277
-  performs its separately reviewed closeout.
+- Prime Continuity Proof is `COMPLETE — CLOSED` through Mission #277. AJ-08
+  remains `PROVEN`; the accepted admission evidence and append-only event remain
+  immutable history, and no validator or continuity-engine capability is inferred
+  from admission.
 - Prime Reborn and Repairing Prime remain completed immutable history. Their
   proof, continuity, identity, recovery, and lifecycle records are not active
   ownership surfaces and are never rewritten by recomposition.
 
 ## Dependency order
 
-1. Portfolio ownership is established by Mission #275.
-2. Found Silverlight transfer and Sunset is separately proven by Mission #276.
-3. Cloud Atlas protected-realm boundaries are established by Mission #279.
-4. Glass Codex client boundaries follow through Mission #282.
-5. Prometheus topology follows through Mission #283.
-6. Notum/Glass Codex health separation follows through Mission #284.
-7. Apollo source continuity follows through Mission #285; protected runtime
+1. Portfolio ownership was established by Mission #275.
+2. Found Silverlight transfer and Sunset was proven by Mission #276.
+3. Prime Continuity Proof closeout was proven by Mission #277.
+4. Cloud Atlas protected-realm boundaries were established by Mission #279.
+5. Glass Codex client boundaries followed through Mission #282.
+6. Prometheus topology followed through Mission #283.
+7. Notum/Glass Codex health separation followed through Mission #284.
+8. Apollo source continuity followed through Mission #285; protected runtime
    commissioning remains separately gated.
 
-Mission #277 independently owns Prime Continuity Proof closeout. Issues #278,
-#280, and #281 remain separate Missions and acquire no implicit dependency or
+Mission #278 may now perform its own fresh reconciliation and atomic-cutover
+Preview. Missions #280 and #281 remain separate and acquire no implicit
 authority from this portfolio contract.
 
 ## Recovery and rollback
 
 Recovery begins from the Quest Board, continuity register, this contract, and
 the exact active Quest sources. Every unfinished responsibility must resolve to
-exactly one row above without chat memory. Before merge, abandon the exact
-candidate PR. After merge, use a reviewed revert or repair-forward PR; never
-rewrite completed Quest history or infer gate completion from ownership.
+exactly one row above without chat memory. Preserve the completed Prime
+Continuity Proof source, AJ-08 evidence, and append-only event as historical
+proof. Before merge, abandon the exact candidate PR. After merge, use a reviewed
+revert or repair-forward PR; never rewrite completed Quest history or infer gate
+completion from ownership.

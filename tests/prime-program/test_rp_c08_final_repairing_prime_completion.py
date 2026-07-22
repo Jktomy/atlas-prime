@@ -5,6 +5,7 @@ import json
 import unittest
 from pathlib import Path
 
+
 ROOT = Path(__file__).resolve().parents[2]
 EVENT = "RP-C08-FINAL-REPAIRING-PRIME-COMPLETION-R05"
 BASE = "40e58dcf33bae68f8c819c2f65c6474f52381718"
@@ -60,7 +61,7 @@ class FinalRepairingPrimeCompletionTests(unittest.TestCase):
         self.assertEqual(states["QUEST-FOUND-SILVERLIGHT-R01"], "COMPLETE")
         self.assertEqual(states["QUEST-PROMETHEUS-FIRE-20260701"], "IN_PROGRESS")
         self.assertEqual(states["QUEST-NOTUMS-WATCH-20260708"], "READY_FOR_JAYSON_EXECUTION_PACKAGE")
-        self.assertEqual(states["QUEST-PRIME-CONTINUITY-PROOF-R01"], "READY_FOR_CAMPAIGN_1_PREVIEW")
+        self.assertEqual(states["QUEST-PRIME-CONTINUITY-PROOF-R01"], "COMPLETE")
 
     def test_living_emberline_parent_and_final_entry_are_exact(self) -> None:
         qem = load("lifecycle/quest-emberlines/QEM-R6QKBDHLY7I7PVVEKIGTZFMZZT.json")

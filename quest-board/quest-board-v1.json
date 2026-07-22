@@ -42,12 +42,12 @@
       "readiness_basis": "Notum's Watch and Sentinel durably own independent monitoring. Mission #284 defines only minimized read-only Glass Codex presentation with explicit freshness and denied control. Protected placement and execution remain Jayson-side; no telemetry connection, monitoring activation, or NW-C01 advancement is claimed."
     },
     {
-      "next_gate": "PCP-C01-PREVIEW",
+      "completion_basis": "Mission #277 preserved the accepted AJ-08 schema-driven admission evidence, confirmed that validator and continuity-engine bytes were unchanged during admission, found no remaining independent Quest-scale objective, and closed the proof Quest without promoting any capability or changing runtime, provider, protected-data, READY, or merge authority.",
+      "next_gate": "CLOSED",
       "owner": "Codex / Source Governance",
       "quest_id": "QUEST-PRIME-CONTINUITY-PROOF-R01",
       "source": "quests/prime-continuity-proof.md",
-      "state": "READY_FOR_CAMPAIGN_1_PREVIEW",
-      "readiness_basis": "Prime Continuity Proof remains an independent Codex / Source Governance Quest at PCP-C01-PREVIEW. Mission #277 owns its separately reviewed disposition; portfolio recomposition neither absorbs nor closes it."
+      "state": "COMPLETE"
     },
     {
       "next_gate": "PA-C01 — Write the Covenant",

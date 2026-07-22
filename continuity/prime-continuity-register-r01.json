@@ -2,9 +2,9 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 50,
+  "register_revision": 51,
   "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
-  "quest_board_sha256": "cb91e7ec96993d2e87add7f97873545f3d9032b778e03c41d1581173d316248f",
+  "quest_board_sha256": "8f4cfd766173e1bf4d8eaceb295bb2ccb94130fa18ad13fbfaa058d18292697f",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -58,7 +58,8 @@
     "GLASS-CODEX-VSCODE-CLIENT-REFRACTION-R03",
     "PROMETHEUS-CLOUD-ATLAS-TOPOLOGY-REFRACTION-R01",
     "NOTUM-GLASS-CODEX-HEALTH-BOUNDARY-R01",
-    "APOLLO-REMOTE-OPERATOR-CONTINUITY-R01"
+    "APOLLO-REMOTE-OPERATOR-CONTINUITY-R01",
+    "PRIME-CONTINUITY-PROOF-CLOSEOUT-R01"
   ],
   "entries": [
     {
@@ -100,22 +101,6 @@
       "next_approval": "Jayson execution and protected evidence readback.",
       "revision": 3,
       "last_event_id": "NOTUM-GLASS-CODEX-HEALTH-BOUNDARY-R01"
-    },
-    {
-      "continuity_id": "CONT-PRIME-CONTINUITY-PROOF-R01",
-      "quest_id": "QUEST-PRIME-CONTINUITY-PROOF-R01",
-      "quest_source": "quests/prime-continuity-proof.md",
-      "quest_source_sha256": "9ffd89797ff648ea4a1bf56a674ea8abd25db3dca65a2c3597d82fc7c2b826e0",
-      "quest_state": "READY_FOR_CAMPAIGN_1_PREVIEW",
-      "campaign_id": null,
-      "mission_id": null,
-      "gate_id": "PCP-C01-PREVIEW",
-      "current_position": "Admitted through the schema-driven Quest Board and continuity registry with validator code unchanged.",
-      "blockers": [],
-      "next_action": "Preserve AJ-08 canonical admission evidence, then prepare a separately reviewed proof-Quest closeout.",
-      "next_approval": "Exact-head AJ-08 CI, detached review, and canonical readback.",
-      "revision": 1,
-      "last_event_id": "RP-C05-AJ08-ADMISSION-R01"
     },
     {
       "continuity_id": "CONT-PRIME-ASCENDANT-R01",
