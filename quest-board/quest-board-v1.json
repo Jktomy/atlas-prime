@@ -31,7 +31,7 @@
       "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
       "source": "quests/prometheus-fire.md",
       "state": "IN_PROGRESS",
-      "readiness_basis": "PF-C01-M01 remains accepted and PF-C01-M02 remains next. Mission #283 fixes a 64 GB planning envelope, isolated Harmony/Atlas/Plex roles, complete/selective restore requirements, GUI/monitoring independence, and household-first priorities. No measured capacity, commissioning, migration, storage, network, backup, runtime, or gate advancement is claimed."
+      "readiness_basis": "PF-C01-M01 remains accepted and PF-C01-M02 remains next. Missions #283 and #285 fix the public-clean Cloud Atlas topology plus Apollo/Hermes endpoint, isolation, source, reinstall, degraded-mode, and recovery proof requirements. Apollo/Hermes protected proof, native workflows, private route, Windows recovery, PF-C01-M02 exit, commissioning, migration, and runtime remain unproven."
     },
     {
       "next_gate": "NW-C01 readiness package and Jayson-side proof",

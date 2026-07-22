@@ -49,7 +49,7 @@ disposition Mission is canonically complete.
 | Prime Continuity Proof | its existing Codex / Source Governance Quest pending Mission #277 | no absorption or closeout occurs in portfolio recomposition |
 | Cloud Atlas | Prime Ascendant protected-realm architecture, owned by Artemis / Operation Harmony with bounded Codex service owners | Mission #279 establishes the public-clean class, access, provenance, export, recovery-requirement, and degraded-mode contract; it is not a Project, Quest, database, host, or deployment claim |
 | monitoring | Notum's Watch | Mission #284 keeps Notum and Sentinel authoritative while Glass Codex consumes only minimized read-only health with explicit freshness and no control authority |
-| infrastructure and Apollo continuity | Prometheus's Fire | Mission #283 fixes the public-clean Cloud Atlas topology and recovery direction; household-critical Plex playback, DVR recording, and persistent Forge services outrank discretionary AI work |
+| infrastructure and Apollo continuity | Prometheus's Fire | Mission #283 fixes the Cloud Atlas topology; Mission #285 fixes Apollo/Hermes endpoint and recovery proof requirements while commissioning and PF-C01-M02 remain unproven |
 | canonical source governance | Codex / Operation Source Governance | Prime remains canonical; generated projections, Mission Issues, clients, and runtime stores do not govern |
 
 ## Campaign and unfinished-work inventory

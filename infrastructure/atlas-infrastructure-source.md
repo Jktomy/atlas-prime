@@ -42,6 +42,14 @@ These assignments are clean source decisions, not proof that operating-system na
 
 Loss or shutdown of Apollo, Hermes, Iris, or Zeus must not stop persistent Forge automation, qBittorrent, Audiobookshelf, finalized Anvil media, household media continuity, Prime source recovery, or administration through another approved route.
 
+Apollo endpoint startup, shutdown, environment isolation, source disposition,
+package/reinstall, remote-route, degraded-mode, and recovery proof follow
+`governance/apollo-remote-operator-continuity-contract.md`. Apollo is preferred,
+but Hermes retains independent administration and Prime recovery; Iris and Zeus
+remain nonblocking companions. The contract is a public-clean proof plan, not
+evidence that Apollo, native VS Code, Glass Codex, credentials, or private
+remote access have been commissioned.
+
 ## Helios placement boundary
 
 Forge retains the persistent Helios backend:

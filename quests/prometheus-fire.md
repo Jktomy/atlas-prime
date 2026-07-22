@@ -258,6 +258,14 @@ Mission Seal authorizes no runtime action, Windows removal, Proxmox installation
 
 **State:** `READY_FOR_PREVIEW`
 
+The public-clean endpoint, dependency, startup/shutdown, source continuity,
+package, reinstall, degraded-mode, and recovery proof plan is defined by
+`governance/apollo-remote-operator-continuity-contract.md`. It does not satisfy
+the protected proof below: Apollo commissioning, native workflow execution,
+private route access, Hermes independent administration, Windows recovery, and
+PF-C01-M02 exit remain unproven until separately authorized execution evidence
+is read back.
+
 Required proof:
 
 1. Apollo is commissioned as the fixed Windows orchestration endpoint.
@@ -449,6 +457,7 @@ Quest state: IN_PROGRESS
 Campaign PF-C01: IN_PROGRESS
 PF-C01-M01 Mission Seal: PROVEN_WITH_CARRY_FORWARD
 PF-C01-M02 Preserve the Old Flame: READY_FOR_PREVIEW
+Apollo continuity architecture: SOURCE_ACCEPTED / RUNTIME_PROOF_PENDING
 Apollo commissioning: NOT PROVEN
 Hermes independent route: NOT PROVEN
 Iris role: SOURCE_ACCEPTED / NONBLOCKING

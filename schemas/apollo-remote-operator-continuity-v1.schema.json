@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas-prime.local/schemas/apollo-remote-operator-continuity-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "primary_endpoint", "independent_operator", "nonblocking_clients", "remote_route", "environment_isolation", "isolation_dimensions", "startup_order", "shutdown_order", "prohibited_unique_state", "recovery_assets", "degraded_behavior", "required_runtime_proof", "runtime_state", "pf_c01_m02_state"],
+  "properties": {
+    "schema_version": {"const": "atlas.apollo-remote-operator-continuity.v1"},
+    "primary_endpoint": {"const": "APOLLO_WINDOWS_NATIVE_VSCODE_AND_GLASS_CLIENT"},
+    "independent_operator": {"const": "HERMES_PORTABLE_ADMIN_AND_PRIME_RECOVERY"},
+    "nonblocking_clients": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"enum": ["IRIS", "ZEUS"]}},
+    "remote_route": {"type": "array", "minItems": 3, "uniqueItems": true, "items": {"type": "string"}},
+    "environment_isolation": {"type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": {"enum": ["PRIVATE", "ENGINEERING", "WORLDHOPPER"]}},
+    "isolation_dimensions": {"type": "array", "minItems": 7, "uniqueItems": true, "items": {"type": "string"}},
+    "startup_order": {"type": "array", "minItems": 6, "items": {"type": "string"}},
+    "shutdown_order": {"type": "array", "minItems": 6, "items": {"type": "string"}},
+    "prohibited_unique_state": {"type": "array", "minItems": 8, "uniqueItems": true, "items": {"type": "string"}},
+    "recovery_assets": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string"}},
+    "degraded_behavior": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string"}},
+    "required_runtime_proof": {"type": "array", "minItems": 9, "uniqueItems": true, "items": {"type": "string"}},
+    "runtime_state": {"const": "PENDING_PROTECTED_EXECUTE"},
+    "pf_c01_m02_state": {"const": "READY_FOR_PREVIEW_NOT_PROVEN"}
+  }
+}
