@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 
 from tools.prime_continuity.engine import (
+    ContinuityError,
     render_mission_quest_emberline,
     validate_quest_registry,
 )
@@ -43,6 +44,21 @@ class MissionQuestEmberlineIntegrationTests(unittest.TestCase):
             self.assertIn(
                 "Merged registry and continuity remain authoritative",
                 rendered["markdown"],
+            )
+
+    def test_renderer_rejects_stale_or_duplicate_registry_binding(self) -> None:
+        stale = copy.deepcopy(self.register)
+        stale["quest_registry_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ContinuityError, "QUEST_REGISTRY_DIGEST_MISMATCH"):
+            render_mission_quest_emberline(
+                stale, self.registry, self.registry["entries"][0]["quest_id"]
+            )
+
+        duplicate = copy.deepcopy(self.registry)
+        duplicate["entries"][1]["emberline_id"] = duplicate["entries"][0]["emberline_id"]
+        with self.assertRaisesRegex(ContinuityError, "QUEST_REGISTRY_DUPLICATE"):
+            render_mission_quest_emberline(
+                self.register, duplicate, duplicate["entries"][0]["quest_id"]
             )
 
     def test_later_reviewed_registry_revision_may_change_quest_position(self) -> None:
