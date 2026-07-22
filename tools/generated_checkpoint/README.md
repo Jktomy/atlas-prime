@@ -7,9 +7,17 @@ and Windows registers, and prepares one exact Thread Engine mission package.
 
 It has no Git, GitHub, credential, branch, pull-request, or repository-write
 authority. Only the singular production Thread Engine may publish the prepared
-mission, and it stops at exact draft pull-request readback.
+mission, and it stops at exact draft pull-request readback with
+`DRAFT_CREATED / REQUIRED_PR_VALIDATION_PENDING`.
+
+The normal Prime pull-request workflow is the single authoritative
+candidate-validation layer for the generated head. The publisher does not run
+a duplicate exact-head Ubuntu/Windows validation matrix; required
+`prime/integrity` and conditional `prime/windows-compatibility` checks validate
+the draft through the ordinary ruleset-governed PR path.
 
 The hosted publisher is explicit and owner-dispatched only; canonical `main`
 pushes do not launch it automatically. Local deterministic generation remains
 available through `python -B tools/build_index.py`, and the hosted route retains
-its full privacy, exact-base, parity, draft-readback, and rollback boundaries.
+its full privacy, exact-base, parity, draft-readback, permission-separation, and
+rollback boundaries.
