@@ -22,11 +22,9 @@ generated-only changes do not require Windows unless another changed path does.
 
 The pull-request workflow exposes `prime/integrity` and the conditional
 `prime/windows-compatibility` logical contexts. Ruleset `Prime Main Protection`
-currently requires the legacy `validate (ubuntu-latest)` and
-`validate (windows-latest)` contexts, so the workflow retains bounded bridge
-jobs until Jayson separately changes the ruleset after exact-head proof. Remove
-the bridges only in a later reviewed source transaction after the new contexts
-are required and observed on both Windows-required and Windows-skipped PRs.
+(`19014636`) requires those exact contexts after the independently verified
+Stage 1A settings transition. The retired `validate (ubuntu-latest)` and
+`validate (windows-latest)` compatibility jobs are no longer emitted.
 
 Pull-request validation runs when a PR is `opened`, `synchronize`d, or
 `reopened`. The unchanged ready-for-review transition does not rerun validation;
