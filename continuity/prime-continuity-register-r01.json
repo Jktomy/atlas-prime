@@ -2,9 +2,9 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 44,
+  "register_revision": 45,
   "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
-  "quest_board_sha256": "5f6adf9c7455b484a2c6acf192ca6739db62be300881fe5ec6d91b948d82eb2a",
+  "quest_board_sha256": "d5040911cc11c5d822125cdf03c06654da01ba1c2977d2d3417533dfc6dbe522",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -52,27 +52,10 @@
     "PA-C01-HARMONY-HYBRID-ROLE-REFINEMENT-R01",
     "PF-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03",
     "PA-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03",
-    "ATLAS-QUEST-PORTFOLIO-RECOMPOSITION-R01"
+    "ATLAS-QUEST-PORTFOLIO-RECOMPOSITION-R01",
+    "FOUND-SILVERLIGHT-DECOMPOSITION-SUNSET-R01"
   ],
   "entries": [
-    {
-      "continuity_id": "CONT-FOUND-SILVERLIGHT-R01",
-      "quest_id": "QUEST-FOUND-SILVERLIGHT-R01",
-      "quest_source": "quests/found-silverlight.md",
-      "quest_source_sha256": "358492da7dacbbe39ae7eb3dc830ded02e592143bedea23630c5196a09c93b95",
-      "quest_state": "IN_PROGRESS",
-      "campaign_id": "FS-C01",
-      "mission_id": "FS-C01-M04",
-      "gate_id": "INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN",
-      "current_position": "FS-C01-M01, M02, and M03 are PROVEN. M04 live acceptance remains unproven. Artemis ownership now routes through Operation Harmony, and recovery support is Project Elantris. The future FS-C03 Seon macOS bridge vessel is Hermes; Apollo is no longer reserved for that bridge role.",
-      "blockers": [
-        "FS-C01-M04 requires a Jayson-selected protected external store and one bounded trusted provider/runtime usage receipt with authoritative category semantics."
-      ],
-      "next_action": "Await a separately authorized Jayson-selected protected store and one bounded trusted provider/runtime usage receipt, then execute FS-C01-M04 without widening the accepted construction boundary.",
-      "next_approval": "Jayson must separately select the protected external store and authorize the bounded trusted usage acceptance journey.",
-      "revision": 5,
-      "last_event_id": "FS-C03-HARMONY-ELANTRIS-NAMING-R01"
-    },
     {
       "continuity_id": "CONT-PROMETHEUS-FIRE-R01",
       "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",

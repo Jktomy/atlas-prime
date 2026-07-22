@@ -34,9 +34,10 @@ The target finite active portfolio is centered on three durable Quests:
 | Prometheus's Fire | Prometheus substrate, capacity, service placement, Apollo endpoint continuity, backup topology, and household-critical priority | Odyssey / Operation Prometheus Foundation |
 | Notum's Watch | independent Gatehouse/Citadel monitoring, sanitized health, and rescue posture | Odyssey / Operation Sentinel and Citadel/Gatehouse Infrastructure |
 
-This target does not itself close Found Silverlight or Prime Continuity Proof.
-They remain independently represented until their exact disposition Missions
-are canonically complete.
+Mission #276 canonically closes Found Silverlight after transferring each
+responsibility to the exact destination below without advancing unfinished
+work. Prime Continuity Proof remains independently represented until its exact
+disposition Mission is canonically complete.
 
 ## Exact responsibility destinations
 
@@ -61,10 +62,12 @@ are canonically complete.
   guest, storage, network, Gitea, backup, or runtime gate advances.
 - Notum's Watch retains NW-C01 through NW-C04 at
   `READY_FOR_JAYSON_EXECUTION_PACKAGE`; runtime proof remains Jayson-side.
-- Found Silverlight retains FS-C01, FS-C02, and FS-C03 until Mission #276
-  canonically transfers each responsibility and proves Sunset. Its accepted
-  receipts, checkpoints, Stormlight/Spirallight/Investiture lineage, and
-  recovery evidence remain historical.
+- Found Silverlight is `COMPLETE — SUNSET` through Mission #276. FS-C01 routes
+  to the bounded Codex / Source Governance Mission family with M01 through M03
+  proven and M04 unfinished; FS-C02 routes to Prime Ascendant / Operation Glass
+  Codex; FS-C03 routes to Prime Ascendant / Operation Harmony. Its accepted
+  receipts, checkpoints, Stormlight/Spirallight/Investiture lineage, identity
+  decisions, and recovery evidence remain immutable history.
 - Prime Continuity Proof remains at `PCP-C01-PREVIEW` until Mission #277
   performs its separately reviewed closeout.
 - Prime Reborn and Repairing Prime remain completed immutable history. Their

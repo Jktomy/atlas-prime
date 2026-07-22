@@ -75,7 +75,7 @@ class PrimeProgramTests(unittest.TestCase):
         }
         expected_preserved = {
             "PRIME-REBORN-QUEST-R01": ("quests/prime-reborn.md", "COMPLETE", "CLOSED"),
-            "QUEST-FOUND-SILVERLIGHT-R01": ("quests/found-silverlight.md", "IN_PROGRESS", "FS-C01-M04 — Prove the Light"),
+            "QUEST-FOUND-SILVERLIGHT-R01": ("quests/found-silverlight.md", "COMPLETE", "CLOSED"),
             "QUEST-PROMETHEUS-FIRE-20260701": ("quests/prometheus-fire.md", "IN_PROGRESS", "PF-C01-M02 Preview — Preserve the Old Flame"),
             "QUEST-NOTUMS-WATCH-20260708": ("quests/notums-watch.md", "READY_FOR_JAYSON_EXECUTION_PACKAGE", "NW-C01 readiness package and Jayson-side proof"),
             "QUEST-PRIME-ASCENDANT-20260717": ("quests/prime-ascendant.md", "IN_PROGRESS", "PA-C01 — Write the Covenant"),
@@ -166,11 +166,10 @@ class PrimeProgramTests(unittest.TestCase):
         found = (ROOT / "quests/found-silverlight.md").read_text(encoding="utf-8")
         proof = (ROOT / "proof/prometheus-fire/pf-c01-m01-mission-seal-r01.md").read_text(encoding="utf-8")
         continuity = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
-        found_continuity = next(entry for entry in continuity["entries"] if entry["continuity_id"] == "CONT-FOUND-SILVERLIGHT-R01")
 
         self.assertIn("Operation Harmony, Sazed/Harmony, Emberdark transit", projects)
         self.assertIn("| Artemis | Harmony; AI Governance |", operations)
-        self.assertIn("| Codex | Source Governance; Document Pipeline; Protocol Library; Template Library; Archive/Index; Janus; Coppermind; Phoenix; future Glass Codex |", operations)
+        self.assertIn("| Codex | Source Governance; Document Pipeline; Protocol Library; Template Library; Archive/Index; Janus; Coppermind; Phoenix; Glass Codex |", operations)
         self.assertIn("| Elantris | Backup Matrix; Restore Runbook; Keystone; External Backup Targets; Recovery Drill/Proof |", operations)
         self.assertNotIn("| Artemis | Nexus;", operations)
         self.assertIn("## Harmony / Sazed resident-intelligence role", artemis)
@@ -195,8 +194,9 @@ class PrimeProgramTests(unittest.TestCase):
         self.assertIn("Jktomy/atlas-prime#195", proof)
         self.assertIn("93def9d8f9716547de69e101bc44a5f896dad67d", proof)
         self.assertIn("the changing final REPAIR head is intentionally not self-embedded", proof)
-        self.assertIn("Artemis ownership now routes through Operation Harmony", found_continuity["current_position"])
-        self.assertIn("The future FS-C03 Seon macOS bridge vessel is Hermes; Apollo is no longer reserved for that bridge role.", found_continuity["current_position"])
+        self.assertNotIn("CONT-FOUND-SILVERLIGHT-R01", {entry["continuity_id"] for entry in continuity["entries"]})
+        self.assertIn("FS-C03 successor: Prime Ascendant / Operation Harmony", found)
+        self.assertIn("Apple Reminders remains authoritative", found)
 
     def test_prime_is_canonical_and_codex_is_predecessor_only(self) -> None:
         policy = json.loads((ROOT / "policies/repository-policy.json").read_text(encoding="utf-8"))

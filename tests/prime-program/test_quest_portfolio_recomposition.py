@@ -27,7 +27,7 @@ class QuestPortfolioRecompositionTests(unittest.TestCase):
 
     def test_unfinished_states_and_completed_history_are_preserved(self) -> None:
         observed = {entry["quest_id"]: (entry["state"], entry["next_gate"]) for entry in self.board["entries"]}
-        self.assertEqual(observed["QUEST-FOUND-SILVERLIGHT-R01"], ("IN_PROGRESS", "FS-C01-M04 — Prove the Light"))
+        self.assertEqual(observed["QUEST-FOUND-SILVERLIGHT-R01"], ("COMPLETE", "CLOSED"))
         self.assertEqual(observed["QUEST-PRIME-CONTINUITY-PROOF-R01"], ("READY_FOR_CAMPAIGN_1_PREVIEW", "PCP-C01-PREVIEW"))
         self.assertEqual(observed["QUEST-PROMETHEUS-FIRE-20260701"], ("IN_PROGRESS", "PF-C01-M02 Preview — Preserve the Old Flame"))
         self.assertEqual(observed["QUEST-NOTUMS-WATCH-20260708"], ("READY_FOR_JAYSON_EXECUTION_PACKAGE", "NW-C01 readiness package and Jayson-side proof"))

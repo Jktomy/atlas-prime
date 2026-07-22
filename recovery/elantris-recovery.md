@@ -54,10 +54,14 @@ platform API; cutover remains separately gated.
 Read `governance/atlas-quest-portfolio-contract.md` after the Quest Board and
 continuity register. Atlas remains an umbrella ecosystem, never a recovery
 super-Quest. Resolve each unfinished responsibility to exactly one durable
-Quest and Operation before resuming it. Found Silverlight and Prime Continuity
-Proof remain independent until their exact disposition Missions are canonically
-read back; ownership direction cannot substitute for a completed transfer,
-Sunset, gate, or protected-runtime proof.
+Quest and Operation before resuming it. Found Silverlight is historical after
+Mission #276: resume FS-C01-M04 only through the bounded Codex / Source
+Governance Mission family, Glass Codex through Prime Ascendant / Operation
+Glass Codex, and Seon through Prime Ascendant / Operation Harmony. Apple
+Reminders remains authoritative and Hermes remains the bridge vessel. Preserve
+all Found Silverlight proofs and events; never infer M04, deployment, reminder
+access, or protected-runtime proof from Sunset. Prime Continuity Proof remains
+independent until its exact disposition Mission is canonically read back.
 
 ## Repository-process recovery boundary
 

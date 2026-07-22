@@ -1,20 +1,22 @@
 ---
-title: "Found Silverlight Investiture Accounting Contract"
+title: "Prime Investiture Accounting Contract"
 atlas_id: "prime.governance.investiture-accounting"
 status: "CANONICAL_ACTIVE"
 source_type: "PROTOCOL"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Codex"
 owner_operation: "Operation Source Governance"
-owning_quest: "QUEST-FOUND-SILVERLIGHT-R01"
+owning_quest: "BOUNDED_SOURCE_GOVERNANCE_MISSION_FAMILY"
 protected_level: "CRITICAL"
 ---
 
-# Found Silverlight Investiture Accounting contract
+# Prime Investiture Accounting contract
 
-Found Silverlight owns Investiture Accounting events, private ledgers,
-sanitized summaries, and receipts. Prime-wide provider/runtime-to-Light
-identity remains governed by
+Codex / Operation Source Governance owns the bounded Mission family for
+Investiture Accounting events, private ledgers, sanitized summaries, and
+receipts. The Found Silverlight FS-C01 lineage remains immutable historical
+evidence: M01 through M03 are proven and M04 remains unfinished. Prime-wide
+provider/runtime-to-Light identity remains governed by
 `governance/investiture-source-identity-contract.md`.
 
 This contract defines accounting semantics only. It does not choose a private
@@ -144,7 +146,7 @@ field is historical compatibility data and is never rewritten or converted.
 
 ## Gates
 
-The stable Found Silverlight lineage uses these gates:
+The preserved Found Silverlight lineage uses these gates:
 
 - FS-C01-M01: `INVESTITURE_ACCOUNTING_DOCTRINE_ACCEPTED`;
 - FS-C01-M02: `APPEND_ONLY_INVESTITURE_LEDGER_CONSTRUCTION_PROVEN`;

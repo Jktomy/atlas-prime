@@ -14,7 +14,7 @@ protected_level: "HIGH"
 | Project | Durable operations |
 |---|---|
 | Odyssey | Prometheus Foundation; Forge Storage; Shadesmar Access; Citadel/Gatehouse Infrastructure; Sentinel |
-| Codex | Source Governance; Document Pipeline; Protocol Library; Template Library; Archive/Index; Janus; Coppermind; Phoenix; future Glass Codex |
+| Codex | Source Governance; Document Pipeline; Protocol Library; Template Library; Archive/Index; Janus; Coppermind; Phoenix; Glass Codex |
 | Artemis | Harmony; AI Governance |
 | Elantris | Backup Matrix; Restore Runbook; Keystone; External Backup Targets; Recovery Drill/Proof |
 | Beacon | Home Assistant Core; Smart Device Integrations; Home Front Ends; Safe Home Control; Tempest |
@@ -31,6 +31,7 @@ protected_level: "HIGH"
 - **Operation Sentinel** owns infrastructure protection and resilience under Odyssey. It is distinct from Atlas-wide Aegis doctrine.
 - **Operation Tempest** owns physical maintenance of Home Olympus under Beacon, with Odyssey support for infrastructure dependencies.
 - **Operation Janus** houses the Argus intake protocol. **Operation Coppermind** owns permitted living memory and history. **Operation Phoenix** owns governed canonical-source maintenance through branch, draft-PR or commit-status publication, audit, and Jayson-controlled permanence boundaries. Future Gitea publication remains PA-C06 architecture only; Phoenix does not own Elantris backup/restore and never merges automatically.
+- **Operation Glass Codex** is Prime Ascendant's single Codex-owned client-product Operation. It consumes governed APIs and sanitized projections without owning backend, monitoring, reminder, or canonical-source authority.
 - **Mission Board** is the GitHub Issues coordination and restart surface governed by Codex / Source Governance. It owns public-clean visible intake, assignment, discussion, sequencing, status, and linked evidence; merged Prime, the Quest Board, Phoenix, Coppermind, and Emberdark retain their distinct authorities under `governance/mission-board-contract.md`.
 - **Operation Harmony** contains the Emberdark and Kandra Systems. **Sazed** and **Harmony** name the same resident intelligence in ordinary Atlas language; Operation Harmony remains the durable workflow and resource boundary.
 - **Emberdark** contains Perpendicularity, the Dynamic and Navigator Cognitive Shadow collections, mission state, authorization, quarantine, routing, and transit receipts.

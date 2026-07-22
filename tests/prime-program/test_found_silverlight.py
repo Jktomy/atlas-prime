@@ -31,8 +31,8 @@ class FoundSilverlightDoctrineTests(unittest.TestCase):
         ):
             self.assertIn(gate, self.quest)
             self.assertIn(gate, self.contract)
-        self.assertIn("Accepted Mission: FS-C01-M03 — Bind the Receipts", self.quest)
-        self.assertIn("Next Mission: FS-C01-M04 — Prove the Light", self.quest)
+        self.assertIn("Accepted historical Mission: FS-C01-M03 — Bind the Receipts", self.quest)
+        self.assertIn("Unfinished successor work: FS-C01-M04 — Prove the Light", self.quest)
         self.assertIn("Runtime deployment: NOT STARTED", self.quest)
         self.assertIn("External-system action: NOT AUTHORIZED", self.quest)
 
@@ -53,7 +53,7 @@ class FoundSilverlightDoctrineTests(unittest.TestCase):
         self.assertIn("accounting Light identities\n  derived only from trusted provider/runtime evidence", self.quest)
         self.assertIn("independent provider, model, runtime-control, work-surface, route, engine", self.quest)
         self.assertIn("`governance/investiture-accounting-contract.md`", identity)
-        self.assertIn("continuity digest updated atomically", identity)
+        self.assertIn("continuity event history preserved", identity)
         self.assertNotIn("will be modernized", identity)
         self.assertNotIn("provider/runtime identities", self.quest)
 
@@ -82,25 +82,37 @@ class FoundSilverlightDoctrineTests(unittest.TestCase):
         board_entry = next(
             item for item in self.board["entries"] if item["quest_id"] == "QUEST-FOUND-SILVERLIGHT-R01"
         )
-        self.assertEqual(board_entry["state"], "IN_PROGRESS")
-        self.assertEqual(board_entry["next_gate"], "FS-C01-M04 — Prove the Light")
-        entry = next(
-            item for item in self.continuity["entries"] if item["continuity_id"] == "CONT-FOUND-SILVERLIGHT-R01"
+        self.assertEqual(board_entry["state"], "COMPLETE")
+        self.assertEqual(board_entry["next_gate"], "CLOSED")
+        self.assertNotIn(
+            "CONT-FOUND-SILVERLIGHT-R01",
+            {item["continuity_id"] for item in self.continuity["entries"]},
         )
-        self.assertEqual(entry["quest_state"], "IN_PROGRESS")
-        self.assertEqual(entry["campaign_id"], "FS-C01")
-        self.assertEqual(entry["mission_id"], "FS-C01-M04")
-        self.assertEqual(entry["gate_id"], "INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN")
-        self.assertEqual(entry["last_event_id"], "FS-C03-HARMONY-ELANTRIS-NAMING-R01")
-        self.assertEqual(entry["revision"], 5)
         fs_event = "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01"
         later_event = "RP-C08-CAP015-ARCHITECTURE-REALIGNMENT-R02"
         naming_event = "FS-C03-HERMES-BRIDGE-NAMING-R01"
+        sunset_event = "FOUND-SILVERLIGHT-DECOMPOSITION-SUNSET-R01"
         self.assertEqual(self.continuity["event_ids"].count(fs_event), 1)
         self.assertEqual(self.continuity["event_ids"].count(later_event), 1)
         self.assertEqual(self.continuity["event_ids"].count(naming_event), 1)
+        self.assertEqual(self.continuity["event_ids"].count(sunset_event), 1)
         self.assertLess(self.continuity["event_ids"].index(fs_event), self.continuity["event_ids"].index(later_event))
         self.assertLess(self.continuity["event_ids"].index(later_event), self.continuity["event_ids"].index(naming_event))
+        self.assertLess(self.continuity["event_ids"].index(naming_event), self.continuity["event_ids"].index(sunset_event))
+
+    def test_sunset_has_one_successor_per_responsibility_without_advancement(self) -> None:
+        for successor in (
+            "Codex / Operation Source Governance bounded Mission family",
+            "Prime Ascendant / Operation Glass Codex",
+            "Prime Ascendant / Operation Harmony",
+        ):
+            self.assertEqual(self.quest.count(f"| {successor} |"), 1)
+        self.assertIn("FS-C01-M01 through M03 remain `PROVEN`", self.quest)
+        self.assertIn("FS-C01-M04 remains `UNFINISHED`", self.quest)
+        self.assertIn("Apple Reminders remains authoritative", self.quest)
+        self.assertIn("Hermes remains the proposed macOS bridge vessel", self.quest)
+        self.assertIn("Runtime deployment: NOT STARTED", self.quest)
+        self.assertIn("External-system action: NOT AUTHORIZED", self.quest)
         self.assertIn("governance/investiture-accounting-contract.md", self.route)
 
     def test_repairing_prime_identity_register_is_not_widened(self) -> None:
