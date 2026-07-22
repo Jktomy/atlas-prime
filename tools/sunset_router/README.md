@@ -29,34 +29,24 @@ Athena defaults to Spear with Phoenix Blade and Aegis Break as ordered
 fallbacks. Jayson and delegated non-Athena routes require explicit operator
 transfer and an exact route; `AUTO` never transfers operators.
 
-## Owner-only Mission Preview ingress
+## Retired Mission #257 Preview ingress
 
-After `.github/workflows/sunset-router-preview-intake.yml` is canonical, Jayson
-may request one exact Mission #257 Preview by posting only this closed block:
+The campaign-specific hosted comment ingress is retired after completion of
+Mission #257. `.github/workflows/sunset-router-preview-intake.yml` is
+intentionally absent so unrelated Issue comments do not create no-job workflow
+runs or failed-run notifications.
 
-````text
-```atlas-sunset-router-preview-intake-v1
-{CANONICAL_SINGLE_LINE_JSON}
-```
-````
+The closed `atlas.sunset-router.preview-intake` schema and
+`tools.sunset_router.issue_preview_ingress` adapter remain frozen historical
+evidence and local regression fixtures. They do not accept live hosted intake,
+grant authority, or establish an Athena-callable route. A runner guard must not
+be added merely to make unrelated comment events appear successful because that
+would consume hosted minutes without performing Sunset work.
 
-The JSON must validate as
-`atlas.sunset-router.preview-intake` version `1.0.0`, bind the exact current
-`main`, declare `ATHENA_SPEAR_THREAD_ENGINE`, forbid operator transfer, include a
-fresh replay nonce and `PUBLIC_CLEAN_CONFIRMED`, and contain the complete closed
-Router request. The comment is limited to 32 KiB.
-
-`tools.sunset_router.issue_preview_ingress admit` validates the GitHub event,
-owner, repository, Issue, canonical bytes, schema, public-clean boundary, base,
-route, request digest, and replay identity. The workflow then invokes only
-`tools.sunset_router preview` in system temporary storage.
-`tools.sunset_router.issue_preview_ingress render` returns the exact lifecycle
-Preview, exact Router receipt, their digests, the replay binding, and one explicit
-Jayson approval command to Mission #257.
-
-The ingress is Preview-only. It cannot approve the Preview, compile a candidate,
-create a branch or PR, write source, mark READY, merge, change settings, operate
-runtime, advance a Quest, transfer an operator, or claim `SUNSET COMPLETE`.
+Use the deterministic CLI above for current Sunset Router operation. Restoring
+hosted ingress requires a new separately authorized transport contract with a
+trigger surface that does not run or create no-job workflow records for
+unrelated repository comments.
 
 All output is temporary, public-clean, canonical JSON. The router never writes
 canonical source, creates a branch or PR, marks READY, merges, advances a Quest,

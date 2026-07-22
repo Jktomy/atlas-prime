@@ -5,12 +5,12 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-WORKFLOW = ROOT / ".github/workflows/sunset-router-preview-intake.yml"
+RETIRED_WORKFLOW = ROOT / ".github/workflows/sunset-router-preview-intake.yml"
 ADAPTER = ROOT / "tools/sunset_router/issue_preview_ingress.py"
 
 
 class SunsetRouterPreviewIngressPolicyTests(unittest.TestCase):
-    def test_adapter_exposes_no_repository_mutation_surface(self) -> None:
+    def test_historical_adapter_exposes_no_repository_mutation_surface(self) -> None:
         tree = ast.parse(ADAPTER.read_text(encoding="utf-8"))
         forbidden_calls = {
             "create_branch",
@@ -40,51 +40,21 @@ class SunsetRouterPreviewIngressPolicyTests(unittest.TestCase):
         self.assertNotIn("git push", text)
         self.assertNotIn("gh api", text)
 
-    def test_workflow_has_only_read_contents_and_issue_comment_write(self) -> None:
-        workflow = WORKFLOW.read_text(encoding="utf-8")
-        permission_block = workflow.split("concurrency:", 1)[0]
-        self.assertIn("contents: read", permission_block)
-        self.assertIn("issues: write", permission_block)
-        for forbidden in (
-            "contents: write",
-            "pull-requests: write",
-            "actions: write",
-            "checks: write",
-            "statuses: write",
-            "id-token: write",
+    def test_campaign_workflow_is_retired_without_runner_guard(self) -> None:
+        self.assertFalse(RETIRED_WORKFLOW.exists())
+        workflow_text = "\n".join(
+            path.read_text(encoding="utf-8")
+            for pattern in ("*.yml", "*.yaml")
+            for path in sorted((ROOT / ".github/workflows").glob(pattern))
+        )
+        for retired_marker in (
+            "Mission 257 Sunset Router Preview intake",
+            "tools.sunset_router.issue_preview_ingress",
+            "atlas-sunset-router-preview-intake-v1",
         ):
-            self.assertNotIn(forbidden, workflow)
-        self.assertIn("persist-credentials: false", workflow)
-        self.assertNotIn("workflow_dispatch:", workflow)
+            self.assertNotIn(retired_marker, workflow_text)
 
-    def test_workflow_prefilter_uses_exact_comment_owner_and_intake(self) -> None:
-        workflow = WORKFLOW.read_text(encoding="utf-8")
-        for marker in (
-            "issue_comment:",
-            "- created",
-            "github.event.issue.number == 257",
-            "github.event.comment.user.login == 'Jktomy'",
-            "startsWith(github.event.comment.body, '```atlas-sunset-router-preview-intake-v1')",
-            "expected_repository='Jktomy/atlas-prime'",
-            "expected_owner='Jktomy'",
-            "refs/heads/main",
-        ):
-            self.assertIn(marker, workflow)
-        condition = workflow.split("    runs-on:", 1)[0].split("    if: >-", 1)[1]
-        for rejected_identity_check in (
-            "github.actor",
-            "github.triggering_actor",
-            "github.event.issue.pull_request",
-            "github.event.comment.author_association",
-        ):
-            self.assertNotIn(rejected_identity_check, condition)
-        for rejected_shell_identity_check in (
-            'test "$GITHUB_ACTOR"',
-            'test "$GITHUB_TRIGGERING_ACTOR"',
-        ):
-            self.assertNotIn(rejected_shell_identity_check, workflow)
-
-    def test_adapter_retains_exact_owner_and_non_pr_authority(self) -> None:
+    def test_historical_adapter_retains_exact_owner_and_non_pr_authority(self) -> None:
         adapter = ADAPTER.read_text(encoding="utf-8")
         for marker in (
             'issue.get("pull_request") is not None',
@@ -95,20 +65,20 @@ class SunsetRouterPreviewIngressPolicyTests(unittest.TestCase):
         ):
             self.assertIn(marker, adapter)
 
-    def test_workflow_invokes_only_preview_lifecycle_command(self) -> None:
-        workflow = WORKFLOW.read_text(encoding="utf-8")
-        self.assertEqual(workflow.count("python -B -m tools.sunset_router \\\n"), 1)
-        self.assertIn("            preview \\\n", workflow)
-        for forbidden_subcommand in ("approve", "candidate", "verify", "receipt"):
-            self.assertNotIn(f"            {forbidden_subcommand} \\\n", workflow)
-        for forbidden in (
-            "git commit",
-            "git push",
-            "gh pr create",
-            "gh pr ready",
-            "gh pr merge",
-        ):
-            self.assertNotIn(forbidden, workflow)
+    def test_retirement_is_canonical_and_does_not_claim_replacement_transport(self) -> None:
+        contract = (ROOT / "governance/sunset-router-contract.md").read_text(encoding="utf-8")
+        readme = (ROOT / "tools/sunset_router/README.md").read_text(encoding="utf-8")
+        commands = (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8")
+
+        self.assertIn("## Retired Mission-comment Preview ingress", contract)
+        self.assertIn("must remain absent", contract)
+        self.assertIn("No replacement runner guard is permitted", contract)
+        self.assertIn("## Retired Mission #257 Preview ingress", readme)
+        self.assertIn("intentionally absent", readme)
+        self.assertIn("Historical Mission #257 owner-only Sunset Preview ingress", commands)
+        self.assertIn("`RETIRED`", commands)
+        for text in (contract, readme, commands):
+            self.assertNotIn("workflow_dispatch", text)
 
 
 if __name__ == "__main__":
