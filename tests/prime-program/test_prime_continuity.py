@@ -123,6 +123,23 @@ class PrimeContinuityTests(unittest.TestCase):
             with self.assertRaisesRegex(ContinuityError, "QUEST_ADMISSION_REVISION_INVALID"):
                 validate_quest_admission(self.registry, stale, self.board, root=root)
 
+    def test_later_registry_revision_can_advance_or_retire_cutover_quest(self) -> None:
+        advanced = copy.deepcopy(self.registry)
+        advanced["registry_revision"] = 2
+        advanced["entries"][1]["state"] = "BLOCKED"
+        advanced["entries"][1]["next_gate"] = "PA-C01 BLOCKED"
+        advanced["entries"][1]["readiness_basis"] = "Later reviewed registry revision may update active Quest state."
+        validate_quest_registry(advanced, self.board)
+
+        retired = copy.deepcopy(self.registry)
+        retired["registry_revision"] = 2
+        retired["entries"] = [
+            item
+            for item in retired["entries"]
+            if item["quest_id"] != "QUEST-NOTUMS-WATCH-20260708"
+        ]
+        validate_quest_registry(retired, self.board)
+
     def test_registry_parent_and_cutover_tampering_fails_closed(self) -> None:
         duplicate = copy.deepcopy(self.registry)
         duplicate["entries"][1]["parent_issue_number"] = duplicate["entries"][0]["parent_issue_number"]

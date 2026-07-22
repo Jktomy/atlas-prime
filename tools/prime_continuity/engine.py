@@ -108,24 +108,25 @@ def validate_quest_registry(
         raise ContinuityError("QUEST_PREDECESSOR_SUCCESSOR_MISMATCH")
 
     baseline = set(cutover["baseline_active_quest_ids"])
-    observed = {item["quest_id"] for item in entries}
-    if not baseline.issubset(observed):
-        raise ContinuityError("QUEST_REGISTRY_BASELINE_MISSING")
-    if registry["registry_revision"] == 1 and baseline != observed:
-        raise ContinuityError("QUEST_REGISTRY_CUTOVER_PARITY_MISMATCH")
-    completed = sum(item["state"] == "COMPLETE" for item in frozen_board["entries"])
-    if cutover["baseline_completed_quest_count"] != completed:
-        raise ContinuityError("QUEST_REGISTRY_HISTORY_COUNT_MISMATCH")
-
     frozen = {item["quest_id"]: item for item in frozen_board["entries"]}
-    current = {item["quest_id"]: item for item in entries}
     for identity in baseline:
         prior = frozen.get(identity)
         if prior is None or prior["state"] == "COMPLETE":
             raise ContinuityError("QUEST_REGISTRY_BASELINE_INVALID")
-        for field in ("quest_id", "source", "owner", "state", "next_gate", "readiness_basis"):
-            if current[identity][field] != prior[field]:
-                raise ContinuityError("QUEST_REGISTRY_CUTOVER_PARITY_MISMATCH")
+
+    completed = sum(item["state"] == "COMPLETE" for item in frozen_board["entries"])
+    if cutover["baseline_completed_quest_count"] != completed:
+        raise ContinuityError("QUEST_REGISTRY_HISTORY_COUNT_MISMATCH")
+
+    if registry["registry_revision"] == 1:
+        observed = {item["quest_id"] for item in entries}
+        if baseline != observed:
+            raise ContinuityError("QUEST_REGISTRY_CUTOVER_PARITY_MISMATCH")
+        current = {item["quest_id"]: item for item in entries}
+        for identity in baseline:
+            for field in ("quest_id", "source", "owner", "state", "next_gate", "readiness_basis"):
+                if current[identity][field] != frozen[identity][field]:
+                    raise ContinuityError("QUEST_REGISTRY_CUTOVER_PARITY_MISMATCH")
 
 
 def validate_quest_admission(
