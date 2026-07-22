@@ -93,14 +93,52 @@ def _is_root_prime_source(path: str) -> bool:
     return len(pure.parts) == 1 and pure.suffix.casefold() in {".md", ".json", ".yaml", ".yml"}
 
 
-def classify_paths(paths: Sequence[str], *, full: bool = False) -> dict[str, object]:
-    normalized = sorted({PurePosixPath(path.strip()).as_posix() for path in paths if path.strip()})
-    if full or not normalized:
+def _normalize_paths(paths: Sequence[object]) -> tuple[list[str], list[str]]:
+    normalized: set[str] = set()
+    malformed: set[str] = set()
+    for value in paths:
+        if not isinstance(value, str):
+            malformed.add(f"<{type(value).__name__}>")
+            continue
+        raw = value
+        parts = raw.split("/")
+        pure = PurePosixPath(raw)
+        canonical = pure.as_posix()
+        if (
+            not raw
+            or raw != raw.strip()
+            or "\\" in raw
+            or "\x00" in raw
+            or any(ord(character) < 32 for character in raw)
+            or pure.is_absolute()
+            or any(part in {"", ".", ".."} for part in parts)
+            or canonical != raw
+        ):
+            malformed.add(raw or "<empty>")
+            continue
+        normalized.add(canonical)
+    return sorted(normalized), sorted(malformed)
+
+
+def classify_paths(paths: Sequence[object], *, full: bool = False) -> dict[str, object]:
+    normalized, malformed = _normalize_paths(paths)
+    case_groups: dict[str, list[str]] = {}
+    for path in normalized:
+        case_groups.setdefault(path.casefold(), []).append(path)
+    case_collisions = sorted(
+        path
+        for group in case_groups.values()
+        if len(group) > 1
+        for path in group
+    )
+    if full or (not normalized and not malformed):
         return {
             "profile": "full",
             "checks": list(FULL_CHECK_IDS),
             "windows_required": True,
             "unclassified_paths": [],
+            "malformed_paths": malformed,
+            "case_collisions": case_collisions,
             "changed_paths": normalized,
         }
 
@@ -136,7 +174,7 @@ def classify_paths(paths: Sequence[str], *, full: bool = False) -> dict[str, obj
 
         if _starts(path, ("tools/generated_checkpoint/", "tests/generators/", "generated/")) or path == "tools/build_index.py":
             selected.update({"generators", "prime_program"})
-            if path.startswith("tools/generated_checkpoint/"):
+            if not path.startswith("generated/"):
                 windows_required = True
             matched = True
 
@@ -169,6 +207,8 @@ def classify_paths(paths: Sequence[str], *, full: bool = False) -> dict[str, obj
             ),
         ) or _is_root_prime_source(path):
             selected.add("prime_program")
+            if path.startswith("schemas/"):
+                windows_required = True
             matched = True
 
         if path.startswith("tests/privacy/"):
@@ -192,10 +232,13 @@ def classify_paths(paths: Sequence[str], *, full: bool = False) -> dict[str, obj
         if not matched:
             unclassified.append(path)
 
-    if unclassified:
+    if unclassified or malformed:
         selected.update(FULL_CHECK_IDS)
         windows_required = True
         profile = "full-fail-closed"
+    elif case_collisions:
+        windows_required = True
+        profile = "full" if selected == set(FULL_CHECK_IDS) else "targeted"
     elif selected == set(FULL_CHECK_IDS):
         profile = "full"
     else:
@@ -207,19 +250,49 @@ def classify_paths(paths: Sequence[str], *, full: bool = False) -> dict[str, obj
         "checks": ordered,
         "windows_required": windows_required,
         "unclassified_paths": unclassified,
+        "malformed_paths": malformed,
+        "case_collisions": case_collisions,
         "changed_paths": normalized,
     }
 
 
+def _parse_git_name_status_z(payload: bytes) -> list[str]:
+    try:
+        fields = payload.decode("utf-8", errors="strict").split("\x00")
+    except UnicodeDecodeError as exc:
+        raise ValueError("git changed-path evidence is not UTF-8") from exc
+    if fields == [""]:
+        return []
+    if not fields or fields[-1] != "":
+        raise ValueError("git changed-path evidence is not NUL terminated")
+    fields.pop()
+
+    paths: list[str] = []
+    index = 0
+    while index < len(fields):
+        status = fields[index]
+        index += 1
+        if not re.fullmatch(r"[ACDMRTUXB](?:\d{1,3})?", status):
+            raise ValueError(f"unsupported git change status: {status!r}")
+        path_count = 2 if status[0] in {"R", "C"} else 1
+        if index + path_count > len(fields):
+            raise ValueError(f"incomplete git changed-path evidence for status {status!r}")
+        status_paths = fields[index:index + path_count]
+        if any(not path for path in status_paths):
+            raise ValueError(f"empty git changed path for status {status!r}")
+        paths.extend(status_paths)
+        index += path_count
+    return paths
+
+
 def git_changed_paths(base: str, head: str) -> list[str]:
     completed = subprocess.run(
-        ["git", "diff", "--name-only", f"{base}...{head}"],
+        ["git", "diff", "--name-status", "-z", "--find-renames", "--find-copies-harder", f"{base}...{head}"],
         cwd=ROOT,
         check=True,
         capture_output=True,
-        text=True,
     )
-    return [line.strip() for line in completed.stdout.splitlines() if line.strip()]
+    return _parse_git_name_status_z(completed.stdout)
 
 
 def _git_output(*args: str) -> str:

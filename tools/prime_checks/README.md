@@ -16,9 +16,17 @@ Privacy and repository-policy tests are mandatory in every targeted plan.
 Prime Integrity also records the exact base, head, merge base, checkout identity,
 changed-path inventory, and deterministic generated-current comparison.
 Workflow, validation-engine, Athena route execution, Thread Engine, Atlas Sword,
-Oathbringer, PowerShell, and unclassified changes fail closed to the appropriate
-Windows companion; ordinary Markdown, JSON, registry, Quest, continuity, and
-generated-only changes do not require Windows unless another changed path does.
+Oathbringer, PowerShell, generator machinery and tests, schema, and unclassified
+changes fail closed to the Windows companion. Ordinary Markdown, JSON, registry,
+Quest, continuity, and generated-only changes do not require Windows unless
+another changed path does.
+
+Rename and copy evidence classifies both the source and destination paths, so a
+risky source cannot disappear behind a safe destination name. Case-only path
+pairs and mixed candidates require Windows. Malformed, absolute, traversal-like,
+backslash, control-character, surrounding-whitespace, case-mismatched, ambiguous,
+and otherwise unknown path evidence fails closed to the complete profile with
+Windows required.
 
 The pull-request workflow exposes `prime/integrity` and the conditional
 `prime/windows-compatibility` logical contexts. Ruleset `Prime Main Protection`

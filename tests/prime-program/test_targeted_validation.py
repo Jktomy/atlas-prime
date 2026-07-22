@@ -62,6 +62,70 @@ class TargetedValidationTests(unittest.TestCase):
         self.assertIn("generated_current", plan["checks"])
         self.assertFalse(plan["windows_required"])
 
+    def test_generator_and_schema_changes_require_windows(self) -> None:
+        for changed_path in (
+            "tools/build_index.py",
+            "tools/generated_checkpoint/core.py",
+            "tests/generators/test_build_index.py",
+            "schemas/lifecycle/sunset-v2.schema.json",
+        ):
+            with self.subTest(changed_path=changed_path):
+                plan = MODULE.classify_paths([changed_path])
+                self.assertTrue(plan["windows_required"])
+
+    def test_mixed_paths_require_windows_when_any_member_requires_it(self) -> None:
+        plan = MODULE.classify_paths(
+            ["quests/prime-ascendant.md", "schemas/lifecycle/sunset-v2.schema.json"]
+        )
+        self.assertTrue(plan["windows_required"])
+        self.assertEqual(plan["unclassified_paths"], [])
+
+    def test_rename_classifies_both_source_and_destination(self) -> None:
+        paths = MODULE._parse_git_name_status_z(
+            b"R100\x00tools/build_index.py\x00operations/build-index.md\x00"
+        )
+        self.assertEqual(paths, ["tools/build_index.py", "operations/build-index.md"])
+        plan = MODULE.classify_paths(paths)
+        self.assertTrue(plan["windows_required"])
+
+    def test_case_only_rename_requires_windows(self) -> None:
+        paths = MODULE._parse_git_name_status_z(
+            b"R100\x00quests/prime-ascendant.md\x00quests/Prime-Ascendant.md\x00"
+        )
+        plan = MODULE.classify_paths(paths)
+        self.assertEqual(
+            plan["case_collisions"],
+            ["quests/Prime-Ascendant.md", "quests/prime-ascendant.md"],
+        )
+        self.assertTrue(plan["windows_required"])
+
+    def test_malformed_git_name_status_fails_closed(self) -> None:
+        for payload in (
+            b"R100\x00tools/build_index.py\x00",
+            b"Q\x00quests/prime-ascendant.md\x00",
+            b"M\x00quests/prime-ascendant.md",
+            b"M\x00\xff\x00",
+        ):
+            with self.subTest(payload=payload):
+                with self.assertRaises(ValueError):
+                    MODULE._parse_git_name_status_z(payload)
+
+    def test_malformed_and_case_mismatched_paths_fail_closed(self) -> None:
+        for changed_path in (
+            "",
+            "../quests/prime-ascendant.md",
+            "quests\\prime-ascendant.md",
+            "/quests/prime-ascendant.md",
+            "quests/prime-ascendant.md ",
+            "quests/prime-ascendant\t.md",
+            "Schemas/lifecycle/sunset-v2.schema.json",
+        ):
+            with self.subTest(changed_path=changed_path):
+                plan = MODULE.classify_paths([changed_path])
+                self.assertEqual(plan["profile"], "full-fail-closed")
+                self.assertEqual(plan["checks"], list(MODULE.FULL_CHECK_IDS))
+                self.assertTrue(plan["windows_required"])
+
     def test_exact_candidate_identity_binds_base_head_and_merge_base(self) -> None:
         head = subprocess.run(
             ["git", "rev-parse", "HEAD"], cwd=ROOT, check=True, capture_output=True, text=True
@@ -115,6 +179,7 @@ class TargetedValidationTests(unittest.TestCase):
         self.assertEqual(plan["profile"], "full-fail-closed")
         self.assertEqual(plan["checks"], list(MODULE.FULL_CHECK_IDS))
         self.assertEqual(plan["unclassified_paths"], ["unclassified/new-surface.bin"])
+        self.assertEqual(plan["malformed_paths"], [])
         self.assertTrue(plan["windows_required"])
 
     def test_full_profile_is_explicit_and_cross_platform(self) -> None:
