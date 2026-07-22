@@ -58,15 +58,11 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual([mission["mission_id"] for mission in rp_c06["missions"]], [f"RP-C06-M{index:02d}" for index in range(1, 8)])
         self.assertEqual({mission["mission_id"]: mission["state"] for mission in rp_c06["missions"]}, {f"RP-C06-M{index:02d}": "PROVEN" for index in range(1, 8)})
         found_board = next(entry for entry in self.board["entries"] if entry["quest_id"] == "QUEST-FOUND-SILVERLIGHT-R01")
-        found_continuity = next(entry for entry in self.register["entries"] if entry["continuity_id"] == "CONT-FOUND-SILVERLIGHT-R01")
-        self.assertEqual(found_board["state"], "IN_PROGRESS")
-        self.assertEqual(found_board["next_gate"], "FS-C01-M04 — Prove the Light")
-        self.assertEqual(found_continuity["campaign_id"], "FS-C01")
-        self.assertEqual(found_continuity["mission_id"], "FS-C01-M04")
-        self.assertEqual(found_continuity["gate_id"], "INVESTITURE_ACCOUNTING_LIVE_ACCEPTANCE_PROVEN")
+        self.assertEqual(found_board["state"], "COMPLETE")
+        self.assertEqual(found_board["next_gate"], "CLOSED")
+        self.assertNotIn("CONT-FOUND-SILVERLIGHT-R01", {entry["continuity_id"] for entry in self.register["entries"]})
         portfolio_event = "ATLAS-QUEST-PORTFOLIO-RECOMPOSITION-R01"
-        self.assertEqual(found_continuity["revision"], 5)
-        self.assertEqual(found_continuity["last_event_id"], "FS-C03-HARMONY-ELANTRIS-NAMING-R01")
+        self.assertIn("FOUND-SILVERLIGHT-DECOMPOSITION-SUNSET-R01", self.register["event_ids"])
         old_found_event = "FS-C01-M02-M03-CONSTRUCTION-ACCEPTANCE-R01"
         naming_event = "FS-C03-HERMES-BRIDGE-NAMING-R01"
         prometheus_event = "PF-C01-M01-KANDRA-ENDPOINT-RECONCILIATION-R01"

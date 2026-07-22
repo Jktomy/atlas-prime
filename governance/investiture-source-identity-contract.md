@@ -12,9 +12,11 @@ protected_level: "CRITICAL"
 # Prime Investiture source identity contract
 
 This Prime-wide contract fixes model-token origin and identity boundaries.
-Found Silverlight owns Investiture Accounting events, ledgers, summaries, and
-receipts. This contract does not create a ledger, assert a measurement, or
-advance an FS-C01 gate.
+Codex / Operation Source Governance owns the bounded Mission family for
+Investiture Accounting events, ledgers, summaries, and receipts. Found
+Silverlight retains immutable historical lineage only: FS-C01-M01 through M03
+are proven and FS-C01-M04 remains unfinished. This contract does not create a
+ledger, assert a measurement, or advance an FS-C01 gate.
 
 ## Exact Lights and BEU convention
 
@@ -90,12 +92,12 @@ The RP-C03 Chromelight campaign remains accepted provider/account evidence.
 Its proper name and gate lineage do not prove Google token use and do not emit
 accounting Chromelight. Only trusted reported Google model tokens do.
 
-The Found Silverlight Quest's older Stormlight wording is superseded for
+The historical Found Silverlight Quest's older Stormlight wording is superseded for
 identity and accounting-name decisions by this contract. Its stable Quest and
 FS-C01 lineage is modernized through
 `governance/investiture-accounting-contract.md`, with the Quest Board and
-Found Silverlight continuity digest updated atomically in the same authored
-acceptance transaction.
+its accepted continuity event history preserved through the authored Sunset
+transaction.
 
 ## Evidence and privacy boundary
 

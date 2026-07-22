@@ -1,13 +1,13 @@
 ---
 title: "Quest — Found Silverlight"
-status: Active
+status: Complete
 owner: "Project Codex / Operation Source Governance"
 supporting_projects:
   - "Project Artemis"
   - "Project Odyssey"
   - "Project Elantris"
 source_type: Quest
-canonical_scope: "Parent Quest for establishing Atlas's private cognitive interface through Investiture Accounting, the seven-pillar Glass Codex, and the Seon Apple Reminders integration."
+canonical_scope: "Completed historical Quest whose responsibilities were transferred without advancing unfinished work: Investiture Accounting to Codex / Operation Source Governance, Glass Codex to Prime Ascendant / Operation Glass Codex, and Seon to Prime Ascendant / Operation Harmony."
 protected_level: High
 routes_from:
   - atlas-prime.md
@@ -25,8 +25,8 @@ routes_to:
   - recovery/elantris-recovery.md
 private_boundary: "Store only clean doctrine, schemas, sanitized status, non-secret architecture, safe evidence pointers, and completion claims. Do not store raw conversations, reminder contents, personal task history, IP addresses, device registers, private network maps, credentials, tokens, MFA or recovery codes, real environment values, PHI, raw finance evidence, account data, or private runtime values."
 evidence_boundary: "This Quest coordinates canonical source and sanitized proof. Only trusted provider/runtime-reported model tokens may emit BEU; partial or unavailable telemetry remains explicit and deterministic non-model work is zero BEU. Raw usage, conversations, account data, private locations, credentials, and protected evidence remain outside Prime. Apple Reminders remains authoritative for Seon. Planning or package readiness does not prove deployment."
-cleanup_path: "Keep active until all three Campaigns and Quest-level gates pass. Close through final Noctua, Ares, Athena reconciliation, whole-Quest Strikeforce, Quest Board and generated refresh, Elantris recovery proof, and restart-safe Sunset."
-last_verified: 2026-07-14
+cleanup_path: "Preserve this source and all accepted evidence as immutable history. Resume unfinished FS-C01-M04 only through the bounded Codex / Operation Source Governance successor Mission family; route Glass Codex and Seon through their exact Prime Ascendant successors."
+last_verified: 2026-07-22
 ---
 
 # Quest — Found Silverlight
@@ -37,13 +37,32 @@ last_verified: 2026-07-14
 **Parent Project:** Project Codex  
 **Owning Operation:** Operation Source Governance  
 **Supporting Projects:** Artemis, Odyssey, Elantris
-**Current lane:** `EXECUTE -> VERIFY`
-**Current route:** `Canonical Investiture identity -> Found Silverlight accounting doctrine -> append-only ledger construction`
-**Current state:** `IN_PROGRESS`
+**Current lane:** `SUNSET -> HISTORICAL`
+**Current route:** `Canonical successors with preserved Found Silverlight lineage`
+**Current state:** `COMPLETE — SUNSET`
+
+## 1.1 Canonical successor disposition
+
+Mission #276 completed a source-ownership decomposition, not the unfinished
+Campaign work described below. Each responsibility has exactly one successor:
+
+| Historical responsibility | Canonical successor | Preserved state and boundary |
+|---|---|---|
+| FS-C01 — Investiture Accounting | Codex / Operation Source Governance bounded Mission family | FS-C01-M01 through M03 remain `PROVEN`; FS-C01-M04 remains `UNFINISHED` and its protected acceptance is not authorized or inferred. |
+| FS-C02 — Glass Codex | Prime Ascendant / Operation Glass Codex | Ownership only; no website, API, deployment, Campaign gate, or protected-runtime state advances. |
+| FS-C03 — Seon | Prime Ascendant / Operation Harmony | Apple Reminders remains authoritative; Hermes remains the proposed macOS bridge vessel; no reminder access, bridge commissioning, or runtime gate advances. |
+
+Found Silverlight no longer owns active work. Its Campaigns, Missions, gates,
+acceptance journeys, checkpoints, identity decisions, Receipt Gemstones,
+recovery rules, and proof lineage below remain immutable historical evidence.
+The Quest identity register requires no deletion because it contains no
+Found Silverlight Campaign identity; the active continuity row is retired while
+its event history remains append-only.
 
 ## 2. Purpose
 
-Found Silverlight establishes Atlas's private cognitive interface by:
+Found Silverlight historically established the source direction for Atlas's
+private cognitive interface by:
 
 1. accounting for trusted model-token Investiture through Found Silverlight's Investiture Accounting system;
 2. rendering canonical Atlas knowledge through Glass Codex;
@@ -96,11 +115,12 @@ Gates govern entry, exit, promotion, Campaign completion, and Quest completion. 
 
 **Owner:** Codex / Source Governance  
 **Support:** Artemis / AI Governance; Elantris
-**Status:** `IN_PROGRESS`
+**Status:** `TRANSFERRED_WITH_M04_UNFINISHED`
 **Depends on:** Found Silverlight source admission
 
-Build and prove Investiture Accounting independently before Glass Codex
-depends on it. The Found Silverlight-owned accounting contract is
+This historical Campaign built and proved the accepted Investiture Accounting
+substrate. Active ownership now routes through Codex / Operation Source
+Governance. The accounting contract is
 `governance/investiture-accounting-contract.md`; Prime-wide Light identity is
 `governance/investiture-source-identity-contract.md`.
 
@@ -183,7 +203,7 @@ Record real events and prove:
 
 **Owner:** Codex / Source Governance  
 **Support:** Odyssey / Forge Storage; Elantris; Artemis
-**Status:** `BLOCKED_BY_FS-C01`  
+**Status:** `TRANSFERRED_UNADVANCED`
 **Depends on:** FS-C01
 
 Build the private Atlas website and consume the proven sanitized Investiture
@@ -232,7 +252,7 @@ or website ledger-write authority.
 
 **Owner:** Artemis / Harmony
 **Support:** Codex; Odyssey; Elantris
-**Status:** `BLOCKED_BY_FS-C02_AND_HERMES_EVIDENCE`  
+**Status:** `TRANSFERRED_UNADVANCED`
 **Depends on:** FS-C02 and Hermes suitability proof
 
 Add Apple Reminders as a separately bounded live integration.
@@ -299,9 +319,11 @@ Found Silverlight admission does not itself authorize:
 - generated-source mixing;
 - automatic ready transition or merge.
 
-## 8. Quest completion gates
+## 8. Historical Quest completion gates
 
-Found Silverlight is complete only when:
+The original unified Quest gates below are retained as historical design and
+were not all satisfied. Mission #276 closes the redundant Quest through exact
+ownership transfer rather than by claiming these unfinished gates complete:
 
 1. Investiture Accounting is independently proven.
 2. Glass Codex displays Pillars I–VII privately and deterministically.
@@ -316,13 +338,16 @@ Found Silverlight is complete only when:
 11. Quest Board and generated projections are current.
 12. Restart-safe Sunset is complete.
 
-## 9. Current gate
+## 9. Sunset readback
 
 ```text
-Quest state: IN_PROGRESS
-Current Campaign: FS-C01 — Infuse the Gemstone
-Accepted Mission: FS-C01-M03 — Bind the Receipts
-Next Mission: FS-C01-M04 — Prove the Light
+Quest state: COMPLETE — SUNSET
+Active Campaign: NONE
+Accepted historical Mission: FS-C01-M03 — Bind the Receipts
+Unfinished successor work: FS-C01-M04 — Prove the Light
+FS-C01 successor: Codex / Operation Source Governance bounded Mission family
+FS-C02 successor: Prime Ascendant / Operation Glass Codex
+FS-C03 successor: Prime Ascendant / Operation Harmony
 Source-governance substrate: FOUNDRY_OATHBRINGER_R04_ACCEPTED
 Construction merge: f88dd11875b7891212a05dd7b66f3e11f128526f
 Canonical exercise main: df3de8e555c19cab890f3968dca67f770498b153
@@ -334,3 +359,8 @@ FS-C01-M02 and FS-C01-M03 are accepted at their construction gates.
 FS-C01-M04 live acceptance remains separately gated by a Jayson-selected
 protected external store and one bounded trusted provider/runtime usage receipt
 with authoritative category-semantics evidence.
+
+Sunset changes no protected system and authorizes no runtime, deployment,
+reminder, account, infrastructure, repository-setting, or generated action.
+Recovery starts from the successor map above and the preserved historical
+evidence; rollback uses a reviewed revert or repair-forward transaction.

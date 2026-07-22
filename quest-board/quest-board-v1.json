@@ -18,12 +18,12 @@
       "completion_basis": "RP-C01-RP-C08 are complete; AJ-01-AJ-12 are PROVEN; CAP-027 is RESTORED/ACTIVE; all 28 capability dispositions are reconciled with 0 BLOCKED and 0 STILL_MISSING. Phoenix recovery is accepted. Sunset PR #224 merged at 40e58dcf33bae68f8c819c2f65c6474f52381718. The generated publisher run 29536662886 proved Ubuntu/Windows parity and a truthful zero-delta NOOP. Living Emberline is COMPLETE/CLOSED; Repairing Prime is removed from active continuity; independent Quest states are unchanged."
     },
     {
-      "next_gate": "FS-C01-M04 — Prove the Light",
+      "completion_basis": "Mission #276 transferred Investiture Accounting to the bounded Codex / Operation Source Governance Mission family with FS-C01-M01 through M03 proven and M04 unfinished; Glass Codex to Prime Ascendant / Operation Glass Codex; and Seon to Prime Ascendant / Operation Harmony. Apple Reminders authority and the Hermes bridge boundary are unchanged. Historical source, receipts, checkpoints, identity decisions, recovery, and proof remain preserved.",
+      "next_gate": "CLOSED",
       "owner": "Codex / Source Governance",
       "quest_id": "QUEST-FOUND-SILVERLIGHT-R01",
       "source": "quests/found-silverlight.md",
-      "state": "IN_PROGRESS",
-      "readiness_basis": "FS-C01-M01 through M03 remain proven and FS-C01-M04 remains unfinished. Mission #276 owns the future transfer: Investiture Accounting to bounded Source Governance, Glass Codex to Prime Ascendant / Glass Codex, and Seon to Prime Ascendant / Harmony. No transfer or Sunset is claimed here."
+      "state": "COMPLETE"
     },
     {
       "next_gate": "PF-C01-M02 Preview — Preserve the Old Flame",

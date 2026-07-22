@@ -57,7 +57,7 @@ class FinalRepairingPrimeCompletionTests(unittest.TestCase):
         register = load("continuity/prime-continuity-register-r01.json")
         self.assertEqual(register["quest_board_sha256"], sha256(board))
         states = {e["quest_id"]: e["state"] for e in board["entries"]}
-        self.assertEqual(states["QUEST-FOUND-SILVERLIGHT-R01"], "IN_PROGRESS")
+        self.assertEqual(states["QUEST-FOUND-SILVERLIGHT-R01"], "COMPLETE")
         self.assertEqual(states["QUEST-PROMETHEUS-FIRE-20260701"], "IN_PROGRESS")
         self.assertEqual(states["QUEST-NOTUMS-WATCH-20260708"], "READY_FOR_JAYSON_EXECUTION_PACKAGE")
         self.assertEqual(states["QUEST-PRIME-CONTINUITY-PROOF-R01"], "READY_FOR_CAMPAIGN_1_PREVIEW")
