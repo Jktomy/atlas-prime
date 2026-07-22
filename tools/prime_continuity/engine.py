@@ -281,12 +281,19 @@ def render_emberline(register: dict[str, Any]) -> dict[str, Any]:
 def render_mission_quest_emberline(
     register: dict[str, Any], registry: dict[str, Any], quest_id: str
 ) -> dict[str, Any]:
+    emberline_ids = [item.get("emberline_id") for item in registry.get("entries", [])]
+    if len(emberline_ids) != len(set(emberline_ids)):
+        raise ContinuityError("QUEST_REGISTRY_DUPLICATE")
+    if register.get("quest_registry_sha256") != sha256(registry):
+        raise ContinuityError("QUEST_REGISTRY_DIGEST_MISMATCH")
     parents = [item for item in registry["entries"] if item["quest_id"] == quest_id]
     entries = [item for item in register["entries"] if item["quest_id"] == quest_id]
     if len(parents) != 1 or len(entries) != 1:
         raise ContinuityError("MISSION_QUEST_EMBERLINE_BINDING_INVALID")
     parent = parents[0]
     entry = entries[0]
+    if entry["quest_source"] != parent["source"] or entry["quest_state"] != parent["state"]:
+        raise ContinuityError("CONTINUITY_REGISTRY_BINDING_MISMATCH")
     if parent["parent_issue_label"] != "mission/quest":
         raise ContinuityError("MISSION_QUEST_LABEL_INVALID")
     journey: list[dict[str, Any]] = [
