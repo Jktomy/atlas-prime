@@ -99,6 +99,11 @@ def validate_quest_registry(
             raise ContinuityError("QUEST_REGISTRY_DUPLICATE")
     for item in entries:
         _source(item["source"], root)
+        expected_emberline_id = item["parent_mission_id"].replace(
+            "MISSION-QUEST-PARENT-", "EMBERLINE-QUEST-", 1
+        )
+        if item["emberline_id"] != expected_emberline_id:
+            raise ContinuityError("MISSION_QUEST_EMBERLINE_ID_MISMATCH")
 
     cutover = registry["cutover"]
     if cutover["predecessor_sha256"] != sha256(frozen_board):
