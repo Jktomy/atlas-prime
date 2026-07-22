@@ -75,16 +75,21 @@ class TargetedValidationTests(unittest.TestCase):
         self.assertEqual(identity["merge_base_sha"], base)
         self.assertEqual(identity["checkout_sha"], head)
 
-    def test_validation_workflow_exposes_new_and_legacy_contexts(self) -> None:
+    def test_validation_workflow_exposes_only_required_logical_contexts(self) -> None:
         workflow = (ROOT / ".github/workflows/prime-readonly-validation.yml").read_text(encoding="utf-8")
         for marker in (
             "name: prime/integrity",
             "name: prime/windows-compatibility",
-            "name: validate (ubuntu-latest)",
-            "name: validate (windows-latest)",
-            "ruleset 19014636",
         ):
             self.assertIn(marker, workflow)
+        for retired_marker in (
+            "name: validate (ubuntu-latest)",
+            "name: validate (windows-latest)",
+            "legacy_validate_ubuntu:",
+            "legacy_validate_windows:",
+            "Migration bridge:",
+        ):
+            self.assertNotIn(retired_marker, workflow)
 
     def test_validation_workflow_uses_byte_changing_pr_triggers_only(self) -> None:
         workflow = (ROOT / ".github/workflows/prime-readonly-validation.yml").read_text(encoding="utf-8")
