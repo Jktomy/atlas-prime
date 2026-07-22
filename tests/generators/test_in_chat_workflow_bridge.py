@@ -45,8 +45,7 @@ class InChatWorkflowBridgeTests(unittest.TestCase):
             "github.triggering_actor == github.repository_owner",
             "tools.generated_checkpoint.hosted_prepare",
             "Bind exact generated draft readback",
-            "validate_exact_head:",
-            "needs.publish.outputs.head_sha",
+            "DRAFT_CREATED; required pull-request validation pending",
             "ubuntu-latest",
             "windows-latest",
         ):
@@ -58,6 +57,21 @@ class InChatWorkflowBridgeTests(unittest.TestCase):
         self.assertNotIn("actions: write", workflow)
         self.assertNotIn("automatic merge", workflow.casefold())
         self.assertNotIn("gh workflow run", workflow)
+        self.assertNotIn("\n  validate_exact_head:\n", workflow)
+        self.assertNotIn("Validate generated exact head", workflow)
+        self.assertNotIn("needs.publish.outputs.head_sha", workflow)
+        for duplicate_step in (
+            "Prime kernel checks",
+            "Prime repository policy tests",
+            "Prime privacy boundary tests",
+            "Prime lifecycle contract tests",
+            "Full Prime Thread Engine tests",
+            "Prime whole-program tests",
+            "Athena execution route tests",
+            "Prime source validation",
+            "Prove active PowerShell launcher resolution",
+        ):
+            self.assertNotIn(duplicate_step, workflow)
 
     def test_publisher_defers_cleanly_while_one_generated_draft_is_open(self) -> None:
         workflow = (
@@ -79,13 +93,12 @@ class InChatWorkflowBridgeTests(unittest.TestCase):
 
         reconcile_block = workflow.split("\n  reconcile:\n", 1)[1].split("\n  prepare:\n", 1)[0]
         prepare_block = workflow.split("\n  prepare:\n", 1)[1].split("\n  publish:\n", 1)[0]
-        publish_block = workflow.split("\n  publish:\n", 1)[1].split("\n  validate_exact_head:\n", 1)[0]
-        validate_block = workflow.split("\n  validate_exact_head:\n", 1)[1]
+        publish_block = workflow.split("\n  publish:\n", 1)[1]
         self.assertIn("needs: parity", reconcile_block)
         self.assertIn("needs: reconcile", prepare_block)
         self.assertIn("- prepare", publish_block)
-        self.assertIn("needs: publish", validate_block)
-        for block in (parity_block, reconcile_block, prepare_block, publish_block, validate_block):
+        self.assertIn("Bind exact generated draft readback", publish_block)
+        for block in (parity_block, reconcile_block, prepare_block, publish_block):
             job_preamble = block.split("\n    steps:\n", 1)[0]
             self.assertNotIn("always()", job_preamble)
             self.assertNotIn("continue-on-error", block)

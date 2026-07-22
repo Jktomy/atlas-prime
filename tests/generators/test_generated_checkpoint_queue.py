@@ -364,12 +364,17 @@ class GeneratedCheckpointQueueTests(unittest.TestCase):
             / "workflows"
             / "generated-checkpoint-publisher.yml"
         ).read_text(encoding="utf-8")
+        validation_workflow = (
+            Path(__file__).resolve().parents[2]
+            / ".github"
+            / "workflows"
+            / "prime-readonly-validation.yml"
+        ).read_text(encoding="utf-8")
         queue_block = workflow.split("\n  queue:\n", 1)[1].split("\n  parity:\n", 1)[0]
         parity_block = workflow.split("\n  parity:\n", 1)[1].split("\n  reconcile:\n", 1)[0]
         reconcile_block = workflow.split("\n  reconcile:\n", 1)[1].split("\n  prepare:\n", 1)[0]
         prepare_block = workflow.split("\n  prepare:\n", 1)[1].split("\n  publish:\n", 1)[0]
-        publish_block = workflow.split("\n  publish:\n", 1)[1].split("\n  validate_exact_head:\n", 1)[0]
-        validate_block = workflow.split("\n  validate_exact_head:\n", 1)[1]
+        publish_block = workflow.split("\n  publish:\n", 1)[1]
 
         self.assertLess(queue_block.index("Admit exact publisher invocation"), queue_block.index("uses:"))
         for phrase in (
@@ -403,8 +408,13 @@ class GeneratedCheckpointQueueTests(unittest.TestCase):
         self.assertIn("needs: parity", reconcile_block)
         self.assertIn("needs: reconcile", prepare_block)
         self.assertIn("- prepare", publish_block)
-        self.assertIn("needs: publish", validate_block)
-        for block in (parity_block, reconcile_block, prepare_block, publish_block, validate_block):
+        self.assertIn("DRAFT_CREATED; required pull-request validation pending", publish_block)
+        self.assertNotIn("\n  validate_exact_head:\n", workflow)
+        self.assertNotIn("Validate generated exact head", workflow)
+        self.assertNotIn("needs.publish.outputs.head_sha", workflow)
+        self.assertIn("name: prime/integrity", validation_workflow)
+        self.assertIn("name: prime/windows-compatibility", validation_workflow)
+        for block in (parity_block, reconcile_block, prepare_block, publish_block):
             job_preamble = block.split("\n    steps:\n", 1)[0]
             self.assertNotIn("always()", job_preamble)
             self.assertNotIn("!cancelled()", job_preamble)
