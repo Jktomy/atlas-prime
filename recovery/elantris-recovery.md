@@ -112,6 +112,15 @@ expired evidence remains `STALE`, unavailable evidence remains `UNKNOWN`, and
 last-known-good remains historical context. Notum loss does not block Prime or
 Cloud Atlas recovery, and Glass loss does not stop monitoring.
 
+Apollo endpoint recovery follows
+`governance/apollo-remote-operator-continuity-contract.md`. Preserve an
+integrity-verified Glass package and rollback package, Windows recovery-media
+and system-image dispositions, and manufacturer-driver sources. Reinstall from
+known-good media, recreate isolated environments, obtain fresh bounded
+credentials, and restore no protected cache or unique source from ordinary
+endpoint backup. Hermes retains independent administration and clean-clone
+Prime recovery while Apollo or its remote route is unavailable.
+
 Read `governance/cloud-atlas-protected-realm-contract.md` before any Cloud
 Atlas recovery design or claim. Preserve exact separation among the Protected
 Original Vault, Coppermind, Emberdark, Harmony, Phoenix, and the approved secret

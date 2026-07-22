@@ -2,9 +2,9 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 49,
+  "register_revision": 50,
   "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
-  "quest_board_sha256": "7b59bac86b49b77881348c460aa5276b0c3404a38b99cf14d0330538177111ad",
+  "quest_board_sha256": "cb91e7ec96993d2e87add7f97873545f3d9032b778e03c41d1581173d316248f",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -57,19 +57,20 @@
     "CLOUD-ATLAS-PROTECTED-REALM-REFRACTION-R01",
     "GLASS-CODEX-VSCODE-CLIENT-REFRACTION-R03",
     "PROMETHEUS-CLOUD-ATLAS-TOPOLOGY-REFRACTION-R01",
-    "NOTUM-GLASS-CODEX-HEALTH-BOUNDARY-R01"
+    "NOTUM-GLASS-CODEX-HEALTH-BOUNDARY-R01",
+    "APOLLO-REMOTE-OPERATOR-CONTINUITY-R01"
   ],
   "entries": [
     {
       "continuity_id": "CONT-PROMETHEUS-FIRE-R01",
       "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
       "quest_source": "quests/prometheus-fire.md",
-      "quest_source_sha256": "0ef436b570090273bfcaeb47768f24e494e7588eb66ac3fd8e945e74031058bc",
+      "quest_source_sha256": "d6a67116d922e6a3405897af7478af536a7b5fb985e8c52832404f3014822326",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "PF-C01",
       "mission_id": "PF-C01-M02",
       "gate_id": "PF-C01-M02-PREVIEW",
-      "current_position": "PF-C01-M01 remains proven with carry-forwards and PF-C01-M02 remains next. Mission #283 selects the 64 GB planning envelope, separate Harmony VM, Atlas VM, and Plex LXC roles, service-specific storage/health/backup/restore, GUI and monitoring independence, and household-first priorities. Capacity remains unmeasured; no deployment, guest, storage, network, backup, migration, cutover, or gate advancement is claimed.",
+      "current_position": "PF-C01-M01 remains proven with carry-forwards and PF-C01-M02 remains next. Missions #283 and #285 define the Cloud Atlas topology plus Apollo/Hermes endpoint, isolation, source, reinstall, degraded-mode, and recovery proof plan. Apollo commissioning, native workflows, private route, Hermes proof, Windows recovery, protected execution, and PF-C01-M02 exit remain unproven.",
       "blockers": [
         "Apollo is not yet commissioned and proven as the Windows orchestration endpoint.",
         "Windows-specific Codex continuity has not yet been evacuated from Prometheus to Apollo.",
@@ -77,10 +78,10 @@
         "Windows recovery media, system-image disposition, and manufacturer-driver preservation remain unresolved.",
         "Extended memory testing and bounded stability follow-up remain pending."
       ],
-      "next_action": "Prepare and execute the exact PF-C01-M02 Preserve the Old Flame work only through a separately bounded authorization; do not infer device renames, migration, Windows removal, Proxmox installation, Plex cutover, Jellyfin deployment, or Gitea activation from this architecture refraction.",
+      "next_action": "Obtain separate protected Execute authority and prove the exact Apollo/Hermes and Windows continuity requirements before any PF-C01-M02 exit or destructive-action Preview.",
       "next_approval": "Jayson must separately authorize endpoint commissioning and migration, then separately authorize any destructive Windows, Proxmox, Plex, Jellyfin, Gitea, or infrastructure action.",
-      "revision": 5,
-      "last_event_id": "PROMETHEUS-CLOUD-ATLAS-TOPOLOGY-REFRACTION-R01"
+      "revision": 6,
+      "last_event_id": "APOLLO-REMOTE-OPERATOR-CONTINUITY-R01"
     },
     {
       "continuity_id": "CONT-NOTUMS-WATCH-R01",

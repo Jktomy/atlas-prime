@@ -86,7 +86,7 @@ class PrometheusFireArchitectureRefractionTests(unittest.TestCase):
         self.assertEqual(bound["campaign_id"], "PF-C01")
         self.assertEqual(bound["mission_id"], "PF-C01-M02")
         self.assertEqual(bound["gate_id"], "PF-C01-M02-PREVIEW")
-        self.assertEqual(bound["last_event_id"], "PROMETHEUS-CLOUD-ATLAS-TOPOLOGY-REFRACTION-R01")
+        self.assertEqual(bound["last_event_id"], "APOLLO-REMOTE-OPERATOR-CONTINUITY-R01")
 
         self.assertTrue((ROOT / "quests/prime-ascendant.md").exists())
         ascendant = next(item for item in board["entries"] if item["quest_id"] == "QUEST-PRIME-ASCENDANT-20260717")

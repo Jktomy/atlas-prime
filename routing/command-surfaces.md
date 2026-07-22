@@ -45,6 +45,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Notum/Sentinel health in Glass Codex, source identity, freshness, minimized telemetry, denied control, and failure independence | `governance/notum-glass-codex-health-contract.md`, `governance/notum-glass-codex-health-v1.json`; read-only architecture only and no telemetry connection |
 | Prometheus Cloud Atlas capacity, service isolation, recovery, dependency, startup, shutdown, and household priority | `governance/prometheus-cloud-atlas-topology-contract.md`, then `quests/prometheus-fire.md`; planning only and no host action |
 | Apollo, Hermes, Iris, and Zeus operator endpoints | `infrastructure/atlas-infrastructure-source.md` |
+| Apollo native VS Code and Glass endpoint continuity, isolated environments, remote route, source disposition, reinstall, degraded mode, and recovery proof | `governance/apollo-remote-operator-continuity-contract.md`, `governance/apollo-remote-operator-continuity-v1.json`; architecture only and runtime remains pending protected Execute |
 | Protocols and delivery methods | `operations/protocol-library.md`, `methods/artemis-bow-and-arrow.md`, `methods/athenas-spear.md`, `methods/atlas-sword.md`, `methods/phoenix-blade.md` |
 | Athena through Thread Engine | `methods/athenas-spear.md`, then the exact Weave, base, Thread Engine state, and draft-PR stop boundary |
 | Athena direct safe construction or repair | `methods/phoenix-blade.md` for Aegis Break route selection, then the exact live repository or PR state |

@@ -62,6 +62,12 @@ monitoring, and Prime clean-clone recovery continue; authoritative state is
 never trapped inside the extension. Rollback disables or reinstalls the client
 without reverting backend state.
 
+Apollo commissioning, isolated Private/Engineering/Worldhopper environments,
+independent Hermes administration, source continuity, remote-route failure,
+Windows recovery, reinstall, and runtime proof follow
+`governance/apollo-remote-operator-continuity-contract.md`. That source grants
+no install, credential, endpoint, or remote-access authority.
+
 ## Ownership and stop boundary
 
 Operation Glass Codex owns the client product. PA-C05 owns governed Cloud Atlas

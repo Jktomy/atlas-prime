@@ -72,6 +72,7 @@ class PrimeContinuityTests(unittest.TestCase):
         glass_codex_event = "GLASS-CODEX-VSCODE-CLIENT-REFRACTION-R03"
         prometheus_cloud_event = "PROMETHEUS-CLOUD-ATLAS-TOPOLOGY-REFRACTION-R01"
         notum_glass_event = "NOTUM-GLASS-CODEX-HEALTH-BOUNDARY-R01"
+        apollo_continuity_event = "APOLLO-REMOTE-OPERATOR-CONTINUITY-R01"
         self.assertEqual(self.register["event_ids"].count(old_found_event), 1)
         self.assertEqual(self.register["event_ids"].count(naming_event), 1)
         self.assertEqual(self.register["event_ids"].count(prometheus_event), 1)
@@ -82,6 +83,7 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(self.register["event_ids"].count(glass_codex_event), 1)
         self.assertEqual(self.register["event_ids"].count(prometheus_cloud_event), 1)
         self.assertEqual(self.register["event_ids"].count(notum_glass_event), 1)
+        self.assertEqual(self.register["event_ids"].count(apollo_continuity_event), 1)
         self.assertLess(self.register["event_ids"].index(old_found_event), self.register["event_ids"].index(naming_event))
         self.assertLess(self.register["event_ids"].index(naming_event), self.register["event_ids"].index(prometheus_event))
         self.assertLess(self.register["event_ids"].index(prometheus_event), self.register["event_ids"].index(prometheus_topology_event))
@@ -91,6 +93,7 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertLess(self.register["event_ids"].index(cloud_atlas_event), self.register["event_ids"].index(glass_codex_event))
         self.assertLess(self.register["event_ids"].index(glass_codex_event), self.register["event_ids"].index(prometheus_cloud_event))
         self.assertLess(self.register["event_ids"].index(prometheus_cloud_event), self.register["event_ids"].index(notum_glass_event))
+        self.assertLess(self.register["event_ids"].index(notum_glass_event), self.register["event_ids"].index(apollo_continuity_event))
         notum = next(entry for entry in self.register["entries"] if entry["continuity_id"] == "CONT-NOTUMS-WATCH-R01")
         self.assertEqual(notum["quest_state"], "READY_FOR_JAYSON_EXECUTION_PACKAGE")
         self.assertEqual(notum["gate_id"], "NW-C01-READINESS")
@@ -104,8 +107,8 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(prometheus_continuity["campaign_id"], "PF-C01")
         self.assertEqual(prometheus_continuity["mission_id"], "PF-C01-M02")
         self.assertEqual(prometheus_continuity["gate_id"], "PF-C01-M02-PREVIEW")
-        self.assertEqual(prometheus_continuity["revision"], 5)
-        self.assertEqual(prometheus_continuity["last_event_id"], prometheus_cloud_event)
+        self.assertEqual(prometheus_continuity["revision"], 6)
+        self.assertEqual(prometheus_continuity["last_event_id"], apollo_continuity_event)
         ascendant = next(entry for entry in self.register["entries"] if entry["continuity_id"] == "CONT-PRIME-ASCENDANT-R01")
         creation_event = "PA-C01-QUEST-CREATION-R01"
         sunset_event = "PA-C01-HOSTED-ACTIONS-SUNSET-R01"
