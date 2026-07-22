@@ -1,0 +1,65 @@
+{
+  "schema_version": "atlas.mission-board-quest-registry.v1",
+  "authority": "CANONICAL_ADMITTED_QUEST_REGISTRY",
+  "repository": "Jktomy/atlas-prime",
+  "registry_id": "MISSION-BOARD-QUEST-REGISTRY-R01",
+  "registry_revision": 1,
+  "state": "CANONICAL_ACTIVE",
+  "platform": "GitHub Issues",
+  "live_issue_availability_required_for_recovery": false,
+  "cutover": {
+    "mission_id": "MISSION-QUEST-REGISTRY-MISSION-BOARD-CUTOVER-R01",
+    "issue_number": 278,
+    "canonical_base": "50caf2cb2d12e84f80ff7e9dcae97ca31e28ffe5",
+    "predecessor_path": "quest-board/quest-board-v1.json",
+    "predecessor_sha256": "a4c4a877f24ce8df4b7f8b6b4766cef8f34023129ea982d43a46043aa041802f",
+    "predecessor_state": "FROZEN_PREDECESSOR_EVIDENCE",
+    "baseline_active_quest_ids": [
+      "QUEST-NOTUMS-WATCH-20260708",
+      "QUEST-PRIME-ASCENDANT-20260717",
+      "QUEST-PROMETHEUS-FIRE-20260701"
+    ],
+    "baseline_completed_quest_count": 4
+  },
+  "entries": [
+    {
+      "next_gate": "NW-C01 readiness package and Jayson-side proof",
+      "owner": "Odyssey / Citadel-Gatehouse Infrastructure",
+      "quest_id": "QUEST-NOTUMS-WATCH-20260708",
+      "source": "quests/notums-watch.md",
+      "state": "READY_FOR_JAYSON_EXECUTION_PACKAGE",
+      "readiness_basis": "Notum's Watch and Sentinel durably own independent monitoring. Mission #284 defines only minimized read-only Glass Codex presentation with explicit freshness and denied control. Protected placement and execution remain Jayson-side; no telemetry connection, monitoring activation, or NW-C01 advancement is claimed.",
+      "parent_issue_number": 309,
+      "parent_mission_id": "MISSION-QUEST-PARENT-NOTUMS-WATCH-R01",
+      "parent_attempt_id": "MISSION-QUEST-PARENT-NOTUMS-WATCH-R01-ATTEMPT-01",
+      "parent_mission_state": "IN_PROGRESS",
+      "parent_source_status": "NO_SOURCE_CHANGE_REQUIRED"
+    },
+    {
+      "next_gate": "PA-C01 — Write the Covenant",
+      "owner": "Artemis / Operation Harmony",
+      "quest_id": "QUEST-PRIME-ASCENDANT-20260717",
+      "source": "quests/prime-ascendant.md",
+      "state": "IN_PROGRESS",
+      "readiness_basis": "Missions #279 and #282 establish Cloud Atlas protected-realm and Glass Codex client boundaries. Glass Codex is client-independent with a first-party VS Code direction, stable API lanes, denied authority, retention cleanup, packaging, and GUI-failure independence. PA-C01 remains current; no implementation, Apollo install, runtime, recovery proof, or later Campaign gate advances.",
+      "parent_issue_number": 307,
+      "parent_mission_id": "MISSION-QUEST-PARENT-PRIME-ASCENDANT-R01",
+      "parent_attempt_id": "MISSION-QUEST-PARENT-PRIME-ASCENDANT-R01-ATTEMPT-01",
+      "parent_mission_state": "IN_PROGRESS",
+      "parent_source_status": "NO_SOURCE_CHANGE_REQUIRED"
+    },
+    {
+      "next_gate": "PF-C01-M02 Preview — Preserve the Old Flame",
+      "owner": "Odyssey / Prometheus Foundation",
+      "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
+      "source": "quests/prometheus-fire.md",
+      "state": "IN_PROGRESS",
+      "readiness_basis": "PF-C01-M01 remains accepted and PF-C01-M02 remains next. Missions #283 and #285 fix the public-clean Cloud Atlas topology plus Apollo/Hermes endpoint, isolation, source, reinstall, degraded-mode, and recovery proof requirements. Apollo/Hermes protected proof, native workflows, private route, Windows recovery, PF-C01-M02 exit, commissioning, migration, and runtime remain unproven.",
+      "parent_issue_number": 308,
+      "parent_mission_id": "MISSION-QUEST-PARENT-PROMETHEUS-FIRE-R01",
+      "parent_attempt_id": "MISSION-QUEST-PARENT-PROMETHEUS-FIRE-R01-ATTEMPT-01",
+      "parent_mission_state": "IN_PROGRESS",
+      "parent_source_status": "NO_SOURCE_CHANGE_REQUIRED"
+    }
+  ]
+}

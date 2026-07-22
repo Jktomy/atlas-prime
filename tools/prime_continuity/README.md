@@ -1,21 +1,30 @@
 # Prime continuity engine
 
-This read-only module validates the schema-driven Quest Board and canonical
-operational continuity register. It plans exactly one-entry, replay-ledger-bound
-continuity updates, renders a deterministic non-authoritative Emberline, and
-reconstructs bounded Sunset, Sunrise, and Argus views without chat memory.
+This read-only module validates the canonical Mission Board Quest registry
+recovery snapshot, the frozen predecessor Quest Board, and the canonical
+operational continuity register. It plans exactly one-entry,
+replay-ledger-bound continuity updates, renders a deterministic
+non-authoritative Emberline, and reconstructs bounded Sunset, Sunrise, and
+Argus views without chat memory.
+
 Here, `sunset` is the historical command name for a compact continuity
 snapshot. It is not a full Atlas Sunset, creates no lifecycle
 Feather/Sunset/Sunrise record set, performs no lesson absorption, and cannot
-claim closeout.
-Route the full lifecycle objective through `governance/lesson-harvest-protocol.md`
-and `tools.atlas_lifecycle` instead.
+claim closeout. Route the full lifecycle objective through
+`governance/lesson-harvest-protocol.md` and `tools.atlas_lifecycle` instead.
 
-The Quest Board remains the canonical Quest registry. Continuity adds
-unfinished-work detail but cannot advance Quest state. A planned update writes
-nothing; durable apply still requires one exact branch, draft PR, review, and
-merge. Sunrise must be anchored to the canonical register; the snapshot's own
-digest is not authority. Generated Emberlines report and never govern.
+The Mission Board is the admitted-Quest registry and primary operational work
+surface. `continuity/mission-board-quest-registry-r01.json` is the merged,
+portable recovery snapshot of its active Quest parents, so recovery never
+requires GitHub availability. Mission Issues coordinate state but cannot
+silently advance merged Prime. `quest-board/quest-board-v1.json` is frozen
+predecessor evidence and is never edited for future admissions.
+
+Continuity adds unfinished-work detail but cannot advance Quest state. A
+planned update writes nothing; durable apply still requires one exact branch,
+draft PR, review, and merge. Sunrise must be anchored to the canonical
+register; the snapshot's own digest is not authority. Generated Emberlines
+report and never govern.
 
 ## Commands
 

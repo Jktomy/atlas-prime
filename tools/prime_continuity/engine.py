@@ -8,15 +8,22 @@ from typing import Any
 
 from tools.athena_routes.schema import SchemaValidationError, validate_schema
 
-
 ROOT = Path(__file__).resolve().parents[2]
-BOARD_SCHEMA = ROOT / "schemas" / "quest-board-v1.schema.json"
+FROZEN_BOARD_SCHEMA = ROOT / "schemas" / "quest-board-v1.schema.json"
+QUEST_REGISTRY_SCHEMA = ROOT / "schemas" / "mission-board-quest-registry-v1.schema.json"
 CONTINUITY_SCHEMA = ROOT / "schemas" / "prime-continuity-register-v1.schema.json"
 IDENTITY_SCHEMA = ROOT / "schemas" / "quest-engine-identity-register-v1.schema.json"
-ALLOWED_UPDATE_FIELDS = {"current_position", "blockers", "next_action", "next_approval", "campaign_id", "mission_id", "gate_id"}
-ADMISSION_STATES = {"READY_FOR_CAMPAIGN_1_PREVIEW", "READY_FOR_JAYSON_EXECUTION_PACKAGE"}
+ALLOWED_UPDATE_FIELDS = {
+    "current_position", "blockers", "next_action", "next_approval",
+    "campaign_id", "mission_id", "gate_id",
+}
+ADMISSION_STATES = {
+    "READY_FOR_CAMPAIGN_1_PREVIEW", "READY_FOR_JAYSON_EXECUTION_PACKAGE",
+    "IN_PROGRESS", "BLOCKED",
+}
 ALLOWED_CAMPAIGN_TRANSITIONS = {
-    "PENDING->IN_PROGRESS", "IN_PROGRESS->BLOCKED", "BLOCKED->IN_PROGRESS", "IN_PROGRESS->COMPLETE",
+    "PENDING->IN_PROGRESS", "IN_PROGRESS->BLOCKED",
+    "BLOCKED->IN_PROGRESS", "IN_PROGRESS->COMPLETE",
 }
 REQUIRED_GATES = {
     "RP-C01": "ATHENA_NATIVE_EXECUTION_ROUTES_PROVEN",
@@ -41,96 +48,185 @@ def stable_json(value: Any) -> bytes:
 
 
 def sha256(value: Any) -> str:
-    payload = value if isinstance(value, bytes) else stable_json(value)
-    return hashlib.sha256(payload).hexdigest()
+    return hashlib.sha256(value if isinstance(value, bytes) else stable_json(value)).hexdigest()
 
 
 def _load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _validate(schema_path: Path, value: dict[str, Any], code: str) -> None:
+def _validate(schema: Path, value: dict[str, Any], code: str) -> None:
     try:
-        validate_schema(_load(schema_path), value)
+        validate_schema(_load(schema), value)
     except SchemaValidationError as exc:
         raise ContinuityError(code) from exc
 
 
+def _source(source: str, root: Path) -> Path:
+    path = PurePosixPath(source)
+    candidate = root.joinpath(*path.parts)
+    if path.is_absolute() or ".." in path.parts or not candidate.is_file():
+        raise ContinuityError("QUEST_SOURCE_INVALID")
+    return candidate
+
+
 def validate_board(board: dict[str, Any], *, root: Path = ROOT) -> None:
-    _validate(BOARD_SCHEMA, board, "QUEST_BOARD_SCHEMA_INVALID")
-    ids = [entry["quest_id"] for entry in board["entries"]]
-    sources = [entry["source"] for entry in board["entries"]]
+    """Validate the frozen predecessor Board; it is evidence, not admission."""
+    _validate(FROZEN_BOARD_SCHEMA, board, "QUEST_BOARD_SCHEMA_INVALID")
+    ids = [item["quest_id"] for item in board["entries"]]
+    sources = [item["source"] for item in board["entries"]]
     if len(ids) != len(set(ids)) or len(sources) != len(set(sources)):
         raise ContinuityError("QUEST_BOARD_DUPLICATE")
     for source in sources:
-        path = PurePosixPath(source)
-        if path.is_absolute() or ".." in path.parts or not root.joinpath(*path.parts).is_file():
-            raise ContinuityError("QUEST_SOURCE_INVALID")
+        _source(source, root)
 
 
-def validate_quest_admission(before: dict[str, Any], after: dict[str, Any], *, root: Path = ROOT) -> dict[str, Any]:
-    validate_board(before, root=root)
-    validate_board(after, root=root)
-    before_by_id = {entry["quest_id"]: entry for entry in before["entries"]}
-    after_by_id = {entry["quest_id"]: entry for entry in after["entries"]}
-    added = set(after_by_id) - set(before_by_id)
-    if len(added) != 1 or set(before_by_id) - set(after_by_id):
+def validate_quest_registry(
+    registry: dict[str, Any], frozen_board: dict[str, Any], *, root: Path = ROOT
+) -> None:
+    validate_board(frozen_board, root=root)
+    _validate(QUEST_REGISTRY_SCHEMA, registry, "QUEST_REGISTRY_SCHEMA_INVALID")
+    entries = registry["entries"]
+    for values in (
+        [item["quest_id"] for item in entries],
+        [item["source"] for item in entries],
+        [item["parent_issue_number"] for item in entries],
+        [item["parent_mission_id"] for item in entries],
+        [item["parent_attempt_id"] for item in entries],
+    ):
+        if len(values) != len(set(values)):
+            raise ContinuityError("QUEST_REGISTRY_DUPLICATE")
+    for item in entries:
+        _source(item["source"], root)
+
+    cutover = registry["cutover"]
+    if cutover["predecessor_sha256"] != sha256(frozen_board):
+        raise ContinuityError("QUEST_PREDECESSOR_DIGEST_MISMATCH")
+    if frozen_board["registry_role"] != "FROZEN_PREDECESSOR_EVIDENCE":
+        raise ContinuityError("QUEST_PREDECESSOR_ROLE_MISMATCH")
+    if frozen_board["successor_registry"] != "continuity/mission-board-quest-registry-r01.json":
+        raise ContinuityError("QUEST_PREDECESSOR_SUCCESSOR_MISMATCH")
+
+    baseline = set(cutover["baseline_active_quest_ids"])
+    frozen = {item["quest_id"]: item for item in frozen_board["entries"]}
+    for identity in baseline:
+        prior = frozen.get(identity)
+        if prior is None or prior["state"] == "COMPLETE":
+            raise ContinuityError("QUEST_REGISTRY_BASELINE_INVALID")
+
+    completed = sum(item["state"] == "COMPLETE" for item in frozen_board["entries"])
+    if cutover["baseline_completed_quest_count"] != completed:
+        raise ContinuityError("QUEST_REGISTRY_HISTORY_COUNT_MISMATCH")
+
+    if registry["registry_revision"] == 1:
+        observed = {item["quest_id"] for item in entries}
+        if baseline != observed:
+            raise ContinuityError("QUEST_REGISTRY_CUTOVER_PARITY_MISMATCH")
+        current = {item["quest_id"]: item for item in entries}
+        for identity in baseline:
+            for field in ("quest_id", "source", "owner", "state", "next_gate", "readiness_basis"):
+                if current[identity][field] != frozen[identity][field]:
+                    raise ContinuityError("QUEST_REGISTRY_CUTOVER_PARITY_MISMATCH")
+
+
+def validate_quest_admission(
+    before: dict[str, Any],
+    after: dict[str, Any],
+    frozen_board: dict[str, Any] | None = None,
+    *,
+    root: Path = ROOT,
+) -> dict[str, Any]:
+    if before.get("registry_role") == "FROZEN_PREDECESSOR_EVIDENCE":
+        raise ContinuityError("QUEST_BOARD_FROZEN")
+    if frozen_board is None:
+        raise ContinuityError("QUEST_PREDECESSOR_REQUIRED")
+    validate_quest_registry(before, frozen_board, root=root)
+    validate_quest_registry(after, frozen_board, root=root)
+    old = {item["quest_id"]: item for item in before["entries"]}
+    new = {item["quest_id"]: item for item in after["entries"]}
+    added = set(new) - set(old)
+    if len(added) != 1 or set(old) - set(new):
         raise ContinuityError("QUEST_ADMISSION_SCOPE_INVALID")
-    if any(after_by_id[identity] != entry for identity, entry in before_by_id.items()):
+    if any(new[identity] != item for identity, item in old.items()):
         raise ContinuityError("QUEST_ADMISSION_EXISTING_ENTRY_CHANGED")
-    admitted = after_by_id[next(iter(added))]
-    if admitted["state"] not in ADMISSION_STATES or admitted.get("completion_basis"):
+    admitted = new[next(iter(added))]
+    if admitted["state"] not in ADMISSION_STATES:
         raise ContinuityError("QUEST_ADMISSION_STATE_INVALID")
+    if after["registry_revision"] != before["registry_revision"] + 1:
+        raise ContinuityError("QUEST_ADMISSION_REVISION_INVALID")
+    if after["cutover"] != before["cutover"]:
+        raise ContinuityError("QUEST_ADMISSION_CUTOVER_CHANGED")
     return copy.deepcopy(admitted)
 
 
 def validate_identity_register(register: dict[str, Any]) -> None:
     _validate(IDENTITY_SCHEMA, register, "IDENTITY_REGISTER_SCHEMA_INVALID")
-    campaign_ids = [item["campaign_id"] for item in register["campaigns"]]
-    gate_ids = [item["gate_id"] for item in register["campaigns"]]
-    mission_ids = [mission["mission_id"] for item in register["campaigns"] for mission in item["missions"]]
-    if len(campaign_ids) != len(set(campaign_ids)) or len(gate_ids) != len(set(gate_ids)) or len(mission_ids) != len(set(mission_ids)):
+    campaigns = register["campaigns"]
+    campaign_ids = [item["campaign_id"] for item in campaigns]
+    gate_ids = [item["gate_id"] for item in campaigns]
+    mission_ids = [mission["mission_id"] for item in campaigns for mission in item["missions"]]
+    if any(len(values) != len(set(values)) for values in (campaign_ids, gate_ids, mission_ids)):
         raise ContinuityError("IDENTITY_DUPLICATE")
-    if {item["campaign_id"]: item["gate_id"] for item in register["campaigns"]} != REQUIRED_GATES:
+    if {item["campaign_id"]: item["gate_id"] for item in campaigns} != REQUIRED_GATES:
         raise ContinuityError("IDENTITY_GATE_SET_INVALID")
     if set(register["state_rules"]["allowed_campaign_transitions"]) != ALLOWED_CAMPAIGN_TRANSITIONS:
         raise ContinuityError("IDENTITY_TRANSITIONS_INVALID")
-    for campaign in register["campaigns"]:
+    for campaign in campaigns:
         if any(not mission["mission_id"].startswith(campaign["campaign_id"] + "-M") for mission in campaign["missions"]):
             raise ContinuityError("MISSION_CAMPAIGN_MISMATCH")
-        if campaign["state"] == "COMPLETE" and campaign["missions"] and any(mission["state"] != "PROVEN" for mission in campaign["missions"]):
+        if campaign["state"] == "COMPLETE" and any(mission["state"] != "PROVEN" for mission in campaign["missions"]):
             raise ContinuityError("CAMPAIGN_COMPLETION_UNPROVEN")
 
 
-def validate_register(register: dict[str, Any], board: dict[str, Any], *, root: Path = ROOT) -> None:
-    validate_board(board, root=root)
+def validate_register(
+    register: dict[str, Any],
+    frozen_board: dict[str, Any],
+    *,
+    registry: dict[str, Any] | None = None,
+    root: Path = ROOT,
+) -> None:
+    active = registry or _load(root / "continuity" / "mission-board-quest-registry-r01.json")
+    validate_quest_registry(active, frozen_board, root=root)
     _validate(CONTINUITY_SCHEMA, register, "CONTINUITY_SCHEMA_INVALID")
-    if register["quest_board_sha256"] != sha256(board):
+    if register["quest_board_sha256"] != sha256(frozen_board):
         raise ContinuityError("QUEST_BOARD_DIGEST_MISMATCH")
-    board_by_id = {entry["quest_id"]: entry for entry in board["entries"] if entry["state"] != "COMPLETE"}
-    entries = register["entries"]
+    if register["quest_registry_source"] != "continuity/mission-board-quest-registry-r01.json":
+        raise ContinuityError("QUEST_REGISTRY_SOURCE_MISMATCH")
+    if register["quest_registry_sha256"] != sha256(active):
+        raise ContinuityError("QUEST_REGISTRY_DIGEST_MISMATCH")
     if len(register["event_ids"]) != len(set(register["event_ids"])):
         raise ContinuityError("CONTINUITY_EVENT_REPLAY")
-    if not {entry["last_event_id"] for entry in entries}.issubset(set(register["event_ids"])):
+
+    entries = register["entries"]
+    if not {item["last_event_id"] for item in entries}.issubset(set(register["event_ids"])):
         raise ContinuityError("CONTINUITY_EVENT_LEDGER_INCOMPLETE")
-    if len({entry["continuity_id"] for entry in entries}) != len(entries) or len({entry["quest_id"] for entry in entries}) != len(entries):
+    if len({item["continuity_id"] for item in entries}) != len(entries) or len({item["quest_id"] for item in entries}) != len(entries):
         raise ContinuityError("CONTINUITY_DUPLICATE")
-    if set(board_by_id) != {entry["quest_id"] for entry in entries}:
-        raise ContinuityError("CONTINUITY_BOARD_COVERAGE_MISMATCH")
-    for entry in entries:
-        board_entry = board_by_id[entry["quest_id"]]
-        if entry["quest_source"] != board_entry["source"] or entry["quest_state"] != board_entry["state"]:
-            raise ContinuityError("CONTINUITY_BOARD_BINDING_MISMATCH")
-        source = root / entry["quest_source"]
-        if hashlib.sha256(source.read_bytes()).hexdigest() != entry["quest_source_sha256"]:
+    registry_by_id = {item["quest_id"]: item for item in active["entries"]}
+    if set(registry_by_id) != {item["quest_id"] for item in entries}:
+        raise ContinuityError("CONTINUITY_REGISTRY_COVERAGE_MISMATCH")
+    for item in entries:
+        parent = registry_by_id[item["quest_id"]]
+        if item["quest_source"] != parent["source"] or item["quest_state"] != parent["state"]:
+            raise ContinuityError("CONTINUITY_REGISTRY_BINDING_MISMATCH")
+        if hashlib.sha256(_source(item["quest_source"], root).read_bytes()).hexdigest() != item["quest_source_sha256"]:
             raise ContinuityError("CONTINUITY_SOURCE_DIGEST_MISMATCH")
 
 
-def plan_one_entry_update(register: dict[str, Any], board: dict[str, Any], identities: dict[str, Any], *,
-                          continuity_id: str, expected_register_sha256: str, expected_entry_revision: int,
-                          event_id: str, changes: dict[str, Any], root: Path = ROOT) -> dict[str, Any]:
+def plan_one_entry_update(
+    register: dict[str, Any],
+    frozen_board: dict[str, Any],
+    identities: dict[str, Any],
+    *,
+    continuity_id: str,
+    expected_register_sha256: str,
+    expected_entry_revision: int,
+    event_id: str,
+    changes: dict[str, Any],
+    root: Path = ROOT,
+) -> dict[str, Any]:
     validate_identity_register(identities)
-    validate_register(register, board, root=root)
+    validate_register(register, frozen_board, root=root)
     if sha256(register) != expected_register_sha256:
         raise ContinuityError("REGISTER_STALE")
     if not changes or not set(changes).issubset(ALLOWED_UPDATE_FIELDS):
@@ -138,7 +234,7 @@ def plan_one_entry_update(register: dict[str, Any], board: dict[str, Any], ident
     if event_id in register["event_ids"]:
         raise ContinuityError("EVENT_REPLAY")
     candidate = copy.deepcopy(register)
-    matches = [entry for entry in candidate["entries"] if entry["continuity_id"] == continuity_id]
+    matches = [item for item in candidate["entries"] if item["continuity_id"] == continuity_id]
     if len(matches) != 1 or matches[0]["revision"] != expected_entry_revision:
         raise ContinuityError("ENTRY_STALE_OR_MISSING")
     matches[0].update(copy.deepcopy(changes))
@@ -146,10 +242,10 @@ def plan_one_entry_update(register: dict[str, Any], board: dict[str, Any], ident
     matches[0]["last_event_id"] = event_id
     candidate["register_revision"] += 1
     candidate["event_ids"].append(event_id)
-    changed = [entry["continuity_id"] for before, entry in zip(register["entries"], candidate["entries"]) if before != entry]
+    changed = [after["continuity_id"] for before, after in zip(register["entries"], candidate["entries"]) if before != after]
     if changed != [continuity_id]:
         raise ContinuityError("UPDATE_NOT_SINGLE_ENTRY")
-    validate_register(candidate, board, root=root)
+    validate_register(candidate, frozen_board, root=root)
     entry = matches[0]
     if entry["quest_id"] == identities["quest_id"]:
         if entry["campaign_id"] is None:
@@ -164,20 +260,27 @@ def plan_one_entry_update(register: dict[str, Any], board: dict[str, Any], ident
 
 
 def render_emberline(register: dict[str, Any]) -> dict[str, Any]:
-    entries = sorted(register["entries"], key=lambda item: item["continuity_id"])
     return {
-        "schema_version": "atlas.prime-emberline.v1", "authority": "NONAUTHORITATIVE_PROJECTION",
-        "source_register_id": register["register_id"], "source_register_revision": register["register_revision"],
-        "source_register_sha256": sha256(register), "entries": [{key: entry[key] for key in ("continuity_id", "quest_id", "campaign_id", "mission_id", "gate_id", "current_position", "blockers", "next_action", "next_approval", "revision")} for entry in entries],
+        "schema_version": "atlas.prime-emberline.v1",
+        "authority": "NONAUTHORITATIVE_PROJECTION",
+        "source_register_id": register["register_id"],
+        "source_register_revision": register["register_revision"],
+        "source_register_sha256": sha256(register),
+        "entries": [
+            {key: item[key] for key in (
+                "continuity_id", "quest_id", "campaign_id", "mission_id", "gate_id",
+                "current_position", "blockers", "next_action", "next_approval", "revision",
+            )}
+            for item in sorted(register["entries"], key=lambda value: value["continuity_id"])
+        ],
     }
 
 
 def sunset(register: dict[str, Any], continuity_id: str) -> dict[str, Any]:
-    matches = [entry for entry in register["entries"] if entry["continuity_id"] == continuity_id]
+    matches = [item for item in register["entries"] if item["continuity_id"] == continuity_id]
     if len(matches) != 1:
         raise ContinuityError("CONTINUITY_ENTRY_NOT_FOUND")
-    entry = copy.deepcopy(matches[0])
-    body = {"schema_version": "atlas.prime-sunset.v1", "register_sha256": sha256(register), "entry": entry}
+    body = {"schema_version": "atlas.prime-sunset.v1", "register_sha256": sha256(register), "entry": copy.deepcopy(matches[0])}
     return {**body, "sunset_sha256": sha256(body)}
 
 
@@ -191,8 +294,26 @@ def sunrise(snapshot: dict[str, Any], register: dict[str, Any]) -> dict[str, Any
     canonical = [item for item in register["entries"] if item["continuity_id"] == entry.get("continuity_id")]
     if len(canonical) != 1 or canonical[0] != entry:
         raise ContinuityError("SUNSET_ENTRY_MISMATCH")
-    return {"schema_version": "atlas.prime-sunrise.v1", "sunset_sha256": snapshot["sunset_sha256"], "current_position": entry["current_position"], "blockers": entry["blockers"], "next_gate": entry["gate_id"], "next_action": entry["next_action"], "next_approval": entry["next_approval"], "source": entry["quest_source"]}
+    return {
+        "schema_version": "atlas.prime-sunrise.v1",
+        "sunset_sha256": snapshot["sunset_sha256"],
+        "current_position": entry["current_position"],
+        "blockers": entry["blockers"],
+        "next_gate": entry["gate_id"],
+        "next_action": entry["next_action"],
+        "next_approval": entry["next_approval"],
+        "source": entry["quest_source"],
+    }
 
 
 def argus(register: dict[str, Any]) -> list[dict[str, Any]]:
-    return [{"continuity_id": entry["continuity_id"], "quest_id": entry["quest_id"], "gate_id": entry["gate_id"], "blocker_count": len(entry["blockers"]), "next_action": entry["next_action"]} for entry in sorted(register["entries"], key=lambda item: (-len(item["blockers"]), item["continuity_id"]))]
+    return [
+        {
+            "continuity_id": item["continuity_id"],
+            "quest_id": item["quest_id"],
+            "gate_id": item["gate_id"],
+            "blocker_count": len(item["blockers"]),
+            "next_action": item["next_action"],
+        }
+        for item in sorted(register["entries"], key=lambda value: (-len(value["blockers"]), value["continuity_id"]))
+    ]

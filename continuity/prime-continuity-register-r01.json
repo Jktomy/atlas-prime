@@ -2,9 +2,10 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 51,
+  "register_revision": 52,
   "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
-  "quest_board_sha256": "8f4cfd766173e1bf4d8eaceb295bb2ccb94130fa18ad13fbfaa058d18292697f",
+  "quest_registry_source": "continuity/mission-board-quest-registry-r01.json",
+  "quest_registry_sha256": "938d47fe1a904b896d83c4b0240cf4ed53bd8f435953a41956513b7c26528c8a",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -59,7 +60,8 @@
     "PROMETHEUS-CLOUD-ATLAS-TOPOLOGY-REFRACTION-R01",
     "NOTUM-GLASS-CODEX-HEALTH-BOUNDARY-R01",
     "APOLLO-REMOTE-OPERATOR-CONTINUITY-R01",
-    "PRIME-CONTINUITY-PROOF-CLOSEOUT-R01"
+    "PRIME-CONTINUITY-PROOF-CLOSEOUT-R01",
+    "MISSION-BOARD-QUEST-REGISTRY-CUTOVER-R01"
   ],
   "entries": [
     {
@@ -122,5 +124,6 @@
       "revision": 9,
       "last_event_id": "GLASS-CODEX-VSCODE-CLIENT-REFRACTION-R03"
     }
-  ]
+  ],
+  "quest_board_sha256": "a4c4a877f24ce8df4b7f8b6b4766cef8f34023129ea982d43a46043aa041802f"
 }
