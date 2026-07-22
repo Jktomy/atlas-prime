@@ -48,3 +48,9 @@ protected_level: "HIGH"
 - Cross-project work names one owner and explicit support; it does not duplicate source.
 - Runtime action requires separate execution authority and evidence. A source file may describe a topology without proving deployment.
 - Active Quest state lives under `quests/` and `quest-board/`, not in an informal workboard.
+- `governance/atlas-quest-portfolio-contract.md` is the canonical cross-Quest
+  ownership map. Glass Codex has one Codex client-product Operation; Harmony and
+  Seon route through Operation Harmony; Investiture Accounting and Prime
+  Continuity Proof remain bounded Source Governance responsibilities; monitoring
+  routes through Notum's Watch; and Prometheus infrastructure and Apollo
+  continuity route through Prometheus's Fire.

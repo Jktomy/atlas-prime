@@ -23,7 +23,7 @@
       "quest_id": "QUEST-FOUND-SILVERLIGHT-R01",
       "source": "quests/found-silverlight.md",
       "state": "IN_PROGRESS",
-      "readiness_basis": "FS-C01-M02 and FS-C01-M03 construction are accepted from exact authored lineage, Ubuntu and Windows validation, detached review, canonical synthetic exercise, immutable recovery, and read-only rollback evidence. FS-C01-M04 still requires a Jayson-selected protected external store and bounded trusted provider/runtime usage evidence."
+      "readiness_basis": "FS-C01-M01 through M03 remain proven and FS-C01-M04 remains unfinished. Mission #276 owns the future transfer: Investiture Accounting to bounded Source Governance, Glass Codex to Prime Ascendant / Glass Codex, and Seon to Prime Ascendant / Harmony. No transfer or Sunset is claimed here."
     },
     {
       "next_gate": "PF-C01-M02 Preview — Preserve the Old Flame",
@@ -31,21 +31,23 @@
       "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
       "source": "quests/prometheus-fire.md",
       "state": "IN_PROGRESS",
-      "readiness_basis": "PF-C01-M01 Mission Seal is accepted with carry-forwards. Apollo commissioning, Windows-specific Codex evacuation, Hermes independent portable access, Windows recovery preservation, extended memory testing, and bounded stability follow-up remain incomplete. Iris and Zeus are source-accepted nonblocking companion endpoints."
+      "readiness_basis": "PF-C01-M01 remains accepted with carry-forwards and PF-C01-M02 remains the next Preview. Prometheus's Fire durably owns infrastructure, topology, capacity, and Apollo continuity; no commissioning, migration, runtime, storage, network, backup, or gate advancement is claimed."
     },
     {
       "next_gate": "NW-C01 readiness package and Jayson-side proof",
       "owner": "Odyssey / Citadel-Gatehouse Infrastructure",
       "quest_id": "QUEST-NOTUMS-WATCH-20260708",
       "source": "quests/notums-watch.md",
-      "state": "READY_FOR_JAYSON_EXECUTION_PACKAGE"
+      "state": "READY_FOR_JAYSON_EXECUTION_PACKAGE",
+      "readiness_basis": "Notum's Watch durably owns independent monitoring and sanitized health posture. Protected placement and execution remain Jayson-side; no telemetry connection, monitoring activation, or NW-C01 advancement is claimed."
     },
     {
       "next_gate": "PCP-C01-PREVIEW",
       "owner": "Codex / Source Governance",
       "quest_id": "QUEST-PRIME-CONTINUITY-PROOF-R01",
       "source": "quests/prime-continuity-proof.md",
-      "state": "READY_FOR_CAMPAIGN_1_PREVIEW"
+      "state": "READY_FOR_CAMPAIGN_1_PREVIEW",
+      "readiness_basis": "Prime Continuity Proof remains an independent Codex / Source Governance Quest at PCP-C01-PREVIEW. Mission #277 owns its separately reviewed disposition; portfolio recomposition neither absorbs nor closes it."
     },
     {
       "next_gate": "PA-C01 — Write the Covenant",
@@ -53,7 +55,7 @@
       "quest_id": "QUEST-PRIME-ASCENDANT-20260717",
       "source": "quests/prime-ascendant.md",
       "state": "IN_PROGRESS",
-      "readiness_basis": "Official architecture-refinement Quest admitted with PA-C01 current and PA-C02 through PA-C10 as the initial roadmap. Runtime, infrastructure deployment, Coppermind, Emberdark, Harmony/Kandra/Cognitive Shadows, Dawnshard, Glass Codex, Phoenix source maintenance, Gitea shadow, canonical cutover, and legacy-route retirement remain unauthorized or unstarted by this Quest."
+      "readiness_basis": "Prime Ascendant durably owns governed application and intelligence architecture, including Cloud Atlas, Harmony, Seon, and Glass Codex boundaries through named Operations. PA-C01 remains current; no runtime, deployment, cutover, Gitea, repository-setting, READY, MERGE, or later Campaign gate advances."
     }
   ],
   "format_version": "1.0",
