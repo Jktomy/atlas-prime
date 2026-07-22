@@ -1,5 +1,5 @@
 ---
-title: "Atlas Mission Board Contract"
+title: "Mission Board Contract"
 atlas_id: "prime.governance.mission-board"
 status: "CANONICAL_ACTIVE"
 source_type: "PROTOCOL"
@@ -8,61 +8,80 @@ owner_project: "Project Codex"
 owner_operation: "Operation Source Governance"
 protected_level: "CRITICAL"
 routes_from:
-  - routing/command-surfaces.md
-  - operations/operation-registry.md
-routes_to:
+  - .github/ISSUE_TEMPLATE/mission.md
   - schemas/mission-v1.schema.json
+  - continuity/mission-board-quest-registry-r01.json
+routes_to:
   - tools/mission_board/README.md
-  - recovery/elantris-recovery.md
   - governance/repository-process-contract.md
-  - lifecycle/lifecycle-contract.md
-  - quest-board/quest-board-v1.json
-private_boundary: "Mission Issues, comments, templates, fixtures, receipts, and archive packages are public-clean. Protected facts remain in approved private evidence systems and are represented only by sanitized summaries and bounded protected pointers."
-evidence_boundary: "Issue state coordinates work. Only merged canonical source and exact readback establish accepted doctrine or source completion; package presence does not prove Coppermind runtime archival."
+  - governance/quest-engine-continuity-contract.md
+  - recovery/elantris-recovery.md
+private_boundary: "Mission Board stores only public-clean mission identity, sanitized operational context, source bindings, checks, receipts, and protected:// pointers."
 ---
 
-# Atlas Mission Board contract
+# Mission Board contract
 
-## Identity and purpose
+## 1. Purpose
 
-The **Mission Board** is the GitHub Issues system in `Jktomy/atlas-prime` and,
-after a separately proven migration, the corresponding Gitea Issues system.
-`Mission #N` means Issue `#N` in the explicitly resolved repository. A pull
-request, Project item, Quest Board row, chat, file, database record, or custom
-service is not a Mission Issue.
+Mission Board is Atlas's primary public-clean operational work surface and its
+admitted-Quest registry interface. In GitHub, one Mission is one Issue in
+`Jktomy/atlas-prime`. The Issue body and append-only comments preserve intake,
+assignment, decisions, dependencies, exact transaction identity, status,
+evidence, and restart instructions.
 
-The Mission Board is the durable public-clean intake, continuity, assignment,
-sequencing, restart, progress, and execution-record surface for unfinished Atlas
-work. It allows Jayson to state an objective without choosing a publisher. The
-assigned worker resolves the safe internal route from current source and live
-state.
+Mission Board does not replace merged Prime. It cannot grant protected access,
+advance a canonical Quest or Campaign by Issue state alone, merge a pull
+request, deploy a runtime, or turn an architectural statement into execution
+proof.
 
-## Authority separation
+## 2. Authority layers
 
-| Surface | Authority |
-|---|---|
-| Mission Board | Visible intake, assignment, discussion, sequencing, queue state, restart context, and linked evidence |
-| Merged Prime `main` | Canonical doctrine and accepted repository source |
-| Quest Board and continuity register | Current admitted-Quest registry and unfinished Quest continuity until a separately proven atomic cutover |
-| Operation Phoenix | Governed branch/PR publication and canonical-source maintenance; future Gitea work remains pre-cutover |
-| Operation Coppermind | Structured operational history, retrieval context, and archival records after applicable gates |
-| Operation Harmony / Emberdark | Governed execution, private integration mediation, event processing, mission-state plumbing, idempotency, retry, quarantine, reconciliation, audit receipts, and controlled exports |
+Authority is deliberately separated:
 
-An Issue can describe intended, pending, blocked, or completed work, but it never
-silently outranks merged Prime. Issue closure does not imply `CANONICAL`,
-`COPPERMIND_ARCHIVED`, Quest completion, or `SUNSET COMPLETE`.
+1. **Merged Prime** owns canonical doctrine, schemas, protocols, Quest sources,
+   portable registry snapshots, continuity, recovery, and route rules.
+2. **Mission Board Issues** are the primary live coordination and restart
+   surface.
+3. **`continuity/mission-board-quest-registry-r01.json`** is the merged portable
+   admitted-Quest registry and offline recovery snapshot.
+4. **`continuity/prime-continuity-register-r01.json`** owns exact unfinished-work
+   detail bound to the active Quest registry.
+5. **`quest-board/quest-board-v1.json`** is frozen predecessor evidence after
+   Mission #278 and has no admission or operational authority.
+6. **Phoenix** owns governed source publication; **Shardblade/Jayson** owns
+   permanence; protected systems retain protected facts and runtime authority.
 
-## Closed Mission model
+A Mission Issue may describe an intended source change but cannot make it
+canonical before exact merged-main readback. A merged registry snapshot may
+bind a parent Issue but does not give that Issue source or permanence authority.
 
-Every Mission uses `schemas/mission-v1.schema.json` and records repository,
-Issue number, stable Mission ID, type, state, timestamps, objective, rationale,
-ownership, Quest/Campaign/Gate relationships, assigned worker, separate execution
-identity, dependencies, public-clean boundary, acceptance criteria, next safe
-action, effort class, queue behavior, canonical-source state, branch/PR/head/path
-bindings, validation and review, Coppermind disposition, completion proof,
-rollback, and replay-resistant attempt identity.
+## 3. Mission identity
 
-### Types
+A valid Mission uses one `atlas.mission.v1` manifest and binds:
+
+- repository and Issue number;
+- Mission ID and attempt ID;
+- Mission type and state;
+- objective, rationale, owner, Quest/Campaign/Gate relationships;
+- assigned worker and execution identity;
+- dependency edges;
+- public-clean boundary;
+- acceptance criteria and next safe action;
+- effort and queue behavior;
+- canonical source status and exact source binding;
+- validation, review, Strikeforce, and receipt references;
+- Coppermind archival disposition;
+- completion proof and rollback; and
+- Sunset fields only for `mission/sunset`.
+
+The Issue template begins with an unbound `atlas-mission-draft-v1` block and
+`issue_number: 0`. After creation, the adapter must bind the real repository and
+Issue number in exactly one valid `atlas-mission-v1` body or comment before the
+Issue becomes an admitted Mission.
+
+## 4. Mission types
+
+The closed Mission type vocabulary is:
 
 ```text
 mission/sunset
@@ -77,50 +96,98 @@ mission/migration
 mission/generated-refresh
 ```
 
-The vocabulary is deliberately small and portable. A new type requires a
-reviewed schema and contract change; labels cannot extend the semantic model.
+`mission/quest` is the stable parent identity for an admitted active Quest.
+Campaigns, gates, migrations, repairs, and research are child or related
+Missions and cannot substitute for the parent.
 
-### Mission states
+## 5. State machine
+
+The closed Mission state sequence is:
 
 ```text
 CAPTURED
-→ TRIAGED
-→ READY
-→ IN_PROGRESS
-→ PR_OPEN
-→ VALIDATING
-→ READY_FOR_PERMANENCE
-→ CANONICAL
-→ COPPERMIND_ARCHIVED
-→ CLOSED
+TRIAGED
+READY
+IN_PROGRESS
+BLOCKED_RESUMABLE
+PR_OPEN
+VALIDATING
+READY_FOR_PERMANENCE
+CANONICAL
+COPPERMIND_ARCHIVED
+CLOSED
 ```
 
-`BLOCKED_RESUMABLE` is reachable from active pre-canonical states and may return
-only through an explicit resumed transition. Validation repair may move
-`VALIDATING → PR_OPEN`; changed candidate bytes require renewed validation,
-review, Strikeforce, READY, and readback. `CLOSED` is terminal.
+Only transitions accepted by `tools.mission_board.core` are valid. Each later
+manifest must keep the same Mission ID and attempt ID, use a non-decreasing
+`updated_at`, preserve repository and Issue identity, and follow the exact state
+and canonical-source transition graphs. Historical malformed candidates may be
+superseded only by a later valid append-only update; the latest manifest-shaped
+update must validate or reconciliation fails closed.
 
-No-source-change Missions may move `IN_PROGRESS → CANONICAL` while keeping the
-separate canonical-source status `NO_SOURCE_CHANGE_REQUIRED`. They still require
-completion proof and an archival disposition before `CLOSED`.
-
-### Canonical-source states
+The canonical-source state sequence is:
 
 ```text
 PHOENIX_PENDING
-→ PR_OPEN
-→ MERGED_PENDING_READBACK
-→ CANONICAL
+NO_SOURCE_CHANGE_REQUIRED
+PR_OPEN
+MERGED_PENDING_READBACK
+CANONICAL
 ```
 
-`PHOENIX_PENDING → NO_SOURCE_CHANGE_REQUIRED` is the only no-source branch.
-General Mission state never substitutes for this source-authority state. A merge
-API response can establish only `MERGED_PENDING_READBACK`; exact canonical-main
-readback is required for `CANONICAL`.
+`READY_FOR_PERMANENCE` is not merge authority. `CANONICAL` requires exact
+merged-main readback. `CLOSED` additionally requires completion proof and an
+explicit archival disposition.
 
-## Dependencies and ordered queues
+## 6. Public-clean boundary
 
-Every dependency names one exact relation:
+Mission Board may contain:
+
+- public-clean doctrine and sanitized summaries;
+- repository paths, public commit/branch/PR/Issue identities, checks, review
+  state, and receipt references;
+- dependency and ownership metadata;
+- explicit uncertainty, blockers, and next safe actions; and
+- bounded `protected://` pointers with no protected value.
+
+It must not contain secrets, credentials, private keys, MFA or recovery codes,
+real environment values, IP addresses, private network maps, PHI, raw finance,
+legal, tax, insurance, mortgage, estate, brokerage, account, or runtime
+evidence. Detection of protected material fails closed before publication.
+
+## 7. Source binding
+
+A source-changing Mission binds:
+
+- canonical base SHA;
+- one branch;
+- one pull request;
+- exact expected head SHA;
+- normalized complete changed paths;
+- changed-path digest; and
+- merged commit after permanence.
+
+Paths are sorted, case-fold unique, repository-relative, and reject traversal,
+absolute paths, drive paths, and backslashes. Source status `PR_OPEN` or later
+requires a complete binding. `MERGED_PENDING_READBACK` and `CANONICAL` require a
+merged commit. A changed candidate head invalidates prior validation, review,
+Strikeforce, and permanence evidence.
+
+## 8. Duplicate and replay prevention
+
+Before mutation, search the exact Mission ID, attempt ID, branch, pull request,
+expected head, changed-path digest, and relevant Issue relationships. Reuse the
+same valid attempt; never create a duplicate because one surface is unavailable.
+
+The same attempt cannot bind two Issues. A branch or PR cannot be silently
+reused by a different Mission. A later Issue comment cannot move time backward,
+change identity, skip the state machine, or replay an event. An ambiguous write
+result enters readback-only reconciliation; never blindly retry.
+
+## 9. Dependencies and queue behavior
+
+Dependencies are explicit edges, never inferred from Issue number order. Allowed
+relations are:
 
 ```text
 BLOCKS
@@ -131,188 +198,141 @@ PARENT_OF
 CHILD_OF
 ```
 
-Issue number, numerical order, shared Quest or Campaign, shared worker, label,
-creation date, and conversation order create no dependency. An unfinished Quest
-Mission does not block an unrelated Sunset Mission.
+An ordered Mission list preserves the requested order. Processing stops on a
+`BLOCKED_RESUMABLE` Mission unless its queue behavior explicitly permits
+`CONTINUE_IF_BLOCKED_RESUMABLE`. Dependency closure, not numbering, controls
+eligibility.
 
-For `complete Missions 5, 7, and 12 sequentially`, the numbers define processing
-order only. The worker fresh-reconciles each Mission, completes or truthfully
-blocks it, posts evidence, and then evaluates the next requested item. It may
-continue past `BLOCKED_RESUMABLE` only when the blocked Mission declares
-`CONTINUE_IF_BLOCKED_RESUMABLE` and no explicit blocking dependency reaches the
-remaining queue. Otherwise it stops and reports the exact edge.
+## 10. Admitted Quest registry
 
-Repository objects `#5`, `#7`, and `#12` in current `Jktomy/atlas-prime` history
-are pull requests, not Mission Issues. A live instruction naming them as Missions
-must fail at `#5` with `IDENTITY_MISMATCH` and leave `#7` and `#12` untouched.
-Deterministic fixtures prove the abstract 5→7→12 sequencing contract without
-rewriting historical pull requests.
+The Mission Board Quest registry has two synchronized forms:
 
-## Continue Mission
+- one live `mission/quest` parent Issue per active Quest; and
+- the merged portable snapshot at
+  `continuity/mission-board-quest-registry-r01.json`.
 
-`Continue Mission #N` means:
+The initial Mission #278 cutover binds exactly:
 
-1. resolve the exact repository and reject a pull-request object;
-2. read Issue `#N` and every comment;
-3. fresh-read canonical `main` and controlling Prime source;
-4. read every linked branch, PR, head, check, review, receipt, and attempt;
-5. validate the latest manifest and every intervening state transition;
-6. reject stale or contradictory Issue claims in favor of live canonical truth;
-7. identify the last proven state and one next safe action;
-8. search for existing Mission, branch, PR, Sunset, child, and archive state;
-9. resume the same exact attempt without blind retry; and
-10. append public-clean evidence to the Mission.
+| Quest | Parent Issue | Parent Mission |
+|---|---:|---|
+| Prime Ascendant | #307 | `MISSION-QUEST-PARENT-PRIME-ASCENDANT-R01` |
+| Prometheus's Fire | #308 | `MISSION-QUEST-PARENT-PROMETHEUS-FIRE-R01` |
+| Notum's Watch | #309 | `MISSION-QUEST-PARENT-NOTUMS-WATCH-R01` |
 
-Append-only history may retain a rejected or malformed candidate manifest. A
-later validated manifest may supersede that historical candidate without editing
-or deleting evidence, but the most recent manifest-shaped update must validate.
-Every transition between validated manifests remains subject to chronological,
-identity, Mission-state, and canonical-source-state checks.
+The portable snapshot stores the exact Quest ID, source, owner, state, next gate,
+readiness basis, parent Issue, parent Mission, parent attempt, parent Mission
+state, and parent source status. It is canonical source because it is merged
+Prime, not because it copies Issue claims.
 
-Chat memory, generated projections, a stale manifest, or an unavailable operator
-surface is insufficient. A missing route preserves `BLOCKED_RESUMABLE`; it does
-not create a replacement Mission.
+Live Issue availability is not required for clean-clone recovery. When Issues
+are unavailable, recover Quest orientation and continuity from merged Prime,
+then defer Issue mutation until authenticated readback is possible. An Issue
+export is evidence and may resume its exact attempt, but it cannot override the
+merged registry or manufacture a source advance.
 
-## Duplicate and replay prevention
+## 11. Quest admission and advancement
 
-Before any mutation, bind and search:
+A later Quest admission requires one unique parent Issue plus one atomic reviewed
+Prime transaction that adds the Quest source, adds one registry row, increments
+the registry revision, binds continuity when unfinished, and preserves every
+existing row. The schema and validator are identity-agnostic; they do not
+hard-code future Quest names.
 
-- Mission ID, repository, and Issue number;
-- canonical base;
-- branch, PR, exact head, and candidate tree;
-- sorted changed paths and SHA-256 digest;
-- attempt or replay identity;
-- Sunset, child-Mission, receipt, and archive references.
+The frozen Quest Board is not an admission route and must fail with
+`QUEST_BOARD_FROZEN`. A parent Issue state change is operational context only.
+Canonical Quest state changes require a reviewed source candidate updating the
+Quest source, portable registry, continuity, tests, and recovery surfaces as
+applicable.
 
-Case-fold or Unicode path collision, conflicting binding, reused attempt, or
-ambiguous mutation fails closed. After interruption, reconciliation is read-only.
-Never blind retry branch, PR, READY, merge, Sunset, or archive creation.
+## 12. Atomic Mission #278 cutover
 
-## Portable template and adapters
+Mission #278 permits no split-brain interval:
 
-`.github/ISSUE_TEMPLATE/mission.md` is ordinary Markdown plus one explicitly
-unbound `atlas-mission-draft-v1` block. An Issue number does not exist until the
-platform creates the Issue, so the draft uses `issue_number: 0` and has no
-Mission authority. The creating adapter must read back the assigned number and
-replace the draft or append one validated `atlas-mission-v1` comment bound to
-that Issue before any worker treats it as a Mission. This avoids a fabricated
-Issue identity and dependence on GitHub Projects, custom fields, sub-issue
-semantics, or an Issue Form feature that lacks a direct Gitea equivalent.
-Optional labels are search indexes only and never state authority.
+- **Before merge:** Issues #307–#309 are prepared non-authoritative candidates;
+  the existing Quest Board remains the active registry.
+- **In the exact candidate tree:** the Mission Board Quest registry becomes
+  canonical, continuity binds its digest, startup/recovery route to it, and the
+  old Quest Board receives `registry_role: FROZEN_PREDECESSOR_EVIDENCE`.
+- **After exact merged-main readback:** the parent Issues are the primary live
+  operational surfaces and the portable snapshot is the recovery authority.
+- **Rollback:** one reviewed revert or repair-forward PR restores the prior
+  authority set; Issue and Git history are never rewritten.
 
-A future Gitea adapter copies the template to
-`.gitea/ISSUE_TEMPLATE/mission.md` and maps API pagination, author identity,
-comments, pull-request detection, and URLs. It may not change schema semantics,
-infer dependencies, hide adapter limitations, or claim cutover. GitHub remains
-canonical until PA-C06 parity, access, backup, recovery, rollback, mirror, and
-cutover are separately proven.
+The frozen Board retains all seven pre-cutover Quest rows and its historical
+proof. Its legacy file lifecycle `state` is not registry authority; the explicit
+`registry_role` and successor binding control that boundary.
 
-## Worker identity and route selection
+## 13. Continue Mission
 
-`assigned_worker` is a logical assignment or `UNASSIGNED`. Execution evidence
-separately records declared worker, authenticated credential principal, surface,
-and publisher. Assignment neither impersonates a worker nor grants source,
-protected-action, READY, or merge authority.
+`Continue Mission #N` requires the adapter to:
 
-The ordinary user-facing flow may be:
+1. resolve the exact repository and prove `#N` is an Issue, not a pull request;
+2. read the body and every comment;
+3. reconcile exactly one latest valid Mission manifest;
+4. fresh-read canonical `main` and routed doctrine;
+5. read linked branch, PR, head, tree, paths, checks, reviews, and receipts;
+6. search duplicate identities before mutation;
+7. use `tools.mission_board` to validate and derive the next safe action; and
+8. append one sanitized result to the same Issue.
 
-```text
-Mission Board
-→ assigned worker
-→ bounded implementation
-→ pull request when source changes
-→ validation and review
-→ Jayson-controlled permanence
-→ canonical readback
-```
+A blocked connector stops that route. It does not authorize a duplicate attempt,
+branch, PR, or Mission.
 
-Spear, Arrow/Bow, Thread Engine, Sword/Oathbringer, Phoenix Blade, and Aegis
-Break remain current internal mechanisms. Mission intake can hide routine route
-selection from Jayson, but this foundation retires none of them. PA-C09 must
-prove parity, Athena/mobile access, recovery, rollback, and independent failure
-domains before later simplification or retirement. Recovery without Mission
-Board availability begins from clean-clone Prime plus the exact Issue/PR/receipt
-export and can use an independently authorized publisher.
+## 14. Search, assignment, and child Missions
 
-## Sunset Missions
+Search may use titles, labels, Mission IDs, Quest relationships, dependencies,
+owners, assignees, states, and exact source bindings. Assignment identifies the
+worker for the next bounded step but grants no extra capability or protected
+authority.
 
-A `mission/sunset` captures public-clean context now without pretending the full
-Atlas lifecycle has finished. It preserves conversation summary, decisions,
-ownership, relationships, exact unfinished work, blockers, Lesson Harvest,
-Golden Wing candidate disposition, canonical-source state, record plan, next
-safe action, acceptance criteria, Phoenix-pending flag, and archival state.
+A child Mission names its parent with an explicit `CHILD_OF` edge or exact Quest
+relationship. Child completion may produce evidence for the parent but never
+silently advances the parent Quest. Cross-Quest work has one owner and explicit
+supporting relationships.
 
-Truthful Sunset states are:
+## 15. Validation and tools
 
-```text
-SUNSET_CAPTURED
-PHOENIX_PENDING
-PR_OPEN
-MERGED_PENDING_READBACK
-CANONICAL_READBACK_COMPLETE
-SUNSET COMPLETE
-```
+`schemas/mission-v1.schema.json` and `tools.mission_board.core` are the closed
+runtime contract for Mission manifests, transitions, path normalization,
+protected-data scanning, duplicate detection, restart plans, and ordered
+sequence plans.
 
-Issue creation or closure, a package, branch, PR, validation result, Strikeforce
-GREEN, READY, or merge response cannot claim `SUNSET COMPLETE`. Only the exact
-applicable lifecycle records read back from merged canonical `main` permit it.
+`schemas/mission-board-quest-registry-v1.schema.json` and
+`tools.prime_continuity.engine` validate the portable Quest registry, frozen
+predecessor, continuity binding, future Quest admission, and deterministic
+recovery views.
 
-## Mission Board, Emberdark, Phoenix, and Coppermind
+The Mission Board tools are read-only. They do not call GitHub or Gitea, create
+or edit an Issue, create a branch or PR, mark ready, merge, archive, deploy, or
+grant authority. Platform adapters perform authenticated reads and explicit
+writes under the repository-process contract.
 
-Mission Board owns visible nonprotected intake, assignment, discussion, status,
-sequencing, restart context, and linked evidence. It can replace most public
-Gemstone ZIP and copy/paste handoff burden as the default intake surface, but an
-offline/exported immutable carrier remains a recovery and protected-boundary
-fallback.
+## 16. Recovery and portability
 
-Emberdark remains necessary for workflow execution, private integrations,
-idempotency, retries, quarantine, reconciliation, authorization mediation,
-events, protected transitions, scheduler/automation behavior, audit receipts,
-and controlled exports. An Issue cannot safely replace these responsibilities.
+A restart-safe export includes the Issue, all comments, linked PR and review
+state, receipts, exact canonical head, and the latest valid manifest. GitHub to
+Gitea portability preserves `atlas.mission.v1` semantics and changes only the
+platform adapter. A future platform cutover remains separately gated.
 
-Phoenix owns canonical-source branch/PR publication and current-source readback.
-Future Gitea publication requires separate cutover evidence. Coppermind owns
-structured operational history, retrieval context, cross-Mission search, and
-archive records; it does not replace Prime doctrine.
+Quest-level recovery never depends on the live Issue service because merged
+Prime contains the parent identity map and continuity. Continuing a particular
+Mission still requires its exact export or authenticated Issue readback; absence
+of that evidence blocks the Mission rather than creating a replacement.
 
-## Coppermind closeout package
+## 17. Completion and archive
 
-The public-clean package contains:
+A Mission is not complete because an Issue closed, a PR merged, tests passed, or
+an operator said it was done. Completion requires the applicable exact-head
+validation, review disposition, Strikeforce result, merged-main readback,
+continuity/recovery agreement, completion proof, and archival disposition.
 
-- Mission identity, repository/Issue, objective, final status, and decisions;
-- Quest/Campaign/Gate links;
-- assigned worker, declared executor, authenticated principal, surface, and publisher;
-- branch, PR, exact merged commit, changed paths, and path digest;
-- validation, review, Strikeforce, receipts, and canonical readback;
-- Lesson Harvest, unresolved follow-up, rollback, and archive timestamp.
+Coppermind archival is separate from canonical source. Before Coppermind is
+proven, `PACKAGE_READY` or `NOT_APPLICABLE` may close a Mission when truthful.
+Protected archive contents never enter Prime or Mission Board.
 
-No secret or raw protected evidence may enter the package. `PACKAGE_READY`
-means the structure is complete but no Coppermind runtime write is claimed.
-`COPPERMIND_ARCHIVED` requires a real archive reference and timestamp.
+## 18. Rollback
 
-## Protected-data boundary
-
-Mission bodies, comments, fixtures, source, receipts, and examples are
-public-clean even after any future private migration. They exclude passwords,
-credentials, tokens, keys, MFA/recovery codes, seed phrases, PHI, raw medical,
-financial, tax, legal, insurance, mortgage, brokerage, or account evidence,
-network addresses or maps, device inventories, real environment values,
-unrestricted logs, and raw private exports. Use a sanitized summary and an
-approved bounded `protected://` pointer.
-
-## Validation, stop, and rollback
-
-`tools.mission_board` provides read-only validation, manifest extraction,
-transition checks, resume planning, replay binding, and ordered-queue behavior.
-Platform mutation remains in existing governed adapters. Candidate validation
-must include Mission tests, privacy, repository policy, source validation,
-whole-program checks, generated-state classification, hosted checks, review,
-and exact-head Strikeforce.
-
-Stop on identity, source, head, tree, path, review, validation, protected-data,
-replay, dependency, portability, rollback, or cutover ambiguity. Preserve valid
-partial state as `BLOCKED_RESUMABLE` with one exact next action.
-
-Before merge, rollback closes the exact PR and preserves Mission evidence. After
-merge, use one reviewed revert or repair-forward PR. Never force-push, rewrite
-history, silently edit prior Mission truth, or delete the evidence chain.
+Before merge, close or abandon the exact candidate while preserving evidence.
+After merge, use a reviewed revert or repair-forward PR. Never force-push,
+rewrite Issue history, delete accepted proof, reuse approval for changed bytes,
+or let a rollback silently advance a different Mission.

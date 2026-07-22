@@ -13,13 +13,16 @@ from .engine import (
     stable_json,
     sunrise,
     sunset,
+    validate_board,
     validate_identity_register,
+    validate_quest_registry,
     validate_register,
 )
 
 
 REGISTER = ROOT / "continuity" / "prime-continuity-register-r01.json"
-BOARD = ROOT / "quest-board" / "quest-board-v1.json"
+REGISTRY = ROOT / "continuity" / "mission-board-quest-registry-r01.json"
+FROZEN_BOARD = ROOT / "quest-board" / "quest-board-v1.json"
 IDENTITIES = ROOT / "continuity" / "quest-engine-identities-r01.json"
 
 
@@ -72,12 +75,25 @@ def parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     register = load(REGISTER)
-    board = load(BOARD)
+    registry = load(REGISTRY)
+    frozen_board = load(FROZEN_BOARD)
     identities = load(IDENTITIES)
+    validate_board(frozen_board)
+    validate_quest_registry(registry, frozen_board)
     validate_identity_register(identities)
-    validate_register(register, board)
+    validate_register(register, frozen_board, registry=registry)
     if args.command == "validate":
-        emit({"result": "PASS", "register_id": register["register_id"], "register_revision": register["register_revision"]}, None)
+        emit(
+            {
+                "result": "PASS",
+                "registry_id": registry["registry_id"],
+                "registry_revision": registry["registry_revision"],
+                "register_id": register["register_id"],
+                "register_revision": register["register_revision"],
+                "frozen_predecessor": frozen_board["registry_role"],
+            },
+            None,
+        )
     elif args.command == "emberline":
         emit(render_emberline(register), args.output)
     elif args.command == "argus":
@@ -93,7 +109,7 @@ def main(argv: list[str] | None = None) -> int:
         emit(
             plan_one_entry_update(
                 register,
-                board,
+                frozen_board,
                 identities,
                 continuity_id=args.continuity_id,
                 expected_register_sha256=args.expected_register_sha256,

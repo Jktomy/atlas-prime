@@ -32,7 +32,7 @@ protected_level: "HIGH"
 - **Operation Tempest** owns physical maintenance of Home Olympus under Beacon, with Odyssey support for infrastructure dependencies.
 - **Operation Janus** houses the Argus intake protocol. **Operation Coppermind** owns permitted living memory and history. **Operation Phoenix** owns governed canonical-source maintenance through branch, draft-PR or commit-status publication, audit, and Jayson-controlled permanence boundaries. Future Gitea publication remains PA-C06 architecture only; Phoenix does not own Elantris backup/restore and never merges automatically.
 - **Operation Glass Codex** is Prime Ascendant's single Codex-owned client-product Operation. It is client-independent; its first GUI direction is a first-party VS Code extension on Apollo. It consumes governed APIs and sanitized projections without owning backend, monitoring, reminder, recovery, or canonical-source authority.
-- **Mission Board** is the GitHub Issues coordination and restart surface governed by Codex / Source Governance. It owns public-clean visible intake, assignment, discussion, sequencing, status, and linked evidence; merged Prime, the Quest Board, Phoenix, Coppermind, and Emberdark retain their distinct authorities under `governance/mission-board-contract.md`.
+- **Mission Board** is the primary GitHub Issues coordination, restart, and admitted-Quest registry surface governed by Codex / Source Governance. Live Issues own public-clean intake, assignment, discussion, sequencing, status, and linked evidence. The merged portable snapshot at `continuity/mission-board-quest-registry-r01.json` preserves Quest identity, ownership, state, gate, and parent bindings for clean-clone recovery when Issues are unavailable. Merged Prime, Phoenix, Coppermind, Emberdark, and protected systems retain their distinct authorities; Issue state cannot self-certify canonical advancement.
 - **Operation Harmony** contains the Emberdark and Kandra Systems. **Sazed** and **Harmony** name the same resident intelligence in ordinary Atlas language; Operation Harmony remains the durable workflow and resource boundary.
 - **Cloud Atlas** is Prime Ascendant's protected private realm under Artemis / Operation Harmony, not an Operation. Its Original Vault, Coppermind, Emberdark, Harmony, Phoenix, secret-system, export, and recovery boundaries are governed by `governance/cloud-atlas-protected-realm-contract.md`; co-location never combines their identities or authority.
 - **Emberdark** contains Perpendicularity, the Dynamic and Navigator Cognitive Shadow collections, mission state, authorization, quarantine, routing, and transit receipts.
@@ -49,10 +49,5 @@ protected_level: "HIGH"
 - A node, service, app, checklist, mode, or artifact is not promoted to an Operation without recurring ownership and decisions.
 - Cross-project work names one owner and explicit support; it does not duplicate source.
 - Runtime action requires separate execution authority and evidence. A source file may describe a topology without proving deployment.
-- Active Quest state lives under `quests/` and `quest-board/`, not in an informal workboard.
-- `governance/atlas-quest-portfolio-contract.md` is the canonical cross-Quest
-  ownership map. Glass Codex has one Codex client-product Operation; Harmony and
-  Seon route through Operation Harmony; Investiture Accounting and Prime
-  Continuity Proof remain bounded Source Governance responsibilities; monitoring
-  routes through Notum's Watch; and Prometheus infrastructure and Apollo
-  continuity route through Prometheus's Fire.
+- Active Quest state lives in `quests/`, `continuity/mission-board-quest-registry-r01.json`, and `continuity/prime-continuity-register-r01.json`, with exact parent Issues for live operational context. `quest-board/quest-board-v1.json` is frozen predecessor evidence and cannot admit or advance a Quest.
+- `governance/atlas-quest-portfolio-contract.md` is the canonical cross-Quest ownership map. Glass Codex has one Codex client-product Operation; Harmony and Seon route through Operation Harmony; Investiture Accounting and Prime Continuity Proof remain bounded Source Governance responsibilities; monitoring routes through Notum's Watch; and Prometheus infrastructure and Apollo continuity route through Prometheus's Fire.

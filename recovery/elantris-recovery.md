@@ -11,13 +11,13 @@ protected_level: "CRITICAL"
 
 # Prime Elantris Recovery
 
-Prime recovery begins from a clean clone of `Jktomy/atlas-prime`, a verified main head, and the exact Receipt Gemstone. Normal restoration must not require `Jktomy/atlas-codex`, Athena, Harmony, Coppermind, an active transaction store, or the normal repository publisher.
+Prime recovery begins from a clean clone of `Jktomy/atlas-prime`, a verified main head, and the exact Receipt Gemstone. Normal restoration must not require `Jktomy/atlas-codex`, Athena, Harmony, Coppermind, an active transaction store, the live GitHub Issue service, or the normal repository publisher.
 
 ## Recovery sequence
 
 1. Verify repository identity, remote, default branch, expected head, and receipt hashes.
 2. Clone without inherited worktrees, hooks, generated output, caches, or local configuration.
-3. Run kernel, repository-policy, privacy, Thread Engine, generator, and whole-program checks.
+3. Run kernel, repository-policy, privacy, Thread Engine, generator, Mission Board Quest registry, frozen Quest Board, continuity, and whole-program checks.
 4. Regenerate projections into a separate output directory and compare deterministically.
 5. Verify Thread Engine state and its isolated disablement path.
 6. Verify Sword/Oathbringer can classify the recovery point without blind replay.
@@ -27,10 +27,23 @@ Prime recovery begins from a clean clone of `Jktomy/atlas-prime`, a verified mai
 10. Perform a destructive canary restore only with explicit Jayson-side authority and a protected evidence plan.
 11. Read back recovered source and runtime evidence before declaring success.
 
-## Mission Board recovery boundary
+## Mission Board and admitted-Quest recovery boundary
 
 Mission Board recovery does not depend on chat memory, Coppermind runtime,
-Emberdark runtime, GitHub Projects, or an available normal publisher.
+Emberdark runtime, GitHub Projects, an available normal publisher, or live
+GitHub Issues for Quest-level orientation.
+
+First read and validate:
+
+1. `continuity/mission-board-quest-registry-r01.json`;
+2. `continuity/prime-continuity-register-r01.json`;
+3. the exact active Quest sources; and
+4. `quest-board/quest-board-v1.json` only as frozen predecessor evidence.
+
+The merged registry recovers the exact active Quest IDs, owners, states, next
+gates, readiness bases, and parent Issues #307–#309. Live Issue availability is
+not required for that recovery. Issue state alone cannot override the merged
+registry or continuity.
 
 For `Continue Mission #N`:
 
@@ -43,25 +56,35 @@ For `Continue Mission #N`:
 7. resume the same attempt from its last proven state; and
 8. append a sanitized result and exact next safe action.
 
-An unavailable Issue service may be recovered from an exact public-clean Issue,
-comment, PR, and receipt export, but that export is evidence rather than source
-authority. It cannot authorize a blind retry or claim canonical completion.
+If the Issue service is unavailable, Quest-level work may be oriented from the
+merged registry and continuity, but a particular child Mission remains blocked
+until its exact public-clean Issue/comment/PR/receipt export or authenticated
+readback is available. That export is evidence rather than source authority. It
+cannot authorize a blind retry or claim canonical completion.
+
 GitHub-to-Gitea recovery preserves `atlas.mission.v1` semantics and maps only the
 platform API; cutover remains separately gated.
 
 ## Quest portfolio recovery boundary
 
-Read `governance/atlas-quest-portfolio-contract.md` after the Quest Board and
-continuity register. Atlas remains an umbrella ecosystem, never a recovery
-super-Quest. Resolve each unfinished responsibility to exactly one durable
-Quest and Operation before resuming it. Found Silverlight is historical after
-Mission #276: resume FS-C01-M04 only through the bounded Codex / Source
-Governance Mission family, Glass Codex through Prime Ascendant / Operation
-Glass Codex, and Seon through Prime Ascendant / Operation Harmony. Apple
-Reminders remains authoritative and Hermes remains the bridge vessel. Preserve
-all Found Silverlight proofs and events; never infer M04, deployment, reminder
-access, or protected-runtime proof from Sunset. Prime Continuity Proof remains
-independent until its exact disposition Mission is canonically read back.
+Read `governance/atlas-quest-portfolio-contract.md` after the Mission Board Quest
+registry and continuity register. Atlas remains an umbrella ecosystem, never a
+recovery super-Quest. Resolve each unfinished responsibility to exactly one
+active registry row, parent Mission identity, durable Quest, and Operation
+before resuming it.
+
+The active portfolio is Prime Ascendant (#307), Prometheus's Fire (#308), and
+Notum's Watch (#309). The frozen Quest Board preserves the exact pre-cutover
+seven-Quest history and cannot admit, advance, or resume work.
+
+Found Silverlight is historical after Mission #276: resume FS-C01-M04 only
+through the bounded Codex / Source Governance Mission family, Glass Codex
+through Prime Ascendant / Operation Glass Codex, and Seon through Prime
+Ascendant / Operation Harmony. Apple Reminders remains authoritative and Hermes
+remains the bridge vessel. Preserve all Found Silverlight proofs and events;
+never infer M04, deployment, reminder access, or protected-runtime proof from
+Sunset. Prime Continuity Proof is complete through Mission #277; preserve AJ-08
+admission evidence and its append-only events as historical proof.
 
 ## Repository-process recovery boundary
 
@@ -177,10 +200,11 @@ These are future proof requirements. This runbook and the Prometheus Quest do no
 
 - Every source transaction records base, head, tree, paths, payload hashes, PR, merge, and recovery classification.
 - A source rollback uses a new reviewed PR; no force push or history rewrite is required.
+- Mission #278 registry rollback restores the prior Quest Board authority and removes the active-registry claim through one reviewed revert or repair-forward PR; the frozen Board, parent Issues, and append-only Issue history are never rewritten.
 - Thread Engine emergency disablement changes the reviewed activation state through Aegis Break → Oathbringer and must reject at `ACTIVATION_GATE` before mission parsing.
 - Historical lifecycle records are never rewritten; a changed Sunset plan requires a new Preview and explicit supersession.
 - The original Prime shadow head remains preserved by the locked archive branch and annotated tag.
 - The frozen Codex predecessor remains audit evidence only and is never the normal rollback target after cutover.
 - Before final Forge Plex removal, a separately authorized migration rollback may temporarily restore service to Forge Plex. After final removal, stored-media continuity is Jellyfin, live-TV continuity is the direct antenna, and normal Plex service returns through restoration of the Prometheus Plex LXC.
 
-RAID, snapshots, a green backup job, an undeleted predecessor, the presence of Jellyfin, or a merge API success response are not restore proof. Recovery is proven only by exact restoration and readback.
+RAID, snapshots, a green backup job, an undeleted predecessor, the presence of Jellyfin, a live Mission Issue, or a merge API success response are not restore proof. Recovery is proven only by exact restoration and readback.

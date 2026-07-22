@@ -61,5 +61,10 @@
   "format_version": "1.0",
   "generated": false,
   "predecessor_workboard_route": "HISTORICAL_ONLY",
-  "state": "CANONICAL_ACTIVE"
+  "state": "CANONICAL_ACTIVE",
+  "frozen_by_mission": "MISSION-QUEST-REGISTRY-MISSION-BOARD-CUTOVER-R01",
+  "frozen_by_issue": 278,
+  "frozen_from_main": "50caf2cb2d12e84f80ff7e9dcae97ca31e28ffe5",
+  "successor_registry": "continuity/mission-board-quest-registry-r01.json",
+  "registry_role": "FROZEN_PREDECESSOR_EVIDENCE"
 }
