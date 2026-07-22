@@ -2,9 +2,9 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 47,
+  "register_revision": 48,
   "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
-  "quest_board_sha256": "db47d5fac6a82b6c391dfb2632aac37fd9bf32f970f3ad18360e3db8aff32ce1",
+  "quest_board_sha256": "e72c91fea8af6928cfd2d977dfcf1b5e16298cfb2c1e975f5675a5c4f962f39a",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -55,19 +55,20 @@
     "ATLAS-QUEST-PORTFOLIO-RECOMPOSITION-R01",
     "FOUND-SILVERLIGHT-DECOMPOSITION-SUNSET-R01",
     "CLOUD-ATLAS-PROTECTED-REALM-REFRACTION-R01",
-    "GLASS-CODEX-VSCODE-CLIENT-REFRACTION-R03"
+    "GLASS-CODEX-VSCODE-CLIENT-REFRACTION-R03",
+    "PROMETHEUS-CLOUD-ATLAS-TOPOLOGY-REFRACTION-R01"
   ],
   "entries": [
     {
       "continuity_id": "CONT-PROMETHEUS-FIRE-R01",
       "quest_id": "QUEST-PROMETHEUS-FIRE-20260701",
       "quest_source": "quests/prometheus-fire.md",
-      "quest_source_sha256": "60d4a1033c029d0ee3807147a7866cf1a3d0b5ca0452039401cb0c79b45f4c7d",
+      "quest_source_sha256": "0ef436b570090273bfcaeb47768f24e494e7588eb66ac3fd8e945e74031058bc",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "PF-C01",
       "mission_id": "PF-C01-M02",
       "gate_id": "PF-C01-M02-PREVIEW",
-      "current_position": "PF-C01-M01 remains PROVEN_WITH_CARRY_FORWARD and PF-C01-M02 remains READY_FOR_PREVIEW. The accepted source topology now plans Harmony VM, Atlas VM, and the household-critical Plex LXC on Prometheus; Forge retains media, completed DVR files, persistent Helios services, backups, and local-only Jellyfin continuity; direct antenna television remains the live-TV fallback. No deployment, migration, cutover, or gate advancement is claimed.",
+      "current_position": "PF-C01-M01 remains proven with carry-forwards and PF-C01-M02 remains next. Mission #283 selects the 64 GB planning envelope, separate Harmony VM, Atlas VM, and Plex LXC roles, service-specific storage/health/backup/restore, GUI and monitoring independence, and household-first priorities. Capacity remains unmeasured; no deployment, guest, storage, network, backup, migration, cutover, or gate advancement is claimed.",
       "blockers": [
         "Apollo is not yet commissioned and proven as the Windows orchestration endpoint.",
         "Windows-specific Codex continuity has not yet been evacuated from Prometheus to Apollo.",
@@ -77,8 +78,8 @@
       ],
       "next_action": "Prepare and execute the exact PF-C01-M02 Preserve the Old Flame work only through a separately bounded authorization; do not infer device renames, migration, Windows removal, Proxmox installation, Plex cutover, Jellyfin deployment, or Gitea activation from this architecture refraction.",
       "next_approval": "Jayson must separately authorize endpoint commissioning and migration, then separately authorize any destructive Windows, Proxmox, Plex, Jellyfin, Gitea, or infrastructure action.",
-      "revision": 4,
-      "last_event_id": "PF-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
+      "revision": 5,
+      "last_event_id": "PROMETHEUS-CLOUD-ATLAS-TOPOLOGY-REFRACTION-R01"
     },
     {
       "continuity_id": "CONT-NOTUMS-WATCH-R01",

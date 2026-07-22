@@ -42,6 +42,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Artemis, Harmony, Emberdark, Cognitive Shadows, Kandra, and Sazed | `operations/artemis-runtime-and-routing.md` |
 | Cloud Atlas protected classes, Original Vault, Coppermind, Emberdark, Harmony, Phoenix, secrets, exports, and degraded recovery | `governance/cloud-atlas-protected-realm-contract.md`, `governance/cloud-atlas-protected-realm-v1.json`; source architecture only and no protected access |
 | Glass Codex service, VS Code client, UI surfaces, API lanes, packaging, retention, and rollback | `governance/glass-codex-client-contract.md`, `governance/glass-codex-client-v1.json`; architecture only and no Apollo installation |
+| Prometheus Cloud Atlas capacity, service isolation, recovery, dependency, startup, shutdown, and household priority | `governance/prometheus-cloud-atlas-topology-contract.md`, then `quests/prometheus-fire.md`; planning only and no host action |
 | Apollo, Hermes, Iris, and Zeus operator endpoints | `infrastructure/atlas-infrastructure-source.md` |
 | Protocols and delivery methods | `operations/protocol-library.md`, `methods/artemis-bow-and-arrow.md`, `methods/athenas-spear.md`, `methods/atlas-sword.md`, `methods/phoenix-blade.md` |
 | Athena through Thread Engine | `methods/athenas-spear.md`, then the exact Weave, base, Thread Engine state, and draft-PR stop boundary |
