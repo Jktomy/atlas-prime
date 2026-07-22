@@ -49,6 +49,16 @@ authority. It cannot authorize a blind retry or claim canonical completion.
 GitHub-to-Gitea recovery preserves `atlas.mission.v1` semantics and maps only the
 platform API; cutover remains separately gated.
 
+## Quest portfolio recovery boundary
+
+Read `governance/atlas-quest-portfolio-contract.md` after the Quest Board and
+continuity register. Atlas remains an umbrella ecosystem, never a recovery
+super-Quest. Resolve each unfinished responsibility to exactly one durable
+Quest and Operation before resuming it. Found Silverlight and Prime Continuity
+Proof remain independent until their exact disposition Missions are canonically
+read back; ownership direction cannot substitute for a completed transfer,
+Sunset, gate, or protected-runtime proof.
+
 ## Repository-process recovery boundary
 
 Every source transaction records or permits reconstruction of:

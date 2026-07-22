@@ -31,3 +31,9 @@ Atlas is the umbrella ecosystem. Its twelve durable Projects are:
 A Project is a durable domain. An Operation is a durable workflow inside a Project. Sub-operations preserve named workstreams without creating unnecessary parent operations. Nodes are physical or virtual devices. Systems are applications or services. Artifacts are source files, templates, runbooks, receipts, or generated projections.
 
 Every canonical operation has one owning Project, explicit supporting Projects where needed, and one active route in `operations/operation-registry.md`. Private or regulated evidence never becomes Project source merely because a Project refers to it.
+
+The active Quest portfolio is governed by
+`governance/atlas-quest-portfolio-contract.md`. It keeps Atlas as the umbrella
+ecosystem, assigns each unfinished responsibility to exactly one durable owner,
+and prevents Project support relationships from becoming duplicate Quest
+ownership.
