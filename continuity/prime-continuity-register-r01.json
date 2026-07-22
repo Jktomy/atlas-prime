@@ -3,7 +3,7 @@
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
   "register_revision": 52,
-  "source_base_sha": "50caf2cb2d12e84f80ff7e9dcae97ca31e28ffe5",
+  "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
   "quest_registry_source": "continuity/mission-board-quest-registry-r01.json",
   "quest_registry_sha256": "938d47fe1a904b896d83c4b0240cf4ed53bd8f435953a41956513b7c26528c8a",
   "event_ids": [

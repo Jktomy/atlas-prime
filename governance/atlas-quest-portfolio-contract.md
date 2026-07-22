@@ -66,6 +66,8 @@ self-certify a canonical Quest advance.
 - Notum's Watch retains NW-C01 through NW-C04 at
   `READY_FOR_JAYSON_EXECUTION_PACKAGE`; Mission #284 adds only the read-only
   Glass Codex health boundary and runtime proof remains Jayson-side.
+- Apollo source continuity remains architecture only; protected runtime
+   commissioning remains separately gated.
 - Found Silverlight is `COMPLETE — SUNSET` through Mission #276. FS-C01 routes
   to the bounded Codex / Source Governance Mission family with M01 through M03
   proven and M04 unfinished; FS-C02 routes to Prime Ascendant / Operation Glass
