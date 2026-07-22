@@ -84,6 +84,22 @@ A candidate is prepublication-complete when:
 
 Review may still discover a defect. That defect enters the consolidated repair process; it does not justify publishing knowingly partial work.
 
+## Deterministic candidate seal
+
+Before the first supported remote branch or pull-request mutation, a complete candidate must receive one deterministic route-neutral seal. The read-only compiler under `tools/candidate_seal/` binds the repository, Mission and attempt, objective digest, exact canonical base, deterministic branch intent, authorizer, operator, selected route, generated-state classification, sorted exact paths and digest, every candidate byte and Git blob identity, candidate-content digest, expected Git tree and optional local commit head, applicable prepublication PASS evidence, invalidation rules, forbidden actions, and rollback.
+
+Codex or Athena discovers and assembles the candidate. Candidate Seal records and verifies evidence but performs no mutation. Thread Engine remains the one normal repository engine and may publish only the exact verified seal once. An explicitly approved Sword/Oathbringer, Phoenix Blade, or direct GitHub-native Aegis Break applies the same seal semantics inside one mission and does not become a second normal or standing publisher.
+
+Any base, branch, path, byte, tree, head, check-evidence, Mission, attempt, or seal drift invalidates the seal and every dependent validation, review, Strikeforce, READY, and MERGE claim. A consumed seal identity rejects as replay. Unknown or malformed state fails closed.
+
+Interrupted publication starts with read-only reconciliation. An absent branch and PR permits one exact publication; an exact sealed branch without a PR permits only draft-PR creation without repush; one exact sealed draft permits readback and validation only. Stale main, moved or unexpected branch state, a mismatched or duplicate PR, replay, or ambiguity stops without mutation.
+
+## Consolidated candidate repair
+
+Before repair, reconcile all readable local, validation, review, and Strikeforce evidence. Normalize findings as actionable, incorrect, duplicate, already resolved, informational, unavailable, decision-required, or unknown. One deterministic batch contains every readable candidate-caused actionable finding. Decision-required, unknown, malformed, duplicate, unreadable-misclassified, and actionable non-candidate-caused findings stop the batch.
+
+A repair batch preserves truthful partial state, explicitly invalidates the prior seal and all dependent evidence, and permits one consolidated local repair. It requires one newly created and independently verified replacement seal before one repair publication. Piecemeal pushes, one-commit-per-file assembly, multi-commit contents-API construction as the normal route, blind retry, force push, and evidence reuse are forbidden.
+
 ## Full Atlas Sunset special route
 
 A request to `Sunset this chat` is always read-only Preview first, even though an ordinary direct repository instruction may otherwise authorize build-through-ready. Sunset Preview is a true semantic decision gate because it exposes Project, Operation, Quest classification, Feather meaning, Lesson Harvest, record inventory, protected handling, routes, and permanence choices before lifecycle construction.
