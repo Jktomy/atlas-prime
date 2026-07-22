@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas-prime.local/schemas/notum-glass-codex-health-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "monitoring_owners", "presentation_owner", "access", "states", "required_observation_fields", "allowed_projection_data", "excluded_data", "denied_actions", "failure_independence", "freshness_rules", "deployment_state"],
+  "properties": {
+    "schema_version": {"const": "atlas.notum-glass-codex-health.v1"},
+    "monitoring_owners": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"enum": ["NOTUMS_WATCH", "OPERATION_SENTINEL"]}},
+    "presentation_owner": {"const": "OPERATION_GLASS_CODEX"},
+    "access": {"const": "READ_ONLY_MINIMIZED_PROJECTION"},
+    "states": {"type": "array", "minItems": 5, "maxItems": 5, "uniqueItems": true, "items": {"enum": ["CURRENT", "STALE", "OFFLINE", "UNKNOWN", "LAST_KNOWN_GOOD"]}},
+    "required_observation_fields": {"type": "array", "minItems": 6, "uniqueItems": true, "items": {"type": "string"}},
+    "allowed_projection_data": {"type": "array", "minItems": 6, "uniqueItems": true, "items": {"type": "string"}},
+    "excluded_data": {"type": "array", "minItems": 9, "uniqueItems": true, "items": {"type": "string"}},
+    "denied_actions": {"type": "array", "minItems": 13, "uniqueItems": true, "items": {"type": "string"}},
+    "failure_independence": {"type": "array", "minItems": 6, "uniqueItems": true, "items": {"type": "string"}},
+    "freshness_rules": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string"}},
+    "deployment_state": {"const": "ARCHITECTURE_ONLY_NOT_CONNECTED"}
+  }
+}

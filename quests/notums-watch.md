@@ -190,6 +190,21 @@ Prometheus's Fire owns the Prometheus Proxmox foundation. Notum's Watch owns Gat
 
 ## 9. READY_FOR_JAYSON_EXECUTION package
 
+## 9A. Glass Codex health presentation boundary
+
+Glass Codex may present only the minimized, read-only health projection defined
+by `governance/notum-glass-codex-health-contract.md`. Notum's Watch and Sentinel
+retain source identity, collection, evaluation, alerting, and outage-record
+ownership. `CURRENT`, `STALE`, `OFFLINE`, `UNKNOWN`, and `LAST_KNOWN_GOOD` are
+explicit and non-interchangeable; expired data cannot appear current.
+
+The view grants no power, restart, network, route, restore, failover,
+deployment, deletion, alert-acknowledgement, monitoring-configuration, or
+automated-recovery authority. Glass Codex or Apollo failure removes the view
+only. Notum failure does not block Cloud Atlas, Prime recovery, Elantris, or
+household-critical workloads. Mission #284 connects no telemetry and does not
+advance NW-C01.
+
 ### Package identity
 
 `NW-C01-READY_FOR_JAYSON_EXECUTION`

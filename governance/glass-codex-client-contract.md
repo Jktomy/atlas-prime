@@ -38,7 +38,10 @@ The extension receives no unrestricted SQL, direct vault mount, infrastructure,
 recovery, permanence, direct canonical-write, secret, or monitoring authority.
 A VS Code profile name is organization, not security isolation. Notum's Watch
 and Sentinel retain monitoring authority; the client presents only bounded
-read-only health.
+read-only health. The source identity, minimized projection, freshness states,
+denied actions, and failure independence for that view are governed by
+`governance/notum-glass-codex-health-contract.md`; stale or last-known-good data
+can never render as current.
 
 Protected evidence never persists in repositories, ordinary logs, unmanaged
 caches, or ordinary temporary directories. Any explicitly authorized bounded
