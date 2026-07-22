@@ -124,9 +124,11 @@ def validate_quest_registry(
         prior = frozen.get(identity)
         if prior is None or prior["state"] == "COMPLETE":
             raise ContinuityError("QUEST_REGISTRY_BASELINE_INVALID")
-        for field in ("quest_id", "source", "owner", "state", "next_gate", "readiness_basis"):
-            if current[identity][field] != prior[field]:
-                raise ContinuityError("QUEST_REGISTRY_CUTOVER_PARITY_MISMATCH")
+    if registry["registry_revision"] == 1:
+        for identity in baseline:
+            for field in ("quest_id", "source", "owner", "state", "next_gate", "readiness_basis"):
+                if current[identity][field] != frozen[identity][field]:
+                    raise ContinuityError("QUEST_REGISTRY_CUTOVER_PARITY_MISMATCH")
 
 
 def validate_quest_admission(
