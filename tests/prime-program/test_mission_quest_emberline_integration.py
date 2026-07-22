@@ -46,6 +46,21 @@ class MissionQuestEmberlineIntegrationTests(unittest.TestCase):
                 rendered["markdown"],
             )
 
+    def test_emberline_id_is_stably_derived_from_parent_mission_identity(self) -> None:
+        for entry in self.registry["entries"]:
+            self.assertEqual(
+                entry["emberline_id"],
+                entry["parent_mission_id"].replace(
+                    "MISSION-QUEST-PARENT-", "EMBERLINE-QUEST-", 1
+                ),
+            )
+        tampered = copy.deepcopy(self.registry)
+        tampered["entries"][0]["emberline_id"] = "EMBERLINE-QUEST-REPLACED-R01"
+        with self.assertRaisesRegex(
+            ContinuityError, "MISSION_QUEST_EMBERLINE_ID_MISMATCH"
+        ):
+            validate_quest_registry(tampered, self.board)
+
     def test_renderer_rejects_stale_or_duplicate_registry_binding(self) -> None:
         stale = copy.deepcopy(self.register)
         stale["quest_registry_sha256"] = "0" * 64
