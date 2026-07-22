@@ -17,7 +17,7 @@ from tools.sunset_router.issue_preview_ingress import (
 )
 
 ROOT = Path(__file__).resolve().parents[2]
-WORKFLOW = ROOT / ".github/workflows/sunset-router-preview-intake.yml"
+RETIRED_WORKFLOW = ROOT / ".github/workflows/sunset-router-preview-intake.yml"
 
 
 def json_bytes(value: object) -> bytes:
@@ -81,7 +81,7 @@ class SunsetRouterPreviewWorkflowTests(unittest.TestCase):
         path.write_bytes(json_bytes(value))
         return path
 
-    def test_intake_schema_is_trusted_and_closed(self) -> None:
+    def test_intake_schema_is_trusted_closed_historical_evidence(self) -> None:
         value = intake()
         SchemaValidator(ROOT / "lifecycle/schemas").validate_sunset_router_preview_intake(value)
         schema = json.loads(
@@ -92,7 +92,7 @@ class SunsetRouterPreviewWorkflowTests(unittest.TestCase):
         self.assertFalse(schema["additionalProperties"])
         self.assertEqual(set(value), set(schema["required"]))
 
-    def test_exact_workflow_route_produces_approval_bound_preview(self) -> None:
+    def test_historical_adapter_still_produces_approval_bound_preview(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             parent = Path(temp)
             request_path = parent / "request.json"
@@ -123,19 +123,23 @@ class SunsetRouterPreviewWorkflowTests(unittest.TestCase):
             self.assertIn("APPROVE SUNSET PREVIEW", body)
             self.assertIn("WITH GODDESS MODE AND SHARDBLADE", body)
 
-    def test_workflow_has_no_source_or_permanence_step(self) -> None:
-        workflow = WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn("Generate exact Sunset Router Preview", workflow)
-        self.assertIn("Return exact Preview to Mission 257", workflow)
-        for forbidden in (
-            "contents: write",
-            "pull-requests: write",
-            "create_pull_request",
-            "mark_pull_request_ready_for_review",
-            "merge_pull_request",
-            "SUNSET COMPLETE",
-        ):
-            self.assertNotIn(forbidden, workflow)
+    def test_campaign_specific_hosted_workflow_is_retired(self) -> None:
+        self.assertFalse(RETIRED_WORKFLOW.exists())
+        workflow_text = "\n".join(
+            path.read_text(encoding="utf-8")
+            for pattern in ("*.yml", "*.yaml")
+            for path in sorted((ROOT / ".github/workflows").glob(pattern))
+        )
+        self.assertNotIn("tools.sunset_router.issue_preview_ingress", workflow_text)
+        self.assertNotIn("atlas-sunset-router-preview-intake-v1", workflow_text)
+
+        contract = (ROOT / "governance/sunset-router-contract.md").read_text(encoding="utf-8")
+        readme = (ROOT / "tools/sunset_router/README.md").read_text(encoding="utf-8")
+        commands = (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8")
+        for text in (contract, readme, commands):
+            self.assertIn("RETIRED", text.upper())
+        self.assertIn("must remain absent", contract)
+        self.assertIn("intentionally absent", readme)
 
 
 if __name__ == "__main__":
