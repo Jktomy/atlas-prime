@@ -255,8 +255,8 @@
       "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "RESTORED",
-      "activation_state": "ACTIVE",
-      "current_state": "Owner-triggered hosted Ubuntu and Windows builds produced byte-identical five-report hash registers bound to one exact source and workflow run.",
+      "activation_state": "INTENTIONALLY_RETIRED",
+      "current_state": "Historical owner-triggered Ubuntu and Windows builds proved byte-identical five-report registers; current ordinary validation reproduces the five functions twice in temporary storage with a machine-readable receipt.",
       "required_proof": "AJ-09 evidence in proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md."
     },
     {
@@ -267,8 +267,8 @@
       "audit_severity": "GREEN",
       "path_disposition": "HISTORICAL_CLOSED",
       "capability_disposition": "RESTORED",
-      "activation_state": "ACTIVE",
-      "current_state": "The owner-triggered GENERATED_CHECKPOINT_V1 route invokes the singular Thread Engine to create an immutable exact-base generated-only draft PR and stop at exact readback.",
+      "activation_state": "INTENTIONALLY_RETIRED",
+      "current_state": "The former owner-triggered GENERATED_CHECKPOINT_V1 hosted publisher is retired from active operation; its proof and dormant compatibility source remain historical and nonauthoritative.",
       "required_proof": "AJ-09 evidence in proof/repairing-prime/rp-c06-generated-parity-acceptance-r01.md."
     },
     {

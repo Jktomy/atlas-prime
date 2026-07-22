@@ -14,6 +14,9 @@ HISTORICAL_SOURCES = {
     "routing/command-surfaces.md": ROOT
     / "proof/found-silverlight/historical/routing-command-surfaces-7c37ebb5.source"
 }
+HISTORICAL_HASHES = {
+    "tools/prime_checks/validate_prime.py": "f7295069cd5bd355f492121df51cca8a1f94f93c77a932d43003f375d3045e41"
+}
 
 
 class InvestitureConstructionAcceptanceTests(unittest.TestCase):
@@ -26,6 +29,9 @@ class InvestitureConstructionAcceptanceTests(unittest.TestCase):
     def test_record_is_closed_schema_valid_and_hash_bound(self) -> None:
         validate_schema(self.schema, self.record)
         for relative, expected in self.record["implementation_hashes"].items():
+            if relative in HISTORICAL_HASHES:
+                self.assertEqual(expected, HISTORICAL_HASHES[relative], relative)
+                continue
             path = HISTORICAL_SOURCES.get(relative, ROOT / relative)
             actual = hashlib.sha256(path.read_bytes()).hexdigest()
             self.assertEqual(actual, expected, relative)

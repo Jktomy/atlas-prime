@@ -118,7 +118,7 @@ Every candidate receives a mandatory baseline:
 - source, schema, and repository-policy validation;
 - undeclared-path rejection;
 - candidate-tree verification;
-- deterministic generated-state comparison.
+- deterministic temporary projection diagnostics with a machine-readable receipt.
 
 Additional checks come from a closed source-to-invariant dependency registry. Unknown paths fail closed to the full profile. Windows, Linux-specific, and other platform execution is conditional on the changed contracts.
 
@@ -126,15 +126,14 @@ A candidate that changes validation planning, workflows, dependency mapping, rep
 
 The required validation surface is `prime/integrity` plus conditional `prime/windows-compatibility`; together they bind the exact head after all selected executors complete. Ruleset `19014636` requires those logical contexts, and the legacy compatibility contexts are retired after the independently verified settings transition.
 
-## Generated state
+## Projection diagnostics
 
-Each transaction records one outcome:
-
-- `CURRENT` — projections match the exact source state;
-- `STALE_ALLOWED` — authored source advanced and a separate generated refresh is expected;
-- `STALE_BLOCKING` — the transaction requires current projections but they are missing, mixed improperly, or incorrect.
-
-Generated-only, release, parity, and recovery-acceptance work requires `CURRENT` where the applicable contract says so. Generated projections never govern authored source.
+Every transaction records the result of deterministic temporary projection
+diagnostics. `PASS` proves that all five functions reproduced byte-identical
+outputs and machine-readable hashes from the exact source state. `FAIL` blocks
+the candidate with a machine-readable error receipt. Committed projection
+freshness is no longer a transaction state, and ordinary source merges create no
+generated-only follow-up. Projections never govern authored source.
 
 ## Review and repair
 

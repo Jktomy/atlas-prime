@@ -61,9 +61,9 @@ CHECKS: dict[str, Check] = {
         "source_validation",
         (PYTHON, "-B", "tools/prime_checks/validate_prime.py"),
     ),
-    "generated_current": Check(
-        "generated_current",
-        (PYTHON, "-B", "tools/build_index.py", "--compare-dir", "generated", "--dry-run"),
+    "generated_diagnostics": Check(
+        "generated_diagnostics",
+        (PYTHON, "-B", "tools/build_index.py", "--diagnostics"),
     ),
     "powershell_resolver": Check(
         "powershell_resolver",
@@ -80,7 +80,7 @@ CHECKS: dict[str, Check] = {
 }
 
 FULL_CHECK_IDS: tuple[str, ...] = tuple(CHECKS)
-BASELINE_CHECK_IDS = {"kernel", "repository_policy", "privacy", "source_validation", "generated_current"}
+BASELINE_CHECK_IDS = {"kernel", "repository_policy", "privacy", "source_validation", "generated_diagnostics"}
 FULL_SHA = re.compile(r"[0-9a-fA-F]{40}")
 
 
@@ -356,9 +356,9 @@ def execute_plan(plan: dict[str, object]) -> None:
             if combined:
                 print(_bounded_failure_output(combined), file=sys.stderr)
             raise subprocess.CalledProcessError(completed.returncode, check.command)
-        if check_id == "generated_current":
+        if check_id == "generated_diagnostics":
             for line in completed.stdout.splitlines():
-                if line.startswith(("Source fingerprint:", "Generated index status:")):
+                if '"schema_id": "atlas.generated-projection-diagnostics.v1"' in line:
                     print(line, flush=True)
         print(f"Prime validation PASS: {check.check_id}", flush=True)
 

@@ -191,9 +191,9 @@ The Prime Integrity Cognitive Shadow receives and validates one event, rejects r
 
 The future Gitea model uses three logical contexts:
 
-- `prime/integrity` — required repository/source policy, protected-data, JSON, schema, Project, Operation, Quest Board, continuity, routing, metadata, deterministic generated-current comparison, changed-path tests, and exact base/head/path identity.
+- `prime/integrity` — required repository/source policy, protected-data, JSON, schema, Project, Operation, Quest Board, continuity, routing, metadata, deterministic temporary projection diagnostics, changed-path tests, and exact base/head/path identity.
 - `prime/windows-compatibility` — conditional for PowerShell, Atlas Sword, Oathbringer, Windows launcher or resolution behavior, Thread Engine, Athena-route execution, validation/workflow, and unknown paths that fail closed.
-- `prime/generated-current` — required for generated-only refresh candidates or wherever accepted source/generated parity applies.
+- Projection diagnostics are part of `prime/integrity`; there is no active generated-only refresh candidate class.
 
 GitHub remains canonical during this planning chapter. Legacy required contexts remain until replacement contexts are observed at exact heads and Jayson separately changes the ruleset. No Gitea deployment, webhook activation, database activation, canonical cutover, GitHub retirement, credential detail, private-network value, repository-settings change, or route retirement is authorized by this augmentation.
 
@@ -490,7 +490,10 @@ Later validation history is also reconciled without changing that architecture:
 | PR #236 — minimize hosted Actions while preserving validation | Merged as `a02e048209ec3e5f9f329c8772440bc4f728e652`; validation became fail-closed and path-targeted, and automatic generated publishing on every `main` push was removed. |
 | PR #237 — targeted hosted-Actions continuity proof | Merged as `e95e13f8e7185bb50e773b2033d06f172d928f58`; proved the Ubuntu baseline/Prime validation route for a continuity transaction. It did not execute the full Atlas Sunset for this chat and created no lifecycle Feather. |
 
-Generated projections remain stale until the separately governed generated refresh. Runtime is not started. Gitea cutover, route retirement, repository visibility changes, and repository-settings changes remain unauthorized.
+Historical committed projections were later retired by Mission #296 after their
+five deterministic functions moved into ordinary temporary validation
+diagnostics. Runtime is not started. Gitea cutover, repository visibility
+changes, and repository-settings changes remain unauthorized.
 
 ## 10. Proven workflow lesson
 
@@ -507,15 +510,20 @@ one bounded Jayson instruction
 → unchanged ready-for-review transition
 → `Prime PR #___ is ready to merge.`
 → Jayson manually clicks Merge in GitHub
-→ merged-main readback
-→ separate generated refresh when applicable
+→ merged-main readback including projection diagnostic receipt
 ```
 
-Authored and generated transactions remain separate. Reviewer findings are advisory evidence; the implementation owner must address actionable findings. Threads are resolved only after the issue is fixed or proven obsolete. Any byte change after READY returns the PR to draft and repeats validation, review, and exact-head Strikeforce. Completion requires merged-main readback and restart-safe proof.
+Authored candidates contain no committed projection reports; deterministic
+projection diagnostics run inside their ordinary validation. Reviewer findings
+are advisory evidence; the implementation owner must address actionable
+findings. Threads are resolved only after the issue is fixed or proven obsolete.
+Any byte change after READY returns the PR to draft and repeats validation,
+review, and exact-head Strikeforce. Completion requires merged-main readback and
+restart-safe proof.
 
 ## 11. Restart and next gates
 
-On restart, read the parent Quest, this Covenant, the current Quest Board and continuity register, then active Aegis, Strikeforce, change-route, Prime Reborn, Prometheus's Fire, Artemis, and generated-index sources. Re-lock current `main` before any mutation.
+On restart, read the parent Quest, this Covenant, the current Quest Board and continuity register, then active Aegis, Strikeforce, change-route, Prime Reborn, Prometheus's Fire, Artemis, and projection-diagnostic source. Re-lock current `main` before any mutation.
 
 The next safe sequence is:
 

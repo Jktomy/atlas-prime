@@ -18,7 +18,6 @@ from tools.prime_continuity.engine import (
 
 REQUIRED = (
     ".github/workflows/athena-bow-hosted.yml",
-    ".github/workflows/generated-checkpoint-publisher.yml",
     "README.md",
     "atlas-prime.md",
     "bootstrap.md",

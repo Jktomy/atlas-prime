@@ -14,11 +14,11 @@ python -B tools/prime_checks/targeted_validation.py --base <base-sha> --head <he
 
 Privacy and repository-policy tests are mandatory in every targeted plan.
 Prime Integrity also records the exact base, head, merge base, checkout identity,
-changed-path inventory, and deterministic generated-current comparison.
+changed-path inventory, and deterministic temporary projection diagnostics.
 Workflow, validation-engine, Athena route execution, Thread Engine, Atlas Sword,
 Oathbringer, PowerShell, generator machinery and tests, schema, and unclassified
 changes fail closed to the Windows companion. Ordinary Markdown, JSON, registry,
-Quest, continuity, and generated-only changes do not require Windows unless
+Quest, continuity, and retired generated-path changes do not require Windows unless
 another changed path does.
 
 Rename and copy evidence classifies both the source and destination paths, so a

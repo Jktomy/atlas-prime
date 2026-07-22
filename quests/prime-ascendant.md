@@ -76,10 +76,10 @@ conditional Windows executor → TenSoon exact-head verification → Operation
 Phoenix draft or status publication → Athena audit → Jayson-controlled
 permanence.
 
-The future logical contexts are `prime/integrity` (required),
-`prime/windows-compatibility` (conditional), and `prime/generated-current`
-(required for generated-only refresh candidates or wherever source/generated
-parity applies). This is source architecture only. It does not advance PA-C01,
+The future logical contexts are `prime/integrity` (required) and
+`prime/windows-compatibility` (conditional). Deterministic projection
+diagnostics run inside integrity and create no separate generated-current
+candidate class. This is source architecture only. It does not advance PA-C01,
 activate Gitea, deploy a webhook or database, retire GitHub, grant READY or MERGE,
 or authorize repository-settings mutation.
 

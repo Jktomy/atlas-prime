@@ -1,6 +1,6 @@
-# Generated checkpoint preparer
+# Generated checkpoint preparer — dormant compatibility source
 
-This package is the read-only construction layer for
+This package preserves the historical read-only construction layer for
 `GENERATED_CHECKPOINT_V1`. It builds the five approved reporting projections,
 emits a canonical byte-hash register, reconciles independently hosted Ubuntu
 and Windows registers, and prepares one exact Thread Engine mission package.
@@ -16,8 +16,8 @@ a duplicate exact-head Ubuntu/Windows validation matrix; required
 `prime/integrity` and conditional `prime/windows-compatibility` checks validate
 the draft through the ordinary ruleset-governed PR path.
 
-The hosted publisher is explicit and owner-dispatched only; canonical `main`
-pushes do not launch it automatically. Local deterministic generation remains
-available through `python -B tools/build_index.py`, and the hosted route retains
-its full privacy, exact-base, parity, draft-readback, permission-separation, and
-rollback boundaries.
+There is no active hosted publisher workflow. Ordinary validation runs
+`python -B tools/build_index.py --diagnostics`, evaluates the five functions in
+temporary storage, and emits a machine-readable receipt. This retained package
+is historical compatibility and test source only; it grants no dispatch,
+publication, or routine generated-file permanence route.

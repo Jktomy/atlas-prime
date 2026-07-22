@@ -30,7 +30,8 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
             "e95e13f8e7185bb50e773b2033d06f172d928f58",
             "did not execute the full Atlas Sunset for this chat",
             "created no lifecycle Feather",
-            "Generated projections remain stale",
+            "Historical committed projections were later retired",
+            "temporary validation",
             "Runtime is not started",
         ):
             self.assertIn(marker, covenant)
@@ -123,9 +124,10 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
             "Jayson-controlled permanence",
             "prime/integrity",
             "prime/windows-compatibility",
-            "prime/generated-current",
+            "Projection diagnostics are part of `prime/integrity`",
         ):
             self.assertIn(marker, quest + covenant)
+        self.assertNotIn("prime/generated-current", quest + covenant)
         for marker in (
             "It cannot judge",
             "receives no general or",
