@@ -10,6 +10,7 @@ from .engine import (
     argus,
     plan_one_entry_update,
     render_emberline,
+    render_mission_quest_emberline,
     stable_json,
     sunrise,
     sunset,
@@ -54,6 +55,12 @@ def parser() -> argparse.ArgumentParser:
     for name in ("emberline", "argus"):
         item = subcommands.add_parser(name)
         item.add_argument("--output")
+    mission_quest = subcommands.add_parser(
+        "mission-quest-emberline",
+        help="render one human-readable Mission Quest Emberline projection",
+    )
+    mission_quest.add_argument("--quest-id", required=True)
+    mission_quest.add_argument("--output")
     sunset_parser = subcommands.add_parser(
         "sunset", help="render a continuity snapshot, not the full Atlas Sunset"
     )
@@ -98,6 +105,8 @@ def main(argv: list[str] | None = None) -> int:
         emit(render_emberline(register), args.output)
     elif args.command == "argus":
         emit(argus(register), args.output)
+    elif args.command == "mission-quest-emberline":
+        emit(render_mission_quest_emberline(register, registry, args.quest_id), args.output)
     elif args.command == "sunset":
         emit(sunset(register, args.continuity_id), args.output)
     elif args.command == "sunrise":
