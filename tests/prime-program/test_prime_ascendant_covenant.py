@@ -9,7 +9,7 @@ from tools.prime_continuity.engine import ContinuityError, plan_one_entry_update
 
 
 ROOT = Path(__file__).resolve().parents[2]
-EVENT_ID = "CLOUD-ATLAS-PROTECTED-REALM-REFRACTION-R01"
+EVENT_ID = "GLASS-CODEX-VSCODE-CLIENT-REFRACTION-R03"
 
 
 class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):

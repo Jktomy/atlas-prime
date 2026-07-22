@@ -2,9 +2,9 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 46,
+  "register_revision": 47,
   "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
-  "quest_board_sha256": "579d50a1a2e72759cc0c7e1fd699eb8c58071353aef6a9c8f2903f92a5df865b",
+  "quest_board_sha256": "db47d5fac6a82b6c391dfb2632aac37fd9bf32f970f3ad18360e3db8aff32ce1",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -54,7 +54,8 @@
     "PA-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03",
     "ATLAS-QUEST-PORTFOLIO-RECOMPOSITION-R01",
     "FOUND-SILVERLIGHT-DECOMPOSITION-SUNSET-R01",
-    "CLOUD-ATLAS-PROTECTED-REALM-REFRACTION-R01"
+    "CLOUD-ATLAS-PROTECTED-REALM-REFRACTION-R01",
+    "GLASS-CODEX-VSCODE-CLIENT-REFRACTION-R03"
   ],
   "entries": [
     {
@@ -117,12 +118,12 @@
       "continuity_id": "CONT-PRIME-ASCENDANT-R01",
       "quest_id": "QUEST-PRIME-ASCENDANT-20260717",
       "quest_source": "quests/prime-ascendant.md",
-      "quest_source_sha256": "88141ff37e5100792764b05e71719495eed5bbfe62ea23d43561786139a97906",
+      "quest_source_sha256": "7e6fff291f513d4f9024340cc1d6fbb9b9ab926c13112612b11ef58b2bdb5fcf",
       "quest_state": "IN_PROGRESS",
       "campaign_id": "PA-C01",
       "mission_id": null,
       "gate_id": "PA-C01-COVENANT-REFINEMENT",
-      "current_position": "Prime Ascendant remains in PA-C01 refinement under Operation Harmony. Mission #279 establishes Cloud Atlas protected-class, provenance, access, export, separation, recovery-requirement, and degraded-mode architecture. The Harmony VM and Atlas VM directions remain unproven; all service identities stay distinct. Runtime, protected import, deployment, restore proof, cutover, settings, and later Campaign gates remain unadvanced.",
+      "current_position": "Prime Ascendant remains at PA-C01 under Operation Harmony. Mission #282 defines Glass Codex as a client-independent service with a first-party VS Code direction on Apollo, two governed API lanes, denied authority, protected-retention cleanup, packaging, rollback, and GUI-failure independence. Harmony VM and Atlas VM directions remain unproven. Runtime, Apollo installation, recovery proof, and later gates remain unadvanced.",
       "blockers": [
         "PA-C01 covenant acceptance remains unproven.",
         "Application contracts, database layout, backup/restore, parity, and cutover evidence remain unproven.",
@@ -130,8 +131,8 @@
       ],
       "next_action": "Continue PA-C01 covenant review and later source-contract design without treating the Harmony VM, Atlas VM, Plex, Jellyfin, or Gitea placement directions as deployment evidence or cutover authority.",
       "next_approval": "Jayson must separately approve any later PA-C01 gate advancement and any runtime, infrastructure, Gitea cutover, route-retirement, visibility, settings, or merge action.",
-      "revision": 8,
-      "last_event_id": "CLOUD-ATLAS-PROTECTED-REALM-REFRACTION-R01"
+      "revision": 9,
+      "last_event_id": "GLASS-CODEX-VSCODE-CLIENT-REFRACTION-R03"
     }
   ]
 }
