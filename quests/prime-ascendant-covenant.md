@@ -70,6 +70,15 @@ deferred until demonstrated need.
 
 Coppermind does not replace durable doctrine. Dawnshard is not a second source of truth. AI models, browser clients, and arbitrary workflows do not receive unrestricted direct SQL authority. Exact schemas, APIs, retention, event model, and retrieval thresholds remain unresolved decisions below.
 
+Cloud Atlas is the protected realm surrounding these bounded services, not a
+new Project, Quest, host, database, or runtime claim. Its controlling
+classification, provenance, access, export, Original Vault, secret-system,
+Phoenix-separation, recovery-requirement, and degraded-mode rules are in
+`governance/cloud-atlas-protected-realm-contract.md` and the validated
+`governance/cloud-atlas-protected-realm-v1.json`. Those rules resolve the
+protected-realm authority boundary without resolving or advancing PA-C01's
+application schemas, runtime placement, deployment, or acceptance gates.
+
 ### 2.2 Dawnshard conceptual target
 
 The future restart-safe projection may contain:

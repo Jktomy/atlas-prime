@@ -47,7 +47,7 @@ disposition Mission is canonically complete.
 | Harmony and Seon | Prime Ascendant / Operation Harmony | Harmony remains a separate intelligence vessel; Apple Reminders remains authoritative for Seon and Hermes remains its bridge vessel |
 | Investiture Accounting | Codex / Operation Source Governance bounded Mission family | FS-C01-M01 through M03 remain proven; FS-C01-M04 remains unfinished and requires separate protected authorization |
 | Prime Continuity Proof | its existing Codex / Source Governance Quest pending Mission #277 | no absorption or closeout occurs in portfolio recomposition |
-| Cloud Atlas | Prime Ascendant protected-realm architecture, owned by Artemis / Operation Harmony with bounded Codex service owners | not a Project, Quest, database, or deployment claim |
+| Cloud Atlas | Prime Ascendant protected-realm architecture, owned by Artemis / Operation Harmony with bounded Codex service owners | Mission #279 establishes the public-clean class, access, provenance, export, recovery-requirement, and degraded-mode contract; it is not a Project, Quest, database, host, or deployment claim |
 | monitoring | Notum's Watch | Notum and Sentinel retain monitoring authority; presentation clients remain read-only |
 | infrastructure and Apollo continuity | Prometheus's Fire | household-critical Plex playback, DVR recording, and persistent Forge services outrank discretionary AI work |
 | canonical source governance | Codex / Operation Source Governance | Prime remains canonical; generated projections, Mission Issues, clients, and runtime stores do not govern |

@@ -68,17 +68,20 @@ class PrimeContinuityTests(unittest.TestCase):
         prometheus_event = "PF-C01-M01-KANDRA-ENDPOINT-RECONCILIATION-R01"
         prometheus_topology_event = "PF-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
         ascendant_topology_event = "PA-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
+        cloud_atlas_event = "CLOUD-ATLAS-PROTECTED-REALM-REFRACTION-R01"
         self.assertEqual(self.register["event_ids"].count(old_found_event), 1)
         self.assertEqual(self.register["event_ids"].count(naming_event), 1)
         self.assertEqual(self.register["event_ids"].count(prometheus_event), 1)
         self.assertEqual(self.register["event_ids"].count(prometheus_topology_event), 1)
         self.assertEqual(self.register["event_ids"].count(ascendant_topology_event), 1)
         self.assertEqual(self.register["event_ids"].count(portfolio_event), 1)
+        self.assertEqual(self.register["event_ids"].count(cloud_atlas_event), 1)
         self.assertLess(self.register["event_ids"].index(old_found_event), self.register["event_ids"].index(naming_event))
         self.assertLess(self.register["event_ids"].index(naming_event), self.register["event_ids"].index(prometheus_event))
         self.assertLess(self.register["event_ids"].index(prometheus_event), self.register["event_ids"].index(prometheus_topology_event))
         self.assertLess(self.register["event_ids"].index(prometheus_topology_event), self.register["event_ids"].index(ascendant_topology_event))
         self.assertLess(self.register["event_ids"].index(ascendant_topology_event), self.register["event_ids"].index(portfolio_event))
+        self.assertLess(self.register["event_ids"].index(portfolio_event), self.register["event_ids"].index(cloud_atlas_event))
         prometheus_board = next(entry for entry in self.board["entries"] if entry["quest_id"] == "QUEST-PROMETHEUS-FIRE-20260701")
         prometheus_continuity = next(entry for entry in self.register["entries"] if entry["continuity_id"] == "CONT-PROMETHEUS-FIRE-R01")
         self.assertEqual(prometheus_board["state"], "IN_PROGRESS")
@@ -98,7 +101,7 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertIsNone(ascendant["mission_id"])
         self.assertEqual(ascendant["gate_id"], "PA-C01-COVENANT-REFINEMENT")
         self.assertGreaterEqual(ascendant["revision"], 7)
-        self.assertEqual(ascendant["last_event_id"], ascendant_topology_event)
+        self.assertEqual(ascendant["last_event_id"], cloud_atlas_event)
         self.assertEqual(self.register["event_ids"].count(creation_event), 1)
         self.assertEqual(self.register["event_ids"].count(sunset_event), 1)
         self.assertEqual(self.register["event_ids"].count(reconciliation_event), 1)

@@ -33,6 +33,12 @@ In VS Code and other approved surfaces where Athena is absent, Harmony may act a
 
 Harmony is not the canonical source, permanent database, workflow engine, infrastructure controller, recovery system, monitoring platform, dashboard, scheduler, notification platform, or automatic permanence authority. Prime retains doctrine; Coppermind retains operational memory; Emberdark retains workflow execution and mission-state plumbing; Odyssey retains infrastructure; Elantris retains backup, restore, rollback, and recovery; Notum's Watch and Sentinel retain monitoring; and each human-facing interface retains its own presentation role.
 
+Cloud Atlas is the protected private realm around these bounded services. Read
+`governance/cloud-atlas-protected-realm-contract.md` before handling any
+protected-realm class, pointer, derivative, export, vault, secret, or recovery
+claim. Harmony receives only bounded retrieved context and never becomes the
+database, secret store, canonical source, or unrestricted vault reader.
+
 No separate Artemis-model identity is created by this role. Future model names and implementation choices remain separately governed decisions. The accepted source-placement direction is the Harmony VM on Prometheus with exclusive planned Intel Arc Pro B50 passthrough, subject to Prometheus's Fire recovery, thermal, soak, resource, and rollback proof. Source placement does not claim deployment.
 
 ## Emberdark

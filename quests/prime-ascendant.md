@@ -21,6 +21,7 @@ routes_from:
   - safety/atlas-safety-doctrine.md
 routes_to:
   - quests/prime-ascendant-covenant.md
+  - governance/cloud-atlas-protected-realm-contract.md
   - quest-board/quest-board-v1.json
   - continuity/prime-continuity-register-r01.json
   - governance/atlas-aegis.md
@@ -66,6 +67,17 @@ Prime Ascendant is the controlled, phased self-hosted Prime chapter. The detaile
 - Perpendicularity is the approved Google Drive crossing; Dynamic and Navigator are Cognitive Shadow collections that retrieve, preserve, prepare, and route Gemstones across Emberdark. Kandra are restricted mission-bound workers, and TenSoon verifies both pre-Coppermind intake and exact Phoenix draft candidates without granting permanence.
 - Phoenix is Codex's canonical-source maintenance Operation. Elantris owns backup, restore, rollback, and recovery. Controlled Burn and Phoenix Burn retain their current meanings pending a later bounded redefinition.
 - Runtime, infrastructure, database, Gitea, website, lifecycle, migration, and route-retirement work require later bounded source and proof transactions. No public endpoint, unrestricted SQL authority, secret, protected raw evidence, new notification platform, or new scheduling platform is authorized here.
+
+## Cloud Atlas protected-realm boundary
+
+Cloud Atlas is the protected private realm governed by
+`governance/cloud-atlas-protected-realm-contract.md`; it is not a Project,
+Quest, database, host, or deployment claim. Coppermind, Emberdark, Harmony, the
+Protected Original Vault, Phoenix, and the approved secret system retain
+separate identities and least-privilege authority. Mission #279 establishes
+classification, provenance, export, denied-access, backup/restore requirement,
+and degraded-mode architecture only. It does not advance PA-C01, activate a
+runtime, import protected evidence, create secrets, or prove recovery.
 
 ## Future Gitea/Phoenix validation augmentation
 
