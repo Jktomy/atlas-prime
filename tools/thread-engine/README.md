@@ -23,6 +23,10 @@ The production adapter under `production_adapter/` is activated only as mission-
 
 The active adapter requires an exact mission authority, mission SHA-256 binding, explicit mission-scoped draft-PR intent, Fresh Clone First, declared paths, source locks, payload hashes, candidate-tree verification, final path-set verification, `git diff --check`, staged diff verification, a pre-push canonical-main recheck, one deterministic branch, one single-parent commit, one draft PR, and independent readback. It never activates persistent writer authority, standing automation, ready transition, merge, workflow dispatch, unprofiled generated-output mutation, repository-setting authority, cleanup, or production configuration.
 
+For new transactions whose route supports prepublication proof, the operator must first create and verify the shared `atlas.candidate-seal.v1` record defined by `tools/candidate_seal/`. Thread Engine remains the publisher rather than the seal compiler: it accepts only the exact sealed base, branch, paths, bytes, candidate tree, optional local head, and PASS-evidence generation, rechecks them before the first remote mutation, and stops on drift or replay. An exact partial branch may resume only draft-PR creation without repush; any other partial or unknown state stops.
+
+Candidate-caused repair follows one sealed batch. All readable findings are reconciled before mutation, the prior seal and all dependent evidence are invalidated, and one replacement seal is required before one consolidated repair publication. Thread Engine does not emit piecemeal repair pushes, force-push, blindly retry, READY, merge, or convert the shared seal into publisher authority.
+
 ## Universal direct-Spear repository paths
 
 Direct Spear may author any safe repository-relative path in Prime. Governance, lifecycle, schemas, workflows, generated source, Quest source, recovery source, and `tools/thread-engine/**` are all valid declared targets in an exact Jayson-authorized Weave.
