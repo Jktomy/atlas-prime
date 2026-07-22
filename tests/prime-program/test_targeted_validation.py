@@ -21,7 +21,7 @@ class TargetedValidationTests(unittest.TestCase):
         self.assertEqual(plan["profile"], "targeted")
         self.assertEqual(
             plan["checks"],
-            ["kernel", "repository_policy", "privacy", "prime_program", "source_validation", "generated_current"],
+            ["kernel", "repository_policy", "privacy", "prime_program", "source_validation", "generated_diagnostics"],
         )
         self.assertFalse(plan["windows_required"])
         self.assertEqual(plan["unclassified_paths"], [])
@@ -55,11 +55,11 @@ class TargetedValidationTests(unittest.TestCase):
                 plan = MODULE.classify_paths([changed_path])
                 self.assertTrue(plan["windows_required"])
 
-    def test_generated_only_change_keeps_windows_conditional(self) -> None:
+    def test_generated_path_retirement_keeps_windows_conditional(self) -> None:
         plan = MODULE.classify_paths(["generated/atlas-file-inventory.md"])
         self.assertEqual(plan["profile"], "targeted")
         self.assertIn("generators", plan["checks"])
-        self.assertIn("generated_current", plan["checks"])
+        self.assertIn("generated_diagnostics", plan["checks"])
         self.assertFalse(plan["windows_required"])
 
     def test_generator_and_schema_changes_require_windows(self) -> None:

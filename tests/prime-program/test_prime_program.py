@@ -63,9 +63,11 @@ class PrimeProgramTests(unittest.TestCase):
         self.assertIn("FINAL WHOLE-QUEST STRIKEFORCE: GREEN", repairing_source)
         self.assertIn("PHOENIX RECOVERY: PROVEN / ACCEPTED", repairing_source)
         self.assertIn("NEXT GATE: CLOSED", repairing_source)
-        self.assertIn("Former G4-E means only the construction layer", conservation)
-        self.assertIn("Former G4-F means only the later live", conservation)
-        self.assertIn("invokes only the singular Thread Engine", conservation)
+        self.assertIn("five Markdown inventory functions", conservation)
+        self.assertIn("temporary storage", conservation)
+        self.assertIn("Historical proof", conservation)
+        self.assertIn("dormant compatibility", conservation)
+        self.assertIn("no generated-only", conservation)
         independent = {
             item["quest_id"]: (item["source"], item["state"], item["next_gate"])
             for item in board["entries"]

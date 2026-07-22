@@ -4,13 +4,6 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-APPROVED_GENERATED = {
-    "atlas-duplicate-scope-report.md",
-    "atlas-file-inventory.md",
-    "atlas-metadata-inventory.md",
-    "atlas-orphan-report.md",
-    "atlas-routing-inventory.md",
-}
 
 required = [
     "README.md",
@@ -106,18 +99,8 @@ assert (
 )
 
 generated_root = ROOT / "generated"
-if generated_root.exists():
-    generated_files = {
-        path.relative_to(generated_root).as_posix()
-        for path in generated_root.rglob("*")
-        if path.is_file()
-    }
-    if generated_files != APPROVED_GENERATED:
-        raise SystemExit(f"Prime generated path set is not approved: {sorted(generated_files)}")
-    for name in APPROVED_GENERATED:
-        text = (generated_root / name).read_text(encoding="utf-8")
-        if "Status: Generated support artifact" not in text or "Generated indexes report. They do not govern." not in text:
-            raise SystemExit(f"Prime generated boundary marker is missing: {name}")
+if generated_root.exists() and any(path.is_file() for path in generated_root.rglob("*")):
+    raise SystemExit("Committed generated projection reports are retired from the active tree")
 
 for path in ROOT.rglob("*"):
     if path.is_file() and (path.suffix in {".pyc", ".pyo"} or "__pycache__" in path.parts):

@@ -106,10 +106,12 @@ class PrimeRepositoryProcessTests(unittest.TestCase):
         self.assertIn("Never blindly retry a merge", recovery)
         self.assertIn("canonical-main", shard)
 
-    def test_generated_state_has_closed_outcomes(self) -> None:
+    def test_projection_diagnostics_have_closed_outcomes(self) -> None:
         contract = source("governance/repository-process-contract.md")
-        for marker in ("CURRENT", "STALE_ALLOWED", "STALE_BLOCKING"):
+        for marker in ("Projection diagnostics", "`PASS`", "`FAIL`", "machine-readable"):
             self.assertIn(marker, contract)
+        for retired in ("STALE_ALLOWED", "STALE_BLOCKING"):
+            self.assertNotIn(retired, contract)
 
 
 if __name__ == "__main__":

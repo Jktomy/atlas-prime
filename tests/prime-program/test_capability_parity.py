@@ -89,9 +89,13 @@ class CapabilityParityTests(unittest.TestCase):
         self.assertEqual(proof["transitions"]["CAP-015"]["to"], "RESTORED/ACTIVE")
 
     def test_hosted_and_generated_capabilities_remain_restored(self) -> None:
-        for capability_id in ("CAP-009", "CAP-010", "CAP-011", "CAP-019", "CAP-020", "CAP-023"):
+        for capability_id in ("CAP-009", "CAP-010", "CAP-011", "CAP-023"):
             self.assertEqual(self.records[capability_id]["capability_disposition"], "RESTORED")
             self.assertEqual(self.records[capability_id]["activation_state"], "ACTIVE")
+        for capability_id in ("CAP-019", "CAP-020"):
+            self.assertEqual(self.records[capability_id]["capability_disposition"], "RESTORED")
+            self.assertEqual(self.records[capability_id]["activation_state"], "INTENTIONALLY_RETIRED")
+            self.assertIn("historical", self.records[capability_id]["current_state"].casefold())
         self.assertIn("Jayson/Artemis Arrow/Bow", self.records["CAP-009"]["current_state"])
 
     def test_legacy_oathbringer_capability_is_replaced(self) -> None:

@@ -47,6 +47,9 @@ It must not be selected by automatic routing or required for Jayson-authorized S
 
 `tools.athena_routes.m05_parity` verifies exact direct-Spear and hosted Arrow/Bow compiler, mission, candidate-tree, final-pathset, adapter, branch, PR, head, checkpoint, and forbidden-action joins from one singular execution. It emits closed evidence only and cannot execute, retry, merge, confer permanence, or self-promote a capability or Quest.
 
-## Generated post-merge route
+## Generated projection diagnostics
 
-The generated checkpoint publisher is separate from this route-ownership taxonomy. After an authorized non-generated source merge reaches main, it prepares the deterministic five-report delta, invokes the singular Thread Engine only for a full delta, and validates the exact generated draft head on Ubuntu and Windows. Zero delta is a read-only `NOOP`; partial delta fails closed; automatic ready and merge remain forbidden.
+Generated projection analysis is separate from this route-ownership taxonomy.
+Ordinary Prime validation builds the five diagnostics in temporary storage and
+emits a machine-readable receipt. It creates no post-merge publisher mission,
+branch, pull request, READY transition, or merge.

@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
-"""Build deterministic Atlas generated index support files.
+"""Build deterministic Atlas projection diagnostics.
 
 This tool is bounded by governance/source-lifecycle.md.
 
-It may read repository Markdown and write only the five approved Markdown
-reports to the declared output directory. Generated indexes report; they do
-not govern.
+It reads repository Markdown and normally evaluates the five approved reports
+inside temporary storage. An explicit output directory remains available for
+noncanonical inspection and historical compatibility. Projections report;
+they do not govern.
 """
 
 from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import re
+import tempfile
 from pathlib import Path
 from typing import Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
@@ -448,6 +451,42 @@ def output_bytes(content: str) -> bytes:
     return normalized.encode("utf-8")
 
 
+def build_diagnostic_receipt(repo_root: Path) -> Dict[str, object]:
+    """Reproduce all five projections twice and verify temporary byte identity."""
+
+    first, source_fingerprint = build_outputs(repo_root)
+    second, repeated_fingerprint = build_outputs(repo_root)
+    if source_fingerprint != repeated_fingerprint or first != second:
+        raise ValueError("Repeated generated projection build was not byte-identical.")
+
+    records: List[Dict[str, object]] = []
+    with tempfile.TemporaryDirectory(prefix="atlas-projection-diagnostics-") as raw:
+        diagnostic_root = Path(raw)
+        for filename in APPROVED_OUTPUTS:
+            data = output_bytes(first[filename])
+            target = diagnostic_root / filename
+            target.write_bytes(data)
+            if target.read_bytes() != data:
+                raise ValueError(f"Temporary diagnostic readback failed: {filename}")
+            records.append(
+                {
+                    "path": filename,
+                    "sha256": hashlib.sha256(data).hexdigest(),
+                    "size": len(data),
+                }
+            )
+
+    return {
+        "schema_id": "atlas.generated-projection-diagnostics.v1",
+        "result": "PASS",
+        "generator_format": GENERATOR_FORMAT,
+        "source_fingerprint": f"sha256:{source_fingerprint}",
+        "temporary_storage": True,
+        "output_count": len(records),
+        "outputs": records,
+    }
+
+
 def write_outputs(
     outputs: Mapping[str, str], output_dir: Path, *, dry_run: bool = False
 ) -> Dict[str, str]:
@@ -527,6 +566,11 @@ def main() -> int:
         help="Repository root to scan.",
     )
     parser.add_argument(
+        "--diagnostics",
+        action="store_true",
+        help="Build twice in temporary storage and emit one machine-readable receipt.",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         help="Directory for the five generated Markdown outputs.",
@@ -554,6 +598,26 @@ def main() -> int:
     args = parser.parse_args()
 
     repo_root = args.repo_root.resolve()
+    implicit_diagnostics = not any(
+        (args.output_dir, args.compare_dir, args.hash_file, args.status_file)
+    )
+    if args.diagnostics or implicit_diagnostics:
+        if any((args.output_dir, args.compare_dir, args.hash_file, args.status_file)):
+            raise SystemExit("--diagnostics cannot be combined with materialization options")
+        try:
+            receipt = build_diagnostic_receipt(repo_root)
+        except Exception as exc:
+            receipt = {
+                "schema_id": "atlas.generated-projection-diagnostics.v1",
+                "result": "FAIL",
+                "error_type": type(exc).__name__,
+                "error": str(exc),
+            }
+            print(json.dumps(receipt, sort_keys=True))
+            return 1
+        print(json.dumps(receipt, sort_keys=True))
+        return 0
+
     output_dir = (args.output_dir or (repo_root / "generated")).resolve()
 
     outputs, source_fingerprint = build_outputs(repo_root)

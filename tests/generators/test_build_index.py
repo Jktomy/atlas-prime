@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import importlib.util
+import json
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -15,6 +18,27 @@ SPEC.loader.exec_module(GENERATOR)
 
 
 class PrimeGeneratorTests(unittest.TestCase):
+    def test_diagnostics_are_machine_readable_temporary_and_complete(self) -> None:
+        completed = subprocess.run(
+            [sys.executable, "-B", str(ROOT / "tools/build_index.py"), "--diagnostics"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        receipt = json.loads(completed.stdout)
+        self.assertEqual(receipt["schema_id"], "atlas.generated-projection-diagnostics.v1")
+        self.assertEqual(receipt["result"], "PASS")
+        self.assertTrue(receipt["temporary_storage"])
+        self.assertEqual(receipt["output_count"], 5)
+        self.assertEqual(
+            [record["path"] for record in receipt["outputs"]],
+            list(GENERATOR.APPROVED_OUTPUTS),
+        )
+        self.assertFalse(
+            any(path.is_file() for path in (ROOT / "generated").rglob("*"))
+        )
+
     def test_repeated_build_is_byte_identical(self) -> None:
         with tempfile.TemporaryDirectory(prefix="prime-generator-") as raw:
             root = Path(raw) / "repo"

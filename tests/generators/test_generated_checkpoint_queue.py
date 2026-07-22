@@ -357,89 +357,20 @@ class GeneratedCheckpointQueueTests(unittest.TestCase):
             self.assert_receipt_shape(rejected, checkpoint=False)
             self.assert_receipt_hash(rejected)
 
-    def test_workflow_admission_query_and_deferred_topology_are_exact(self) -> None:
-        workflow = (
+    def test_hosted_entrypoint_is_absent_and_pr_validation_remains(self) -> None:
+        publisher = (
             Path(__file__).resolve().parents[2]
-            / ".github"
-            / "workflows"
-            / "generated-checkpoint-publisher.yml"
-        ).read_text(encoding="utf-8")
+            / ".github" / "workflows" / "generated-checkpoint-publisher.yml"
+        )
         validation_workflow = (
             Path(__file__).resolve().parents[2]
             / ".github"
             / "workflows"
             / "prime-readonly-validation.yml"
         ).read_text(encoding="utf-8")
-        queue_block = workflow.split("\n  queue:\n", 1)[1].split("\n  parity:\n", 1)[0]
-        parity_block = workflow.split("\n  parity:\n", 1)[1].split("\n  reconcile:\n", 1)[0]
-        reconcile_block = workflow.split("\n  reconcile:\n", 1)[1].split("\n  prepare:\n", 1)[0]
-        prepare_block = workflow.split("\n  prepare:\n", 1)[1].split("\n  publish:\n", 1)[0]
-        publish_block = workflow.split("\n  publish:\n", 1)[1]
-
-        self.assertLess(queue_block.index("Admit exact publisher invocation"), queue_block.index("uses:"))
-        for phrase in (
-            'expectedRepository = "Jktomy/atlas-prime"',
-            'expectedOwner = "Jktomy"',
-            "$env:GITHUB_ACTOR",
-            "$env:GITHUB_TRIGGERING_ACTOR",
-            "$env:GITHUB_EVENT_NAME -ceq \"push\"",
-            "$env:GITHUB_EVENT_NAME -ceq \"workflow_dispatch\"",
-            '"refs/heads/main"',
-            "$env:GITHUB_SHA",
-            "$env:GITHUB_WORKFLOW_SHA",
-            "$env:GENERATED_BASE_SHA",
-            "git/ref/heads/main",
-        ):
-            self.assertIn(phrase, queue_block)
-        self.assertIn("pull-requests: read", queue_block)
-        self.assertNotIn("contents: write", queue_block)
-        self.assertNotIn("pull-requests: write", queue_block)
-        self.assertIn("--limit 1001", queue_block)
-        self.assertIn(
-            "--json number,state,isDraft,isCrossRepository,author,headRefName,headRefOid,headRepository,headRepositoryOwner,baseRefName,baseRefOid,title,body",
-            queue_block,
-        )
-        self.assertIn("sort_by(.number) | map({", queue_block)
-        self.assertIn("tools.generated_checkpoint.queue", queue_block)
-        self.assertIn('"queue_result=DEFERRED_OPEN_CHECKPOINT"', queue_block)
-        self.assertIn("needs: queue", parity_block)
-        self.assertIn("needs.queue.result == 'success'", parity_block)
-        self.assertIn("needs.queue.outputs.queue_result == 'CLEAR'", parity_block)
-        self.assertIn("needs: parity", reconcile_block)
-        self.assertIn("needs: reconcile", prepare_block)
-        self.assertIn("- prepare", publish_block)
-        self.assertIn("DRAFT_CREATED; required pull-request validation pending", publish_block)
-        self.assertNotIn("\n  validate_exact_head:\n", workflow)
-        self.assertNotIn("Validate generated exact head", workflow)
-        self.assertNotIn("needs.publish.outputs.head_sha", workflow)
+        self.assertFalse(publisher.exists())
         self.assertIn("name: prime/integrity", validation_workflow)
         self.assertIn("name: prime/windows-compatibility", validation_workflow)
-        for block in (parity_block, reconcile_block, prepare_block, publish_block):
-            job_preamble = block.split("\n    steps:\n", 1)[0]
-            self.assertNotIn("always()", job_preamble)
-            self.assertNotIn("!cancelled()", job_preamble)
-            self.assertNotIn("continue-on-error", block)
-
-    def test_workflow_preserves_single_writer_and_no_automatic_permanence(self) -> None:
-        workflow = (
-            Path(__file__).resolve().parents[2]
-            / ".github"
-            / "workflows"
-            / "generated-checkpoint-publisher.yml"
-        ).read_text(encoding="utf-8")
-        self.assertNotIn("paths-ignore:", workflow)
-        self.assertNotIn('"generated/**"', workflow)
-        self.assertEqual(workflow.count("contents: write"), 1)
-        self.assertEqual(workflow.count("pull-requests: write"), 1)
-        self.assertEqual(workflow.count("production_adapter.cli"), 1)
-        self.assertNotIn("pull_request_target", workflow)
-        self.assertNotIn("actions: write", workflow)
-        self.assertNotIn("persist-credentials: true", workflow)
-        self.assertNotIn("gh workflow run", workflow)
-        self.assertNotIn("gh pr close", workflow)
-        self.assertNotIn("gh pr ready", workflow)
-        self.assertNotIn("gh pr merge", workflow)
-        self.assertNotIn("force-push", workflow)
 
 
 if __name__ == "__main__":

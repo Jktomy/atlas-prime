@@ -141,19 +141,19 @@ The owner-guided publisher is a Jayson/Artemis Arrow/Bow launcher over the exist
 
 The guided publisher may not call the adapter directly, create or update a branch or PR, retry partial state, mark ready, merge, change settings, or become a second writer. CAP-010 is already accepted from its separate live journey and does not establish or limit Athena's Spear identity.
 
-## Generated explicit owner-dispatch route
+## Generated projection diagnostic route
 
-Canonical `main` pushes do not launch `.github/workflows/generated-checkpoint-publisher.yml`. An explicit owner `workflow_dispatch`, bound to exact current `main`, is the only hosted entrypoint. Before parity work, the read-only queue admission binds the exact repository, owner actor, triggering actor, event, main ref, workflow source, requested base, current-main readback, run identity, and ephemeral GitHub credential class. It enumerates at most 1,000 open pull requests through a 1,001-entry sentinel so the accepted queue cannot silently truncate. Its durable sanitized receipt binds the closed query boundary and observed snapshot by SHA-256 and never authorizes mutation.
+The hosted generated-checkpoint publisher has no active workflow entrypoint.
+Ordinary Prime validation recomputes all five projection functions twice in
+temporary storage, verifies exact byte readback, and emits a machine-readable
+receipt. A successful authored merge needs no generated-only follow-up; a
+diagnostic failure blocks the same candidate before permanence.
 
-Exactly one open generated checkpoint may yield successful `DEFERRED_OPEN_CHECKPOINT` only when its readback is an internally consistent publisher-owned draft: GitHub Actions bot author, same Prime repository and owner, `main` base, exact generated title and mission, deterministic branch and replay relation, and canonical publisher body provenance. Its historical base may truthfully precede the newer queue run's current main. An older serialized event may likewise defer against a recorded newer current main because deferral cannot mutate; a `CLEAR` decision with event-base drift fails closed before parity. A malformed, inconsistent, forged, non-draft, or multiple generated identity fails closed. Successful deferral leaves parity, reconciliation, preparation, publication, and exact-head validation skipped, performs no mutation, and is an overall GREEN workflow outcome.
-
-While one valid generated draft is open, an explicit later dispatch defers read-only and canonical source changes continue to accumulate without hosted work. A later owner dispatch recomputes all five projections from then-current source. Current reports return successful `NOOP` with no mission, commit, branch, PR, or self-dispatch. Accumulated source changes produce one full five-file mission and one fresh deterministic generated-only draft through the singular Thread Engine; a partial delta fails closed.
-
-Closing a generated draft without merge does not move `main` and does not wake the publisher. Recovery is an explicit owner `workflow_dispatch` bound to exact current main. There is no push, pull-request-close, or schedule trigger and no automatic close, replacement, retry, ready, merge, branch deletion, or direct generated write to `main`.
-
-Queue preflight is defense in depth, not a replacement writer. The singular Thread Engine retains its final remote-head, branch-collision, generated-PR-collision, mission replay, nonce replay, stale-base, pre-push, exact path/blob, and draft readback locks. No generated queue component may become a second repository writer.
-
-This explicit generated route is not Spear, Phoenix Blade, Aegis Break, or Bow/Arrow route ownership. It preserves the generated lifecycle described by AJ-09 and CAP-019/CAP-020 while removing automatic launch. It never automatically readies or merges the generated PR.
+Historical proof and dormant compatibility implementation remain available for
+audit and clean-clone understanding, but they create no dispatch, queue,
+publication, branch, pull request, READY, or merge route. Restoring the former
+publisher or committed report permanence requires a new reviewed architecture
+transaction. This refraction deploys no Coppermind or Glass Codex runtime.
 
 ## Evidence and promotion boundary
 

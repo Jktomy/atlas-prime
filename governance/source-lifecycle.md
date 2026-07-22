@@ -29,7 +29,7 @@ Prime is the sole active canonical authored source. A source file controls only 
 10. **Ready** only the unchanged validated head. Without Shardblade authority, report `Prime PR #___ is ready to merge.`
 11. **Merge** manually by Jayson by default, or through one exact transaction-scoped Shardblade action when the current Jayson instruction explicitly invokes it.
 12. **Read back** the merged PR, merge SHA, canonical main, tree, paths, continuity, generated-state consequence, receipts, and rollback posture.
-13. **Regenerate** projections separately from source when the transaction is `STALE_ALLOWED`.
+13. **Diagnose** nonauthoritative projections in temporary storage as part of ordinary validation.
 14. **Sunset** superseded source with an explicit replacement or archive pointer.
 
 ## Source boundaries
@@ -38,7 +38,7 @@ Prime is the sole active canonical authored source. A source file controls only 
 - Historical, failed, preview, harvest, closeout, release, and predecessor-only material stays in the frozen predecessor or the final Receipt Gemstone unless a current canonical contract explicitly requires a sanitized record.
 - Private evidence stays in its approved evidence system; Prime may keep only sanitized policy and pointers.
 - A source removal requires a disposition: KEEP, MERGE, REMODEL, REGENERATE, ARCHIVE, or EXCLUDE.
-- Generated outputs live only under `generated/`, carry their source fingerprint, and are reproducible from merged Prime source.
+- Projection diagnostics are temporary, carry their source fingerprint, and are reproducible from merged Prime source without committed report files.
 - A partial candidate is not made acceptable by calling the PR a draft; deterministically knowable dependencies belong in the initial candidate.
 
 ## Change routes
@@ -47,7 +47,7 @@ Prime is the sole active canonical authored source. A source file controls only 
 - Immutable carrier: Athena Weave → Arrow → Bow → Thread Engine.
 - Protected non-self-change: exact Aegis Break authority → Thread Engine protected route or another exact approved route.
 - Thread Engine self-change or independent emergency bootstrap: Aegis Break → Oathbringer.
-- Generated refresh: generator-only transaction after source merge.
+- Projection diagnostics: read-only temporary evaluation inside ordinary validation; no follow-up publication transaction.
 - Route failover: read-only reconciliation of the same transaction before any alternate publisher acts; never create a duplicate mission, branch, or PR.
 
 ## Permanence authority

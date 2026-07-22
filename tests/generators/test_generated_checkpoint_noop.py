@@ -207,30 +207,10 @@ class GeneratedCheckpointNoopTests(unittest.TestCase):
             self.assertFalse((package / "mission.json").exists())
             self.assertFalse((package / "noop-receipt.json").exists())
 
-    def test_workflow_keeps_noop_read_only_and_writer_full_delta_only(self) -> None:
-        workflow = (
-            ROOT / ".github" / "workflows" / "generated-checkpoint-publisher.yml"
-        ).read_text(encoding="utf-8")
-        prepare_block = workflow.split("\n  prepare:\n", 1)[1].split("\n  publish:\n", 1)[0]
-        publish_block = workflow.split("\n  publish:\n", 1)[1].split(
-            "\n  validate_exact_head:\n", 1
-        )[0]
-        self.assertIn("route_result: ${{ steps.prepare_checkpoint.outputs.route_result }}", prepare_block)
-        self.assertIn('"route_result=NOOP"', prepare_block)
-        self.assertIn("contents: read", prepare_block)
-        self.assertNotIn("contents: write", prepare_block)
-        self.assertNotIn("pull-requests: write", prepare_block)
-        self.assertIn(
-            "needs.prepare.outputs.route_result == 'PACKAGE_PREPARED'",
-            publish_block,
+    def test_hosted_checkpoint_entrypoint_is_retired(self) -> None:
+        self.assertFalse(
+            (ROOT / ".github" / "workflows" / "generated-checkpoint-publisher.yml").exists()
         )
-        self.assertIn("contents: write", publish_block)
-        self.assertIn("pull-requests: write", publish_block)
-        self.assertIn("generated-checkpoint-preparation-", workflow)
-        self.assertNotIn("paths-ignore:", workflow)
-        self.assertNotIn("actions: write", workflow)
-        self.assertNotIn("automatic merge", workflow.casefold())
-        self.assertNotIn("gh workflow run", workflow)
 
 
 if __name__ == "__main__":

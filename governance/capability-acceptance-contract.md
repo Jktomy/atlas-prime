@@ -27,7 +27,7 @@ Only exact evidence and canonical readback may move a capability to RESTORED, RE
 | AJ-06 | Oathbringer EXECUTE | A separately authorized exact audited head is merged only after applicable CI and exact readback. |
 | AJ-07 | Continuity update | Exactly one continuity entry changes without unrelated source changes. |
 | AJ-08 | Quest admission | A valid Quest is admitted through registry/schema rules without a validator code edit. |
-| AJ-09 | Generated lifecycle | Source merge produces Linux/Windows byte parity and a separate generated-only draft PR. |
+| AJ-09 | Generated lifecycle | Historical source merge proved Linux/Windows byte parity and a separate generated-only draft PR; current operation preserves the five functions as temporary validation diagnostics. |
 | AJ-10 | Sunset and restart | One Sunset invocation creates exactly one new sealed Feather and one Sunset bound to it; admitted-Quest work adds the applicable checkpoint, non-Quest work invents no Quest, and a fresh context reconstructs the exact Sunset/Feather pair and next safe gate from Prime source. |
 | AJ-11 | Clean-clone recovery | Prime recovers from a clean clone without normal Codex dependency. |
 | AJ-12 | Merged-main validation | Final merged main passes complete Prime validation on Linux and Windows at the exact SHA. |
@@ -65,6 +65,11 @@ The R04 Foundry acceptance repeated the complete BUILD → REPAIR → independen
 AJ-09 is `PROVEN`. Owner-triggered hosted evidence built byte-identical Ubuntu and Windows registers, invoked the singular Thread Engine, created generated-only draft PR `#138`, passed exact-head validation and detached review, and reproduced canonical generated state as `CURRENT`.
 
 PRs `#181` and `#182` later made the post-source-merge publisher automatic for non-generated main pushes, preserved manual recovery dispatch, added exact generated-head Ubuntu/Windows validation, and made zero generated delta a successful read-only `NOOP`. They did not add automatic ready or merge authority.
+
+Mission #296 later retired that routine permanence cycle. The historical AJ-09
+proof remains accepted; active operation now reproduces the same five functions
+inside ordinary validation temporary storage and emits a machine-readable
+diagnostic receipt without a generated-only follow-up transaction.
 
 ## Accepted Sunset and restart journey
 
@@ -152,6 +157,10 @@ Windows validation in run `29472056220` and merged as canonical main
 projections current at source fingerprint
 `sha256:bec1e11e85091017abda4a2943cb2cc9805dcd9b8ce7897342f40ae08ece3a95`
 with no successor generated candidate or canonical generated delta.
+
+Those values remain historical readback facts. The active tree no longer keeps
+the five reports, so current validation proves deterministic diagnostic
+reproduction rather than committed projection freshness.
 
 The independent final whole-Quest Strikeforce at that exact main is GREEN. It
 found zero blocking defects, authority contradictions, capability gaps,
