@@ -15,7 +15,7 @@ Atlas is the umbrella ecosystem. Its twelve durable Projects are:
 
 1. **Odyssey** — Prometheus, Forge, network, Citadel, Gatehouse, access, and infrastructure.
 2. **Codex** — source governance, Janus/Argus intake, document pipeline, protocols, templates, Coppermind memory, Phoenix canonical maintenance, archive, indexing, and hash-bound Context Packs governed by `knowledge/context-pack-contract.md`. After cutover this is a domain name, not a repository dependency.
-3. **Artemis** — Operation Harmony, Sazed/Harmony, Emberdark transit, Perpendicularity, Cognitive Shadows, Kandra, AI governance, and future intelligence surfaces.
+3. **Artemis** — Operation Harmony, Sazed/Harmony, Emberdark transit, Cloud Atlas protected-realm architecture, Perpendicularity, Cognitive Shadows, Kandra, AI governance, and future intelligence surfaces. Cloud Atlas is a realm, not a Project.
 4. **Elantris** — backup, restore, recovery, rollback, power resilience, and recovery drills.
 5. **Beacon** — Home Olympus, Home Assistant, Morningstar, smart-device integrations, physical maintenance through Tempest, home front ends, and safe manual fallback.
 6. **Helios** — Sun Maker, Sun Eater, Relay, library governance, and future Steam Engine.

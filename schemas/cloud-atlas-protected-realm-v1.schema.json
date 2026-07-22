@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas-prime.local/schemas/cloud-atlas-protected-realm-v1.schema.json",
+  "title": "Cloud Atlas Protected Realm Contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "realm_id",
+    "authority",
+    "deployment_state",
+    "data_classes",
+    "services",
+    "access_rules",
+    "export_rules",
+    "recovery",
+    "degraded_modes",
+    "denied_authorities"
+  ],
+  "properties": {
+    "schema_version": {"const": "atlas.cloud-atlas-protected-realm.v1"},
+    "realm_id": {"const": "CLOUD-ATLAS-PROTECTED-REALM-R01"},
+    "authority": {"const": "QUEST-PRIME-ASCENDANT-20260717"},
+    "deployment_state": {"const": "SOURCE_ARCHITECTURE_ONLY"},
+    "data_classes": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "protected", "canonicality", "provenance_required"],
+        "properties": {
+          "id": {"enum": ["PROTECTED_ORIGINAL", "EXTRACTED_REPRESENTATION", "STRUCTURED_RECORD", "SANITIZED_SUMMARY", "PUBLIC_CLEAN_EXPORT", "DERIVED_INDEX_OR_EMBEDDING", "AUDIT_RECEIPT", "PROTECTED_POINTER"]},
+          "protected": {"type": "boolean"},
+          "canonicality": {"enum": ["AUTHORITATIVE_ORIGINAL", "NONCANONICAL_DERIVATIVE", "PUBLIC_CLEAN_DERIVATIVE", "RECEIPT_ONLY", "POINTER_ONLY"]},
+          "provenance_required": {"const": true}
+        }
+      }
+    },
+    "services": {
+      "type": "array",
+      "minItems": 7,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "owner", "role", "may_read", "may_write", "never"],
+        "properties": {
+          "id": {"enum": ["PRIME", "ORIGINAL_VAULT", "COPPERMIND", "EMBERDARK", "HARMONY", "PHOENIX", "SECRET_SYSTEM"]},
+          "owner": {"type": "string", "minLength": 1},
+          "role": {"type": "string", "minLength": 1},
+          "may_read": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "may_write": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "never": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}
+        }
+      }
+    },
+    "access_rules": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string"}},
+    "export_rules": {"type": "array", "minItems": 4, "uniqueItems": true, "items": {"type": "string"}},
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["complete_backup", "selective_backup", "complete_restore", "selective_restore", "integrity_validation", "provenance_validation", "recovery_destination"],
+      "properties": {
+        "complete_backup": {"const": "REQUIRED_UNPROVEN"},
+        "selective_backup": {"const": "REQUIRED_UNPROVEN"},
+        "complete_restore": {"const": "REQUIRED_UNPROVEN"},
+        "selective_restore": {"const": "REQUIRED_UNPROVEN"},
+        "integrity_validation": {"const": "REQUIRED_UNPROVEN"},
+        "provenance_validation": {"const": "REQUIRED_UNPROVEN"},
+        "recovery_destination": {"const": "FORGE_ENCRYPTED_RECOVERY_DESTINATION_NOT_PRIMARY_RUNTIME"}
+      }
+    },
+    "degraded_modes": {"type": "object", "minProperties": 6, "additionalProperties": {"enum": ["READ_ONLY", "UNAVAILABLE_FAIL_CLOSED", "QUEUE_NO_REPLAY", "CANONICAL_SOURCE_ONLY"]}},
+    "denied_authorities": {"type": "array", "minItems": 8, "uniqueItems": true, "items": {"type": "string"}}
+  }
+}

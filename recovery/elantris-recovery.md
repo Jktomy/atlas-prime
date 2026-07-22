@@ -95,6 +95,25 @@ A missing publisher, local clone, connector, or network path changes the carrier
 
 No recovery route may manufacture a lifecycle source fingerprint, recreate an approval from chat memory, substitute a narrative summary, or report `SUNSET COMPLETE` before canonical merged-main readback.
 
+## Cloud Atlas protected-realm recovery boundary
+
+Read `governance/cloud-atlas-protected-realm-contract.md` before any Cloud
+Atlas recovery design or claim. Preserve exact separation among the Protected
+Original Vault, Coppermind, Emberdark, Harmony, Phoenix, and the approved secret
+system. Recovery requires complete and selective-service backup, complete and
+selective restore, integrity and provenance validation, and least-privilege
+readback. Restore one bounded identity at a time where possible; never let a
+restored derivative impersonate an original or let co-location confer vault,
+SQL, secret, source, or permanence authority.
+
+Forge is an approved encrypted recovery destination, not the primary protected
+runtime. If Forge or the Original Vault is unavailable, recoverability or
+original availability is `UNPROVEN`/`UNAVAILABLE` and fails closed. If
+Coppermind, Emberdark, Harmony, or Phoenix is unavailable, follow the explicit
+degraded mode in the validated protected-realm contract. Mission #279 proves
+architecture only; no backup, restore, protected import, secret, database,
+storage, network, or runtime action is claimed.
+
 ## Prometheus's Fire recovery boundary
 
 The Prometheus architecture requires narrow Forge mounts with safe unavailable-mount behavior, Prometheus guest backups, a destructive canary restore, and an independent recovery copy not confined to Forge.

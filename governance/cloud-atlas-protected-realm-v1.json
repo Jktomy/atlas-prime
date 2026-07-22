@@ -1,0 +1,69 @@
+{
+  "schema_version": "atlas.cloud-atlas-protected-realm.v1",
+  "realm_id": "CLOUD-ATLAS-PROTECTED-REALM-R01",
+  "authority": "QUEST-PRIME-ASCENDANT-20260717",
+  "deployment_state": "SOURCE_ARCHITECTURE_ONLY",
+  "data_classes": [
+    {"id": "PROTECTED_ORIGINAL", "protected": true, "canonicality": "AUTHORITATIVE_ORIGINAL", "provenance_required": true},
+    {"id": "EXTRACTED_REPRESENTATION", "protected": true, "canonicality": "NONCANONICAL_DERIVATIVE", "provenance_required": true},
+    {"id": "STRUCTURED_RECORD", "protected": true, "canonicality": "NONCANONICAL_DERIVATIVE", "provenance_required": true},
+    {"id": "SANITIZED_SUMMARY", "protected": false, "canonicality": "PUBLIC_CLEAN_DERIVATIVE", "provenance_required": true},
+    {"id": "PUBLIC_CLEAN_EXPORT", "protected": false, "canonicality": "PUBLIC_CLEAN_DERIVATIVE", "provenance_required": true},
+    {"id": "DERIVED_INDEX_OR_EMBEDDING", "protected": true, "canonicality": "NONCANONICAL_DERIVATIVE", "provenance_required": true},
+    {"id": "AUDIT_RECEIPT", "protected": false, "canonicality": "RECEIPT_ONLY", "provenance_required": true},
+    {"id": "PROTECTED_POINTER", "protected": false, "canonicality": "POINTER_ONLY", "provenance_required": true}
+  ],
+  "services": [
+    {"id": "PRIME", "owner": "Codex / Source Governance", "role": "Durable public-clean doctrine", "may_read": ["PUBLIC_CLEAN_EXPORT", "SANITIZED_SUMMARY", "AUDIT_RECEIPT", "PROTECTED_POINTER"], "may_write": ["PUBLIC_CLEAN_DOCTRINE_THROUGH_REVIEW"], "never": ["PROTECTED_DATA", "SECRETS", "RUNTIME_STATE"]},
+    {"id": "ORIGINAL_VAULT", "owner": "Jayson / approved protected-data authority", "role": "Byte-preserved authoritative originals", "may_read": ["PROTECTED_ORIGINAL"], "may_write": ["IMMUTABLE_OR_VERSIONED_ORIGINAL"], "never": ["SILENT_NORMALIZATION", "PRIME_PLACEMENT", "DIRECT_VSCODE_MOUNT", "UNRESTRICTED_MODEL_OR_SQL_ACCESS"]},
+    {"id": "COPPERMIND", "owner": "Codex / Operation Coppermind", "role": "Replaceable noncanonical PostgreSQL operational read model using full-text search and pgvector", "may_read": ["APPROVED_EXTRACTED_REPRESENTATION", "APPROVED_STRUCTURED_RECORD"], "may_write": ["PROVENANCE_BOUND_RECORD", "DERIVED_INDEX_OR_EMBEDDING"], "never": ["REPLACE_PRIME", "UNRESTRICTED_VAULT_READ", "SECRET_STORAGE", "DIRECT_CLIENT_SQL"]},
+    {"id": "EMBERDARK", "owner": "Artemis / Operation Harmony", "role": "Governed workflow, transit, Mission state, authorization mediation, quarantine, idempotency, retry, reconciliation, controlled export, and receipts", "may_read": ["MISSION_BOUND_PACKET", "AUTHORIZED_RECORD"], "may_write": ["WORKFLOW_STATE", "QUARANTINE_STATE", "AUDIT_RECEIPT", "CONTROLLED_EXPORT"], "never": ["CANONICAL_SOURCE", "AUTOMATIC_PERMANENCE", "UNMEDIATED_PROTECTED_EXPORT"]},
+    {"id": "HARMONY", "owner": "Artemis / Operation Harmony", "role": "Separate intelligence vessel for bounded retrieval, synthesis, and interpretation", "may_read": ["BOUNDED_RETRIEVED_CONTEXT"], "may_write": ["NONCANONICAL_SYNTHESIS", "MISSION_RESULT_PACKET"], "never": ["DATABASE_IDENTITY", "CANONICAL_SOURCE", "SECRET_STORAGE", "UNRESTRICTED_VAULT_READ"]},
+    {"id": "PHOENIX", "owner": "Codex / Operation Phoenix", "role": "Governed canonical-source maintenance", "may_read": ["PUBLIC_CLEAN_EXPORT", "EXPLICITLY_SANITIZED_PACKET"], "may_write": ["REVIEWED_SOURCE_CANDIDATE"], "never": ["PROTECTED_ORIGINAL", "VAULT_ACCESS_BY_COLOCATION", "SECRET_STORAGE", "AUTOMATIC_MERGE"]},
+    {"id": "SECRET_SYSTEM", "owner": "Jayson / separately approved secret authority", "role": "Secret custody and scoped credential delivery", "may_read": ["SECRET_MATERIAL"], "may_write": ["VERSIONED_SECRET_MATERIAL"], "never": ["PRIME", "COPPERMIND_RECORD", "LOG", "MODEL_EXPORT"]}
+  ],
+  "access_rules": [
+    "DENY_BY_DEFAULT",
+    "MISSION_BOUND_LEAST_PRIVILEGE",
+    "NO_BROWSER_OR_MODEL_UNRESTRICTED_SQL",
+    "NO_CLIENT_DIRECT_VAULT_ACCESS",
+    "HOST_COLOCATION_CONFERS_NO_AUTHORITY",
+    "EVERY_DERIVATIVE_BINDS_ORIGINAL_IDENTITY_AND_TRANSFORM_PROVENANCE"
+  ],
+  "export_rules": [
+    "EXPORT_REQUIRES_CLASSIFICATION_AND_DESTINATION",
+    "SANITIZATION_IS_EXPLICIT_AND_RECEIPTED",
+    "PUBLIC_CLEAN_EXPORT_CANNOT_RECONSTRUCT_PROTECTED_CONTENT",
+    "PHOENIX_ACCEPTS_ONLY_PUBLIC_CLEAN_OR_EXPLICITLY_SANITIZED_PACKETS",
+    "FAILED_OR_AMBIGUOUS_EXPORT_IS_QUARANTINED"
+  ],
+  "recovery": {
+    "complete_backup": "REQUIRED_UNPROVEN",
+    "selective_backup": "REQUIRED_UNPROVEN",
+    "complete_restore": "REQUIRED_UNPROVEN",
+    "selective_restore": "REQUIRED_UNPROVEN",
+    "integrity_validation": "REQUIRED_UNPROVEN",
+    "provenance_validation": "REQUIRED_UNPROVEN",
+    "recovery_destination": "FORGE_ENCRYPTED_RECOVERY_DESTINATION_NOT_PRIMARY_RUNTIME"
+  },
+  "degraded_modes": {
+    "COPPERMIND_UNAVAILABLE": "CANONICAL_SOURCE_ONLY",
+    "EMBERDARK_UNAVAILABLE": "QUEUE_NO_REPLAY",
+    "HARMONY_UNAVAILABLE": "UNAVAILABLE_FAIL_CLOSED",
+    "PHOENIX_UNAVAILABLE": "READ_ONLY",
+    "FORGE_UNAVAILABLE": "UNAVAILABLE_FAIL_CLOSED",
+    "ORIGINAL_VAULT_UNAVAILABLE": "UNAVAILABLE_FAIL_CLOSED"
+  },
+  "denied_authorities": [
+    "NO_DEPLOYMENT",
+    "NO_POSTGRESQL_ACTIVATION",
+    "NO_PGVECTOR_ACTIVATION",
+    "NO_PROTECTED_IMPORT",
+    "NO_SECRET_CREATION",
+    "NO_STORAGE_CHANGE",
+    "NO_NETWORK_CHANGE",
+    "NO_GITEA_ACTIVATION",
+    "NO_RUNTIME_PROOF_CLAIM",
+    "NO_GATE_ADVANCEMENT"
+  ]
+}
