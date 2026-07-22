@@ -43,7 +43,7 @@ disposition Mission is canonically complete.
 
 | Responsibility | One durable destination | Preserved boundary |
 |---|---|---|
-| Glass Codex | Prime Ascendant / Operation Glass Codex | client product consumes governed APIs; it does not own backend authority |
+| Glass Codex | Prime Ascendant / Operation Glass Codex | Mission #282 defines a client-independent service and first-party VS Code client direction; it consumes governed APIs and owns no backend, monitoring, recovery, or permanence authority |
 | Harmony and Seon | Prime Ascendant / Operation Harmony | Harmony remains a separate intelligence vessel; Apple Reminders remains authoritative for Seon and Hermes remains its bridge vessel |
 | Investiture Accounting | Codex / Operation Source Governance bounded Mission family | FS-C01-M01 through M03 remain proven; FS-C01-M04 remains unfinished and requires separate protected authorization |
 | Prime Continuity Proof | its existing Codex / Source Governance Quest pending Mission #277 | no absorption or closeout occurs in portfolio recomposition |

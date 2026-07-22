@@ -55,7 +55,7 @@
       "quest_id": "QUEST-PRIME-ASCENDANT-20260717",
       "source": "quests/prime-ascendant.md",
       "state": "IN_PROGRESS",
-      "readiness_basis": "Mission #279 establishes Cloud Atlas's public-clean class, provenance, access, export, Phoenix-separation, recovery-requirement, and degraded-mode contract while keeping every service identity distinct. PA-C01 remains current; no protected import, runtime, recovery proof, Gitea, repository-setting, or later Campaign gate advances."
+      "readiness_basis": "Missions #279 and #282 establish Cloud Atlas protected-realm and Glass Codex client boundaries. Glass Codex is client-independent with a first-party VS Code direction, stable API lanes, denied authority, retention cleanup, packaging, and GUI-failure independence. PA-C01 remains current; no implementation, Apollo install, runtime, recovery proof, or later Campaign gate advances."
     }
   ],
   "format_version": "1.0",

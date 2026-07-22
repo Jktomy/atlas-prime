@@ -22,6 +22,7 @@ routes_from:
 routes_to:
   - quests/prime-ascendant-covenant.md
   - governance/cloud-atlas-protected-realm-contract.md
+  - governance/glass-codex-client-contract.md
   - quest-board/quest-board-v1.json
   - continuity/prime-continuity-register-r01.json
   - governance/atlas-aegis.md
@@ -67,6 +68,11 @@ Prime Ascendant is the controlled, phased self-hosted Prime chapter. The detaile
 - Perpendicularity is the approved Google Drive crossing; Dynamic and Navigator are Cognitive Shadow collections that retrieve, preserve, prepare, and route Gemstones across Emberdark. Kandra are restricted mission-bound workers, and TenSoon verifies both pre-Coppermind intake and exact Phoenix draft candidates without granting permanence.
 - Phoenix is Codex's canonical-source maintenance Operation. Elantris owns backup, restore, rollback, and recovery. Controlled Burn and Phoenix Burn retain their current meanings pending a later bounded redefinition.
 - Runtime, infrastructure, database, Gitea, website, lifecycle, migration, and route-retirement work require later bounded source and proof transactions. No public endpoint, unrestricted SQL authority, secret, protected raw evidence, new notification platform, or new scheduling platform is authorized here.
+
+Glass Codex is the client-independent governed service defined by
+`governance/glass-codex-client-contract.md`. Its first graphical-client
+direction is a first-party VS Code extension on Apollo, but PA-C05 remains
+unadvanced and no extension, installation, backend, or runtime is claimed.
 
 ## Cloud Atlas protected-realm boundary
 

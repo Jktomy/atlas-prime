@@ -160,6 +160,14 @@ Plex application database, configuration, metadata, artwork, cache, and transcod
 
 The future Operation Glass Codex website/API is a private control surface for Jayson with local/mobile access, approvals, Quest views, Dawnshard views, health, receipts, and bounded actions. Tailscale or another separately approved private route is an accepted direction. No public endpoint is approved. Framework, authentication, authorization, session handling, and approval UX remain unresolved.
 
+Mission #282 refracts that surface into the client-independent service and
+first-party VS Code client direction governed by
+`governance/glass-codex-client-contract.md`. Stable APIs, two distinct access
+lanes, reusable UI components, denied authority, protected-retention cleanup,
+signed or integrity-verified packaging, compatibility, and GUI-failure
+independence are selected architecture. Implementation, authentication details,
+Apollo installation, backend deployment, and PA-C05 acceptance remain unproven.
+
 ### 2.7 Gitea direction
 
 Gitea may become future canonical Prime source only after shadow parity, backup, restore, rollback, mirror, mobile access, Athena access, exact source identity, and workflow replacement are proven. GitHub Prime remains canonical until an explicit Preview → Execute and Jayson-approved cutover. The Atlas VM is the selected shadow host substrate direction; database layout, mirror direction/cadence, branch/tag/PR parity, and rollback criteria remain unproven.

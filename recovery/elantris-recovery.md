@@ -97,6 +97,13 @@ No recovery route may manufacture a lifecycle source fingerprint, recreate an ap
 
 ## Cloud Atlas protected-realm recovery boundary
 
+Glass Codex recovery follows `governance/glass-codex-client-contract.md`.
+Retain an integrity-verified client package and known-good rollback package,
+but keep authoritative state in governed backend services. Apollo or VS Code
+loss removes the GUI only and must not block Cloud Atlas services, monitoring,
+or Prime clean-clone recovery. Client disable/reinstall never restores or
+mutates backend state and no protected cache is silently recovered.
+
 Read `governance/cloud-atlas-protected-realm-contract.md` before any Cloud
 Atlas recovery design or claim. Preserve exact separation among the Protected
 Original Vault, Coppermind, Emberdark, Harmony, Phoenix, and the approved secret

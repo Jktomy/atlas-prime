@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas-prime.local/schemas/glass-codex-client-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "service_id", "first_client", "state_owner", "access_lanes", "surfaces", "denied_authorities", "retention", "packaging", "failure_independence", "deployment_state"],
+  "properties": {
+    "schema_version": {"const": "atlas.glass-codex-client.v1"},
+    "service_id": {"const": "OPERATION-GLASS-CODEX"},
+    "first_client": {"const": "FIRST_PARTY_VSCODE_EXTENSION_ON_APOLLO"},
+    "state_owner": {"const": "GOVERNED_CLOUD_ATLAS_SERVICES"},
+    "access_lanes": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"enum": ["DIRECT_GOVERNED_API_FOR_EXACT_LOOKUP", "HARMONY_FOR_INTERPRETATION_AND_SYNTHESIS"]}},
+    "surfaces": {"type": "array", "minItems": 11, "uniqueItems": true, "items": {"enum": ["HARMONY", "COPPERMIND_SEARCH", "EXACT_SOURCE_RETRIEVAL", "DOCUMENTS_AND_EVIDENCE", "EMBERDARK_WORKFLOW", "GEMSTONES_AND_PROVENANCE", "MISSION_BOARD", "PHOENIX_STATE", "APPROVALS", "RECEIPTS", "READ_ONLY_HEALTH"]}},
+    "denied_authorities": {"type": "array", "minItems": 8, "uniqueItems": true, "items": {"type": "string"}},
+    "retention": {"type": "array", "minItems": 6, "uniqueItems": true, "items": {"type": "string"}},
+    "packaging": {"type": "array", "minItems": 8, "uniqueItems": true, "items": {"type": "string"}},
+    "failure_independence": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string"}},
+    "deployment_state": {"const": "ARCHITECTURE_ONLY_NOT_IMPLEMENTED"}
+  }
+}

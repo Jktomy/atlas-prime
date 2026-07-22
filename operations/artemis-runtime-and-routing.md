@@ -39,6 +39,12 @@ protected-realm class, pointer, derivative, export, vault, secret, or recovery
 claim. Harmony receives only bounded retrieved context and never becomes the
 database, secret store, canonical source, or unrestricted vault reader.
 
+Glass Codex exact lookup and structured search use direct governed APIs;
+interpretation and synthesis use Harmony. Harmony does not proxy unrestricted
+SQL, vault, infrastructure, recovery, monitoring, source, or permanence
+authority to the client. The controlling client contract is
+`governance/glass-codex-client-contract.md`.
+
 No separate Artemis-model identity is created by this role. Future model names and implementation choices remain separately governed decisions. The accepted source-placement direction is the Harmony VM on Prometheus with exclusive planned Intel Arc Pro B50 passthrough, subject to Prometheus's Fire recovery, thermal, soak, resource, and rollback proof. Source placement does not claim deployment.
 
 ## Emberdark
