@@ -76,12 +76,12 @@ class PrimeProgramTests(unittest.TestCase):
         expected_preserved = {
             "PRIME-REBORN-QUEST-R01": ("quests/prime-reborn.md", "COMPLETE", "CLOSED"),
             "QUEST-FOUND-SILVERLIGHT-R01": ("quests/found-silverlight.md", "COMPLETE", "CLOSED"),
+            "QUEST-PRIME-CONTINUITY-PROOF-R01": ("quests/prime-continuity-proof.md", "COMPLETE", "CLOSED"),
             "QUEST-PROMETHEUS-FIRE-20260701": ("quests/prometheus-fire.md", "IN_PROGRESS", "PF-C01-M02 Preview — Preserve the Old Flame"),
             "QUEST-NOTUMS-WATCH-20260708": ("quests/notums-watch.md", "READY_FOR_JAYSON_EXECUTION_PACKAGE", "NW-C01 readiness package and Jayson-side proof"),
             "QUEST-PRIME-ASCENDANT-20260717": ("quests/prime-ascendant.md", "IN_PROGRESS", "PA-C01 — Write the Covenant"),
         }
         self.assertEqual({identity: independent[identity] for identity in expected_preserved}, expected_preserved)
-        self.assertEqual(independent["QUEST-PRIME-CONTINUITY-PROOF-R01"], ("quests/prime-continuity-proof.md", "READY_FOR_CAMPAIGN_1_PREVIEW", "PCP-C01-PREVIEW"))
 
     def test_prime_ascendant_is_architecture_refinement_only(self) -> None:
         source = (ROOT / "quests/prime-ascendant.md").read_text(encoding="utf-8")
