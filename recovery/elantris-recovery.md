@@ -123,6 +123,11 @@ storage, network, or runtime action is claimed.
 
 ## Prometheus's Fire recovery boundary
 
+The selected service isolation, complete/selective restore, dependency order,
+failure behavior, and household priority are summarized by
+`governance/prometheus-cloud-atlas-topology-contract.md`. Treat every envelope
+as planning until measured capacity and real destructive restore proof exist.
+
 The Prometheus architecture requires narrow Forge mounts with safe unavailable-mount behavior, Prometheus guest backups, a destructive canary restore, and an independent recovery copy not confined to Forge.
 
 Harmony recovery must include the Harmony VM, Intel Arc Pro B50 detachment and reattachment safety, model/runtime configuration, backup, restoration, thermal and soak evidence, and rollback without making host administration depend on the accelerator.

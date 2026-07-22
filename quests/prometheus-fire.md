@@ -83,6 +83,12 @@ The thin-provisioned NVMe planning envelope is approximately 64 GB for host ISOs
 
 ## 3. Approved topology baseline
 
+The cross-service resource, trust, recovery, health, dependency, startup,
+shutdown, and rollback selection is governed by
+`governance/prometheus-cloud-atlas-topology-contract.md`. It consolidates this
+Quest's existing public-clean planning envelopes without claiming measurement
+or advancing PF-C01-M02.
+
 ```text
 Prometheus / Proxmox
 ├── Harmony VM — intelligence and B50
@@ -382,7 +388,7 @@ Required proof:
 
 - no current Matrix/Element deployment requirement;
 - no Matrix dependency for Harmony, Atlas VM, Emberdark, Coppermind, Phoenix, or Plex;
-- VS Code/Apollo and a future private Glass Codex website replace the immediate interaction need;
+- VS Code/Apollo and the future Glass Codex client with governed APIs replace the immediate interaction need;
 - any future communications requirement must justify a separate source decision or Quest.
 
 ## Campaign PF-C07 — Raise Relay

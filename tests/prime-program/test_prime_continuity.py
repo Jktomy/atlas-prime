@@ -70,6 +70,7 @@ class PrimeContinuityTests(unittest.TestCase):
         ascendant_topology_event = "PA-C01-PROMETHEUS-CORE-TOPOLOGY-REFRACTION-R03"
         cloud_atlas_event = "CLOUD-ATLAS-PROTECTED-REALM-REFRACTION-R01"
         glass_codex_event = "GLASS-CODEX-VSCODE-CLIENT-REFRACTION-R03"
+        prometheus_cloud_event = "PROMETHEUS-CLOUD-ATLAS-TOPOLOGY-REFRACTION-R01"
         self.assertEqual(self.register["event_ids"].count(old_found_event), 1)
         self.assertEqual(self.register["event_ids"].count(naming_event), 1)
         self.assertEqual(self.register["event_ids"].count(prometheus_event), 1)
@@ -78,6 +79,7 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(self.register["event_ids"].count(portfolio_event), 1)
         self.assertEqual(self.register["event_ids"].count(cloud_atlas_event), 1)
         self.assertEqual(self.register["event_ids"].count(glass_codex_event), 1)
+        self.assertEqual(self.register["event_ids"].count(prometheus_cloud_event), 1)
         self.assertLess(self.register["event_ids"].index(old_found_event), self.register["event_ids"].index(naming_event))
         self.assertLess(self.register["event_ids"].index(naming_event), self.register["event_ids"].index(prometheus_event))
         self.assertLess(self.register["event_ids"].index(prometheus_event), self.register["event_ids"].index(prometheus_topology_event))
@@ -85,6 +87,7 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertLess(self.register["event_ids"].index(ascendant_topology_event), self.register["event_ids"].index(portfolio_event))
         self.assertLess(self.register["event_ids"].index(portfolio_event), self.register["event_ids"].index(cloud_atlas_event))
         self.assertLess(self.register["event_ids"].index(cloud_atlas_event), self.register["event_ids"].index(glass_codex_event))
+        self.assertLess(self.register["event_ids"].index(glass_codex_event), self.register["event_ids"].index(prometheus_cloud_event))
         prometheus_board = next(entry for entry in self.board["entries"] if entry["quest_id"] == "QUEST-PROMETHEUS-FIRE-20260701")
         prometheus_continuity = next(entry for entry in self.register["entries"] if entry["continuity_id"] == "CONT-PROMETHEUS-FIRE-R01")
         self.assertEqual(prometheus_board["state"], "IN_PROGRESS")
@@ -93,8 +96,8 @@ class PrimeContinuityTests(unittest.TestCase):
         self.assertEqual(prometheus_continuity["campaign_id"], "PF-C01")
         self.assertEqual(prometheus_continuity["mission_id"], "PF-C01-M02")
         self.assertEqual(prometheus_continuity["gate_id"], "PF-C01-M02-PREVIEW")
-        self.assertEqual(prometheus_continuity["revision"], 4)
-        self.assertEqual(prometheus_continuity["last_event_id"], prometheus_topology_event)
+        self.assertEqual(prometheus_continuity["revision"], 5)
+        self.assertEqual(prometheus_continuity["last_event_id"], prometheus_cloud_event)
         ascendant = next(entry for entry in self.register["entries"] if entry["continuity_id"] == "CONT-PRIME-ASCENDANT-R01")
         creation_event = "PA-C01-QUEST-CREATION-R01"
         sunset_event = "PA-C01-HOSTED-ACTIONS-SUNSET-R01"
