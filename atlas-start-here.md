@@ -20,10 +20,11 @@ Read in order:
 5. `projects/project-registry.md`
 6. `operations/operation-registry.md`
 7. `continuity/mission-board-quest-registry-r01.json`
-8. `continuity/prime-continuity-register-r01.json`
-9. `quest-board/quest-board-v1.json` as frozen predecessor evidence
-10. `tools/thread-engine/PRIME-PORT-STATUS.json`
-11. `recovery/elantris-recovery.md`
+8. `governance/mission-quest-emberline-contract.md`
+9. `continuity/prime-continuity-register-r01.json`
+10. `quest-board/quest-board-v1.json` as frozen predecessor evidence
+11. `tools/thread-engine/PRIME-PORT-STATUS.json`
+12. `recovery/elantris-recovery.md`
 
 Current authority:
 
