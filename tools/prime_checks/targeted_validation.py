@@ -100,14 +100,16 @@ def _normalize_paths(paths: Sequence[object]) -> tuple[list[str], list[str]]:
         if not isinstance(value, str):
             malformed.add(f"<{type(value).__name__}>")
             continue
-        raw = value.strip()
+        raw = value
         parts = raw.split("/")
         pure = PurePosixPath(raw)
         canonical = pure.as_posix()
         if (
             not raw
+            or raw != raw.strip()
             or "\\" in raw
             or "\x00" in raw
+            or any(ord(character) < 32 for character in raw)
             or pure.is_absolute()
             or any(part in {"", ".", ".."} for part in parts)
             or canonical != raw
@@ -120,6 +122,15 @@ def _normalize_paths(paths: Sequence[object]) -> tuple[list[str], list[str]]:
 
 def classify_paths(paths: Sequence[object], *, full: bool = False) -> dict[str, object]:
     normalized, malformed = _normalize_paths(paths)
+    case_groups: dict[str, list[str]] = {}
+    for path in normalized:
+        case_groups.setdefault(path.casefold(), []).append(path)
+    case_collisions = sorted(
+        path
+        for group in case_groups.values()
+        if len(group) > 1
+        for path in group
+    )
     if full or (not normalized and not malformed):
         return {
             "profile": "full",
@@ -127,6 +138,7 @@ def classify_paths(paths: Sequence[object], *, full: bool = False) -> dict[str, 
             "windows_required": True,
             "unclassified_paths": [],
             "malformed_paths": malformed,
+            "case_collisions": case_collisions,
             "changed_paths": normalized,
         }
 
@@ -224,6 +236,9 @@ def classify_paths(paths: Sequence[object], *, full: bool = False) -> dict[str, 
         selected.update(FULL_CHECK_IDS)
         windows_required = True
         profile = "full-fail-closed"
+    elif case_collisions:
+        windows_required = True
+        profile = "full" if selected == set(FULL_CHECK_IDS) else "targeted"
     elif selected == set(FULL_CHECK_IDS):
         profile = "full"
     else:
@@ -236,6 +251,7 @@ def classify_paths(paths: Sequence[object], *, full: bool = False) -> dict[str, 
         "windows_required": windows_required,
         "unclassified_paths": unclassified,
         "malformed_paths": malformed,
+        "case_collisions": case_collisions,
         "changed_paths": normalized,
     }
 
@@ -271,7 +287,7 @@ def _parse_git_name_status_z(payload: bytes) -> list[str]:
 
 def git_changed_paths(base: str, head: str) -> list[str]:
     completed = subprocess.run(
-        ["git", "diff", "--name-status", "-z", "--find-renames", f"{base}...{head}"],
+        ["git", "diff", "--name-status", "-z", "--find-renames", "--find-copies-harder", f"{base}...{head}"],
         cwd=ROOT,
         check=True,
         capture_output=True,

@@ -88,6 +88,17 @@ class TargetedValidationTests(unittest.TestCase):
         plan = MODULE.classify_paths(paths)
         self.assertTrue(plan["windows_required"])
 
+    def test_case_only_rename_requires_windows(self) -> None:
+        paths = MODULE._parse_git_name_status_z(
+            b"R100\x00quests/prime-ascendant.md\x00quests/Prime-Ascendant.md\x00"
+        )
+        plan = MODULE.classify_paths(paths)
+        self.assertEqual(
+            plan["case_collisions"],
+            ["quests/Prime-Ascendant.md", "quests/prime-ascendant.md"],
+        )
+        self.assertTrue(plan["windows_required"])
+
     def test_malformed_git_name_status_fails_closed(self) -> None:
         for payload in (
             b"R100\x00tools/build_index.py\x00",
@@ -105,6 +116,8 @@ class TargetedValidationTests(unittest.TestCase):
             "../quests/prime-ascendant.md",
             "quests\\prime-ascendant.md",
             "/quests/prime-ascendant.md",
+            "quests/prime-ascendant.md ",
+            "quests/prime-ascendant\t.md",
             "Schemas/lifecycle/sunset-v2.schema.json",
         ):
             with self.subTest(changed_path=changed_path):

@@ -22,10 +22,11 @@ Quest, continuity, and generated-only changes do not require Windows unless
 another changed path does.
 
 Rename and copy evidence classifies both the source and destination paths, so a
-risky source cannot disappear behind a safe destination name. Mixed candidates
-require Windows when any member does. Malformed, absolute, traversal-like,
-backslash, case-mismatched, ambiguous, and otherwise unknown path evidence fails
-closed to the complete profile with Windows required.
+risky source cannot disappear behind a safe destination name. Case-only path
+pairs and mixed candidates require Windows. Malformed, absolute, traversal-like,
+backslash, control-character, surrounding-whitespace, case-mismatched, ambiguous,
+and otherwise unknown path evidence fails closed to the complete profile with
+Windows required.
 
 The pull-request workflow exposes `prime/integrity` and the conditional
 `prime/windows-compatibility` logical contexts. Ruleset `Prime Main Protection`
