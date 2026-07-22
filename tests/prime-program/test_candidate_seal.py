@@ -16,6 +16,7 @@ from tools.candidate_seal import (
     reconcile_publication_state,
     verify_candidate_seal,
 )
+from tools.candidate_seal.__main__ import _candidate_files
 
 BASE = "7" * 40
 TREE = "8" * 40
@@ -198,6 +199,7 @@ class CandidateSealTests(unittest.TestCase):
         self.assertEqual(batch["actionable_finding_ids"], ["F-001", "F-002"])
         self.assertEqual(batch["publication_limit"], "ONE_CONSOLIDATED_REPAIR")
         self.assertTrue(batch["replacement_seal_required"])
+        self.assertEqual(batch["source_expected_head_sha"], HEAD)
         self.assertEqual(
             batch["invalidated_evidence"],
             [
@@ -210,6 +212,48 @@ class CandidateSealTests(unittest.TestCase):
                 "MERGE",
             ],
         )
+
+    def test_exact_source_draft_allows_one_sealed_repair_publication(self) -> None:
+        source = seal()
+        batch = build_repair_batch(
+            source,
+            [
+                {
+                    "finding_id": "F-001",
+                    "source": "REVIEW",
+                    "classification": "ACTIONABLE",
+                    "candidate_caused": True,
+                    "readable": True,
+                    "detail": "candidate regression",
+                }
+            ],
+        )
+        replacement_files = dict(FILES, **{"tools/candidate_seal/core.py": b"repaired\n"})
+        replacement = seal(replacement_files, head="e" * 40)
+        state = {
+            "canonical_main_sha": BASE,
+            "branch_head_sha": HEAD,
+            "pull_requests": [
+                {
+                    "number": 300,
+                    "state": "OPEN",
+                    "draft": True,
+                    "base_sha": BASE,
+                    "head_sha": HEAD,
+                    "branch": BRANCH,
+                }
+            ],
+            "consumed_seal_ids": [],
+        }
+        result = reconcile_publication_state(replacement, state, repair_batch=batch)
+        self.assertEqual(result["status"], "REPAIR_PUBLICATION_CLEAR")
+        self.assertEqual(result["remote_mutation_allowance"], "PUSH_EXACT_REPLACEMENT_HEAD_ONCE")
+        self.assertFalse(result["blind_retry"])
+
+        tampered = copy.deepcopy(batch)
+        tampered["source_expected_head_sha"] = "f" * 40
+        with self.assertRaisesRegex(CandidateSealError, "REPAIR_BATCH_DIGEST_MISMATCH"):
+            reconcile_publication_state(replacement, state, repair_batch=tampered)
 
     def test_decision_unknown_and_non_candidate_actionable_findings_stop(self) -> None:
         template = {
@@ -239,6 +283,22 @@ class CandidateSealTests(unittest.TestCase):
             with self.subTest(paths=list(bad_files)):
                 with self.assertRaises(CandidateSealError):
                     seal(bad_files)
+
+    def test_cli_validates_candidate_paths_before_reading(self) -> None:
+        with self.assertRaisesRegex(CandidateSealError, "UNSAFE_PATH"):
+            _candidate_files(REPOSITORY_ROOT, ["../outside-protected-evidence"])
+
+    def test_repair_batch_public_clean_scans_complete_record(self) -> None:
+        finding = {
+            "finding_id": "F-001",
+            "source": "ghp_" + "a" * 20,
+            "classification": "ACTIONABLE",
+            "candidate_caused": True,
+            "readable": True,
+            "detail": "candidate-caused defect",
+        }
+        with self.assertRaisesRegex(CandidateSealError, "PROTECTED_BOUNDARY_FAILURE"):
+            build_repair_batch(seal(), [finding])
 
 
 if __name__ == "__main__":

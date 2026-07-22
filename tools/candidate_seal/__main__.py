@@ -8,6 +8,7 @@ from .core import (
     CandidateSealError,
     build_candidate_seal,
     build_repair_batch,
+    normalize_paths,
     reconcile_publication_state,
     verify_candidate_seal,
 )
@@ -18,7 +19,16 @@ def _json(path: Path) -> object:
 
 
 def _candidate_files(root: Path, paths: list[str]) -> dict[str, bytes]:
-    return {path: root.joinpath(*path.split("/")).read_bytes() for path in paths}
+    resolved_root = root.resolve(strict=True)
+    result: dict[str, bytes] = {}
+    for path in normalize_paths(paths):
+        candidate = resolved_root.joinpath(*path.split("/")).resolve(strict=True)
+        try:
+            candidate.relative_to(resolved_root)
+        except ValueError as exc:
+            raise CandidateSealError("CANDIDATE_PATH_ESCAPE", path) from exc
+        result[path] = candidate.read_bytes()
+    return result
 
 
 def _checks(values: list[str]) -> dict[str, str]:
@@ -61,6 +71,7 @@ def main() -> int:
     reconcile = subparsers.add_parser("reconcile")
     reconcile.add_argument("seal", type=Path)
     reconcile.add_argument("remote_state", type=Path)
+    reconcile.add_argument("--repair-batch", type=Path)
 
     repair = subparsers.add_parser("repair-batch")
     repair.add_argument("seal", type=Path)
@@ -95,7 +106,11 @@ def main() -> int:
                 consumed_seal_ids=args.consumed_seal_id,
             )
         elif args.command == "reconcile":
-            result = reconcile_publication_state(_json(args.seal), _json(args.remote_state))
+            result = reconcile_publication_state(
+                _json(args.seal),
+                _json(args.remote_state),
+                repair_batch=_json(args.repair_batch) if args.repair_batch else None,
+            )
         else:
             result = build_repair_batch(_json(args.seal), _json(args.findings))
     except (OSError, json.JSONDecodeError, CandidateSealError) as exc:

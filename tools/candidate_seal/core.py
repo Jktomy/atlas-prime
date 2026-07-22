@@ -198,6 +198,19 @@ def _verify_seal_digest(seal: Mapping[str, Any]) -> None:
         _fail("SEAL_ID_MISMATCH", "seal identity changed")
 
 
+def _verify_repair_batch_digest(batch: Mapping[str, Any]) -> None:
+    if not isinstance(batch, Mapping) or batch.get("schema_version") != "atlas.candidate-repair-batch.v1":
+        _fail("INVALID_REPAIR_BATCH", "schema_version")
+    body = {key: value for key, value in batch.items() if key not in {"repair_batch_id", "repair_batch_sha256"}}
+    observed = batch.get("repair_batch_sha256")
+    expected = _sha256_json(body)
+    if not isinstance(observed, str) or observed != expected:
+        _fail("REPAIR_BATCH_DIGEST_MISMATCH", "repair batch changed")
+    expected_id = f"{batch.get('mission_id')}:{batch.get('attempt_id')}:repair:{expected[:16]}"
+    if batch.get("repair_batch_id") != expected_id:
+        _fail("REPAIR_BATCH_ID_MISMATCH", "repair batch identity changed")
+
+
 def build_candidate_seal(
     mission: Mapping[str, Any],
     *,
@@ -324,7 +337,12 @@ def verify_candidate_seal(
     }
 
 
-def reconcile_publication_state(seal: Mapping[str, Any], remote_state: Mapping[str, Any]) -> dict[str, Any]:
+def reconcile_publication_state(
+    seal: Mapping[str, Any],
+    remote_state: Mapping[str, Any],
+    *,
+    repair_batch: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
     _verify_seal_digest(seal)
     required = {"canonical_main_sha", "branch_head_sha", "pull_requests", "consumed_seal_ids"}
     if not isinstance(remote_state, Mapping) or set(remote_state) != required:
@@ -393,11 +411,50 @@ def reconcile_publication_state(seal: Mapping[str, Any], remote_state: Mapping[s
             "remote_mutation_allowance": "NONE",
             "next_safe_action": "READBACK_VALIDATE_AND_REVIEW_EXACT_HEAD",
         }
+    if repair_batch is not None:
+        _verify_repair_batch_digest(repair_batch)
+        source_head = repair_batch.get("source_expected_head_sha")
+        source_pr = pull_requests[0] if len(pull_requests) == 1 else None
+        if (
+            repair_batch.get("batch_state") != "SEALED_REPAIR_BATCH"
+            or repair_batch.get("replacement_seal_required") is not True
+            or repair_batch.get("repository") != seal.get("repository")
+            or repair_batch.get("mission_id") != seal.get("mission_id")
+            or repair_batch.get("attempt_id") != seal.get("attempt_id")
+            or repair_batch.get("source_seal_id") == seal.get("seal_id")
+            or repair_batch.get("source_canonical_base_sha") != seal.get("canonical_base_sha")
+            or repair_batch.get("source_branch_intent") != seal.get("branch_intent")
+            or not isinstance(source_head, str)
+            or not SHA40.fullmatch(source_head)
+            or branch_head != source_head
+            or not isinstance(source_pr, Mapping)
+            or set(source_pr) != {"number", "state", "draft", "base_sha", "head_sha", "branch"}
+            or type(source_pr["number"]) is not int
+            or source_pr["number"] < 1
+            or source_pr["state"] != "OPEN"
+            or source_pr["draft"] is not True
+            or source_pr["base_sha"] != seal.get("canonical_base_sha")
+            or source_pr["head_sha"] != source_head
+            or source_pr["branch"] != seal.get("branch_intent")
+        ):
+            _fail("REPAIR_REMOTE_STATE_CONFLICT", "remote state does not match the source seal and repair batch")
+        return {
+            **common,
+            "status": "REPAIR_PUBLICATION_CLEAR",
+            "pull_request": source_pr["number"],
+            "source_seal_id": repair_batch["source_seal_id"],
+            "repair_batch_id": repair_batch["repair_batch_id"],
+            "remote_mutation_allowance": "PUSH_EXACT_REPLACEMENT_HEAD_ONCE",
+            "next_safe_action": "PUBLISH_ONE_CONSOLIDATED_REPAIR_WITHOUT_FORCE_PUSH",
+        }
     _fail("REMOTE_STATE_CONFLICT", "branch or pull request state does not match the seal")
 
 
 def build_repair_batch(seal: Mapping[str, Any], findings: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     _verify_seal_digest(seal)
+    source_head = seal.get("expected_head_sha")
+    if not isinstance(source_head, str) or not SHA40.fullmatch(source_head):
+        _fail("HEAD_IDENTITY_REQUIRED", "repair batching requires an exact source head")
     if not isinstance(findings, Sequence) or isinstance(findings, (str, bytes)) or not findings:
         _fail("EMPTY_REPAIR_EVIDENCE", "readable findings are required")
     normalized: list[dict[str, Any]] = []
@@ -447,6 +504,9 @@ def build_repair_batch(seal: Mapping[str, Any], findings: Sequence[Mapping[str, 
         "source_seal_id": seal["seal_id"],
         "source_seal_sha256": seal["seal_sha256"],
         "source_candidate_content_sha256": seal["candidate_content_sha256"],
+        "source_canonical_base_sha": seal["canonical_base_sha"],
+        "source_branch_intent": seal["branch_intent"],
+        "source_expected_head_sha": source_head,
         "findings": normalized,
         "findings_sha256": _sha256_json(normalized),
         "actionable_finding_ids": actionable,
@@ -458,6 +518,7 @@ def build_repair_batch(seal: Mapping[str, Any], findings: Sequence[Mapping[str, 
         "force_push": False,
         "next_safe_action": "APPLY_ALL_ACTIONABLE_FINDINGS_LOCALLY_THEN_CREATE_AND_VERIFY_ONE_REPLACEMENT_SEAL",
     }
+    _scan_public_clean(body)
     digest = _sha256_json(body)
     return {
         **body,
