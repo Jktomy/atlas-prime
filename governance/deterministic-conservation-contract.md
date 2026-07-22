@@ -41,7 +41,17 @@ The owner-triggered hosted route:
    approved generated paths, and creates one immutable replay-bound branch and
    one draft PR;
 7. performs exact PR and file-set readback, writes a sanitized immutable
-   receipt outside the repository, and stops.
+   receipt outside the repository, records
+   `DRAFT_CREATED / REQUIRED_PR_VALIDATION_PENDING`, and stops; and
+8. relies on the normal Prime pull-request workflow as the single authoritative
+   candidate-validation layer for the generated head, including required
+   `prime/integrity` and conditional `prime/windows-compatibility`.
+
+The publisher does not run a second exact-head Ubuntu/Windows validation matrix.
+Parity proof remains inside the publisher, candidate validation remains inside
+the ruleset-governed pull-request path, and the write-capable publication job
+remains permission-isolated from read-only admission, parity, reconciliation,
+and preparation.
 
 The route and profile cannot ready, merge, force-push, write `main`, change settings,
 advance a Quest, promote a capability, or become a second writer. Rejection is
