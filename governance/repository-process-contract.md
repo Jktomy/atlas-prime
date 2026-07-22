@@ -108,7 +108,7 @@ Additional checks come from a closed source-to-invariant dependency registry. Un
 
 A candidate that changes validation planning, workflows, dependency mapping, repository policy, path classification, Thread Engine, or validation schemas may not reduce its own validation. The exact trusted-base planner selects the compulsory self-change profile; the candidate planner is tested as the subject. Disagreement fails closed.
 
-The logical `prime/integrity` result must eventually become the final aggregate for the exact head after all selected executors complete. Existing required contexts and compatibility bridges remain until later exact proof and a separately authorized repository-settings transition.
+The logical `prime/integrity` result is the final aggregate for the exact head after all selected executors complete. Ruleset `19014636` requires `prime/integrity` and conditional `prime/windows-compatibility`; the legacy compatibility contexts are retired after the independently verified settings transition.
 
 ## Generated state
 
