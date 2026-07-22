@@ -4,7 +4,7 @@ This read-only module validates the canonical Mission Board Quest registry
 recovery snapshot, the frozen predecessor Quest Board, and the canonical
 operational continuity register. It plans exactly one-entry,
 replay-ledger-bound continuity updates, renders a deterministic
-non-authoritative Emberline, and reconstructs bounded Sunset, Sunrise, and
+non-authoritative aggregate Emberline and one human-readable Mission Quest Emberline, and reconstructs bounded Sunset, Sunrise, and
 Argus views without chat memory.
 
 Here, `sunset` is the historical command name for a compact continuity
@@ -23,8 +23,10 @@ predecessor evidence and is never edited for future admissions.
 Continuity adds unfinished-work detail but cannot advance Quest state. A
 planned update writes nothing; durable apply still requires one exact branch,
 draft PR, review, and merge. Sunrise must be anchored to the canonical
-register; the snapshot's own digest is not authority. Generated Emberlines
-report and never govern.
+register; the snapshot's own digest is not authority. Generated Emberlines report and never govern. Each Mission Quest row binds one
+stable Emberline ID and the exact `mission/quest` label; the per-Quest renderer
+joins that row to canonical continuity and includes readable Markdown for the
+parent Issue.
 
 ## Commands
 
@@ -33,6 +35,7 @@ Run from the repository root:
 ```text
 python -B -m tools.prime_continuity.cli validate
 python -B -m tools.prime_continuity.cli emberline [--output PATH]
+python -B -m tools.prime_continuity.cli mission-quest-emberline --quest-id QUEST_ID [--output PATH]
 python -B -m tools.prime_continuity.cli argus [--output PATH]
 python -B -m tools.prime_continuity.cli sunset --continuity-id ID [--output PATH]
 python -B -m tools.prime_continuity.cli sunrise --snapshot PATH [--output PATH]
