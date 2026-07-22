@@ -104,6 +104,14 @@ loss removes the GUI only and must not block Cloud Atlas services, monitoring,
 or Prime clean-clone recovery. Client disable/reinstall never restores or
 mutates backend state and no protected cache is silently recovered.
 
+The read-only health view additionally follows
+`governance/notum-glass-codex-health-contract.md`. Recovering Glass Codex never
+recovers, rewrites, acknowledges, or controls Notum/Sentinel monitoring state.
+After client loss, rehydrate only a freshly authenticated minimized projection;
+expired evidence remains `STALE`, unavailable evidence remains `UNKNOWN`, and
+last-known-good remains historical context. Notum loss does not block Prime or
+Cloud Atlas recovery, and Glass loss does not stop monitoring.
+
 Read `governance/cloud-atlas-protected-realm-contract.md` before any Cloud
 Atlas recovery design or claim. Preserve exact separation among the Protected
 Original Vault, Coppermind, Emberdark, Harmony, Phoenix, and the approved secret

@@ -2,9 +2,9 @@
   "schema_version": "atlas.prime-continuity-register.v1",
   "authority": "CANONICAL_OPERATIONAL_CONTINUITY",
   "register_id": "PRIME-CONTINUITY-R01",
-  "register_revision": 48,
+  "register_revision": 49,
   "source_base_sha": "e87dbf05252fd80829143474b83b7fa180d66fb7",
-  "quest_board_sha256": "e72c91fea8af6928cfd2d977dfcf1b5e16298cfb2c1e975f5675a5c4f962f39a",
+  "quest_board_sha256": "7b59bac86b49b77881348c460aa5276b0c3404a38b99cf14d0330538177111ad",
   "event_ids": [
     "RP-C05-FOUNDATION-R01",
     "RP-C05-IMPORT-FS-R01",
@@ -56,7 +56,8 @@
     "FOUND-SILVERLIGHT-DECOMPOSITION-SUNSET-R01",
     "CLOUD-ATLAS-PROTECTED-REALM-REFRACTION-R01",
     "GLASS-CODEX-VSCODE-CLIENT-REFRACTION-R03",
-    "PROMETHEUS-CLOUD-ATLAS-TOPOLOGY-REFRACTION-R01"
+    "PROMETHEUS-CLOUD-ATLAS-TOPOLOGY-REFRACTION-R01",
+    "NOTUM-GLASS-CODEX-HEALTH-BOUNDARY-R01"
   ],
   "entries": [
     {
@@ -85,19 +86,19 @@
       "continuity_id": "CONT-NOTUMS-WATCH-R01",
       "quest_id": "QUEST-NOTUMS-WATCH-20260708",
       "quest_source": "quests/notums-watch.md",
-      "quest_source_sha256": "dc9e04c4f92eb23f353e1a60d9b3e440bfd24b354a32ee8338643a57e6695d31",
+      "quest_source_sha256": "05d7483ce6155aa8271e17dd8a7992944e4f19e8dff3cf2db1567c16cd526a70",
       "quest_state": "READY_FOR_JAYSON_EXECUTION_PACKAGE",
       "campaign_id": null,
       "mission_id": null,
       "gate_id": "NW-C01-READINESS",
-      "current_position": "Ready for the Jayson execution package and protected proof. Project Elantris is the recovery support owner; the distinct Notum Phoenix vessel name remains unchanged.",
+      "current_position": "Ready for the Jayson execution package and protected proof. Mission #284 defines a minimized read-only Glass Codex health projection with explicit freshness, denied control, and failure independence. Notum's Watch and Sentinel remain monitoring authorities; NW-C01 and runtime remain unadvanced.",
       "blockers": [
         "Protected runtime placement and execution remain Jayson-side."
       ],
-      "next_action": "Use the approved execution package when Jayson provides runtime authority.",
+      "next_action": "Use the approved execution package only when Jayson provides runtime authority; any telemetry connection or Glass Codex integration requires separate protected proof.",
       "next_approval": "Jayson execution and protected evidence readback.",
-      "revision": 2,
-      "last_event_id": "NW-C01-ELANTRIS-NAMING-R01"
+      "revision": 3,
+      "last_event_id": "NOTUM-GLASS-CODEX-HEALTH-BOUNDARY-R01"
     },
     {
       "continuity_id": "CONT-PRIME-CONTINUITY-PROOF-R01",

@@ -39,7 +39,7 @@
       "quest_id": "QUEST-NOTUMS-WATCH-20260708",
       "source": "quests/notums-watch.md",
       "state": "READY_FOR_JAYSON_EXECUTION_PACKAGE",
-      "readiness_basis": "Notum's Watch durably owns independent monitoring and sanitized health posture. Protected placement and execution remain Jayson-side; no telemetry connection, monitoring activation, or NW-C01 advancement is claimed."
+      "readiness_basis": "Notum's Watch and Sentinel durably own independent monitoring. Mission #284 defines only minimized read-only Glass Codex presentation with explicit freshness and denied control. Protected placement and execution remain Jayson-side; no telemetry connection, monitoring activation, or NW-C01 advancement is claimed."
     },
     {
       "next_gate": "PCP-C01-PREVIEW",

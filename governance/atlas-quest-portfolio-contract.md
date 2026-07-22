@@ -48,7 +48,7 @@ disposition Mission is canonically complete.
 | Investiture Accounting | Codex / Operation Source Governance bounded Mission family | FS-C01-M01 through M03 remain proven; FS-C01-M04 remains unfinished and requires separate protected authorization |
 | Prime Continuity Proof | its existing Codex / Source Governance Quest pending Mission #277 | no absorption or closeout occurs in portfolio recomposition |
 | Cloud Atlas | Prime Ascendant protected-realm architecture, owned by Artemis / Operation Harmony with bounded Codex service owners | Mission #279 establishes the public-clean class, access, provenance, export, recovery-requirement, and degraded-mode contract; it is not a Project, Quest, database, host, or deployment claim |
-| monitoring | Notum's Watch | Notum and Sentinel retain monitoring authority; presentation clients remain read-only |
+| monitoring | Notum's Watch | Mission #284 keeps Notum and Sentinel authoritative while Glass Codex consumes only minimized read-only health with explicit freshness and no control authority |
 | infrastructure and Apollo continuity | Prometheus's Fire | Mission #283 fixes the public-clean Cloud Atlas topology and recovery direction; household-critical Plex playback, DVR recording, and persistent Forge services outrank discretionary AI work |
 | canonical source governance | Codex / Operation Source Governance | Prime remains canonical; generated projections, Mission Issues, clients, and runtime stores do not govern |
 
@@ -61,7 +61,8 @@ disposition Mission is canonically complete.
   with carry-forwards and PF-C01-M02 remains the next Preview; no migration,
   guest, storage, network, Gitea, backup, or runtime gate advances.
 - Notum's Watch retains NW-C01 through NW-C04 at
-  `READY_FOR_JAYSON_EXECUTION_PACKAGE`; runtime proof remains Jayson-side.
+  `READY_FOR_JAYSON_EXECUTION_PACKAGE`; Mission #284 adds only the read-only
+  Glass Codex health boundary and runtime proof remains Jayson-side.
 - Found Silverlight is `COMPLETE — SUNSET` through Mission #276. FS-C01 routes
   to the bounded Codex / Source Governance Mission family with M01 through M03
   proven and M04 unfinished; FS-C02 routes to Prime Ascendant / Operation Glass
