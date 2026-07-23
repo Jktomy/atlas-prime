@@ -23,6 +23,7 @@ routes_to:
   - quests/prime-ascendant-covenant.md
   - governance/cloud-atlas-protected-realm-contract.md
   - governance/glass-codex-client-contract.md
+  - governance/perpendicularity-crossing-contract.md
   - quest-board/quest-board-v1.json
   - continuity/prime-continuity-register-r01.json
   - governance/atlas-aegis.md
@@ -35,7 +36,7 @@ routes_to:
 private_boundary: "Store only clean doctrine, campaign status, gates, sanitized evidence pointers, and completion claims. Protected runtime facts, credentials, tokens, PHI, raw finance evidence, and private exports remain outside Prime."
 evidence_boundary: "This Quest records source and sanitized proof only. Planning and source presence do not prove deployment, recovery, model use, Gitea parity, or private-site security."
 cleanup_path: "Keep active until all Campaign and Quest gates pass. Close through integrated proof, recovery, restart-safe Sunset, explicit route-retirement evidence, and merged-main readback."
-last_verified: 2026-07-20
+last_verified: 2026-07-23
 ---
 
 # Quest — Prime Ascendant — The Dawnshard Covenant
@@ -62,11 +63,12 @@ Prime Ascendant is the controlled, phased self-hosted Prime chapter. The detaile
 - Prometheus's Fire remains the host, Proxmox, VM/LXC, storage, network, backup, restore, hardware, and recovery substrate Quest.
 - Prime Ascendant owns future application semantics, Operation Coppermind, Operation Phoenix, Operation Harmony, Emberdark, Dawnshard, the private Glass Codex control surface, local intelligence coordination, workflow refraction, and future Gitea cutover semantics.
 - Project Artemis is the durable owning domain, not a model identity. Operation Harmony is the durable workflow and resource boundary. Harmony and Sazed name the same resident intelligence; no separate Artemis-model identity is created by this Quest.
-- Harmony/Sazed's frictionless resident role is RAG and bounded context assembly, OCR and intake normalization, capability awareness, delegation, worker coordination, result reconciliation, and lightweight intent interpretation only when the active surface lacks a stronger conversational lead.
+- Harmony/Sazed's primary private domain is Coppermind and personal local assistance to Jayson. Through governed interfaces it may retrieve, correlate, interpret, summarize, and derive observations across Jayson-approved Coppermind records, coordinate bounded Kandra, and assist other Projects. Broad understanding grants no database-administrator, secret-custody, infrastructure, external-action, canonical-source, READY, or merge authority.
 - In ChatGPT, Athena remains the primary intent, reasoning, and conversational lead while Harmony supplies context, intake, capability awareness, and downstream delegation. In VS Code and other approved surfaces without Athena, Harmony may become the conversational lead and route ordinary work without adding a second planning ceremony.
-- Prime Git remains durable doctrine and accepted source. Coppermind is the future PostgreSQL operational-memory system. Emberdark is Harmony's governed transit, validation, routing, mission-state, quarantine, workflow-execution, retry, and receipt System. Dawnshard is the restart-safe projection Coppermind prepares for Athena. PostgreSQL full-text search plus `pgvector` is the initial retrieval direction; Qdrant is deferred until demonstrated need.
-- Perpendicularity is the approved Google Drive crossing; Dynamic and Navigator are Cognitive Shadow collections that retrieve, preserve, prepare, and route Gemstones across Emberdark. Kandra are restricted mission-bound workers, and TenSoon verifies both pre-Coppermind intake and exact Phoenix draft candidates without granting permanence.
-- Phoenix is Codex's canonical-source maintenance Operation. Elantris owns backup, restore, rollback, and recovery. Controlled Burn and Phoenix Burn retain their current meanings pending a later bounded redefinition.
+- Prime Git remains durable doctrine and accepted source. Coppermind is the future PostgreSQL operational-memory system and Harmony's private memory domain; it is not the universal transit path. Emberdark is the governed intake, API/MCP, validation, connector, routing, mission-state, quarantine, workflow-execution, retry, controlled-export, and receipt System. Dawnshard is the restart-safe projection Coppermind prepares for Athena. PostgreSQL full-text search plus `pgvector` is the initial retrieval direction; Qdrant is deferred until demonstrated need.
+- Perpendicularity is the governed crossing protocol defined by `governance/perpendicularity-crossing-contract.md`. Google Drive remains the approved Athena/cloud-AI crossing; the iCloud-Forge working bridge, future direct MCP/API crossings, and sealed offline packages are distinct transport classes under the same fail-closed contract. Dynamic and Navigator remain Cognitive Shadow collections that retrieve, preserve, prepare, and route Gemstones across Emberdark. Kandra are restricted mission-bound workers, and TenSoon verifies both pre-Coppermind intake and exact Phoenix draft candidates without granting permanence.
+- Phoenix is Codex's canonical-source maintenance Operation. Private Gitea is the future Phoenix workshop direction, while GitHub remains canonical for Prime until separately proven and approved cutover and may receive deliberately public or collaborative projects only through explicit public-clean release boundaries. Elantris owns backup, restore, rollback, and recovery.
+- Athena may help design and build HAOS source through reviewed private repository routes. Harmony and bounded HAOS Kandra may analyze health, traces, recurring failures, and household patterns and prepare proposals; they receive no automatic household-security, credential, deployment, deletion, or consequential control authority.
 - Runtime, infrastructure, database, Gitea, website, lifecycle, migration, and route-retirement work require later bounded source and proof transactions. No public endpoint, unrestricted SQL authority, secret, protected raw evidence, new notification platform, or new scheduling platform is authorized here.
 
 Glass Codex is the client-independent governed service defined by
@@ -106,13 +108,13 @@ or authorize repository-settings mutation.
 | Campaign | Owner | Initial purpose | Current gate |
 |---|---|---|---|
 | PA-C01 — Write the Covenant | Artemis / Harmony with Codex | Constitutional boundaries, source/memory relationships, protected data, rationale, unresolved decisions, and acceptance criteria. | `ACTIVE — ARCHITECTURE REFINEMENT` |
-| PA-C02 — Raise the Coppermind | Codex / Coppermind with Artemis / Harmony and Elantris | PostgreSQL schemas, events, audit, retrieval, export, backup, restore, WAL, PITR, and reconciliation. | Depends on PA-C01 and substrate gates. |
-| PA-C03 — Establish Emberdark | Artemis / Harmony | Governed intake, Dynamic and Navigator transport, Perpendicularity, authorization, receipts, idempotency, integrations, failure, rollback, workflow execution, and mission-state plumbing. | Depends on PA-C01 and PA-C02 contracts. |
+| PA-C02 — Raise the Coppermind | Codex / Coppermind with Artemis / Harmony and Elantris | PostgreSQL schemas, events, audit, retrieval, broad governed Harmony read profiles, export, backup, restore, WAL, PITR, and reconciliation. | Depends on PA-C01 and substrate gates. |
+| PA-C03 — Establish Emberdark | Artemis / Harmony | Governed structured intent, API/MCP tools, webhooks, Dynamic and Navigator transport, Perpendicularity adapters, authorization, receipts, idempotency, integrations, failure, rollback, workflow execution, and mission-state plumbing. | Depends on PA-C01 and PA-C02 contracts. |
 | PA-C04 — Shape the Dawnshard | Codex / Coppermind with Artemis / Harmony | Watermarked, stale-aware, fail-closed, restart-safe context projection from Coppermind for Athena. | Depends on a stable event contract. |
 | PA-C05 — Open Glass Codex | Codex / Glass Codex with Artemis / Harmony | Private website/API, authentication, approvals, health, receipts, read views, and bounded actions. | Depends on Emberdark and Coppermind contracts; no public endpoint. |
 | PA-C06 — Crown Gitea | Codex / Phoenix with Elantris | Shadow parity, backup, mirror, recovery, rollback, access, and future cutover evidence. | Cutover remains a separate Jayson gate. |
-| PA-C07 — Awaken Harmony | Artemis / Harmony and AI Governance | Prove Harmony/Sazed as the resident intelligence with RAG, context assembly, OCR/intake, capability awareness, surface-dependent intent ownership, delegation, bounded Kandra and Cognitive Shadows, embeddings, reranking, assistance, and resource measurement; no separate Artemis-model identity. | Safe interfaces required. |
-| PA-C08 — Bind the Realms | Artemis / Harmony with Odyssey, Elantris, Codex, and Helios | Integrate components, prove boundaries and degraded modes, and keep monitoring nonauthoritative. | Component contracts and substrate gates. |
+| PA-C07 — Awaken Harmony | Artemis / Harmony and AI Governance | Prove Harmony/Sazed as the resident intelligence with broad governed Coppermind retrieval, context assembly, OCR/intake, capability awareness, surface-dependent intent ownership, delegation, bounded Kandra and Cognitive Shadows, embeddings, reranking, personal assistance, pattern interpretation, and resource measurement; no separate Artemis-model identity. | Safe interfaces required. |
+| PA-C08 — Bind the Realms | Artemis / Harmony with Odyssey, Elantris, Codex, and Helios | Integrate components, prove boundaries, Perpendicularity transports, HAOS support limits, and degraded modes, and keep monitoring nonauthoritative. | Component contracts and substrate gates. |
 | PA-C09 — Temper the Old Blades | Codex / Source Governance | Compare current routes, prove parity and rollback, and only then consider simplification or retirement. | No route retires during Quest creation. |
 | PA-C10 — Prove the Dawn | All owners through Source Governance | Integrated backup, restore, restart, rollback, reconciliation, stale handling, private access, model boundaries, cutover readiness, and final proof. | Requires applicable Campaign evidence. |
 
