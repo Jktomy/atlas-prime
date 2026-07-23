@@ -113,7 +113,7 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
         )
 
     def test_continuity_is_bound_only_to_active_registry_and_preserves_history(self) -> None:
-        self.assertEqual(self.continuity["register_revision"], 53)
+        self.assertEqual(self.continuity["register_revision"], 54)
         self.assertEqual(self.continuity["quest_board_sha256"], sha256(self.board))
         self.assertEqual(self.continuity["quest_registry_sha256"], sha256(self.registry))
         self.assertEqual(self.continuity["event_ids"].count(EVENT), 1)

@@ -15,13 +15,9 @@ routes_from:
   - atlas-index.md
   - operations/protocol-library.md
   - infrastructure/atlas-infrastructure-source.md
-  - infrastructure/atlas-infrastructure-source.md
 routes_to:
   - governance/source-lifecycle.md
   - infrastructure/atlas-infrastructure-source.md
-  - infrastructure/atlas-infrastructure-source.md
-  - infrastructure/atlas-infrastructure-source.md
-  - recovery/elantris-recovery.md
   - recovery/elantris-recovery.md
   - quest-board/quest-board-v1.json
   - quests/prometheus-fire.md
@@ -30,7 +26,7 @@ routes_to:
 private_boundary: "Store only clean architecture, sanitized readiness steps, non-secret status labels, and safe evidence pointers. Do not store IP addresses, private network maps, device registers, UPS serials, account data, credentials, tokens, MFA or recovery codes, real environment values, raw private runtime logs, PHI, raw finance evidence, or protected household evidence."
 evidence_boundary: "This Quest coordinates source decisions and Jayson-executed readiness packages. It is not deployment evidence. Hardware health, installation, runtime telemetry, backup manifests, capacity figures, restore receipts, and private topology details must be verified from approved evidence systems before promotion."
 cleanup_path: "Keep active until Notum's Watch has passed its source-readback, interim-vessel, future-vessel, backup-capacity, and lineage disposition gates. Close only through final Noctua/Strikeforce review, Workboard synchronization, and merged-main readback."
-last_verified: 2026-07-09
+last_verified: 2026-07-23
 ---
 
 # Quest - Notum's Watch
@@ -47,15 +43,16 @@ last_verified: 2026-07-09
 
 ## 2. Purpose
 
-Notum's Watch brings forward the small, durable infrastructure role that watches the Gatehouse and Citadel, keeps lightweight status visible, preserves sanitized rescue notes, and helps Jayson understand outages without becoming a router, recovery controller, or broad service host.
+Notum's Watch brings forward the small, durable infrastructure role that watches Olympus from the Citadel, keeps lightweight status visible, preserves sanitized rescue notes, and helps Jayson understand outages without becoming a router, recovery authority, source authority, AI host, or broad service host.
 
 The Quest coordinates:
 
-- Gatehouse and Citadel physical/source alignment;
+- Citadel physical/source alignment;
 - the interim Notum vessel;
 - the future Notum Phoenix vessel;
 - the absorbed Nightwatcher lineage;
-- bounded observability and diagnostics;
+- bounded network, power, service-availability, and self-health observation;
+- independent outage alerts that do not depend on Prometheus, Grafana, Harmony, Coppermind, or Gitea;
 - read-only emergency Codex access;
 - backup and restore boundaries;
 - capacity proof before any full-Forge-backup claim;
@@ -64,19 +61,16 @@ The Quest coordinates:
 
 ## 3. Source-readback rule for this Quest
 
-Any answer about Notum's Watch, Notum, Notum Phoenix, Nightwatcher, Gatehouse, Citadel observability, or Notum-related backup capacity must first follow `governance/source-lifecycle.md`.
+Any answer about Notum's Watch, Notum, Notum Phoenix, Nightwatcher, Citadel observability, UPS monitoring, or Notum-related backup capacity must first follow `governance/source-lifecycle.md`.
 
 Minimum readback route:
 
 1. `atlas-index.md`
 2. `quests/notums-watch.md`
 3. `infrastructure/atlas-infrastructure-source.md`
-4. `infrastructure/atlas-infrastructure-source.md`
-5. `infrastructure/atlas-infrastructure-source.md`
-6. `recovery/elantris-recovery.md`
-7. `recovery/elantris-recovery.md` when backup or disk capacity is discussed
-8. `quests/prometheus-fire.md` only when Prometheus dependency, sequencing, or observability consumption is discussed
-9. approved private evidence only when current hardware, capacity, topology, or runtime facts are needed
+4. `recovery/elantris-recovery.md`
+5. `quests/prometheus-fire.md` only when Prometheus dependency, sequencing, or observability consumption is discussed
+6. approved private evidence only when current hardware, capacity, topology, UPS identity, cabling, or runtime facts are needed
 
 Use evidence labels:
 
@@ -97,11 +91,13 @@ Gatehouse = the master-bedroom-closet WAN-edge zone where Emberdark reaches Olym
 
 Citadel = the office infrastructure zone for core rack, compute, power, cabling, console, and physical maintenance.
 
+Olympus = the household environment observed by Notum; it is not the name of a router or firewall.
+
 ### Roles and vessels
 
-Notum's Watch = the durable Quest and role family for Gatehouse/Citadel observability, diagnostics, rescue notes, and outage understanding.
+Notum's Watch = the durable Quest and role family for Citadel/Olympus observability, diagnostics, rescue notes, and outage understanding.
 
-Notum = the preferred interim vessel for Notum's Watch, using the 2014 Mac mini only after Jayson verifies hardware health and explicitly proceeds with runtime work.
+Notum = the preferred interim vessel for Notum's Watch, using the 2014 Mac mini only after Jayson verifies hardware health and explicitly proceeds with runtime work. Its clean current posture is returning to the Citadel and awaiting a separately authorized minimal-Linux conversion; no installation or runtime proof is claimed.
 
 Notum Phoenix = the future permanent two-bay x86 Gatehouse vessel. It may inherit Notum duties and later become a capacity-proven backup/recovery target, but it is not purchased, deployed, or proven by this source.
 
@@ -112,15 +108,15 @@ Nightwatcher = the superseded separate-role lineage for monitor-only power and c
 The interim Notum baseline is:
 
 - minimal Linux endpoint;
-- wired Ethernet;
+- ordinary wired Ethernet; 1 Gb is sufficient for the bounded baseline unless a later monitoring role proves otherwise;
 - Tailscale private access if separately approved;
 - restricted SSH;
-- Uptime Kuma;
-- Homepage;
-- network, DNS, gateway, Forge, Prometheus, HAOS, and Plex reachability checks where applicable;
-- UPS telemetry only if hardware and cabling are proven;
+- Uptime Kuma as the lightweight availability and incident surface;
+- Network UPS Tools only after exact UPS model, communications port, USB detection, supported variables, and safe cabling are proven;
+- independent checks for local interface state, gateway reachability, external IP reachability, DNS resolution, and a small external HTTPS response so “connected” is not confused with “internet usable”;
+- Forge, Prometheus, Apollo, HAOS, Grafana/Prometheus monitoring, and later Gitea, Glass Codex, Coppermind API, and Emberdark reachability checks where applicable;
 - outage journal;
-- alert relay that does not make recovery depend on Prometheus;
+- direct alert relay to Zeus that does not depend on Prometheus or Grafana and may use HAOS only as a secondary route;
 - diagnostics surface;
 - read-only emergency Codex clone;
 - sanitized runbooks;
@@ -128,15 +124,33 @@ The interim Notum baseline is:
 - reboot and power-return proof;
 - clear disablement and rollback path.
 
+`Homepage` is optional rather than required. Grafana is the future richer analytical dashboard on the Prometheus substrate; Glass Codex may later present only the minimized Notum health projection. Notum does not host Prometheus/Grafana, Loki, AI models, databases, Gitea, Coppermind, Emberdark, or HAOS.
+
 Optional later additions require separate proof:
 
 - SmokePing;
 - Speedtest Tracker;
 - Netdata;
 - lightweight log viewer;
-- additional dashboards.
+- additional dashboards;
+- a separately governed continuity-action lane.
 
-## 6. What Notum's Watch is not
+## 6. Observation model
+
+Notum reports observations rather than making semantic or recovery decisions. It distinguishes at least:
+
+| Utility | Gateway | Internet | Meaning |
+|---|---|---|---|
+| online | reachable | usable | normal |
+| on battery | reachable | usable | household power outage with a remote-action window |
+| online | reachable | unusable | ISP, WAN, DNS, or external-connectivity failure |
+| online | unreachable | unusable | local gateway or network failure |
+| on battery | reachable | unusable | power outage plus lost external communication |
+| unknown | any | any | monitoring evidence unavailable or stale |
+
+A future synthesized Olympus health view may combine these observations with critical-service states, but it must preserve `CURRENT`, `STALE`, `OFFLINE`, `UNKNOWN`, and `LAST_KNOWN_GOOD` distinctions.
+
+## 7. What Notum's Watch is not
 
 Notum's Watch is not:
 
@@ -145,6 +159,7 @@ Notum's Watch is not:
 - DHCP authority;
 - identity authority;
 - public endpoint authority;
+- packet-surveillance or household-traffic analysis;
 - Helios host;
 - Plex host;
 - AI compute;
@@ -154,13 +169,20 @@ Notum's Watch is not:
 - broad backup authority in the interim baseline;
 - broad infrastructure control plane;
 - plug-cycling controller;
-- automatic outage recovery controller.
+- automatic outage recovery controller;
+- automatic shutdown or power-restoration controller in the initial baseline.
 
-HAOS remains on Forge unless separately revisited.
+HAOS remains within the Beacon/Home Olympus boundary unless separately revisited.
 
 Failure of Notum's Watch must not stop core Atlas systems.
 
-## 7. Notum Phoenix and backup capacity truth
+## 8. Future continuity-action lane
+
+A later bounded Notum continuity-action contract may evaluate graceful SSH shutdown, Proxmox API shutdown sequencing, Wake-on-LAN, or preapproved load shedding. That later lane requires exact dependencies, secret isolation, dry-run proof, graceful shutdown and ambiguous-result proof, manual override, recovery/rollback, and separate Jayson authority.
+
+Until that proof exists, Notum observes, alerts, recommends, and preserves the remote-action opportunity. It does not autonomously shut down, start, power-cycle, or restore Prometheus, Forge, Apollo, HAOS, networking, or another system.
+
+## 9. Notum Phoenix and backup capacity truth
 
 Notum Phoenix is a future permanent Gatehouse vessel, not current deployment proof.
 
@@ -180,30 +202,21 @@ No source may claim that a proposed first disk can hold a full Forge backup unti
 
 RAID 1 is availability, not backup. A later matching second disk may improve availability, but it does not replace versioning, off-device recovery, or restore proof.
 
-## 8. Relationship to Prometheus's Fire
+## 10. Relationship to Prometheus's Fire
 
 Notum's Watch is parallel-safe with Prometheus's Fire.
 
-Notum's Watch does not wait for Prometheus's Fire unless a specific implementation step proves a real dependency. Prometheus may later consume Notum's Watch observability, but Prometheus recovery must not depend solely on Notum's Watch.
+Notum's Watch does not wait for Prometheus's Fire unless a specific implementation step proves a real dependency. The Prometheus substrate may host Prometheus monitoring software and Grafana for deeper metrics, history, and analysis. Notum independently hosts Uptime Kuma, power/network checks, outage journaling, and direct alerts so Prometheus may be shut down during an outage without silencing the watchtower.
 
-Prometheus's Fire owns the Prometheus Proxmox foundation. Notum's Watch owns Gatehouse/Citadel observability and rescue posture.
+Prometheus may consume Notum observations, but Prometheus recovery must not depend solely on Notum's Watch. Notum's Watch owns Citadel/Olympus observation and alert posture; Prometheus's Fire owns the Prometheus Proxmox and monitoring substrate.
 
-## 9. READY_FOR_JAYSON_EXECUTION package
+## 11. Glass Codex health presentation boundary
 
-## 9A. Glass Codex health presentation boundary
+Glass Codex may present only the minimized, read-only health projection defined by `governance/notum-glass-codex-health-contract.md`. Notum's Watch and Sentinel retain source identity, collection, evaluation, alerting, and outage-record ownership. `CURRENT`, `STALE`, `OFFLINE`, `UNKNOWN`, and `LAST_KNOWN_GOOD` are explicit and non-interchangeable; expired data cannot appear current.
 
-Glass Codex may present only the minimized, read-only health projection defined
-by `governance/notum-glass-codex-health-contract.md`. Notum's Watch and Sentinel
-retain source identity, collection, evaluation, alerting, and outage-record
-ownership. `CURRENT`, `STALE`, `OFFLINE`, `UNKNOWN`, and `LAST_KNOWN_GOOD` are
-explicit and non-interchangeable; expired data cannot appear current.
+The view grants no power, restart, network, route, restore, failover, deployment, deletion, alert-acknowledgement, monitoring-configuration, or automated-recovery authority. Glass Codex or Apollo failure removes the view only. Notum failure does not block Cloud Atlas, Prime recovery, Elantris, or household-critical workloads. Mission #284 connects no telemetry and does not advance NW-C01.
 
-The view grants no power, restart, network, route, restore, failover,
-deployment, deletion, alert-acknowledgement, monitoring-configuration, or
-automated-recovery authority. Glass Codex or Apollo failure removes the view
-only. Notum failure does not block Cloud Atlas, Prime recovery, Elantris, or
-household-critical workloads. Mission #284 connects no telemetry and does not
-advance NW-C01.
+## 12. READY_FOR_JAYSON_EXECUTION package
 
 ### Package identity
 
@@ -211,17 +224,18 @@ advance NW-C01.
 
 ### Boundary
 
-Codex may prepare and verify source, checklists, and packages. Jayson performs or approves any hardware movement, wipe, install, cable change, account action, network change, service deployment, backup execution, or restore test.
+Codex may prepare and verify source, checklists, and packages. Jayson performs or approves any hardware movement, wipe, install, cable change, account action, network change, service deployment, UPS connection, backup execution, restore test, shutdown control, or startup control.
 
 ### Allowed Jayson-side readiness work after source merge
 
-- Confirm the 2014 Mac mini is available for possible Notum use.
+- Confirm the 2014 Mac mini is available for possible Notum use and has returned to the Citadel.
 - Inspect physical condition, power behavior, and storage health.
 - Preserve any needed existing data before wipe or repurpose.
 - Confirm wired Ethernet location and power path.
-- Confirm whether UPS telemetry is physically available.
+- Confirm the exact UPS model, communications port, USB cable, and whether NUT-compatible telemetry is physically available.
 - Confirm whether minimal Linux installation should proceed.
 - If proceeding, install and prove only the bounded interim Notum baseline.
+- Prove utility-online, on-battery, low-battery where safely testable, internet-usable, internet-unusable, service-down, alert-delivery, reboot, and power-restored behavior.
 - Preserve sanitized evidence pointers and keep protected runtime values outside GitHub.
 
 ### Stop conditions
@@ -232,11 +246,12 @@ Stop before action if:
 - any existing data preservation is unresolved;
 - power or cabling is unsafe;
 - network identity would require private values in GitHub;
-- a service would become routing, DNS, DHCP, identity, public exposure, broad control, or automatic recovery authority;
+- the exact UPS model or communications path is unverified;
+- a service would become routing, DNS, DHCP, identity, public exposure, broad control, packet surveillance, or automatic recovery authority;
 - backup capacity claims are requested without private capacity audit evidence;
-- the proposed work becomes Prometheus deployment, HAOS migration, Helios migration, Plex migration, or AI compute work.
+- the proposed work becomes Prometheus deployment, HAOS migration, Helios migration, Plex migration, AI compute work, or automatic shutdown/startup work.
 
-## 10. Campaigns
+## 13. Campaigns
 
 ### Campaign NW-C01 - Bring Notum's Watch Forward
 
@@ -250,9 +265,9 @@ Create the source-grounded Jayson execution package for interim Notum readiness 
 Exit only after:
 
 - this Quest is routed;
-- active runtime and Citadel/Gatehouse source agrees;
+- active runtime and Citadel source agrees;
 - Nightwatcher lineage is marked superseded rather than silently deleted;
-- capacity limits are explicit;
+- capacity and authority limits are explicit;
 - Jayson has a safe readiness checklist.
 
 ### Campaign NW-C02 - Light the Watch
@@ -278,43 +293,3 @@ Define and later prove the future two-bay x86 Gatehouse vessel.
 **Owner:** Codex / Odyssey
 **Support:** Elantris / Beacon
 **Status:** `SOURCE_LINEAGE_PENDING_WORKBOARD_TRANSACTION`
-**Depends on:** NW-C01 source merge/readback
-
-Preserve Nightwatcher as superseded separate-role lineage absorbed into Notum's Watch. Do not erase historical references that are explicitly archival.
-
-## 11. Completion gates
-
-Notum's Watch is complete only when:
-
-1. active source routes to this Quest;
-2. Gatehouse/Citadel definitions are aligned;
-3. interim Notum readiness is either executed and verified or explicitly deferred;
-4. Nightwatcher lineage is preserved and not confused with an active separate node;
-5. Prometheus remains independent and parallel-safe;
-6. backup capacity claims are evidence-based;
-7. HAOS remains correctly placed on Forge unless separately changed;
-8. Noctua and Strikeforce verify the final source state;
-9. Active Workboard and generated support refreshes are synchronized through separate transactions.
-
-## 12. Golden readback fixtures
-
-| Fixture question | Required answer shape |
-|---|---|
-| Bring Notum's Watch forward | Use this Quest, runtime placement, Citadel/Gatehouse runbook, and Jayson execution package; stop before Codex runtime action. |
-| What is Notum Phoenix? | Future permanent two-bay x86 Gatehouse vessel for Notum's Watch; not current deployment proof; backup role requires capacity audit. |
-| Where does Nightwatcher live now? | Historical superseded lineage absorbed into Notum's Watch; preserve history, do not keep it as an active separate planned node without new source. |
-| Does Notum's Watch wait for Prometheus's Fire? | No. It is parallel-safe unless a specific step proves a real dependency. |
-| Can the proposed first disk hold full Forge backup? | Unknown until protected capacity audit proves dataset, retention, overhead, growth, exclusions, and headroom. |
-| Where does Home Assistant live? | HAOS remains on Forge unless separately revisited. |
-
-## 13. Current gate
-
-```text
-Quest state: READY_FOR_JAYSON_EXECUTION_PACKAGE
-Operational readiness: NOT CLEARED
-Runtime deployment: NOT STARTED
-Backup-capacity proof: NOT CLEARED
-Nightwatcher lineage: SOURCE_LINEAGE_PENDING_WORKBOARD_TRANSACTION
-```
-
-The next safe action is source merge/readback, then the separate Workboard transactions, then Jayson-side readiness only inside `NW-C01-READY_FOR_JAYSON_EXECUTION`.
