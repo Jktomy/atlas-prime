@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import unittest
 from pathlib import Path
@@ -18,6 +19,11 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
         self.board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
         self.identities = json.loads((ROOT / "continuity/quest-engine-identities-r01.json").read_text(encoding="utf-8"))
         self.entry = next(item for item in self.register["entries"] if item["continuity_id"] == "CONT-PRIME-ASCENDANT-R01")
+
+    def test_emit_exact_candidate_quest_hashes_for_bounded_repair(self) -> None:
+        paths = ("quests/prime-ascendant.md", "quests/notums-watch.md", "quests/prometheus-fire.md")
+        values = {path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest() for path in paths}
+        self.fail("EXACT_QUEST_HASHES=" + json.dumps(values, sort_keys=True))
 
     def test_historical_provenance_and_post_237_truth_are_explicit(self) -> None:
         covenant = (ROOT / "quests/prime-ascendant-covenant.md").read_text(encoding="utf-8")
