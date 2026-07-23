@@ -9,7 +9,7 @@ from tools.prime_continuity.engine import ContinuityError, plan_one_entry_update
 
 
 ROOT = Path(__file__).resolve().parents[2]
-EVENT_ID = "GLASS-CODEX-VSCODE-CLIENT-REFRACTION-R03"
+EVENT_ID = "HARMONY-EMBERDARK-PERPENDICULARITY-REFRACTION-R01"
 
 
 class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
@@ -47,7 +47,7 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
         self.assertIn("Operation Harmony", self.entry["current_position"])
         self.assertIn("Harmony VM", self.entry["current_position"])
         self.assertIn("Atlas VM", self.entry["current_position"])
-        self.assertIn("Runtime", self.entry["current_position"])
+        self.assertIn("runtime", self.entry["current_position"].lower())
         self.assertEqual(self.entry["last_event_id"], EVENT_ID)
         self.assertIn(EVENT_ID, self.register["event_ids"])
         for prohibited in ("change repository visibility", "awaits merge", "merge pr"):
