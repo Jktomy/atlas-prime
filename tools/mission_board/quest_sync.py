@@ -267,6 +267,8 @@ def enforce_quest_sync_closure(
     for entry in entries:
         issue_number = entry["parent_issue_number"]
         snapshot = parent_issue_snapshots.get(issue_number)
+        if not isinstance(snapshot, Mapping):
+            _fail("QUEST_SYNC_PENDING", f"parent Issue #{issue_number} snapshot is unavailable")
         receipts = _snapshot_receipts(snapshot, issue_number)
         matches = [
             receipt
