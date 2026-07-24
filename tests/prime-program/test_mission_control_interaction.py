@@ -31,20 +31,35 @@ class MissionControlInteractionTests(unittest.TestCase):
         self.assertIn("If current Prime cannot be", text)
         self.assertIn("stop before consequential work", text)
 
-    def test_decision_boxes_are_consequential_choice_only(self) -> None:
+    def test_next_safe_action_is_inside_final_decision_box(self) -> None:
         text = compact((ROOT / "governance" / "mission-control-interaction-contract.md").read_text(encoding="utf-8"))
-        self.assertIn("used only when an unresolved consequential choice remains", text)
-        self.assertIn("two or more viable paths have meaningful downstream consequences", text)
-        self.assertIn("not required for obvious safe next steps", text)
+        self.assertIn("recommended **Next Safe Action** appears only as Option 1 inside the final Decision Box", text)
+        self.assertIn("must not be repeated as a separate status field", text)
+        self.assertIn("appears at the absolute bottom", text)
+        self.assertIn("nothing follows it", text)
 
-    def test_single_action_and_no_action_cases_do_not_manufacture_choices(self) -> None:
+    def test_single_action_uses_single_option_decision_box(self) -> None:
         text = compact((ROOT / "governance" / "mission-control-interaction-contract.md").read_text(encoding="utf-8"))
-        self.assertIn("When only one valid authorization exists", text)
-        self.assertIn("one exact copy-paste command at the absolute bottom", text)
-        self.assertIn("rather than false choices", text)
-        self.assertIn("When no user authorization is required", text)
+        self.assertIn("When only one valid action or authorization exists", text)
+        self.assertIn("single-option Decision Box", text)
+        self.assertIn("Do not replace that box with an unnumbered command", text)
+        self.assertIn("When no user action or authorization is required", text)
         self.assertIn("do not manufacture a Decision Box or copy-paste action", text)
-        self.assertIn("status fields appear before any final Decision Box or single copy-paste command", text)
+
+    def test_multi_option_boxes_are_consequential_choice_only(self) -> None:
+        text = compact((ROOT / "governance" / "mission-control-interaction-contract.md").read_text(encoding="utf-8"))
+        self.assertIn("A multi-option Decision Box is required", text)
+        self.assertIn("two or more viable paths have meaningful downstream consequences", text)
+        self.assertIn("Obvious safe work inside an already approved bounded goal", text)
+
+    def test_stored_state_is_distinct_from_user_facing_presentation(self) -> None:
+        interaction = compact((ROOT / "governance" / "mission-control-interaction-contract.md").read_text(encoding="utf-8"))
+        routing = compact((ROOT / "routing" / "interaction-contract.md").read_text(encoding="utf-8"))
+        for text in (interaction, routing):
+            self.assertIn("machine-readable", text)
+            self.assertIn("Option 1", text)
+            self.assertIn("final Decision Box", text)
+        self.assertIn("does not authorize execution", interaction)
 
     def test_preview_is_restart_safe_and_build_is_separately_authorized(self) -> None:
         text = compact((ROOT / "governance" / "mission-control-interaction-contract.md").read_text(encoding="utf-8"))
