@@ -18,6 +18,14 @@ class MissionControlInteractionTests(unittest.TestCase):
         self.assertIn("Next Safe Action", text)
         self.assertIn("Waiting On", text)
 
+    def test_preview_is_restart_safe_and_build_is_separately_authorized(self) -> None:
+        text = (ROOT / "governance" / "mission-control-interaction-contract.md").read_text(encoding="utf-8")
+        self.assertIn("complete restart-safe Preview is appended to the Mission Board", text)
+        self.assertIn("Preview acceptance stores and confirms the plan only", text)
+        self.assertIn("later explicit Build Lane authorization", text)
+        self.assertIn("fresh-reads current Prime and live transaction state", text)
+        self.assertIn("returns to Preview rather than being silently inferred", text)
+
     def test_risk_scaled_strikeforce_and_pass_ceiling_are_bound(self) -> None:
         interaction = (ROOT / "governance" / "mission-control-interaction-contract.md").read_text(encoding="utf-8")
         strikeforce = (ROOT / "governance" / "atlas-strikeforce.md").read_text(encoding="utf-8")
