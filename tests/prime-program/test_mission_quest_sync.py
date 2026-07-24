@@ -33,9 +33,9 @@ def canonical_mission() -> dict[str, object]:
         "governance/mission-board-contract.md",
         "schemas/quest-sync-receipt-v1.schema.json",
         "tests/prime-program/test_mission_quest_sync.py",
-        "tools/mission_board/README.md",
         "tools/mission_board/__init__.py",
         "tools/mission_board/quest_sync.py",
+        "tools/mission_board/README.md",
     ]
     mission["source_binding"]["changed_paths_digest"] = changed_paths_digest(
         mission["source_binding"]["changed_paths"]
