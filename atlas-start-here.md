@@ -16,15 +16,22 @@ Read in order:
 1. `README.md`
 2. `bootstrap.md`
 3. `routing/command-surfaces.md`
-4. `safety/atlas-safety-doctrine.md`
-5. `projects/project-registry.md`
-6. `operations/operation-registry.md`
-7. `continuity/mission-board-quest-registry-r01.json`
-8. `governance/mission-quest-emberline-contract.md`
-9. `continuity/prime-continuity-register-r01.json`
-10. `quest-board/quest-board-v1.json` as frozen predecessor evidence
-11. `tools/thread-engine/PRIME-PORT-STATUS.json`
-12. `recovery/elantris-recovery.md`
+4. `governance/mission-control-interaction-contract.md`
+5. `safety/atlas-safety-doctrine.md`
+6. `projects/project-registry.md`
+7. `operations/operation-registry.md`
+8. `continuity/mission-board-quest-registry-r01.json`
+9. `governance/mission-quest-emberline-contract.md`
+10. `continuity/prime-continuity-register-r01.json`
+11. `quest-board/quest-board-v1.json` as frozen predecessor evidence
+12. `tools/thread-engine/PRIME-PORT-STATUS.json`
+13. `recovery/elantris-recovery.md`
+
+Before substantive Atlas work, apply
+`governance/mission-control-interaction-contract.md` to the chat presentation,
+approval surface, and next-action format. Atlas Project instructions may trigger
+the fresh startup read, but merged Prime defines the exact doctrine; saved memory
+is reminder-only and never substitutes for current Prime.
 
 Current authority:
 
