@@ -14,15 +14,15 @@ protected_level: "CRITICAL"
 Strikeforce consists of Noctua, Ares, and Aegis working cumulatively against one exact Preview, candidate head, execution object, recovery object, or lifecycle transaction.
 
 ```text
-Noctua verifies source, identity, feasibility, duplication, evidence, paths, bytes, and claims
-→ Ares red-teams why the plan may fail, be unsafe, be duplicated, or be a bad direction
-→ Aegis audits alignment, resolves or exposes Ares findings, and improves safety, efficiency, clarity, and the Athena-to-Jayson interface
+Noctua verifies source, identity, evidence, paths, bytes, and claims
+→ Ares red-teams assumptions, authority, replay, recovery, leakage, and rollback
+→ Aegis audits alignment and improves the safety, clarity, and Athena-to-Jayson interface
 → GREEN, YELLOW, or RED
 ```
 
 Strikeforce is read-only. Its members may report defects, required repairs, clearer decision surfaces, and safer next actions, but they do not alter the exact object during reconciliation.
 
-Noctua verifies that the object is possible with the declared route and evidence, is not an accidental duplicate of existing Missions, branches, pull requests, doctrine, capabilities, or services, and preserves Jayson's understood semantic intent.
+Noctua also verifies that the object is feasible with the declared route and evidence, is not an accidental duplicate of existing Missions, branches, pull requests, doctrine, capabilities, or services, and preserves Jayson's understood semantic intent.
 
 Ares follows `governance/ares.md`. It acts as the devil's advocate and attacks credible failure modes, hidden assumptions, unnecessary complexity, authority, replay, recovery, leakage, rollback, misuse, and reasons the plan may be a bad direction even when technically possible.
 
@@ -40,7 +40,7 @@ Every full Strikeforce cycle is numbered and reported as `Pass N of 5`. Each pas
 
 After five non-GREEN passes, the transaction stops `BLOCKED_RESUMABLE`. Mission Control presents unresolved findings and asks Jayson for more information, narrowed scope, a changed approach, or abandonment. Five attempts never waive evidence or convert YELLOW or RED into GREEN. The final report records how many passes were required and which pass became GREEN.
 
-GREEN means the exact reviewed object is ready for the next authorized gate. GREEN does not merge. It also does not itself READY, activate, promote, deploy, migrate, change settings, or cut over Prime. Shardblade is the separate merge authority for an explicitly authorized exact head; it remains distinct from Strikeforce and must perform its own fresh gate.
+GREEN means the exact reviewed candidate is ready for the next authorized gate. For non-candidate objects, GREEN means that exact reviewed object is ready for its next authorized gate. GREEN does not merge. It also does not itself READY, activate, promote, deploy, migrate, change settings, or cut over Prime. Shardblade is the separate merge authority for an explicitly authorized exact head; it remains distinct from Strikeforce and must perform its own fresh gate.
 
 For a Prime repository transaction, Strikeforce also reconciles:
 
