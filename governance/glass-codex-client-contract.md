@@ -26,7 +26,16 @@ The normative UI and authority record is
 
 The client presents Harmony, Coppermind search, exact source retrieval,
 documents/evidence, Emberdark workflow state, Gemstones/provenance, Mission
-Board, Phoenix state, approvals, receipts, and read-only health.
+Board, Mission Control, Decision Boxes, Previews, Phoenix state, approvals,
+receipts, and read-only health.
+
+Mission Control presents truthful live operational progress. Decision Boxes are
+the mobile-first consequential-choice surface and remain at the bottom of their
+message with at most four numbered, individually copyable options; option 1 is
+the agent recommendation. Previews show the exact proposed change before
+consequential Build or Execute. These surfaces follow
+`governance/mission-control-interaction-contract.md` and grant no authority by
+their presentation alone.
 
 Exact lookup and structured search use direct governed APIs. Interpretation and
 synthesis use Harmony. Neither lane lets the client bypass Emberdark mediation,

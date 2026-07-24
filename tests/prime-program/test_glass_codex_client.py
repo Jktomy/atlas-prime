@@ -11,7 +11,7 @@ class GlassCodexClientTests(unittest.TestCase):
         self.contract=(ROOT/'governance/glass-codex-client-contract.md').read_text(encoding='utf-8')
     def test_record_validates_and_surfaces_are_complete(self):
         validate_schema(self.schema,self.record)
-        self.assertEqual(len(self.record['surfaces']),11)
+        self.assertEqual(len(self.record['surfaces']),14)
         self.assertEqual(len(self.record['access_lanes']),2)
         self.assertEqual(self.record['deployment_state'],'ARCHITECTURE_ONLY_NOT_IMPLEMENTED')
     def test_client_has_no_backend_or_protected_authority(self):
