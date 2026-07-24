@@ -13,6 +13,7 @@ routes_from:
   - continuity/mission-board-quest-registry-r01.json
 routes_to:
   - tools/mission_board/README.md
+  - schemas/quest-sync-receipt-v1.schema.json
   - governance/repository-process-contract.md
   - governance/quest-engine-continuity-contract.md
   - recovery/elantris-recovery.md
@@ -302,6 +303,11 @@ sequence plans.
 predecessor, continuity binding, future Quest admission, and deterministic
 recovery views.
 
+`schemas/quest-sync-receipt-v1.schema.json` and
+`tools.mission_board.quest_sync` detect child-Mission impact on active Quest
+doctrine, construct compact parent synchronization receipts, and enforce the
+post-merge closure gate from exact readback evidence.
+
 The Mission Board tools are read-only. They do not call GitHub or Gitea, create
 or edit an Issue, create a branch or PR, mark ready, merge, archive, deploy, or
 grant authority. Platform adapters perform authenticated reads and explicit
@@ -336,3 +342,34 @@ Before merge, close or abandon the exact candidate while preserving evidence.
 After merge, use a reviewed revert or repair-forward PR. Never force-push,
 rewrite Issue history, delete accepted proof, reuse approval for changed bytes,
 or let a rollback silently advance a different Mission.
+
+## 19. Post-merge parent-Quest synchronization
+
+A child Mission that changes active Quest doctrine must synchronize every
+affected live `mission/quest` parent Issue after permanence and before child
+Mission closure. Impact is detected from an exact Quest relationship, a
+`CHILD_OF` binding to the registered parent Mission, a changed registered Quest
+source, or shared Mission Board and Quest-continuity doctrine.
+
+The synchronization sequence is closed:
+
+1. merge the unchanged authorized child candidate;
+2. read back the exact merged commit as current canonical `main`;
+3. derive affected parents from the merged portable Quest registry and the
+   child's complete changed-path inventory;
+4. append exactly one compact `atlas-quest-sync-receipt-v1` block to each
+   affected parent Issue;
+5. independently read back every parent Issue and confirm the exact receipt; and
+6. only then allow the child Mission to transition to `CLOSED`.
+
+Each receipt binds the repository, child Mission and Issue, exact merged commit,
+changed-path digest, parent Quest, parent Issue, parent Mission identity, compact
+impact summary, and `EXACT_MERGED_MAIN` status. It references exact merged
+evidence without copying full Quest architecture, routine progress, protected
+data, or an invented Quest advancement.
+
+Missing, stale, contradictory, unreadable, or duplicate parent evidence blocks
+closure with `QUEST_SYNC_PENDING`. A receipt never changes Quest, Campaign, gate,
+readiness, or runtime state. Non-Quest lifecycle records do not create a Quest
+synchronization obligation merely because their context spans more than one
+Quest.
