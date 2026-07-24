@@ -15,6 +15,7 @@ required = [
     "governance/protected-source-boundary.md",
     "governance/change-routes.md",
     "governance/cutover-boundary.md",
+    "governance/mission-control-interaction-contract.md",
     "migration/predecessor-snapshot.md",
     "migration/codex-inheritance-manifest.md",
     "migration/rollback-map.md",
@@ -61,6 +62,8 @@ for required_path in ("migration/**", "quest-board/**", "generated/**", "tools/t
 
 rollback = (ROOT / "migration/rollback-map.md").read_text(encoding="utf-8")
 command_surfaces = (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8")
+start_here = (ROOT / "atlas-start-here.md").read_text(encoding="utf-8")
+interaction = (ROOT / "governance/mission-control-interaction-contract.md").read_text(encoding="utf-8")
 
 for required_fragment in (
     'status: "CANONICAL_ACTIVE"',
@@ -97,6 +100,22 @@ assert (
     "| Backup, restore, recovery, rollback | `recovery/elantris-recovery.md`, `migration/rollback-map.md` |"
     not in command_surfaces
 )
+
+interaction_path = "`governance/mission-control-interaction-contract.md`"
+assert interaction_path in start_here
+assert (
+    start_here.index("`routing/command-surfaces.md`")
+    < start_here.index(interaction_path)
+    < start_here.index("`safety/atlas-safety-doctrine.md`")
+)
+assert (
+    "| Mission Control, Decision Boxes, Preview-first interaction, and final copy-paste action surfaces | "
+    "`governance/mission-control-interaction-contract.md`;"
+    in command_surfaces
+)
+assert 'status: "CANONICAL_ACTIVE"' in interaction
+assert "merged Prime defines the exact doctrine" in start_here
+assert "saved memory" in start_here
 
 generated_root = ROOT / "generated"
 if generated_root.exists() and any(path.is_file() for path in generated_root.rglob("*")):
