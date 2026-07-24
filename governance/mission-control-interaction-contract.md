@@ -41,6 +41,8 @@ A Decision Box is required when two or more viable paths have meaningful downstr
 
 Consequential durable or runtime work requires a user-visible Preview before Build or Execute. The Preview states the objective, exact scope, source authority, protected boundary, route, proof, stop condition, rollback, and next safe action. Preview, Build, Execute, READY, and permanence remain distinct.
 
+For a source-changing Mission, the complete restart-safe Preview is appended to the Mission Board before branch or pull-request construction. Preview acceptance stores and confirms the plan only; it grants no Build authority. Build begins only after a later explicit Build Lane authorization. Before construction or reuse of an earlier candidate, the worker fresh-reads current Prime and live transaction state, checks for duplicates, and reconciles the stored Preview. Canonical drift, missing evidence, or changed scope returns to Preview rather than being silently inferred. This separation preserves a resumable plan across context, resource, connector, or session interruption.
+
 Risk-scaled Strikeforce applies:
 
 - consequential or complex work receives a full Preview Strikeforce and a full exact-head Build Strikeforce;
