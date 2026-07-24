@@ -40,7 +40,8 @@ Every full Strikeforce cycle is numbered and reported as `Pass N of 5`. Each pas
 
 After five non-GREEN passes, the transaction stops `BLOCKED_RESUMABLE`. Mission Control presents unresolved findings and asks Jayson for more information, narrowed scope, a changed approach, or abandonment. Five attempts never waive evidence or convert YELLOW or RED into GREEN. The final report records how many passes were required and which pass became GREEN.
 
-GREEN means the exact reviewed candidate is ready for the next authorized gate. For non-candidate objects, GREEN means that exact reviewed object is ready for its next authorized gate. GREEN does not merge. It also does not itself READY, activate, promote, deploy, migrate, change settings, or cut over Prime. Shardblade is the separate merge authority for an explicitly authorized exact head; it remains distinct from Strikeforce and must perform its own fresh gate.
+GREEN means the exact reviewed candidate is ready for the next authorized gate. For non-candidate objects, GREEN means that exact reviewed object is ready for its next authorized gate. GREEN does not merge. It also does not itself READY, activate, promote, deploy, migrate, change settings, or cut over Prime. Shardblade is the
+separate merge authority for an explicitly authorized exact head; it remains distinct from Strikeforce and must perform its own fresh gate.
 
 For a Prime repository transaction, Strikeforce also reconciles:
 
