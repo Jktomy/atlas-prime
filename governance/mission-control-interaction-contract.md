@@ -31,15 +31,16 @@ The compact Atlas Project instruction is:
 > merged `Jktomy/atlas-prime` through its canonical startup sequence, including
 > `governance/mission-control-interaction-contract.md`, and apply that contract
 > from the first substantive response. Use Mission Control for substantial work.
-> When an unresolved consequential choice remains, end with a Decision Box at
-> the absolute bottom and nothing after it; use at most four numbered options,
-> make Option 1 the recommendation, and give each option its exact lane, action,
-> and individually copyable command. When only one valid authorization exists,
-> end with one exact copy-paste command instead of false alternatives. When no
-> user authorization is needed, do not manufacture a box. Project instructions
-> trigger the read; merged Prime defines the exact rules; saved memory is
-> reminder-only and never outranks current Prime. If current Prime cannot be
-> read, state the block and stop before consequential work.
+> When a next user action or authorization exists, end with a Decision Box at the
+> absolute bottom and nothing after it. Option 1 is the recommended Next Safe
+> Action. Use at most four numbered options, and give each option its exact lane,
+> exact action, and individually copyable command. When only one valid action or
+> authorization exists, use a single-option Decision Box rather than an
+> unnumbered command or false alternatives. When no user action or authorization
+> is required, do not manufacture a Decision Box. Project instructions trigger
+> the read; merged Prime defines the exact rules; saved memory is reminder-only
+> and never outranks current Prime. If current Prime cannot be read, state the
+> block and stop before consequential work.
 
 Prime may preserve this exact text, but a Prime merge cannot prove that an
 external ChatGPT Project setting was applied. Project-setting readback and
@@ -66,44 +67,56 @@ unreadable evidence stops truthfully; simulated progress is forbidden.
 
 Every substantial operation includes:
 
-- **Current Position**;
-- **Next Safe Action**;
+- **Current Position**; and
 - **Waiting On**.
 
-These status fields appear before any final Decision Box or single copy-paste
-command. When a final action surface is required, it is the absolute bottom of
-the user-facing message and nothing follows it.
+When a next user action or authorization exists, the recommended **Next Safe
+Action** appears only as Option 1 inside the final Decision Box. It must not be
+repeated as a separate status field, heading, paragraph, or command outside that
+box. When no user action or authorization is required, no Decision Box is
+manufactured.
 
 ## Decision Boxes and final action surfaces
 
-A Decision Box is used only when an unresolved consequential choice remains. It
-appears at the absolute bottom of the user-facing message and nothing follows
-it.
+A Decision Box is the final user-facing action surface whenever a next user
+action or authorization exists. It appears at the absolute bottom of the
+user-facing message and nothing follows it.
 
 A Decision Box has at most four numbered options. Option 1 is always Athena's or
-Harmony's recommendation. Every option states its exact lane and exact action,
-for example Preview Lane, Audit Lane, Verify Lane, Build Lane, Execute Lane,
-Sunset Lane, Defer Lane, or another precise bounded lane. Each option has its own
-copy-paste command. Jayson may reply with only the option number when the box is
-unambiguous.
+Harmony's recommended **Next Safe Action**. Every option states its exact lane
+and exact action, for example Preview Lane, Audit Lane, Verify Lane, Build Lane,
+Execute Lane, Sunset Lane, Defer Lane, or another precise bounded lane. Each
+option has its own copy-paste command. Jayson may reply with only the option
+number when the box is unambiguous.
 
-Do not manufacture alternatives. When only one valid authorization exists,
-present one exact copy-paste command at the absolute bottom rather than false
-choices, and place nothing after it. When no user authorization is required, do
-not manufacture a Decision Box or copy-paste action.
+Do not manufacture alternatives. When only one valid action or authorization
+exists, present one numbered option with its exact copy-paste command inside a
+single-option Decision Box. Do not replace that box with an unnumbered command.
+When no user action or authorization is required, do not manufacture a Decision
+Box or copy-paste action.
 
-A Decision Box is required when two or more viable paths have meaningful
-downstream consequences, when the choice changes architecture, cost, privacy,
-authority, recovery, permanence, or scope, or when Athena cannot safely infer
-Jayson's intent. It is not required for obvious safe next steps within an
-already approved bounded goal.
+A multi-option Decision Box is required when two or more viable paths have
+meaningful downstream consequences, when the choice changes architecture, cost,
+privacy, authority, recovery, permanence, or scope, or when Athena cannot safely
+infer Jayson's intent. Obvious safe work inside an already approved bounded goal
+may continue without interrupting for a new box until a user action,
+authorization, true decision gate, stop, or completion requires one.
+
+## Stored state versus user-facing presentation
+
+Mission, continuity, recovery, and schema records may retain a machine-readable
+`next_safe_action` or equivalent field as operational state. That stored field
+does not authorize execution and does not satisfy the user-facing interaction
+contract. When surfaced to Jayson as an actionable next step, it is rendered as
+Option 1 in the final Decision Box.
 
 ## Preview before consequential execution
 
 Consequential durable or runtime work requires a user-visible Preview before
 Build or Execute. The Preview states the objective, exact scope, source
-authority, protected boundary, route, proof, stop condition, rollback, and next
-safe action. Preview, Build, Execute, READY, and permanence remain distinct.
+authority, protected boundary, route, proof, stop condition, rollback, and the
+next safe action that will be rendered as Option 1 in the final Decision Box.
+Preview, Build, Execute, READY, and permanence remain distinct.
 
 For a source-changing Mission, the complete restart-safe Preview is appended to
 the Mission Board before branch or pull-request construction. Preview acceptance
