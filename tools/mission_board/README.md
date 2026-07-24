@@ -27,8 +27,10 @@ creation. The adapter must read back that number and publish a validated
 `atlas-mission-v1` body or comment before the Issue becomes an admitted Mission.
 
 Implementation paths are `tools/mission_board/__init__.py`,
-`tools/mission_board/__main__.py`, and `tools/mission_board/core.py`. The package
-entry point exposes only read-only validation and planning commands.
+`tools/mission_board/__main__.py`, `tools/mission_board/core.py`, and
+`tools/mission_board/quest_sync.py`. The receipt contract is
+`schemas/quest-sync-receipt-v1.schema.json`. The package entry point exposes only
+read-only validation and planning commands.
 
 ## Commands
 
@@ -42,6 +44,26 @@ The `sequence` command preserves the requested order. It continues past
 `BLOCKED_RESUMABLE` only when that Mission explicitly declares
 `CONTINUE_IF_BLOCKED_RESUMABLE`; number order never invents a dependency.
 
+## Post-merge Quest synchronization gate
+
+Before closing a child Mission, an authenticated platform adapter must invoke
+`enforce_quest_sync_closure` with the exact canonical head, the merged portable
+Quest registry, and complete parent-Issue snapshots. `affected_parent_quests`
+detects impact from a direct Quest relationship, a `CHILD_OF` parent binding, a
+changed Quest source, or shared Mission Board and Quest-continuity doctrine.
+
+For every affected active Quest, the adapter must append exactly one compact
+`atlas-quest-sync-receipt-v1` block to that Quest's live `mission/quest` parent
+Issue. `build_quest_sync_receipt` binds the child Mission and Issue, exact merged
+commit, changed-path digest, parent Quest and Mission identities, and
+`EXACT_MERGED_MAIN` readback. The receipt summarizes impact and never copies
+full Quest doctrine or advances Quest state.
+
+Missing, stale, contradictory, unreadable, or duplicate evidence fails closed.
+The closure gate returns `QUEST_SYNC_PENDING` until every required parent receipt
+is independently read back. A lifecycle-only non-Quest candidate does not invent
+Quest impact merely because it records cross-Quest context.
+
 ## Safe adapter sequence
 
 1. Resolve exact repository and Issue number.
@@ -51,7 +73,8 @@ The `sequence` command preserves the requested order. It continues past
 5. Ignore the unbound draft, extract exactly one manifest per admitted update, and reconcile chronological state transitions. A later valid append-only update may supersede an invalid historical candidate; the latest manifest-shaped update must validate or reconciliation fails closed.
 6. Search Mission ID, attempt ID, branch, PR, head, and changed-path digest before mutation.
 7. Use the returned next safe action; never blind retry.
-8. Append sanitized evidence to the same Mission.
+8. After merged-main readback, append and independently confirm every required parent-Quest synchronization receipt before child Mission closure.
+9. Append sanitized completion evidence to the same Mission.
 
 Merged Prime remains source authority. Mission state and issue closure cannot
 self-certify canonical source, Coppermind archival, Quest completion, or
