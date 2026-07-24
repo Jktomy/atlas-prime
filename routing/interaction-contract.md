@@ -13,7 +13,11 @@ protected_level: "HIGH"
 
 Every action reports objective, exact scope, current source authority, Preview,
 route and method, authorizer and operator, protected boundary, expected proof,
-stop point, rollback, observed result, and next safe action.
+stop point, rollback, and observed result. Stored Mission and continuity state may
+retain a machine-readable next safe action. When Jayson's next action or
+authorization is required, that Next Safe Action is rendered only as Option 1 in
+the final Decision Box under
+`governance/mission-control-interaction-contract.md`.
 
 `Preview`, `Build`, `Execute`, `Ready`, and `Merge` are distinct decisions.
 Preview never executes. Build never implies Execute. Execute never implies Ready
