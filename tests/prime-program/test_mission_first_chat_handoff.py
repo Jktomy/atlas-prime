@@ -13,6 +13,7 @@ class MissionFirstChatHandoffTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.text = CONTRACT.read_text(encoding="utf-8")
+        cls.words = " ".join(cls.text.split())
 
     def test_contract_is_canonical_and_routes_to_existing_surfaces(self) -> None:
         self.assertIn('status: "CANONICAL_ACTIVE"', self.text)
@@ -33,22 +34,22 @@ class MissionFirstChatHandoffTests(unittest.TestCase):
             "BLOCKED_RESUMABLE",
         )
         for phrase in required:
-            self.assertIn(phrase, self.text)
+            self.assertIn(phrase, self.words)
 
     def test_chat_and_mission_board_roles_remain_distinct(self) -> None:
-        self.assertIn("Chat is the discussion", self.text)
-        self.assertIn("Mission Board is the required", self.text)
-        self.assertIn("Merged Prime remains canonical doctrine", self.text)
-        self.assertIn("Mission capture does not itself grant Build", self.text)
+        self.assertIn("Chat is the discussion", self.words)
+        self.assertIn("Mission Board is the required", self.words)
+        self.assertIn("Merged Prime remains canonical doctrine", self.words)
+        self.assertIn("Mission capture does not itself grant Build", self.words)
 
     def test_ordinary_conversation_does_not_manufacture_missions(self) -> None:
-        self.assertIn("Do not manufacture a Mission for ordinary conversation", self.text)
-        self.assertIn("quick factual answers", self.text)
-        self.assertIn("writing or rewriting", self.text)
-        self.assertIn("nonconsequential one-shot task", self.text)
+        self.assertIn("Do not manufacture a Mission for ordinary conversation", self.words)
+        self.assertIn("quick factual answers", self.words)
+        self.assertIn("writing or rewriting", self.words)
+        self.assertIn("nonconsequential one-shot task", self.words)
 
     def test_public_clean_boundary_is_explicit(self) -> None:
-        self.assertIn("Never copy an entire chat", self.text)
+        self.assertIn("Never copy an entire chat", self.words)
         self.assertIn("protected://", self.text)
         for prohibited in (
             "Secrets",
@@ -58,7 +59,7 @@ class MissionFirstChatHandoffTests(unittest.TestCase):
             "raw financial",
             "unrestricted logs",
         ):
-            self.assertIn(prohibited, self.text)
+            self.assertIn(prohibited, self.words)
 
     def test_sunset_interruption_requires_durable_mission_handoff(self) -> None:
         required = (
@@ -70,13 +71,13 @@ class MissionFirstChatHandoffTests(unittest.TestCase):
             "`SUNSET COMPLETE`",
         )
         for phrase in required:
-            self.assertIn(phrase, self.text)
+            self.assertIn(phrase, self.words)
 
     def test_worldhopper_resumes_same_attempt_without_new_authority(self) -> None:
-        self.assertIn("Assignment makes work discoverable", self.text)
-        self.assertIn("grants no new capability", self.text)
-        self.assertIn("resumes the same attempt", self.text)
-        self.assertIn("READY, and permanence gates", self.text)
+        self.assertIn("Assignment makes work discoverable", self.words)
+        self.assertIn("grants no new capability", self.words)
+        self.assertIn("resumes the same attempt", self.words)
+        self.assertIn("READY, and permanence gates", self.words)
 
 
 if __name__ == "__main__":
