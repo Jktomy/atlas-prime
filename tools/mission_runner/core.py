@@ -611,6 +611,8 @@ def validate_route_attempts(
             _fail("ROUTE_STAGE_DRIFT", f"{attempt['route_id']} belongs to {attempt['stage']}")
         if index < len(normalized) - 1 and attempt["status"] not in TERMINAL_ROUTE_STATES:
             _fail("ROUTE_NOT_TERMINAL", attempt["route_id"])
+        if index < len(normalized) - 1 and attempt["status"] in TRUE_GATE_STATES:
+            _fail("ROUTE_AFTER_TRUE_GATE", attempt["route_id"])
         if attempt["status"] == "SUCCEEDED" and index != len(normalized) - 1:
             _fail("ROUTE_AFTER_SUCCESS", attempt["route_id"])
     return normalized
@@ -620,7 +622,7 @@ def next_authorized_route(
     routes: Sequence[str], attempts: Sequence[Mapping[str, Any]], *, stage: str
 ) -> str | None:
     normalized = validate_route_attempts(routes, attempts, stage=stage)
-    if normalized and normalized[-1]["status"] == "SUCCEEDED":
+    if normalized and normalized[-1]["status"] in TRUE_GATE_STATES | {"SUCCEEDED"}:
         return None
     if normalized and normalized[-1]["status"] not in TERMINAL_ROUTE_STATES:
         return normalized[-1]["route_id"]

@@ -253,6 +253,21 @@ class MissionRunnerTests(unittest.TestCase):
         with self.assertRaisesRegex(MissionRunnerError, "ROUTE_ALREADY_SUCCEEDED"):
             assert_mission_may_block(ROUTES, [spear, oathbringer, aegis], stage="PUBLICATION")
 
+    def test_true_gate_stops_fallback_and_rejects_later_attempts(self) -> None:
+        safety_gate = attempt(ROUTES[0], 1, "REJECTED_SAFETY")
+        self.assertIsNone(next_authorized_route(ROUTES, [safety_gate], stage="PUBLICATION"))
+        self.assertEqual(
+            assert_mission_may_block(
+                ROUTES, [safety_gate], stage="PUBLICATION", true_gate=True
+            )["basis"],
+            "REJECTED_SAFETY",
+        )
+        later_attempt = attempt(ROUTES[1], 2, "REJECTED_CAPABILITY")
+        with self.assertRaisesRegex(MissionRunnerError, "ROUTE_AFTER_TRUE_GATE"):
+            next_authorized_route(
+                ROUTES, [safety_gate, later_attempt], stage="PUBLICATION"
+            )
+
     def test_deleted_branch_closed_pr_and_ambiguous_head_fail_closed(self) -> None:
         with self.assertRaisesRegex(MissionRunnerError, "EXPECTED_HEAD_MISMATCH"):
             assert_publication_compare_and_swap(HEAD_A, HEAD_B)
