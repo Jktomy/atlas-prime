@@ -298,6 +298,15 @@ runtime contract for Mission manifests, transitions, path normalization,
 protected-data scanning, duplicate detection, restart plans, and ordered
 sequence plans.
 
+`governance/worldhopper-relay-contract.md`,
+`schemas/mission-checkpoint-v1.schema.json`,
+`schemas/mission-worker-capability-v1.schema.json`,
+`schemas/mission-working-source-handoff-v1.schema.json`,
+`schemas/mission-route-attempt-v1.schema.json`, and `tools.mission_runner`
+govern provider-neutral checkpoint, takeover, working-source, and executable
+fallback evidence. These records are operational evidence and never replace the
+latest Mission manifest or merged Prime.
+
 `schemas/mission-board-quest-registry-v1.schema.json` and
 `tools.prime_continuity.engine` validate the portable Quest registry, frozen
 predecessor, continuity binding, future Quest admission, and deterministic

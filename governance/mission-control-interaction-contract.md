@@ -65,6 +65,12 @@ Planned actions must be labeled as plans. A write is not complete until readback
 confirms it. A blocked connector, ambiguous mutation result, stale identity, or
 unreadable evidence stops truthfully; simulated progress is forbidden.
 
+For Worldhopper relay work, Mission Control reports the exact Mission and
+attempt, checkpoint digest, worker stage and proven capability, observed main
+and branch heads, selected route, ordered fallback dispositions, and the next
+unevaluated route. A route-local failure is not reported as Mission-wide
+`BLOCKED_RESUMABLE` while an approved fallback remains available.
+
 Every substantial operation includes:
 
 - **Current Position**; and

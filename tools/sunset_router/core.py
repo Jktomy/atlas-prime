@@ -22,6 +22,7 @@ from tools.atlas_lifecycle.sunset_preview import (
     verify_sunset_approval,
     verify_sunset_preview,
 )
+from tools.mission_runner.core import MissionRunnerError, assert_mission_may_block
 
 ROUTER_PLAN = "sunset-router-plan.json"
 ROUTER_RECEIPT = "sunset-router-receipt.json"
@@ -488,12 +489,29 @@ def verify_router_candidate(
 
 
 def build_resumable_receipt(
-    repo_root: Path, plan: dict[str, Any], *, reason_code: str, next_safe_action: str
+    repo_root: Path,
+    plan: dict[str, Any],
+    *,
+    reason_code: str,
+    next_safe_action: str,
+    route_attempts: list[dict[str, Any]] | None = None,
+    true_gate: bool = False,
 ) -> dict[str, Any]:
     root = repo_root.resolve()
     _validate_plan(root, plan)
     if not reason_code or not next_safe_action:
         _fail("SUNSET_ROUTER_RESUME", "blocked receipts require a reason and next action")
+    routes = [plan["selected_route"], *plan["fallback_routes"]]
+    try:
+        assert_mission_may_block(
+            routes,
+            route_attempts or [],
+            stage=plan["phase"],
+            true_gate=true_gate,
+        )
+    except MissionRunnerError as exc:
+        code, _, detail = str(exc).partition(": ")
+        _fail(code, detail or str(exc))
     receipt = _receipt(
         plan, phase=plan["phase"], state="BLOCKED_RESUMABLE",
         reason_code=reason_code, next_safe_action=next_safe_action,

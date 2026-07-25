@@ -57,6 +57,13 @@ For `Continue Mission #N`:
 7. resume the same attempt from its last proven state; and
 8. append a sanitized result and exact next safe action.
 
+For a Worldhopper relay, additionally validate the complete digest-chained
+checkpoint sequence, the incoming adapter's accepted stage capability, the one
+working-source handoff, and every ordered route-attempt receipt. Reject stale
+claims, forks, replay, duplicate branches or PRs, moved heads, undeclared paths,
+protected content, and premature `BLOCKED_RESUMABLE`. A local checkout failure
+does not exhaust GitHub-native publication or readback capability.
+
 If the Issue service is unavailable, Quest-level work may be oriented from the
 merged registry and continuity, but a particular child Mission remains blocked
 until its exact public-clean Issue/comment/PR/receipt export or authenticated

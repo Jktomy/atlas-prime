@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/mission-working-source-handoff-v1.schema.json",
+  "title": "Atlas Mission Working Source Handoff V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "mission_id", "attempt_id", "branch", "base_sha", "expected_head", "changed_paths", "changed_paths_digest", "candidate_state", "public_clean_status", "force_push", "pull_request", "previous_handoff_digest", "handoff_digest"],
+  "properties": {
+    "schema_version": {"const": "atlas.mission-working-source-handoff.v1"},
+    "mission_id": {"type": "string", "minLength": 3, "maxLength": 160},
+    "attempt_id": {"type": "string", "minLength": 3, "maxLength": 160},
+    "branch": {"type": "string", "minLength": 2, "maxLength": 160},
+    "base_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "expected_head": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "changed_paths": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "changed_paths_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "candidate_state": {"enum": ["WORKING_DRAFT", "SEALED"]},
+    "public_clean_status": {"const": "PASS"},
+    "force_push": {"const": false},
+    "pull_request": {"type": ["integer", "null"], "minimum": 1},
+    "previous_handoff_digest": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"}]},
+    "handoff_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"}
+  }
+}
