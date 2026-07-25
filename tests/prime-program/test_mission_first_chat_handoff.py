@@ -7,6 +7,7 @@ CONTRACT = ROOT / "governance" / "mission-first-chat-handoff-contract.md"
 MISSION_CONTROL = ROOT / "governance" / "mission-control-interaction-contract.md"
 MISSION_BOARD = ROOT / "governance" / "mission-board-contract.md"
 LESSON_HARVEST = ROOT / "governance" / "lesson-harvest-protocol.md"
+START_HERE = ROOT / "atlas-start-here.md"
 
 
 class MissionFirstChatHandoffTests(unittest.TestCase):
@@ -14,12 +15,14 @@ class MissionFirstChatHandoffTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.text = CONTRACT.read_text(encoding="utf-8")
         cls.words = " ".join(cls.text.split())
+        cls.start_here = START_HERE.read_text(encoding="utf-8")
 
-    def test_contract_is_canonical_and_routes_to_existing_surfaces(self) -> None:
+    def test_contract_is_canonical_and_routed_from_startup(self) -> None:
         self.assertIn('status: "CANONICAL_ACTIVE"', self.text)
         self.assertIn("governance/mission-control-interaction-contract.md", self.text)
         self.assertIn("governance/mission-board-contract.md", self.text)
         self.assertIn("governance/lesson-harvest-protocol.md", self.text)
+        self.assertIn("governance/mission-first-chat-handoff-contract.md", self.start_here)
         self.assertTrue(MISSION_CONTROL.is_file())
         self.assertTrue(MISSION_BOARD.is_file())
         self.assertTrue(LESSON_HARVEST.is_file())
