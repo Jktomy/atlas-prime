@@ -60,7 +60,7 @@ Revocation disables credentials, network routes, tools, and carrier access befor
 
 ## 6. Return quarantine and verification
 
-Every result returns only through `EMBERDARK_QUARANTINE_TENSOON_VERIFY`. Direct promotion into Coppermind, the Original Vault, Phoenix, Prime, a repository, or another Worldhopper is forbidden.
+Every result returns only through `EMBERDARK_QUARANTINE_TENSOON_VERIFY`. A Worldhopper result cannot self-promote into Coppermind, the Original Vault, Phoenix, Prime, a repository, or another Worldhopper.
 
 Return validation checks mission and attempt identity, carrier lineage, digest, expiry, malware/content policy where applicable, unknown fields, embedded credentials, protected pointers, private network/runtime values, unrestricted logs, replay, and unauthorized destinations. TenSoon independently verifies the sanitized result and exclusion proof before release.
 
