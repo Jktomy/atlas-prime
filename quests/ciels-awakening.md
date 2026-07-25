@@ -1,6 +1,6 @@
 ---
 title: "Quest — Ciel’s Awakening"
-status: Active
+status: Complete
 owner: "Project Artemis / Operation Ciel"
 supporting_projects:
   - "Project Codex"
@@ -16,13 +16,11 @@ routes_from:
 routes_to:
   - skills/gluttony/SKILL.md
   - knowledge/rimuru/README.md
-  - continuity/mission-board-quest-registry-r01.json
-  - continuity/prime-continuity-register-r01.json
   - recovery/elantris-recovery.md
 private_boundary: "Prime stores only public-clean external-intelligence doctrine, sanitized source identity, hashes, licenses, dispositions, synthetic fixtures, and protected:// pointers. Protected records and runtime values remain outside Prime."
 evidence_boundary: "Harvest and Rimuru records are noncanonical evidence and inspiration. They cannot override merged Prime, authorize Build, install tools, activate runtime, grant READY, or grant permanence."
-cleanup_path: "Complete CIEL-C01-M02 through reviewed Rimuru publication and follow-on routing, then close only after merged-main readback, continuity, recovery, and Sunset proof agree."
-last_verified: 2026-07-24
+cleanup_path: "Preserve Operation Ciel, Gluttony, Rimuru, Issue #328, Issue #330, and the final Emberline as active capability and immutable Quest history after merged-main closeout."
+last_verified: 2026-07-25
 ---
 
 # Quest — Ciel’s Awakening
@@ -31,13 +29,14 @@ last_verified: 2026-07-24
 
 **Quest ID:** `QUEST-CIELS-AWAKENING-20260724`  
 **Parent Issue:** `#328`  
+**Child Mission Issue:** `#330`  
 **Owning Project:** Project Artemis  
 **Owning Operation:** Operation Ciel  
 **Supporting Project:** Project Codex / Source Governance  
 **Campaign:** `CIEL-C01`  
 **Current Mission:** `CIEL-C01-M02 — First Gluttony`  
-**Current Gate:** `CIEL-C01-M02-PREVIEW`  
-**Quest state:** `IN_PROGRESS`  
+**Current Gate:** `CLOSED`  
+**Quest state:** `COMPLETE`  
 **Runtime:** `NOT AUTHORIZED`  
 **External tool installation:** `NOT AUTHORIZED`
 
@@ -61,10 +60,22 @@ Harvest discovers and verifies. Absorb classifies and prepares. Neither stage gr
 
 | Mission | Purpose | State |
 |---|---|---|
-| `CIEL-C01-M01 — Awaken Ciel` | Admit the Quest; canonize Operation Ciel, Harvest → Absorb, Gluttony, Rimuru, schemas, validation, lineage, safety, and recovery boundaries. | `COMPLETE IN THIS CANONICAL SOURCE CANDIDATE; REQUIRES MERGED-MAIN READBACK` |
-| `CIEL-C01-M02 — First Gluttony` | Reverify and absorb the Harvest backlog into atomic, license-bound, noncanonical Rimuru records and route later implementation Missions. | `NOT STARTED / PREVIEW REQUIRED` |
+| `CIEL-C01-M01 — Awaken Ciel` | Admit the Quest; canonize Operation Ciel, Harvest → Absorb, Gluttony, Rimuru, schemas, validation, lineage, safety, and recovery boundaries. | `COMPLETE / CANONICAL / MERGED-MAIN READBACK PROVEN` |
+| `CIEL-C01-M02 — First Gluttony` | Reverify and absorb the initial Harvest backlog into atomic, license-bound, noncanonical Rimuru records and route later implementation Missions. | `COMPLETE IN THIS CANONICAL SOURCE CANDIDATE; REQUIRES MERGED-MAIN READBACK` |
 
-M02 is ineligible until the unchanged M01 candidate is merged and independently read back from `main`.
+## First Gluttony result
+
+- 21 reviewed Harvest Records;
+- 21 reviewed paired Absorption Records;
+- 45 atomic findings;
+- 0 Code Capsules;
+- exact source or composite evidence binding for every Harvest;
+- verified repository licensing or `NOT_APPLICABLE` composite classification;
+- no copied code, imported repository, package, workflow, model, service, or runtime payload;
+- no downstream Mission self-admitted;
+- Rimuru registry revision 2.
+
+The records remain noncanonical evidence. A future finding may support a separately approved Preview or Mission, but no disposition authorizes implementation.
 
 ## Authority boundary
 
@@ -75,8 +86,9 @@ M02 is ineligible until the unchanged M01 candidate is merged and independently 
 - `INTEGRATE` does not mean installed.
 - `EXPERIMENT` does not mean deployed.
 - Literal code requires an inert Code Capsule with exact source, revision, digest, license, attribution, dependencies, security review, and test requirements.
+- First Gluttony creates no Code Capsule.
 - Any real implementation leaves Rimuru and enters its owning subsystem through a separate reviewed Mission.
 
 ## Completion condition
 
-The Quest completes only after M01 is proven canonical, M02 publishes the reviewed initial Harvest inventory, every atomic finding has one disposition, follow-on work is routed without self-admission, protected and license boundaries pass, recovery is proven, and merged-main readback agrees with the parent Issue and continuity.
+The Quest is complete only after this unchanged candidate is merged and independently read back from `main`; the 42 reviewed records, registry revision 2, validator, tests, completed Quest source, active-registry removal, continuity closeout, recovery, parent Issue, child Mission Issue, and final Living Emberline must agree.
