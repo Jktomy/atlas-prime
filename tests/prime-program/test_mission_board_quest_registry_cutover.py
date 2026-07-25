@@ -14,7 +14,8 @@ from tools.prime_continuity.engine import (
 
 ROOT = Path(__file__).resolve().parents[2]
 EVENT = "MISSION-BOARD-QUEST-REGISTRY-CUTOVER-R01"
-CIEL_EVENT = "CIEL-C01-M01-QUEST-ADMISSION-R01"
+CIEL_ADMISSION_EVENT = "CIEL-C01-M01-QUEST-ADMISSION-R01"
+CIEL_CLOSEOUT_EVENT = "CIEL-C01-M02-FIRST-GLUTTONY-CLOSEOUT-R01"
 
 
 def load(relative: str) -> dict:
@@ -27,7 +28,7 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
         self.registry = load("continuity/mission-board-quest-registry-r01.json")
         self.continuity = load("continuity/prime-continuity-register-r01.json")
 
-    def test_atomic_registry_authority_and_parent_identity_are_exact(self) -> None:
+    def test_atomic_registry_authority_and_active_parent_identity_are_exact(self) -> None:
         validate_board(self.board)
         validate_quest_registry(self.registry, self.board)
         validate_register(self.continuity, self.board, registry=self.registry)
@@ -69,11 +70,6 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
                     "MISSION-QUEST-PARENT-NOTUMS-WATCH-R01",
                     "MISSION-QUEST-PARENT-NOTUMS-WATCH-R01-ATTEMPT-01",
                 ),
-                "QUEST-CIELS-AWAKENING-20260724": (
-                    328,
-                    "MISSION-QUEST-PARENT-CIELS-AWAKENING-R01",
-                    "MISSION-QUEST-PARENT-CIELS-AWAKENING-R01-ATTEMPT-01",
-                ),
             },
         )
         self.assertEqual(
@@ -81,16 +77,8 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
             {"IN_PROGRESS"},
         )
         self.assertEqual(
-            {
-                item["quest_id"]: item["parent_source_status"]
-                for item in self.registry["entries"]
-            },
-            {
-                "QUEST-PRIME-ASCENDANT-20260717": "NO_SOURCE_CHANGE_REQUIRED",
-                "QUEST-PROMETHEUS-FIRE-20260701": "NO_SOURCE_CHANGE_REQUIRED",
-                "QUEST-NOTUMS-WATCH-20260708": "NO_SOURCE_CHANGE_REQUIRED",
-                "QUEST-CIELS-AWAKENING-20260724": "CANONICAL",
-            },
+            {item["parent_source_status"] for item in self.registry["entries"]},
+            {"NO_SOURCE_CHANGE_REQUIRED"},
         )
         self.assertEqual(
             {item["parent_issue_label"] for item in self.registry["entries"]},
@@ -98,7 +86,7 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
         )
         self.assertEqual(
             len({item["emberline_id"] for item in self.registry["entries"]}),
-            4,
+            3,
         )
 
     def test_frozen_board_and_active_registry_preserve_cutover_baseline(self) -> None:
@@ -108,8 +96,7 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
             if item["state"] != "COMPLETE"
         }
         active = {item["quest_id"]: item for item in self.registry["entries"]}
-        self.assertTrue(set(frozen_active).issubset(set(active)))
-        self.assertEqual(set(active) - set(frozen_active), {"QUEST-CIELS-AWAKENING-20260724"})
+        self.assertEqual(set(active), set(frozen_active))
         for quest_id, predecessor in frozen_active.items():
             entry = active[quest_id]
             for field in (
@@ -126,18 +113,23 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
             sum(item["state"] == "COMPLETE" for item in self.board["entries"]),
             self.registry["cutover"]["baseline_completed_quest_count"],
         )
-        self.assertEqual(self.registry["registry_revision"], 3)
+        self.assertEqual(self.registry["registry_revision"], 4)
 
-    def test_continuity_is_bound_to_active_registry_and_preserves_history(self) -> None:
-        self.assertEqual(self.continuity["register_revision"], 55)
+    def test_continuity_is_bound_to_active_registry_and_preserves_ciel_history(self) -> None:
+        self.assertEqual(self.continuity["register_revision"], 56)
         self.assertEqual(self.continuity["quest_board_sha256"], sha256(self.board))
         self.assertEqual(self.continuity["quest_registry_sha256"], sha256(self.registry))
         self.assertEqual(self.continuity["event_ids"].count(EVENT), 1)
-        self.assertEqual(self.continuity["event_ids"].count(CIEL_EVENT), 1)
+        self.assertEqual(self.continuity["event_ids"].count(CIEL_ADMISSION_EVENT), 1)
+        self.assertEqual(self.continuity["event_ids"].count(CIEL_CLOSEOUT_EVENT), 1)
         self.assertEqual(self.continuity["event_ids"].count("MISSION-QUEST-EMBERLINE-INTEGRATION-R01"), 1)
         self.assertEqual(
             {item["quest_id"] for item in self.continuity["entries"]},
             {item["quest_id"] for item in self.registry["entries"]},
+        )
+        self.assertNotIn(
+            "QUEST-CIELS-AWAKENING-20260724",
+            {item["quest_id"] for item in self.continuity["entries"]},
         )
         self.assertIn("RP-C05-AJ08-ADMISSION-R01", self.continuity["event_ids"])
         self.assertIn("FOUND-SILVERLIGHT-DECOMPOSITION-SUNSET-R01", self.continuity["event_ids"])
@@ -164,13 +156,15 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
             "MISSION-QUEST-PARENT-PRIME-ASCENDANT-R01",
             "MISSION-QUEST-PARENT-PROMETHEUS-FIRE-R01",
             "MISSION-QUEST-PARENT-NOTUMS-WATCH-R01",
-            "MISSION-QUEST-PARENT-CIELS-AWAKENING-R01",
             "QUEST_BOARD_FROZEN",
             "live Issue availability is not required",
             "no split-brain",
             "mission/quest",
             "Living Emberline",
             "Operation Ciel",
+            "CIEL-C01-M02",
+            "Issue #328",
+            "Issue #330",
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker.casefold(), joined.casefold())
@@ -179,7 +173,7 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
         self.assertIn("cannot admit, advance", surfaces["recovery"])
         self.assertNotIn("Prime Continuity Proof remains independent", surfaces["recovery"])
 
-    def test_new_schema_and_required_program_paths_exist(self) -> None:
+    def test_required_program_paths_exist(self) -> None:
         required = (
             "schemas/mission-board-quest-registry-v1.schema.json",
             "continuity/mission-board-quest-registry-r01.json",
