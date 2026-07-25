@@ -1,0 +1,60 @@
+{
+  "schema_version": "atlas.gemstone.carrier.v1",
+  "carrier_id": "GEMSTONE-WORLDHOPPER-FIXTURE-R01",
+  "carrier_class": "WORLDHOPPER",
+  "mission_id": "MISSION-GEMSTONE-EVIDENCE-LIFECYCLE-R01",
+  "attempt_id": "MISSION-GEMSTONE-EVIDENCE-LIFECYCLE-R01-ATTEMPT-01",
+  "created_at": "2026-07-24T00:00:00Z",
+  "producer": {
+    "declared_worker": "Athena",
+    "credential_principal": "Jktomy",
+    "surface": "public-clean fixture"
+  },
+  "classification": "SANITIZED_WORLDHOPPER",
+  "manifest_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "payload": {
+    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "byte_length": 42,
+    "media_type": "application/json",
+    "private_pointer": null,
+    "embedded_in_public_clean": false
+  },
+  "sources": [
+    {
+      "carrier_id": "GEMSTONE-WORKING-FIXTURE-R01",
+      "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "relationship": "SANITIZED_FROM"
+    }
+  ],
+  "derivation": null,
+  "worldhopper": {
+    "recipient": "WORLDHOPPER-FIXTURE",
+    "purpose": "One bounded synthetic review",
+    "allowed_fields": ["sanitized_summary"],
+    "excluded_classes": ["credentials", "original_bytes", "protected_pointers"],
+    "expires_at": "2026-07-25T00:00:00Z",
+    "return_route": "EMBERDARK_QUARANTINE_TENSOON_VERIFY",
+    "sanitization_receipt": "receipt-sanitized-fixture"
+  },
+  "custody": [
+    {
+      "event": "SANITIZED",
+      "actor": "Emberdark",
+      "timestamp": "2026-07-24T00:00:00Z",
+      "receipt": "receipt-custody-fixture"
+    }
+  ],
+  "validation": {
+    "status": "PASS",
+    "replay_checked": true,
+    "tamper_checked": true,
+    "sanitization_checked": true,
+    "quarantine_status": "PENDING"
+  },
+  "recovery": {
+    "model_independent": true,
+    "original_retrievable": true,
+    "instructions": "Resolve the source carrier through the approved private evidence system and verify every digest.",
+    "encryption_disposition": "DEFERRED_DECISION_GATE"
+  }
+}
