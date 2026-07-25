@@ -1,0 +1,20 @@
+{
+  "schema_version": "atlas.rimuru.registry.v1",
+  "authority": "NONCANONICAL_EXTERNAL_INTELLIGENCE",
+  "registry_id": "RIMURU-REGISTRY-R01",
+  "registry_revision": 1,
+  "quest_id": "QUEST-CIELS-AWAKENING-20260724",
+  "operation": "Operation Ciel",
+  "record_root": "knowledge/rimuru/records",
+  "code_capsule_root": "knowledge/rimuru/code-capsules",
+  "entries": [],
+  "lineage": [
+    {
+      "repository": "Jktomy/atlas-codex",
+      "revision": "c892dc05ea56db0134a0e865f56d491f9c02ff85",
+      "path": "harvest-protocol.md",
+      "disposition": "REMODEL",
+      "successor": "operations/ciel.md"
+    }
+  ]
+}
