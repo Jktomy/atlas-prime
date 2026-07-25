@@ -145,7 +145,7 @@ class PrimeContinuityTests(unittest.TestCase):
             validate_quest_registry(wrong_predecessor, self.board)
 
         missing = copy.deepcopy(self.registry)
-        missing["entries"].pop()
+        missing["entries"].pop(0)
         with self.assertRaises(ContinuityError):
             validate_quest_registry(missing, self.board)
 
