@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/ciel-harvest-record-v1.schema.json",
+  "title": "Operation Ciel Harvest Record v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "record_id",
+    "title",
+    "source",
+    "observed_at",
+    "source_class",
+    "verification",
+    "claims",
+    "atlas_fit",
+    "protected_boundary",
+    "status"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "atlas.ciel.harvest-record.v1"
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^HARVEST-[A-Z0-9-]{3,120}-R[0-9]{2}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "locator",
+        "revision",
+        "retrieved_at",
+        "license_status"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "POST",
+            "REPOSITORY",
+            "PAPER",
+            "TOOL",
+            "MODEL",
+            "WORKFLOW",
+            "OTHER"
+          ]
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "revision": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 160
+        },
+        "retrieved_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "license_status": {
+          "enum": [
+            "VERIFIED",
+            "NOT_APPLICABLE",
+            "UNRESOLVED"
+          ]
+        }
+      }
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_class": {
+      "enum": [
+        "PUBLIC_CLEAN",
+        "PROTECTED_POINTER_ONLY",
+        "REJECTED"
+      ]
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "evidence_refs",
+        "unresolved"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "VERIFIED",
+            "PARTIAL",
+            "UNVERIFIED"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "unresolved": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "claim",
+          "status",
+          "evidence_refs"
+        ],
+        "properties": {
+          "claim": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "status": {
+            "enum": [
+              "VERIFIED",
+              "REJECTED",
+              "UNPROVEN"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "atlas_fit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "current_problem",
+        "future_risk",
+        "affected_components",
+        "recommendation"
+      ],
+      "properties": {
+        "current_problem": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "future_risk": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "affected_components": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "recommendation": {
+          "enum": [
+            "ABSORB_CANDIDATE",
+            "PRESERVE_ONLY",
+            "REJECT"
+          ]
+        }
+      }
+    },
+    "protected_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification",
+        "excluded_classes"
+      ],
+      "properties": {
+        "classification": {
+          "enum": [
+            "PUBLIC_CLEAN",
+            "PROTECTED_POINTER_ONLY",
+            "REJECTED"
+          ]
+        },
+        "excluded_classes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "status": {
+      "enum": [
+        "DRAFT",
+        "REVIEWED",
+        "SUPERSEDED",
+        "REJECTED"
+      ]
+    }
+  }
+}
