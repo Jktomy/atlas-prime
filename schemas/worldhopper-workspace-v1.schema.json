@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/worldhopper-workspace-v1.schema.json",
+  "title": "Atlas Worldhopper Workspace v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "workspace_id", "mission_id", "attempt_id", "worker_identity",
+    "credential_identity", "carrier", "purpose", "created_at", "expires_at",
+    "allowed_tools", "allowed_destinations", "denied_resources", "isolation",
+    "lifecycle", "return_route", "receipts", "recovery"
+  ],
+  "properties": {
+    "schema_version": {"const": "atlas.worldhopper.workspace.v1"},
+    "workspace_id": {"type": "string", "pattern": "^[A-Z0-9][A-Z0-9-]{2,127}$"},
+    "mission_id": {"type": "string", "minLength": 1},
+    "attempt_id": {"type": "string", "minLength": 1},
+    "worker_identity": {"type": "string", "minLength": 1},
+    "credential_identity": {"type": "string", "minLength": 1},
+    "carrier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["carrier_id", "sha256", "recipient", "purpose", "expires_at", "sanitization_receipt"],
+      "properties": {
+        "carrier_id": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "recipient": {"type": "string", "minLength": 1},
+        "purpose": {"type": "string", "minLength": 1},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "sanitization_receipt": {"type": "string", "minLength": 1}
+      }
+    },
+    "purpose": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "allowed_tools": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "allowed_destinations": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "denied_resources": {
+      "type": "array", "minItems": 8, "uniqueItems": true,
+      "items": {"enum": [
+        "COPPERMIND", "ORIGINAL_VAULT", "PRIVATE_GLASS_CODEX", "PHOENIX",
+        "PRIME_WRITE", "PROTECTED_POINTER_RESOLVER", "HOST_FILESYSTEM",
+        "SHARED_CLIPBOARD", "LOCAL_LAN", "UNRESTRICTED_NETWORK",
+        "SHARED_CREDENTIALS", "OTHER_MISSION_DATA"
+      ]}
+    },
+    "isolation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["process", "extension_host", "filesystem", "temporary_files", "clipboard", "caches", "logs", "crash_reports", "network", "repositories", "models", "tools"],
+      "properties": {
+        "process": {"const": "ISOLATED"},
+        "extension_host": {"const": "ISOLATED"},
+        "filesystem": {"const": "MISSION_BOUND"},
+        "temporary_files": {"const": "WORKSPACE_BOUND"},
+        "clipboard": {"const": "NO_HOST_BRIDGE"},
+        "caches": {"const": "WORKSPACE_BOUND"},
+        "logs": {"const": "WORKSPACE_BOUND"},
+        "crash_reports": {"enum": ["DISABLED", "WORKSPACE_BOUND"]},
+        "network": {"const": "DESTINATION_ALLOWLIST"},
+        "repositories": {"const": "NO_STANDING_AUTHORITY"},
+        "models": {"const": "MISSION_BOUND"},
+        "tools": {"const": "ALLOWLIST_ONLY"}
+      }
+    },
+    "lifecycle": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "revoked_at", "destroyed_at", "residual_risk"],
+      "properties": {
+        "status": {"enum": ["CREATED", "ACTIVE", "EXPIRED", "REVOKED", "DESTROYED"]},
+        "revoked_at": {"type": ["string", "null"], "format": "date-time"},
+        "destroyed_at": {"type": ["string", "null"], "format": "date-time"},
+        "residual_risk": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "return_route": {"const": "EMBERDARK_QUARANTINE_TENSOON_VERIFY"},
+    "receipts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["creation", "delivery", "revocation", "destruction", "return_quarantine", "verification"],
+      "properties": {
+        "creation": {"type": "string", "minLength": 1},
+        "delivery": {"type": "string", "minLength": 1},
+        "revocation": {"type": ["string", "null"]},
+        "destruction": {"type": ["string", "null"]},
+        "return_quarantine": {"type": ["string", "null"]},
+        "verification": {"type": ["string", "null"]}
+      }
+    },
+    "recovery": {
+      "type": "object", "additionalProperties": false,
+      "required": ["model_independent", "provider_replaceable", "instructions"],
+      "properties": {
+        "model_independent": {"const": true},
+        "provider_replaceable": {"const": true},
+        "instructions": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}
