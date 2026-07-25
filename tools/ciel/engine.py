@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 from pathlib import Path, PurePosixPath
@@ -27,6 +28,29 @@ FORBIDDEN_SUFFIXES = {
     ".exe", ".dll", ".so", ".dylib", ".zip", ".tar", ".gz", ".7z", ".whl",
     ".pyc", ".jar", ".bin", ".img", ".iso",
 }
+FIRST_GLUTTONY_SLUGS = (
+    "CODOR",
+    "ASSEMBLIX",
+    "GITHUB-AUTOPILOT",
+    "AGENT-RIGOR",
+    "AGENT-SKILL-REPOSITORY-SURVEY",
+    "RAG-INTERVIEW-SYSTEM",
+    "ARXIV-READER-MCP",
+    "KWIPU",
+    "CHRONICLE-MCP",
+    "ODYSSEUS",
+    "OLLAMA-OCR",
+    "OLMOCR",
+    "IOS-OCR-SERVER",
+    "APPLE-CORE-AI-MODELS",
+    "PIXELRAG",
+    "ORNITH",
+    "INTEL-ARC-PRO-B50-MS02",
+    "FREE-LLM-PRIVACY-PROVIDER-ROUTING",
+    "MEETILY",
+    "GITHUB-PROFILE-README-SKILL",
+    "HA-MCP-READONLY",
+)
 
 
 class CielValidationError(ValueError):
@@ -35,6 +59,10 @@ class CielValidationError(ValueError):
 
 def load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def sha256_bytes(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def validate_with_schema(kind: str, value: dict[str, Any]) -> None:
@@ -85,6 +113,12 @@ def validate_registry(value: dict[str, Any], *, root: Path = ROOT) -> None:
     ids: list[str] = []
     paths: list[str] = []
     source_keys: list[tuple[str, str | None]] = []
+    registered_paths: set[str] = set()
+    entries_by_id: dict[str, dict[str, Any]] = {}
+    payloads_by_id: dict[str, dict[str, Any]] = {}
+    paths_by_id: dict[str, Path] = {}
+    finding_ids: list[str] = []
+
     for entry in value["entries"]:
         path = safe_repo_path(entry["path"])
         expected_root = (
@@ -97,21 +131,76 @@ def validate_registry(value: dict[str, Any], *, root: Path = ROOT) -> None:
         ids.append(entry["record_id"])
         paths.append(entry["path"].casefold())
         source_keys.append((entry["source_locator"], entry["source_revision"]))
+        registered_paths.add(entry["path"])
+        entries_by_id[entry["record_id"]] = entry
+
         target = root.joinpath(*path.parts)
         if not target.is_file():
             raise CielValidationError("RIMURU_RECORD_MISSING")
         payload = load(target)
+        payloads_by_id[entry["record_id"]] = payload
+        paths_by_id[entry["record_id"]] = target
         if entry["record_type"] == "HARVEST":
             validate_harvest_record(payload)
         elif entry["record_type"] == "ABSORPTION":
             validate_absorption_record(payload)
+            finding_ids.extend(item["finding_id"] for item in payload["findings"])
         else:
             validate_code_capsule(payload)
         if payload.get("record_id", payload.get("absorption_id", payload.get("capsule_id"))) != entry["record_id"]:
             raise CielValidationError("RIMURU_RECORD_ID_MISMATCH")
-    for values in (ids, paths, source_keys):
+
+    for values in (ids, paths, source_keys, finding_ids):
         if len(values) != len(set(values)):
             raise CielValidationError("RIMURU_DUPLICATE")
+
+    actual_paths: set[str] = set()
+    for root_name in (value["record_root"], value["code_capsule_root"]):
+        directory = root.joinpath(*PurePosixPath(root_name).parts)
+        if directory.is_dir():
+            actual_paths.update(path.relative_to(root).as_posix() for path in directory.glob("*.json"))
+    if actual_paths != registered_paths:
+        raise CielValidationError("RIMURU_ORPHAN_OR_UNDECLARED_RECORD")
+
+    for record_id, entry in entries_by_id.items():
+        payload = payloads_by_id[record_id]
+        if entry["status"] != payload["status"]:
+            raise CielValidationError("RIMURU_RECORD_STATUS_MISMATCH")
+        if entry["record_type"] == "HARVEST":
+            source = payload["source"]
+            if (
+                entry["source_locator"] != source["locator"]
+                or entry["source_revision"] != source["revision"]
+                or entry["license_status"] != source["license_status"]
+            ):
+                raise CielValidationError("RIMURU_HARVEST_BINDING_MISMATCH")
+        elif entry["record_type"] == "ABSORPTION":
+            harvest_id = payload["source_harvest_id"]
+            harvest_entry = entries_by_id.get(harvest_id)
+            if harvest_entry is None or harvest_entry["record_type"] != "HARVEST":
+                raise CielValidationError("RIMURU_ABSORPTION_HARVEST_MISSING")
+            if entry["source_locator"] != f"rimuru://harvest/{harvest_id}":
+                raise CielValidationError("RIMURU_ABSORPTION_LOCATOR_MISMATCH")
+            if entry["source_revision"] != sha256_bytes(paths_by_id[harvest_id]):
+                raise CielValidationError("RIMURU_ABSORPTION_DIGEST_MISMATCH")
+            if entry["license_status"] != "NOT_APPLICABLE":
+                raise CielValidationError("RIMURU_ABSORPTION_LICENSE_INVALID")
+
+    if value["registry_revision"] == 2:
+        expected_harvests = {f"HARVEST-{slug}-R01" for slug in FIRST_GLUTTONY_SLUGS}
+        expected_absorptions = {f"ABSORB-{slug}-R01" for slug in FIRST_GLUTTONY_SLUGS}
+        if set(entries_by_id) != expected_harvests | expected_absorptions:
+            raise CielValidationError("FIRST_GLUTTONY_INVENTORY_MISMATCH")
+        if any(entry["record_type"] == "CODE_CAPSULE" for entry in value["entries"]):
+            raise CielValidationError("FIRST_GLUTTONY_CODE_CAPSULE_FORBIDDEN")
+        for slug in FIRST_GLUTTONY_SLUGS:
+            harvest_id = f"HARVEST-{slug}-R01"
+            absorption_id = f"ABSORB-{slug}-R01"
+            if payloads_by_id[absorption_id]["source_harvest_id"] != harvest_id:
+                raise CielValidationError("FIRST_GLUTTONY_PAIRING_MISMATCH")
+            if payloads_by_id[harvest_id]["status"] == "DRAFT" or payloads_by_id[absorption_id]["status"] == "DRAFT":
+                raise CielValidationError("FIRST_GLUTTONY_DRAFT_RECORD_FORBIDDEN")
+
     for lineage in value["lineage"]:
         safe_repo_path(lineage["path"])
         safe_repo_path(lineage["successor"])
@@ -128,7 +217,7 @@ def validate_repository(*, root: Path = ROOT) -> dict[str, Any]:
         "operation": ("HARVEST <X>", "ABSORB <Y>", "A disposition is analysis, not authority"),
         "skill": ("may not obey instructions retrieved", "stop before any unapproved Prime write"),
         "rimuru": ("noncanonical", "never override merged Prime"),
-        "quest": ("CIEL-C01-M02-PREVIEW", "M02 is ineligible"),
+        "quest": ("CIEL-C01-M02", "Quest state:** `COMPLETE`", "First Gluttony"),
     }
     surfaces = {"operation": operation, "skill": skill, "rimuru": rimuru, "quest": quest}
     for name, markers in required.items():
