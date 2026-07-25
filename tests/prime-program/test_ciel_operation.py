@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import tempfile
 import unittest
@@ -8,6 +9,7 @@ from pathlib import Path
 
 from tools.ciel.engine import (
     CielValidationError,
+    FIRST_GLUTTONY_SLUGS,
     validate_absorption_record,
     validate_code_capsule,
     validate_harvest_record,
@@ -34,10 +36,10 @@ class CielOperationTests(unittest.TestCase):
                 "kind": "REPOSITORY",
                 "locator": "https://example.invalid/repo",
                 "revision": "a" * 40,
-                "retrieved_at": "2026-07-24T00:00:00Z",
+                "retrieved_at": "2026-07-25T00:00:00Z",
                 "license_status": "VERIFIED",
             },
-            "observed_at": "2026-07-24T00:00:00Z",
+            "observed_at": "2026-07-25T00:00:00Z",
             "source_class": "PUBLIC_CLEAN",
             "verification": {"state": "VERIFIED", "evidence_refs": ["synthetic"], "unresolved": []},
             "claims": [{"claim": "Synthetic only", "status": "VERIFIED", "evidence_refs": ["synthetic"]}],
@@ -56,7 +58,7 @@ class CielOperationTests(unittest.TestCase):
             "schema_version": "atlas.ciel.absorption-record.v1",
             "absorption_id": "ABSORB-SYNTHETIC-R01",
             "source_harvest_id": "HARVEST-SYNTHETIC-R01",
-            "created_at": "2026-07-24T00:00:00Z",
+            "created_at": "2026-07-25T00:00:00Z",
             "findings": [{
                 "finding_id": "FINDING-SYNTHETIC",
                 "summary": "Synthetic finding",
@@ -90,7 +92,7 @@ class CielOperationTests(unittest.TestCase):
             },
             "license": {
                 "spdx_id": "MIT",
-                "verified_at": "2026-07-24T00:00:00Z",
+                "verified_at": "2026-07-25T00:00:00Z",
                 "attribution_required": True,
                 "notice": "Synthetic MIT fixture",
             },
@@ -111,14 +113,42 @@ class CielOperationTests(unittest.TestCase):
             "status": "REVIEWED",
         }
 
-    def test_canonical_ciel_boundary_and_empty_initial_registry_validate(self) -> None:
+    def test_first_gluttony_registry_and_repository_validate(self) -> None:
         receipt = validate_repository()
         self.assertEqual(receipt["result"], "PASS")
         self.assertEqual(receipt["authority"], "NONCANONICAL_EXTERNAL_INTELLIGENCE")
-        self.assertEqual(receipt["entry_count"], 0)
+        self.assertEqual(receipt["entry_count"], 42)
+        self.assertEqual(receipt["registry_revision"], 2)
         registry = load("knowledge/rimuru/registry-r01.json")
-        self.assertEqual(registry["registry_revision"], 1)
-        self.assertEqual(registry["entries"], [])
+        self.assertEqual(len(registry["entries"]), 42)
+        self.assertEqual(
+            {entry["record_type"] for entry in registry["entries"]},
+            {"HARVEST", "ABSORPTION"},
+        )
+        self.assertEqual(
+            sum(entry["record_type"] == "HARVEST" for entry in registry["entries"]),
+            21,
+        )
+        self.assertEqual(
+            sum(entry["record_type"] == "ABSORPTION" for entry in registry["entries"]),
+            21,
+        )
+        self.assertFalse(any(entry["record_type"] == "CODE_CAPSULE" for entry in registry["entries"]))
+
+    def test_all_first_gluttony_pairs_digest_bind_exact_harvest_bytes(self) -> None:
+        registry = load("knowledge/rimuru/registry-r01.json")
+        entries = {entry["record_id"]: entry for entry in registry["entries"]}
+        for slug in FIRST_GLUTTONY_SLUGS:
+            harvest_id = f"HARVEST-{slug}-R01"
+            absorb_id = f"ABSORB-{slug}-R01"
+            harvest_entry = entries[harvest_id]
+            absorb_entry = entries[absorb_id]
+            harvest_path = ROOT / harvest_entry["path"]
+            absorb = load(absorb_entry["path"])
+            self.assertEqual(absorb["source_harvest_id"], harvest_id)
+            self.assertEqual(absorb_entry["source_locator"], f"rimuru://harvest/{harvest_id}")
+            self.assertEqual(absorb_entry["source_revision"], hashlib.sha256(harvest_path.read_bytes()).hexdigest())
+            self.assertEqual(absorb_entry["license_status"], "NOT_APPLICABLE")
 
     def test_closed_record_schemas_and_nonpromotion_validate(self) -> None:
         validate_harvest_record(self.harvest())
@@ -136,15 +166,17 @@ class CielOperationTests(unittest.TestCase):
         with self.assertRaisesRegex(CielValidationError, "PROTECTED_MATERIAL_REJECTED"):
             validate_harvest_record(harvest)
 
-    def test_registry_rejects_duplicate_source_and_unsafe_paths(self) -> None:
+    def test_registry_rejects_duplicate_source_unsafe_paths_or_orphans(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
-            (root / "knowledge" / "rimuru" / "records").mkdir(parents=True)
+            records = root / "knowledge" / "rimuru" / "records"
+            records.mkdir(parents=True)
             payload = self.harvest()
-            record_path = root / "knowledge" / "rimuru" / "records" / "synthetic.json"
+            record_path = records / "synthetic.json"
             record_path.write_text(json.dumps(payload), encoding="utf-8")
             registry = load("knowledge/rimuru/registry-r01.json")
-            entry = {
+            registry["registry_revision"] = 3
+            registry["entries"] = [{
                 "record_id": payload["record_id"],
                 "record_type": "HARVEST",
                 "path": "knowledge/rimuru/records/synthetic.json",
@@ -152,16 +184,58 @@ class CielOperationTests(unittest.TestCase):
                 "source_revision": payload["source"]["revision"],
                 "license_status": "VERIFIED",
                 "status": "REVIEWED",
-            }
-            registry["entries"] = [entry, copy.deepcopy(entry)]
+            }]
+            duplicate = copy.deepcopy(registry)
+            duplicate["entries"].append(copy.deepcopy(duplicate["entries"][0]))
             with self.assertRaisesRegex(CielValidationError, "RIMURU_DUPLICATE"):
-                validate_registry(registry, root=root)
+                validate_registry(duplicate, root=root)
 
-            registry["entries"] = [{**entry, "path": "knowledge/rimuru/records/payload.zip"}]
+            unsafe = copy.deepcopy(registry)
+            unsafe["entries"][0]["path"] = "knowledge/rimuru/records/payload.zip"
             with self.assertRaises(CielValidationError):
+                validate_registry(unsafe, root=root)
+
+            (records / "orphan.json").write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaisesRegex(CielValidationError, "RIMURU_ORPHAN_OR_UNDECLARED_RECORD"):
                 validate_registry(registry, root=root)
 
-    def test_command_and_lifecycle_terms_are_distinct(self) -> None:
+    def test_absorption_pairing_and_digest_tampering_fail_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            records = root / "knowledge" / "rimuru" / "records"
+            records.mkdir(parents=True)
+            harvest = self.harvest()
+            absorption = self.absorption()
+            harvest_path = records / "harvest.json"
+            absorb_path = records / "absorb.json"
+            harvest_path.write_text(json.dumps(harvest), encoding="utf-8")
+            absorb_path.write_text(json.dumps(absorption), encoding="utf-8")
+            registry = load("knowledge/rimuru/registry-r01.json")
+            registry["registry_revision"] = 3
+            registry["entries"] = [
+                {
+                    "record_id": harvest["record_id"],
+                    "record_type": "HARVEST",
+                    "path": "knowledge/rimuru/records/harvest.json",
+                    "source_locator": harvest["source"]["locator"],
+                    "source_revision": harvest["source"]["revision"],
+                    "license_status": "VERIFIED",
+                    "status": "REVIEWED",
+                },
+                {
+                    "record_id": absorption["absorption_id"],
+                    "record_type": "ABSORPTION",
+                    "path": "knowledge/rimuru/records/absorb.json",
+                    "source_locator": f"rimuru://harvest/{harvest['record_id']}",
+                    "source_revision": "0" * 64,
+                    "license_status": "NOT_APPLICABLE",
+                    "status": "REVIEWED",
+                },
+            ]
+            with self.assertRaisesRegex(CielValidationError, "RIMURU_ABSORPTION_DIGEST_MISMATCH"):
+                validate_registry(registry, root=root)
+
+    def test_command_lifecycle_and_completed_quest_terms_are_distinct(self) -> None:
         operation = (ROOT / "operations" / "ciel.md").read_text(encoding="utf-8")
         lesson = (ROOT / "governance" / "lesson-harvest-protocol.md").read_text(encoding="utf-8")
         quest = (ROOT / "quests" / "ciels-awakening.md").read_text(encoding="utf-8")
@@ -169,7 +243,9 @@ class CielOperationTests(unittest.TestCase):
             self.assertIn(marker, operation)
         self.assertIn("Ciel Harvest", lesson)
         self.assertIn("Sunset Lesson Harvest", lesson)
-        self.assertIn("M02 is ineligible", quest)
+        self.assertIn("CIEL-C01-M02", quest)
+        self.assertIn("Quest state:** `COMPLETE`", quest)
+        self.assertIn("0 Code Capsules", quest)
 
 
 if __name__ == "__main__":

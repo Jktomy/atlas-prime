@@ -198,6 +198,22 @@ class PrimeProgramTests(unittest.TestCase):
         self.assertIn("FS-C03 successor: Prime Ascendant / Operation Harmony", found)
         self.assertIn("Apple Reminders remains authoritative", found)
 
+    def test_ciels_awakening_is_complete_and_rimuru_is_noncanonical(self) -> None:
+        source = (ROOT / "quests/ciels-awakening.md").read_text(encoding="utf-8")
+        registry = json.loads((ROOT / "knowledge/rimuru/registry-r01.json").read_text(encoding="utf-8"))
+        active_quests = json.loads((ROOT / "continuity/mission-board-quest-registry-r01.json").read_text(encoding="utf-8"))
+        continuity = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
+        self.assertIn("Quest state:** `COMPLETE`", source)
+        self.assertIn("Current Gate:** `CLOSED`", source)
+        self.assertEqual(registry["authority"], "NONCANONICAL_EXTERNAL_INTELLIGENCE")
+        self.assertEqual(registry["registry_revision"], 2)
+        self.assertEqual(len(registry["entries"]), 42)
+        self.assertEqual(sum(item["record_type"] == "HARVEST" for item in registry["entries"]), 21)
+        self.assertEqual(sum(item["record_type"] == "ABSORPTION" for item in registry["entries"]), 21)
+        self.assertEqual(sum(item["record_type"] == "CODE_CAPSULE" for item in registry["entries"]), 0)
+        self.assertNotIn("QUEST-CIELS-AWAKENING-20260724", {item["quest_id"] for item in active_quests["entries"]})
+        self.assertNotIn("CONT-CIELS-AWAKENING-R01", {item["continuity_id"] for item in continuity["entries"]})
+
     def test_prime_is_canonical_and_codex_is_predecessor_only(self) -> None:
         policy = json.loads((ROOT / "policies/repository-policy.json").read_text(encoding="utf-8"))
         self.assertEqual(policy["state"], "CANONICAL_ACTIVE")
@@ -218,6 +234,8 @@ class PrimeProgramTests(unittest.TestCase):
             "quests/repairing-prime.md",
             "quests/prime-ascendant.md",
             "quests/prime-ascendant-covenant.md",
+            "quests/ciels-awakening.md",
+            "knowledge/rimuru/registry-r01.json",
             "proof/repairing-prime/rp-c08-final-whole-quest-strikeforce-reconciliation-r01.md",
             "proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.md",
             "proof/repairing-prime/rp-c08-phoenix-recovery-acceptance-r01.json",

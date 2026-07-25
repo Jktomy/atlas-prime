@@ -37,12 +37,12 @@ parents and their merged recovery snapshot are:
 | Prime Ascendant | #307 | `MISSION-QUEST-PARENT-PRIME-ASCENDANT-R01` | governed Atlas application and intelligence architecture | Artemis / Operation Harmony, with named Codex Operations for source, memory, Phoenix, and Glass Codex |
 | Prometheus's Fire | #308 | `MISSION-QUEST-PARENT-PROMETHEUS-FIRE-R01` | Prometheus substrate, capacity, service placement, Apollo endpoint continuity, backup topology, and household-critical priority | Odyssey / Operation Prometheus Foundation |
 | Notum's Watch | #309 | `MISSION-QUEST-PARENT-NOTUMS-WATCH-R01` | independent Gatehouse/Citadel monitoring, sanitized health, and rescue posture | Odyssey / Operation Sentinel and Citadel/Gatehouse Infrastructure |
-| Ciel's Awakening | #328 | `MISSION-QUEST-PARENT-CIELS-AWAKENING-R01` | governed external-intelligence Harvest, Absorb, Gluttony, Rimuru, source/license binding, and later inspiration routing | Artemis / Operation Ciel with Codex / Source Governance support |
 
 `continuity/mission-board-quest-registry-r01.json` is the portable canonical
 registry. The parent Issues are the primary live work surfaces, but their
 availability is not required for clean-clone recovery and their state cannot
-self-certify a canonical Quest advance.
+self-certify a canonical Quest advance. Completed Ciel's Awakening parent Issue
+#328 and child Mission Issue #330 remain append-only historical proof.
 
 ## Exact responsibility destinations
 
@@ -50,7 +50,7 @@ self-certify a canonical Quest advance.
 |---|---|---|
 | Glass Codex | Prime Ascendant / Operation Glass Codex | Mission #282 defines a client-independent service and first-party VS Code client direction; it consumes governed APIs and owns no backend, monitoring, recovery, or permanence authority |
 | Harmony and Seon | Prime Ascendant / Operation Harmony | Harmony remains a separate intelligence vessel; Apple Reminders remains authoritative for Seon and Hermes remains its bridge vessel |
-| External-intelligence Harvest and Absorb | Ciel's Awakening / Operation Ciel | Harvest remains read-only; Gluttony prepares classifications and candidates; Rimuru stays noncanonical; no source, tool, runtime, READY, or permanence authority is implied |
+| External-intelligence Harvest and Absorb | Operation Ciel | Harvest remains read-only; Gluttony prepares classifications and candidates; Rimuru stays noncanonical; no source, tool, runtime, READY, or permanence authority is implied; Ciel's Awakening is completed historical proof |
 | Investiture Accounting | Codex / Operation Source Governance bounded Mission family | FS-C01-M01 through M03 remain proven; FS-C01-M04 remains unfinished and requires separate protected authorization |
 | Prime Continuity Proof | completed Codex / Source Governance historical Quest | Mission #277 preserves AJ-08 admission proof, validator and engine unchanged evidence, and append-only continuity history; no unfinished Quest-scale objective remained |
 | Cloud Atlas | Prime Ascendant protected-realm architecture, owned by Artemis / Operation Harmony with bounded Codex service owners | Mission #279 establishes the public-clean class, access, provenance, export, recovery-requirement, and degraded-mode contract; it is not a Project, Quest, database, host, or deployment claim |
@@ -69,10 +69,12 @@ self-certify a canonical Quest advance.
 - Notum's Watch retains NW-C01 through NW-C04 at
   `READY_FOR_JAYSON_EXECUTION_PACKAGE`; Mission #284 adds only the read-only
   Glass Codex health boundary and runtime proof remains Jayson-side.
-- Ciel's Awakening retains `CIEL-C01`. M01 admits the Quest and the external-
-  intelligence boundary. M02 remains at `CIEL-C01-M02-PREVIEW`; no Harvest
-  backlog has been absorbed, no external tool has been installed, and no later
-  implementation Mission has been admitted.
+- Ciel's Awakening is `COMPLETE — CLOSED` through CIEL-C01-M01 and
+  CIEL-C01-M02. Operation Ciel, Gluttony, and Rimuru remain active capabilities.
+  Rimuru registry revision 2 preserves 21 reviewed Harvest Records, 21 reviewed
+  paired Absorption Records, 45 atomic findings, and zero Code Capsules. No
+  external tool was installed, no runtime was activated, and no later
+  implementation Mission was self-admitted.
 - Apollo source continuity remains architecture only; protected runtime
    commissioning remains separately gated.
 - Found Silverlight is `COMPLETE — SUNSET` through Mission #276. FS-C01 routes
@@ -106,17 +108,26 @@ No split-brain interval is permitted:
   surface for the newly admitted Quest; and
 - rollback requires one reviewed revert or repair-forward PR.
 
+A completed Quest is removed from the active registry and unfinished continuity
+only in the same complete reviewed candidate that marks its Quest source closed,
+preserves its durable capabilities and history, updates recovery, and passes
+merged-main readback.
+
 ## Recovery and rollback
 
 Recovery begins from merged Prime, the Mission Board Quest registry, continuity
 register, exact active Quest sources, and then the frozen Board for historical
 comparison. Every unfinished responsibility resolves to exactly one active
-registry row and parent Issue identity without chat memory. If GitHub Issues are
-unavailable, resume Quest-level orientation from the merged registry and defer
-Issue writes until authenticated readback is possible.
+registry row and parent Issue identity without chat memory. Completed Ciel
+capability recovery begins from Operation Ciel, Gluttony, Rimuru registry
+revision 2, its 42 record files, Quest source, Issues #328 and #330, and the final
+Emberline; it does not re-enter active Quest continuity.
 
-Before merge, abandon the exact candidate PR and close the prepared parent
-Issue as not planned if the admission is cancelled. After merge, use a reviewed
-revert or repair-forward PR restoring the prior registry and continuity state;
-never rewrite Issue history, Git history, completed Quest history, or protected
-evidence.
+If GitHub Issues are unavailable, resume Quest-level orientation from the merged
+registry and defer Issue writes until authenticated readback is possible.
+
+Before merge, abandon the exact candidate PR and preserve the child Mission
+Issue. After merge, use a reviewed revert or repair-forward PR restoring the
+prior Rimuru registry and Ciel Quest/continuity state when reverting the complete
+transaction; never rewrite Issue history, Git history, completed Quest history,
+or protected evidence.

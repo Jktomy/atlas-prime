@@ -41,9 +41,10 @@ First read and validate:
 4. `quest-board/quest-board-v1.json` only as frozen predecessor evidence.
 
 The merged registry recovers the exact active Quest IDs, owners, states, next
-gates, readiness bases, and parent Issues #307–#309 and #328. Live Issue
-availability is not required for that recovery. Issue state alone cannot
-override the merged registry or continuity.
+gates, readiness bases, and parent Issues #307–#309. Live Issue availability is
+not required for that recovery. Issue state alone cannot override the merged
+registry or continuity. Completed Ciel's Awakening Issues #328 and #330 remain
+historical evidence rather than active registry rows.
 
 For `Continue Mission #N`:
 
@@ -73,10 +74,9 @@ recovery super-Quest. Resolve each unfinished responsibility to exactly one
 active registry row, parent Mission identity, durable Quest, and Operation
 before resuming it.
 
-The active portfolio is Prime Ascendant (#307), Prometheus's Fire (#308),
-Notum's Watch (#309), and Ciel's Awakening (#328). The frozen Quest Board
-preserves the exact pre-cutover seven-Quest history and cannot admit, advance,
-or resume work.
+The active portfolio is Prime Ascendant (#307), Prometheus's Fire (#308), and
+Notum's Watch (#309). The frozen Quest Board preserves the exact pre-cutover
+seven-Quest history and cannot admit, advance, or resume work.
 
 Found Silverlight is historical after Mission #276: resume FS-C01-M04 only
 through the bounded Codex / Source Governance Mission family, Glass Codex
@@ -87,13 +87,14 @@ never infer M04, deployment, reminder access, or protected-runtime proof from
 Sunset. Prime Continuity Proof is complete through Mission #277; preserve AJ-08
 admission evidence and its append-only events as historical proof.
 
-Ciel's Awakening recovery begins from `quests/ciels-awakening.md`,
+Ciel capability recovery begins from `quests/ciels-awakening.md`,
 `operations/ciel.md`, `skills/gluttony/SKILL.md`, `knowledge/rimuru/README.md`,
-the schema-valid Rimuru registry, and the matching Quest-registry and continuity
-rows. Recovery must not require `atlas-codex`; predecessor references are
-lineage only. Rimuru records never become doctrine or executable recovery
-payloads. CIEL-C01-M02 remains ineligible until CIEL-C01-M01 receives exact
-merged-main readback, and later Absorb work requires a fresh Preview.
+`knowledge/rimuru/registry-r01.json`, all registered Rimuru record files, and
+Issues #328 and #330 when available. Recovery must not require `atlas-codex`;
+predecessor references are lineage only. Rimuru records never become doctrine or
+executable recovery payloads. CIEL-C01-M01 and CIEL-C01-M02 are completed
+historical Missions, not active continuity targets. Any consequential use of a
+Rimuru finding requires a fresh Preview and separately admitted owner Mission.
 
 ## Repository-process recovery boundary
 
@@ -211,6 +212,7 @@ These are future proof requirements. This runbook and the Prometheus Quest do no
 - A source rollback uses a new reviewed PR; no force push or history rewrite is required.
 - Mission #278 registry rollback restores the prior Quest Board authority and removes the active-registry claim through one reviewed revert or repair-forward PR; the frozen Board, parent Issues, and append-only Issue history are never rewritten.
 - Ciel admission rollback removes the one Ciel registry row, matching continuity entry, Operation/Quest/Rimuru source, and routing through one reviewed revert or repair-forward PR while preserving Issue #328 and predecessor lineage.
+- First Gluttony rollback restores Rimuru registry revision 1, removes the 42 M02 record files and validator closeout changes, restores Ciel's active Quest/continuity state, and preserves Issues #328 and #330 plus all source observations through one reviewed revert or repair-forward PR.
 - Thread Engine emergency disablement changes the reviewed activation state through Aegis Break → Oathbringer and must reject at `ACTIVATION_GATE` before mission parsing.
 - Historical lifecycle records are never rewritten; a changed Sunset plan requires a new Preview and explicit supersession.
 - The original Prime shadow head remains preserved by the locked archive branch and annotated tag.

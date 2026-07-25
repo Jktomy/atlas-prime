@@ -51,7 +51,7 @@ class MissionQuestSyncTests(unittest.TestCase):
 
     def test_global_mission_board_doctrine_requires_all_active_parent_receipts(self) -> None:
         affected = affected_parent_quests(self.mission, self.registry)
-        self.assertEqual([entry["parent_issue_number"] for entry in affected], [307, 308, 309, 328])
+        self.assertEqual([entry["parent_issue_number"] for entry in affected], [307, 308, 309])
 
     def test_missing_parent_receipt_blocks_closure_with_exact_code(self) -> None:
         with self.assertRaisesRegex(MissionError, "QUEST_SYNC_PENDING"):
@@ -62,7 +62,7 @@ class MissionQuestSyncTests(unittest.TestCase):
                 canonical_head=self.canonical_head,
             )
 
-    def test_exact_receipts_on_every_parent_allow_closure(self) -> None:
+    def test_exact_receipts_on_every_active_parent_allow_closure(self) -> None:
         snapshots: dict[int, dict[str, object]] = {}
         for entry in affected_parent_quests(self.mission, self.registry):
             receipt = build_quest_sync_receipt(
@@ -85,8 +85,8 @@ class MissionQuestSyncTests(unittest.TestCase):
             canonical_head=self.canonical_head,
         )
         self.assertEqual(result["status"], "PASS")
-        self.assertEqual(result["required_parent_issues"], [307, 308, 309, 328])
-        self.assertEqual(len(result["confirmed_receipts"]), 4)
+        self.assertEqual(result["required_parent_issues"], [307, 308, 309])
+        self.assertEqual(len(result["confirmed_receipts"]), 3)
 
     def test_duplicate_exact_receipt_fails_closed(self) -> None:
         snapshots: dict[int, dict[str, object]] = {}
