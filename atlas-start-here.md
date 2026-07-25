@@ -46,6 +46,7 @@ Codex repository: PREDECESSOR_EVIDENCE_ONLY
 ```
 
 The live Quest parent Issues are `#307` Prime Ascendant, `#308` Prometheus's
-Fire, `#309` Notum's Watch, and `#328` Ciel's Awakening. Their merged portable
-registry snapshot controls startup and recovery if GitHub Issues are unavailable.
-Issue activity alone cannot advance merged Quest state.
+Fire, and `#309` Notum's Watch. Completed Ciel's Awakening parent Issue `#328`
+and child Mission Issue `#330` remain immutable operational history. The merged
+portable registry snapshot controls startup and recovery if GitHub Issues are
+unavailable. Issue activity alone cannot advance merged Quest state.
