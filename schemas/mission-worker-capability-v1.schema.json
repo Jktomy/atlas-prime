@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/mission-worker-capability-v1.schema.json",
+  "title": "Atlas Mission Worker Capability V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "worker_id", "adapter_id", "provider", "surface", "capabilities", "takeover_evidence", "declared_at"],
+  "properties": {
+    "schema_version": {"const": "atlas.mission-worker-capability.v1"},
+    "worker_id": {"type": "string", "minLength": 2, "maxLength": 160},
+    "adapter_id": {"type": "string", "minLength": 2, "maxLength": 160},
+    "provider": {"type": "string", "minLength": 2, "maxLength": 160},
+    "surface": {"type": "string", "minLength": 2, "maxLength": 160},
+    "capabilities": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"enum": ["MISSION_READ", "CHECKPOINT_WRITE", "COMPLETE_CHECKOUT", "COMPILER_EXECUTION", "VALIDATION_EXECUTION", "PUBLICATION", "REVIEW_RECONCILIATION", "READY_TRANSITION", "EXACT_HEAD_PERMANENCE", "CANONICAL_READBACK"]}
+    },
+    "takeover_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["stage", "status", "evidence_ref"],
+        "properties": {
+          "stage": {"enum": ["MISSION_READ", "CHECKPOINT", "SOURCE_CONSTRUCTION", "COMPILATION", "VALIDATION", "PUBLICATION", "REVIEW", "READY", "PERMANENCE", "CANONICAL_READBACK"]},
+          "status": {"const": "ACCEPTED"},
+          "evidence_ref": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "declared_at": {"type": "string", "format": "date-time"}
+  }
+}

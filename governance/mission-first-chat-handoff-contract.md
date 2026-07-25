@@ -130,6 +130,16 @@ The worker resumes the same attempt, appends public-clean evidence to the same
 Mission, and remains subject to Aegis, Noctua, Ares, Strikeforce, protected-data,
 rollback, READY, and permanence gates.
 
+Worldhopper handoff follows `governance/worldhopper-relay-contract.md`. The
+outgoing worker appends a digest-chained checkpoint; the incoming adapter proves
+the exact stage capability and accepted takeover evidence; and any partial source
+remains on the one expected-head-protected Mission branch. Worker, provider,
+connector, runtime, BEU, or session loss never authorizes a duplicate attempt.
+
+An authorized route failure records a terminal stage-specific receipt and
+advances to the next fallback. `BLOCKED_RESUMABLE` is invalid while an approved
+fallback remains pending or unevaluated.
+
 ## Acceptance
 
 The doctrine is satisfied only when:

@@ -49,6 +49,11 @@ Athena, Harmony, and Jayson PowerShell may start or resume the same transaction.
 
 Until a separately proven Coppermind implementation exists, route-neutral manifests and append-only sanitized receipts may preserve transaction continuity outside canonical source. They are evidence and recovery aids, never a second source of truth.
 
+Worldhopper continuation additionally follows
+`governance/worldhopper-relay-contract.md`. The relay reconstructs one attempt
+from Mission Board, digest-chained checkpoints, current main, and the linked
+working branch or pull request. It never becomes a publisher or authority.
+
 ## Three resilient entry pathways
 
 - **Athena** — conversational intent, semantic authorship, dependency discovery, review reconciliation, and Jayson-facing reporting.
@@ -94,6 +99,12 @@ Any base, branch, path, byte, tree, head, check-evidence, Mission, attempt, or s
 
 Interrupted publication starts with read-only reconciliation. An absent branch and PR permits one exact publication; an exact sealed branch without a PR permits only draft-PR creation without repush; one exact sealed draft permits readback and validation only. Stale main, moved or unexpected branch state, a mismatched or duplicate PR, replay, or ambiguity stops without mutation.
 
+Before complete-candidate sealing, one deterministic Mission branch may preserve
+bounded partial work as `WORKING_DRAFT`. Each handoff binds public-clean paths
+and the expected branch head through compare-and-swap. No pull request or
+head-bound validation, review, READY, or permanence evidence exists until the
+candidate is complete, prepublication validated, and sealed.
+
 ## Consolidated candidate repair
 
 Before repair, reconcile all readable local, validation, review, and Strikeforce evidence. Normalize findings as actionable, incorrect, duplicate, already resolved, informational, unavailable, decision-required, or unknown. One deterministic batch contains every readable candidate-caused actionable finding. Decision-required, unknown, malformed, duplicate, unreadable-misclassified, and actionable non-candidate-caused findings stop the batch.
@@ -107,6 +118,11 @@ A request to `Sunset this chat` is always read-only Preview first, even though a
 After Jayson approves the exact Preview, the same transaction seals an approved route-neutral carrier, compiles the lifecycle candidate from Preview, approval, carrier, and request v3, publishes one draft PR, validates, reconciles review, and proceeds through the authorized permanence mode. Goddess Mode cannot bypass or change the approved semantic payload. Shardblade authority applies only when the approval mode explicitly binds it.
 
 A blocked Sunset route preserves the approved carrier and resumes the same transaction. It never substitutes a narrative summary, duplicate transaction, or unapproved request. Only canonical merged-main readback permits the final `SUNSET COMPLETE` claim.
+
+The Sunset Router consumes the ordered route-attempt ledger. It must reject
+`BLOCKED_RESUMABLE` while the selected route or any approved fallback remains
+pending or unevaluated. A mechanism failure blocks only the capability and stage
+it actually prevents.
 
 ## Validation
 

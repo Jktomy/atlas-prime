@@ -137,7 +137,7 @@
       "items": {"type": "string", "minLength": 1, "maxLength": 2048}
     },
     "next_safe_action": {"type": "string", "minLength": 1, "maxLength": 4096},
-    "effort_class": {"enum": ["BEU_0", "BEU_1", "BEU_2", "BEU_3", "BEU_5", "BEU_8", "UNKNOWN"]},
+    "effort_class": {"enum": ["BEU_0", "BEU_1", "BEU_2", "BEU_3", "BEU_5", "BEU_8", "BEU_16", "UNKNOWN"]},
     "queue_behavior": {"enum": ["TERMINAL_ON_BLOCK", "CONTINUE_IF_BLOCKED_RESUMABLE"]},
     "canonical_source_status": {"enum": ["PHOENIX_PENDING", "NO_SOURCE_CHANGE_REQUIRED", "PR_OPEN", "MERGED_PENDING_READBACK", "CANONICAL"]},
     "source_binding": {

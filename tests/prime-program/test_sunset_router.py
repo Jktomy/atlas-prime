@@ -18,6 +18,7 @@ from tools.sunset_router.core import (
     verify_router_candidate,
     verify_router_preview,
 )
+from tools.mission_runner.core import build_route_attempt
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -127,13 +128,39 @@ class SunsetRouterPrimeProgramTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             preview, approval, candidate = self.pipeline(Path(temp))
             plan = verify_router_candidate(ROOT, preview, approval, candidate)["plan"]
+            attempts = [
+                build_route_attempt(
+                    route_id=route,
+                    ordinal=index,
+                    stage="PUBLICATION",
+                    status="REJECTED_CAPABILITY",
+                    failed_capability="SYNTHETIC_ROUTE_UNAVAILABLE",
+                    evidence_refs=[f"fixture://route-{index}"],
+                    observed_head="a" * 40,
+                    next_route_disposition="Advance to the next authorized route.",
+                    attempted_at=f"2026-07-25T18:0{index}:00-05:00",
+                )
+                for index, route in enumerate(
+                    [plan["selected_route"], *plan["fallback_routes"]], start=1
+                )
+            ]
             blocked = build_resumable_receipt(
                 ROOT,
                 plan,
                 reason_code="CONNECTOR_UNAVAILABLE",
                 next_safe_action="Resume the same exact plan after read-only reconciliation.",
+                route_attempts=attempts,
             )
             self.assertEqual(blocked["state"], "BLOCKED_RESUMABLE")
+            with self.assertRaises(LifecycleError) as premature:
+                build_resumable_receipt(
+                    ROOT,
+                    plan,
+                    reason_code="CONNECTOR_UNAVAILABLE",
+                    next_safe_action="This block is premature.",
+                    route_attempts=attempts[:-1],
+                )
+            self.assertEqual(premature.exception.code, "ROUTE_FALLBACK_PENDING")
             validation = build_publication_receipt(
                 ROOT,
                 plan,

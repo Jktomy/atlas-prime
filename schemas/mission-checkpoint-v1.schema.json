@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/mission-checkpoint-v1.schema.json",
+  "title": "Atlas Mission Checkpoint V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "checkpoint_id", "checkpoint_digest", "previous_checkpoint_digest", "mission_id", "attempt_id", "sequence", "worker_id", "stage", "observed_main_head", "observed_branch_head", "completed_work", "remaining_work", "stop_reason", "lease", "next_action", "created_at"],
+  "properties": {
+    "schema_version": {"const": "atlas.mission-checkpoint.v1"},
+    "checkpoint_id": {"type": "string", "pattern": "^MCP-[A-Z2-7]{26}$"},
+    "checkpoint_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "previous_checkpoint_digest": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"}]},
+    "mission_id": {"type": "string", "minLength": 3, "maxLength": 160},
+    "attempt_id": {"type": "string", "minLength": 3, "maxLength": 160},
+    "sequence": {"type": "integer", "minimum": 1},
+    "worker_id": {"type": "string", "minLength": 2, "maxLength": 160},
+    "stage": {"enum": ["MISSION_READ", "CHECKPOINT", "SOURCE_CONSTRUCTION", "COMPILATION", "VALIDATION", "PUBLICATION", "REVIEW", "READY", "PERMANENCE", "CANONICAL_READBACK"]},
+    "observed_main_head": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "observed_branch_head": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^[a-f0-9]{40}$"}]},
+    "completed_work": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "remaining_work": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "stop_reason": {"type": ["string", "null"], "minLength": 1},
+    "lease": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_id", "disposition", "expected_previous_digest"],
+      "properties": {
+        "claim_id": {"type": "string", "minLength": 2, "maxLength": 160},
+        "disposition": {"enum": ["CLAIMED", "RELEASED", "COMPLETED", "REJECTED_STALE"]},
+        "expected_previous_digest": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"}]}
+      }
+    },
+    "next_action": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"}
+  }
+}

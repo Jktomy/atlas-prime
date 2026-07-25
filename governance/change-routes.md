@@ -25,6 +25,7 @@ protected_level: "CRITICAL"
 | Hosted or local launcher | Thin intake or client that invokes a method or engine without becoming one |
 | Normal repository engine | Prime Thread Engine, singular |
 | Independent alternate publisher | Sword/Oathbringer for PowerShell, Thread Engine self-change, emergency bootstrap, or a proven blocked-route recovery |
+| Provider-neutral Mission relay | `tools.mission_runner`: read-only reconstruction, digest-chained checkpoint validation, stage capability matching, and ordered fallback execution; never a publisher |
 | Repository substrate | Exact GitHub-native tree transaction or Fresh Clone First |
 | AI-assisted work surface | Shardplate |
 | Default permanence boundary | An unchanged merge-ready PR; Jayson merges manually when no exact Shardblade authority is present |
@@ -57,6 +58,11 @@ Every route:
 - includes complete-candidate construction, validation, candidate-caused repair, actionable review repair, exact-head Strikeforce, and ready-for-review within one direct Jayson request;
 - uses `with Goddess Mode` only for bounded autonomous completion inside the same transaction and safeguards;
 - uses `with Shardblade` only for one exact unchanged head after required status, review, Strikeforce, fresh compare-and-swap readback, and rollback proof.
+
+Each stage failure appends a terminal route-attempt receipt and advances to the
+next authorized fallback. Mission-wide blocking is forbidden while a fallback
+is pending or unevaluated. A complete-checkout failure does not automatically
+block GitHub-native publication, review, READY, permanence, or readback.
 
 Without explicit Shardblade authority, Athena reports `Prime PR #___ is ready to merge.` and Jayson executes the normal permanence action manually in GitHub. With explicit Shardblade authority, the one machine action is consumed by success or terminal safe rejection and grants no standing approval.
 
