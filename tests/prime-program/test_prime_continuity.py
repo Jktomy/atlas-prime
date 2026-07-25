@@ -53,19 +53,18 @@ class PrimeContinuityTests(unittest.TestCase):
         )
         self.assertEqual(self.registry["authority"], "CANONICAL_ADMITTED_QUEST_REGISTRY")
         self.assertFalse(self.registry["live_issue_availability_required_for_recovery"])
-        self.assertEqual(self.registry["registry_revision"], 3)
+        self.assertEqual(self.registry["registry_revision"], 4)
         self.assertEqual(
             {entry["quest_id"] for entry in self.registry["entries"]},
             {
                 "QUEST-PRIME-ASCENDANT-20260717",
                 "QUEST-PROMETHEUS-FIRE-20260701",
                 "QUEST-NOTUMS-WATCH-20260708",
-                "QUEST-CIELS-AWAKENING-20260724",
             },
         )
         self.assertEqual(
             {entry["parent_issue_number"] for entry in self.registry["entries"]},
-            {307, 308, 309, 328},
+            {307, 308, 309},
         )
         self.assertEqual(
             {entry["quest_id"] for entry in self.register["entries"]},
@@ -78,6 +77,7 @@ class PrimeContinuityTests(unittest.TestCase):
             1,
         )
         self.assertEqual(self.register["event_ids"].count("CIEL-C01-M01-QUEST-ADMISSION-R01"), 1)
+        self.assertEqual(self.register["event_ids"].count("CIEL-C01-M02-FIRST-GLUTTONY-CLOSEOUT-R01"), 1)
         self.assertEqual(len(self.identities["campaigns"]), 8)
 
     def test_frozen_board_cannot_admit_a_quest(self) -> None:
@@ -229,6 +229,7 @@ class PrimeContinuityTests(unittest.TestCase):
             "CONT-REPAIRING-PRIME-R01",
             "CONT-FOUND-SILVERLIGHT-R01",
             "CONT-PRIME-CONTINUITY-PROOF-R01",
+            "CONT-CIELS-AWAKENING-R01",
         ):
             with self.subTest(continuity_id=continuity_id):
                 with self.assertRaisesRegex(ContinuityError, "ENTRY_STALE_OR_MISSING"):
@@ -275,7 +276,7 @@ class PrimeContinuityTests(unittest.TestCase):
             validate_quest_registry(missing, self.board)
 
         with self.assertRaisesRegex(ContinuityError, "MISSION_QUEST_EMBERLINE_BINDING_INVALID"):
-            render_mission_quest_emberline(self.register, self.registry, "QUEST-MISSING-R01")
+            render_mission_quest_emberline(self.register, self.registry, "QUEST-CIELS-AWAKENING-20260724")
 
     def test_emberline_sunset_sunrise_and_argus_are_deterministic(self) -> None:
         self.assertEqual(render_emberline(self.register), render_emberline(copy.deepcopy(self.register)))
@@ -309,7 +310,7 @@ class PrimeContinuityTests(unittest.TestCase):
                 continuity_cli([
                     "mission-quest-emberline",
                     "--quest-id",
-                    "QUEST-CIELS-AWAKENING-20260724",
+                    "QUEST-PRIME-ASCENDANT-20260717",
                 ]),
                 0,
             )
