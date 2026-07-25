@@ -53,18 +53,19 @@ class PrimeContinuityTests(unittest.TestCase):
         )
         self.assertEqual(self.registry["authority"], "CANONICAL_ADMITTED_QUEST_REGISTRY")
         self.assertFalse(self.registry["live_issue_availability_required_for_recovery"])
-        self.assertEqual(self.registry["registry_revision"], 2)
+        self.assertEqual(self.registry["registry_revision"], 3)
         self.assertEqual(
             {entry["quest_id"] for entry in self.registry["entries"]},
             {
                 "QUEST-PRIME-ASCENDANT-20260717",
                 "QUEST-PROMETHEUS-FIRE-20260701",
                 "QUEST-NOTUMS-WATCH-20260708",
+                "QUEST-CIELS-AWAKENING-20260724",
             },
         )
         self.assertEqual(
             {entry["parent_issue_number"] for entry in self.registry["entries"]},
-            {307, 308, 309},
+            {307, 308, 309, 328},
         )
         self.assertEqual(
             {entry["quest_id"] for entry in self.register["entries"]},
@@ -76,6 +77,7 @@ class PrimeContinuityTests(unittest.TestCase):
             self.register["event_ids"].count("MISSION-BOARD-QUEST-REGISTRY-CUTOVER-R01"),
             1,
         )
+        self.assertEqual(self.register["event_ids"].count("CIEL-C01-M01-QUEST-ADMISSION-R01"), 1)
         self.assertEqual(len(self.identities["campaigns"]), 8)
 
     def test_frozen_board_cannot_admit_a_quest(self) -> None:
@@ -91,6 +93,11 @@ class PrimeContinuityTests(unittest.TestCase):
                 source = root / entry["source"]
                 source.parent.mkdir(parents=True, exist_ok=True)
                 source.write_text(f"# {entry['quest_id']}\n", encoding="utf-8")
+            for entry in self.registry["entries"]:
+                source = root / entry["source"]
+                source.parent.mkdir(parents=True, exist_ok=True)
+                if not source.exists():
+                    source.write_text(f"# {entry['quest_id']}\n", encoding="utf-8")
             later = root / "quests" / "later-valid-quest.md"
             later.write_text("# Later valid Quest\n", encoding="utf-8")
 
@@ -138,7 +145,7 @@ class PrimeContinuityTests(unittest.TestCase):
             validate_quest_registry(wrong_predecessor, self.board)
 
         missing = copy.deepcopy(self.registry)
-        missing["entries"].pop()
+        missing["entries"].pop(0)
         with self.assertRaises(ContinuityError):
             validate_quest_registry(missing, self.board)
 
@@ -302,7 +309,7 @@ class PrimeContinuityTests(unittest.TestCase):
                 continuity_cli([
                     "mission-quest-emberline",
                     "--quest-id",
-                    "QUEST-PRIME-ASCENDANT-20260717",
+                    "QUEST-CIELS-AWAKENING-20260724",
                 ]),
                 0,
             )

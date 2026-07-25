@@ -168,7 +168,7 @@ class PrimeProgramTests(unittest.TestCase):
         continuity = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
 
         self.assertIn("Operation Harmony, Sazed/Harmony, Emberdark transit", projects)
-        self.assertIn("| Artemis | Harmony; AI Governance |", operations)
+        self.assertIn("| Artemis | Harmony; AI Governance; Ciel |", operations)
         self.assertIn("| Codex | Source Governance; Document Pipeline; Protocol Library; Template Library; Archive/Index; Janus; Coppermind; Phoenix; Glass Codex |", operations)
         self.assertIn("| Elantris | Backup Matrix; Restore Runbook; Keystone; External Backup Targets; Recovery Drill/Proof |", operations)
         self.assertNotIn("| Artemis | Nexus;", operations)

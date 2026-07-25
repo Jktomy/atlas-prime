@@ -19,6 +19,8 @@ Use one canonical source for each meaning. Registers map stable identities to so
 
 The frozen Codex predecessor preserves historical search and rollback evidence. Prime carries only the durable meaning selected by the disposition ledger.
 
+Operation Ciel routes verified external intelligence through source-bound Harvest Records and Gluttony-assisted Absorption Records. `knowledge/rimuru/` preserves those records, evaluated patterns, license bindings, rejected approaches, and inert Code Capsules as `NONCANONICAL_EXTERNAL_INTELLIGENCE`. Rimuru may inspire a later Preview or Mission, but it never governs doctrine, resolves protected pointers, installs dependencies, or enters runtime and deployment paths.
+
 Structured lifecycle knowledge is routed through `lifecycle/`. Quest Emberlines
 hold current admitted-Quest state; Feathers and checkpoints preserve immutable
 positions; Golden Wings remain lesson candidates. Website and Quest Board views
@@ -29,5 +31,5 @@ Lesson Harvest routes reusable meaning through exact Feather evidence and, only
 when justified, the singular Golden Wing candidate form. A Golden Wing candidate
 never self-promotes. Human-controlled reviewed absorption must name a real
 ACTIVE control in `governance/assurance-controls.json`, its enforcing source,
-and regression proof. Observations, chats, checks, Feathers, and generated views
-remain evidence; none are controlling rules.
+and regression proof. Observations, chats, checks, Feathers, Ciel Harvests,
+Rimuru records, and generated views remain evidence; none are controlling rules.

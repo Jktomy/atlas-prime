@@ -41,9 +41,9 @@ First read and validate:
 4. `quest-board/quest-board-v1.json` only as frozen predecessor evidence.
 
 The merged registry recovers the exact active Quest IDs, owners, states, next
-gates, readiness bases, and parent Issues #307–#309. Live Issue availability is
-not required for that recovery. Issue state alone cannot override the merged
-registry or continuity.
+gates, readiness bases, and parent Issues #307–#309 and #328. Live Issue
+availability is not required for that recovery. Issue state alone cannot
+override the merged registry or continuity.
 
 For `Continue Mission #N`:
 
@@ -73,9 +73,10 @@ recovery super-Quest. Resolve each unfinished responsibility to exactly one
 active registry row, parent Mission identity, durable Quest, and Operation
 before resuming it.
 
-The active portfolio is Prime Ascendant (#307), Prometheus's Fire (#308), and
-Notum's Watch (#309). The frozen Quest Board preserves the exact pre-cutover
-seven-Quest history and cannot admit, advance, or resume work.
+The active portfolio is Prime Ascendant (#307), Prometheus's Fire (#308),
+Notum's Watch (#309), and Ciel's Awakening (#328). The frozen Quest Board
+preserves the exact pre-cutover seven-Quest history and cannot admit, advance,
+or resume work.
 
 Found Silverlight is historical after Mission #276: resume FS-C01-M04 only
 through the bounded Codex / Source Governance Mission family, Glass Codex
@@ -85,6 +86,14 @@ remains the bridge vessel. Preserve all Found Silverlight proofs and events;
 never infer M04, deployment, reminder access, or protected-runtime proof from
 Sunset. Prime Continuity Proof is complete through Mission #277; preserve AJ-08
 admission evidence and its append-only events as historical proof.
+
+Ciel's Awakening recovery begins from `quests/ciels-awakening.md`,
+`operations/ciel.md`, `skills/gluttony/SKILL.md`, `knowledge/rimuru/README.md`,
+the schema-valid Rimuru registry, and the matching Quest-registry and continuity
+rows. Recovery must not require `atlas-codex`; predecessor references are
+lineage only. Rimuru records never become doctrine or executable recovery
+payloads. CIEL-C01-M02 remains ineligible until CIEL-C01-M01 receives exact
+merged-main readback, and later Absorb work requires a fresh Preview.
 
 ## Repository-process recovery boundary
 
@@ -201,10 +210,11 @@ These are future proof requirements. This runbook and the Prometheus Quest do no
 - Every source transaction records base, head, tree, paths, payload hashes, PR, merge, and recovery classification.
 - A source rollback uses a new reviewed PR; no force push or history rewrite is required.
 - Mission #278 registry rollback restores the prior Quest Board authority and removes the active-registry claim through one reviewed revert or repair-forward PR; the frozen Board, parent Issues, and append-only Issue history are never rewritten.
+- Ciel admission rollback removes the one Ciel registry row, matching continuity entry, Operation/Quest/Rimuru source, and routing through one reviewed revert or repair-forward PR while preserving Issue #328 and predecessor lineage.
 - Thread Engine emergency disablement changes the reviewed activation state through Aegis Break → Oathbringer and must reject at `ACTIVATION_GATE` before mission parsing.
 - Historical lifecycle records are never rewritten; a changed Sunset plan requires a new Preview and explicit supersession.
 - The original Prime shadow head remains preserved by the locked archive branch and annotated tag.
 - The frozen Codex predecessor remains audit evidence only and is never the normal rollback target after cutover.
 - Before final Forge Plex removal, a separately authorized migration rollback may temporarily restore service to Forge Plex. After final removal, stored-media continuity is Jellyfin, live-TV continuity is the direct antenna, and normal Plex service returns through restoration of the Prometheus Plex LXC.
 
-RAID, snapshots, a green backup job, an undeleted predecessor, the presence of Jellyfin, a live Mission Issue, or a merge API success response are not restore proof. Recovery is proven only by exact restoration and readback.
+RAID, snapshots, a green backup job, an undeleted predecessor, the presence of Jellyfin, a live Mission Issue, a Harvest record, a Rimuru record, or a merge API success response are not restore proof. Recovery is proven only by exact restoration and readback.

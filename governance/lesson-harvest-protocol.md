@@ -35,6 +35,17 @@ promote itself.
   the exact Preview, approval, semantic payload, source lock, and fallback
   routes. It is not canonical lifecycle source or Sunset completion.
 
+## Ciel Harvest boundary
+
+**Ciel Harvest** is the read-only external-source analysis defined by
+`operations/ciel.md`. It may produce noncanonical Harvest Records and later
+Gluttony-assisted Absorption Records in Rimuru. It does not create a Feather,
+Golden Wing, assurance control, lifecycle closeout, or internal recurrence proof.
+
+**Sunset Lesson Harvest** remains the internal Atlas learning route below. A
+shared word such as `Harvest` or `absorption` never combines their identities,
+evidence, schemas, ownership, or authority. Neither path may self-promote.
+
 ## Mandatory Sunset Preview route
 
 `Sunset this chat` always routes to read-only Preview first. The Preview shows
@@ -106,6 +117,8 @@ Route from meaning, not a shared command name:
 
 | Semantic objective | Exact route | Prohibited substitution |
 |---|---|---|
+| Analyze an external source | Operation Ciel `HARVEST <X>` | Sunset Lesson Harvest or mutation |
+| Classify one completed external Harvest | Operation Ciel `ABSORB <Y>` through Gluttony | automatic doctrine, install, runtime, or permanence |
 | Preview the full Atlas lifecycle closeout | `python -B -m tools.atlas_lifecycle sunset preview` | candidate construction or continuity snapshot |
 | Approve one exact Sunset Preview | `python -B -m tools.atlas_lifecycle sunset approve` | prior or standing approval |
 | Complete the approved full Atlas lifecycle closeout | `python -B -m tools.atlas_lifecycle sunset candidate` with exact Preview and approval carrier | standalone unapproved request |

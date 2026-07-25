@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/rimuru-code-capsule-v1.schema.json",
+  "title": "Rimuru inert Code Capsule v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "capsule_id",
+    "classification",
+    "source",
+    "license",
+    "content",
+    "dependencies",
+    "security_review",
+    "tests",
+    "authority_boundary",
+    "status"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "atlas.rimuru.code-capsule.v1"
+    },
+    "capsule_id": {
+      "type": "string",
+      "pattern": "^CAPSULE-[A-Z0-9-]{3,120}-R[0-9]{2}$"
+    },
+    "classification": {
+      "enum": [
+        "REFERENCE_ONLY",
+        "SNIPPET_CANDIDATE",
+        "ATLAS_NATIVE_REIMPLEMENTATION",
+        "VENDOR_CANDIDATE",
+        "TOOL_INTEGRATION_CANDIDATE",
+        "REJECTED_FOR_REUSE"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "revision",
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "spdx_id",
+        "verified_at",
+        "attribution_required",
+        "notice"
+      ],
+      "properties": {
+        "spdx_id": {
+          "type": "string",
+          "pattern": "^(?!NOASSERTION$|UNKNOWN$).+"
+        },
+        "verified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "attribution_required": {
+          "type": "boolean"
+        },
+        "notice": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "storage",
+        "excerpt_sha256",
+        "modifications"
+      ],
+      "properties": {
+        "storage": {
+          "const": "INERT_JSON_ONLY"
+        },
+        "excerpt_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "modifications": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "security_review": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "tests": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "authority_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "executable",
+        "runtime_import",
+        "installation_authorized",
+        "permanence_authorized"
+      ],
+      "properties": {
+        "executable": {
+          "const": false
+        },
+        "runtime_import": {
+          "const": false
+        },
+        "installation_authorized": {
+          "const": false
+        },
+        "permanence_authorized": {
+          "const": false
+        }
+      }
+    },
+    "status": {
+      "enum": [
+        "DRAFT",
+        "REVIEWED",
+        "SUPERSEDED",
+        "REJECTED"
+      ]
+    }
+  }
+}
