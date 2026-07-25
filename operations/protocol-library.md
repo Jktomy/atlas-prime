@@ -13,6 +13,9 @@ protected_level: "HIGH"
 
 - **Janus** is Codex's governed intake and transition Operation. It houses **Argus**, which routes intake and sunrise review without silently promoting it to source.
 - **Spark** captures an idea or opportunity as noncanonical material until reviewed.
+- **Ciel Harvest** is read-only external-source verification under Operation Ciel. It produces a source-bound noncanonical Harvest Record and performs no mutation.
+- **Absorb** invokes **Gluttony** against a completed Harvest. It classifies atomic findings and may prepare Rimuru records or later Mission proposals without self-promotion.
+- **Rimuru** is the noncanonical external-intelligence library under `knowledge/rimuru/`; Prime defines its boundary, but its records never govern Atlas.
 - **Emberline** is an immutable preview and decision package; it does not execute itself.
 - **Quest Emberline** is a structured, non-executing Emberline subtype and the sole current-state authority for an admitted Quest after the lifecycle cutover is proven. It never advances a Quest by itself.
 - **Athena Weave** binds one exact change.
@@ -32,6 +35,6 @@ protected_level: "HIGH"
 - **Feather** is immutable exact-context evidence with a stable permanent identity; archival and supersession preserve readback and do not create competing Quest authority.
 - **Golden Wing** is the sole reusable-lesson candidate supported across independent contexts or one justified systemic exception; it is never doctrine and is never promoted automatically.
 - **Dawnshard** is a bounded, restart-safe context projection prepared from Coppermind for Athena. It is stale-aware, fail-closed, and never a second source of truth.
-- **Lesson Harvest** routes Observation → Feather → Golden Wing candidate → Noctua → Ares → human-controlled reviewed absorption → active assurance control → pre-Build applicability → Strikeforce exact-head verification.
+- **Lesson Harvest** routes Observation → Feather → Golden Wing candidate → Noctua → Ares → human-controlled reviewed absorption → active assurance control → pre-Build applicability → Strikeforce exact-head verification. It is distinct from Ciel Harvest of external sources.
 
 Protocols do not broaden authority by being named. Each invocation must bind the repository, exact source, allowed actions, protected boundary, stop point, evidence, and rollback.
