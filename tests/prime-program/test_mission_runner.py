@@ -8,6 +8,7 @@ from tools.mission_runner.core import (
     MissionRunnerError,
     assert_mission_may_block,
     assert_publication_compare_and_swap,
+    assert_single_carrier,
     build_checkpoint,
     build_route_attempt,
     build_working_handoff,
@@ -99,6 +100,10 @@ def attempt(route: str, ordinal: int, status: str, *, stage: str = "PUBLICATION"
     )
 
 
+def payloads(*paths: str) -> dict[str, bytes]:
+    return {path: f"synthetic public-clean bytes for {path}\n".encode() for path in paths}
+
+
 class MissionRunnerTests(unittest.TestCase):
     def test_campaign_effort_class_beu_16_is_valid(self) -> None:
         mission = json.loads(
@@ -159,6 +164,7 @@ class MissionRunnerTests(unittest.TestCase):
             base_sha=HEAD_A,
             expected_head=HEAD_B,
             changed_paths=["tools/mission_runner/core.py"],
+            candidate_payloads=payloads("tools/mission_runner/core.py"),
             candidate_state="WORKING_DRAFT",
         )
         with self.assertRaisesRegex(MissionRunnerError, "PREMATURE_PULL_REQUEST"):
@@ -169,6 +175,7 @@ class MissionRunnerTests(unittest.TestCase):
                 base_sha=HEAD_A,
                 expected_head="c" * 40,
                 changed_paths=first["changed_paths"],
+                candidate_payloads=payloads(*first["changed_paths"]),
                 candidate_state="WORKING_DRAFT",
                 pull_request=341,
                 previous=first,
@@ -182,6 +189,7 @@ class MissionRunnerTests(unittest.TestCase):
                 base_sha=HEAD_A,
                 expected_head="c" * 40,
                 changed_paths=first["changed_paths"],
+                candidate_payloads=payloads(*first["changed_paths"]),
                 candidate_state="SEALED",
                 pull_request=341,
                 previous=first,
@@ -194,6 +202,7 @@ class MissionRunnerTests(unittest.TestCase):
             base_sha=HEAD_A,
             expected_head="c" * 40,
             changed_paths=first["changed_paths"],
+            candidate_payloads=payloads(*first["changed_paths"]),
             candidate_state="SEALED",
             pull_request=341,
             previous=first,
@@ -208,6 +217,7 @@ class MissionRunnerTests(unittest.TestCase):
                 base_sha=HEAD_A,
                 expected_head="d" * 40,
                 changed_paths=sealed["changed_paths"],
+                candidate_payloads=payloads(*sealed["changed_paths"]),
                 candidate_state="SEALED",
                 pull_request=341,
                 previous=sealed,
@@ -254,6 +264,7 @@ class MissionRunnerTests(unittest.TestCase):
             base_sha=HEAD_A,
             expected_head=HEAD_B,
             changed_paths=["tools/mission_runner/core.py"],
+            candidate_payloads=payloads("tools/mission_runner/core.py"),
             candidate_state="WORKING_DRAFT",
         )
 
@@ -283,6 +294,45 @@ class MissionRunnerTests(unittest.TestCase):
                 checkpoints=[],
                 working_handoff=handoff,
                 branch_snapshot={"exists": False, "branch": handoff["branch"], "head_sha": None},
+            )
+
+    def test_duplicate_undeclared_and_closed_carriers_fail_closed(self) -> None:
+        with self.assertRaisesRegex(MissionRunnerError, "UNDECLARED_PATH"):
+            build_working_handoff(
+                mission_id=MISSION_ID,
+                attempt_id=ATTEMPT_ID,
+                branch="repair/mission-339-worldhopper-relay-r01",
+                base_sha=HEAD_A,
+                expected_head=HEAD_B,
+                changed_paths=["tools/mission_runner/core.py", "undeclared/path.md"],
+                candidate_payloads=payloads("tools/mission_runner/core.py", "undeclared/path.md"),
+                declared_path_envelope=["tools/mission_runner/core.py"],
+                candidate_state="WORKING_DRAFT",
+            )
+        branch_snapshot = {"exists": True, "branch": "repair/mission-339-worldhopper-relay-r01", "head_sha": HEAD_B}
+        with self.assertRaisesRegex(MissionRunnerError, "DUPLICATE_BRANCH"):
+            assert_single_carrier(
+                branch=branch_snapshot["branch"],
+                branch_snapshots=[branch_snapshot, dict(branch_snapshot)],
+                pull_request=None,
+                pr_snapshots=[],
+            )
+        with self.assertRaisesRegex(MissionRunnerError, "DUPLICATE_PULL_REQUEST"):
+            assert_single_carrier(
+                branch=branch_snapshot["branch"],
+                branch_snapshots=[branch_snapshot],
+                pull_request=341,
+                pr_snapshots=[
+                    {"number": 341, "branch": branch_snapshot["branch"], "state": "OPEN"},
+                    {"number": 342, "branch": branch_snapshot["branch"], "state": "OPEN"},
+                ],
+            )
+        with self.assertRaisesRegex(MissionRunnerError, "PULL_REQUEST_UNAVAILABLE"):
+            assert_single_carrier(
+                branch=branch_snapshot["branch"],
+                branch_snapshots=[branch_snapshot],
+                pull_request=341,
+                pr_snapshots=[{"number": 341, "branch": branch_snapshot["branch"], "state": "CLOSED"}],
             )
 
     def test_public_clean_checkpoint_rejects_protected_content(self) -> None:

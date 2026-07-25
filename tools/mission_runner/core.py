@@ -430,6 +430,8 @@ def build_working_handoff(
     base_sha: str,
     expected_head: str,
     changed_paths: Sequence[str],
+    candidate_payloads: Mapping[str, bytes],
+    declared_path_envelope: Sequence[str] | None = None,
     candidate_state: str,
     pull_request: int | None = None,
     previous: Mapping[str, Any] | None = None,
@@ -450,6 +452,26 @@ def build_working_handoff(
         if previous_value["candidate_state"] == "SEALED":
             _fail("SEALED_CANDIDATE_IMMUTABLE", "create no replacement handoff")
     paths = normalize_changed_paths(changed_paths)
+    if not paths:
+        _fail("EMPTY_HANDOFF", "working source requires at least one changed path")
+    envelope = normalize_changed_paths(declared_path_envelope if declared_path_envelope is not None else paths)
+    undeclared = sorted(set(paths) - set(envelope))
+    if undeclared:
+        _fail("UNDECLARED_PATH", str(undeclared))
+    if not isinstance(candidate_payloads, Mapping):
+        _fail("INVALID_PAYLOADS", "candidate_payloads must be a path-to-bytes object")
+    payload_paths = normalize_changed_paths(candidate_payloads)
+    if payload_paths != paths:
+        _fail("PAYLOAD_PATH_MISMATCH", "payload paths must equal the complete changed paths")
+    for path in paths:
+        payload = candidate_payloads[path]
+        if not isinstance(payload, bytes):
+            _fail("INVALID_PAYLOADS", path)
+        try:
+            text = payload.decode("utf-8")
+        except UnicodeDecodeError:
+            _fail("NON_UTF8_PAYLOAD", path)
+        _public_clean(text, f"candidate_payloads.{path}")
     value: dict[str, Any] = {
         "schema_version": HANDOFF_SCHEMA,
         "mission_id": mission_id,
@@ -468,6 +490,43 @@ def build_working_handoff(
     }
     value["handoff_digest"] = _digest({key: child for key, child in value.items() if key != "handoff_digest"})
     return validate_working_handoff(value)
+
+
+def assert_single_carrier(
+    *,
+    branch: str,
+    branch_snapshots: Sequence[Mapping[str, Any]],
+    pull_request: int | None,
+    pr_snapshots: Sequence[Mapping[str, Any]],
+) -> dict[str, Any]:
+    _identity(branch, "branch")
+    branches = [
+        item
+        for item in branch_snapshots
+        if isinstance(item, Mapping) and item.get("branch") == branch and item.get("exists") is True
+    ]
+    if len(branches) == 0:
+        _fail("WORKING_BRANCH_UNAVAILABLE", branch)
+    if len(branches) > 1:
+        _fail("DUPLICATE_BRANCH", branch)
+    prs = [
+        item
+        for item in pr_snapshots
+        if isinstance(item, Mapping) and item.get("branch") == branch
+    ]
+    if len(prs) > 1:
+        _fail("DUPLICATE_PULL_REQUEST", branch)
+    if pull_request is None:
+        if prs:
+            _fail("UNEXPECTED_PULL_REQUEST", str(prs[0].get("number")))
+        return {"branch": branch, "pull_request": None, "result": "SINGLE_CARRIER"}
+    if type(pull_request) is not int or pull_request < 1:
+        _fail("INVALID_PULL_REQUEST", str(pull_request))
+    if len(prs) != 1 or prs[0].get("number") != pull_request:
+        _fail("PULL_REQUEST_UNAVAILABLE", str(pull_request))
+    if prs[0].get("state") != "OPEN":
+        _fail("PULL_REQUEST_UNAVAILABLE", f"PR #{pull_request} is {prs[0].get('state')}")
+    return {"branch": branch, "pull_request": pull_request, "result": "SINGLE_CARRIER"}
 
 
 def validate_route_attempt(value: Mapping[str, Any]) -> dict[str, Any]:

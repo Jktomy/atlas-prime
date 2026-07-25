@@ -3,6 +3,7 @@
 from .core import (
     MissionRunnerError,
     assert_mission_may_block,
+    assert_single_carrier,
     assert_publication_compare_and_swap,
     build_checkpoint,
     build_route_attempt,
@@ -20,6 +21,7 @@ from .core import (
 __all__ = [
     "MissionRunnerError",
     "assert_mission_may_block",
+    "assert_single_carrier",
     "assert_publication_compare_and_swap",
     "build_checkpoint",
     "build_route_attempt",
