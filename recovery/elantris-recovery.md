@@ -100,7 +100,7 @@ merged-main readback, and later Absorb work requires a fresh Preview.
 Every source transaction records or permits reconstruction of:
 
 - transaction and objective identity;
-- canonical base, branch, PR, head, tree, paths, receipts, and remote state before resuming;
+- canonical base, branch, PR, head, tree, and complete changed paths;
 - candidate generation and payload hashes;
 - requesting surface, operator, selected route, and authorized fallback routes;
 - validation plan, exact-head results, review dispositions, and generated-state classification;
