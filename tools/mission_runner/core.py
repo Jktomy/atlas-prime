@@ -629,6 +629,131 @@ def next_authorized_route(
     return routes[len(normalized)] if len(normalized) < len(routes) else None
 
 
+def resolve_route_disposition(
+    routes: Sequence[str],
+    attempts: Sequence[Mapping[str, Any]],
+    *,
+    stage: str,
+    transaction_reconciled: bool,
+    boundaries_unchanged: bool,
+) -> dict[str, Any]:
+    if type(transaction_reconciled) is not bool or type(boundaries_unchanged) is not bool:
+        _fail("INVALID_ROUTE_DISPOSITION", "reconciliation and boundary flags must be booleans")
+    if stage not in STAGES and stage not in {"PREVIEW", "APPROVAL"}:
+        _fail("UNKNOWN_STAGE", stage)
+    normalized = validate_route_attempts(routes, attempts, stage=stage)
+
+    def disposition(
+        value: str,
+        *,
+        selected_route: str | None,
+        mission_state: str,
+        user_authorization_required: bool,
+        decision_box_allowed: bool,
+        basis: str,
+        message_code: str,
+    ) -> dict[str, Any]:
+        result = {
+            "disposition": value,
+            "selected_route": selected_route,
+            "mission_state": mission_state,
+            "user_authorization_required": user_authorization_required,
+            "decision_box_allowed": decision_box_allowed,
+            "basis": basis,
+            "message_code": message_code,
+        }
+        _public_clean(result, "route_disposition")
+        return result
+
+    if not transaction_reconciled:
+        return disposition(
+            "STOP_AT_GATE",
+            selected_route=None,
+            mission_state="BLOCKED_RESUMABLE",
+            user_authorization_required=False,
+            decision_box_allowed=False,
+            basis="TRANSACTION_UNRECONCILED",
+            message_code="ROUTE_RECONCILIATION_REQUIRED",
+        )
+    if not boundaries_unchanged:
+        return disposition(
+            "STOP_AT_GATE",
+            selected_route=None,
+            mission_state="BLOCKED_RESUMABLE",
+            user_authorization_required=True,
+            decision_box_allowed=True,
+            basis="BOUNDARIES_CHANGED",
+            message_code="ROUTE_BOUNDARY_CHANGE_REQUIRES_DECISION",
+        )
+    if not normalized:
+        return disposition(
+            "CONTINUE_CURRENT_ROUTE",
+            selected_route=routes[0],
+            mission_state="IN_PROGRESS",
+            user_authorization_required=False,
+            decision_box_allowed=False,
+            basis="ROUTE_NOT_STARTED",
+            message_code="ROUTE_CONTINUE_CURRENT",
+        )
+
+    latest = normalized[-1]
+    status = latest["status"]
+    if status in {"PENDING", "IN_PROGRESS"}:
+        return disposition(
+            "CONTINUE_CURRENT_ROUTE",
+            selected_route=latest["route_id"],
+            mission_state="IN_PROGRESS",
+            user_authorization_required=False,
+            decision_box_allowed=False,
+            basis=status,
+            message_code="ROUTE_CONTINUE_CURRENT",
+        )
+    if status == "SUCCEEDED":
+        return disposition(
+            "STAGE_COMPLETE",
+            selected_route=latest["route_id"],
+            mission_state="IN_PROGRESS",
+            user_authorization_required=False,
+            decision_box_allowed=False,
+            basis="SUCCEEDED",
+            message_code="ROUTE_STAGE_COMPLETE",
+        )
+    if status in TRUE_GATE_STATES:
+        return disposition(
+            "STOP_AT_GATE",
+            selected_route=None,
+            mission_state="BLOCKED_RESUMABLE",
+            user_authorization_required=True,
+            decision_box_allowed=True,
+            basis=status,
+            message_code="ROUTE_TRUE_GATE",
+        )
+
+    selected = next_authorized_route(routes, normalized, stage=stage)
+    if status == "REJECTED_CAPABILITY" and selected is not None:
+        return disposition(
+            "CONTINUE_AUTOMATICALLY",
+            selected_route=selected,
+            mission_state="IN_PROGRESS",
+            user_authorization_required=False,
+            decision_box_allowed=False,
+            basis="REJECTED_CAPABILITY",
+            message_code="ROUTE_AUTOMATIC_FALLBACK",
+        )
+    if status == "REJECTED_CAPABILITY":
+        blocked = assert_mission_may_block(routes, normalized, stage=stage)
+        return disposition(
+            "BLOCKED_RESUMABLE",
+            selected_route=None,
+            mission_state="BLOCKED_RESUMABLE",
+            user_authorization_required=True,
+            decision_box_allowed=True,
+            basis=blocked["basis"],
+            message_code="AUTHORIZED_ROUTES_EXHAUSTED",
+        )
+    _fail("INVALID_ROUTE_DISPOSITION", status)
+
+
 def assert_mission_may_block(
     routes: Sequence[str],
     attempts: Sequence[Mapping[str, Any]],
