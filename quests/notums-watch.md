@@ -12,17 +12,16 @@ protected_level: High
 routes_from:
   - atlas-prime.md
   - atlas-start-here.md
-  - atlas-index.md
+  - routing/command-surfaces.md
   - operations/protocol-library.md
   - infrastructure/atlas-infrastructure-source.md
 routes_to:
   - governance/source-lifecycle.md
   - infrastructure/atlas-infrastructure-source.md
   - recovery/elantris-recovery.md
-  - quest-board/quest-board-v1.json
   - quests/prometheus-fire.md
   - governance/atlas-strikeforce.md
-  - noctua.md
+  - governance/noctua.md
 private_boundary: "Store only clean architecture, sanitized readiness steps, non-secret status labels, and safe evidence pointers. Do not store IP addresses, private network maps, device registers, UPS serials, account data, credentials, tokens, MFA or recovery codes, real environment values, raw private runtime logs, PHI, raw finance evidence, or protected household evidence."
 evidence_boundary: "This Quest coordinates source decisions and Jayson-executed readiness packages. It is not deployment evidence. Hardware health, installation, runtime telemetry, backup manifests, capacity figures, restore receipts, and private topology details must be verified from approved evidence systems before promotion."
 cleanup_path: "Keep active until Notum's Watch has passed its source-readback, interim-vessel, future-vessel, backup-capacity, and lineage disposition gates. Close only through final Noctua/Strikeforce review, Workboard synchronization, and merged-main readback."
@@ -33,7 +32,7 @@ last_verified: 2026-07-23
 
 ## 1. Quest identity
 
-**Quest ID:** `quest.notums-watch`
+**Quest ID:** `QUEST-NOTUMS-WATCH-20260708`
 **Parent Project:** Project Odyssey
 **Owning Operation:** Operation Citadel / Gatehouse Infrastructure
 **Supporting Projects:** Elantris, Beacon, Codex
@@ -65,7 +64,7 @@ Any answer about Notum's Watch, Notum, Notum Phoenix, Nightwatcher, Citadel obse
 
 Minimum readback route:
 
-1. `atlas-index.md`
+1. `routing/command-surfaces.md`
 2. `quests/notums-watch.md`
 3. `infrastructure/atlas-infrastructure-source.md`
 4. `recovery/elantris-recovery.md`
