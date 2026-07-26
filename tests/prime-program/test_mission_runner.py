@@ -16,6 +16,7 @@ from tools.mission_runner.core import (
     match_worker_to_stage,
     next_authorized_route,
     reconstruct_attempt,
+    resolve_route_disposition,
     validate_checkpoint_chain,
     validate_worker_capability,
 )
@@ -252,6 +253,127 @@ class MissionRunnerTests(unittest.TestCase):
         self.assertIsNone(next_authorized_route(ROUTES, [spear, oathbringer, aegis], stage="PUBLICATION"))
         with self.assertRaisesRegex(MissionRunnerError, "ROUTE_ALREADY_SUCCEEDED"):
             assert_mission_may_block(ROUTES, [spear, oathbringer, aegis], stage="PUBLICATION")
+
+    def test_route_disposition_continues_unstarted_and_active_routes_without_user_action(self) -> None:
+        routes = ["SPEAR", "AEGIS_BREAK_GITHUB_NATIVE"]
+        unstarted = resolve_route_disposition(
+            routes,
+            [],
+            stage="PUBLICATION",
+            transaction_reconciled=True,
+            boundaries_unchanged=True,
+        )
+        self.assertEqual(unstarted["disposition"], "CONTINUE_CURRENT_ROUTE")
+        self.assertEqual(unstarted["selected_route"], "SPEAR")
+        self.assertFalse(unstarted["user_authorization_required"])
+        self.assertFalse(unstarted["decision_box_allowed"])
+
+        pending = resolve_route_disposition(
+            routes,
+            [attempt(routes[0], 1, "PENDING")],
+            stage="PUBLICATION",
+            transaction_reconciled=True,
+            boundaries_unchanged=True,
+        )
+        self.assertEqual(pending["disposition"], "CONTINUE_CURRENT_ROUTE")
+        self.assertEqual(pending["selected_route"], "SPEAR")
+
+        with self.assertRaisesRegex(MissionRunnerError, "UNKNOWN_STAGE"):
+            resolve_route_disposition(
+                routes,
+                [],
+                stage="UNKNOWN",
+                transaction_reconciled=True,
+                boundaries_unchanged=True,
+            )
+
+    def test_mission_344_spear_failure_continues_through_aegis_break_without_approval(self) -> None:
+        routes = ["SPEAR", "AEGIS_BREAK_GITHUB_NATIVE"]
+        spear = attempt(routes[0], 1, "REJECTED_CAPABILITY")
+        result = resolve_route_disposition(
+            routes,
+            [spear],
+            stage="PUBLICATION",
+            transaction_reconciled=True,
+            boundaries_unchanged=True,
+        )
+        self.assertEqual(
+            result,
+            {
+                "disposition": "CONTINUE_AUTOMATICALLY",
+                "selected_route": "AEGIS_BREAK_GITHUB_NATIVE",
+                "mission_state": "IN_PROGRESS",
+                "user_authorization_required": False,
+                "decision_box_allowed": False,
+                "basis": "REJECTED_CAPABILITY",
+                "message_code": "ROUTE_AUTOMATIC_FALLBACK",
+            },
+        )
+        with self.assertRaisesRegex(MissionRunnerError, "ROUTE_FALLBACK_PENDING"):
+            assert_mission_may_block(routes, [spear], stage="PUBLICATION")
+
+    def test_route_disposition_preserves_true_gates_and_exhaustion(self) -> None:
+        routes = ["SPEAR", "AEGIS_BREAK_GITHUB_NATIVE"]
+        for status in (
+            "REJECTED_SAFETY",
+            "REJECTED_AUTHORITY",
+            "REJECTED_DRIFT",
+            "TRANSFER_REQUIRED",
+        ):
+            result = resolve_route_disposition(
+                routes,
+                [attempt(routes[0], 1, status)],
+                stage="PUBLICATION",
+                transaction_reconciled=True,
+                boundaries_unchanged=True,
+            )
+            self.assertEqual(result["disposition"], "STOP_AT_GATE")
+            self.assertEqual(result["basis"], status)
+            self.assertTrue(result["user_authorization_required"])
+            self.assertTrue(result["decision_box_allowed"])
+
+        capability_failure = attempt(routes[0], 1, "REJECTED_CAPABILITY")
+        unreconciled = resolve_route_disposition(
+            routes,
+            [capability_failure],
+            stage="PUBLICATION",
+            transaction_reconciled=False,
+            boundaries_unchanged=True,
+        )
+        self.assertEqual(unreconciled["basis"], "TRANSACTION_UNRECONCILED")
+        self.assertFalse(unreconciled["decision_box_allowed"])
+
+        changed_boundary = resolve_route_disposition(
+            routes,
+            [capability_failure],
+            stage="PUBLICATION",
+            transaction_reconciled=True,
+            boundaries_unchanged=False,
+        )
+        self.assertEqual(changed_boundary["basis"], "BOUNDARIES_CHANGED")
+        self.assertTrue(changed_boundary["decision_box_allowed"])
+
+        exhausted = resolve_route_disposition(
+            routes,
+            [capability_failure, attempt(routes[1], 2, "REJECTED_CAPABILITY")],
+            stage="PUBLICATION",
+            transaction_reconciled=True,
+            boundaries_unchanged=True,
+        )
+        self.assertEqual(exhausted["disposition"], "BLOCKED_RESUMABLE")
+        self.assertEqual(exhausted["basis"], "AUTHORIZED_ROUTES_EXHAUSTED")
+
+        succeeded = resolve_route_disposition(
+            routes,
+            [attempt(routes[0], 1, "SUCCEEDED")],
+            stage="PUBLICATION",
+            transaction_reconciled=True,
+            boundaries_unchanged=True,
+        )
+        self.assertEqual(succeeded["disposition"], "STAGE_COMPLETE")
+        self.assertFalse(succeeded["decision_box_allowed"])
+        with self.assertRaisesRegex(MissionRunnerError, "ROUTE_ALREADY_SUCCEEDED"):
+            assert_mission_may_block(routes[:1], [attempt(routes[0], 1, "SUCCEEDED")], stage="PUBLICATION")
 
     def test_true_gate_stops_fallback_and_rejects_later_attempts(self) -> None:
         safety_gate = attempt(ROUTES[0], 1, "REJECTED_SAFETY")

@@ -71,6 +71,25 @@ and branch heads, selected route, ordered fallback dispositions, and the next
 unevaluated route. A route-local failure is not reported as Mission-wide
 `BLOCKED_RESUMABLE` while an approved fallback remains available.
 
+Before Athena reports route-level blocking or renders a Decision Box after a
+route failure, Athena consumes the deterministic Mission Runner route
+disposition. `CONTINUE_CURRENT_ROUTE` and `CONTINUE_AUTOMATICALLY` require
+immediate continuation, prohibit a Decision Box, and preserve the same Mission,
+attempt, scope, protected boundary, stop point, rollback, and permanence mode.
+Only a true gate, actionable operator transfer, or exhausted authorized routes
+may stop the transaction.
+
+For an unavailable Spear adapter before mutation, the user-facing report is:
+
+> **Spear failed before mutation because its adapter is unavailable on this
+> surface. Continuing automatically through the approved Aegis Break fallback
+> on the same Mission, attempt, scope, and stop boundary.**
+
+While automatic continuation applies, Athena must not ask Jayson to authorize
+the fallback again, present a route catalog or manufactured alternatives,
+render a Decision Box, report Mission-wide `BLOCKED_RESUMABLE`, obscure the
+failed route, or relabel GitHub-native Aegis Break work as Spear.
+
 Every substantial operation includes:
 
 - **Current Position**; and
