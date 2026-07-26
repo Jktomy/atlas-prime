@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/athena-spear-issue-receipt-v1.schema.json",
+  "title": "Athena Spear Issue Receipt V1",
+  "type": "object",
+  "required": [
+    "schema_version", "mode", "result", "repository", "issue_number", "mission_id",
+    "attempt_id", "base_sha", "request_id", "route", "automatic_retry", "forbidden_actions"
+  ],
+  "properties": {
+    "schema_version": {"const": "atlas.athena.spear-issue-receipt.v1"},
+    "mode": {"enum": ["KEY_REQUEST", "PREVIEW", "EXECUTE", "RESUME"]},
+    "result": {"enum": ["KEY_ADVERTISEMENT", "PREVIEW_ACCEPTED", "EXECUTE_RESERVED", "SUCCESS", "PARTIAL", "RECOVERED_SUCCESS", "REJECTED", "BLOCKED"]},
+    "repository": {"const": "Jktomy/atlas-prime"},
+    "issue_number": {"type": "integer", "minimum": 1},
+    "mission_id": {"type": "string", "minLength": 1},
+    "attempt_id": {"type": "string", "minLength": 1},
+    "base_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "request_id": {"type": "string", "minLength": 1},
+    "route": {"const": "SPEAR_DIRECT_ISSUE"},
+    "automatic_retry": {"const": false},
+    "forbidden_actions": {
+      "type": "object",
+      "required": ["direct_main", "force_push", "ready", "merge", "repository_settings", "standing_authority", "second_writer"],
+      "additionalProperties": false,
+      "properties": {
+        "direct_main": {"const": false},
+        "force_push": {"const": false},
+        "ready": {"const": false},
+        "merge": {"const": false},
+        "repository_settings": {"const": false},
+        "standing_authority": {"const": false},
+        "second_writer": {"const": false}
+      }
+    }
+  },
+  "additionalProperties": true
+}

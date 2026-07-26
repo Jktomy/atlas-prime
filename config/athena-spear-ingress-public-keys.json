@@ -1,0 +1,19 @@
+{
+  "schema_version": "atlas.athena.spear-ingress-key-policy.v1",
+  "state": "SETTINGS_ACTIVATION_REQUIRED",
+  "environment": "atlas-spear-ingress",
+  "private_key_secret": "ATLAS_SPEAR_INGRESS_PRIVATE_KEY_V1",
+  "public_key_secret": "ATLAS_SPEAR_INGRESS_PUBLIC_KEY_V1",
+  "key_id_secret": "ATLAS_SPEAR_INGRESS_KEY_ID_V1",
+  "algorithm": {
+    "key_agreement": "X25519",
+    "kdf": "HKDF-SHA-256",
+    "aead": "AES-256-GCM"
+  },
+  "maximum_plaintext_carrier_bytes": 524288,
+  "maximum_ciphertext_chunks": 24,
+  "maximum_comment_utf8_bytes": 48000,
+  "source_contains_private_key": false,
+  "repository_pat_required": false,
+  "activation_requires_separate_jayson_authority": true
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas.local/schemas/athena-spear-issue-envelope-v1.schema.json",
+  "title": "Athena Spear Issue Envelope V1",
+  "type": "object",
+  "required": ["schema_version", "mode", "repository", "mission_id", "attempt_id", "request_id"],
+  "properties": {
+    "schema_version": {"const": "atlas.athena.spear-issue-envelope.v1"},
+    "mode": {"enum": ["KEY_REQUEST", "CIPHERTEXT_CHUNK", "PREVIEW", "EXECUTE", "RESUME"]},
+    "repository": {"const": "Jktomy/atlas-prime"},
+    "issue_number": {"type": "integer", "minimum": 1},
+    "mission_id": {"type": "string", "minLength": 1},
+    "attempt_id": {"type": "string", "minLength": 1},
+    "base_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "request_id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]{12,160}$"},
+    "requesting_surface": {"const": "CHATGPT_ATLAS_PROJECT"},
+    "semantic_operator": {"const": "ATHENA"},
+    "authorizer": {"const": "JAYSON"}
+  },
+  "additionalProperties": true
+}

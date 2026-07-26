@@ -30,3 +30,9 @@ A Thread Engine self-change is permitted only as an exact draft-PR candidate pro
 A Jayson-authorized Preview and Execute in the active chat is sufficient human authority for the bounded Spear task. A separate platform-signed ChatGPT Work origin attestation is not part of Spear's route contract and is not required to prove that Athena can reach Thread Engine.
 
 Spear does not merge, widen scope, inherit later-stage authority, become a standing writer, or bypass the draft-PR stop. Review, exact-head Strikeforce, and separately authorized permanence remain required.
+
+## Current ChatGPT Atlas Project ingress
+
+The `SPEAR_DIRECT_ISSUE` transport lets Athena deliver an encrypted immutable Spear carrier from the ChatGPT Atlas Project through exact Mission Issue comments. The default-branch workflow decrypts and validates the carrier inside the separately activated `atlas-spear-ingress` environment, compiles a read-only Preview, emits a shared candidate seal, and invokes the singular Thread Engine only after a separately posted Execute envelope reproduces every authority, comment, base, path, byte, tree, and replay binding.
+
+Issue comments are transport and durable readback, not source, authorship, or a second repository writer. Ciphertext chunks are inert. The workflow rejects plaintext payloads, non-owner actors, pull-request comments, stale or edited comments, replay, DELETE in R01, missing seal admission, and ambiguous partial state. The route is not operational merely because source exists: environment-key activation and a harmless current-surface live acceptance remain separately required.
