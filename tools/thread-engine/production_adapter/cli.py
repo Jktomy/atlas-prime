@@ -6,7 +6,6 @@ from pathlib import Path
 
 from .adapter import AdapterError, execute_mission
 from .receipt import stable_json
-from .resume import execute_sealed_mission, reconcile_adapter_error, resume_exact_partial
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -26,6 +25,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         if args.resume_partial_receipt:
+            from .resume import resume_exact_partial
+
             if not args.candidate_seal:
                 raise AdapterError("resume requires candidate seal", "CANDIDATE_SEAL_REQUIRED", "PACKAGE_AUDIT")
             receipt = resume_exact_partial(
@@ -34,6 +35,8 @@ def main(argv: list[str] | None = None) -> int:
                 seal_path=Path(args.candidate_seal),
             )
         elif args.candidate_seal or args.candidate_seal_context:
+            from .resume import execute_sealed_mission
+
             if not args.candidate_seal or not args.candidate_seal_context or not args.package_root:
                 raise AdapterError("sealed execution requires seal, context, and package root", "CANDIDATE_SEAL_REQUIRED", "PACKAGE_AUDIT")
             receipt = execute_sealed_mission(
@@ -61,7 +64,11 @@ def main(argv: list[str] | None = None) -> int:
     except AdapterError as exc:
         mission_path = Path(args.mission)
         package_root = Path(args.package_root) if args.package_root else mission_path.resolve().parent
-        reconciled = reconcile_adapter_error(mission_path, package_root=package_root, error=exc)
+        reconciled = exc.receipt
+        if exc.stage in {"PUSH", "DRAFT_PR", "READBACK", "RECEIPT", "STOP"} or exc.partial:
+            from .resume import reconcile_adapter_error
+
+            reconciled = reconcile_adapter_error(mission_path, package_root=package_root, error=exc)
         if reconciled:
             sys.stderr.write(stable_json(reconciled))
         elif exc.receipt:

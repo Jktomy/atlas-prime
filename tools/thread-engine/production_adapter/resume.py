@@ -5,7 +5,6 @@ import re
 import subprocess
 from pathlib import Path
 from typing import Any
-from urllib.parse import quote
 import tempfile
 import shutil
 import sys
@@ -76,7 +75,7 @@ def _candidate_git_tree(mission_path: Path, candidate_files: dict[str, bytes]) -
 
 def _remote_state(repository: str, branch: str) -> dict[str, Any]:
     ref = subprocess.run(
-        ["gh", "api", f"repos/{repository}/git/ref/heads/{quote(branch, safe='')}"],
+        ["gh", "api", f"repos/{repository}/git/ref/heads/{branch}"],
         check=False,
         capture_output=True,
         text=True,
