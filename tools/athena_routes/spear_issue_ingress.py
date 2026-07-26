@@ -85,6 +85,61 @@ def _compile_and_seal(carrier: bytes, body: dict[str, Any], manifest: dict[str, 
 def _receipt_base(mode: str, result: str, issue_number: int, manifest: dict[str, Any], request_id: str) -> dict[str, Any]:
     return {'schema_version': 'atlas.athena.spear-issue-receipt.v1', 'mode': mode, 'result': result, 'repository': REPOSITORY, 'issue_number': issue_number, 'mission_id': manifest['mission_id'], 'attempt_id': manifest['attempt_id'], 'base_sha': manifest['source_binding']['base_sha'], 'request_id': request_id, 'route': 'SPEAR_DIRECT_ISSUE', 'requesting_surface': 'CHATGPT_ATLAS_PROJECT', 'semantic_operator': 'ATHENA', 'authorizer': 'JAYSON', 'automatic_retry': False, 'forbidden_actions': {'direct_main': False, 'force_push': False, 'ready': False, 'merge': False, 'repository_settings': False, 'standing_authority': False, 'second_writer': False}}
 
+def _manifest_rejection_receipt(mode: str, issue_number: int, raw_body: str, environment: dict[str, str]) -> dict[str, Any]:
+    receipt_mode, marker = {
+        'key': ('KEY_REQUEST', KEY_REQUEST),
+        'preview': ('PREVIEW', PREVIEW),
+        'execute': ('EXECUTE', EXECUTE),
+        'resume': ('RESUME', RESUME),
+    }[mode]
+    request_id = 'UNVERIFIED'
+    trigger_envelope_identity = 'UNAVAILABLE'
+    if len(raw_body.encode('utf-8')) <= 60000:
+        try:
+            _marker, body = parse_comment(raw_body, marker)
+        except ValueError:
+            pass
+        else:
+            candidate = body.get('request_id')
+            if isinstance(candidate, str) and re.fullmatch('[A-Za-z0-9._:-]{12,160}', candidate):
+                request_id = candidate
+                trigger_envelope_identity = 'SCREENED_NOT_MANIFEST_BOUND'
+    workflow_sha = environment.get('GITHUB_SHA', '')
+    workflow_source_status = 'TRUSTED_EVENT'
+    if not re.fullmatch('[0-9a-f]{40}', workflow_sha):
+        workflow_sha = '0' * 40
+        workflow_source_status = 'UNVERIFIED'
+    return {
+        'schema_version': 'atlas.athena.spear-issue-receipt.v1',
+        'mode': receipt_mode,
+        'result': 'REJECTED',
+        'repository': REPOSITORY,
+        'issue_number': issue_number,
+        'mission_id': 'UNVERIFIED_MISSION_MANIFEST',
+        'attempt_id': 'UNVERIFIED_MISSION_MANIFEST_ATTEMPT',
+        'base_sha': workflow_sha,
+        'request_id': request_id,
+        'route': 'SPEAR_DIRECT_ISSUE',
+        'requesting_surface': 'CHATGPT_ATLAS_PROJECT',
+        'semantic_operator': 'ATHENA',
+        'authorizer': 'JAYSON',
+        'mission_manifest_verified': False,
+        'trigger_envelope_identity': trigger_envelope_identity,
+        'workflow_source_status': workflow_source_status,
+        'error_code': 'MISSION_MANIFEST_REJECTED',
+        'stop_point': 'PRE_MUTATION_REJECTION',
+        'automatic_retry': False,
+        'forbidden_actions': {
+            'direct_main': False,
+            'force_push': False,
+            'ready': False,
+            'merge': False,
+            'repository_settings': False,
+            'standing_authority': False,
+            'second_writer': False,
+        },
+    }
+
 def _preview(issue_number: int, triggering_comment: dict[str, Any], body: dict[str, Any], manifest: dict[str, Any], *, post: bool) -> dict[str, Any]:
     _validate_envelope(body, manifest, issue_number, 'PREVIEW')
     _authorization(body)
@@ -220,10 +275,22 @@ def main(argv: list[str] | None=None) -> int:
     parser = argparse.ArgumentParser(description='Athena Direct Spear Mission-comment ingress')
     parser.add_argument('--mode', choices=('key', 'preview', 'execute', 'resume'), required=True)
     args = parser.parse_args(argv)
-    issue_event, triggering, raw_body, _environment = _trusted_event()
+    issue_event, triggering, raw_body, environment = _trusted_event()
     issue_number = int(issue_event['number'])
     current_issue = _issue(issue_number)
-    manifest = _mission_manifest(current_issue)
+    try:
+        manifest = _mission_manifest(current_issue)
+    except SpearIssueIngressError as exc:
+        if exc.code != 'MISSION_MANIFEST_REJECTED':
+            raise
+        failure = _manifest_rejection_receipt(args.mode, issue_number, raw_body, environment)
+        receipt_status = 'WRITTEN'
+        try:
+            _post(issue_number, RECEIPT_MARKER, failure)
+        except SpearIssueIngressError:
+            receipt_status = 'WRITE_FAILED'
+        sys.stderr.write(stable_json({'result': 'REJECTED', 'error_code': exc.code, 'stop_point': exc.stage, 'receipt_status': receipt_status}))
+        return 2
     try:
         if args.mode == 'key':
             _marker, body = parse_comment(raw_body, KEY_REQUEST)
