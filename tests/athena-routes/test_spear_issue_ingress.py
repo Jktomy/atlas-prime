@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+from contextlib import ExitStack
 import json
 from pathlib import Path
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from tools.athena_routes import spear_issue_client as issue_client
 from tools.athena_routes import spear_issue_ingress as ingress
@@ -31,6 +32,106 @@ def _carrier() -> bytes:
 
 
 class SpearIssueIngressTests(unittest.TestCase):
+    def test_main_posts_one_bounded_manifest_rejection_receipt(self) -> None:
+        raw_body = issue_client.key_request(
+            mission_id="UNTRUSTED-MISSION",
+            attempt_id="UNTRUSTED-ATTEMPT",
+            base_sha="a" * 40,
+            request_id="request-manifest-rejected-001",
+        )
+        environment = {
+            "GITHUB_SHA": "b" * 40,
+            "GITHUB_WORKFLOW_REF": "Jktomy/atlas-prime/.github/workflows/athena-spear-issue-ingress.yml@refs/heads/main",
+            "GITHUB_RUN_ID": "123",
+            "GITHUB_RUN_ATTEMPT": "1",
+        }
+        post = Mock(return_value={"id": 1})
+        guarded = {
+            name: Mock(side_effect=AssertionError(f"{name} must not be invoked"))
+            for name in (
+                "_key_advertisement",
+                "_preview",
+                "_execute",
+                "_resume_request",
+                "_compile_and_seal",
+                "_load_thread_engine",
+                "_reconstruct_preview",
+            )
+        }
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(
+                ingress,
+                "_trusted_event",
+                return_value=({"number": 351}, {"id": 99}, raw_body, environment),
+            ))
+            stack.enter_context(patch.object(
+                ingress,
+                "_issue",
+                return_value={
+                    "number": 351,
+                    "body": "draft manifest with RAW-ISSUE-CONTENT-CANARY",
+                },
+            ))
+            stack.enter_context(patch.object(ingress, "_post", post))
+            for name, value in guarded.items():
+                stack.enter_context(patch.object(ingress, name, value))
+            result = ingress.main(["--mode", "key"])
+        self.assertEqual(result, 2)
+        post.assert_called_once()
+        issue_number, marker, receipt = post.call_args.args
+        self.assertEqual(issue_number, 351)
+        self.assertEqual(marker, ingress.RECEIPT_MARKER)
+        self.assertEqual(receipt["result"], "REJECTED")
+        self.assertEqual(receipt["error_code"], "MISSION_MANIFEST_REJECTED")
+        self.assertEqual(receipt["stop_point"], "PRE_MUTATION_REJECTION")
+        self.assertEqual(receipt["request_id"], "request-manifest-rejected-001")
+        self.assertEqual(receipt["base_sha"], "b" * 40)
+        self.assertEqual(receipt["mission_id"], "UNVERIFIED_MISSION_MANIFEST")
+        self.assertEqual(receipt["attempt_id"], "UNVERIFIED_MISSION_MANIFEST_ATTEMPT")
+        self.assertIs(receipt["mission_manifest_verified"], False)
+        self.assertEqual(receipt["trigger_envelope_identity"], "SCREENED_NOT_MANIFEST_BOUND")
+        self.assertIs(receipt["automatic_retry"], False)
+        rendered = json.dumps(receipt, sort_keys=True)
+        self.assertNotIn("UNTRUSTED-MISSION", rendered)
+        self.assertNotIn("UNTRUSTED-ATTEMPT", rendered)
+        self.assertNotIn("RAW-ISSUE-CONTENT-CANARY", rendered)
+        self.assertLess(len(rendered.encode("utf-8")), 60000)
+        self.assertTrue(all(value is False for value in receipt["forbidden_actions"].values()))
+        for value in guarded.values():
+            value.assert_not_called()
+
+    def test_manifest_rejection_receipt_write_is_not_retried(self) -> None:
+        raw_body = issue_client.key_request(
+            mission_id="UNTRUSTED-MISSION",
+            attempt_id="UNTRUSTED-ATTEMPT",
+            base_sha="a" * 40,
+            request_id="request-manifest-rejected-002",
+        )
+        post = Mock(
+            side_effect=ingress.SpearIssueIngressError(
+                "receipt unavailable",
+                "RECEIPT_WRITE_FAILED",
+                "RECEIPT",
+            )
+        )
+        with (
+            patch.object(
+                ingress,
+                "_trusted_event",
+                return_value=(
+                    {"number": 351},
+                    {"id": 99},
+                    raw_body,
+                    {"GITHUB_SHA": "b" * 40},
+                ),
+            ),
+            patch.object(ingress, "_issue", return_value={"number": 351, "body": "no bound manifest"}),
+            patch.object(ingress, "_post", post),
+        ):
+            result = ingress.main(["--mode", "key"])
+        self.assertEqual(result, 2)
+        post.assert_called_once()
+
     def test_envelope_identity_is_exact(self) -> None:
         body = {
             "schema_version": "atlas.athena.spear-issue-envelope.v1",
