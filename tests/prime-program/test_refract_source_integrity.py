@@ -142,7 +142,10 @@ class RefractSourceIntegrityTests(unittest.TestCase):
 
     def test_frozen_predecessor_is_not_promoted_to_active_authority(self) -> None:
         frozen = json.loads(FROZEN_QUEST_BOARD.read_text(encoding="utf-8"))
-        self.assertEqual(frozen["state"], "FROZEN_PREDECESSOR_EVIDENCE")
+        frozen_role = frozen.get("registry_role", frozen.get("state"))
+        self.assertEqual(frozen_role, "FROZEN_PREDECESSOR_EVIDENCE")
+        if "successor_registry" in frozen:
+            self.assertEqual(frozen["successor_registry"], "continuity/mission-board-quest-registry-r01.json")
         self.assertNotIn("quest-board/quest-board-v1.json", _declared_route_paths(self.notum_text))
 
 
