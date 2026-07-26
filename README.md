@@ -21,8 +21,8 @@ Thread Engine: ACTIVE / MISSION_SCOPED / DRAFT_PR_ONLY
 Codex repository: FROZEN PREDECESSOR / ROLLBACK EVIDENCE
 ```
 
-Start with `bootstrap.md`, then `atlas-start-here.md`, then
-`routing/command-surfaces.md`.
+This README is the repository entrypoint. Continue with `bootstrap.md`, then
+`atlas-start-here.md`, then `routing/command-surfaces.md`.
 
 Athena's active route architecture is:
 
