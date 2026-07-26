@@ -35,6 +35,16 @@ This is a Jayson/Artemis Arrow/Bow launcher. It is not Athena's Spear identity. 
 
 CAP-010 is already accepted from its separate live journey.
 
+## Current ChatGPT Direct Spear ingress
+
+`tools.athena_routes.spear_issue_client` locally scans and encrypts one public-clean Spear carrier for transport through the Mission Board. `tools.athena_routes.spear_issue_ingress` runs only from the default-branch `issue_comment` workflow and accepts exact owner-authored key, Preview, Execute, or resume envelopes.
+
+The client uses X25519, HKDF-SHA-256, and AES-256-GCM with authenticated Mission, attempt, base, request, authorization, key, and carrier context. The matching private key exists only as a separately activated GitHub environment secret. Source contains key policy but no private key or standing credential.
+
+Preview has no content-write permission. It re-fetches every referenced comment, decrypts and scans the carrier, compiles against exact current main, computes the staged Git tree, and emits `atlas.candidate-seal.v1`. Execute re-fetches and reproduces the same object, writes a durable reservation, and calls the singular production adapter through the sealed wrapper. Every failure at or after push is reconciled as PARTIAL; exact resume can create only the missing draft PR or complete exact readback without recommit or repush.
+
+R01 rejects DELETE. It never uses `pull_request_target`, PR code, arbitrary URLs, PATs, direct main, force push, automatic READY, merge, settings mutation, cleanup, or a second Git writer.
+
 ## Historical fresh-origin construction
 
 `tools.athena_routes.fresh_work_bridge` and its two schemas are retained as inert historical construction evidence. The controlling disposition is `governance/athena-fresh-work-origin-contract.md` with status `SUPERSEDED_HISTORICAL_CONSTRUCTION`.
