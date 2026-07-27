@@ -11,9 +11,10 @@ protected_level: "CRITICAL"
 
 # Athena's Spear — Prime
 
-Athena authors one exact multi-file Weave and Spear delivers that Weave to a
-singular Thread Engine adapter. Spear remains distinct from Phoenix Blade,
-Aegis Break, Oathbringer, and Jayson/Artemis Arrow/Bow.
+Spear is Athena's direct Thread Engine route for an exact Weave. Athena authors
+one exact multi-file Weave and Spear delivers that Weave to a singular Thread
+Engine adapter. Spear remains distinct from Phoenix Blade, Aegis Break,
+Oathbringer, and Jayson/Artemis Arrow/Bow.
 
 Direct Spear compilation and Thread Engine delivery are historically proven and
 merged through harmless PR `#102`, with compiler parity preserved by the merged
