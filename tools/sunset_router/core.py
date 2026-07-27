@@ -27,11 +27,12 @@ from tools.mission_runner.core import MissionRunnerError, assert_mission_may_blo
 ROUTER_PLAN = "sunset-router-plan.json"
 ROUTER_RECEIPT = "sunset-router-receipt.json"
 PREVIEW_DIR, APPROVAL_DIR, CANDIDATE_DIR = "preview", "approval", "lifecycle-candidate"
-ATHENA_ROUTES = (
-    "ATHENA_SPEAR_THREAD_ENGINE",
-    "ATHENA_PHOENIX_BLADE",
+ATHENA_CURRENT_ROUTES = (
     "ATHENA_AEGIS_BREAK",
+    "ATHENA_PHOENIX_BLADE",
 )
+ATHENA_HISTORICAL_ROUTES = ("ATHENA_SPEAR_THREAD_ENGINE",)
+ATHENA_ROUTES = ATHENA_CURRENT_ROUTES + ATHENA_HISTORICAL_ROUTES
 JAYSON_ROUTES = ("JAYSON_ARROW_BOW_THREAD_ENGINE", "JAYSON_OATHBRINGER_SWORD")
 DELEGATED_ROUTES = ("DELEGATED_ARROW_BOW_THREAD_ENGINE",)
 TRANSFER_STOP = "OPERATOR_TRANSFER_REQUIRED"
@@ -46,6 +47,19 @@ LIFECYCLE_ROUTE_TOKENS = {
 }
 DRIVE_PATH = re.compile(r"^[A-Za-z]:/")
 SHA40 = re.compile(r"^[a-f0-9]{40}$")
+HISTORICAL_ADMISSION_KEYS = {
+    "authority",
+    "repository",
+    "issue_number",
+    "comment_id",
+    "owner",
+    "expected_main_sha",
+    "request_digest",
+    "replay_nonce",
+    "replay_id",
+    "mutation_authorized",
+    "next_safe_action",
+}
 
 
 def _fail(code: str, message: str) -> None:
@@ -136,14 +150,66 @@ def _ownership(root: Path, request: dict[str, Any]) -> None:
         _fail("SUNSET_ROUTER_QUEST_IDENTITY", "request Quest is not canonically admitted")
 
 
-def _routes(request: dict[str, Any]) -> tuple[str, list[str]]:
+def _historical_preview_admission(path: Path, request_bytes: bytes, current_main: str) -> bool:
+    resolved = path.resolve()
+    temporary = Path(tempfile.gettempdir()).resolve()
+    if temporary != resolved.parent and temporary not in resolved.parents:
+        return False
+    candidates: list[Path] = []
+    if path.name == "request.json":
+        candidates.append(path.with_name("admission.json"))
+    if path.name.endswith("-request.json"):
+        prefix = path.name[: -len("-request.json")]
+        candidates.append(path.with_name(f"{prefix}-admission.json"))
+    for candidate in dict.fromkeys(candidates):
+        if candidate.is_symlink() or not candidate.is_file():
+            continue
+        admission = _read(candidate, "SUNSET_ROUTER_HISTORICAL_ADMISSION")
+        if set(admission) != HISTORICAL_ADMISSION_KEYS:
+            continue
+        comment_id = admission.get("comment_id")
+        replay_nonce = admission.get("replay_nonce")
+        if type(comment_id) is not int or comment_id < 1 or not isinstance(replay_nonce, str) or not replay_nonce:
+            continue
+        request_digest = _digest(request_bytes)
+        replay_seed = {
+            "repository": "Jktomy/atlas-prime",
+            "issue_number": 257,
+            "comment_id": comment_id,
+            "replay_nonce": replay_nonce,
+            "request_digest": request_digest,
+        }
+        if (
+            admission.get("authority") == "PREVIEW_ONLY_ADMISSION"
+            and admission.get("repository") == "Jktomy/atlas-prime"
+            and admission.get("issue_number") == 257
+            and admission.get("owner") == "Jktomy"
+            and admission.get("expected_main_sha") == current_main
+            and admission.get("request_digest") == request_digest
+            and admission.get("replay_id") == _digest(canonical_bytes(replay_seed))
+            and admission.get("mutation_authorized") is False
+            and admission.get("next_safe_action")
+            == "Invoke only the canonical Sunset Router Preview in temporary storage."
+        ):
+            return True
+    return False
+
+
+def _routes(request: dict[str, Any], *, historical_preview: bool = False) -> tuple[str, list[str]]:
     actor, requested = request["actor"], request["requested_route"]
     if actor == "ATHENA":
         if requested == "AUTO":
-            return ATHENA_ROUTES[0], list(ATHENA_ROUTES[1:])
-        if requested not in ATHENA_ROUTES:
-            _fail("SUNSET_ROUTER_ROUTE_IDENTITY", "Athena may select only an Athena route")
-        return requested, [item for item in ATHENA_ROUTES if item != requested]
+            return ATHENA_CURRENT_ROUTES[0], list(ATHENA_CURRENT_ROUTES[1:])
+        if requested in ATHENA_HISTORICAL_ROUTES:
+            if historical_preview:
+                return requested, ["ATHENA_PHOENIX_BLADE", "ATHENA_AEGIS_BREAK"]
+            _fail(
+                "CURRENT_GITHUB_SPEAR_RETIRED",
+                "CURRENT_GITHUB_SPEAR_RETIRED: GitHub Direct Spear is retired from new current-platform selection",
+            )
+        if requested not in ATHENA_CURRENT_ROUTES:
+            _fail("SUNSET_ROUTER_ROUTE_IDENTITY", "Athena may select only a current Athena route")
+        return requested, [item for item in ATHENA_CURRENT_ROUTES if item != requested]
     allowed = JAYSON_ROUTES if actor == "JAYSON" else DELEGATED_ROUTES
     if requested == "AUTO" or not request["operator_transfer_authorized"]:
         _fail("OPERATOR_TRANSFER_REQUIRED", "non-Athena routes require explicit transfer and route")
@@ -239,7 +305,12 @@ def _receipt(plan: dict[str, Any], *, phase: str, state: str, **bindings: Any) -
 def generate_router_preview(repo_root: Path, request_path: Path, output_dir: Path) -> dict[str, Any]:
     root = repo_root.resolve()
     request, request_bytes = _validate_request(root, request_path)
-    selected, fallbacks = _routes(request)
+    historical_preview = _historical_preview_admission(
+        request_path,
+        request_bytes,
+        request["lifecycle_request"]["expected_main_sha"],
+    )
+    selected, fallbacks = _routes(request, historical_preview=historical_preview)
     destination = _output(root, output_dir)
     with tempfile.TemporaryDirectory() as temp:
         lifecycle_path = Path(temp) / "sunset-request-v2.json"

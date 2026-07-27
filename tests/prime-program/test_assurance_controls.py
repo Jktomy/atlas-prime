@@ -7,7 +7,6 @@ from pathlib import Path, PurePosixPath
 
 from tools.athena_routes.schema import SchemaValidationError, validate_schema
 
-
 ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -62,7 +61,8 @@ class AssuranceControlTests(unittest.TestCase):
         self.assertIn("exactly one new sealed Feather", controls["ASC-001"]["objective"])
         self.assertIn("Golden Wing candidates gain no authority", controls["ASC-002"]["objective"])
         self.assertIn("one exact transaction identity", controls["ASC-003"]["objective"])
-        self.assertIn("independently executable alternate publisher", controls["ASC-003"]["objective"])
+        self.assertIn("Aegis Break", controls["ASC-003"]["objective"])
+        self.assertIn("independently executable recovery publisher", controls["ASC-003"]["objective"])
         self.assertIn("current explicit Jayson Shardblade instruction", controls["ASC-004"]["objective"])
         self.assertIn("atomic expected-head binding", controls["ASC-004"]["objective"])
         self.assertIn("user-visible Preview", controls["ASC-005"]["objective"])

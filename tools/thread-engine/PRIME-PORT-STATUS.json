@@ -3,20 +3,25 @@
   "automatic_merge": false,
   "canonical_repository": "Jktomy/atlas-prime",
   "codex_workboard_route": "ABSENT",
+  "current_github_primary_method": "ATHENA_AEGIS_BREAK",
+  "current_github_write_substrate": "DIRECT_GITHUB_NATIVE_AEGIS_BREAK",
   "direct_main": false,
   "fixture_execution_authorized": false,
-  "format_version": "1.0",
+  "format_version": "1.1",
+  "future_gitea_spear_state": "PLANNING_ONLY_PA_C06",
+  "github_direct_spear_ingress": "RETIRED_WORKFLOW_ABSENT",
   "harmless_pilot_merge": "49eaf46bd971b4359e9ef89cb551c97e83dec85e",
   "harmless_pilot_pr": 38,
   "harmless_pilot_receipt_sha256": "a653b7468fd070960e5efe9d7ddbed1e5c28491851b9257d731d96d78ec7bd54",
   "harmless_pilot_state": "PROVEN_MERGED",
   "implementation_state": "THREAD_ENGINE_ACTIVE_MISSION_SCOPED",
   "known_disabled_routes": [
+    "current GitHub Direct Spear Issue dispatch",
     "ready transition and merge",
     "direct main and force push",
     "standing or automatic authority"
   ],
-  "next_gate": "NORMAL_PRIME_OPERATION",
+  "next_gate": "AEGIS_BREAK_PRIMARY_GITHUB_OPERATION",
   "production_execution_authorized": true,
   "proof_required": false,
   "protected_path_policy": "PRIME_NATIVE_JSON_ENFORCED",
@@ -25,5 +30,6 @@
   "spear_arrow_bow_merge": "7c8a533175da5c4fc9e8e0bb9de8bd37eba33dc5",
   "spear_arrow_bow_pr": 39,
   "spear_arrow_bow_state": "PROVEN_MERGED",
-  "standing_authority": false
+  "standing_authority": false,
+  "thread_engine_current_role": "PRESERVED_PROVEN_COMPONENT_NOT_CURRENT_GITHUB_DEFAULT"
 }

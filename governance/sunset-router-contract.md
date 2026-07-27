@@ -18,7 +18,7 @@ routes_to:
   - lifecycle/schemas/sunset-router-plan-v1.schema.json
   - lifecycle/schemas/sunset-router-receipt-v1.schema.json
   - lifecycle/schemas/sunset-router-preview-intake-v1.schema.json
-private_boundary: "Router requests, plans, receipts, fixtures, and proof are public-clean. Protected facts remain represented only by sanitized summaries and bounded protected pointers."
+private_boundary: "Router requests, plans, receipts, fixtures, and proof are public-clean. Protected facts remain sanitized summaries and bounded pointers."
 evidence_boundary: "Router output is temporary execution evidence. Only exact merged-main lifecycle readback can establish SUNSET COMPLETE."
 ---
 
@@ -32,57 +32,60 @@ continuity, Operation Phoenix publication, or Jayson-controlled permanence.
 
 ```text
 public-clean router request
-→ canonical Project / Operation / Quest ownership resolution
-→ exact route selection
-→ lifecycle Sunset Preview
-→ Jayson approval bound to the unchanged Preview
-→ route-neutral approval carrier
-→ exact lifecycle candidate
-→ exact publication plan
-→ governed draft PR
-→ validation and review
-→ separately authorized permanence
-→ canonical lifecycle readback
-→ SUNSET COMPLETE
+-> canonical Project / Operation / Quest ownership resolution
+-> exact route selection
+-> lifecycle Sunset Preview
+-> Jayson approval bound to the unchanged Preview
+-> route-neutral approval carrier
+-> exact lifecycle candidate
+-> exact publication plan
+-> governed draft PR
+-> validation and review
+-> separately authorized permanence
+-> canonical lifecycle readback
+-> SUNSET COMPLETE
 ```
 
-## Route policy
+## Current GitHub route policy
 
-- `ATHENA` defaults to `ATHENA_SPEAR_THREAD_ENGINE`.
-- Ordered Athena fallbacks are `ATHENA_PHOENIX_BLADE` then
-  `ATHENA_AEGIS_BREAK`.
+- `ATHENA` with `AUTO` selects `ATHENA_AEGIS_BREAK`.
+- Its automatic same-operator fallback is `ATHENA_PHOENIX_BLADE`.
+- `ATHENA_SPEAR_THREAD_ENGINE` remains schema-readable for historical records but
+  a new current-GitHub request selecting it rejects before mutation with
+  `CURRENT_GITHUB_SPEAR_RETIRED`.
+- Explicit Aegis Break or Phoenix Blade selection retains route identity and the
+  other current Athena method as its fallback.
 - `JAYSON` and `DELEGATED_NON_ATHENA` require explicit operator-transfer
   authorization and an exact allowed route.
 - `AUTO` never transfers operators.
-- A failed route preserves the same Preview, approval, plan, and transaction
-  identity as `BLOCKED_RESUMABLE`.
+- A failed route preserves the same Preview, approval, plan, candidate bytes,
+  and transaction identity.
+
+Aegis Break is the primary method, not the lifecycle-byte author or a standing
+publisher. The lifecycle engine owns deterministic lifecycle bytes. The exact
+selected substrate must preserve Candidate Seal, base, paths, tree, draft-PR
+stop, validation, review, rollback, and readback.
 
 The router validates canonical ownership, current main, protected boundaries,
 trusted schemas, exact candidate paths, and route identity. Candidate paths
-must remain beneath `lifecycle/`, sorted, traversal-safe, drive-prefix-safe, and
-case-fold unique. Every path carries an exact `ADD` or `REPLACE` action and a
-payload digest; existing living Emberlines are replacements, while immutable new
-records are additions.
+remain beneath `lifecycle/`, sorted, traversal-safe, drive-prefix-safe, and
+case-fold unique. Every path carries exact `ADD` or `REPLACE` action and payload
+digest.
 
 ## Retired Mission-comment Preview ingress
 
-The owner-only hosted Preview ingress was a campaign-scoped acceptance surface
-for Mission #257. Mission #257 is complete, and its repository-wide
-`issue_comment` trigger produced workflow records for unrelated comments even
-though the only job was ineligible. The active workflow is therefore retired,
-and `.github/workflows/sunset-router-preview-intake.yml` must remain absent.
+The owner-only hosted Preview ingress was campaign-scoped acceptance for Mission
+#257. Mission #257 is complete and
+`.github/workflows/sunset-router-preview-intake.yml` must remain absent so unrelated
+Issue comments do not create no-job workflow failures. No replacement runner guard is permitted.
 
-No replacement runner guard is permitted. Starting a hosted job for every
-unrelated comment would hide the notification symptom while reintroducing
-unnecessary Actions use. The closed intake schema and
-`tools/sunset_router/issue_preview_ingress.py` remain frozen historical evidence
-and local regression fixtures only. They establish no active hosted route,
-accept no new authority, and do not make Athena callable.
+The closed intake schema and `tools.sunset_router.issue_preview_ingress` adapter
+remain frozen historical evidence and local regression fixtures only. They
+establish no active hosted route, accept no new authority, and do not make Athena
+callable. Restoring hosted ingress requires a separately authorized transport
+contract whose trigger avoids repository-wide no-job runs.
 
-Current Sunset Router operation remains the deterministic local CLI documented
-in `tools/sunset_router/README.md`. Any future hosted ingress requires a new,
-separately authorized transport contract whose trigger does not create
-repository-wide no-job runs.
+## Completion boundary
 
 The router writes only new system-temporary directories. It grants no source,
 READY, merge, Quest, runtime, infrastructure, Gitea, settings, deployment, or
