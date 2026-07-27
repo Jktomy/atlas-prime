@@ -38,9 +38,13 @@ Future proven Gitea route -> Spear -> singular Thread Engine adapter
 `governance/aegis-break-primary-route-contract.md` controls current-GitHub route
 selection. Aegis Break is the bounded safety and construction method, not a
 standing writer or repository engine. Every durable source change still uses one
-reviewed branch, one complete candidate, one single-parent commit, and one draft
-pull request. Candidate Seal, exact-base protection, validation, review,
-Strikeforce, rollback, and Jayson-controlled permanence remain mandatory.
+reviewed branch, one complete candidate, and one initial base-parent single-parent commit.
+It uses one draft pull request. Candidate-caused defects may append only
+replacement-sealed, non-force, single-parent fast-forward repair commits on that
+same branch and PR. The final exact head—not the initial publication commit—is
+the candidate validated, reviewed, and considered for permanence. Candidate Seal,
+exact-base protection, validation, review, Strikeforce, rollback, and
+Jayson-controlled permanence remain mandatory.
 
 The former GitHub Direct Spear Issue ingress is retired from new dispatch. Its
 schemas, implementation, and accepted historical evidence remain audit and future

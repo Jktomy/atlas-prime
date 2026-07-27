@@ -32,10 +32,11 @@ Jayson instruction
 -> exact Mission and restart-safe Preview
 -> Aegis Break authority and route selection
 -> one prepublication-complete candidate
--> one route-neutral Candidate Seal
--> exact GitHub-native atomic tree and single-parent commit
+-> one route-neutral Candidate Seal for initial publication
+-> exact GitHub-native atomic tree and initial base-parent single-parent commit
 -> one deterministic branch and one draft pull request
--> independent readback, validation, review, and exact-head Strikeforce
+-> replacement-sealed non-force single-parent fast-forward repair commits only for candidate-caused defects
+-> independent readback, validation, review, and Strikeforce on the final exact head
 -> unchanged merge-ready pull request
 -> Jayson-controlled permanence
 ```
@@ -49,7 +50,9 @@ performs the bounded write and may act only on the exact sealed candidate.
 
 - `ATHENA_AEGIS_BREAK` — primary current-GitHub Athena method.
 - `DIRECT_GITHUB_NATIVE_AEGIS_BREAK` — primary current-GitHub atomic write
-  substrate; one tree, one single-parent commit, one branch, one draft PR.
+  substrate; one initial sealed tree and base-parent single-parent commit, one
+  branch, one draft PR, and replacement-sealed single-parent fast-forward repair
+  commits only when candidate-caused defects are discovered.
 - `ATHENA_PHOENIX_BLADE` — Athena executes one exact Sword; explicit route only.
 - `JAYSON_OATHBRINGER` — independent recovery publisher and human-operated Sword
   route.
@@ -77,10 +80,19 @@ The current route requires:
 6. no-ref Git object staging only when necessary to determine the exact tree;
 7. no commit, branch ref, or pull request before the seal is independently
    verified;
-8. one single-parent commit whose parent is the exact canonical base;
+8. one initial single-parent publication commit whose parent is the exact canonical base;
 9. one non-force branch update and one draft pull request;
-10. exact remote branch, commit, parent, tree, path, blob, deletion, and PR
+10. after a candidate-caused defect, explicit invalidation of the prior seal and
+    all dependent head-bound evidence, followed only by a newly verified
+    replacement seal and one single-parent fast-forward repair commit on the same
+    branch and PR;
+11. exact remote branch, commit, parent, tree, path, blob, deletion, and PR
     readback before validation claims.
+
+The final exact head, rather than the initial publication commit, is the
+candidate subject to validation, review, Strikeforce, READY, and permanence.
+Every repair commit must be single-parent, non-force, replacement-sealed, and
+fast-forward from the previously verified head.
 
 Piecemeal contents-API assembly, one-commit-per-file construction, direct main,
 force push, history rewrite, duplicate branch or PR creation, blind retry,

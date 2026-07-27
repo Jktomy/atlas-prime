@@ -30,7 +30,9 @@ class AegisBreakPrimaryRouteTests(unittest.TestCase):
             "ATHENA_AEGIS_BREAK",
             "DIRECT_GITHUB_NATIVE_AEGIS_BREAK",
             "CURRENT_GITHUB_SPEAR_RETIRED",
-            "one single-parent commit",
+            "one initial single-parent publication commit",
+            "replacement-sealed",
+            "final exact head",
             "Jayson-controlled permanence",
             "future Gitea",
         ):
@@ -44,6 +46,18 @@ class AegisBreakPrimaryRouteTests(unittest.TestCase):
         commands = text("routing/command-surfaces.md")
         self.assertIn("Aegis Break -> exact GitHub-native atomic transaction", readme)
         self.assertIn("Aegis Break is Athena's primary method", bootstrap)
+        self.assertIn("initial base-parent single-parent commit", readme)
+        self.assertIn("replacement-sealed, non-force", readme)
+        self.assertIn("final exact head", readme)
+        self.assertIn("initial base-parent single-parent commit", bootstrap)
+        self.assertIn(
+            "replacement-sealed non-force single-parent fast-forward repair commits",
+            bootstrap,
+        )
+        self.assertNotIn(
+            "one complete candidate, one single-parent commit, and one draft",
+            readme,
+        )
         self.assertIn("Aegis Break primary route", commands)
         self.assertIn("Direct GitHub-native construction is an Aegis Break route", commands)
 

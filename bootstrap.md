@@ -58,9 +58,10 @@ Aegis Break is Athena's primary method for current-GitHub Prime changes:
 exact Mission and accepted Preview
 -> Aegis Break primary method
 -> prepublication-complete candidate
--> route-neutral Candidate Seal
--> exact GitHub-native atomic tree / single-parent commit / branch / draft PR
--> independent readback, validation, review, and exact-head Strikeforce
+-> route-neutral Candidate Seal for initial publication
+-> exact GitHub-native atomic tree / initial base-parent single-parent commit / branch / draft PR
+-> replacement-sealed non-force single-parent fast-forward repair commits only for candidate-caused defects
+-> independent readback, validation, review, and Strikeforce on the final exact head
 -> unchanged merge-ready PR
 -> Jayson manual merge by default
 ```
