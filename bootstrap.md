@@ -51,7 +51,8 @@ projections are never startup authority.
 ## Current GitHub change rule
 
 While GitHub remains canonical, eligible Athena source construction begins with
-`governance/aegis-break-primary-route-contract.md`:
+`governance/aegis-break-primary-route-contract.md`.
+Aegis Break is Athena's primary method for current-GitHub Prime changes:
 
 ```text
 exact Mission and accepted Preview

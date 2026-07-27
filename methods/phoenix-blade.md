@@ -21,11 +21,11 @@ repository engine, standing automation route, work surface, or permanence
 authority. Direct repository work that is not Sword execution is not Phoenix
 Blade.
 
-Aegis Break is Athena's bounded safety, route-selection, and route-construction
-method. While GitHub remains canonical, it is Athena's primary Prime change
-method under `governance/aegis-break-primary-route-contract.md`. It may select an
-exact GitHub-native blob/tree/commit/ref/draft-PR transaction while preserving
-the approved goal, operator, target, risk class, protected-data class, allowed
+Aegis Break is Athena's bounded route-selection and route-construction method.
+While GitHub remains canonical, it is Athena's primary Prime change method under
+`governance/aegis-break-primary-route-contract.md`. It may select an exact
+GitHub-native blob/tree/commit/ref/draft-PR transaction while preserving the
+approved goal, operator, target, risk class, protected-data class, allowed
 operations, Candidate Seal, stop, proof, and rollback.
 
 Aegis Break is not hardwired to Phoenix Blade, Spear, Oathbringer, or any one
@@ -38,6 +38,6 @@ delegated delivery. Oathbringer remains the independent recovery publisher.
 None may be used as an alias for another.
 
 Shardplate is the AI-assisted work surface, never the mutation route or source
-of permanence authority. Provider, model, runtime, Light, operator, launcher,
-engine, substrate, credential principal, route, and permanence authority remain
-independently bound.
+of permanence authority. Unreported model use is `UNAVAILABLE`; deterministic non-model work has no Light and zero BEU. Provider, model, runtime, Light,
+operator, launcher, engine, substrate, credential principal, route, and
+permanence authority remain independently bound.

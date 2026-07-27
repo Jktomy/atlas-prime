@@ -44,8 +44,8 @@ protected_level: "HIGH"
   repository work.
 - **Shardplate** is an AI-assisted work surface, never a route, credential,
   engine, candidate, approval, or permanence authority.
-- **Shardblade** is one bounded exact-head permanence executor. READY and MERGE
-  remain separate and never author, repair, or widen.
+- **Shardblade** is the bounded permanence executor for one exact unchanged head.
+  READY and MERGE remain separate and never author, repair, or widen.
 - **Fresh Clone First** is one repository substrate. Exact GitHub-native atomic
   tree/commit construction is equivalent only when it preserves the same locks,
   Candidate Seal, single-parent topology, draft stop, validation, and readback.

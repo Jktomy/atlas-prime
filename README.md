@@ -28,7 +28,7 @@ This README is the repository entrypoint. Continue with `bootstrap.md`, then
 While GitHub remains canonical, Athena's active route architecture is:
 
 ```text
-Athena -> Aegis Break -> exact GitHub-native atomic candidate transaction
+Athena -> Aegis Break -> exact GitHub-native atomic transaction
 Athena -> exact Sword -> Phoenix Blade -> no Thread Engine
 Jayson / Artemis -> explicit Arrow -> Bow -> Thread Engine
 Jayson -> exact Sword -> Oathbringer -> independent recovery publisher

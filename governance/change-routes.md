@@ -39,6 +39,10 @@ Athena -> exact Sword -> Phoenix Blade
 Jayson / Artemis -> explicit Arrow -> Bow -> Thread Engine
 Jayson -> exact Sword -> Oathbringer
 
+Preserved route identities:
+Athena -> Spear -> Thread Engine
+Jayson / Artemis -> Arrow -> Bow -> Thread Engine
+
 Future separately proven Gitea:
 Athena -> Spear -> singular Thread Engine Gitea adapter
 ```
@@ -52,6 +56,13 @@ Spear remains Athena's Thread Engine method. GitHub Direct Spear Issue ingress i
 retired from new dispatch. Arrow/Bow retains Jayson/Artemis ownership. Phoenix
 Blade remains Athena executing a Sword. Oathbringer remains the independent
 recovery publisher. Historical accepted proof for each route remains truthful.
+
+Prime preserves one normal repository engine and one independent alternate
+publisher. Their recovery value requires that they must not share one mutation
+implementation whose failure disables both. Under the current GitHub policy,
+Aegis Break selects the exact atomic substrate while Sword/Oathbringer remains
+the independent alternate publisher; this wording preserves failure isolation
+without making Aegis Break a standing repository engine.
 
 Every route:
 
@@ -78,4 +89,5 @@ unchanged. Operator transfer remains explicit.
 
 Without explicit Shardblade authority, Athena reports
 `Prime PR #___ is ready to merge.` and Jayson performs permanence manually.
-Changed candidate bytes invalidate readiness and all head-bound evidence.
+Changed candidate bytes invalidate readiness and all head-bound evidence. The
+replacement exact head requires fresh validation, review, and Strikeforce.

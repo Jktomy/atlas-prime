@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 import json
 from pathlib import Path
 import unittest
@@ -9,6 +10,17 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def text(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
+
+
+def tuple_assignment(source: str, name: str) -> tuple[str, ...]:
+    module = ast.parse(source)
+    for node in module.body:
+        if isinstance(node, ast.Assign):
+            if any(isinstance(target, ast.Name) and target.id == name for target in node.targets):
+                value = ast.literal_eval(node.value)
+                if isinstance(value, tuple) and all(isinstance(item, str) for item in value):
+                    return value
+    raise AssertionError(f"missing exact tuple assignment: {name}")
 
 
 class AegisBreakPrimaryRouteTests(unittest.TestCase):
@@ -37,10 +49,15 @@ class AegisBreakPrimaryRouteTests(unittest.TestCase):
 
     def test_sunset_router_auto_is_aegis_break_and_spear_fails_closed(self) -> None:
         source = text("tools/sunset_router/core.py")
-        self.assertIn('ATHENA_CURRENT_ROUTES = ("ATHENA_AEGIS_BREAK", "ATHENA_PHOENIX_BLADE")', source)
-        self.assertIn('ATHENA_HISTORICAL_ROUTES = ("ATHENA_SPEAR_THREAD_ENGINE",)', source)
+        self.assertEqual(
+            tuple_assignment(source, "ATHENA_CURRENT_ROUTES"),
+            ("ATHENA_AEGIS_BREAK", "ATHENA_PHOENIX_BLADE"),
+        )
+        self.assertEqual(
+            tuple_assignment(source, "ATHENA_HISTORICAL_ROUTES"),
+            ("ATHENA_SPEAR_THREAD_ENGINE",),
+        )
         self.assertIn('"CURRENT_GITHUB_SPEAR_RETIRED"', source)
-        self.assertLess(source.index('"ATHENA_AEGIS_BREAK"'), source.index('"ATHENA_PHOENIX_BLADE"'))
 
     def test_github_direct_spear_workflow_is_absent_but_history_remains(self) -> None:
         self.assertFalse((ROOT / ".github/workflows/athena-spear-issue-ingress.yml").exists())

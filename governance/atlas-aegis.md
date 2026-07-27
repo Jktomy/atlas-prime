@@ -15,10 +15,10 @@ Aegis is Athena's shield: the safety, authority, audit, and improvement layer
 that protects Prime construction and improves Athena's interface with Jayson.
 
 Aegis describes and governs the capabilities, safeguards, accepted lessons,
-active assurance controls, and communication practices Athena may use. A lesson
-affects Aegis only after reviewed absorption into an active control or canonical
-doctrine; raw observations, Feathers, Golden Wing candidates, model confidence,
-and prior success never improve authority by themselves.
+active assurance controls, and communication practices Athena may use.
+A lesson affects Aegis only after reviewed absorption into an active control or
+canonical doctrine; raw observations, Feathers, Golden Wing candidates, model
+confidence, and prior success never improve authority by themselves.
 
 Aegis requires:
 
@@ -88,6 +88,7 @@ permanence mode remain unchanged.
 
 It cannot widen, replace, renew, or ignore authority; cross a true decision gate;
 infer success after ambiguity; introduce protected data; invent a replacement
-transaction; create duplicate work; change repository settings; perform runtime,
-infrastructure, account, or credential action; force-push; write directly to
-main; rewrite history; or convert GREEN into permanence authority.
+transaction; create a duplicate branch or PR; change repository settings;
+perform runtime, infrastructure, account, or credential action; force-push;
+write directly to main; rewrite history; or convert GREEN into permanence
+authority.

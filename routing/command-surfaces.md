@@ -16,7 +16,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Need | Canonical route |
 |---|---|
 | Atlas identity and canonical authority | `atlas-prime.md`, `governance/source-hierarchy.md` |
-| Current GitHub Prime change method | `governance/aegis-break-primary-route-contract.md`, then `governance/repository-process-contract.md`, `governance/change-routes.md`, and the exact Mission state |
+| Current GitHub Prime change method and Aegis Break primary route | `governance/aegis-break-primary-route-contract.md`, then `governance/repository-process-contract.md`, `governance/change-routes.md`, and the exact Mission state |
 | Safety and execution boundaries | `safety/atlas-safety-doctrine.md`, `governance/noctua.md`, `governance/atlas-aegis.md`, `governance/atlas-strikeforce.md`, `governance/protected-source-boundary.md`, `governance/cutover-boundary.md` |
 | Complete candidate, Candidate Seal, fallback, Goddess Mode, review, validation, Shardblade, and readback | `governance/aegis-break-primary-route-contract.md`, `governance/repository-process-contract.md`, `tools/candidate_seal/README.md`, `governance/shard-doctrine.md` |
 | Mission Control, Decision Boxes, Preview-first interaction, and final copy-paste action surfaces | `governance/mission-control-interaction-contract.md`; current GitHub route precedence comes from `governance/aegis-break-primary-route-contract.md` |
@@ -33,14 +33,14 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Bounded Campaign Goddess Mode and Campaign Shardblade | `governance/atlas-aegis.md`, `governance/shard-doctrine.md`, and campaign warrant schemas |
 | Investiture source identity and Light-name migration | `governance/investiture-source-identity-contract.md` |
 | Investiture Accounting | Codex / Source Governance through `governance/investiture-accounting-contract.md` |
-| Deterministic conservation and projection diagnostics | `governance/deterministic-conservation-contract.md`, `tools/generated_checkpoint/README.md`; temporary validation only |
+| Deterministic conservation and projection diagnostics | `python -B tools/build_index.py --diagnostics`; `governance/deterministic-conservation-contract.md`, `tools/generated_checkpoint/README.md`; no active hosted generated-checkpoint publisher exists |
 | Prime Integrity and conditional Windows validation | `tools/prime_checks/README.md`, `tools/prime_checks/targeted_validation.py`, `.github/workflows/prime-readonly-validation.yml` |
 | Chromelight provider evidence | `governance/chromelight-provider-boundary.md` and its accepted evidence register |
 | Resonance reconciliation | `governance/resonance-reconciliation-contract.md`, schemas, and `tools/resonance/README.md` |
 | Source changes and route selection | `governance/aegis-break-primary-route-contract.md`, `governance/source-lifecycle.md`, `governance/change-routes.md` |
 | Default one-request route | One direct Jayson instruction grants bounded build-through-ready authority; Athena selects Aegis Break for current GitHub and Jayson merges manually without Shardblade |
 | Explicit Goddess Mode | Bounded autonomous completion only inside the exact transaction and stops |
-| Explicit Shardblade | One exact-head compare-and-swap merge after status, review, Strikeforce, replay, rollback, and readback |
+| Explicit `with Shardblade` | One exact-head compare-and-swap merge after status, review, Strikeforce, replay, rollback, and readback |
 | Projects | `projects/project-registry.md` |
 | Operations | `operations/operation-registry.md` |
 | Artemis, Harmony, Emberdark, Cognitive Shadows, Kandra, and Sazed | `operations/artemis-runtime-and-routing.md` |
@@ -49,17 +49,18 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Glass Codex | `governance/glass-codex-client-contract.md`, `governance/glass-codex-client-v1.json` |
 | Notum/Sentinel health | `governance/notum-glass-codex-health-contract.md`, `governance/notum-glass-codex-health-v1.json` |
 | Prometheus Cloud Atlas topology | `governance/prometheus-cloud-atlas-topology-contract.md`, then `quests/prometheus-fire.md` |
-| Apollo, Hermes, Iris, and Zeus endpoints | `infrastructure/atlas-infrastructure-source.md` |
+| Apollo, Hermes, Iris, and Zeus operator endpoints | `infrastructure/atlas-infrastructure-source.md` |
 | Apollo operator continuity | `governance/apollo-remote-operator-continuity-contract.md`, validated companion JSON |
 | Protocols and methods | `operations/protocol-library.md`, `methods/artemis-bow-and-arrow.md`, `methods/athenas-spear.md`, `methods/atlas-sword.md`, `methods/phoenix-blade.md` |
-| Athena direct current-GitHub construction | `governance/aegis-break-primary-route-contract.md`, `methods/phoenix-blade.md`, exact live repository state |
+| Every Sword request | Every Sword request automatically routes through `methods/sword-forge-standard.md` and `methods/sword-lessons.json`; it does not need to invoke a separate preflight command |
+| Athena direct current-GitHub construction | Direct GitHub-native construction is an Aegis Break route; use `governance/aegis-break-primary-route-contract.md`, `methods/phoenix-blade.md`, and exact live repository state |
 | Athena explicitly delivers through Thread Engine | `methods/athenas-spear.md`; current GitHub Direct Spear dispatch is retired and must fail closed |
 | Athena executes an exact Sword | `methods/phoenix-blade.md`, Sword doctrine, exact live target state |
 | Jayson Sword or Oathbringer | Sword Forge, Sword lessons, Atlas Sword, Oathbringer tooling, exact live target state |
 | Oathbringer Foundry carrier compile | `methods/oathbringer-foundry.md`, Sword doctrine, exact current source |
 | Active Quests and admitted Quest parents | Mission Board Quest registry, live parents #307–#309, active `quests/`; frozen Quest Board is evidence only |
 | Atlas Quest portfolio ownership | `governance/atlas-quest-portfolio-contract.md`, Mission Board registry, continuity register |
-| Mission Board intake and restart | GitHub Issues, merged portable registry, Mission Board contract, issue template, schema, tools |
+| Mission Board intake and restart | GitHub Issues; `.github/ISSUE_TEMPLATE/mission.md`; `governance/mission-board-contract.md`; `schemas/mission-v1.schema.json`; `tools/mission_board/README.md`; `tools/mission_board/__init__.py`; `tools/mission_board/__main__.py`; `tools/mission_board/core.py`; merged portable registry |
 | Worldhopper Mission resume | `governance/worldhopper-relay-contract.md`, Mission Runner schemas/tools; current GitHub construction begins with Aegis Break and recovery remains Oathbringer-isolated |
 | Continue one Mission | Resolve exact Issue, all comments, current source, linked branch/PR/check/review/receipt state, duplicates, then one next safe action |
 | Complete an ordered Mission list | Reconcile each exact Mission; number order alone creates no dependency |
@@ -86,8 +87,8 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 
 An ordinary request for Athena to change, repair, update, add to, or otherwise
 accomplish bounded Prime source work while GitHub is canonical routes first to
-Aegis Break. Direct GitHub-native atomic construction is an Aegis Break substrate,
-not a synonym for Phoenix Blade or Spear.
+Aegis Break. Direct GitHub-native construction is an Aegis Break route, not a
+synonym for Phoenix Blade or Spear.
 
 A request for Athena to execute an exact Sword herself routes to Phoenix Blade.
 A request explicitly requiring Thread Engine identifies Spear, but current GitHub
@@ -100,8 +101,8 @@ Jayson's independent Sword and recovery publisher.
 A direct Prime request routes one bounded transaction through merge-ready without
 a second user command unless explicitly Preview-only or narrower. `Sunset this
 chat` remains the mandatory Preview-first exception. Goddess Mode cannot widen;
-Shardblade grants only one exact-head permanence action; without it, merge remains
-Jayson's manual action.
+`with Shardblade` grants only one exact-head permanence action; without it, merge
+remains Jayson's manual action.
 
 ## Decision box
 

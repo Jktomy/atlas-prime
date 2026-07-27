@@ -16,8 +16,8 @@ protected boundary, permitted authority, explicit stop conditions, accepted
 safeguards, and the Jayson-facing decision surface before construction begins
 and throughout the route.
 
-At exact-candidate review, Strikeforce combines three cumulative read-only
-disciplines:
+Strikeforce combines three cumulative read-only disciplines at exact-candidate
+review. Together Noctua, Ares, and Aegis reconcile one exact head:
 
 1. **Noctua** verifies whether the source, identity, routing, evidence, paths,
    bytes, and claims are true and complete.
@@ -66,8 +66,9 @@ a receipt cannot claim a capability the active code does not enforce.
   Strikeforce GREEN, fresh compare-and-swap readback, replay reservation, and
   rollback proof. It grants no standing authority.
 - Without exact Shardblade authority, Jayson executes permanence manually.
-- After READY, any candidate-byte change returns the PR to draft and requires
-  validation, review, Strikeforce, and exact current permanence authority.
+- After READY, any candidate-byte change creates replacement evidence: return the
+  PR to draft and require validation, review, Strikeforce, and exact current
+  permanence authority for the replacement exact head.
 - Hardware, destructive restore, credential, account, private-network,
   repository-settings, and regulated-data actions remain Jayson-side unless
   separately and explicitly authorized.

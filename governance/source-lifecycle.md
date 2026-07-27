@@ -82,9 +82,9 @@ precedence.
 A direct Jayson instruction to change, repair, update, add to, or Sunset Prime
 authorizes one bounded transaction through merge-ready, unless explicitly
 narrower. `with Goddess Mode` authorizes bounded completion only inside that
-transaction and never grants permanence. Machine merge requires current explicit
-Shardblade authority plus exact-head status, review, Strikeforce, replay,
-rollback, and compare-and-swap readback.
+transaction. It never grants permanence. Machine merge requires current explicit
+`with Shardblade` authority, or an unambiguous equivalent, plus exact-head
+status, review, Strikeforce, replay, rollback, and compare-and-swap readback.
 
 If candidate bytes change after READY, return the PR to draft, revalidate and
 review the replacement exact head, repeat Strikeforce, and use exact current
