@@ -19,7 +19,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Current GitHub Prime change method | `governance/aegis-break-primary-route-contract.md`, then `governance/repository-process-contract.md`, `governance/change-routes.md`, and the exact Mission state |
 | Safety and execution boundaries | `safety/atlas-safety-doctrine.md`, `governance/noctua.md`, `governance/atlas-aegis.md`, `governance/atlas-strikeforce.md`, `governance/protected-source-boundary.md`, `governance/cutover-boundary.md` |
 | Complete candidate, Candidate Seal, fallback, Goddess Mode, review, validation, Shardblade, and readback | `governance/aegis-break-primary-route-contract.md`, `governance/repository-process-contract.md`, `tools/candidate_seal/README.md`, `governance/shard-doctrine.md` |
-| Mission Control, Decision Boxes, Preview-first interaction, and final copy-paste surfaces | `governance/mission-control-interaction-contract.md`; current GitHub route precedence comes from `governance/aegis-break-primary-route-contract.md` |
+| Mission Control, Decision Boxes, Preview-first interaction, and final copy-paste action surfaces | `governance/mission-control-interaction-contract.md`; current GitHub route precedence comes from `governance/aegis-break-primary-route-contract.md` |
 | Capability parity and acceptance | `governance/capability-parity-register.json`, `schemas/capability-parity-register.schema.json`, `governance/capability-acceptance-contract.md`; accepted historical route proof is not current default-route authority |
 | Athena execution identities | `governance/aegis-break-primary-route-contract.md`, `governance/athena-execution-route-contract.md`, `methods/athenas-spear.md`, `methods/phoenix-blade.md` |
 | Ordinary free-form mission fields to immutable carrier | `python -B -m tools.athena_routes.free_form_intake --fields <fields.json> --output-dir <new-directory>`; local, read-only, and non-promoting |
@@ -74,7 +74,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Lifecycle records and mechanics | `lifecycle/`, lifecycle contract/schemas, `tools/atlas_lifecycle/README.md` |
 | Infrastructure source | `infrastructure/atlas-infrastructure-source.md` |
 | Clean-clone recovery, protected runtime restoration, and recovery proof | `recovery/elantris-recovery.md` |
-| Prime-native rollback | `migration/rollback-map.md` |
+| Prime-native source rollback and reviewed revert | `migration/rollback-map.md` |
 | Knowledge lifecycle | `knowledge/atlas-source-compendium.md` |
 | Thread Engine | `tools/thread-engine/README.md`, status JSON; preserved component, not current GitHub default |
 | Reusable templates | `templates/` canonical templates |
