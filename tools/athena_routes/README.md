@@ -51,9 +51,9 @@ architecture and separate settings/secret authority.
 
 ## Historical fresh-origin construction
 
-`fresh_work_bridge` and its schemas remain inert historical evidence. It has no
-dispatch or remote-write path and is never required for Aegis Break, Phoenix
-Blade, delegated Arrow/Bow, or future separately proven Spear.
+`fresh_work_bridge` and its schemas are retained as inert historical construction evidence.
+It has no dispatch or remote-write path and is never required for Aegis Break,
+Phoenix Blade, delegated Arrow/Bow, or future separately proven Spear.
 
 ## RP-C01-M05 parity join
 
