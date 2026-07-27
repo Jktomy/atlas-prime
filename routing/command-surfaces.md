@@ -69,7 +69,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Admit a later Quest | One parent Mission, schema-valid Quest source and registry row, one revision increment, continuity binding, validation, reviewed PR |
 | Full Atlas Sunset or continuity snapshot | Lifecycle contract and Atlas lifecycle CLI; never substitute compact snapshot for full Sunset |
 | Sunset Router deterministic front door | Sunset Router contract and CLI; Athena AUTO selects Aegis Break, lifecycle meaning remains in `tools.atlas_lifecycle` |
-| Historical Mission #257 Sunset ingress | `RETIRED`; workflow absent, schema/adapter evidence only |
+| Historical Mission #257 owner-only Sunset Preview ingress | `RETIRED`; workflow absent, schema/adapter evidence only |
 | Lesson Harvest and assurance controls | Lesson Harvest protocol, assurance register/schema; distinct from Ciel Harvest |
 | Lifecycle records and mechanics | `lifecycle/`, lifecycle contract/schemas, `tools/atlas_lifecycle/README.md` |
 | Infrastructure source | `infrastructure/atlas-infrastructure-source.md` |

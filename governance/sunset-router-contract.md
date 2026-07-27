@@ -76,8 +76,8 @@ digest.
 
 The owner-only hosted Preview ingress was campaign-scoped acceptance for Mission
 #257. Mission #257 is complete and
-`.github/workflows/sunset-router-preview-intake.yml` remains absent so unrelated
-Issue comments do not create no-job workflow failures.
+`.github/workflows/sunset-router-preview-intake.yml` must remain absent so unrelated
+Issue comments do not create no-job workflow failures. No replacement runner guard is permitted.
 
 The closed intake schema and `tools.sunset_router.issue_preview_ingress` adapter
 remain frozen historical evidence and local regression fixtures only. They
