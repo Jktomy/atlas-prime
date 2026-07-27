@@ -17,27 +17,40 @@ protected_level: "CRITICAL"
 Prime: CANONICAL / ACTIVE
 Mission Board: PRIMARY_OPERATIONAL_SURFACE / ADMITTED_QUEST_REGISTRY
 Quest Board: FROZEN PREDECESSOR EVIDENCE
-Thread Engine: ACTIVE / MISSION_SCOPED / DRAFT_PR_ONLY
+Current GitHub change method: AEGIS_BREAK_PRIMARY / DIRECT_GITHUB_NATIVE_ATOMIC
+Thread Engine: PRESERVED_PROVEN_COMPONENT / NOT_CURRENT_GITHUB_DEFAULT
 Codex repository: FROZEN PREDECESSOR / ROLLBACK EVIDENCE
 ```
 
 This README is the repository entrypoint. Continue with `bootstrap.md`, then
 `atlas-start-here.md`, then `routing/command-surfaces.md`.
 
-Athena's active route architecture is:
+While GitHub remains canonical, Athena's active route architecture is:
 
 ```text
-Athena -> Spear -> singular Thread Engine
+Athena -> Aegis Break -> exact GitHub-native atomic candidate transaction
 Athena -> exact Sword -> Phoenix Blade -> no Thread Engine
-Athena -> Aegis Break -> any safe bounded equivalent route
-Jayson / Artemis -> Arrow -> Bow -> singular Thread Engine
-Jayson -> exact Sword -> Oathbringer -> no Thread Engine
+Jayson / Artemis -> explicit Arrow -> Bow -> Thread Engine
+Jayson -> exact Sword -> Oathbringer -> independent recovery publisher
+Future proven Gitea route -> Spear -> singular Thread Engine adapter
 ```
 
-The former fresh Work/Athena origin bridge is retained only as superseded
-historical construction at `governance/athena-fresh-work-origin-contract.md`.
-It is inert, non-dispatching, and never required for Jayson-authorized Spear,
-Phoenix Blade, Aegis Break, CAP-015, or AJ-01.
+`governance/aegis-break-primary-route-contract.md` controls current-GitHub route
+selection. Aegis Break is the bounded safety and construction method, not a
+standing writer or repository engine. Every durable source change still uses one
+reviewed branch, one complete candidate, one single-parent commit, and one draft
+pull request. Candidate Seal, exact-base protection, validation, review,
+Strikeforce, rollback, and Jayson-controlled permanence remain mandatory.
+
+The former GitHub Direct Spear Issue ingress is retired from new dispatch. Its
+schemas, implementation, and accepted historical evidence remain audit and future
+Gitea design input. Historical AJ-01, CAP-015, Spear, Arrow/Bow, and Thread Engine
+proof is not rewritten by the route-policy change.
+
+The former fresh Work/Athena origin bridge remains superseded historical
+construction at `governance/athena-fresh-work-origin-contract.md`. It is inert,
+non-dispatching, and never required for current Aegis Break, explicit Phoenix
+Blade, delegated Arrow/Bow, or future separately proven Spear work.
 
 Prime contains current authored identity, governance, routing, Projects,
 Operations, Quests, safety doctrine, recovery, infrastructure source,
@@ -48,8 +61,8 @@ Issue availability. Generated projections do not govern. Runtime packages do
 not prove deployment. Private or regulated evidence remains in its approved
 system.
 
-All durable source changes use a reviewed branch and draft PR. Spear and
-delegated Arrow/Bow may invoke the singular Thread Engine. Thread Engine
-self-change must use Aegis Break to select an approved non-Thread-Engine route.
-Phoenix Blade and Oathbringer execute exact Swords independently of Thread
-Engine. Jayson retains permanence and protected external-action authority.
+A direct Jayson instruction may authorize one bounded transaction through an
+unchanged merge-ready pull request. Without explicit Shardblade authority,
+Jayson performs permanence manually. No route grants direct-main, force-push,
+repository-settings, protected-data, automatic READY, automatic merge, or
+standing authority.

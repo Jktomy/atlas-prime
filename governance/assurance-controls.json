@@ -45,19 +45,22 @@
     },
     {
       "control_id": "ASC-003",
-      "title": "Repository process preserves one transaction and isolated fallback",
+      "title": "Repository process preserves one transaction, Aegis Break primary routing, and isolated recovery",
       "status": "ACTIVE",
-      "objective": "Prime repository work uses one exact transaction identity and one complete candidate while preserving Thread Engine as the normal publisher and Sword/Oathbringer as an independently executable alternate publisher.",
-      "applies_when": "The objective creates, repairs, reviews, readies, merges, reverts, or recovers a Prime repository candidate or changes repository-process doctrine or tooling.",
+      "objective": "Prime repository work uses one exact transaction identity and one complete sealed candidate, selects Aegis Break as Athena's primary current-GitHub method over an atomic Git-data substrate, and preserves Sword/Oathbringer as an independently executable recovery publisher.",
+      "applies_when": "The objective creates, repairs, reviews, readies, merges, reverts, or recovers a Prime repository candidate or changes repository-process doctrine, routing, or tooling.",
       "required_evidence": [
-        "The exact candidate binds transaction, base, route, paths, tree, validation, review, permanence mode, and rollback identity.",
+        "The exact candidate binds transaction, base, route, substrate, paths, bytes, tree, validation, review, permanence mode, and rollback identity.",
         "Any route takeover reconciles the existing branch, PR, head, and receipts before mutation and does not create duplicate work.",
-        "Normal and alternate publishers remain failure-isolated; shared schemas or fixtures do not create one common mutation dependency."
+        "Aegis Break remains a bounded method rather than a standing publisher; current GitHub construction is atomic and Oathbringer recovery remains failure-isolated.",
+        "Historical Spear and Thread Engine proof remains truthful while retired GitHub Direct Spear dispatch is not selected as the current default."
       ],
       "enforcement_sources": [
+        "governance/aegis-break-primary-route-contract.md",
         "governance/repository-process-contract.md",
         "governance/change-routes.md",
         "recovery/elantris-recovery.md",
+        "tests/prime-program/test_aegis_break_primary_route.py",
         "tests/prime-program/test_prime_human_merge_route.py"
       ],
       "superseded_by": null

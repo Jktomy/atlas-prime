@@ -1,7 +1,7 @@
 ---
 title: "Athena's Spear — Prime"
 atlas_id: "prime.method.spear"
-status: "ACTIVE_DIRECT_THREAD_ENGINE_ROUTE"
+status: "PRESERVED_PROVEN_COMPONENT_GITHUB_INGRESS_RETIRED"
 source_type: "METHOD"
 authority_class: "CANONICAL_AUTHORED_SOURCE"
 owner_project: "Project Artemis"
@@ -11,28 +11,44 @@ protected_level: "CRITICAL"
 
 # Athena's Spear — Prime
 
-Athena authors one exact multi-file Weave and Spear delivers that Weave to the singular Prime Thread Engine.
+Athena authors one exact multi-file Weave and Spear delivers that Weave to a
+singular Thread Engine adapter. Spear remains distinct from Phoenix Blade,
+Aegis Break, Oathbringer, and Jayson/Artemis Arrow/Bow.
 
-Spear is Athena's direct Thread Engine route. It is distinct from Phoenix Blade, Aegis Break, Oathbringer, and the Jayson/Artemis Arrow/Bow route.
+Direct Spear compilation and Thread Engine delivery are historically proven and
+merged through harmless PR `#102`, with compiler parity preserved by the merged
+Spear/Arrow/Bow proof. AJ-01 and CAP-015 remain accepted historical evidence for
+their exact corrected journeys.
 
-Prime direct Spear compilation and Thread Engine delivery are proven and merged through the harmless direct Spear journey in PR `#102`, with the shared compiler and route parity separately preserved by the merged Spear/Arrow/Bow parity proof.
+## Current GitHub posture
 
-## Universal repository-path authorship
+While GitHub remains canonical,
+`governance/aegis-break-primary-route-contract.md` makes Aegis Break Athena's
+primary Prime change method. `.github/workflows/athena-spear-issue-ingress.yml`
+is absent, so `SPEAR_DIRECT_ISSUE` cannot dispatch new GitHub key, Preview,
+Execute, or Resume jobs.
 
-A Jayson-authorized Spear Weave may declare any safe repository-relative path in `Jktomy/atlas-prime`, including governance, lifecycle, schemas, workflows, generated source, Quest source, and `tools/thread-engine/**` itself. Prime has no repository file class that forces a direct Spear mission onto another authoring route.
+The Spear Issue client, crypto, ingress implementation, schemas, fixtures, and
+PR #349/#352 evidence remain dormant compatibility and future-design material.
+Their presence proves neither an active workflow nor current-surface acceptance.
+Mission #351's unfinished GitHub activation direction is operationally
+superseded; its evidence remains append-only.
 
-Repository location is not authority. Every Spear mission still binds the exact base, declared path set, source blobs, payload hashes, candidate tree, final path-set digest, validation profile, branch, commit, and draft-PR stop. High-impact paths select stronger validation and review; they do not block authorship.
+## Repository-path capability
 
-The protected-data boundary remains unchanged. Secrets, credentials, PHI, raw financial or legal evidence, private runtime information, and other prohibited material may never enter a Spear packet or Prime merely because its target path is allowed.
+The proven compiler may describe any safe declared repository-relative authored
+path when Spear is explicitly available. Repository location is classification,
+not authority. Exact base, source blobs, payload hashes, candidate tree, path-set
+digest, validation, draft stop, protected boundary, and later permanence gates
+remain mandatory.
 
-A Thread Engine self-change is permitted only as an exact draft-PR candidate produced by the current canonical engine. It cannot reduce its own required validation, write directly to `main`, mark itself ready, merge itself, change repository settings, or confer future authority.
+## Future Gitea boundary
 
-A Jayson-authorized Preview and Execute in the active chat is sufficient human authority for the bounded Spear task. A separate platform-signed ChatGPT Work origin attestation is not part of Spear's route contract and is not required to prove that Athena can reach Thread Engine.
+Spear is a platform-neutral method and may become Gitea-native only through
+Mission #353 and PA-C06 after version-pinned ingress, crossing, secret release,
+runner isolation, token scope, adapter, replay, partial-state, branch/PR/check,
+backup, restore, rollback, mirror, and cutover proof. No current source file or
+historical proof activates that route.
 
-Spear does not merge, widen scope, inherit later-stage authority, become a standing writer, or bypass the draft-PR stop. Review, exact-head Strikeforce, and separately authorized permanence remain required.
-
-## Current ChatGPT Atlas Project ingress
-
-The `SPEAR_DIRECT_ISSUE` transport lets Athena deliver an encrypted immutable Spear carrier from the ChatGPT Atlas Project through exact Mission Issue comments. The default-branch workflow decrypts and validates the carrier inside the separately activated `atlas-spear-ingress` environment, compiles a read-only Preview, emits a shared candidate seal, and invokes the singular Thread Engine only after a separately posted Execute envelope reproduces every authority, comment, base, path, byte, tree, and replay binding.
-
-Issue comments are transport and durable readback, not source, authorship, or a second repository writer. Ciphertext chunks are inert. The workflow rejects plaintext payloads, non-owner actors, pull-request comments, stale or edited comments, replay, DELETE in R01, missing seal admission, and ambiguous partial state. The route is not operational merely because source exists: environment-key activation and a harmless current-surface live acceptance remain separately required.
+Spear never merges, widens scope, inherits later-stage authority, becomes a
+standing writer, or bypasses Jayson-controlled permanence.

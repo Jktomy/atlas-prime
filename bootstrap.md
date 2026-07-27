@@ -23,8 +23,8 @@ protected_level: "CRITICAL"
 ## Recovery bootstrap
 
 Clone Prime fresh, verify the expected main head, run the complete read-only
-validation workflow, compare generated projections as CURRENT, verify Thread
-Engine state, and follow `recovery/elantris-recovery.md`. Normal bootstrap and
+validation workflow, compare generated projections as CURRENT, verify current
+route status, and follow `recovery/elantris-recovery.md`. Normal bootstrap and
 recovery do not read from or write to `Jktomy/atlas-codex` and do not require
 GitHub Issues to be available.
 
@@ -48,13 +48,32 @@ required to recover Quest identity, ownership, state, gate, or next action.
 Chat memory, Issue state by itself, the frozen Quest Board, and generated
 projections are never startup authority.
 
-## Change rule
+## Current GitHub change rule
 
-Every durable mutation uses an exact branch and draft PR. Eligible source
-construction uses Athena Weave → Spear or Arrow/Bow → Prime Thread Engine.
-Protected Thread Engine self-change and an independently required alternate
-publisher use Aegis Break → Oathbringer. The controlling repository workflow is
-`governance/repository-process-contract.md`.
+While GitHub remains canonical, eligible Athena source construction begins with
+`governance/aegis-break-primary-route-contract.md`:
+
+```text
+exact Mission and accepted Preview
+-> Aegis Break primary method
+-> prepublication-complete candidate
+-> route-neutral Candidate Seal
+-> exact GitHub-native atomic tree / single-parent commit / branch / draft PR
+-> independent readback, validation, review, and exact-head Strikeforce
+-> unchanged merge-ready PR
+-> Jayson manual merge by default
+```
+
+Aegis Break grants no standing writer or repository-engine identity. The GitHub
+Direct Spear Issue workflow is retired. Spear and Thread Engine remain preserved
+proven components and future Gitea planning inputs; Arrow/Bow remains an explicit
+Jayson/Artemis delegated route; Phoenix Blade remains Athena executing an exact
+Sword; Sword/Oathbringer remains the failure-isolated recovery publisher.
+
+Every durable mutation uses an exact branch and draft PR. The controlling common
+repository rules remain `governance/repository-process-contract.md`; current
+GitHub route precedence is supplied by
+`governance/aegis-break-primary-route-contract.md`.
 
 A direct Jayson instruction to change, repair, update, add to, or Sunset Prime
 authorizes one bounded transaction through an unchanged merge-ready PR unless

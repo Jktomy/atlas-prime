@@ -14,6 +14,7 @@ required = [
     "governance/source-hierarchy.md",
     "governance/protected-source-boundary.md",
     "governance/change-routes.md",
+    "governance/aegis-break-primary-route-contract.md",
     "governance/cutover-boundary.md",
     "governance/mission-control-interaction-contract.md",
     "migration/predecessor-snapshot.md",
@@ -54,7 +55,14 @@ assert port["activation_route"] == "AEGIS_BREAK_TO_OATHBRINGER"
 assert port["canonical_repository"] == "Jktomy/atlas-prime"
 assert port["harmless_pilot_state"] == "PROVEN_MERGED"
 assert port["spear_arrow_bow_state"] == "PROVEN_MERGED"
-assert port["next_gate"] == "NORMAL_PRIME_OPERATION"
+assert port["current_github_primary_method"] == "ATHENA_AEGIS_BREAK"
+assert port["current_github_write_substrate"] == "DIRECT_GITHUB_NATIVE_AEGIS_BREAK"
+assert port["github_direct_spear_ingress"] == "RETIRED_WORKFLOW_ABSENT"
+assert port["future_gitea_spear_state"] == "PLANNING_ONLY_PA_C06"
+assert port["thread_engine_current_role"] == "PRESERVED_PROVEN_COMPONENT_NOT_CURRENT_GITHUB_DEFAULT"
+assert port["next_gate"] == "AEGIS_BREAK_PRIMARY_GITHUB_OPERATION"
+
+assert not (ROOT / ".github/workflows/athena-spear-issue-ingress.yml").exists()
 
 protected = json.loads((ROOT / "policies/protected-paths.json").read_text(encoding="utf-8"))
 for required_path in ("migration/**", "quest-board/**", "generated/**", "tools/thread-engine/**"):
@@ -64,6 +72,7 @@ rollback = (ROOT / "migration/rollback-map.md").read_text(encoding="utf-8")
 command_surfaces = (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8")
 start_here = (ROOT / "atlas-start-here.md").read_text(encoding="utf-8")
 interaction = (ROOT / "governance/mission-control-interaction-contract.md").read_text(encoding="utf-8")
+primary = (ROOT / "governance/aegis-break-primary-route-contract.md").read_text(encoding="utf-8")
 
 for required_fragment in (
     'status: "CANONICAL_ACTIVE"',
@@ -116,6 +125,9 @@ assert (
 assert 'status: "CANONICAL_ACTIVE"' in interaction
 assert "merged Prime defines the exact doctrine" in start_here
 assert "saved memory" in start_here
+assert "primary method for durable Prime changes" in primary
+assert "DIRECT_GITHUB_NATIVE_AEGIS_BREAK" in primary
+assert "CURRENT_GITHUB_SPEAR_RETIRED" in primary
 
 generated_root = ROOT / "generated"
 if generated_root.exists() and any(path.is_file() for path in generated_root.rglob("*")):

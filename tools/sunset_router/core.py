@@ -27,11 +27,12 @@ from tools.mission_runner.core import MissionRunnerError, assert_mission_may_blo
 ROUTER_PLAN = "sunset-router-plan.json"
 ROUTER_RECEIPT = "sunset-router-receipt.json"
 PREVIEW_DIR, APPROVAL_DIR, CANDIDATE_DIR = "preview", "approval", "lifecycle-candidate"
-ATHENA_ROUTES = (
-    "ATHENA_SPEAR_THREAD_ENGINE",
-    "ATHENA_PHOENIX_BLADE",
+ATHENA_CURRENT_ROUTES = (
     "ATHENA_AEGIS_BREAK",
+    "ATHENA_PHOENIX_BLADE",
 )
+ATHENA_HISTORICAL_ROUTES = ("ATHENA_SPEAR_THREAD_ENGINE",)
+ATHENA_ROUTES = ATHENA_CURRENT_ROUTES + ATHENA_HISTORICAL_ROUTES
 JAYSON_ROUTES = ("JAYSON_ARROW_BOW_THREAD_ENGINE", "JAYSON_OATHBRINGER_SWORD")
 DELEGATED_ROUTES = ("DELEGATED_ARROW_BOW_THREAD_ENGINE",)
 TRANSFER_STOP = "OPERATOR_TRANSFER_REQUIRED"
@@ -140,10 +141,15 @@ def _routes(request: dict[str, Any]) -> tuple[str, list[str]]:
     actor, requested = request["actor"], request["requested_route"]
     if actor == "ATHENA":
         if requested == "AUTO":
-            return ATHENA_ROUTES[0], list(ATHENA_ROUTES[1:])
-        if requested not in ATHENA_ROUTES:
-            _fail("SUNSET_ROUTER_ROUTE_IDENTITY", "Athena may select only an Athena route")
-        return requested, [item for item in ATHENA_ROUTES if item != requested]
+            return ATHENA_CURRENT_ROUTES[0], list(ATHENA_CURRENT_ROUTES[1:])
+        if requested in ATHENA_HISTORICAL_ROUTES:
+            _fail(
+                "CURRENT_GITHUB_SPEAR_RETIRED",
+                "GitHub Direct Spear is retired from new current-platform selection",
+            )
+        if requested not in ATHENA_CURRENT_ROUTES:
+            _fail("SUNSET_ROUTER_ROUTE_IDENTITY", "Athena may select only a current Athena route")
+        return requested, [item for item in ATHENA_CURRENT_ROUTES if item != requested]
     allowed = JAYSON_ROUTES if actor == "JAYSON" else DELEGATED_ROUTES
     if requested == "AUTO" or not request["operator_transfer_authorized"]:
         _fail("OPERATOR_TRANSFER_REQUIRED", "non-Athena routes require explicit transfer and route")

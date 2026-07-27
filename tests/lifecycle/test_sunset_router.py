@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from tests.lifecycle.test_sunset_candidate import canonical_tree, request
+from tools.atlas_lifecycle.errors import LifecycleError
 from tools.atlas_lifecycle.jsonio import canonical_bytes
 from tools.sunset_router.core import (
     generate_router_approval,
@@ -58,10 +59,10 @@ class SunsetRouterLifecycleTests(unittest.TestCase):
                 preview, approval, candidate = self.pipeline(Path(temp), "NON_QUEST")
                 verified = verify_router_candidate(ROOT, preview, approval, candidate)
                 plan = verified["plan"]
-                self.assertEqual(plan["selected_route"], "ATHENA_SPEAR_THREAD_ENGINE")
+                self.assertEqual(plan["selected_route"], "ATHENA_AEGIS_BREAK")
                 self.assertEqual(
                     plan["fallback_routes"],
-                    ["ATHENA_PHOENIX_BLADE", "ATHENA_AEGIS_BREAK"],
+                    ["ATHENA_PHOENIX_BLADE"],
                 )
                 self.assertTrue(plan["operations"])
                 self.assertTrue(
@@ -73,6 +74,21 @@ class SunsetRouterLifecycleTests(unittest.TestCase):
                 outputs.append((candidate / "sunset-router-plan.json").read_bytes())
         self.assertEqual(outputs[0], outputs[1])
         self.assertEqual(canonical_tree(), before)
+
+    def test_explicit_current_github_spear_rejects_before_output(self) -> None:
+        value = router_request("NON_QUEST")
+        value["requested_route"] = "ATHENA_SPEAR_THREAD_ENGINE"
+        with tempfile.TemporaryDirectory() as temp:
+            parent = Path(temp)
+            output = parent / "router-preview"
+            with self.assertRaises(LifecycleError) as caught:
+                generate_router_preview(
+                    ROOT,
+                    self.write_request(parent, value),
+                    output,
+                )
+            self.assertIn("CURRENT_GITHUB_SPEAR_RETIRED", str(caught.exception))
+            self.assertFalse(output.exists())
 
     def test_admitted_quest_marks_living_emberline_replace(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

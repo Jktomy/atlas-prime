@@ -16,91 +16,97 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Need | Canonical route |
 |---|---|
 | Atlas identity and canonical authority | `atlas-prime.md`, `governance/source-hierarchy.md` |
+| Current GitHub Prime change method | `governance/aegis-break-primary-route-contract.md`, then `governance/repository-process-contract.md`, `governance/change-routes.md`, and the exact Mission state |
 | Safety and execution boundaries | `safety/atlas-safety-doctrine.md`, `governance/noctua.md`, `governance/atlas-aegis.md`, `governance/atlas-strikeforce.md`, `governance/protected-source-boundary.md`, `governance/cutover-boundary.md` |
-| Repository process, complete candidate, fallback, Goddess Mode, review, validation, Shardblade, and readback | `governance/repository-process-contract.md`, `governance/change-routes.md`, `governance/shard-doctrine.md` |
-| Mission Control, Decision Boxes, Preview-first interaction, and final copy-paste action surfaces | `governance/mission-control-interaction-contract.md`; client-independent doctrine for substantial Atlas work, not dependent on Glass Codex or VS Code |
-| Capability parity and acceptance | `governance/capability-parity-register.json`, `schemas/capability-parity-register.schema.json`, `governance/capability-acceptance-contract.md` |
-| Athena execution routes and hosted identity | `governance/athena-execution-route-contract.md`, `methods/athenas-spear.md`, `methods/phoenix-blade.md`, `schemas/athena-hosted-route-request-v1.schema.json`, `schemas/athena-hosted-route-receipt-v1.schema.json`, `tools/athena_routes/README.md` |
-| Ordinary free-form mission fields to immutable carrier | `python -B -m tools.athena_routes.free_form_intake --fields <fields.json> --output-dir <new-directory>`; closed inputs/receipt use `schemas/athena-free-form-mission-fields-v1.schema.json` and `schemas/athena-free-form-intake-receipt-v1.schema.json`; constructor is local, read-only, and non-promoting |
-| Guided hosted Preview and Execute | `python -B -m tools.athena_routes.guided_publisher preview|execute`; this is the Jayson/Artemis Arrow/Bow hosted route, not Athena's Spear identity; Execute retains durable no-retry intent and exact hosted mission/base locks |
-| Historical fresh-origin construction | `governance/athena-fresh-work-origin-contract.md`, `tools.athena_routes.fresh_work_bridge`; retained only as inert historical construction evidence and never required for Jayson-authorized Spear, Phoenix Blade, or Aegis Break work |
-| RP-C01-M05 same-carrier parity evidence | `tools.athena_routes.m05_parity`, `schemas/rp-c01-m05-parity-evidence-v1.schema.json`; verifies exact direct-Spear and hosted Arrow/Bow compiler/adapter joins and cannot self-promote M05 |
-| Agent identity and capability warrants | `governance/agentic-warrant-contract.md`, `schemas/agentic-capability-warrant-v1.schema.json`, `schemas/agentic-approval-record-v1.schema.json`, `schemas/agentic-warrant-receipt-v1.schema.json` |
-| Legacy dedicated Shardblade warrant contracts | `governance/shard-doctrine.md`, `schemas/shardblade-permanence-request-v1.schema.json`, `schemas/shardblade-permanence-approval-v1.schema.json`, `schemas/shardblade-permanence-receipt-v1.schema.json`, `tools/agentic_warrants/permanence.py`; the dedicated standing service remains `CONTRACT_ONLY_NOT_ACTIVATED` while explicit one-transaction Shardblade is governed by the repository-process contract |
-| Bounded Campaign Goddess Mode and Campaign Shardblade | `governance/atlas-aegis.md`, `governance/shard-doctrine.md`, `schemas/shardblade-campaign-warrant-v1.schema.json`, `schemas/shardblade-campaign-stage-request-v1.schema.json`, `schemas/shardblade-campaign-stage-receipt-v1.schema.json`, `tools/agentic_warrants/campaign.py` |
+| Complete candidate, Candidate Seal, fallback, Goddess Mode, review, validation, Shardblade, and readback | `governance/aegis-break-primary-route-contract.md`, `governance/repository-process-contract.md`, `tools/candidate_seal/README.md`, `governance/shard-doctrine.md` |
+| Mission Control, Decision Boxes, Preview-first interaction, and final copy-paste surfaces | `governance/mission-control-interaction-contract.md`; current GitHub route precedence comes from `governance/aegis-break-primary-route-contract.md` |
+| Capability parity and acceptance | `governance/capability-parity-register.json`, `schemas/capability-parity-register.schema.json`, `governance/capability-acceptance-contract.md`; accepted historical route proof is not current default-route authority |
+| Athena execution identities | `governance/aegis-break-primary-route-contract.md`, `governance/athena-execution-route-contract.md`, `methods/athenas-spear.md`, `methods/phoenix-blade.md` |
+| Ordinary free-form mission fields to immutable carrier | `python -B -m tools.athena_routes.free_form_intake --fields <fields.json> --output-dir <new-directory>`; local, read-only, and non-promoting |
+| Guided hosted Preview and Execute | `python -B -m tools.athena_routes.guided_publisher preview|execute`; explicit Jayson/Artemis Arrow/Bow, not Athena's default route |
+| Historical fresh-origin construction | `governance/athena-fresh-work-origin-contract.md`, `tools.athena_routes.fresh_work_bridge`; inert historical evidence |
+| Historical Spear Issue ingress | `methods/athenas-spear.md`, `tools/athena_routes/README.md`; workflow absent, source dormant, new GitHub dispatch retired |
+| Future Gitea-native Spear | Mission #353 and Prime Ascendant PA-C06; planning only until separate version-pinned proof and cutover |
+| RP-C01-M05 same-carrier parity evidence | `tools.athena_routes.m05_parity`, `schemas/rp-c01-m05-parity-evidence-v1.schema.json`; historical exact component parity only |
+| Agent identity and capability warrants | `governance/agentic-warrant-contract.md`, related closed schemas, and `tools/agentic_warrants/` |
+| Legacy Shardblade warrant contracts | `governance/shard-doctrine.md`; standing service remains not activated |
+| Bounded Campaign Goddess Mode and Campaign Shardblade | `governance/atlas-aegis.md`, `governance/shard-doctrine.md`, and campaign warrant schemas |
 | Investiture source identity and Light-name migration | `governance/investiture-source-identity-contract.md` |
-| Investiture Accounting doctrine, ledger, summaries, and receipts | Codex / Operation Source Governance through `governance/investiture-accounting-contract.md`; `quests/found-silverlight.md` is historical lineage only |
-| Deterministic conservation and generated-checkpoint diagnostics | `governance/deterministic-conservation-contract.md`, `tools/generated_checkpoint/README.md`; ordinary validation runs `python -B tools/build_index.py --diagnostics` in temporary storage, and no active hosted generated-checkpoint publisher exists |
-| Prime Integrity and conditional Windows validation | `tools/prime_checks/README.md`, `tools/prime_checks/targeted_validation.py`, `.github/workflows/prime-readonly-validation.yml`; ruleset `19014636` requires `prime/integrity` and conditional `prime/windows-compatibility`; the legacy compatibility contexts are retired |
-| Chromelight provider evidence and account boundary | `governance/chromelight-provider-boundary.md`, `schemas/chromelight-evidence-register-v1.schema.json`, `proof/repairing-prime/rp-c03-chromelight-evidence-r01.json` |
-| Resonance independent finding reconciliation | `governance/resonance-reconciliation-contract.md`, `schemas/resonance-finding-v1.schema.json`, `schemas/aberration-register-v1.schema.json`, `tools/resonance/README.md`, `proof/repairing-prime/rp-c04-aberration-register-r01.json` |
-| Source changes and route selection | `governance/source-lifecycle.md`, `governance/change-routes.md` |
-| Default one-request route | One direct Jayson instruction grants bounded build-through-ready authority under `governance/repository-process-contract.md`; without explicit Shardblade authority, Athena reports `Prime PR #___ is ready to merge.` and Jayson merges manually |
-| Explicit Goddess Mode | `with Goddess Mode` authorizes bounded autonomous completion only inside the exact approved transaction or campaign and all existing stops |
-| Explicit Shardblade | `with Shardblade` or an unambiguous equivalent authorizes one exact-head compare-and-swap merge after required status, review reconciliation, Strikeforce GREEN, replay reservation, rollback, and fresh readback |
+| Investiture Accounting | Codex / Source Governance through `governance/investiture-accounting-contract.md` |
+| Deterministic conservation and projection diagnostics | `governance/deterministic-conservation-contract.md`, `tools/generated_checkpoint/README.md`; temporary validation only |
+| Prime Integrity and conditional Windows validation | `tools/prime_checks/README.md`, `tools/prime_checks/targeted_validation.py`, `.github/workflows/prime-readonly-validation.yml` |
+| Chromelight provider evidence | `governance/chromelight-provider-boundary.md` and its accepted evidence register |
+| Resonance reconciliation | `governance/resonance-reconciliation-contract.md`, schemas, and `tools/resonance/README.md` |
+| Source changes and route selection | `governance/aegis-break-primary-route-contract.md`, `governance/source-lifecycle.md`, `governance/change-routes.md` |
+| Default one-request route | One direct Jayson instruction grants bounded build-through-ready authority; Athena selects Aegis Break for current GitHub and Jayson merges manually without Shardblade |
+| Explicit Goddess Mode | Bounded autonomous completion only inside the exact transaction and stops |
+| Explicit Shardblade | One exact-head compare-and-swap merge after status, review, Strikeforce, replay, rollback, and readback |
 | Projects | `projects/project-registry.md` |
 | Operations | `operations/operation-registry.md` |
 | Artemis, Harmony, Emberdark, Cognitive Shadows, Kandra, and Sazed | `operations/artemis-runtime-and-routing.md` |
-| Operation Ciel external-intelligence lifecycle | `operations/ciel.md`, `skills/gluttony/SKILL.md`, `knowledge/rimuru/README.md`, and `tools/ciel/README.md`; `HARVEST <X>` is read-only, while `ABSORB <Y>` classifies and prepares noncanonical candidates without automatic source, installation, runtime, READY, or permanence authority; First Gluttony is preserved in Rimuru registry revision 2 |
-| Cloud Atlas protected classes, Original Vault, Coppermind, Emberdark, Harmony, Phoenix, secrets, exports, and degraded recovery | `governance/cloud-atlas-protected-realm-contract.md`, `governance/cloud-atlas-protected-realm-v1.json`; source architecture only and no protected access |
-| Glass Codex service, VS Code client, UI surfaces, API lanes, packaging, retention, and rollback | `governance/glass-codex-client-contract.md`, `governance/glass-codex-client-v1.json`; architecture only and no Apollo installation |
-| Notum/Sentinel health in Glass Codex, source identity, freshness, minimized telemetry, denied control, and failure independence | `governance/notum-glass-codex-health-contract.md`, `governance/notum-glass-codex-health-v1.json`; read-only architecture only and no telemetry connection |
-| Prometheus Cloud Atlas capacity, service isolation, recovery, dependency, startup, shutdown, and household priority | `governance/prometheus-cloud-atlas-topology-contract.md`, then `quests/prometheus-fire.md`; planning only and no host action |
-| Apollo, Hermes, Iris, and Zeus operator endpoints | `infrastructure/atlas-infrastructure-source.md` |
-| Apollo native VS Code and Glass endpoint continuity, isolated environments, remote route, source disposition, reinstall, degraded mode, and recovery proof | `governance/apollo-remote-operator-continuity-contract.md`, `governance/apollo-remote-operator-continuity-v1.json`; architecture only and runtime remains pending protected Execute |
-| Protocols and delivery methods | `operations/protocol-library.md`, `methods/artemis-bow-and-arrow.md`, `methods/athenas-spear.md`, `methods/atlas-sword.md`, `methods/phoenix-blade.md` |
-| Athena through Thread Engine | `methods/athenas-spear.md`, then the exact Weave, base, Thread Engine state, and draft-PR stop boundary |
-| Athena direct safe construction or repair | `methods/phoenix-blade.md` for Aegis Break route selection, then the exact live repository or PR state |
-| Athena executes a Sword | `methods/phoenix-blade.md`, `methods/sword-forge-standard.md`, `methods/sword-lessons.json`, `methods/atlas-sword.md`, then the exact Sword and live target state |
-| Jayson Sword or Oathbringer request | `methods/sword-forge-standard.md`, `methods/sword-lessons.json`, `methods/atlas-sword.md`, `tools/atlas-sword/README.md`, then the exact live repository or PR state |
-| Oathbringer Foundry carrier compile | `methods/oathbringer-foundry.md`, `methods/sword-forge-standard.md`, `methods/sword-lessons.json`, `tools/oathbringer-foundry/README.md`, then exact current source and read-only live-state binding |
-| Active Quests and admitted Quest parents | `continuity/mission-board-quest-registry-r01.json`, live parent Issues `#307`–`#309`, then active `quests/`; `quest-board/quest-board-v1.json` is frozen predecessor evidence only; completed Ciel parent Issue `#328`, child Issue `#330`, and `quests/ciels-awakening.md` remain historical proof |
-| Atlas Quest portfolio ownership and dependency routing | `governance/atlas-quest-portfolio-contract.md`, then the Mission Board Quest registry and continuity register; Atlas remains the umbrella ecosystem rather than a Quest |
-| Mission Board intake, admitted-Quest registry, assignment, search, sequencing, and restart | GitHub Issues in `Jktomy/atlas-prime`, `continuity/mission-board-quest-registry-r01.json`, `governance/mission-board-contract.md`, `.github/ISSUE_TEMPLATE/mission.md`, `schemas/mission-v1.schema.json`, `schemas/mission-board-quest-registry-v1.schema.json`, `tools/mission_board/README.md`; live Issues are primary operations, the merged registry snapshot enables offline recovery, and neither may replace merged Prime doctrine |
-| Worldhopper Mission resume, checkpoints, capability matching, working-source handoff, and executable fallback exhaustion | `governance/worldhopper-relay-contract.md`, `schemas/mission-checkpoint-v1.schema.json`, `schemas/mission-worker-capability-v1.schema.json`, `schemas/mission-working-source-handoff-v1.schema.json`, `schemas/mission-route-attempt-v1.schema.json`, `tools/mission_runner/README.md`; orchestration only, with Thread Engine normal publication and independent Sword/Oathbringer recovery |
-| Continue one Mission | `Continue Mission #N` requires exact repository/Issue resolution, all comments, current canonical source, linked branch/PR/check/review/receipt readback, duplicate search, and one next safe action; pull-request objects and chat-only claims fail closed |
-| Complete an ordered Mission list | Read and reconcile each exact Mission in the requested order; number order creates no dependency, and a `BLOCKED_RESUMABLE` item permits continuation only through its explicit queue behavior and dependency edges |
-| Quest identities and unfinished-work continuity | `governance/quest-engine-continuity-contract.md`, `continuity/mission-board-quest-registry-r01.json`, `quest-board/quest-board-v1.json` as frozen evidence, `continuity/quest-engine-identities-r01.json`, `continuity/prime-continuity-register-r01.json`, `tools/prime_continuity/README.md` |
-| Validate continuity or surface Argus | `python -B -m tools.prime_continuity.cli validate`, `python -B -m tools.prime_continuity.cli argus` |
-| Preview one bounded continuity update | `python -B -m tools.prime_continuity.cli plan-update ...`; candidate only, then reviewed draft-PR route |
-| Admit a later Quest | Create and bind one unique `mission/quest` parent Issue, add one schema-valid Quest source and one schema-valid registry row, increment the registry revision exactly once, bind matching unfinished-work continuity, validate against the frozen predecessor, then use the reviewed draft-PR route; the frozen Quest Board rejects admission |
-| Full Atlas Sunset or continuity snapshot | Full lifecycle closeout: `governance/lesson-harvest-protocol.md`, `lifecycle/lifecycle-contract.md`, then `python -B -m tools.atlas_lifecycle sunset preview`, exact `sunset approve`, and exact `sunset candidate`; compact continuity snapshot only: `python -B -m tools.prime_continuity.cli sunset --continuity-id ID`; never substitute one for the other |
-| Sunset Router deterministic front door | `governance/sunset-router-contract.md`, `tools/sunset_router/README.md`, then `python -B -m tools.sunset_router preview`, `python -B -m tools.sunset_router approve`, `python -B -m tools.sunset_router candidate`, `python -B -m tools.sunset_router verify`, or `python -B -m tools.sunset_router receipt`; it resolves canonical ownership, selects Athena-first routes without automatic operator transfer, delegates lifecycle semantics to `tools.atlas_lifecycle`, and requires exact merged-byte readback for `SUNSET COMPLETE` |
-| Historical Mission #257 owner-only Sunset Preview ingress | `RETIRED`: Mission #257 is complete and `.github/workflows/sunset-router-preview-intake.yml` is intentionally absent so unrelated Issue comments do not create no-job workflow failures. The historical schema and adapter remain evidence only; use the deterministic Sunset Router CLI, and require a separate approved transport contract before restoring hosted ingress. |
-| Lesson Harvest and active assurance controls | `governance/lesson-harvest-protocol.md`, `governance/assurance-controls.json`, `schemas/assurance-controls-v1.schema.json`; Sunset Lesson Harvest is distinct from Operation Ciel external Harvest |
-| Lifecycle records and read-only mechanics | `lifecycle/README.md`, `lifecycle/lifecycle-contract.md`, `lifecycle/schemas/`, `tools/atlas_lifecycle/README.md` |
+| Operation Ciel | `operations/ciel.md`, `skills/gluttony/SKILL.md`, `knowledge/rimuru/README.md`, `tools/ciel/README.md` |
+| Cloud Atlas protected realm | `governance/cloud-atlas-protected-realm-contract.md`, `governance/cloud-atlas-protected-realm-v1.json` |
+| Glass Codex | `governance/glass-codex-client-contract.md`, `governance/glass-codex-client-v1.json` |
+| Notum/Sentinel health | `governance/notum-glass-codex-health-contract.md`, `governance/notum-glass-codex-health-v1.json` |
+| Prometheus Cloud Atlas topology | `governance/prometheus-cloud-atlas-topology-contract.md`, then `quests/prometheus-fire.md` |
+| Apollo, Hermes, Iris, and Zeus endpoints | `infrastructure/atlas-infrastructure-source.md` |
+| Apollo operator continuity | `governance/apollo-remote-operator-continuity-contract.md`, validated companion JSON |
+| Protocols and methods | `operations/protocol-library.md`, `methods/artemis-bow-and-arrow.md`, `methods/athenas-spear.md`, `methods/atlas-sword.md`, `methods/phoenix-blade.md` |
+| Athena direct current-GitHub construction | `governance/aegis-break-primary-route-contract.md`, `methods/phoenix-blade.md`, exact live repository state |
+| Athena explicitly delivers through Thread Engine | `methods/athenas-spear.md`; current GitHub Direct Spear dispatch is retired and must fail closed |
+| Athena executes an exact Sword | `methods/phoenix-blade.md`, Sword doctrine, exact live target state |
+| Jayson Sword or Oathbringer | Sword Forge, Sword lessons, Atlas Sword, Oathbringer tooling, exact live target state |
+| Oathbringer Foundry carrier compile | `methods/oathbringer-foundry.md`, Sword doctrine, exact current source |
+| Active Quests and admitted Quest parents | Mission Board Quest registry, live parents #307–#309, active `quests/`; frozen Quest Board is evidence only |
+| Atlas Quest portfolio ownership | `governance/atlas-quest-portfolio-contract.md`, Mission Board registry, continuity register |
+| Mission Board intake and restart | GitHub Issues, merged portable registry, Mission Board contract, issue template, schema, tools |
+| Worldhopper Mission resume | `governance/worldhopper-relay-contract.md`, Mission Runner schemas/tools; current GitHub construction begins with Aegis Break and recovery remains Oathbringer-isolated |
+| Continue one Mission | Resolve exact Issue, all comments, current source, linked branch/PR/check/review/receipt state, duplicates, then one next safe action |
+| Complete an ordered Mission list | Reconcile each exact Mission; number order alone creates no dependency |
+| Quest identities and continuity | Quest continuity contract, Mission Board registry, frozen predecessor evidence, identities, continuity register |
+| Validate continuity or surface Argus | `python -B -m tools.prime_continuity.cli validate|argus` |
+| Preview one bounded continuity update | `python -B -m tools.prime_continuity.cli plan-update ...`; candidate only, then reviewed route |
+| Admit a later Quest | One parent Mission, schema-valid Quest source and registry row, one revision increment, continuity binding, validation, reviewed PR |
+| Full Atlas Sunset or continuity snapshot | Lifecycle contract and Atlas lifecycle CLI; never substitute compact snapshot for full Sunset |
+| Sunset Router deterministic front door | Sunset Router contract and CLI; Athena AUTO selects Aegis Break, lifecycle meaning remains in `tools.atlas_lifecycle` |
+| Historical Mission #257 Sunset ingress | `RETIRED`; workflow absent, schema/adapter evidence only |
+| Lesson Harvest and assurance controls | Lesson Harvest protocol, assurance register/schema; distinct from Ciel Harvest |
+| Lifecycle records and mechanics | `lifecycle/`, lifecycle contract/schemas, `tools/atlas_lifecycle/README.md` |
 | Infrastructure source | `infrastructure/atlas-infrastructure-source.md` |
-| Clean-clone recovery, protected runtime restoration, and recovery proof | `recovery/elantris-recovery.md` |
-| Prime-native source rollback and reviewed revert | `migration/rollback-map.md` |
+| Clean-clone recovery | `recovery/elantris-recovery.md` plus current route-precedence contract |
+| Prime-native rollback | `migration/rollback-map.md` |
 | Knowledge lifecycle | `knowledge/atlas-source-compendium.md` |
-| Thread Engine | `tools/thread-engine/README.md`, `tools/thread-engine/PRIME-PORT-STATUS.json` |
-| Reusable templates | `templates/preview-bundle-template.md`, `templates/project-template.md`, `templates/protocol-template.md`, `templates/source-file-template.md`, `templates/support-file-template.md` |
-| Proven delivery evidence | `proof/prime-thread-engine-bootstrap-proof.md`, `proof/prime-spear-arrow-bow-parity-r01.md`, `proof/repairing-prime/rp-c08-cap015-architecture-realignment-r02.md` |
+| Thread Engine | `tools/thread-engine/README.md`, status JSON; preserved component, not current GitHub default |
+| Reusable templates | `templates/` canonical templates |
+| Proven delivery evidence | Thread Engine bootstrap proof, Spear/Arrow/Bow parity proof, Repairing Prime accepted evidence |
 | Generated projections | `tools/build_index.py`, `generated/` |
-| Migration and cutover evidence | `migration/codex-cutover.md`, `migration/codex-inheritance-manifest.md`, `migration/predecessor-snapshot.md`, `migration/rollback-map.md`, `migration/source-disposition-summary.json` |
+| Migration and cutover evidence | `migration/` canonical cutover, inheritance, predecessor, rollback, and disposition sources |
 
 ## Automatic method routing
 
-A request for Athena to deliver through Thread Engine routes to Spear.
+An ordinary request for Athena to change, repair, update, add to, or otherwise
+accomplish bounded Prime source work while GitHub is canonical routes first to
+Aegis Break. Direct GitHub-native atomic construction is an Aegis Break substrate,
+not a synonym for Phoenix Blade or Spear.
 
-A request for Athena to execute an exact Sword herself routes to Phoenix Blade. Phoenix Blade mirrors Jayson wielding the same Sword through Oathbringer and does not use Thread Engine.
+A request for Athena to execute an exact Sword herself routes to Phoenix Blade.
+A request explicitly requiring Thread Engine identifies Spear, but current GitHub
+Direct Spear dispatch is retired and must reject before mutation rather than
+silently aliasing to Aegis Break. Future Gitea Spear remains separately gated.
 
-A request for Athena to construct, repair, or otherwise accomplish a bounded Atlas task directly routes through Aegis Break, which selects or constructs the safest exact route available. Direct GitHub-native construction is an Aegis Break route, not a synonym for Phoenix Blade.
+Bow and Arrow belong to Jayson and Artemis delegated delivery. Oathbringer remains
+Jayson's independent Sword and recovery publisher.
 
-Bow and Arrow belong to Jayson and Artemis delegated delivery. They are never selected as Athena's direct route. Their compiler-declared authored path eligibility matches Spear, including governance and Thread Engine self-change, while their exact authority, launcher, and draft-only boundaries remain distinct.
-
-A request to build, repair, recover, execute, or otherwise make a Sword automatically routes first through `methods/sword-forge-standard.md` and `methods/sword-lessons.json`, then through current Sword doctrine and the exact live GitHub target state. The user does not need to invoke a separate preflight command or remind Athena to recall earlier lessons.
-
-A direct request to change, repair, update, or add to Prime routes one bounded transaction through merge-ready without a second user command. Preview-only and draft-only requests remain narrower. The route includes complete-candidate construction, candidate-caused repair, actionable review repair, validation, exact-head Strikeforce, and ready-for-review only while the candidate head remains unchanged.
-
-A request to `Sunset this chat` is the mandatory exception: it always returns one exact user-visible Sunset Preview and stops. After Jayson approves that exact Preview, the same transaction seals its approval carrier and may continue through candidate, draft PR, validation, Strikeforce, permanence, and canonical readback according to the approved mode.
-
-Sunset Router is the deterministic front door for that flow. It resolves canonical ownership and route policy, but it never bypasses the required user-visible Preview or transfers an operator automatically. It delegates lifecycle meaning and candidate compilation to `tools.atlas_lifecycle` and treats only exact merged-byte canonical readback as `SUNSET COMPLETE`.
-
-`with Goddess Mode` keeps the same transaction moving through obvious safe work and candidate-caused repair without widening, but cannot bypass or change a Sunset Preview. `with Shardblade` grants one exact-head permanence action only when the exact approval binds that mode. Without Shardblade, merge remains Jayson's manual action. A blocked Sunset route resumes the same approved carrier and cannot claim completion before canonical readback.
+A direct Prime request routes one bounded transaction through merge-ready without
+a second user command unless explicitly Preview-only or narrower. `Sunset this
+chat` remains the mandatory Preview-first exception. Goddess Mode cannot widen;
+Shardblade grants only one exact-head permanence action; without it, merge remains
+Jayson's manual action.
 
 ## Decision box
 
-For every requested action, state: objective, exact scope, source authority, protected boundary, route, proof, stop condition, rollback, and next safe action. If any field is unknown, investigate before mutation.
-
-Prime command surfaces never route normal operation to `Jktomy/atlas-codex`, a live legacy Work tracker, the frozen Quest Board, or an unmerged Mission Issue as source authority.
+For every requested action, state objective, exact scope, source authority,
+protected boundary, route, proof, stop, rollback, and next safe action. Investigate
+unknown fields before mutation. Prime never routes normal operation to
+`Jktomy/atlas-codex`, a legacy Work tracker, the frozen Quest Board, an unmerged
+Mission Issue as source authority, or the retired GitHub Direct Spear workflow.
