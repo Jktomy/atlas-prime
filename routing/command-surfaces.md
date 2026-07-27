@@ -24,7 +24,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Athena execution identities | `governance/aegis-break-primary-route-contract.md`, `governance/athena-execution-route-contract.md`, `methods/athenas-spear.md`, `methods/phoenix-blade.md` |
 | Ordinary free-form mission fields to immutable carrier | `python -B -m tools.athena_routes.free_form_intake --fields <fields.json> --output-dir <new-directory>`; local, read-only, and non-promoting |
 | Guided hosted Preview and Execute | `python -B -m tools.athena_routes.guided_publisher preview|execute`; explicit Jayson/Artemis Arrow/Bow, not Athena's default route |
-| Historical fresh-origin construction | `governance/athena-fresh-work-origin-contract.md`, `tools.athena_routes.fresh_work_bridge`; inert historical evidence |
+| Historical fresh-origin construction | `governance/athena-fresh-work-origin-contract.md`, `tools.athena_routes.fresh_work_bridge`; inert historical evidence and never required by current Aegis Break, Phoenix Blade, delegated Arrow/Bow, or future separately proven Spear |
 | Historical Spear Issue ingress | `methods/athenas-spear.md`, `tools/athena_routes/README.md`; workflow absent, source dormant, new GitHub dispatch retired |
 | Future Gitea-native Spear | Mission #353 and Prime Ascendant PA-C06; planning only until separate version-pinned proof and cutover |
 | RP-C01-M05 same-carrier parity evidence | `tools.athena_routes.m05_parity`, `schemas/rp-c01-m05-parity-evidence-v1.schema.json`; historical exact component parity only |
