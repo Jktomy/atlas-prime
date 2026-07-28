@@ -35,6 +35,13 @@ REQUIRED_GATES = {
     "RP-C07": "AJ_01_THROUGH_AJ_12_RECONCILED",
     "RP-C08": "REPAIRING_PRIME_COMPLETE",
 }
+ODYSSEY_QUEST_ID = "QUEST-THE-ODYSSEY-20260727"
+ODYSSEY_SOURCE = "quests/the-odyssey.md"
+ODYSSEY_PARENT_ISSUE = 359
+ODYSSEY_PARENT_MISSION = "MISSION-QUEST-PARENT-THE-ODYSSEY-R01"
+ODYSSEY_PARENT_ATTEMPT = "MISSION-QUEST-PARENT-THE-ODYSSEY-R01-ATTEMPT-01"
+ODYSSEY_EMBERLINE = "EMBERLINE-QUEST-THE-ODYSSEY-R01"
+ODYSSEY_RECOMPOSITION_REVISION = 5
 
 
 class ContinuityError(ValueError):
@@ -81,6 +88,34 @@ def validate_board(board: dict[str, Any], *, root: Path = ROOT) -> None:
         _source(source, root)
 
 
+def _validate_odyssey_recomposition(
+    registry: dict[str, Any], baseline: set[str], observed: set[str]
+) -> None:
+    missing = baseline - observed
+    if not missing:
+        return
+    if missing != baseline:
+        raise ContinuityError("QUEST_REGISTRY_PARTIAL_RECOMPOSITION")
+    if registry["registry_revision"] < ODYSSEY_RECOMPOSITION_REVISION:
+        raise ContinuityError("QUEST_REGISTRY_BASELINE_MISSING")
+    matches = [item for item in registry["entries"] if item["quest_id"] == ODYSSEY_QUEST_ID]
+    if len(matches) != 1:
+        raise ContinuityError("QUEST_REGISTRY_BASELINE_MISSING")
+    entry = matches[0]
+    expected = {
+        "source": ODYSSEY_SOURCE,
+        "parent_issue_number": ODYSSEY_PARENT_ISSUE,
+        "parent_mission_id": ODYSSEY_PARENT_MISSION,
+        "parent_attempt_id": ODYSSEY_PARENT_ATTEMPT,
+        "parent_issue_label": "mission/quest",
+        "emberline_id": ODYSSEY_EMBERLINE,
+    }
+    if any(entry.get(key) != value for key, value in expected.items()):
+        raise ContinuityError("ODYSSEY_RECOMPOSITION_BINDING_INVALID")
+    if entry["state"] not in ADMISSION_STATES:
+        raise ContinuityError("ODYSSEY_RECOMPOSITION_STATE_INVALID")
+
+
 def validate_quest_registry(
     registry: dict[str, Any], frozen_board: dict[str, Any], *, root: Path = ROOT
 ) -> None:
@@ -115,8 +150,7 @@ def validate_quest_registry(
 
     baseline = set(cutover["baseline_active_quest_ids"])
     observed = {item["quest_id"] for item in entries}
-    if not baseline.issubset(observed):
-        raise ContinuityError("QUEST_REGISTRY_BASELINE_MISSING")
+    _validate_odyssey_recomposition(registry, baseline, observed)
     if registry["registry_revision"] == 1 and baseline != observed:
         raise ContinuityError("QUEST_REGISTRY_CUTOVER_PARITY_MISMATCH")
     completed = sum(item["state"] == "COMPLETE" for item in frozen_board["entries"])

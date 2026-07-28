@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import unittest
@@ -8,6 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 NOTUM_SOURCE = ROOT / "quests" / "notums-watch.md"
+ODYSSEY_SOURCE = ROOT / "quests" / "the-odyssey.md"
 QUEST_REGISTRY = ROOT / "continuity" / "mission-board-quest-registry-r01.json"
 CONTINUITY = ROOT / "continuity" / "prime-continuity-register-r01.json"
 COMMAND_SURFACES = ROOT / "routing" / "command-surfaces.md"
@@ -20,11 +22,11 @@ GENERATED_CHECKPOINT_README = ROOT / "tools" / "generated_checkpoint" / "README.
 def _declared_route_paths(text: str) -> list[str]:
     lines = text.splitlines()
     if not lines or lines[0] != "---":
-        raise AssertionError("Notum source must begin with YAML front matter")
+        raise AssertionError("Quest source must begin with YAML front matter")
     try:
         end = lines.index("---", 1)
     except ValueError as exc:
-        raise AssertionError("Notum source front matter is not closed") from exc
+        raise AssertionError("Quest source front matter is not closed") from exc
 
     paths: list[str] = []
     active_key: str | None = None
@@ -42,9 +44,14 @@ def _declared_route_paths(text: str) -> list[str]:
 
 def _minimum_readback_paths(text: str) -> list[str]:
     try:
-        section = text.split("Minimum readback route:", 1)[1].split("Use evidence labels:", 1)[0]
+        section = text.split(
+            "Minimum readback route:",
+            1,
+        )[1].split("Use evidence labels:", 1)[0]
     except IndexError as exc:
-        raise AssertionError("Notum source must retain a bounded minimum readback route") from exc
+        raise AssertionError(
+            "Historical Notum source must retain a bounded minimum readback route"
+        ) from exc
     return re.findall(r"`([^`]+)`", section)
 
 
@@ -52,31 +59,33 @@ class RefractSourceIntegrityTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.notum_text = NOTUM_SOURCE.read_text(encoding="utf-8")
+        cls.odyssey_text = ODYSSEY_SOURCE.read_text(encoding="utf-8")
         cls.registry = json.loads(QUEST_REGISTRY.read_text(encoding="utf-8"))
         cls.continuity = json.loads(CONTINUITY.read_text(encoding="utf-8"))
         cls.command_surfaces = COMMAND_SURFACES.read_text(encoding="utf-8")
         cls.readme = README.read_text(encoding="utf-8")
         cls.start_here = START_HERE.read_text(encoding="utf-8")
 
-    def test_notum_identity_matches_active_registry_and_continuity(self) -> None:
-        match = re.search(r"^\*\*Quest ID:\*\* `([^`]+)`$", self.notum_text, re.MULTILINE)
+    def test_odyssey_identity_matches_active_registry_and_continuity(self) -> None:
+        match = re.search(
+            r"^- \*\*Quest ID:\*\* `([^`]+)`$",
+            self.odyssey_text,
+            re.MULTILINE,
+        )
         self.assertIsNotNone(match)
         source_id = match.group(1)
 
-        registry_entry = next(
-            entry for entry in self.registry["entries"]
-            if entry["source"] == "quests/notums-watch.md"
-        )
-        continuity_entry = next(
-            entry for entry in self.continuity["entries"]
-            if entry["quest_source"] == "quests/notums-watch.md"
-        )
+        self.assertEqual(len(self.registry["entries"]), 1)
+        self.assertEqual(len(self.continuity["entries"]), 1)
+        registry_entry = self.registry["entries"][0]
+        continuity_entry = self.continuity["entries"][0]
 
-        self.assertEqual(source_id, "QUEST-NOTUMS-WATCH-20260708")
+        self.assertEqual(source_id, "QUEST-THE-ODYSSEY-20260727")
         self.assertEqual(source_id, registry_entry["quest_id"])
         self.assertEqual(source_id, continuity_entry["quest_id"])
+        self.assertEqual(registry_entry["parent_issue_number"], 359)
 
-    def test_notum_active_routes_and_required_readback_paths_resolve(self) -> None:
+    def test_historical_notum_routes_still_resolve_without_active_authority(self) -> None:
         declared = _declared_route_paths(self.notum_text)
         readback = _minimum_readback_paths(self.notum_text)
 
@@ -90,17 +99,16 @@ class RefractSourceIntegrityTests(unittest.TestCase):
         for relative_path in declared + readback:
             self.assertTrue(
                 (ROOT / relative_path).is_file(),
-                f"active Notum route does not resolve: {relative_path}",
+                f"historical Notum route does not resolve: {relative_path}",
             )
 
-    def test_continuity_hash_binds_exact_notum_source_bytes(self) -> None:
-        import hashlib
+        active_ids = {entry["quest_id"] for entry in self.registry["entries"]}
+        self.assertNotIn("QUEST-NOTUMS-WATCH-20260708", active_ids)
+        self.assertIn("preserved superseded history", self.command_surfaces)
 
-        continuity_entry = next(
-            entry for entry in self.continuity["entries"]
-            if entry["quest_id"] == "QUEST-NOTUMS-WATCH-20260708"
-        )
-        actual = hashlib.sha256(NOTUM_SOURCE.read_bytes()).hexdigest()
+    def test_continuity_hash_binds_exact_odyssey_source_bytes(self) -> None:
+        continuity_entry = self.continuity["entries"][0]
+        actual = hashlib.sha256(ODYSSEY_SOURCE.read_bytes()).hexdigest()
         self.assertEqual(continuity_entry["quest_source_sha256"], actual)
 
     def test_generated_checkpoint_surface_is_diagnostic_not_hosted(self) -> None:
@@ -139,14 +147,24 @@ class RefractSourceIntegrityTests(unittest.TestCase):
             self.start_here.index("3. `routing/command-surfaces.md`"),
         ]
         self.assertEqual(ordered, sorted(ordered))
+        self.assertIn(
+            "12. `quests/the-odyssey.md`",
+            self.start_here,
+        )
 
     def test_frozen_predecessor_is_not_promoted_to_active_authority(self) -> None:
         frozen = json.loads(FROZEN_QUEST_BOARD.read_text(encoding="utf-8"))
         frozen_role = frozen.get("registry_role", frozen.get("state"))
         self.assertEqual(frozen_role, "FROZEN_PREDECESSOR_EVIDENCE")
         if "successor_registry" in frozen:
-            self.assertEqual(frozen["successor_registry"], "continuity/mission-board-quest-registry-r01.json")
-        self.assertNotIn("quest-board/quest-board-v1.json", _declared_route_paths(self.notum_text))
+            self.assertEqual(
+                frozen["successor_registry"],
+                "continuity/mission-board-quest-registry-r01.json",
+            )
+        self.assertNotIn(
+            "quest-board/quest-board-v1.json",
+            _declared_route_paths(self.notum_text),
+        )
 
 
 if __name__ == "__main__":

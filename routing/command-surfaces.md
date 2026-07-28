@@ -48,7 +48,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Cloud Atlas protected realm | `governance/cloud-atlas-protected-realm-contract.md`, `governance/cloud-atlas-protected-realm-v1.json` |
 | Glass Codex | `governance/glass-codex-client-contract.md`, `governance/glass-codex-client-v1.json` |
 | Notum/Sentinel health | `governance/notum-glass-codex-health-contract.md`, `governance/notum-glass-codex-health-v1.json` |
-| Prometheus Cloud Atlas topology | `governance/prometheus-cloud-atlas-topology-contract.md`, then `quests/prometheus-fire.md` |
+| Prometheus Cloud Atlas topology | `governance/prometheus-cloud-atlas-topology-contract.md`, then historical `quests/prometheus-fire.md` |
 | Apollo, Hermes, Iris, and Zeus operator endpoints | `infrastructure/atlas-infrastructure-source.md` |
 | Apollo operator continuity | `governance/apollo-remote-operator-continuity-contract.md`, validated companion JSON |
 | Protocols and methods | `operations/protocol-library.md`, `methods/artemis-bow-and-arrow.md`, `methods/athenas-spear.md`, `methods/atlas-sword.md`, `methods/phoenix-blade.md` |
@@ -58,13 +58,13 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Athena executes an exact Sword | `methods/phoenix-blade.md`, Sword doctrine, exact live target state |
 | Jayson Sword or Oathbringer | Sword Forge, Sword lessons, Atlas Sword, Oathbringer tooling, exact live target state |
 | Oathbringer Foundry carrier compile | `methods/oathbringer-foundry.md`, Sword doctrine, exact current source |
-| Active Quests and admitted Quest parents | Mission Board Quest registry, live parents #307–#309, active `quests/`; frozen Quest Board is evidence only |
-| Atlas Quest portfolio ownership | `governance/atlas-quest-portfolio-contract.md`, Mission Board registry, continuity register |
+| Active Quest and admitted Quest parent | `quests/the-odyssey.md`, Mission Board parent #359, Mission #358, portable registry, and continuity register; prior parents #307–#309 are preserved superseded history |
+| Atlas Quest portfolio ownership | `governance/atlas-quest-portfolio-contract.md`, `quests/the-odyssey.md`, Mission Board registry, continuity register |
 | Mission Board intake and restart | GitHub Issues; `.github/ISSUE_TEMPLATE/mission.md`; `governance/mission-board-contract.md`; `schemas/mission-v1.schema.json`; `tools/mission_board/README.md`; `tools/mission_board/__init__.py`; `tools/mission_board/__main__.py`; `tools/mission_board/core.py`; merged portable registry |
 | Worldhopper Mission resume | `governance/worldhopper-relay-contract.md`, Mission Runner schemas/tools; current GitHub construction begins with Aegis Break and recovery remains Oathbringer-isolated |
 | Continue one Mission | Resolve exact Issue, all comments, current source, linked branch/PR/check/review/receipt state, duplicates, then one next safe action |
 | Complete an ordered Mission list | Reconcile each exact Mission; number order alone creates no dependency |
-| Quest identities and continuity | Quest continuity contract, Mission Board registry, frozen predecessor evidence, identities, continuity register |
+| Quest identities and continuity | `quests/the-odyssey.md`, Mission Board registry, frozen predecessor evidence, identities, continuity register |
 | Validate continuity or surface Argus | `python -B -m tools.prime_continuity.cli validate|argus` |
 | Preview one bounded continuity update | `python -B -m tools.prime_continuity.cli plan-update ...`; candidate only, then reviewed route |
 | Admit a later Quest | One parent Mission, schema-valid Quest source and registry row, one revision increment, continuity binding, validation, reviewed PR |
@@ -74,7 +74,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Lesson Harvest and assurance controls | Lesson Harvest protocol, assurance register/schema; distinct from Ciel Harvest |
 | Lifecycle records and mechanics | `lifecycle/`, lifecycle contract/schemas, `tools/atlas_lifecycle/README.md` |
 | Infrastructure source | `infrastructure/atlas-infrastructure-source.md` |
-| Clean-clone recovery, protected runtime restoration, and recovery proof | `recovery/elantris-recovery.md` |
+| Clean-clone recovery, protected runtime restoration, and recovery proof | `quests/the-odyssey.md`, then `recovery/elantris-recovery.md` |
 | Prime-native source rollback and reviewed revert | `migration/rollback-map.md` |
 | Knowledge lifecycle | `knowledge/atlas-source-compendium.md` |
 | Thread Engine | `tools/thread-engine/README.md`, status JSON; preserved component, not current GitHub default |

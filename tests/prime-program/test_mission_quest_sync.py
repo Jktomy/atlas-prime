@@ -30,12 +30,11 @@ def canonical_mission() -> dict[str, object]:
     mission["attempt_id"] = "MISSION-315-QUEST-SYNC-ENFORCEMENT-R01-ATTEMPT-01"
     mission["relationships"] = {"quest": None, "campaign": None, "gate": None}
     mission["source_binding"]["changed_paths"] = [
-        "governance/mission-board-contract.md",
-        "schemas/quest-sync-receipt-v1.schema.json",
+        "continuity/mission-board-quest-registry-r01.json",
+        "continuity/prime-continuity-register-r01.json",
+        "quests/the-odyssey.md",
         "tests/prime-program/test_mission_quest_sync.py",
-        "tools/mission_board/__init__.py",
         "tools/mission_board/quest_sync.py",
-        "tools/mission_board/README.md",
     ]
     mission["source_binding"]["changed_paths_digest"] = changed_paths_digest(
         mission["source_binding"]["changed_paths"]
@@ -45,13 +44,22 @@ def canonical_mission() -> dict[str, object]:
 
 class MissionQuestSyncTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.registry = load_json(ROOT / "continuity" / "mission-board-quest-registry-r01.json")
+        self.registry = load_json(
+            ROOT / "continuity" / "mission-board-quest-registry-r01.json"
+        )
         self.mission = canonical_mission()
         self.canonical_head = self.mission["source_binding"]["merged_commit"]
 
-    def test_global_mission_board_doctrine_requires_all_active_parent_receipts(self) -> None:
+    def test_global_mission_board_doctrine_requires_odyssey_parent_receipt(self) -> None:
         affected = affected_parent_quests(self.mission, self.registry)
-        self.assertEqual([entry["parent_issue_number"] for entry in affected], [307, 308, 309])
+        self.assertEqual(
+            [entry["parent_issue_number"] for entry in affected],
+            [359],
+        )
+        self.assertEqual(
+            [entry["quest_id"] for entry in affected],
+            ["QUEST-THE-ODYSSEY-20260727"],
+        )
 
     def test_missing_parent_receipt_blocks_closure_with_exact_code(self) -> None:
         with self.assertRaisesRegex(MissionError, "QUEST_SYNC_PENDING"):
@@ -62,22 +70,29 @@ class MissionQuestSyncTests(unittest.TestCase):
                 canonical_head=self.canonical_head,
             )
 
-    def test_exact_receipts_on_every_active_parent_allow_closure(self) -> None:
-        snapshots: dict[int, dict[str, object]] = {}
-        for entry in affected_parent_quests(self.mission, self.registry):
-            receipt = build_quest_sync_receipt(
-                self.mission,
-                entry,
-                canonical_head=self.canonical_head,
-                impact_summary="Mission #315 adds the shared post-merge Quest synchronization closure gate without advancing this Quest.",
-            )
-            self.assertEqual(validate_quest_sync_receipt(receipt)["receipt_id"], receipt["receipt_id"])
-            snapshots[entry["parent_issue_number"]] = {
-                "number": entry["parent_issue_number"],
+    def test_exact_odyssey_receipt_allows_closure(self) -> None:
+        entry = affected_parent_quests(self.mission, self.registry)[0]
+        receipt = build_quest_sync_receipt(
+            self.mission,
+            entry,
+            canonical_head=self.canonical_head,
+            impact_summary=(
+                "Mission #315 updates shared Quest doctrine and synchronizes "
+                "the single active Odyssey parent without advancing its gate."
+            ),
+        )
+        self.assertEqual(
+            validate_quest_sync_receipt(receipt)["receipt_id"],
+            receipt["receipt_id"],
+        )
+        snapshots = {
+            359: {
+                "number": 359,
                 "is_pull_request": False,
                 "body": "",
                 "comments": [{"body": receipt_markdown(receipt)}],
             }
+        }
         result = enforce_quest_sync_closure(
             self.mission,
             self.registry,
@@ -85,28 +100,26 @@ class MissionQuestSyncTests(unittest.TestCase):
             canonical_head=self.canonical_head,
         )
         self.assertEqual(result["status"], "PASS")
-        self.assertEqual(result["required_parent_issues"], [307, 308, 309])
-        self.assertEqual(len(result["confirmed_receipts"]), 3)
+        self.assertEqual(result["required_parent_issues"], [359])
+        self.assertEqual(len(result["confirmed_receipts"]), 1)
 
     def test_duplicate_exact_receipt_fails_closed(self) -> None:
-        snapshots: dict[int, dict[str, object]] = {}
-        for entry in affected_parent_quests(self.mission, self.registry):
-            receipt = build_quest_sync_receipt(
-                self.mission,
-                entry,
-                canonical_head=self.canonical_head,
-                impact_summary="Exact merged-main synchronization receipt.",
-            )
-            block = receipt_markdown(receipt)
-            comments = [{"body": block}]
-            if entry["parent_issue_number"] == 307:
-                comments.append({"body": block})
-            snapshots[entry["parent_issue_number"]] = {
-                "number": entry["parent_issue_number"],
+        entry = affected_parent_quests(self.mission, self.registry)[0]
+        receipt = build_quest_sync_receipt(
+            self.mission,
+            entry,
+            canonical_head=self.canonical_head,
+            impact_summary="Exact merged-main synchronization receipt.",
+        )
+        block = receipt_markdown(receipt)
+        snapshots = {
+            359: {
+                "number": 359,
                 "is_pull_request": False,
                 "body": "",
-                "comments": comments,
+                "comments": [{"body": block}, {"body": block}],
             }
+        }
         with self.assertRaisesRegex(MissionError, "QUEST_SYNC_DUPLICATE"):
             enforce_quest_sync_closure(
                 self.mission,
@@ -147,7 +160,10 @@ class MissionQuestSyncTests(unittest.TestCase):
             "archival_status": "NOT_APPLICABLE",
             "truth_state": "SUNSET COMPLETE",
         }
-        self.assertEqual(affected_parent_quests(mission, self.registry), [])
+        self.assertEqual(
+            affected_parent_quests(mission, self.registry),
+            [],
+        )
         result = enforce_quest_sync_closure(
             mission,
             self.registry,
