@@ -27,6 +27,8 @@ from tools.prime_continuity.engine import (
 
 
 ROOT = Path(__file__).resolve().parents[2]
+ODYSSEY_ID = "QUEST-THE-ODYSSEY-20260727"
+ODYSSEY_CONTINUITY = "CONT-THE-ODYSSEY-R01"
 
 
 def load(relative: str) -> dict:
@@ -36,70 +38,114 @@ def load(relative: str) -> dict:
 class PrimeContinuityTests(unittest.TestCase):
     def setUp(self) -> None:
         self.board = load("quest-board/quest-board-v1.json")
-        self.registry = load("continuity/mission-board-quest-registry-r01.json")
-        self.register = load("continuity/prime-continuity-register-r01.json")
-        self.identities = load("continuity/quest-engine-identities-r01.json")
+        self.registry = load(
+            "continuity/mission-board-quest-registry-r01.json"
+        )
+        self.register = load(
+            "continuity/prime-continuity-register-r01.json"
+        )
+        self.identities = load(
+            "continuity/quest-engine-identities-r01.json"
+        )
 
     def test_canonical_registry_frozen_board_register_and_identities_validate(self) -> None:
         validate_board(self.board)
         validate_quest_registry(self.registry, self.board)
-        validate_register(self.register, self.board, registry=self.registry)
+        validate_register(
+            self.register,
+            self.board,
+            registry=self.registry,
+        )
         validate_identity_register(self.identities)
 
-        self.assertEqual(self.board["registry_role"], "FROZEN_PREDECESSOR_EVIDENCE")
+        self.assertEqual(
+            self.board["registry_role"],
+            "FROZEN_PREDECESSOR_EVIDENCE",
+        )
         self.assertEqual(
             self.board["successor_registry"],
             "continuity/mission-board-quest-registry-r01.json",
         )
-        self.assertEqual(self.registry["authority"], "CANONICAL_ADMITTED_QUEST_REGISTRY")
-        self.assertFalse(self.registry["live_issue_availability_required_for_recovery"])
-        self.assertEqual(self.registry["registry_revision"], 4)
+        self.assertEqual(
+            self.registry["authority"],
+            "CANONICAL_ADMITTED_QUEST_REGISTRY",
+        )
+        self.assertFalse(
+            self.registry["live_issue_availability_required_for_recovery"]
+        )
+        self.assertEqual(self.registry["registry_revision"], 5)
         self.assertEqual(
             {entry["quest_id"] for entry in self.registry["entries"]},
-            {
-                "QUEST-PRIME-ASCENDANT-20260717",
-                "QUEST-PROMETHEUS-FIRE-20260701",
-                "QUEST-NOTUMS-WATCH-20260708",
-            },
+            {ODYSSEY_ID},
         )
         self.assertEqual(
-            {entry["parent_issue_number"] for entry in self.registry["entries"]},
-            {307, 308, 309},
+            {
+                entry["parent_issue_number"]
+                for entry in self.registry["entries"]
+            },
+            {359},
         )
         self.assertEqual(
             {entry["quest_id"] for entry in self.register["entries"]},
-            {entry["quest_id"] for entry in self.registry["entries"]},
+            {ODYSSEY_ID},
         )
-        self.assertEqual(self.register["quest_board_sha256"], sha256(self.board))
-        self.assertEqual(self.register["quest_registry_sha256"], sha256(self.registry))
         self.assertEqual(
-            self.register["event_ids"].count("MISSION-BOARD-QUEST-REGISTRY-CUTOVER-R01"),
+            self.register["quest_board_sha256"],
+            sha256(self.board),
+        )
+        self.assertEqual(
+            self.register["quest_registry_sha256"],
+            sha256(self.registry),
+        )
+        self.assertEqual(
+            self.register["event_ids"].count(
+                "MISSION-BOARD-QUEST-REGISTRY-CUTOVER-R01"
+            ),
             1,
         )
-        self.assertEqual(self.register["event_ids"].count("CIEL-C01-M01-QUEST-ADMISSION-R01"), 1)
-        self.assertEqual(self.register["event_ids"].count("CIEL-C01-M02-FIRST-GLUTTONY-CLOSEOUT-R01"), 1)
+        self.assertEqual(
+            self.register["event_ids"].count(
+                "ODYSSEY-QUEST-ADMISSION-AND-SUPERSESSION-R01"
+            ),
+            1,
+        )
         self.assertEqual(len(self.identities["campaigns"]), 8)
 
     def test_frozen_board_cannot_admit_a_quest(self) -> None:
         candidate = copy.deepcopy(self.board)
-        candidate["entries"].append(copy.deepcopy(candidate["entries"][0]))
-        with self.assertRaisesRegex(ContinuityError, "QUEST_BOARD_FROZEN"):
-            validate_quest_admission(self.board, candidate, self.board)
+        candidate["entries"].append(
+            copy.deepcopy(candidate["entries"][0])
+        )
+        with self.assertRaisesRegex(
+            ContinuityError,
+            "QUEST_BOARD_FROZEN",
+        ):
+            validate_quest_admission(
+                self.board,
+                candidate,
+                self.board,
+            )
 
-    def test_schema_driven_registry_accepts_later_quest_without_validator_edit(self) -> None:
+    def test_later_quest_admission_preserves_odyssey(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             for entry in self.board["entries"]:
                 source = root / entry["source"]
                 source.parent.mkdir(parents=True, exist_ok=True)
-                source.write_text(f"# {entry['quest_id']}\n", encoding="utf-8")
-            for entry in self.registry["entries"]:
-                source = root / entry["source"]
-                source.parent.mkdir(parents=True, exist_ok=True)
-                if not source.exists():
-                    source.write_text(f"# {entry['quest_id']}\n", encoding="utf-8")
+                source.write_text(
+                    f"# {entry['quest_id']}\n",
+                    encoding="utf-8",
+                )
+            odyssey = root / "quests" / "the-odyssey.md"
+            odyssey.write_text(
+                "# Quest — The Odyssey\n",
+                encoding="utf-8",
+            )
             later = root / "quests" / "later-valid-quest.md"
-            later.write_text("# Later valid Quest\n", encoding="utf-8")
+            later.write_text(
+                "# Later valid Quest\n",
+                encoding="utf-8",
+            )
 
             candidate = copy.deepcopy(self.registry)
             candidate["registry_revision"] += 1
@@ -108,12 +154,18 @@ class PrimeContinuityTests(unittest.TestCase):
                     "next_gate": "LQ-C01 Preview",
                     "owner": "Atlas / Source Governance",
                     "quest_id": "QUEST-LATER-VALID-R01",
-                    "readiness_basis": "Schema-valid later Quest with one unique parent Mission.",
+                    "readiness_basis": (
+                        "Schema-valid later Quest with one unique parent Mission."
+                    ),
                     "source": "quests/later-valid-quest.md",
                     "state": "READY_FOR_CAMPAIGN_1_PREVIEW",
                     "parent_issue_number": 999,
-                    "parent_mission_id": "MISSION-QUEST-PARENT-LATER-VALID-R01",
-                    "parent_attempt_id": "MISSION-QUEST-PARENT-LATER-VALID-R01-ATTEMPT-01",
+                    "parent_mission_id": (
+                        "MISSION-QUEST-PARENT-LATER-VALID-R01"
+                    ),
+                    "parent_attempt_id": (
+                        "MISSION-QUEST-PARENT-LATER-VALID-R01-ATTEMPT-01"
+                    ),
                     "parent_mission_state": "CAPTURED",
                     "parent_source_status": "NO_SOURCE_CHANGE_REQUIRED",
                     "parent_issue_label": "mission/quest",
@@ -126,50 +178,113 @@ class PrimeContinuityTests(unittest.TestCase):
                 self.board,
                 root=root,
             )
-            self.assertEqual(admitted["quest_id"], "QUEST-LATER-VALID-R01")
+            self.assertEqual(
+                admitted["quest_id"],
+                "QUEST-LATER-VALID-R01",
+            )
+            self.assertEqual(
+                candidate["entries"][0],
+                self.registry["entries"][0],
+            )
 
             stale = copy.deepcopy(candidate)
-            stale["registry_revision"] = self.registry["registry_revision"] + 2
-            with self.assertRaisesRegex(ContinuityError, "QUEST_ADMISSION_REVISION_INVALID"):
-                validate_quest_admission(self.registry, stale, self.board, root=root)
+            stale["registry_revision"] = (
+                self.registry["registry_revision"] + 2
+            )
+            with self.assertRaisesRegex(
+                ContinuityError,
+                "QUEST_ADMISSION_REVISION_INVALID",
+            ):
+                validate_quest_admission(
+                    self.registry,
+                    stale,
+                    self.board,
+                    root=root,
+                )
 
     def test_registry_parent_and_cutover_tampering_fails_closed(self) -> None:
         duplicate = copy.deepcopy(self.registry)
-        duplicate["entries"][1]["parent_issue_number"] = duplicate["entries"][0]["parent_issue_number"]
-        with self.assertRaisesRegex(ContinuityError, "QUEST_REGISTRY_DUPLICATE"):
+        duplicate["entries"].append(
+            copy.deepcopy(duplicate["entries"][0])
+        )
+        with self.assertRaisesRegex(
+            ContinuityError,
+            "QUEST_REGISTRY_DUPLICATE",
+        ):
             validate_quest_registry(duplicate, self.board)
 
         wrong_predecessor = copy.deepcopy(self.registry)
         wrong_predecessor["cutover"]["predecessor_sha256"] = "0" * 64
-        with self.assertRaisesRegex(ContinuityError, "QUEST_PREDECESSOR_DIGEST_MISMATCH"):
-            validate_quest_registry(wrong_predecessor, self.board)
+        with self.assertRaisesRegex(
+            ContinuityError,
+            "QUEST_PREDECESSOR_DIGEST_MISMATCH",
+        ):
+            validate_quest_registry(
+                wrong_predecessor,
+                self.board,
+            )
+
+        wrong_parent = copy.deepcopy(self.registry)
+        wrong_parent["entries"][0]["parent_issue_number"] = 358
+        with self.assertRaisesRegex(
+            ContinuityError,
+            "ODYSSEY_RECOMPOSITION_BINDING_INVALID",
+        ):
+            validate_quest_registry(wrong_parent, self.board)
 
         missing = copy.deepcopy(self.registry)
-        missing["entries"].pop(0)
+        missing["entries"] = []
         with self.assertRaises(ContinuityError):
             validate_quest_registry(missing, self.board)
 
     def test_register_rejects_registry_digest_and_coverage_drift(self) -> None:
         wrong_digest = copy.deepcopy(self.register)
         wrong_digest["quest_registry_sha256"] = "0" * 64
-        with self.assertRaisesRegex(ContinuityError, "QUEST_REGISTRY_DIGEST_MISMATCH"):
-            validate_register(wrong_digest, self.board, registry=self.registry)
+        with self.assertRaisesRegex(
+            ContinuityError,
+            "QUEST_REGISTRY_DIGEST_MISMATCH",
+        ):
+            validate_register(
+                wrong_digest,
+                self.board,
+                registry=self.registry,
+            )
 
         missing = copy.deepcopy(self.register)
-        missing["entries"].pop()
-        with self.assertRaisesRegex(ContinuityError, "CONTINUITY_REGISTRY_COVERAGE_MISMATCH"):
-            validate_register(missing, self.board, registry=self.registry)
+        missing["entries"] = []
+        with self.assertRaisesRegex(
+            ContinuityError,
+            "CONTINUITY_REGISTRY_COVERAGE_MISMATCH",
+        ):
+            validate_register(
+                missing,
+                self.board,
+                registry=self.registry,
+            )
 
         wrong_state = copy.deepcopy(self.register)
         wrong_state["entries"][0]["quest_state"] = "BLOCKED"
-        with self.assertRaisesRegex(ContinuityError, "CONTINUITY_REGISTRY_BINDING_MISMATCH"):
-            validate_register(wrong_state, self.board, registry=self.registry)
+        with self.assertRaisesRegex(
+            ContinuityError,
+            "CONTINUITY_REGISTRY_BINDING_MISMATCH",
+        ):
+            validate_register(
+                wrong_state,
+                self.board,
+                registry=self.registry,
+            )
 
     def test_duplicate_or_unsafe_source_paths_fail_closed(self) -> None:
         duplicate = copy.deepcopy(self.board)
-        duplicate["entries"].append(copy.deepcopy(self.board["entries"][1]))
-        with self.assertRaisesRegex(ContinuityError, "QUEST_BOARD_DUPLICATE"):
+        duplicate["entries"].append(
+            copy.deepcopy(self.board["entries"][1])
+        )
+        with self.assertRaisesRegex(
+            ContinuityError,
+            "QUEST_BOARD_DUPLICATE",
+        ):
             validate_board(duplicate)
+
         unsafe = copy.deepcopy(self.board)
         unsafe["entries"][1]["source"] = "quests/../outside.md"
         with self.assertRaises(ContinuityError):
@@ -177,11 +292,7 @@ class PrimeContinuityTests(unittest.TestCase):
 
     def test_one_entry_plan_is_stale_bound_and_non_mutating(self) -> None:
         before = copy.deepcopy(self.register)
-        target = next(
-            entry
-            for entry in self.register["entries"]
-            if entry["continuity_id"] == "CONT-PROMETHEUS-FIRE-R01"
-        )
+        target = self.register["entries"][0]
         candidate = plan_one_entry_update(
             self.register,
             self.board,
@@ -189,19 +300,27 @@ class PrimeContinuityTests(unittest.TestCase):
             continuity_id=target["continuity_id"],
             expected_register_sha256=sha256(self.register),
             expected_entry_revision=target["revision"],
-            event_id="PF-C01-TEST-PREVIEW-R01",
-            changes={"next_action": "Run the bounded continuity update proof."},
+            event_id="OD-C02-TEST-PREVIEW-R01",
+            changes={
+                "next_action": (
+                    "Run the bounded Odyssey continuity update proof."
+                )
+            },
         )
         self.assertEqual(self.register, before)
-        self.assertEqual(candidate["register_revision"], before["register_revision"] + 1)
-        changed = [
-            after["continuity_id"]
-            for prior, after in zip(before["entries"], candidate["entries"])
-            if prior != after
-        ]
-        self.assertEqual(changed, [target["continuity_id"]])
+        self.assertEqual(
+            candidate["register_revision"],
+            before["register_revision"] + 1,
+        )
+        self.assertEqual(
+            candidate["entries"][0]["revision"],
+            target["revision"] + 1,
+        )
 
-        with self.assertRaisesRegex(ContinuityError, "REGISTER_STALE"):
+        with self.assertRaisesRegex(
+            ContinuityError,
+            "REGISTER_STALE",
+        ):
             plan_one_entry_update(
                 self.register,
                 self.board,
@@ -209,10 +328,14 @@ class PrimeContinuityTests(unittest.TestCase):
                 continuity_id=target["continuity_id"],
                 expected_register_sha256="0" * 64,
                 expected_entry_revision=target["revision"],
-                event_id="PF-C01-STALE-R01",
+                event_id="OD-C02-STALE-R01",
                 changes={"next_action": "Rejected"},
             )
-        with self.assertRaisesRegex(ContinuityError, "UPDATE_SCOPE_INVALID"):
+
+        with self.assertRaisesRegex(
+            ContinuityError,
+            "UPDATE_SCOPE_INVALID",
+        ):
             plan_one_entry_update(
                 self.register,
                 self.board,
@@ -220,19 +343,25 @@ class PrimeContinuityTests(unittest.TestCase):
                 continuity_id=target["continuity_id"],
                 expected_register_sha256=sha256(self.register),
                 expected_entry_revision=target["revision"],
-                event_id="PF-C01-WIDEN-R01",
+                event_id="OD-C02-WIDEN-R01",
                 changes={"quest_source": "quests/other.md"},
             )
 
-    def test_completed_quests_have_no_active_continuity_target(self) -> None:
+    def test_completed_and_superseded_quests_have_no_active_continuity_target(self) -> None:
         for continuity_id in (
             "CONT-REPAIRING-PRIME-R01",
             "CONT-FOUND-SILVERLIGHT-R01",
             "CONT-PRIME-CONTINUITY-PROOF-R01",
             "CONT-CIELS-AWAKENING-R01",
+            "CONT-PRIME-ASCENDANT-R01",
+            "CONT-PROMETHEUS-FIRE-R01",
+            "CONT-NOTUMS-WATCH-R01",
         ):
             with self.subTest(continuity_id=continuity_id):
-                with self.assertRaisesRegex(ContinuityError, "ENTRY_STALE_OR_MISSING"):
+                with self.assertRaisesRegex(
+                    ContinuityError,
+                    "ENTRY_STALE_OR_MISSING",
+                ):
                     plan_one_entry_update(
                         self.register,
                         self.board,
@@ -244,56 +373,92 @@ class PrimeContinuityTests(unittest.TestCase):
                         changes={"next_action": "Rejected"},
                     )
 
-    def test_mission_quest_labels_and_human_emberlines_are_exact(self) -> None:
-        self.assertEqual(
-            {entry["parent_issue_label"] for entry in self.registry["entries"]},
-            {"mission/quest"},
+    def test_mission_quest_label_and_human_emberline_are_exact(self) -> None:
+        entry = self.registry["entries"][0]
+        rendered = render_mission_quest_emberline(
+            self.register,
+            self.registry,
+            ODYSSEY_ID,
         )
         self.assertEqual(
-            len({entry["emberline_id"] for entry in self.registry["entries"]}),
-            len(self.registry["entries"]),
+            rendered["emberline_id"],
+            "EMBERLINE-QUEST-THE-ODYSSEY-R01",
         )
-        for entry in self.registry["entries"]:
-            rendered = render_mission_quest_emberline(
-                self.register, self.registry, entry["quest_id"]
-            )
-            self.assertEqual(rendered["emberline_id"], entry["emberline_id"])
-            self.assertEqual(rendered["required_label"], "mission/quest")
-            self.assertIn("## Living Emberline", rendered["markdown"])
-            self.assertIn("Merged registry and continuity remain authoritative", rendered["markdown"])
-            self.assertEqual(rendered, render_mission_quest_emberline(
-                copy.deepcopy(self.register), copy.deepcopy(self.registry), entry["quest_id"]
-            ))
+        self.assertEqual(rendered["required_label"], "mission/quest")
+        self.assertEqual(rendered["parent_issue_number"], 359)
+        self.assertIn("## Living Emberline", rendered["markdown"])
+        self.assertIn(
+            "Merged registry and continuity remain authoritative",
+            rendered["markdown"],
+        )
+        self.assertEqual(
+            rendered,
+            render_mission_quest_emberline(
+                copy.deepcopy(self.register),
+                copy.deepcopy(self.registry),
+                ODYSSEY_ID,
+            ),
+        )
 
         duplicate = copy.deepcopy(self.registry)
-        duplicate["entries"][1]["emberline_id"] = duplicate["entries"][0]["emberline_id"]
-        with self.assertRaisesRegex(ContinuityError, "QUEST_REGISTRY_DUPLICATE"):
+        duplicate["entries"].append(copy.deepcopy(entry))
+        with self.assertRaisesRegex(
+            ContinuityError,
+            "QUEST_REGISTRY_DUPLICATE",
+        ):
             validate_quest_registry(duplicate, self.board)
 
         missing = copy.deepcopy(self.registry)
         del missing["entries"][0]["emberline_id"]
-        with self.assertRaisesRegex(ContinuityError, "QUEST_REGISTRY_SCHEMA_INVALID"):
+        with self.assertRaisesRegex(
+            ContinuityError,
+            "QUEST_REGISTRY_SCHEMA_INVALID",
+        ):
             validate_quest_registry(missing, self.board)
 
-        with self.assertRaisesRegex(ContinuityError, "MISSION_QUEST_EMBERLINE_BINDING_INVALID"):
-            render_mission_quest_emberline(self.register, self.registry, "QUEST-CIELS-AWAKENING-20260724")
+        with self.assertRaisesRegex(
+            ContinuityError,
+            "MISSION_QUEST_EMBERLINE_BINDING_INVALID",
+        ):
+            render_mission_quest_emberline(
+                self.register,
+                self.registry,
+                "QUEST-CIELS-AWAKENING-20260724",
+            )
 
     def test_emberline_sunset_sunrise_and_argus_are_deterministic(self) -> None:
-        self.assertEqual(render_emberline(self.register), render_emberline(copy.deepcopy(self.register)))
-        continuity_id = "CONT-PROMETHEUS-FIRE-R01"
-        snapshot = sunset(self.register, continuity_id)
-        reconstructed = sunrise(snapshot, self.register)
-        expected = next(
-            entry for entry in self.register["entries"] if entry["continuity_id"] == continuity_id
+        self.assertEqual(
+            render_emberline(self.register),
+            render_emberline(copy.deepcopy(self.register)),
         )
-        self.assertEqual(reconstructed["next_gate"], expected["gate_id"])
-        self.assertEqual(reconstructed["source"], expected["quest_source"])
+        snapshot = sunset(self.register, ODYSSEY_CONTINUITY)
+        reconstructed = sunrise(snapshot, self.register)
+        expected = self.register["entries"][0]
+        self.assertEqual(
+            reconstructed["next_gate"],
+            expected["gate_id"],
+        )
+        self.assertEqual(
+            reconstructed["source"],
+            expected["quest_source"],
+        )
+
         tampered = copy.deepcopy(snapshot)
         tampered["entry"]["next_action"] = "tampered"
-        with self.assertRaisesRegex(ContinuityError, "SUNSET_DIGEST_MISMATCH"):
+        with self.assertRaisesRegex(
+            ContinuityError,
+            "SUNSET_DIGEST_MISMATCH",
+        ):
             sunrise(tampered, self.register)
-        self.assertEqual(argus(self.register), argus(copy.deepcopy(self.register)))
-        self.assertEqual(argus(self.register)[0]["continuity_id"], "CONT-PROMETHEUS-FIRE-R01")
+
+        self.assertEqual(
+            argus(self.register),
+            argus(copy.deepcopy(self.register)),
+        )
+        self.assertEqual(
+            argus(self.register)[0]["continuity_id"],
+            ODYSSEY_CONTINUITY,
+        )
 
     def test_cli_validate_and_output_no_clobber(self) -> None:
         output = io.StringIO()
@@ -301,29 +466,48 @@ class PrimeContinuityTests(unittest.TestCase):
             self.assertEqual(continuity_cli(["validate"]), 0)
         receipt = json.loads(output.getvalue())
         self.assertEqual(receipt["result"], "PASS")
-        self.assertEqual(receipt["registry_id"], "MISSION-BOARD-QUEST-REGISTRY-R01")
-        self.assertEqual(receipt["frozen_predecessor"], "FROZEN_PREDECESSOR_EVIDENCE")
+        self.assertEqual(
+            receipt["registry_id"],
+            "MISSION-BOARD-QUEST-REGISTRY-R01",
+        )
+        self.assertEqual(
+            receipt["frozen_predecessor"],
+            "FROZEN_PREDECESSOR_EVIDENCE",
+        )
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
             self.assertEqual(
-                continuity_cli([
-                    "mission-quest-emberline",
-                    "--quest-id",
-                    "QUEST-PRIME-ASCENDANT-20260717",
-                ]),
+                continuity_cli(
+                    [
+                        "mission-quest-emberline",
+                        "--quest-id",
+                        ODYSSEY_ID,
+                    ]
+                ),
                 0,
             )
         human = json.loads(output.getvalue())
         self.assertEqual(human["required_label"], "mission/quest")
+        self.assertEqual(human["parent_issue_number"], 359)
         self.assertIn("Living Emberline", human["markdown"])
 
         with tempfile.TemporaryDirectory() as temp:
             target = Path(temp) / "argus.json"
-            self.assertEqual(continuity_cli(["argus", "--output", str(target)]), 0)
+            self.assertEqual(
+                continuity_cli(
+                    ["argus", "--output", str(target)]
+                ),
+                0,
+            )
             self.assertTrue(target.is_file())
-            with self.assertRaisesRegex(ValueError, "OUTPUT_ALREADY_EXISTS"):
-                continuity_cli(["argus", "--output", str(target)])
+            with self.assertRaisesRegex(
+                ValueError,
+                "OUTPUT_ALREADY_EXISTS",
+            ):
+                continuity_cli(
+                    ["argus", "--output", str(target)]
+                )
 
 
 if __name__ == "__main__":

@@ -24,9 +24,10 @@ Read in order:
 9. `continuity/mission-board-quest-registry-r01.json`
 10. `governance/mission-quest-emberline-contract.md`
 11. `continuity/prime-continuity-register-r01.json`
-12. `quest-board/quest-board-v1.json` as frozen predecessor evidence
-13. `tools/thread-engine/PRIME-PORT-STATUS.json`
-14. `recovery/elantris-recovery.md`
+12. `quests/the-odyssey.md`
+13. `quest-board/quest-board-v1.json` as frozen predecessor evidence
+14. `tools/thread-engine/PRIME-PORT-STATUS.json`
+15. `recovery/elantris-recovery.md`
 
 Before substantive Atlas work, apply
 `governance/mission-control-interaction-contract.md` to the chat presentation,
@@ -49,8 +50,10 @@ Codex Workboard route: ABSENT
 Codex repository: PREDECESSOR_EVIDENCE_ONLY
 ```
 
-The live Quest parent Issues are `#307` Prime Ascendant, `#308` Prometheus's
-Fire, and `#309` Notum's Watch. Completed Ciel's Awakening parent Issue `#328`
-and child Mission Issue `#330` remain immutable operational history. The merged
-portable registry snapshot controls startup and recovery if GitHub Issues are
-unavailable. Issue activity alone cannot advance merged Quest state.
+The live Quest parent is `#359` The Odyssey. Mission `#358` is the accepted
+architecture and admission record. Prior parents `#307` Prime Ascendant, `#308`
+Prometheus's Fire, and `#309` Notum's Watch remain preserved superseded history.
+Completed Ciel's Awakening parent Issue `#328` and child Mission Issue `#330`
+remain immutable operational history. The merged portable registry snapshot
+controls startup and recovery if GitHub Issues are unavailable. Issue activity
+alone cannot advance merged Quest state.

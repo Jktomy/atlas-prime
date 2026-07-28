@@ -5,22 +5,44 @@ import json
 import unittest
 from pathlib import Path
 
-from tools.prime_continuity.engine import ContinuityError, plan_one_entry_update, sha256
+from tools.prime_continuity.engine import (
+    ContinuityError,
+    plan_one_entry_update,
+    sha256,
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
-EVENT_ID = "HARMONY-EMBERDARK-PERPENDICULARITY-REFRACTION-R01"
+ODYSSEY_EVENT = "ODYSSEY-QUEST-ADMISSION-AND-SUPERSESSION-R01"
 
 
 class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.register = json.loads((ROOT / "continuity/prime-continuity-register-r01.json").read_text(encoding="utf-8"))
-        self.board = json.loads((ROOT / "quest-board/quest-board-v1.json").read_text(encoding="utf-8"))
-        self.identities = json.loads((ROOT / "continuity/quest-engine-identities-r01.json").read_text(encoding="utf-8"))
-        self.entry = next(item for item in self.register["entries"] if item["continuity_id"] == "CONT-PRIME-ASCENDANT-R01")
+        self.register = json.loads(
+            (
+                ROOT / "continuity/prime-continuity-register-r01.json"
+            ).read_text(encoding="utf-8")
+        )
+        self.board = json.loads(
+            (ROOT / "quest-board/quest-board-v1.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.identities = json.loads(
+            (
+                ROOT / "continuity/quest-engine-identities-r01.json"
+            ).read_text(encoding="utf-8")
+        )
+        self.entry = next(
+            item
+            for item in self.register["entries"]
+            if item["continuity_id"] == "CONT-THE-ODYSSEY-R01"
+        )
 
-    def test_historical_provenance_and_post_237_truth_are_explicit(self) -> None:
-        covenant = (ROOT / "quests/prime-ascendant-covenant.md").read_text(encoding="utf-8")
+    def test_historical_provenance_and_post_237_truth_are_preserved(self) -> None:
+        covenant = (
+            ROOT / "quests/prime-ascendant-covenant.md"
+        ).read_text(encoding="utf-8")
         for marker in (
             "historical founding lineage",
             "Main immediately after the founding generated transaction",
@@ -37,36 +59,41 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
             self.assertIn(marker, covenant)
         self.assertNotIn("| Current verified main |", covenant)
 
-    def test_continuity_advances_without_quest_promotion(self) -> None:
-        self.assertGreaterEqual(self.register["register_revision"], 43)
-        self.assertGreaterEqual(self.entry["revision"], 7)
+    def test_odyssey_continuity_replaces_prime_ascendant_active_row(self) -> None:
+        self.assertEqual(self.register["register_revision"], 57)
+        self.assertEqual(self.entry["revision"], 1)
         self.assertEqual(self.entry["quest_state"], "IN_PROGRESS")
-        self.assertEqual(self.entry["campaign_id"], "PA-C01")
+        self.assertEqual(self.entry["campaign_id"], "OD-C02")
         self.assertIsNone(self.entry["mission_id"])
-        self.assertEqual(self.entry["gate_id"], "PA-C01-COVENANT-REFINEMENT")
-        self.assertIn("Operation Harmony", self.entry["current_position"])
-        self.assertIn("Harmony VM", self.entry["current_position"])
-        self.assertIn("Atlas VM", self.entry["current_position"])
-        self.assertIn("runtime", self.entry["current_position"].lower())
-        self.assertEqual(self.entry["last_event_id"], EVENT_ID)
-        self.assertIn(EVENT_ID, self.register["event_ids"])
-        for prohibited in ("change repository visibility", "awaits merge", "merge pr"):
-            self.assertNotIn(prohibited, self.entry["next_action"].lower())
+        self.assertEqual(self.entry["gate_id"], "OD-C02-PREVIEW")
+        self.assertIn("single admitted active Quest", self.entry["current_position"])
+        self.assertEqual(self.entry["last_event_id"], ODYSSEY_EVENT)
+        self.assertIn(ODYSSEY_EVENT, self.register["event_ids"])
+        self.assertNotIn(
+            "CONT-PRIME-ASCENDANT-R01",
+            {item["continuity_id"] for item in self.register["entries"]},
+        )
 
         replay = copy.deepcopy(self.register)
         with self.assertRaisesRegex(ContinuityError, "EVENT_REPLAY"):
             plan_one_entry_update(
-                replay, self.board, self.identities,
+                replay,
+                self.board,
+                self.identities,
                 continuity_id=self.entry["continuity_id"],
                 expected_register_sha256=sha256(replay),
                 expected_entry_revision=self.entry["revision"],
-                event_id=EVENT_ID,
+                event_id=ODYSSEY_EVENT,
                 changes={"next_action": "replay rejected"},
             )
 
     def test_harmony_hybrid_role_is_surface_aware_and_frictionless(self) -> None:
-        quest = (ROOT / "quests/prime-ascendant.md").read_text(encoding="utf-8")
-        artemis = (ROOT / "operations/artemis-runtime-and-routing.md").read_text(encoding="utf-8")
+        quest = (ROOT / "quests/prime-ascendant.md").read_text(
+            encoding="utf-8"
+        )
+        artemis = (
+            ROOT / "operations/artemis-runtime-and-routing.md"
+        ).read_text(encoding="utf-8")
         combined = quest + artemis
         for marker in (
             "Project Artemis is the owning durable domain, not a model identity",
@@ -90,8 +117,12 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
             self.assertNotIn(prohibited_claim, combined)
 
     def test_runtime_cutover_retirement_topology_and_settings_stay_closed(self) -> None:
-        covenant = (ROOT / "quests/prime-ascendant-covenant.md").read_text(encoding="utf-8")
-        quest = (ROOT / "quests/prime-ascendant.md").read_text(encoding="utf-8")
+        covenant = (
+            ROOT / "quests/prime-ascendant-covenant.md"
+        ).read_text(encoding="utf-8")
+        quest = (ROOT / "quests/prime-ascendant.md").read_text(
+            encoding="utf-8"
+        )
         for marker in (
             "PostgreSQL full-text search + pgvector",
             "Qdrant:\ndeferred until demonstrated need.",
@@ -105,16 +136,27 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
             "direct antenna",
         ):
             self.assertIn(marker, covenant)
-        self.assertEqual(covenant.count("Qdrant:\ndeferred until demonstrated need."), 1)
+        self.assertEqual(
+            covenant.count(
+                "Qdrant:\ndeferred until demonstrated need."
+            ),
+            1,
+        )
         self.assertIn("**Runtime:** `NOT STARTED`", quest)
         self.assertIn("No Campaign, runtime state", quest)
         self.assertIn("GitHub remains canonical", covenant)
         self.assertIn("SELECTED SUBSTRATE DIRECTION", covenant)
 
     def test_future_gitea_phoenix_validation_roles_are_bounded(self) -> None:
-        quest = (ROOT / "quests/prime-ascendant.md").read_text(encoding="utf-8")
-        covenant = (ROOT / "quests/prime-ascendant-covenant.md").read_text(encoding="utf-8")
-        artemis = (ROOT / "operations/artemis-runtime-and-routing.md").read_text(encoding="utf-8")
+        quest = (ROOT / "quests/prime-ascendant.md").read_text(
+            encoding="utf-8"
+        )
+        covenant = (
+            ROOT / "quests/prime-ascendant-covenant.md"
+        ).read_text(encoding="utf-8")
+        artemis = (
+            ROOT / "operations/artemis-runtime-and-routing.md"
+        ).read_text(encoding="utf-8")
         for marker in (
             "Gitea pull-request event",
             "Prime Integrity Cognitive Shadow",
@@ -127,7 +169,10 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
             "Projection diagnostics are part of `prime/integrity`",
         ):
             self.assertIn(marker, quest + covenant)
-        self.assertNotIn("prime/generated-current", quest + covenant)
+        self.assertNotIn(
+            "prime/generated-current",
+            quest + covenant,
+        )
         for marker in (
             "It cannot judge",
             "receives no general or",
@@ -139,10 +184,15 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
             "Gitea cutover is authorized",
             "PA-C01 is complete",
         ):
-            self.assertNotIn(prohibited_claim, quest + covenant + artemis)
+            self.assertNotIn(
+                prohibited_claim,
+                quest + covenant + artemis,
+            )
 
-    def test_normal_human_merge_boundary_replaces_ordinary_shardblade(self) -> None:
-        covenant = (ROOT / "quests/prime-ascendant-covenant.md").read_text(encoding="utf-8")
+    def test_normal_human_merge_boundary_remains_historical_source_truth(self) -> None:
+        covenant = (
+            ROOT / "quests/prime-ascendant-covenant.md"
+        ).read_text(encoding="utf-8")
         for marker in (
             "Normal human-merge boundary",
             "Jayson alone makes the candidate permanent",
@@ -151,7 +201,10 @@ class PrimeAscendantCovenantReconciliationTests(unittest.TestCase):
             "CONTRACT_ONLY_NOT_ACTIVATED",
         ):
             self.assertIn(marker, covenant)
-        self.assertNotIn("Shardblade may mark that exact candidate ready and merge it", covenant)
+        self.assertNotIn(
+            "Shardblade may mark that exact candidate ready and merge it",
+            covenant,
+        )
 
 
 if __name__ == "__main__":
