@@ -40,11 +40,12 @@ First read and validate:
 3. the exact active Quest sources; and
 4. `quest-board/quest-board-v1.json` only as frozen predecessor evidence.
 
-The merged registry recovers the exact active Quest IDs, owners, states, next
-gates, readiness bases, and parent Issues #307–#309. Live Issue availability is
+The merged registry recovers the exact active Quest ID, owner, state, next gate,
+readiness basis, and parent Issue #359. Live Issue availability is
 not required for that recovery. Issue state alone cannot override the merged
-registry or continuity. Completed Ciel's Awakening Issues #328 and #330 remain
-historical evidence rather than active registry rows.
+registry or continuity. Superseded parent Issues #307–#309 and completed Ciel's
+Awakening Issues #328 and #330 remain historical evidence rather than active
+registry rows.
 
 For `Continue Mission #N`:
 
@@ -81,14 +82,15 @@ recovery super-Quest. Resolve each unfinished responsibility to exactly one
 active registry row, parent Mission identity, durable Quest, and Operation
 before resuming it.
 
-The active portfolio is Prime Ascendant (#307), Prometheus's Fire (#308), and
-Notum's Watch (#309). The frozen Quest Board preserves the exact pre-cutover
-seven-Quest history and cannot admit, advance, or resume work.
+The active portfolio is The Odyssey (#359). The frozen Quest Board preserves
+the exact pre-Mission-#278 seven-Quest history, and Issues #307–#309 plus their
+Quest sources preserve the superseded three-Quest lineage. None can admit,
+advance, or resume current work.
 
 Found Silverlight is historical after Mission #276: resume FS-C01-M04 only
 through the bounded Codex / Source Governance Mission family, Glass Codex
-through Prime Ascendant / Operation Glass Codex, and Seon through Prime
-Ascendant / Operation Harmony. Apple Reminders remains authoritative and Hermes
+through The Odyssey / Operation Glass Codex, and Seon through The Odyssey /
+Operation Harmony. Apple Reminders remains authoritative and Hermes
 remains the bridge vessel. Preserve all Found Silverlight proofs and events;
 never infer M04, deployment, reminder access, or protected-runtime proof from
 Sunset. Prime Continuity Proof is complete through Mission #277; preserve AJ-08
@@ -178,11 +180,12 @@ degraded mode in the validated protected-realm contract. Mission #279 proves
 architecture only; no backup, restore, protected import, secret, database,
 storage, network, or runtime action is claimed.
 
-## Prometheus's Fire recovery boundary
+## Odyssey infrastructure recovery boundary
 
 The selected service isolation, complete/selective restore, dependency order,
 failure behavior, and household priority are summarized by
-`governance/prometheus-cloud-atlas-topology-contract.md`. Treat every envelope
+`governance/prometheus-cloud-atlas-topology-contract.md`, with
+`quests/prometheus-fire.md` retained as superseded lineage. Treat every envelope
 as planning until measured capacity and real destructive restore proof exist.
 
 The Prometheus architecture requires narrow Forge mounts with safe unavailable-mount behavior, Prometheus guest backups, a destructive canary restore, and an independent recovery copy not confined to Forge.
@@ -211,7 +214,7 @@ Household media continuity is intentionally degraded rather than seamless high a
 
 Temporary restore guests require an explicit RAM reallocation or guest-shutdown plan. The 8 GB protected Proxmox reserve is not consumed merely to simplify a restoration exercise.
 
-These are future proof requirements. This runbook and the Prometheus Quest do not claim that any backup, restore, deployment, migration, Jellyfin installation, Gitea activation, Plex cutover, or runtime action has occurred. Recovery receipts must be sanitized and must not contain secrets, private runtime values, or protected records.
+These are future proof requirements. This runbook and The Odyssey do not claim that any backup, restore, deployment, migration, Jellyfin installation, Gitea activation, Plex cutover, or runtime action has occurred. Recovery receipts must be sanitized and must not contain secrets, private runtime values, or protected records.
 
 ## Rollback
 

@@ -47,6 +47,21 @@ Validator code does not enumerate future Quest paths or identities. Attempting
 admission through the frozen Quest Board fails closed with
 `QUEST_BOARD_FROZEN`.
 
+## Many-to-one recomposition
+
+Ordinary Quest admission is additive and preserves every existing active
+registry row. The completed Odyssey cutover is the reviewed many-to-one
+recomposition exception: one exact candidate replaced the active Prime
+Ascendant, Prometheus's Fire, and Notum's Watch registry rows and continuity
+rows with one Odyssey registry row and one matching continuity row.
+
+That recomposition preserved the Mission #278 cutover identity, the frozen Quest
+Board, all predecessor Quest sources, parent Issues #307–#309, accepted proof,
+and append-only event history. Issue #359 is now the sole living Quest parent.
+A future recomposition cannot infer authority from this precedent; it requires
+its own explicit Preview, Mission, atomic source transaction, validation,
+review, permanence, and merged-main readback.
+
 ## Stable identity evidence
 
 `continuity/quest-engine-identities-r01.json` fixes the historical Repairing

@@ -212,13 +212,24 @@ The Mission Board Quest registry has two synchronized forms:
 - the merged portable snapshot at
   `continuity/mission-board-quest-registry-r01.json`.
 
-The initial Mission #278 cutover binds exactly:
+The initial Mission #278 cutover bound exactly:
 
 | Quest | Parent Issue | Parent Mission |
 |---|---:|---|
 | Prime Ascendant | #307 | `MISSION-QUEST-PARENT-PRIME-ASCENDANT-R01` |
 | Prometheus's Fire | #308 | `MISSION-QUEST-PARENT-PROMETHEUS-FIRE-R01` |
 | Notum's Watch | #309 | `MISSION-QUEST-PARENT-NOTUMS-WATCH-R01` |
+
+That table is immutable cutover history, not the current registry. The current
+merged registry binds exactly one active Quest:
+
+| Quest | Parent Issue | Parent Mission |
+|---|---:|---|
+| The Odyssey | #359 | `MISSION-QUEST-PARENT-THE-ODYSSEY-R01` |
+
+Issues #307–#309 and their Mission identities remain preserved superseded
+history. Issue #359 is the sole living `mission/quest` parent; Mission #358
+preserves the accepted Odyssey architecture and admission transaction.
 
 The portable snapshot stores the exact Quest ID, source, owner, state, next gate,
 readiness basis, parent Issue, parent Mission, parent attempt, parent Mission
@@ -238,6 +249,14 @@ Prime transaction that adds the Quest source, adds one registry row, increments
 the registry revision, binds continuity when unfinished, and preserves every
 existing row. The schema and validator are identity-agnostic; they do not
 hard-code future Quest names.
+
+The completed Odyssey many-to-one recomposition is distinct from ordinary
+additive admission. Its exact candidate replaced the three active rows for
+Prime Ascendant, Prometheus's Fire, and Notum's Watch with one Odyssey row and
+one matching continuity row while preserving Mission #278 identity, the frozen
+Quest Board, all three predecessor Quest sources, parent Issues, and accepted
+history. Any later recomposition requires its own explicit atomic transaction;
+ordinary admission must continue to preserve every existing active row.
 
 The frozen Quest Board is not an admission route and must fail with
 `QUEST_BOARD_FROZEN`. A parent Issue state change is operational context only.
