@@ -110,6 +110,9 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
             "start": (ROOT / "atlas-start-here.md").read_text(encoding="utf-8"),
             "routing": (ROOT / "routing/command-surfaces.md").read_text(encoding="utf-8"),
             "quest": (ROOT / "quests/the-odyssey.md").read_text(encoding="utf-8"),
+            "portfolio": (ROOT / "governance/atlas-quest-portfolio-contract.md").read_text(encoding="utf-8"),
+            "mission_board": (ROOT / "governance/mission-board-contract.md").read_text(encoding="utf-8"),
+            "recovery": (ROOT / "recovery/elantris-recovery.md").read_text(encoding="utf-8"),
         }
         joined = "\n".join(surfaces.values())
         for marker in (
@@ -127,6 +130,28 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
             surfaces["start"],
         )
         self.assertIn("prior parents #307–#309", surfaces["routing"])
+        self.assertIn("| The Odyssey | #359 |", surfaces["portfolio"])
+        self.assertIn("| The Odyssey | #359 |", surfaces["mission_board"])
+        self.assertIn("The active portfolio is The Odyssey (#359)", surfaces["recovery"])
+
+    def test_mission_278_and_predecessor_lineage_remain_historical(self) -> None:
+        portfolio = (ROOT / "governance/atlas-quest-portfolio-contract.md").read_text(encoding="utf-8")
+        mission_board = (ROOT / "governance/mission-board-contract.md").read_text(encoding="utf-8")
+        continuity_contract = (
+            ROOT / "governance/quest-engine-continuity-contract.md"
+        ).read_text(encoding="utf-8")
+        for marker in (
+            "| Prime Ascendant | #307 |",
+            "| Prometheus's Fire | #308 |",
+            "| Notum's Watch | #309 |",
+        ):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, portfolio)
+                self.assertIn(marker, mission_board)
+        self.assertIn("Mission #278", portfolio)
+        self.assertIn("Mission #278", mission_board)
+        self.assertIn("Mission #278", continuity_contract)
+        self.assertIn("many-to-one recomposition", continuity_contract.casefold())
 
     def test_required_program_paths_exist(self) -> None:
         required = (
