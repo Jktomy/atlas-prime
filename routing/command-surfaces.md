@@ -74,7 +74,7 @@ Start with `README.md`, then `bootstrap.md`, then `atlas-start-here.md`, then th
 | Lesson Harvest and assurance controls | Lesson Harvest protocol, assurance register/schema; distinct from Ciel Harvest |
 | Lifecycle records and mechanics | `lifecycle/`, lifecycle contract/schemas, `tools/atlas_lifecycle/README.md` |
 | Infrastructure source | `infrastructure/atlas-infrastructure-source.md` |
-| Clean-clone recovery, protected runtime restoration, and recovery proof | `quests/the-odyssey.md`, then `recovery/elantris-recovery.md` |
+| Clean-clone recovery, protected runtime restoration, and recovery proof | `recovery/elantris-recovery.md` |
 | Prime-native source rollback and reviewed revert | `migration/rollback-map.md` |
 | Knowledge lifecycle | `knowledge/atlas-source-compendium.md` |
 | Thread Engine | `tools/thread-engine/README.md`, status JSON; preserved component, not current GitHub default |
