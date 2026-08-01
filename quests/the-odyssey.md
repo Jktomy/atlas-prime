@@ -87,9 +87,9 @@ The following Quest sources and parent Issues remain historical snapshots:
 - Prime Ascendant — `quests/prime-ascendant.md`, Issue `#307`
 - Notum's Watch — `quests/notums-watch.md`, Issue `#309`
 
-Their source bytes, accepted proof, and Issue history remain preserved. Prior
-status text records the pre-supersession state and must not be read as current
-portfolio authority.
+Their source bytes, accepted proof, and Issue history remain preserved as
+**preserved superseded history**. Prior status text records the
+pre-supersession state and must not be read as current portfolio authority.
 
 ## Current position and rollback
 

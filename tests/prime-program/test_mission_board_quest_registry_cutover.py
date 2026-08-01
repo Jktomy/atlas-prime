@@ -47,6 +47,10 @@ class MissionBoardQuestRegistryCutoverTests(unittest.TestCase):
             self.registry["cutover"]["predecessor_sha256"],
             sha256(self.board),
         )
+        self.assertEqual(
+            set(self.registry["cutover"]["baseline_active_quest_ids"]),
+            frozen_active,
+        )
 
     def test_odyssey_is_the_only_active_registry_parent(self) -> None:
         validate_quest_registry(self.registry, self.board)

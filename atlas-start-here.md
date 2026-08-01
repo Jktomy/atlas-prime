@@ -19,13 +19,13 @@ Read in order:
 4. `governance/mission-control-interaction-contract.md`
 5. `governance/mission-first-chat-handoff-contract.md`
 6. `safety/atlas-safety-doctrine.md`
-7. `governance/atlas-autonomy-and-adaptation-contract.md`
-8. `projects/project-registry.md`
-9. `operations/operation-registry.md`
-10. `continuity/mission-board-quest-registry-r01.json`
-11. `governance/mission-quest-emberline-contract.md`
-12. `continuity/prime-continuity-register-r01.json`
-13. `quests/the-odyssey.md`
+7. `projects/project-registry.md`
+8. `operations/operation-registry.md`
+9. `continuity/mission-board-quest-registry-r01.json`
+10. `governance/mission-quest-emberline-contract.md`
+11. `continuity/prime-continuity-register-r01.json`
+12. `quests/the-odyssey.md`
+13. `governance/atlas-autonomy-and-adaptation-contract.md`
 14. `governance/odyssey-hermes-native-architecture-contract.md`
 15. `quest-board/quest-board-v1.json` as frozen predecessor evidence
 16. `tools/thread-engine/PRIME-PORT-STATUS.json`
