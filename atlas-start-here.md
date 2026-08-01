@@ -25,18 +25,20 @@ Read in order:
 10. `governance/mission-quest-emberline-contract.md`
 11. `continuity/prime-continuity-register-r01.json`
 12. `quests/the-odyssey.md`
-13. `quest-board/quest-board-v1.json` as frozen predecessor evidence
-14. `tools/thread-engine/PRIME-PORT-STATUS.json`
-15. `recovery/elantris-recovery.md`
+13. `governance/atlas-autonomy-and-adaptation-contract.md`
+14. `governance/odyssey-hermes-native-architecture-contract.md`
+15. `quest-board/quest-board-v1.json` as frozen predecessor evidence
+16. `tools/thread-engine/PRIME-PORT-STATUS.json`
+17. `recovery/elantris-recovery.md`
 
 Before substantive Atlas work, apply
 `governance/mission-control-interaction-contract.md` to the chat presentation,
 approval surface, and next-action format, then apply
 `governance/mission-first-chat-handoff-contract.md` so substantive execution,
-delegation, blocking, and durable continuation are bound to one public-clean Mission
-and exact attempt. Atlas Project instructions may trigger the fresh startup read, but
-merged Prime defines the exact doctrine; saved memory is reminder-only and never
-substitutes for current Prime.
+delegation, blocking, and durable continuation are bound to one public-clean
+Mission and exact attempt. Atlas Project instructions may trigger the fresh
+startup read, but merged Prime defines the exact doctrine; saved memory is
+reminder-only and never substitutes for current Prime.
 
 Current authority:
 
@@ -50,10 +52,15 @@ Codex Workboard route: ABSENT
 Codex repository: PREDECESSOR_EVIDENCE_ONLY
 ```
 
-The live Quest parent is `#359` The Odyssey. Mission `#358` is the accepted
-architecture and admission record. Prior parents `#307` Prime Ascendant, `#308`
-Prometheus's Fire, and `#309` Notum's Watch remain preserved superseded history.
-Completed Ciel's Awakening parent Issue `#328` and child Mission Issue `#330`
-remain immutable operational history. The merged portable registry snapshot
-controls startup and recovery if GitHub Issues are unavailable. Issue activity
-alone cannot advance merged Quest state.
+The live Quest parent is `#359` The Odyssey. Mission `#358` remains preserved
+architecture and admission evidence. Mission `#364` is the accepted current
+Hermes-native reconciliation and roadmap carrier. Prior parents `#307` Prime
+Ascendant, `#308` Prometheus's Fire, and `#309` Notum's Watch remain preserved
+superseded history. Completed Ciel's Awakening parent Issue `#328` and child
+Mission Issue `#330` remain immutable operational history.
+
+The merged portable registry snapshot controls startup and recovery if GitHub
+Issues are unavailable. Issue activity alone cannot advance merged Quest state.
+The Odyssey Hermes-native contract supplies target-architecture precedence only
+for its exact settled scope and grants no runtime, hardware, protected-data,
+Mission Board cutover, repository retirement, READY, or permanence authority.
