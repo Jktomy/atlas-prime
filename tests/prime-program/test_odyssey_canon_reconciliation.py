@@ -29,6 +29,7 @@ class OdysseyCanonReconciliationTests(unittest.TestCase):
         ):
             self.assertIn(marker, self.autonomy)
         self.assertIn("A fresh Jayson authorization is required", self.autonomy)
+        self.assertIn("policy-matched Harmony sanitization may proceed autonomously", self.autonomy)
 
     def test_native_hermes_and_knowledge_realms_are_canonical_direction(self) -> None:
         for marker in (

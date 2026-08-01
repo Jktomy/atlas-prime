@@ -55,9 +55,11 @@ scope or classification becomes uncertain.
 A fresh Jayson authorization is required before an action crosses any of these
 classes:
 
-1. **Protected** — new protected-data access, private-to-shared release,
-   credential use beyond an existing bounded grant, regulated evidence, or an
-   uncertain classification.
+1. **Protected** — new protected-data access, publication outside an already
+   approved sanitization policy, credential use beyond an existing bounded
+   grant, regulated evidence, or an uncertain classification. A clear
+   policy-matched Harmony sanitization may proceed autonomously with provenance,
+   receipt, and rollback; uncertainty remains private and stops for Jayson.
 2. **Destructive** — irreversible deletion, destructive restore, formatting,
    sole-copy removal, history rewrite, or loss of a proven rollback.
 3. **Externally binding** — messages, submissions, purchases, contracts,
