@@ -82,7 +82,7 @@ class AegisStrikeforceAlignmentTests(unittest.TestCase):
         ):
             self.assertIn(basis, doctrine)
 
-        for dependent in (aegis, strikeforce, safety, autonomy, process, aegis_break, commands):
+        for dependent in (aegis, strikeforce, safety, autonomy, mission_control, process, aegis_break, commands):
             self.assertIn("governance/open-sky-doctrine.md", dependent)
         self.assertIn("mandatory Open Sky review", aegis)
         self.assertIn("Every full Strikeforce pass includes the mandatory Open Sky evaluation", strikeforce)
