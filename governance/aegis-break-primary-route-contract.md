@@ -12,6 +12,7 @@ routes_from:
   - bootstrap.md
   - routing/command-surfaces.md
 routes_to:
+  - governance/open-sky-doctrine.md
   - governance/repository-process-contract.md
   - governance/change-routes.md
   - governance/source-lifecycle.md
@@ -45,6 +46,14 @@ Aegis Break is a bounded safety, route-selection, and construction method. It is
 not a standing writer, repository engine, credential, settings authority, READY
 authority, or permanence authority. The authenticated GitHub Git-data substrate
 performs the bounded write and may act only on the exact sealed candidate.
+
+Aegis Break applies `governance/open-sky-doctrine.md` while selecting and
+constructing the route. It prefers the simplest complete, most efficient safe
+substrate, reuses the proven atomic pattern, and adds no approval, control,
+handoff, abstraction, or manual operation without a concrete consequential
+basis. This removes invented friction without weakening any exact stop,
+Candidate Seal, validation, review, recovery, rollback, authority, or permanence
+boundary below.
 
 ## Current route identities
 
