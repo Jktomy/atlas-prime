@@ -30,6 +30,10 @@ one Jayson instruction
 ```
 
 Fewer steps never justify weaker source identity, protected-data handling, exact-head proof, rollback, or recovery.
+More steps never become safer merely by existing. Under
+`governance/open-sky-doctrine.md`, the process uses the simplest complete and
+most efficient safe route, removes unjustified friction and duplication, and
+keeps every genuine consequence boundary exact.
 
 ## Transaction identity
 
@@ -86,6 +90,11 @@ A candidate is prepublication-complete when:
 - changed paths are closed and candidate bytes are exact;
 - generated consequences are classified;
 - applicable prepublication validation passes.
+
+The complete-candidate review also applies the mandatory Open Sky standard. It
+rejects unnecessary permission prompts, duplicated controls or architecture,
+avoidable handoffs, overengineered safety, inefficient supported routes, and
+manual steps Atlas can safely complete inside the accepted transaction.
 
 Review may still discover a defect. That defect enters the consolidated repair process; it does not justify publishing knowingly partial work.
 
@@ -170,11 +179,15 @@ Strikeforce remains read-only and exact-head-bound:
 ```text
 Noctua verifies identity, source, paths, bytes, evidence, and claims
 → Ares attacks stale assumptions, bypass, replay, leakage, recovery, and rollback
-→ Aegis verifies alignment with Jayson's semantic objective and safeguards
+→ Aegis verifies alignment with Jayson's semantic objective and safeguards, including mandatory Open Sky review
 → GREEN, YELLOW, or RED
 ```
 
 GREEN means ready for the next authorized gate. It never supplies that authority.
+A material unresolved Open Sky violation prevents GREEN. Open Sky removes
+invented friction but never weakens permanent invariants, consequence gates,
+protected boundaries, exact-head proof, rollback, or Jayson-controlled
+permanence.
 
 ## Permanence and Shardblade
 

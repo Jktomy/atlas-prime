@@ -16,7 +16,7 @@ Strikeforce consists of Noctua, Ares, and Aegis working cumulatively against one
 ```text
 Noctua verifies source, identity, evidence, paths, bytes, and claims
 → Ares red-teams assumptions, authority, replay, recovery, leakage, and rollback
-→ Aegis audits alignment and improves the safety, clarity, and Athena-to-Jayson interface
+→ Aegis audits alignment, including mandatory Open Sky review, and improves the safety, clarity, and Athena-to-Jayson interface
 → GREEN, YELLOW, or RED
 ```
 
@@ -28,6 +28,22 @@ Ares follows `governance/ares.md`. It acts as the devil's advocate and attacks c
 
 Aegis is Athena's shield within Strikeforce. It confirms that the object and its presentation preserve Jayson's semantic objective, accepted lessons, active safeguards, explicit choices, stop conditions, protected boundaries, selected route, generated-state policy, and permanence mode. Aegis must resolve every solvable Ares finding, improve inefficiency and user friction, and clearly expose unresolved findings. It cannot convert a Noctua or Ares failure into GREEN through wording, confidence, or simplification.
 
+Every full Strikeforce pass includes the mandatory Open Sky evaluation defined
+by `governance/open-sky-doctrine.md` as an inseparable part of Aegis. The pass
+explicitly evaluates safeguard proportionality, unnecessary restriction of AI
+autonomy, unnecessary user interruption, unnecessary complexity and duplicated
+architecture, infrastructure improvements that can replace procedural
+restriction, simplicity, route efficiency, proven-pattern reuse, consistency
+with comparable Atlas decisions, and whether the object builds a runway or a
+cage. A material unresolved Open Sky violation prevents GREEN.
+
+A restriction cannot rely on “safety” as a vague justification. It must trace to
+a current canonical invariant, defined consequence gate, protected-data
+boundary, credible identified failure mode, evidence-backed recovery or rollback
+requirement, exact authority boundary, or concrete object-specific risk. Without
+one of those bases, Aegis reports unnecessary friction, unnecessary complexity,
+or overengineered safety and requires removal or clear justification.
+
 ## Risk-scaled gates
 
 Consequential or complex work receives a full Preview Strikeforce before Jayson approval and a full exact-head Build Strikeforce after construction. Ordinary low-risk reversible work receives a lighter Preview review and one full Build Strikeforce. Immutable execution may use a fresh execution gate instead of repeating a full design review when exact bytes, digests, authority, scope, and prior findings remain unchanged.
@@ -37,6 +53,12 @@ Preview Strikeforce asks whether the exact plan should be built. Build Strikefor
 ## Pass ceiling and reporting
 
 Every full Strikeforce cycle is numbered and reported as `Pass N of 5`. Each pass runs Noctua, then Ares, then Aegis against one exact object. A repair or semantic change invalidates the prior exact-head result and requires another numbered pass.
+
+Every full-pass report includes an explicit Open Sky verdict and any findings.
+
+- `Open Sky: RUNWAY` means no material Open Sky violation remains.
+- `Open Sky: CAGE — YELLOW` or `Open Sky: CAGE — RED` identifies each material
+  restriction, its missing or inadequate basis, and the condition for resolution.
 
 After five non-GREEN passes, the transaction stops `BLOCKED_RESUMABLE`. Mission Control presents unresolved findings and asks Jayson for more information, narrowed scope, a changed approach, or abandonment. Five attempts never waive evidence or convert YELLOW or RED into GREEN. The final report records how many passes were required and which pass became GREEN.
 
@@ -48,6 +70,7 @@ For a Prime repository transaction, Strikeforce also reconciles:
 - the transaction and objective digests;
 - exact canonical base, branch, PR, head, tree, and complete path inventory;
 - complete-candidate and dependency-discovery posture;
+- mandatory Open Sky applicability and the exact full-pass verdict;
 - requesting surface, operator, selected route, publisher, and any fallback reconciliation;
 - required checks and the final exact-head integrity result;
 - generated-state classification;

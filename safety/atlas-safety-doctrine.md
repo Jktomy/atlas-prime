@@ -16,6 +16,12 @@ protected boundary, permitted authority, explicit stop conditions, accepted
 safeguards, and the Jayson-facing decision surface before construction begins
 and throughout the route.
 
+Safety is a fence around credible consequential boundaries, not a cage around
+intelligence. `governance/open-sky-doctrine.md` is a permanent mandatory Aegis
+standard. It requires freedom by default inside an accepted boundary,
+proportional safeguards, infrastructure before restriction, simplicity and
+efficiency, and consistent reuse of proven patterns.
+
 Strikeforce combines three cumulative read-only disciplines at exact-candidate
 review. Together Noctua, Ares, and Aegis reconcile one exact head:
 
@@ -24,8 +30,9 @@ review. Together Noctua, Ares, and Aegis reconcile one exact head:
 2. **Ares** red-teams the exact candidate for bypasses, stale assumptions,
    unsafe defaults, hidden authority, replay, leakage, and rollback failure.
 3. **Aegis** audits alignment with Jayson's semantic objective and improves the
-   safety, clarity, safeguards, and Athena-to-Jayson interface without changing
-   the candidate or granting authority.
+   safety, clarity, safeguards, and Athena-to-Jayson interface, including the
+   mandatory Open Sky review, without changing the candidate or granting
+   authority.
 
 Strikeforce reconciles the combined result at one exact head and reports GREEN,
 YELLOW, or RED. A passing test cannot authorize a protected action, clearer
@@ -35,6 +42,9 @@ a receipt cannot claim a capability the active code does not enforce.
 ## Permanent invariants
 
 - Prime is the only active source repository after cutover.
+- The Open Sky Doctrine is mandatory Aegis doctrine and an inseparable part of
+  every full Strikeforce pass; a material unresolved Open Sky violation prevents
+  GREEN.
 - Generated projections report; they never govern.
 - Private records, credentials, tokens, recovery codes, PHI, raw finance
   evidence, account data, private network values, and unrestricted terminal

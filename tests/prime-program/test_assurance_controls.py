@@ -20,7 +20,7 @@ class AssuranceControlTests(unittest.TestCase):
         controls = self.register["controls"]
         self.assertEqual(
             [item["control_id"] for item in controls],
-            ["ASC-001", "ASC-002", "ASC-003", "ASC-004", "ASC-005", "ASC-006", "ASC-007"],
+            ["ASC-001", "ASC-002", "ASC-003", "ASC-004", "ASC-005", "ASC-006", "ASC-007", "ASC-008"],
         )
         self.assertEqual(len({item["control_id"] for item in controls}), len(controls))
         self.assertLessEqual({item["status"] for item in controls}, {"ACTIVE", "SUPERSEDED"})
@@ -68,6 +68,10 @@ class AssuranceControlTests(unittest.TestCase):
         self.assertIn("user-visible Preview", controls["ASC-005"]["objective"])
         self.assertIn("survives route failure", controls["ASC-006"]["title"])
         self.assertIn("explicit disposition", controls["ASC-007"]["objective"])
+        self.assertIn("freedom by default", controls["ASC-008"]["objective"])
+        self.assertIn("every full Strikeforce pass", controls["ASC-008"]["objective"])
+        self.assertIn("material unresolved violation prevents GREEN", controls["ASC-008"]["objective"])
+        self.assertIn("governance/open-sky-doctrine.md", controls["ASC-008"]["enforcement_sources"])
 
         protocol = (ROOT / "governance/lesson-harvest-protocol.md").read_text(encoding="utf-8")
         aegis = (ROOT / "governance/atlas-aegis.md").read_text(encoding="utf-8")

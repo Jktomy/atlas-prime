@@ -34,6 +34,7 @@ Skip:
 - Runtime impact: [No / yes]
 - Large protected file impact: [No / yes]
 - Deletion / migration: [No / yes]
+- Open Sky: [RUNWAY / CAGE finding with concrete consequential basis or required simplification]
 
 ## Proposed changes
 

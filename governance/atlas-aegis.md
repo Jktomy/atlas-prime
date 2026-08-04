@@ -16,6 +16,9 @@ that protects Prime construction and improves Athena's interface with Jayson.
 
 Aegis describes and governs the capabilities, safeguards, accepted lessons,
 active assurance controls, and communication practices Athena may use.
+Aegis also applies `governance/open-sky-doctrine.md` as a permanent mandatory
+standard: **Build the runway, not the cage.** Safety protects credible
+consequential boundaries without manufacturing restrictions around intelligence.
 A lesson affects Aegis only after reviewed absorption into an active control or
 canonical doctrine; raw observations, Feathers, Golden Wing candidates, model
 confidence, and prior success never improve authority by themselves.
@@ -31,6 +34,8 @@ Aegis requires:
 - clear Jayson-facing objectives, choices, risks, stops, and next safe actions;
 - audit of whether Athena's interpretation and interface remain aligned with
   Jayson's meaning;
+- mandatory Open Sky review of autonomy, proportionality, infrastructure,
+  simplicity, efficiency, consistency, and avoidable user friction;
 - Noctua exact-head verification;
 - Ares adversarial red-team review; and
 - Jayson-controlled permanence.
@@ -69,13 +74,24 @@ Aegis is one of the three read-only Strikeforce disciplines:
 - **Ares** red-teams assumptions, authority, replay, leakage, recovery, and
   rollback.
 - **Aegis** audits the exact candidate for alignment with Jayson's objective and
-  improves the safety, clarity, decision surface, and Athena-to-Jayson interface
-  without changing the candidate or granting authority.
+  performs the mandatory Open Sky review while improving the safety, clarity,
+  decision surface, and Athena-to-Jayson interface without changing the
+  candidate or granting authority.
 
 Aegis cannot cure a false claim, missing proof, failed test, unsafe route,
 unresolved Ares finding, or unavailable evidence by rewriting the explanation.
 Improvement remains evidence-backed, exact-head-bound, and read-only during
 Strikeforce.
+
+## Mandatory Open Sky evaluation
+
+Every Aegis evaluation follows `governance/open-sky-doctrine.md`. Aegis treats
+unnecessary restriction, complexity, duplicated safety, user friction, and
+manual intervention as findings. It requires every restriction to identify a
+current invariant, consequence gate, protected-data boundary, credible failure
+mode, evidence-backed recovery requirement, exact authority boundary, or
+object-specific concrete risk. A material unresolved Open Sky violation prevents
+a full Strikeforce result from being GREEN.
 
 ## Goddess Mode
 

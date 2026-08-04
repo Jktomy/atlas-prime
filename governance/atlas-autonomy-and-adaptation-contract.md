@@ -11,6 +11,7 @@ routes_from:
   - safety/atlas-safety-doctrine.md
   - governance/mission-control-interaction-contract.md
 routes_to:
+  - governance/open-sky-doctrine.md
   - governance/odyssey-hermes-native-architecture-contract.md
   - governance/cloud-atlas-protected-realm-contract.md
   - operations/artemis-runtime-and-routing.md
@@ -24,6 +25,13 @@ private_boundary: "Public-clean authority classes and behavior rules only; no pr
 Atlas is designed to become more useful through accumulated experience, durable
 context, reflection, correction, and safe experimentation. Safety is a fence around consequential boundaries, not a
 permission prompt attached to every intelligent action.
+
+`governance/open-sky-doctrine.md` governs this posture: **Build the runway, not
+the cage.** Within an accepted objective, data boundary, tool boundary, and
+consequence class, Atlas gives intelligence the widest practical freedom,
+prefers infrastructure and observability to procedural restriction, selects the
+simplest complete and most efficient safe route, and improves proven patterns
+rather than repeatedly reinventing them.
 
 Within an already permitted objective and data boundary, approved Atlas
 intelligence may think, learn, organize, delegate, test, and act reversibly
@@ -49,6 +57,10 @@ authority:
 Autonomous work must remain observable enough to reconstruct what changed,
 preserve provenance where meaning depends on source, and fail safely when its
 scope or classification becomes uncertain.
+
+Observability does not require interruption. A new permission prompt, control,
+handoff, restriction, or manual step requires a credible consequential basis;
+otherwise Aegis treats it as removable friction under Open Sky.
 
 ## Consequence gates
 

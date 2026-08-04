@@ -171,6 +171,14 @@ exact-head Build Strikeforce results. After five non-GREEN passes, stop
 changed approach, or abandonment. Five attempts never convert a defective plan
 into GREEN.
 
+Every full-pass report makes the Open Sky result explicit under
+`governance/open-sky-doctrine.md`. It reports `Open Sky: RUNWAY` only when no
+material violation remains. Otherwise it reports `Open Sky: CAGE — YELLOW` or
+`Open Sky: CAGE — RED`, names the unnecessary restriction, interruption,
+complexity, duplication, or friction, identifies the missing concrete basis,
+and states the condition for resolution. A material unresolved Open Sky
+violation prevents the full pass from being GREEN.
+
 ## Goddess Mode and Shardblade
 
 Goddess Mode means continue through recoverable failures inside the exact

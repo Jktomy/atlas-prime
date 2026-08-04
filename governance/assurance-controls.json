@@ -143,6 +143,29 @@
         "tests/prime-program/test_assurance_controls.py"
       ],
       "superseded_by": null
+    },
+    {
+      "control_id": "ASC-008",
+      "title": "Open Sky is mandatory Aegis doctrine in every full Strikeforce pass",
+      "status": "ACTIVE",
+      "objective": "Aegis gives intelligence freedom by default inside accepted boundaries, requires safeguards and restrictions to be proportional to a concrete consequential basis, prefers infrastructure over restriction, selects the simplest complete and most efficient safe route, reuses proven patterns, treats unjustified complexity and friction as findings, and performs explicit Open Sky review in every full Strikeforce pass; a material unresolved violation prevents GREEN.",
+      "applies_when": "An Aegis evaluation or full Strikeforce pass reviews a Preview, candidate, execution object, recovery object, lifecycle transaction, architecture, control, route, or user-facing process, or source work changes Aegis, Strikeforce, autonomy, safety, routing, review, or interaction doctrine.",
+      "required_evidence": [
+        "The exact canonical name The Open Sky Doctrine, maxim Build the runway, not the cage., governing meaning, and all five permanent principles remain present without semantic weakening.",
+        "Every full Strikeforce pass includes explicit Open Sky evaluation as part of Aegis and cannot report GREEN while a material Open Sky violation remains unresolved.",
+        "Every restriction identifies a current invariant, consequence gate, protected-data boundary, credible failure mode, evidence-backed recovery requirement, exact authority boundary, or concrete object-specific risk; otherwise Aegis reports and requires removal or justification of the friction.",
+        "Dependent safety, autonomy, Mission Control, repository-process, route, command, template, and regression sources preserve genuine boundaries while agreeing with mandatory Open Sky behavior."
+      ],
+      "enforcement_sources": [
+        "governance/open-sky-doctrine.md",
+        "governance/atlas-aegis.md",
+        "governance/atlas-strikeforce.md",
+        "safety/atlas-safety-doctrine.md",
+        "governance/atlas-autonomy-and-adaptation-contract.md",
+        "tests/prime-program/test_aegis_strikeforce_alignment.py",
+        "tests/prime-program/test_assurance_controls.py"
+      ],
+      "superseded_by": null
     }
   ]
 }
